@@ -2,12 +2,20 @@ import { useState, useEffect } from "react";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { useNavigate, useLocation } from "react-router-dom";
 import FeatherIcon from 'feather-icons-react';
+import ReactPaginate from "react-paginate"
 
 const Users = () => {
-    const [users, setUsers] = useState();
+    const [users, setUsers] = useState([]);
     const axiosPrivate = useAxiosPrivate();
     const navigate = useNavigate();
     const location = useLocation();
+
+    const [currentPage,setCurrentPage] =  useState(1)
+    const [usersPerPage] =  useState(8)
+
+    const pagesVisited = currentPage * usersPerPage
+    const currentUsers = users.slice(pagesVisited,pagesVisited+usersPerPage)
+    const pageCount = Math.ceil(users.length/usersPerPage)
 
     useEffect(() => {
         let isMounted = true;
@@ -34,7 +42,10 @@ const Users = () => {
         }
     }, [])
 
-
+    //-------------------------
+    const handlePageClick = ({ selected: selectedPage }) => {
+        setCurrentPage(selectedPage);
+    }
     //-------------------
     const [showCreateNew, setIsActive] = useState(false);
     const CreateNew = event => {
@@ -139,7 +150,7 @@ const Users = () => {
                                  </header>
                                  <div className="contact-body">
                                      <div data-simplebar className="nicescroll-bar">
-                                         <div className="contact-list-view" style={{height:'650px', overflow:"scroll"}}>
+                                         <div className="contact-list-view">
                                              <table id="datable_1" className="table nowrap w-100 mb-5">
                                                  <thead>
                                                      <tr>
@@ -155,9 +166,9 @@ const Users = () => {
                                                          <th>Actions</th>
                                                      </tr>
                                                  </thead>
-                                                 {users?.length &&
+                                                 {currentUsers.length &&
                                                   (<tbody >
-                                                     {users.map((user,i) => 
+                                                     {currentUsers.map((user,i) => 
                                                      (<tr>
                                                         <td><input type="checkbox" className="form-check-input check-select-all" id="customCheck1"/></td>
                                                         
@@ -208,7 +219,20 @@ const Users = () => {
                                                      
                                                  </tbody>
                                                  )}
+                                                 
                                              </table>
+                                            <ReactPaginate
+                                            previousLabel = {"Previous"}    
+                                            nextLabel = {"Next"}
+                                            pageCount = {pageCount}
+                                            onPageChange = {handlePageClick}
+                                            containerClassName={"pagination-wrap"}
+                                            pageLinkClassName = {"page-link"}
+                                            previousLinkClassName={"page-link"}
+                                            nextLinkClassName={"page-link"}
+                                            disabledLinkClassName={"disabled"}
+                                            activeClassName={"active"}
+                                            />
                                          </div>
                                      </div>
                                  </div>
