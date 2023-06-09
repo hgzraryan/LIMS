@@ -1,6 +1,7 @@
 import { useNavigate, Link, Outlet } from "react-router-dom";
 import useLogout from "../../hooks/useLogout";
-import React, { useState } from "react";
+import React, { Suspense, useState } from "react";
+import LoadingSpinner from "../LoadingSpinner";
 
 
 
@@ -1075,7 +1076,9 @@ const MainTemplate = () => {
                 {/* Main Content */}
                 <div className="hk-pg-wrapper">
                     {/*<div className="container-xxl">*/}
+                    <Suspense fallback = {<LoadingSpinner/>}>
                         <Outlet/>
+                    </Suspense>
                     </div>
                     {/* Page Footer */}
                     <div className="hk-footer">

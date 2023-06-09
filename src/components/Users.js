@@ -3,6 +3,7 @@ import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { useNavigate, useLocation } from "react-router-dom";
 import FeatherIcon from 'feather-icons-react';
 import ReactPaginate from "react-paginate"
+import LoadingSpinner from "./LoadingSpinner";
 
 const Users = () => {
     const [users, setUsers] = useState([]);
@@ -45,6 +46,10 @@ const Users = () => {
     //-------------------------
     const handlePageClick = ({ selected: selectedPage }) => {
         setCurrentPage(selectedPage);
+    }
+    const refreshPage = () => {
+        let paglink = document.querySelectorAll('.page-item');
+        paglink[0].firstChild.click();
     }
     //-------------------
     const [showCreateNew, setIsActive] = useState(false);
@@ -122,7 +127,7 @@ const Users = () => {
                                              <a className="dropdown-item" href="contact-cards.html"><span className="feather-icon dropdown-icon"><FeatherIcon icon="grid" /></span><span>Grid View</span></a>
                                              <a className="dropdown-item" href="#"><span className="feather-icon dropdown-icon"><FeatherIcon icon="server" /></span><span>Compact View</span></a>
                                          </div>
-                                         <a className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover no-caret d-sm-inline-block d-none" href="#" onClick={() => handlePageClick({selected:0})} data-bs-toggle="tooltip" data-placement="top" title="" data-bs-original-title="Refresh"><span className="icon"><span className="feather-icon"><FeatherIcon icon="refresh-cw" /></span></span></a>
+                                         <a className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover no-caret d-sm-inline-block d-none" href="#" onClick={ refreshPage } data-bs-toggle="tooltip" data-placement="top" title="" data-bs-original-title="Refresh"><span className="icon"><span className="feather-icon"><FeatherIcon icon="refresh-cw" /></span></span></a>
                                          <div className="v-separator d-lg-block d-none"></div>
                                          <a className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover dropdown-toggle no-caret  d-lg-inline-block d-none  ms-sm-0" href="#" data-bs-toggle="dropdown"><span className="icon" data-bs-toggle="tooltip" data-placement="top" title="" data-bs-original-title="Manage Contact"><span className="feather-icon"><FeatherIcon icon="settings" /></span></span></a>
                                          <div className="dropdown-menu dropdown-menu-end">
@@ -167,10 +172,10 @@ const Users = () => {
                                                          <th>Actions</th>
                                                      </tr>
                                                  </thead>
-                                                 {currentUsers.length &&
-                                                  (<tbody >
-                                                     {currentUsers.map((user,i) => 
-                                                     (<tr>
+                                                 <tbody >
+                                                 {currentUsers.length ?
+                                                     currentUsers.map((user) => 
+                                                     <tr key={user._id}>
                                                         <td><input type="checkbox" className="form-check-input check-select-all" id="customCheck1"/></td>
                                                         
                                                          <td>
@@ -189,8 +194,8 @@ const Users = () => {
                                                          <td>{user.lastname}</td>
                                                          <td className="text-truncate">{user.email ?? 'test@mail.ru'}</td>
                                                          <td>
-                                                             {Object.keys(user.roles).map((role) => 
-                                                             <span className={setUserTypeStyle(role)}>{role}</span>   )}
+                                                             {Object.keys(user.roles).map((role,idx) => 
+                                                             <span key={idx} className={setUserTypeStyle(role)}>{role}</span>   )}
                                                          </td>
                                                          <td>
                                                              <div className="d-flex align-items-center">
@@ -215,23 +220,23 @@ const Users = () => {
                                                                  </div>
                                                              </div>
                                                          </td>
-                                                     </tr>
-                                                     ))}
-                                                     
+                                                     </tr>                                                     
+                                                 ):(<tr><td><LoadingSpinner/></td></tr> )}
                                                  </tbody>
-                                                 )}
-                                                 
                                              </table>
                                             <ReactPaginate
                                             previousLabel = {"Previous"}    
                                             nextLabel = {"Next"}
                                             pageCount = {pageCount}
                                             onPageChange = {handlePageClick}
-                                            containerClassName={"pagination-wrap"}
+                                            initialPage = {0}
+                                            containerClassName={"pagination"}
                                             pageLinkClassName = {"page-link"}
+                                            pageClassName = {"page-item"}
                                             previousLinkClassName={"page-link"}
                                             nextLinkClassName={"page-link"}
                                             disabledLinkClassName={"disabled"}
+                                            //activeLinkClassName={"active"}
                                             activeClassName={"active"}
                                             />
                                          </div>
