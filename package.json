@@ -34,6 +34,7 @@
     "react-router-dom": "^6.2.1",
     "react-scripts": "5.0.0",
     "react-table": "^7.8.0",
+    "react-to-print": "^2.14.13",
     "react-validation": "^3.0.7",
     "sass": "^1.62.1",
     "styled-components": "^5.3.6",
@@ -65,5 +66,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://127.0.0.1:6443"
+  "proxy": "http://161.35.193.18:6443"
 }

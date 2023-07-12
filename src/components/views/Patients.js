@@ -12,8 +12,8 @@ import Loading from '../Loading';
 import { useTable } from 'react-table';
 import { Modal, Button } from 'react-bootstrap';
 import { Editor } from '@tinymce/tinymce-react';
-
-
+import ReactToPrint from 'react-to-print'
+import {ComponentToPrint} from './../ComponentToPrint'
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
@@ -95,6 +95,25 @@ const log = () => {
    console.log(editorRef.current.getContent());
  }
 };
+/*------------------------------------------------*/
+/*------------------ tiny mce --------------------*/
+const ComponentToPrintWrapper = ({ user }) => { // 1.
+	const componentRef = useRef(); // 2.
+  
+	return (
+	  <div style={{ display: "flex" }}>
+	
+		<ReactToPrint
+		  trigger={() => <button type="primary">Print</button>}
+		  content={() => componentRef.current}
+		/>
+		<div style={{display:'none'}}>
+
+		<ComponentToPrint ref={componentRef} value={user} />
+		</div>
+	  </div>
+	);
+  };
 /*------------------------------------------------*/
 
 
@@ -813,6 +832,10 @@ const generateData = (start, length = 1) =>
                                                          <td>
                                                              <div className="d-flex align-items-center">
                                                                  <div className="d-flex">
+																	
+																 <ComponentToPrintWrapper key={i} user={user} />
+
+																	
                                                                      <a className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover" data-bs-toggle="tooltip" data-placement="top" title="" data-bs-original-title="Archive" href="#"><span className="icon"><span className="feather-icon"><FeatherIcon icon="archive" /></span></span></a>
                                                                      <a className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover" data-bs-toggle="tooltip" data-placement="top" title="" data-bs-original-title="Edit" href="edit-contact.html"><span className="icon"><span className="feather-icon"><FeatherIcon icon="edit" /></span></span></a>
                                                                      <a className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover del-button" data-bs-toggle="tooltip" data-placement="top" title="" data-bs-original-title="Delete" href="#"><span className="icon"><span className="feather-icon"><FeatherIcon icon="trash" /></span></span></a>
