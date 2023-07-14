@@ -817,13 +817,6 @@ const generateData = (start, length = 1) =>
                                                      
                                                  </tbody>
                                                  )}
-												   
-												   
-												   
-												   
-												   
-												   
-												   
 												 </table>
 											   </InfiniteScroll>
 											 </div>

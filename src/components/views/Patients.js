@@ -166,7 +166,6 @@ const handleSubmit = async (e) => {
 		//console.log(JSON.stringify(response))
 
 		//clear state and controlled inputs
-		debugger
 		firstname.current='';
 		lastname.current='';
 		pwd.current='';
@@ -225,7 +224,6 @@ const onAdd = (e) => {
 			alert("Image mime type is not valid");
 			return;
 		  }
-		  debugger
 		setImage(image);
 		 try{ 
 		    formData.append('image',event.target.files[0])
@@ -861,13 +859,6 @@ const generateData = (start, length = 1) =>
                                                      
                                                  </tbody>
                                                  )}
-												   
-												   
-												   
-												   
-												   
-												   
-												   
 												 </table>
 											   </InfiniteScroll>
 											 </div>
