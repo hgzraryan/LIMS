@@ -285,7 +285,7 @@ const onAdd = (e) => {
 
         const getUsers = async () => {
             try {
-                const response = await axiosPrivate.post('/users', {
+                const response = await axiosPrivate.post('/patients', {
                     signal: controller.signal,
 					page:currentPage,
 					onPage:Math.round(window.innerHeight/100*1.5)
@@ -323,7 +323,7 @@ const generateData = (start, length = 1) =>
 	
 	const getUsers = async () => {
 		try {
-			const response = await axiosPrivate.post('/users', {
+			const response = await axiosPrivate.post('/patients', {
 				page:currentPage,
 				onPage:usersPerPage
 			});
@@ -406,29 +406,33 @@ const generateData = (start, length = 1) =>
            //accessor: 'select',
          },
          {
-           Header: 'Username',
-           accessor: 'username',
-         },
-         {
-           Header: 'Firstname',
+           Header: 'Անուն',
            accessor: 'firstname',
          },
          {
-           Header: 'Lastname',
+           Header: 'Ազգանուն',
            accessor: 'lastname',
          },
          {
-           Header: 'Email Address',
+           Header: 'Հայրանուն',
+           accessor: 'middlename',
+         },
+         {
+           Header: 'Էլ․ հասցե',
            accessor: 'email',
          },
          {
-           Header: 'Roles',
-           accessor: 'roles',
+           Header: 'Տարիք',
+           accessor: 'age',
          },
          {
-           Header: 'Actions',
-           accessor: 'actions',
+           Header: 'Հետազոտություններ',
+           accessor: 'researchlist',
          },
+		 {
+			Header: 'Կարգաբերումներ',
+			//accessor: 'researchlist',
+		  },
        ],
        []
      );
@@ -823,17 +827,19 @@ const generateData = (start, length = 1) =>
                                                                      </div>
                                                                  </div>
                                                                  <div className="media-body">
-                                                                     <span className="d-block text-high-em">{user.username}</span> 
+                                                                     <span className="d-block text-high-em">{user.firstName}</span> 
                                                                  </div>
                                                              </div>
                                                          </td>
-                                                         <td>{user.firstname}</td>
-                                                         <td>{user.lastname}</td>
+                                                         <td>{user.lastName}</td>
+                                                         <td>{user.midName}</td>
                                                          <td className="text-truncate">{user.email ?? 'test@mail.ru'}</td>
+														 <td>{user.age}</td>
                                                          <td>
-															
+															{/*
                                                              {Object.keys(user.roles).map((role) => 
                                                              <span className={setUserTypeStyle(role)}>{role}</span>   )}
+															 */}
                                                          </td>
                                                          <td>
                                                              <div className="d-flex align-items-center">
