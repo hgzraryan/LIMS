@@ -252,8 +252,13 @@ const onAdd = (e) => {
 					page:currentPage,
 					onPage:Math.round(window.innerHeight/100*1.5)
                 });
-                isMounted && setResearches(prevUsers => [...prevUsers,...response.data.jsonString]);
-				setCurrentPage(prev => prev+1)
+				setTimeout(() => {
+					if(response.data.jsonString.length === 0 || response.data.jsonString.length < 12){
+						setHasMore(false)
+					}
+					setResearches(prevUsers => [...prevUsers,...response.data.jsonString]);
+					setCurrentPage(prev => prev+1)
+				}, 500);
             } catch (err) {
                 console.error(err);
                 navigate('/login', { state: { from: location }, replace: true });

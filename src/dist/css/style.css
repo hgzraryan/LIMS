@@ -77445,7 +77445,7 @@ span[data-notify="icon"] {
 .edit-profile-wrap .nav-profile .nav .nav-item a.nav-link:hover, .edit-profile-wrap .nav-profile .nav .nav-item a.nav-link:focus {
   color: rgba(38, 42, 46, 0.8);
 }
-.edit-profile-wrap .nav-profile .nav .nav-item a.nav-link.active {
+.edit-profile-wrap .nav-profile .nav .nav-item a.nav-link .active {
   color: #007D88;
 }
 
@@ -83183,6 +83183,11 @@ Project:	Jampack
   margin: 0 -1rem;
   white-space: nowrap;
 }
+.hk-wrapper[data-layout="vertical"] .hk-menu .menu-content-wrap .menu-group .navbar-nav .nav-item .nav-link.active{
+  background: rgba(0, 125, 136, 0.15);
+  color: #007D88 !important;
+  border-radius: 0.5rem;
+}
 .hk-wrapper[data-layout="vertical"] .hk-menu .menu-content-wrap .menu-group .navbar-nav .nav-item .nav-link > * {
   -webkit-transition: -webkit-transform 0.25s ease;
   -moz-transition: -moz-transform 0.25s ease;
@@ -83228,7 +83233,7 @@ Project:	Jampack
   -o-transform: translateX(5px);
   transform: translateX(5px);
 }
-.hk-wrapper[data-layout="vertical"] .hk-menu .menu-content-wrap .menu-group .navbar-nav .nav-item.active > .nav-link {
+.hk-wrapper[data-layout="vertical"] .hk-menu .menu-content-wrap .menu-group .navbar-nav .nav-item.active > .nav-link.active {
   color: #007D88 !important;
 }
 .hk-wrapper[data-layout="vertical"] .hk-menu .menu-content-wrap .menu-group .navbar-nav > .nav-item.active > .nav-link {

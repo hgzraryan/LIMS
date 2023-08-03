@@ -288,11 +288,16 @@ const onAdd = (e) => {
                 const response = await axiosPrivate.post('/patients', {
                     signal: controller.signal,
 					page:currentPage,
-					onPage:Math.round(window.innerHeight/100*1.5)
+					onPage:1
                 });
                 console.log(response);
-                isMounted && setUsers(prevUsers => [...prevUsers,...response.data.jsonString]);
-				setCurrentPage(prev => prev+1)
+				setTimeout(() => {
+					if(response.data.jsonString.length === 0 || response.data.jsonString.length < 12){
+						setHasMore(false)
+					}
+					setUsers(prevUsers => [...prevUsers,...response.data.jsonString]);
+					setCurrentPage(prev => prev+1)
+				}, 500);
             } catch (err) {
                 console.error(err);
                 navigate('/login', { state: { from: location }, replace: true });

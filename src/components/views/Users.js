@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import InfiniteScroll from 'react-infinite-scroll-component';
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -9,7 +9,7 @@ import MissingAvatar from "../../dist/img/Missing.svg"
 import Multiselect from 'multiselect-react-dropdown';
 import axios from './../../api/axios';
 import Loading from '../Loading';
-import { useTable } from 'react-table';
+import { useSortBy, useTable } from 'react-table';
 import { Modal, Button } from 'react-bootstrap';
 
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
@@ -34,11 +34,9 @@ const Users = () => {
 	const fileReader = new FileReader()
 	const multiselectRef  = useRef('')	
 	let roleState = {
-    options: [{name: 'Collaborator', id: 1},
-	{name: 'Designer', id: 2},
-	{name: 'React Developer', id: 3},
-	{name: 'Promotion', id: 4},
-	{name: 'Advertisement', id: 5},
+    options: [{name: 'Admin', id: 1},
+	{name: 'Editor', id: 2},
+	{name: 'User', id: 3},
 ]
 };
 /*----------------ADD USER---------------------*/
@@ -235,15 +233,7 @@ const onAdd = (e) => {
 	
 
 
-	
-const generateData = (start, length = 1) =>
-  Array.from({ length }).map((_, i) => ({
-    username: 'hgzraryan',
-    firstname: 'Hartyun',
-    lastname: 'Gzraryan',
-    email: 'hgzraryan@yandex.ru',
-    roles: 'dded',
-  }));
+
 	
 	const getUsers = async () => {
 		try {
@@ -303,73 +293,105 @@ const generateData = (start, length = 1) =>
              break;
         }
      }
-
-
-
-
-
-
-
-     const [items, setItems] = useState(generateData(0));
-     const [isOpen, setIsOpen] = useState(false);
-   /*
-     const fetchMoreData = () => {
-       setTimeout(() => {
-         setItems((prevItems) => [
-           ...prevItems,
-           ...generateData(prevItems.length),
-         ]);
-       }, 1500);
-     };
-	 */
 	 
-     const columns = React.useMemo(
+	 
+	const setUserActiveState = (activeState) => {
+
+        switch (activeState) {
+         case 0:
+         return ["badge badge-soft-danger  my-1  me-2", "Ոչ ակտիվ"];
+         case 1:
+         return ["badge badge-soft-success my-1  me-2  my-1  me-2", "Ակտիվ"];
+         default:
+             break;
+        }
+     }
+
+
+
+
+
+
+
+const columns = React.useMemo(
        () => [
 	     {
-           Header: ' ',
-           //accessor: 'select',
+           Header: '',
+           accessor: 'select',
          },
          {
-           Header: 'Username',
+           Header: 'Ծածկանուն',
            accessor: 'username',
          },
          {
-           Header: 'Firstname',
+           Header: 'Անուն',
            accessor: 'firstname',
          },
          {
-           Header: 'Lastname',
+           Header: 'Ազգանուն',
            accessor: 'lastname',
          },
          {
-           Header: 'Email Address',
+           Header: 'Էլ․ հասցե',
            accessor: 'email',
          },
          {
-           Header: 'Roles',
+           Header: 'Դերեր',
            accessor: 'roles',
          },
          {
-           Header: 'Actions',
+           Header: 'Կարգավիճակ',
+           accessor: 'isActive',
+         },
+		 {
+           Header: 'Գործողություններ',
            accessor: 'actions',
          },
        ],
        []
-     );
-   
-     const tableInstance = useTable({ columns, data: items });
-   
-     const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-       tableInstance;
-   
+       );
+
+
+	const data = useMemo(() => users,[users])
+      if(users.length) {          
+		  
+		const result = users.map(el=>{
+          return{
+            ...el,
+            roles:Object.keys(el.roles)
+          }})
+		{
+        //setUsers(prevUsers => prevUsers=result);
+        console.log('**********');
+        console.log('res',result);
+        console.log('**********',);
+		
+		}
+		
+      } 
+      console.log('**********');
+      console.log('res',users.length);
+      console.log('**********',);
+	  
+	const {
+      getTableProps,
+      getTableBodyProps,
+      headerGroups,
+      rows,
+      prepareRow
+    } = useTable(
+      {
+        columns,
+        data:users
+      },
+      useSortBy
+    );
 
 
 
 
-
-
-
-
+    // const [items, setItems] = useState(generateData(0));
+     const [isOpen, setIsOpen] = useState(false);
 
 
     return (
@@ -439,20 +461,10 @@ const generateData = (start, length = 1) =>
 																			//data-default-file="dist/img/avatar2.jpg"
 																		/>
 																		</div>
-																		<div className="cp-name text-truncate mt-3">Mendaline Shane</div>
-																		<p>No phone calls Always busy</p>
+																		<div className="cp-name text-truncate mt-3">Աշխատակցի նկարը</div>
+																		
 																		<div className="rating rating-yellow my-rating-4" data-rating="3"></div>
-																		<ul className="hk-list hk-list-sm justify-content-center mt-2">
-																			<li>
-																				<a className="btn btn-icon btn-soft-primary btn-rounded" href="#"><span className="icon"><span className="feather-icon"><FeatherIcon icon="mail" /></span></span></a>
-																			</li>
-																			<li>
-																				<a className="btn btn-icon btn-soft-success btn-rounded" href="#"><span className="icon"><span className="feather-icon"><FeatherIcon icon="phone" /></span></span></a>
-																			</li>
-																			<li>
-																				<a className="btn btn-icon btn-soft-danger btn-rounded" href="#"><span className="icon"><span className="feather-icon"><FeatherIcon icon="video" /></span></span></a>
-																			</li>
-																		</ul>
+																		<p>&nbsp;</p>
 																	</div>
 																	<div className="card">
 																		<div className="card-header">
@@ -546,17 +558,7 @@ const generateData = (start, length = 1) =>
 																							</div>
 																						</div>
 																					</div>
-																					<div className="row gx-3">
-																						<div className="col-sm-12">
-																							<label className="form-label">Location</label>
-																							<div className="form-group">
-																								<input className="form-control" type="text" value="Lane 1" placeholder="Line 1" name="add1" />
-																							</div>	
-																							<div className="form-group">
-																								<input className="form-control" type="text" value="Newyork" placeholder="Line 2" name="add2" />
-																							</div>
-																						</div>
-																					</div>
+																					
 																				</form>
 																			</div>
 									
@@ -564,6 +566,7 @@ const generateData = (start, length = 1) =>
 																			
 																		</div>
 																	</div>
+																	{/*
 																	<div className="separator-full"></div>
 																	<div className="card">
 																		<div className="card-header">
@@ -606,6 +609,7 @@ const generateData = (start, length = 1) =>
 																			</div>
 																		</div>
 																	</div>
+																	*/}
 																	<div className="separator-full"></div>
 																	<div className="card">
 																		<div className="card-header">
@@ -617,7 +621,7 @@ const generateData = (start, length = 1) =>
 																				<button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close">
 																					<span aria-hidden="true">×</span>
 																				</button>
-																				<h6 className="text-uppercase fw-bold mb-3">Add Tag</h6>
+																				<h6 className="text-uppercase fw-bold mb-3">Ավելացնել դերեր</h6>
 																				<form>
 																					<div className="row gx-3">
 																						<div className="col-sm-12">
@@ -633,7 +637,7 @@ const generateData = (start, length = 1) =>
 																									className="form-control"
 																									ref={multiselectRef}
 																									hidePlaceholder={true}
-																									placeholder = "Select Role"
+																									placeholder = "Ընտրել դերը"
 																								/>
 																								{/* <select id="input_tags_3" className="form-control" multiple="multiple">
 																									<option selected="selected">Collaborator</option>
@@ -645,7 +649,7 @@ const generateData = (start, length = 1) =>
 																							</div>
 																						</div>
 																					</div>
-																					<button type="button" className="btn btn-primary float-end" onClick={onAdd} data-bs-dismiss="modal">Add</button>
+																					<button type="button" className="btn btn-primary float-end" onClick={onAdd} data-bs-dismiss="modal">Ավելացնել</button>
 																				</form>
 																			</div>
 																		</div>
@@ -674,6 +678,7 @@ const generateData = (start, length = 1) =>
 								</div>
 							</div>
 							<div className="contact-options-wrap">	
+							{/*
 								<a className="btn btn-icon btn-flush-dark flush-soft-hover dropdown-toggle no-caret active" href="#" data-bs-toggle="dropdown">
 									<span className="icon">
 										<span className="feather-icon">
@@ -681,15 +686,32 @@ const generateData = (start, length = 1) =>
 										</span>
 									</span>
 								</a>
+							*/}
 								<div className="dropdown-menu dropdown-menu-end">
 									<a className="dropdown-item active" href="contact.html"><span className="feather-icon dropdown-icon"><FeatherIcon icon="list" /></span><span>List View</span></a>
 									<a className="dropdown-item" href="contact-cards.html"><span className="feather-icon dropdown-icon"><FeatherIcon icon="grid" /></span><span>Grid View</span></a>
 									<a className="dropdown-item" href="#"><span className="feather-icon dropdown-icon"><FeatherIcon icon="server" /></span><span>Compact View</span></a>
 								</div>
-								<a className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover no-caret d-sm-inline-block d-none" href="#" data-bs-toggle="tooltip" data-placement="top" onClick={ refreshPage } title="" data-bs-original-title="Refresh"><span className="icon"><span className="feather-icon"><FeatherIcon icon="refresh-cw" /></span></span></a>
+								
+									<a className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover no-caret d-sm-inline-block d-none" href="#" data-bs-toggle="tooltip" data-placement="top" onClick={ refreshPage } title="" data-bs-original-title="Refresh">
+										<span className="icon">
+											<span className="feather-icon">
+												<FeatherIcon icon="refresh-cw" />
+											</span>
+										</span>
+									</a>
+									{/*
 									<div className="v-separator d-lg-block d-none"></div>
-                                         <a className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover dropdown-toggle no-caret  d-lg-inline-block d-none  ms-sm-0" href="#" data-bs-toggle="dropdown"><span className="icon" data-bs-toggle="tooltip" data-placement="top" title="" data-bs-original-title="Manage Contact"><span className="feather-icon"><FeatherIcon icon="settings" /></span></span></a>
-                                         <div className="dropdown-menu dropdown-menu-end">
+                                         
+										 <a className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover dropdown-toggle no-caret  d-lg-inline-block d-none  ms-sm-0" href="#" data-bs-toggle="dropdown">
+											<span className="icon" data-bs-toggle="tooltip" data-placement="top" title="" data-bs-original-title="Manage Contact">
+												<span className="feather-icon">
+													<FeatherIcon icon="settings" />
+												</span>
+											</span>
+										 </a>
+										 
+										<div className="dropdown-menu dropdown-menu-end">
                                              <a className="dropdown-item" href="#">Manage User</a>
                                              <a className="dropdown-item" href="#">Import</a>
                                              <a className="dropdown-item" href="#">Export</a>
@@ -711,6 +733,10 @@ const generateData = (start, length = 1) =>
                                                  <span className="feather-icon d-none"><FeatherIcon icon="list" /><i data-feather="chevron-down"></i></span>
                                              </span>
                                          </a>
+										 
+										 */}
+										 
+										 
                                      </div>
                                  </header>
                                  <div className="contact-body">
@@ -728,46 +754,41 @@ const generateData = (start, length = 1) =>
 												 scrollableTarget='scrollableDiv'
 												 endMessage={<p>Տվյալներ չեն հայտնաբերվել բեռնելու համար:</p>}
 											   >
-												 <table  className='table table-striped'>
+												 <table  className='table nowrap w-100 mb-5 dataTable no-footer'>
 												   <thead>
-													 {headerGroups.map((headerGroup) => (
-													   <tr {...headerGroup.getHeaderGroupProps()}>
-														 {headerGroup.headers.map((column) => (
-														   <th {...column.getHeaderProps()}>
-															 {column.render('Header')}
-														   </th>
-														 ))}
-													   </tr>
-													 ))}
+												   {headerGroups.map((headerGroup) => (
+													  <tr {...headerGroup.getHeaderGroupProps()}>
+														{headerGroup.headers.map((column) => (
+														  <th className="sorting"
+															{...column.getHeaderProps(
+															  column.getSortByToggleProps()
+															)}
+														  >
+															{column.render("Header")}
+															<span>
+															  {column.isSorted
+																? column.isSortedDesc
+																  ? " 🔽"
+																  : " 🔼"
+																: ""}
+															</span>
+														  </th>
+														))}
+													  </tr>
+													))}
+													  
 												   </thead>
-												   
-												   
-												   
-												   {/*
-												   <tbody {...getTableBodyProps()}>
-													 {rows.map((row, i) => {
-													   prepareRow(row);
-													   return (
-														 <tr {...row.getRowProps()}>
-														   {row.cells.map((cell) => {
-															 return (
-															   <td {...cell.getCellProps()}>
-																 {cell.render('Cell')}
-															   </td>
-															 );
-														   })}
-														 </tr>
-													   );
-													 })}
-												   </tbody>
-												   */}
-												   
-												   
+												  
 												  {users?.length &&
                                                   (<tbody {...getTableBodyProps()}>
-                                                     {users.map((user,i) => 
+                                                     
+													 {users.map((user,i) => 
                                                      (<tr>
-                                                        <td><input type="checkbox" className="form-check-input check-select-all" id="customCheck1"/></td>
+                                                        
+														
+														
+														
+														<td><input type="checkbox" className="form-check-input check-select-all" id="customCheck1"/></td>
                                                         
                                                          <td>
                                                              <div className="media align-items-center">
@@ -777,39 +798,28 @@ const generateData = (start, length = 1) =>
                                                                      </div>
                                                                  </div>
                                                                  <div className="media-body">
-                                                                     <span className="d-block text-high-em">{user.username}</span> 
+                                                                     <span className="d-block text-high-em">{user.username ?? ''}</span> 
                                                                  </div>
                                                              </div>
                                                          </td>
-                                                         <td>{user.firstname}</td>
-                                                         <td>{user.lastname}</td>
-                                                         <td className="text-truncate">{user.email ?? 'test@mail.ru'}</td>
+                                                         <td>{user.firstname ?? ''}</td>
+                                                         <td>{user.lastname ?? ''}</td>
+                                                         <td className="text-truncate">{user.email ?? ''}</td>
                                                          <td>
 															
                                                              {Object.keys(user.roles).map((role) => 
                                                              <span className={setUserTypeStyle(role)}>{role}</span>   )}
                                                          </td>
+														 <td>
+															<span className={setUserActiveState(user.isActive)[0]}>{setUserActiveState(user.isActive)[1]}</span>
+														 </td>
                                                          <td>
                                                              <div className="d-flex align-items-center">
                                                                  <div className="d-flex">
-                                                                     <a className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover" data-bs-toggle="tooltip" data-placement="top" title="" data-bs-original-title="Archive" href="#"><span className="icon"><span className="feather-icon"><FeatherIcon icon="archive" /></span></span></a>
                                                                      <a className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover" data-bs-toggle="tooltip" data-placement="top" title="" data-bs-original-title="Edit" href="edit-contact.html"><span className="icon"><span className="feather-icon"><FeatherIcon icon="edit" /></span></span></a>
                                                                      <a className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover del-button" data-bs-toggle="tooltip" data-placement="top" title="" data-bs-original-title="Delete" href="#"><span className="icon"><span className="feather-icon"><FeatherIcon icon="trash" /></span></span></a>
                                                                  </div>
-                                                                 <div className="dropdown">
-                                                                     <button className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover dropdown-toggle no-caret" aria-expanded="false" data-bs-toggle="dropdown"><span className="icon"><span className="feather-icon"><FeatherIcon icon="more-vertical" /></span></span></button>
-                                                                     <div className="dropdown-menu dropdown-menu-end">
-                                                                         <a className="dropdown-item" href="edit-contact.html"><span className="feather-icon dropdown-icon"><FeatherIcon icon="list" /><FeatherIcon icon="edit" /></span><span>Edit Contact</span></a>
-                                                                         <a className="dropdown-item" href="#"><span className="feather-icon dropdown-icon"><FeatherIcon icon="list" /><i data-feather="trash-2"></i></span><span>Delete</span></a>
-                                                                         <a className="dropdown-item" href="#"><span className="feather-icon dropdown-icon"><FeatherIcon icon="list" /><i data-feather="copy"></i></span><span>Duplicate</span></a>
-                                                                         <div className="dropdown-divider"></div>
-                                                                         <h6 className="dropdown-header dropdown-header-bold">Change Labels</h6>
-                                                                         <a className="dropdown-item" href="#">Design</a>
-                                                                         <a className="dropdown-item" href="#">Developer</a>
-                                                                         <a className="dropdown-item" href="#">Inventory</a>
-                                                                         <a className="dropdown-item" href="#">Human Resource</a>
-                                                                     </div>
-                                                                 </div>
+																
                                                              </div>
                                                          </td>
                                                      </tr>
@@ -817,12 +827,18 @@ const generateData = (start, length = 1) =>
                                                      
                                                  </tbody>
                                                  )}
-												   
-												   
-												   
-												   
-												   
-												   
+
+												
+												
+												
+																						
+												
+												
+												
+												
+												
+												
+												
 												   
 												 </table>
 											   </InfiniteScroll>

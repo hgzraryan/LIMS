@@ -1,4 +1,4 @@
-import { useNavigate, Link, Outlet, useLocation } from "react-router-dom";
+import { useNavigate, Link, Outlet, useLocation, NavLink } from "react-router-dom";
 import useLogout from "../../hooks/useLogout";
 import React, { Suspense, useState, useEffect } from "react";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
@@ -467,7 +467,7 @@ const MainTemplate = () => {
                               
                               <ul className="navbar-nav flex-column">
                                   <li className="nav-item">
-                                      <Link className="nav-link" to="./patients">
+                                      <NavLink className="nav-link" to="./patients">
                                           <span className="nav-icon-wrap">
                                               <span className="svg-icon">
                                                 <svg width="800px" height="800px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -478,10 +478,10 @@ const MainTemplate = () => {
                                               </span>
                                           </span>
                                           <span className="nav-link-text">Հիվանդներ</span>
-                                      </Link>
+                                      </NavLink>
                                   </li>	
                                   <li className="nav-item">
-                                  <Link className="nav-link" to="./agents">
+                                  <NavLink className="nav-link" to="./agents">
                                           <span className="nav-icon-wrap">
                                               <span className="svg-icon">
                                               <svg width="800px" height="800px" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
@@ -490,10 +490,10 @@ const MainTemplate = () => {
                                               </span>
                                           </span>
                                           <span className="nav-link-text">Գործակալներ</span>
-                                      </Link>
+                                      </NavLink>
                                   </li>	
                                   <li className="nav-item">
-                                  <Link className="nav-link" to="./Organizations">
+                                  <NavLink className="nav-link" to="./Organizations">
                                           <span className="nav-icon-wrap">
                                               <span className="svg-icon">
                                               <svg fill="#000000" width="800px" height="800px" viewBox="0 0 15 15" id="town" xmlns="http://www.w3.org/2000/svg">
@@ -502,7 +502,7 @@ const MainTemplate = () => {
                                               </span>
                                           </span>
                                           <span className="nav-link-text">Կազմակերպություններ</span>
-                                      </Link>
+                                      </NavLink>
                                   </li>	
                                   <li className="nav-item">
                                       <Link className="nav-link" to="#" data-bs-toggle="collapse" data-bs-target="#dash_chatpop">
@@ -519,10 +519,10 @@ const MainTemplate = () => {
                                           <li className="nav-item">
                                               <ul className="nav flex-column">
                                                   <li className="nav-item">
-                                                      <a className="nav-link" href="chatpopup.html"><span className="nav-link-text">Direct Message</span></a>
+                                                      <NavLink className="nav-link" to="chatpopup.html"><span className="nav-link-text">Direct Message</span></NavLink>
                                                   </li>
                                                   <li className="nav-item">
-                                                      <a className="nav-link" href="chatbot.html"><span className="nav-link-text">Chatbot</span></a>
+                                                      <NavLink className="nav-link" to="chatbot.html"><span className="nav-link-text">Chatbot</span></NavLink>
                                                   </li>
                                               </ul>	
                                           </li>	
@@ -545,13 +545,13 @@ const MainTemplate = () => {
                                           <li className="nav-item">
                                               <ul className="nav flex-column">
                                                   <li className="nav-item">
-                                                      <a className="nav-link" href="#"><span className="nav-link-text">Մենյու1</span></a>
+                                                      <NavLink className="nav-link" to="./menu1"><span className="nav-link-text">Մենյու1</span></NavLink>
                                                   </li>
                                                   <li className="nav-item">
-                                                      <a className="nav-link" href="#"><span className="nav-link-text">Մենյու2</span></a>
+                                                      <NavLink className="nav-link" to="./menu2"><span className="nav-link-text">Մենյու2</span></NavLink>
                                                   </li>
                                                   <li className="nav-item">
-                                                      <a className="nav-link" href="#"><span className="nav-link-text">Մենյու2</span></a>
+                                                      <NavLink className="nav-link" to="./menu3"><span className="nav-link-text">Մենյու2</span></NavLink>
                                                   </li>
                                               </ul>	
                                           </li>	
@@ -605,7 +605,7 @@ const MainTemplate = () => {
 
 
                                   <li className="nav-item">
-                                      <Link className="nav-link" to="/users">
+                                      <NavLink className="nav-link" to="/users">
                                           <span className="nav-icon-wrap position-relative">
                                               <span className="svg-icon">
                                               <span className="badge badge-sm badge-primary badge-sm badge-pill position-top-end-overflow">{count}</span>
@@ -623,7 +623,7 @@ const MainTemplate = () => {
                                               </span>
                                           </span>
                                           <span className="nav-link-text">Աշխատակիցներ</span>
-                                      </Link>
+                                      </NavLink>
                                   </li>
 
 
@@ -677,13 +677,13 @@ const MainTemplate = () => {
                                           <li className="nav-item">
                                               <ul className="nav flex-column">
                                                   <li className="nav-item">
-                                                      <a className="nav-link" href="contact.html"><span className="nav-link-text">Contact List</span></a>
+                                                      <NavLink className="nav-link" to="contact.html"><span className="nav-link-text">Contact List</span></NavLink>
                                                   </li>
                                                   <li className="nav-item">
-                                                      <a className="nav-link" href="contact-cards.html"><span className="nav-link-text">Contact Cards</span></a>
+                                                      <NavLink className="nav-link" to="contact-cards.html"><span className="nav-link-text">Contact Cards</span></NavLink>
                                                   </li>
                                                   <li className="nav-item">
-                                                      <a className="nav-link" href="edit-contact.html"><span className="nav-link-text">Edit Contact</span></a>
+                                                      <NavLink className="nav-link" to="edit-contact.html"><span className="nav-link-text">Edit Contact</span></NavLink>
                                                   </li>
                                               </ul>	
                                           </li>	
@@ -712,10 +712,10 @@ const MainTemplate = () => {
                                           <li className="nav-item">
                                               <ul className="nav flex-column">
                                                   <li className="nav-item">
-                                                      <a className="nav-link" href="file-manager-list.html"><span className="nav-link-text">List View</span></a>
+                                                      <NavLink className="nav-link" to="file-manager-list.html"><span className="nav-link-text">List View</span></NavLink>
                                                   </li>
                                                   <li className="nav-item">
-                                                      <a className="nav-link" href="file-manager-grid.html"><span className="nav-link-text">Grid View</span></a>
+                                                      <NavLink className="nav-link" to="file-manager-grid.html"><span className="nav-link-text">Grid View</span></NavLink>
                                                   </li>
                                               </ul>	
                                           </li>	
@@ -754,13 +754,13 @@ const MainTemplate = () => {
                                           <li className="nav-item">
                                               <ul className="nav flex-column">
                                                   <li className="nav-item">
-                                                      <a className="nav-link" href="all-apps.html"><span className="nav-link-text">All Apps</span></a>
+                                                      <NavLink className="nav-link" to="all-apps.html"><span className="nav-link-text">All Apps</span></NavLink>
                                                   </li>
                                                   <li className="nav-item">
-                                                      <a className="nav-link" href="integrations-detail.html"><span className="nav-link-text">App Detail</span></a>
+                                                      <NavLink className="nav-link" to="integrations-detail.html"><span className="nav-link-text">App Detail</span></NavLink>
                                                   </li>
                                                   <li className="nav-item">
-                                                      <a className="nav-link" href="integrations.html"><span className="nav-link-text">Integrations</span></a>
+                                                      <NavLink className="nav-link" to="integrations.html"><span className="nav-link-text">Integrations</span></NavLink>
                                                   </li>
                                               </ul>	
                                           </li>	
@@ -792,29 +792,29 @@ const MainTemplate = () => {
                                           <li className="nav-item">
                                               <ul className="nav flex-column">
                                                   <li className="nav-item">
-													  <Link className="nav-link" to="./settings/prices">
+													  <NavLink className="nav-link" to="./settings/prices">
 														  <span className="nav-link-text">Գնացուցակներ</span>
-													  </Link>
+													  </NavLink>
                                                   </li>
                                                   <li className="nav-item">
-													  <Link className="nav-link" to="./settings/discountCards">
+													  <NavLink className="nav-link" to="./settings/discountCards">
 														  <span className="nav-link-text">Զեղչի քարտեր</span>
-													  </Link>
+													  </NavLink>
                                                   </li>
                                                   <li className="nav-item">
-                                                       <Link className="nav-link" to="./settings/reagents">
+                                                       <NavLink className="nav-link" to="./settings/reagents">
 														  <span className="nav-link-text">Ռեագենտներ</span>
-													  </Link>
+													  </NavLink>
                                                   </li>
 												   <li className="nav-item">
-                                                       <Link className="nav-link" to="./settings/equipments">
+                                                       <NavLink className="nav-link" to="./settings/equipments">
 														  <span className="nav-link-text">Սարքավորումներ</span>
-													  </Link>
+													  </NavLink>
                                                   </li>
 												   <li className="nav-item">
-                                                       <Link className="nav-link" to="./settings/researchlists">
+                                                       <NavLink className="nav-link" to="./settings/researchlists">
 														  <span className="nav-link-text">Հետ․ տեսակներ</span>
-													  </Link>
+													  </NavLink>
                                                   </li>
                                               </ul>	
                                           </li>	
