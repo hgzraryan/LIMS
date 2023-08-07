@@ -596,19 +596,19 @@ const Users = () => {
                             <tr {...headerGroup.getHeaderGroupProps()}>
                               {headerGroup.headers.map((column) => (
                                 <th
-                                  className="sorting"
+                                  //className="sorting"
                                   {...column.getHeaderProps(
                                     column.getSortByToggleProps()
                                   )}
                                 >
-                                  {column.render("Header")}
-                                  <span>
+                                 
                                     {column.isSorted
                                       ? column.isSortedDesc
-                                        ? " 🔽"
-                                        : " 🔼"
+                                        ? <span className="sorting_asc" ></span>
+                                        : <span className="sorting_desc" ></span>
                                       : ""}
-                                  </span>
+                                  
+                                      {column.render("Header")}
                                 </th>
                               ))}
                             </tr>
