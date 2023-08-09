@@ -1,11 +1,12 @@
-import React, { useState, useRef } from "react";
-import { Modal, Button } from "react-bootstrap";
+import React from "react";
+import { Modal} from "react-bootstrap";
 
 const ComponentToConfirm = ({
   confirmUserRef,
   handleCloseModal,
   handleDeleteItem,
-  selectedItemId
+  selectedItemId,
+  userName
 }) => {
   return (
     <Modal show={selectedItemId !== null} size="xl" onHide={handleCloseModal}>
@@ -16,7 +17,7 @@ const ComponentToConfirm = ({
             textAlign: "center",
           }}
         >
-          Ջնջել աշխատակցին
+          Հեռացնել աշխատակցին
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
@@ -29,22 +30,22 @@ const ComponentToConfirm = ({
                     <div className="card-body">
                       <div className="modal-body">
                         <form>
-                          <div className="row gx-6 ">
-                            <div className="col-sm-6">
+                          <div className="row gx-12 ">
+                            <div className="col-sm-12">
                               <div className="form-group center">
                                 <label
                                   className="form-label"
                                   htmlFor="confirmUser"
                                 >
-                                  Ծածկանուն
+                                  Աշխատակցի հեռացման համար խնդրում ենք մուտքագրել "{userName}" տեքստը
                                 </label>
                                 <input
                                   ref={confirmUserRef}
                                   type="text"
                                   name="name"
-                                  placeholder="Ծածկանուն"
+                                  placeholder="Մուտքագրել պահանջվող տեքստը"
                                   id="confirmUser"
-                                  className="form-control"
+                                  className="form-control w-50"
                                   autoComplete="off"
                                   value={confirmUserRef.value}
                                   onChange={(e) =>

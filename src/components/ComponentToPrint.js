@@ -12,7 +12,7 @@ export const ComponentToPrint = React.forwardRef(({ value }, ref) => {
       testSubstance: "Shijuk",
       price: "1000",
     }));
-
+    
   const [items, setItems] = useState(generateData(0));
   const columns = React.useMemo(
     () => [
@@ -131,12 +131,6 @@ const { inputRef } = Barcode({
             >
               
 			<Barcode value="barcode-example" />;
-			 
-			 
-			
-				
-				
-			  
 			  
               <img width={"120px"} src="./../dist/img/avatar1.jpg" alt="Logo" />
             </div>
@@ -146,7 +140,7 @@ const { inputRef } = Barcode({
               <ul>
                 <li>Order {}</li>
                 <li>
-                  {value.firstname} {value.lastname}
+                  {value.firstName} {value.lastName}
                 </li>
                 <li>Phone number`</li>
                 <li>Date </li>

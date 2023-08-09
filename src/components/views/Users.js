@@ -432,14 +432,6 @@ const Users = () => {
                   >
                     <h1>Աշխատակիցներ</h1>
                   </a>
-                  {/*
-									<div className={showUserMenu ? 'dropdown-menu show' : 'dropdown-menu'} >
-										<a className="dropdown-item" href="#"><span className="feather-icon dropdown-icon"><FeatherIcon icon="users" /></span><span>Users1</span></a>
-										<a className="dropdown-item" href="#"><span className="feather-icon dropdown-icon"><FeatherIcon icon="star" /></span><span>Users2</span></a>
-										<a className="dropdown-item" href="#"><span className="feather-icon dropdown-icon"><FeatherIcon icon="archive" /></span><span>Users3</span></a>
-										<a className="dropdown-item" href="#"><span className="feather-icon dropdown-icon"><FeatherIcon icon="edit" /></span><span>Users4</span></a>
-									</div>
-									*/}
                 </div>
                 <div className="dropdown ms-3">
                   <button
@@ -606,7 +598,7 @@ const Users = () => {
                                       ? column.isSortedDesc
                                         ? <span className="sorting_asc" ></span>
                                         : <span className="sorting_desc" ></span>
-                                      : ""}
+                                      : <span className="sorting" ></span>}
                                   
                                       {column.render("Header")}
                                 </th>
@@ -631,13 +623,14 @@ const Users = () => {
                                 </tr>
                               );
                             })}
-                             <ComponentToConfirm
+                            <ComponentToConfirm
                                     handleCloseModal={handleCloseModal}
                                     handleOpenModal={handleOpenModal}
                                     handleDeleteItem={handleDeleteItem}
                                     selectedItemId={selectedItemId}
                                     confirmUserRef={confirmUserRef}
-                                  />
+									                  userName = {selectedItem.username}
+                            />
                           </tbody>
                         )}{" "}
                       </table>
