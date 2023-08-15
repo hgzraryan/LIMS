@@ -219,9 +219,13 @@ const Reagents = () => {
 			const response = await axiosPrivate.post('/reagentList', {
 				signal: controller.signal,
 				page:currentPage,
-				onPage:1
+				onPage:14
 			});
+			
+			console.log("-------");
 			console.log(response);
+			console.log("+++++++");
+			
 			setTimeout(() => {
 				if(response.data.jsonString.length === 0 || response.data.jsonString.length < 12){
 					setHasMore(false)
@@ -324,7 +328,7 @@ const Reagents = () => {
       },
       {
         Header: "Անվանում",
-        accessor: "name",
+        accessor: "product_name",
         sortable: true,
       },
       {
@@ -333,7 +337,17 @@ const Reagents = () => {
       },
       {
         Header: "Չափման միավոր",
+        accessor: "quantity_unit",
+        sortable: true,
+      },
+	  {
+        Header: "Չափման միավոր",
         accessor: "unit",
+        sortable: true,
+      },
+	   {
+        Header: "Կիրառություն",
+        accessor: "used_for",
         sortable: true,
       },
       {
@@ -343,6 +357,10 @@ const Reagents = () => {
       {
         Header: "Նկարագիր",
         accessor: "description",
+      },
+	  {
+        Header: "Թողարկող",
+        accessor: "vendor",
       },
       {
         Header: "Գործողություններ",

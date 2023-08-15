@@ -50,19 +50,21 @@ const Users = () => {
   const formData = new FormData();
 
 
-
+   const [posts, setPosts] = useState([]);
+   
+   
+   
+   
   /*------------------ Delete Component --------------------*/
-  const handleDeleteItem = async () => {
+  const handleDeleteItem = async (delid) => {
     if (selectedItem?.username.trim() === confirmUserRef.current?.trim()) {
       try {
-        const response = await axiosPrivate.post("/users", {
-          message: "delete",
-          userId: selectedItem.id,
-        });
-        setTimeout(() => {
+		const response = await axiosPrivate.delete("/users", { data: { id: delid }  } );
+	    setTimeout(() => {
           setUsers((prev) => response.data.jsonString);
           setSelectedItemId(null); // Close the modal after deletion
         }, 500);
+		
       } catch (err) {
         console.error(err);
         //navigate('/login', { state: { from: location }, replace: true });
@@ -320,6 +322,12 @@ const Users = () => {
         ),
         accessor: "select",
         disableSortBy: true,
+      },
+	  {
+        Header: "ID",
+        accessor: "_id",
+        sortable: true,
+		show: false,
       },
       {
         Header: "Ծածկանուն",
@@ -630,6 +638,7 @@ const Users = () => {
                                     selectedItemId={selectedItemId}
                                     confirmUserRef={confirmUserRef}
 									userName = {selectedItem.username}
+									userId = {selectedItem._id}
                             />
                           </tbody>
                         )}{" "}

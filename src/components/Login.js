@@ -50,12 +50,13 @@ const Login = () => {
             const accessToken = response?.data?.accessToken;
             const decodedJWT = jwt(accessToken);
             const roles = decodedJWT.UserInfo.roles;
+            const isActive = decodedJWT.UserInfo.isActive;
 
 
             console.log(roles);
 
             
-            setAuth({ user, pwd, roles, accessToken });
+            setAuth({ user, pwd, roles, isActive, accessToken });
             resetUser();
             setPwd('');
             navigate(from, { replace: true });

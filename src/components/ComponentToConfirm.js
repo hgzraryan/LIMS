@@ -6,7 +6,8 @@ const ComponentToConfirm = ({
   handleCloseModal,
   handleDeleteItem,
   selectedItemId,
-  userName
+  userName,
+  userId
 }) => {
   return (
     <Modal show={selectedItemId !== null} size="xl" onHide={handleCloseModal}>
@@ -64,7 +65,7 @@ const ComponentToConfirm = ({
                   <div className="modal-footer align-items-center">
                     <button
                       type="button"
-                      onClick={() => handleDeleteItem()}
+                      onClick={() => handleDeleteItem(userId)}
                       className="btn btn-primary"
                       data-bs-dismiss="modal"
                     >
