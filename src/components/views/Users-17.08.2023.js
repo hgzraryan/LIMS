@@ -13,7 +13,6 @@ import Loading from "../Loading";
 import { useSortBy, useTable } from "react-table";
 import ComponentToConfirm from "../ComponentToConfirm";
 import CreateUser from "../views/CreateUser";
-import Swal from "sweetalert2";
 
 const REGISTER_URL = "/register";
 
@@ -41,8 +40,8 @@ const Users = () => {
   const pwd = useRef("");
   const roles = useRef("");
   const confirmUserRef = useRef("");
-  const emailRef = useRef("");
-  const phoneRef = useRef("");
+  const emailRef = useRef("")
+  const phoneRef = useRef("")
 
   const [validName, setValidName] = useState(false);
   const [validPwd, setValidPwd] = useState(false);
@@ -50,32 +49,26 @@ const Users = () => {
 
   const formData = new FormData();
 
-  const [posts, setPosts] = useState([]);
 
+   const [posts, setPosts] = useState([]);
+   
+   
+   
+   
   /*------------------ Delete Component --------------------*/
   const handleDeleteItem = async (delid) => {
     if (selectedItem?.username.trim() === confirmUserRef.current?.trim()) {
       try {
-        const response = await axiosPrivate.delete("/users", {
-          data: { id: delid },
-        });
-        setTimeout(() => {
+		const response = await axiosPrivate.delete("/users", { data: { id: delid }  } );
+	    setTimeout(() => {
+          setUsers((prev) => response.data.jsonString);
           setSelectedItemId(null); // Close the modal after deletion
-          Swal.fire(`The user ${response.data.username} has been deleted`);
-          const updatedUsers = users.filter((user) => user._id !== delid )
-          setUsers(updatedUsers)
         }, 500);
+		
       } catch (err) {
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: "Something went wrong!"
-        });
         console.error(err);
         //navigate('/login', { state: { from: location }, replace: true });
       }
-    }else{
-      Swal.fire('Write wright username');
     }
   };
   const handleOpenModal = (user) => {
@@ -88,7 +81,7 @@ const Users = () => {
   /*------------------------------------------------*/
   /*------------------ Create user Component --------------------*/
   const handleToggleCreateModal = (value) => {
-    setIsOpen((prev) => value);
+    setIsOpen(prev => value);
   };
   /*------------------------------------------------*/
   const handleSubmit = async (e) => {
@@ -121,7 +114,7 @@ const Users = () => {
       });
       //console.log(JSON.stringify(response?.data));
       //console.log(JSON.stringify(response))
-      navigate("/users", { state: { from: location }, replace: true });
+      navigate("/users", { state: { from: location }, replace: true });      
     } catch (err) {
       if (!err?.response) {
         setErrMsg("No Server Response");
@@ -231,16 +224,9 @@ const Users = () => {
           onPage: Math.round((window.innerHeight / 100) * 1.5),
         });
         console.log(response);
-        if (
-          response.data.jsonString.length === 0 ||
-          response.data.jsonString.length < 12
-        ) {
-          setHasMore(false);
-        }
         isMounted &&
           setUsers((prevUsers) => [...prevUsers, ...response.data.jsonString]);
         setCurrentPage((prev) => prev + 1);
-        
       } catch (err) {
         console.error(err);
         navigate("/login", { state: { from: location }, replace: true });
@@ -337,11 +323,11 @@ const Users = () => {
         accessor: "select",
         disableSortBy: true,
       },
-      {
+	  {
         Header: "ID",
         accessor: "_id",
         sortable: true,
-        show: false,
+		show: false,
       },
       {
         Header: "Ծածկանուն",
@@ -434,6 +420,8 @@ const Users = () => {
 
   // const [items, setItems] = useState(generateData(0));
 
+
+
   return (
     <div>
       <div className="contactapp-wrap">
@@ -475,24 +463,25 @@ const Users = () => {
                       <span className="feather-icon dropdown-icon"></span>
                       <span>Աշխատակից</span>
                     </a>
-                    {isOpen && (
-                      <CreateUser
-                        handleSubmit={handleSubmit}
-                        onRoleSelect={onRoleSelect}
-                        onRoleDelete={onRoleDelete}
-                        onAdd={onAdd}
-                        handleChangeFile={handleChangeFile}
-                        handleDrop={handleDrop}
-                        handleDragEmpty={handleDragEmpty}
-                        handleToggleCreateModal={handleToggleCreateModal}
-                        imageUrl={imageUrl}
-                        user={user}
-                        firstname={firstname}
-                        lastname={lastname}
-                        pwd={pwd}
-                        roles={roles}
-                      />
-                    )}
+                    {
+                    isOpen &&
+                    <CreateUser                      
+                      handleSubmit = {handleSubmit}
+                      onRoleSelect = {onRoleSelect}
+                      onRoleDelete = {onRoleDelete}
+                      onAdd = {onAdd}
+                      handleChangeFile = {handleChangeFile}
+                      handleDrop = {handleDrop}
+                      handleDragEmpty = {handleDragEmpty}
+                      handleToggleCreateModal = {handleToggleCreateModal}
+                      imageUrl = {imageUrl}
+                      user = {user}
+                      firstname = {firstname}
+                      lastname = {lastname}
+                      pwd = {pwd}
+                      roles = {roles}
+                    />
+                    }
                     {/*
 										<a className="dropdown-item" href="#">Type2</a>
 										<a className="dropdown-item" href="#">Type3</a>
@@ -612,17 +601,14 @@ const Users = () => {
                                     column.getSortByToggleProps()
                                   )}
                                 >
-                                  {column.isSorted ? (
-                                    column.isSortedDesc ? (
-                                      <span className="sorting_asc"></span>
-                                    ) : (
-                                      <span className="sorting_desc"></span>
-                                    )
-                                  ) : (
-                                    <span className="sorting"></span>
-                                  )}
-
-                                  {column.render("Header")}
+                                 
+                                    {column.isSorted
+                                      ? column.isSortedDesc
+                                        ? <span className="sorting_asc" ></span>
+                                        : <span className="sorting_desc" ></span>
+                                      : <span className="sorting" ></span>}
+                                  
+                                      {column.render("Header")}
                                 </th>
                               ))}
                             </tr>
@@ -641,17 +627,18 @@ const Users = () => {
                                       </td>
                                     );
                                   })}
+                                 
                                 </tr>
                               );
                             })}
                             <ComponentToConfirm
-                              handleCloseModal={handleCloseModal}
-                              handleOpenModal={handleOpenModal}
-                              handleDeleteItem={handleDeleteItem}
-                              selectedItemId={selectedItemId}
-                              confirmUserRef={confirmUserRef}
-                              userName={selectedItem.username}
-                              userId={selectedItem._id}
+                                    handleCloseModal={handleCloseModal}
+                                    handleOpenModal={handleOpenModal}
+                                    handleDeleteItem={handleDeleteItem}
+                                    selectedItemId={selectedItemId}
+                                    confirmUserRef={confirmUserRef}
+									userName = {selectedItem.username}
+									userId = {selectedItem._id}
                             />
                           </tbody>
                         )}{" "}
