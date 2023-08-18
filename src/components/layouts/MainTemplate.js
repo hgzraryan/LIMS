@@ -3,6 +3,8 @@ import useLogout from "../../hooks/useLogout";
 import React, { Suspense, useState, useEffect } from "react";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import LoadingSpinner from "../LoadingSpinner";
+import {Context} from '../Context';
+import { useContext } from "react";
 
 
 
@@ -10,8 +12,8 @@ const MainTemplate = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const logout = useLogout();
-    const [count, countUsers] = useState();
     const axiosPrivate = useAxiosPrivate();
+    const {count, countUsers} = useContext(Context)
 
 
 

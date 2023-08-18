@@ -14,6 +14,8 @@ import { useSortBy, useTable } from "react-table";
 import ComponentToConfirm from "../ComponentToConfirm";
 import CreateUser from "../views/CreateUser";
 import Swal from "sweetalert2";
+import {Context} from "../Context"
+import { useContext } from "react";
 
 const REGISTER_URL = "/register";
 
@@ -52,7 +54,18 @@ const Users = () => {
 
   const [posts, setPosts] = useState([]);
 
+  const {count, countUsers} = useContext(Context)
+
   /*------------------ Delete Component --------------------*/
+  const updateUsersCount = async () => {
+    try {
+      const response = await axiosPrivate.get('/usersCount');
+      countUsers(response.data)      
+  } catch (err) {
+      console.error(err);
+      navigate('/login', { state: { from: location }, replace: true });
+  }
+  }
   const handleDeleteItem = async (delid) => {
     if (selectedItem?.username.trim() === confirmUserRef.current?.trim()) {
       try {
@@ -77,6 +90,7 @@ const Users = () => {
     }else{
       Swal.fire('Write wright username');
     }
+    updateUsersCount()
   };
   const handleOpenModal = (user) => {
     setSelectedItemId(true);

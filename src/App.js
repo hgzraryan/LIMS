@@ -24,8 +24,10 @@ import Reagents from './components/views/Reagents';
 import Equipments from './components/views/Equipments';
 import Researchlists from './components/views/Researchlists';
 import Diagnoses from './components/views/Diagnoses';
+import {Context} from './components/Context';
 
 import { Routes, Route } from 'react-router-dom';
+import { useState } from 'react';
 //import React, { useState, useEffect } from "react";
 
 
@@ -37,9 +39,12 @@ const ROLES = {
 }
 
 function App() {
-  
+    const [count, countUsers] = useState('');
+
 
   return (
+        <Context.Provider value = {{count,countUsers}}>
+
     <Routes>
       <Route path="/" element={<Layout />}>
         {/* public routes */}
@@ -100,6 +105,7 @@ function App() {
 
       </Route>
     </Routes>
+    </Context.Provider>
   );
 }
 
