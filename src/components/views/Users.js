@@ -16,6 +16,10 @@ import CreateUser from "../views/CreateUser";
 import Swal from "sweetalert2";
 import {Context} from "../Context"
 import { useContext } from "react";
+import { Dropdown } from "react-bootstrap";
+
+
+
 
 const REGISTER_URL = "/register";
 
@@ -72,12 +76,12 @@ const Users = () => {
         const response = await axiosPrivate.delete("/users", {
           data: { id: delid },
         });
-        setTimeout(() => {
+        
           setSelectedItemId(null); // Close the modal after deletion
           Swal.fire(`The user ${response.data.username} has been deleted`);
           const updatedUsers = users.filter((user) => user._id !== delid )
-          setUsers(updatedUsers)
-        }, 500);
+          setUsers(updatedUsers);
+
       } catch (err) {
         Swal.fire({
           icon: "error",
@@ -468,27 +472,18 @@ const Users = () => {
                   </a>
                 </div>
                 <div className="dropdown ms-3">
-                  <button
-                    className="btn btn-sm btn-outline-secondary flex-shrink-0 dropdown-toggle d-lg-inline-block d-none"
-                    data-bs-toggle="dropdown"
-                    onClick={CreateNew}
-                  >
-                    Գրանցել նոր
-                  </button>
-                  <div
-                    className={
-                      showCreateNew ? "dropdown-menu show" : "dropdown-menu"
-                    }
-                    data-popper-placement="bottom"
-                  >
-                    <a
-                      className="dropdown-item"
-                      href="#"
-                      onClick={() => setIsOpen(true)}
-                    >
-                      <span className="feather-icon dropdown-icon"></span>
-                      <span>Աշխատակից</span>
-                    </a>
+					 <Dropdown>
+					  <Dropdown.Toggle variant="success" id="dropdown-basic" className="btn btn-sm btn-outline-secondary flex-shrink-0 dropdown-toggle d-lg-inline-block d-none">
+						Գրանցել նոր
+					  </Dropdown.Toggle>
+
+					  <Dropdown.Menu>
+						<Dropdown.Item onClick={() => setIsOpen(true)}>Աշխատակից</Dropdown.Item>
+						
+					  </Dropdown.Menu>
+					</Dropdown>
+					
+					
                     {isOpen && (
                       <CreateUser
                         handleSubmit={handleSubmit}
@@ -512,7 +507,7 @@ const Users = () => {
 										<a className="dropdown-item" href="#">Type3</a>
 										<a className="dropdown-item" href="#">Type4</a>
 										*/}
-                  </div>
+
                 </div>
               </div>
               <div className="contact-options-wrap">

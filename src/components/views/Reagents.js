@@ -1,5 +1,3 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
-/* eslint-disable no-lone-blocks */
 import React, { useState, useEffect, useRef, useMemo } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
@@ -12,12 +10,17 @@ import axios from "./../../api/axios";
 import Loading from "../Loading";
 import { useSortBy, useTable } from "react-table";
 import ComponentToConfirm from "../ComponentToConfirm";
-import CreateUser from "../views/CreateUser";
+import AddReagents from "../views/CreateUser";
+import { Dropdown } from "react-bootstrap";
+
 
 const REGISTER_URL = "/register";
 
 const Reagents = () => {
-  const [users, setUsers] = useState([]);
+  const [reagents, setReagents] = useState([]);
+  
+  
+  
   const [rolesArray, setRolesArray] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [usersPerPage, setUsersPerPage] = useState(12);
@@ -60,7 +63,7 @@ const Reagents = () => {
           userId: selectedItem.id,
         });
         setTimeout(() => {
-          setUsers((prev) => response.data.jsonString);
+          setReagents((prev) => response.data.jsonString);
           setSelectedItemId(null); // Close the modal after deletion
         }, 500);
       } catch (err) {
@@ -207,14 +210,14 @@ const Reagents = () => {
   };
 
   const pagesVisited = currentPage * usersPerPage;
-  const currentUsers = users.slice(pagesVisited, pagesVisited + usersPerPage);
-  const pageCount = Math.ceil(users.length / usersPerPage);
+  const currentUsers = reagents.slice(pagesVisited, pagesVisited + usersPerPage);
+  const pageCount = Math.ceil(reagents.length / usersPerPage);
 
  useEffect(() => {
 	let isMounted = true;
 	const controller = new AbortController();
 
-	const getUsers = async () => {
+	const getReagents = async () => {
 		try {
 			const response = await axiosPrivate.post('/reagentList', {
 				signal: controller.signal,
@@ -222,15 +225,13 @@ const Reagents = () => {
 				onPage:14
 			});
 			
-			console.log("-------");
-			console.log(response);
-			console.log("+++++++");
+		
 			
 			setTimeout(() => {
 				if(response.data.jsonString.length === 0 || response.data.jsonString.length < 12){
 					setHasMore(false)
 				}
-				setUsers(prevUsers => [...prevUsers,...response.data.jsonString]);
+				setReagents(prevUsers => [...prevUsers,...response.data.jsonString]);
 				setCurrentPage(prev => prev+1)
 			}, 500);
 		} catch (err) {
@@ -239,7 +240,7 @@ const Reagents = () => {
 		}
 	}
 
-	getUsers();
+	getReagents();
 
 	return () => {
 		isMounted = false;
@@ -247,7 +248,7 @@ const Reagents = () => {
 	}
 }, [])
 
-  const getUsers = async () => {
+  const getReagents = async () => {
 		try {
 			const response = await axiosPrivate.post('/reagentList', {
 				page:currentPage,
@@ -257,7 +258,7 @@ const Reagents = () => {
 				if(response.data.jsonString.length === 0 || response.data.jsonString.length < 12){
 					setHasMore(false)
 				}
-				setUsers(prevUsers => [...prevUsers,...response.data.jsonString]);
+				setReagents(prevUsers => [...prevUsers,...response.data.jsonString]);
 				setCurrentPage(prev => prev+1)
 			}, 500);
 		} catch (err) {
@@ -409,7 +410,7 @@ const Reagents = () => {
     useTable(
       {
         columns,
-        data: users,
+        data: reagents,
       },
       useSortBy
     );
@@ -438,30 +439,27 @@ const Reagents = () => {
                   </a>
                 </div>
                 <div className="dropdown ms-3">
-                  <button
-                    className="btn btn-sm btn-outline-secondary flex-shrink-0 dropdown-toggle d-lg-inline-block d-none"
-                    data-bs-toggle="dropdown"
-                    onClick={CreateNew}
-                  >
-                    Ավելացնել նոր
-                  </button>
-                  <div
-                    className={
-                      showCreateNew ? "dropdown-menu show" : "dropdown-menu"
-                    }
-                    data-popper-placement="bottom"
-                  >
-                    <a
-                      className="dropdown-item"
-                      href="#"
-                      onClick={() => setIsOpen(true)}
-                    >
-                      <span className="feather-icon dropdown-icon"></span>
-                      <span>Գնառաջարկ</span>
-                    </a>
+				
+				 <Dropdown>
+				  <Dropdown.Toggle variant="success" id="dropdown-basic" className="btn btn-sm btn-outline-secondary flex-shrink-0 dropdown-toggle d-lg-inline-block d-none">
+					Ավելացնել նոր
+				  </Dropdown.Toggle>
+
+				  <Dropdown.Menu>
+					<Dropdown.Item onClick={() => setIsOpen(true)}>Ռեագենտ</Dropdown.Item>
+				  </Dropdown.Menu>
+				</Dropdown>
+				
+				
+
                     {
+						
+						
+						
+						
+						
                     isOpen &&
-                    <CreateUser                      
+                    <AddReagents                      
                       handleSubmit = {handleSubmit}
                       onRoleSelect = {onRoleSelect}
                       onRoleDelete = {onRoleDelete}
@@ -479,7 +477,7 @@ const Reagents = () => {
                     />
                     }
                     
-                  </div>
+
                 </div>
               </div>
               <div className="contact-options-wrap">
@@ -531,8 +529,8 @@ const Reagents = () => {
                     style={{ height: "80vh", overflow: "auto" }}
                   >
                     <InfiniteScroll
-                      dataLength={users.length}
-                      next={getUsers}
+                      dataLength={reagents.length}
+                      next={getReagents}
                       hasMore={hasMore}
                       loader={<Loading />}
                       scrollableTarget="scrollableDiv"
@@ -564,7 +562,7 @@ const Reagents = () => {
                             </tr>
                           ))}
                         </thead>
-                        {users?.length && (
+                        {reagents?.length && (
                           <tbody {...getTableBodyProps()}>
                             {rows.map((row) => {
                               prepareRow(row);

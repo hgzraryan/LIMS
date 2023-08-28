@@ -11,6 +11,7 @@ import { useTable, useSortBy } from "react-table";
 import CreatePatient from "./CreatePatient"
 import ReactToPrint from "react-to-print";
 import { ComponentToPrint } from "./../ComponentToPrint";
+import { Dropdown } from "react-bootstrap";
 
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
 const EMAIL_REGEX =/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
@@ -525,36 +526,25 @@ const Patients = () => {
                     <h1>Հիվանդներ</h1>
                   </a>
                   {/*
-									<div className={showUserMenu ? 'dropdown-menu show' : 'dropdown-menu'} >
-										<a className="dropdown-item" href="#"><span className="feather-icon dropdown-icon"><FeatherIcon icon="users" /></span><span>Users1</span></a>
-										<a className="dropdown-item" href="#"><span className="feather-icon dropdown-icon"><FeatherIcon icon="star" /></span><span>Users2</span></a>
-										<a className="dropdown-item" href="#"><span className="feather-icon dropdown-icon"><FeatherIcon icon="archive" /></span><span>Users3</span></a>
-										<a className="dropdown-item" href="#"><span className="feather-icon dropdown-icon"><FeatherIcon icon="edit" /></span><span>Users4</span></a>
-									</div>
-									*/}
+					<div className={showUserMenu ? 'dropdown-menu show' : 'dropdown-menu'} >
+						<a className="dropdown-item" href="#"><span className="feather-icon dropdown-icon"><FeatherIcon icon="users" /></span><span>Users1</span></a>
+						<a className="dropdown-item" href="#"><span className="feather-icon dropdown-icon"><FeatherIcon icon="star" /></span><span>Users2</span></a>
+						<a className="dropdown-item" href="#"><span className="feather-icon dropdown-icon"><FeatherIcon icon="archive" /></span><span>Users3</span></a>
+						<a className="dropdown-item" href="#"><span className="feather-icon dropdown-icon"><FeatherIcon icon="edit" /></span><span>Users4</span></a>
+					</div>
+					*/}
                 </div>
                 <div className="dropdown ms-3">
-                  <button
-                    className="btn btn-sm btn-outline-secondary flex-shrink-0 dropdown-toggle d-lg-inline-block d-none"
-                    data-bs-toggle="dropdown"
-                    onClick={CreateNew}
-                  >
-                    Գրանցել նոր
-                  </button>
-                  <div
-                    className={
-                      showCreateNew ? "dropdown-menu show" : "dropdown-menu"
-                    }
-                    data-popper-placement="bottom"
-                  >
-                    <a
-                      className="dropdown-item"
-                      href="#"
-                      onClick={() => setIsOpen(true)}
-                    >
-                      <span className="feather-icon dropdown-icon"></span>
-                      <span>Հիվանդի</span>
-                    </a>
+                  <Dropdown>
+					  <Dropdown.Toggle variant="success" id="dropdown-basic" className="btn btn-sm btn-outline-secondary flex-shrink-0 dropdown-toggle d-lg-inline-block d-none">
+						Գրանցել նոր
+					  </Dropdown.Toggle>
+
+					  <Dropdown.Menu>
+						<Dropdown.Item onClick={() => setIsOpen(true)}>Հիվանդի</Dropdown.Item>
+						
+					  </Dropdown.Menu>
+					</Dropdown>
                     {isOpen && 
                     <CreatePatient
                       handleToggleCreateModal={handleToggleCreateModal}
@@ -573,7 +563,7 @@ const Patients = () => {
                       addressRef={addressRef}
                     />
                     }
-                  </div>
+
                 </div>
               </div>
               <div className="contact-options-wrap">

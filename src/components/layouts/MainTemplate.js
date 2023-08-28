@@ -1,11 +1,11 @@
-import { useNavigate, Link, Outlet, useLocation, NavLink } from "react-router-dom";
+import { useHistory, useNavigate, Link, Outlet, useLocation, NavLink } from "react-router-dom";
 import useLogout from "../../hooks/useLogout";
 import React, { Suspense, useState, useEffect } from "react";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import LoadingSpinner from "../LoadingSpinner";
 import {Context} from '../Context';
 import { useContext } from "react";
-
+import { prefix } from "@fortawesome/free-solid-svg-icons";
 
 
 const MainTemplate = () => {
@@ -14,7 +14,6 @@ const MainTemplate = () => {
     const logout = useLogout();
     const axiosPrivate = useAxiosPrivate();
     const {count, countUsers} = useContext(Context)
-
 
 
     //-------------------
@@ -32,15 +31,31 @@ const MainTemplate = () => {
 	const smenuClick = event => {
 		ssetIsActive(current => !current);
 	};
-
+    //---------------------------------------------//
+	const [misActive1, msetIsActive1] = useState(false);
+	const mmenuClick1 = event => {
+		msetIsActive1(current => !current);
+	};
+	
+	const [sisActive1, ssetIsActive1] = useState(false);
+	const smenuClick1 = event => {
+		ssetIsActive1(current => !current);
+	};
+    const handleSubmenuClick = (menu,subMenu) => {
+        ssetIsActive1(subMenu)
+        msetIsActive1(menu)
+    }
+        
     const [dropDownMenu1, dropDownMenu1IsActive] = useState(true);
 	const dropDownMenu1Click = event => {
 		dropDownMenu1IsActive(current => !current);
 	};
 	
-	const [dropDownMenu2, dropDownMenu2IsActive] = useState(true);
+	const [dropDownMenu2, dropDownMenu2IsActive] = useState(false);
 	const dropDownMenu2Click = event => {
+        console.log(event)
 		dropDownMenu2IsActive(current => !current);
+
 	};
    //--------------------------------------
 
@@ -471,7 +486,8 @@ const MainTemplate = () => {
                               
                               <ul className="navbar-nav flex-column">
                                   <li className="nav-item">
-                                      <NavLink className="nav-link" to="./patients">
+                                      <Link className={misActive1 === "patients"||  location.pathname==="/patients" ?"nav-link active":"nav-link"} to="./patients"
+                                      onClick={() => handleSubmenuClick("patients","")}>
                                           <span className="nav-icon-wrap">
                                               <span className="svg-icon">
                                                 <svg width="800px" height="800px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -482,10 +498,11 @@ const MainTemplate = () => {
                                               </span>
                                           </span>
                                           <span className="nav-link-text">Հիվանդներ</span>
-                                      </NavLink>
+                                      </Link>
                                   </li>	
                                   <li className="nav-item">
-                                  <NavLink className="nav-link" to="./agents">
+                                  <Link className={misActive1 === "agents" || location.pathname==="/agents"?"nav-link active":"nav-link"} to="./agents"
+                                   onClick={() => handleSubmenuClick("agents","")}>
                                           <span className="nav-icon-wrap">
                                               <span className="svg-icon">
                                               <svg width="800px" height="800px" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
@@ -494,10 +511,11 @@ const MainTemplate = () => {
                                               </span>
                                           </span>
                                           <span className="nav-link-text">Գործակալներ</span>
-                                      </NavLink>
+                                      </Link>
                                   </li>	
                                   <li className="nav-item">
-                                  <NavLink className="nav-link" to="./Organizations">
+                                  <Link className={misActive1 === "organizations" || location.pathname==="/organizations" ?"nav-link active":"nav-link"}  to="./organizations"
+                                   onClick={() => handleSubmenuClick("organizations","")}>
                                           <span className="nav-icon-wrap">
                                               <span className="svg-icon">
                                               <svg fill="#000000" width="800px" height="800px" viewBox="0 0 15 15" id="town" xmlns="http://www.w3.org/2000/svg">
@@ -506,10 +524,10 @@ const MainTemplate = () => {
                                               </span>
                                           </span>
                                           <span className="nav-link-text">Կազմակերպություններ</span>
-                                      </NavLink>
+                                      </Link>
                                   </li>	
                                   <li className="nav-item">
-                                      <Link className="nav-link" to="#" data-bs-toggle="collapse" data-bs-target="#dash_chatpop">
+                                  <Link className={misActive1 === "calculations"?"nav-link active":"nav-link"} to="#" data-bs-toggle="collapse" data-bs-target="#dash_chatpop">
                                           <span className="nav-icon-wrap">
                                               <span className="svg-icon">
                                                <svg fill="#000000" width="800px" height="800px" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
@@ -523,17 +541,19 @@ const MainTemplate = () => {
                                           <li className="nav-item">
                                               <ul className="nav flex-column">
                                                   <li className="nav-item">
-                                                      <NavLink className="nav-link" to="chatpopup.html"><span className="nav-link-text">Direct Message</span></NavLink>
+                                                      <Link className={sisActive1 === "test"?"nav-link active":"nav-link"} to="chatpopup.html"><span className="nav-link-text"
+                                                      onClick={() => handleSubmenuClick("calculations","test")}>Direct Message</span></Link>
                                                   </li>
                                                   <li className="nav-item">
-                                                      <NavLink className="nav-link" to="chatbot.html"><span className="nav-link-text">Chatbot</span></NavLink>
+                                                  <Link className={sisActive1 === "test"?"nav-link active":"nav-link"} to="chatbot.html"><span className="nav-link-text"
+                                                  onClick={() => handleSubmenuClick("calculations","test")}>Chatbot</span></Link>
                                                   </li>
                                               </ul>	
                                           </li>	
                                       </ul>	
                                   </li>	
                                   <li className="nav-item">
-                                      <Link className="nav-link" to="#" onClick={dropDownMenu1Click} data-bs-toggle="collapse" data-bs-target="#dash_chat">
+                                  <Link className={misActive1 === "payments"?"nav-link active":"nav-link"} to="#" onClick={dropDownMenu1Click} data-bs-toggle="collapse" data-bs-target="#dash_chat">
                                           <span className="nav-icon-wrap">
                                               <span className="svg-icon">
                                               <svg width="800px" height="800px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -549,13 +569,16 @@ const MainTemplate = () => {
                                           <li className="nav-item">
                                               <ul className="nav flex-column">
                                                   <li className="nav-item">
-                                                      <NavLink className="nav-link" to="./menu1"><span className="nav-link-text">Մենյու1</span></NavLink>
+                                                      <Link className={sisActive1 === "menu1"?"nav-link active":"nav-link"} to="./menu1"><span className="nav-link-text"
+                                                      onClick={() => handleSubmenuClick("payments","menu1")}>Մենյու1</span></Link>
                                                   </li>
                                                   <li className="nav-item">
-                                                      <NavLink className="nav-link" to="./menu2"><span className="nav-link-text">Մենյու2</span></NavLink>
+                                                      <Link className={sisActive1 === "menu2"?"nav-link active":"nav-link"} to="./menu2"><span className="nav-link-text"
+                                                      onClick={() => handleSubmenuClick("payments","menu2")}>Մենյու2</span></Link>
                                                   </li>
                                                   <li className="nav-item">
-                                                      <NavLink className="nav-link" to="./menu3"><span className="nav-link-text">Մենյու2</span></NavLink>
+                                                      <Link className={sisActive1 === "menu3"?"nav-link active":"nav-link"} to="./menu3"><span className="nav-link-text"
+                                                      onClick={() => handleSubmenuClick("payments","menu3")}>Մենյու3</span></Link>
                                                   </li>
                                               </ul>	
                                           </li>	
@@ -609,7 +632,8 @@ const MainTemplate = () => {
 
 
                                   <li className="nav-item">
-                                      <NavLink className="nav-link" to="/users">
+                                  <Link className={(misActive1 === "users" ||  location.pathname==="/users")?"nav-link active":"nav-link"} to="/users"
+                                  onClick={() => handleSubmenuClick("users","")}>
                                           <span className="nav-icon-wrap position-relative">
                                               <span className="svg-icon">
                                               <span className="badge badge-sm badge-primary badge-sm badge-pill position-top-end-overflow">{count}</span>
@@ -627,7 +651,7 @@ const MainTemplate = () => {
                                               </span>
                                           </span>
                                           <span className="nav-link-text">Աշխատակիցներ</span>
-                                      </NavLink>
+                                      </Link>
                                   </li>
 
 
@@ -636,7 +660,7 @@ const MainTemplate = () => {
 
                                   
                                   <li className="nav-item">
-                                      <Link className="nav-link" to="#" data-bs-toggle="collapse" data-bs-target="#dash_contact">
+                                  <Link className={misActive1 === "departments"?"nav-link active":"nav-link"} to="#" data-bs-toggle="collapse" data-bs-target="#dash_contact">
                                           <span className="nav-icon-wrap">
                                               <span className="svg-icon">
                                               <svg fill="#000000" height="800px" width="800px" version="1.1" id="Layer_1"  viewBox="0 0 480 480" >
@@ -681,13 +705,16 @@ const MainTemplate = () => {
                                           <li className="nav-item">
                                               <ul className="nav flex-column">
                                                   <li className="nav-item">
-                                                      <NavLink className="nav-link" to="contact.html"><span className="nav-link-text">Contact List</span></NavLink>
+                                                      <Link className={sisActive1 === "contractList"?"nav-link active":"nav-link"} to="contact.html"><span className="nav-link-text"
+                                   onClick={() => handleSubmenuClick("departments","contractList")}>Contact List</span></Link>
                                                   </li>
                                                   <li className="nav-item">
-                                                      <NavLink className="nav-link" to="contact-cards.html"><span className="nav-link-text">Contact Cards</span></NavLink>
+                                                      <Link className={sisActive1 === "contractCard"?"nav-link active":"nav-link"} to="contact-cards.html"><span className="nav-link-text"
+                                   onClick={() => handleSubmenuClick("departments","contractCard")}>Contact Cards</span></Link>
                                                   </li>
                                                   <li className="nav-item">
-                                                      <NavLink className="nav-link" to="edit-contact.html"><span className="nav-link-text">Edit Contact</span></NavLink>
+                                                      <Link className={sisActive1 === "edidContract"?"nav-link active":"nav-link"} to="edit-contact.html"><span className="nav-link-text"
+                                   onClick={() => handleSubmenuClick("departments","edidContract")}>Edit Contact</span></Link>
                                                   </li>
                                               </ul>	
                                           </li>	
@@ -696,7 +723,8 @@ const MainTemplate = () => {
                                   <li className="nav-item">
                                       
 									  
-									   <NavLink className="nav-link" to="./diagnoses">
+                                  <Link className={misActive1 === "diagnoses" || location.pathname==="/diagnoses" ?"nav-link active":"nav-link"} to="./diagnoses"
+                                  onClick={() => handleSubmenuClick("diagnoses","")}>
                                           <span className="nav-icon-wrap">
                                               <span className="svg-icon">
                                               <svg fill="#000000" width="23" height="23" viewBox="0 0 512 512" id="Layer_1" version="1.1">
@@ -715,7 +743,7 @@ const MainTemplate = () => {
                                               </span>
                                           </span>
                                           <span className="nav-link-text">Ախտորոշումներ</span>
-                                      </NavLink>
+                                      </Link>
                                   </li>
 								  {/*
                                   <li className="nav-item">
@@ -736,7 +764,7 @@ const MainTemplate = () => {
                                   </li>
 								  */}
                                   <li className="nav-item">
-                                      <Link className="nav-link" to="#" data-bs-toggle="collapse" data-bs-target="#dash_integ">
+                                  <Link className={misActive1 === "reports"?"nav-link active":"nav-link"} to="#" data-bs-toggle="collapse" data-bs-target="#dash_integ">
                                           <span className="nav-icon-wrap">
                                               <span className="svg-icon">
                                                 <svg width="800px" height="800px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -750,20 +778,23 @@ const MainTemplate = () => {
                                           <li className="nav-item">
                                               <ul className="nav flex-column">
                                                   <li className="nav-item">
-                                                      <NavLink className="nav-link" to="all-apps.html"><span className="nav-link-text">All Apps</span></NavLink>
+                                                      <Link className={sisActive1 === "allApps"?"nav-link active":"nav-link"} to="all-apps.html"><span className="nav-link-text"
+                                                      onClick={()=>handleSubmenuClick("reports","allApps")}>All Apps</span></Link>
                                                   </li>
                                                   <li className="nav-item">
-                                                      <NavLink className="nav-link" to="integrations-detail.html"><span className="nav-link-text">App Detail</span></NavLink>
+                                                      <Link className={sisActive1 === "allDetails"?"nav-link active":"nav-link"} to="integrations-detail.html"><span className="nav-link-text"
+                                                      onClick={()=>handleSubmenuClick("reports","allDetails")}>App Detail</span></Link>
                                                   </li>
                                                   <li className="nav-item">
-                                                      <NavLink className="nav-link" to="integrations.html"><span className="nav-link-text">Integrations</span></NavLink>
+                                                     <Link className={sisActive1 === "integrations"?"nav-link active":"nav-link"} to="integrations.html"><span className="nav-link-text"
+                                                     onClick={()=>handleSubmenuClick("reports","integrations")}>Integrations</span></Link>
                                                   </li>
                                               </ul>	
                                           </li>	
                                       </ul>	
                                   </li>
 								  <li className="nav-item">
-                                      <NavLink className="nav-link" data-bs-toggle="collapse" onClick={dropDownMenu2Click} to="/settings" data-bs-target="#dash_integ">
+                                      <a className={misActive1 === "settings" ?"nav-link active":"nav-link"} href="#" data-bs-toggle="collapse" onClick={dropDownMenu2Click}  data-bs-target="#dash_integ">
                                           <span className="nav-icon-wrap">
                                               <span className="svg-icon">
                                                 <svg fill="#000000" height="800px" width="800px"  id="Capa_1" viewBox="0 0 482.568 482.568">
@@ -783,34 +814,39 @@ const MainTemplate = () => {
                                               </span>
                                           </span>
                                           <span className="nav-link-text">Կարգաբերումներ</span>
-                                      </NavLink>
+                                      </a>
                                       <ul id="dash_integ" className={dropDownMenu2 ? 'nav flex-column collapse  nav-children' : 'nav flex-column collapse  nav-children show'} >
                                           <li className="nav-item">
                                               <ul className="nav flex-column">
                                                   <li className="nav-item">
-													  <NavLink className="nav-link" to="./settings/prices">
+													  <Link className={sisActive1==="prices" || location.pathname==="/settings/prices"?"nav-link active":"nav-link"} to="./settings/prices"
+                                                       onClick={()=>handleSubmenuClick("settings","prices")}>
 														  <span className="nav-link-text">Գնացուցակներ</span>
-													  </NavLink>
+													  </Link>
                                                   </li>
                                                   <li className="nav-item">
-													  <NavLink className="nav-link" to="./settings/discountCards">
+													  <Link className={sisActive1==="discountCards" || location.pathname==="/settings/discountCards"?"nav-link active":"nav-link"} to="./settings/discountCards"
+                                                      onClick={()=>handleSubmenuClick("settings","discountCards")}>
 														  <span className="nav-link-text">Զեղչի քարտեր</span>
-													  </NavLink>
+													  </Link>
                                                   </li>
                                                   <li className="nav-item">
-                                                       <NavLink className="nav-link" to="./settings/reagents">
+                                                       <Link className={sisActive1==="reagents" || location.pathname==="/settings/reagents"?"nav-link active":"nav-link"} to="./settings/reagents"
+                                                       onClick={()=>handleSubmenuClick("settings","reagents")}>                                                       
 														  <span className="nav-link-text">Ռեագենտներ</span>
-													  </NavLink>
+													  </Link>
                                                   </li>
 												   <li className="nav-item">
-                                                       <NavLink className="nav-link" to="./settings/equipments">
+                                                       <Link className={sisActive1==="equipments" || location.pathname==="/settings/equipments"?"nav-link active":"nav-link"} to="./settings/equipments"
+                                                       onClick={()=>handleSubmenuClick("settings","equipments")}>
 														  <span className="nav-link-text">Սարքավորումներ</span>
-													  </NavLink>
+													  </Link>
                                                   </li>
 												   <li className="nav-item">
-                                                       <NavLink className="nav-link" to="./settings/researchlists">
+                                                       <Link className={sisActive1==="researchlists" || location.pathname==="/settings/researchlists"?"nav-link active":"nav-link"} to="./settings/researchlists"
+                                                       onClick={()=>handleSubmenuClick("settings","researchlists")}>
 														  <span className="nav-link-text">Հետ․ տեսակներ</span>
-													  </NavLink>
+													  </Link>
                                                   </li>
                                               </ul>	
                                           </li>	

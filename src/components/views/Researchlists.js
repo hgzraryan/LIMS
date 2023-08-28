@@ -9,8 +9,10 @@ import MissingAvatar from "../../dist/img/Missing.svg"
 import Multiselect from 'multiselect-react-dropdown';
 import axios from './../../api/axios';
 import Loading from '../Loading';
-import { useTable } from 'react-table';
-import { Modal, Button } from 'react-bootstrap';
+import { useSortBy, useTable } from "react-table";
+import { Dropdown } from "react-bootstrap";
+
+import AddResearch from "../views/CreateUser";
 
 
 
@@ -74,7 +76,11 @@ const Researchlists = () => {
 
 
 
-
+  /*------------------ Create user Component --------------------*/
+  const handleToggleCreateModal = (value) => {
+    setIsOpen(prev => value);
+  };
+  /*------------------------------------------------*/
 
 
 
@@ -420,286 +426,48 @@ const generateData = (start, length = 1) =>
 									</div>
 									*/}
 								</div>
-								<div className="dropdown ms-3">
-									<button className="btn btn-sm btn-outline-secondary flex-shrink-0 dropdown-toggle d-lg-inline-block d-none" data-bs-toggle="dropdown" onClick={CreateNew}>Գրանցել նոր</button>
-									<div className={showCreateNew ? 'dropdown-menu show' : 'dropdown-menu'} data-popper-placement="bottom">
-										
-										
-
-										
-										<a className="dropdown-item" href="#" onClick={() => setIsOpen(true)}>
-                                             <span className="feather-icon dropdown-icon"></span><span>Հետ․ տեսակ</span>
-                                        </a>
-										
-										<Modal show={isOpen} size='xl' onHide={() => setIsOpen(false)}>
-										   <Modal.Header closeButton>
-											 <Modal.Title style={{ width: '100%', textAlign: 'center' }}>
-											   Ավելացնել նոր աշխատակից
-											 </Modal.Title>
-										   </Modal.Header>
-										   <Modal.Body>
-												<div>
-													<div className="contact-body contact-detail-body">
-														<div data-simplebar className="nicescroll-bar">
-															<div className="d-flex flex-xxl-nowrap flex-wrap">
-																<div className="contact-info w-100">
-																	
-																	<div className="text-center mt-5">
-																		<div className="dropify-circle edit-img">
-																		<img
-                    														width={'100px'}
-                    														height={'100px'}
-                    														style={{borderRadius:"50%", cursor:"pointer"}}
-                    														onClick={()=>intupAvatarRef.current.click()}
-                    														src = {imageUrl}
-                    														className = "avatar_upload_preview"
-                    														alt = "preview"
-                    														onDrop={handleDrop}
-                    														onDragEnter={handleDragEmpty}
-                    														onDragOver={handleDragEmpty}
-                    													/> 
-																		<input 
-																			hidden 
-																			type="file" 
-																			ref={intupAvatarRef} 
-																			onChange={handleChangeFile} 
-																			className="dropify-1" 
-																			//data-default-file="dist/img/avatar2.jpg"
-																		/>
-																		</div>
-																		<div className="cp-name text-truncate mt-3">Mendaline Shane</div>
-																		<p>No phone calls Always busy</p>
-																		<div className="rating rating-yellow my-rating-4" data-rating="3"></div>
-																		<ul className="hk-list hk-list-sm justify-content-center mt-2">
-																			<li>
-																				<a className="btn btn-icon btn-soft-primary btn-rounded" href="#"><span className="icon"><span className="feather-icon"><FeatherIcon icon="mail" /></span></span></a>
-																			</li>
-																			<li>
-																				<a className="btn btn-icon btn-soft-success btn-rounded" href="#"><span className="icon"><span className="feather-icon"><FeatherIcon icon="phone" /></span></span></a>
-																			</li>
-																			<li>
-																				<a className="btn btn-icon btn-soft-danger btn-rounded" href="#"><span className="icon"><span className="feather-icon"><FeatherIcon icon="video" /></span></span></a>
-																			</li>
-																		</ul>
-																	</div>
-																	<div className="card">
-																		<div className="card-header">
-																			<a href="#">Անձնական տվյալներ</a>
-																			<button className="btn btn-xs btn-icon btn-rounded btn-light" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Edit"><span className="icon" data-bs-toggle="modal" data-bs-target="#editInfo"><span class="feather-icon"><FeatherIcon icon="edit-2" /></span></span></button>
-																		</div>
-																		<div className="card-body">
-																			
-																			
-																			<div className="modal-body">
-																				<form>
-																					<div className="row gx-3">
-																						<div className="col-sm-6">
-																							<div className="form-group">
-																								<label className="form-label"  htmlFor="firstname">Անուն</label>
-																								<input 
-																								type="text" 
-																								name="name"
-																								placeholder="Անուն"
-																								id="firstname" 
-																								className="form-control"
-																								autoComplete="off"
-																								value={firstname.current.value}
-																								onChange={(e) => (firstname.current=e.target.value)} 
-																								required 
-																								/>
-																							</div>
-																						</div>
-																						<div className="col-sm-6">
-																							<div className="form-group">
-																								<label className="form-label" htmlFor="lastname">Ազգանուն</label>
-																								<input 
-																								type="text" 
-																								name="lastname" 
-																								placeholder="Ազգանուն"
-																								id="lastname" 
-																								className="form-control"
-																								autoComplete="off" 
-																								value={lastname.current.value} 
-																								onChange={(e) => (lastname.current=e.target.value)}
-																								required
-																								/>
-																							</div>
-																						</div>
-																					</div>
-																					<div className="row gx-3">
-																						<div className="col-sm-6">
-																							<div className="form-group">
-																								<label className="form-label">Էլ․ հասցե</label>
-																								<input className="form-control" type="email" value="" placeholder="Email" name="email" />
-																							</div>
-																						</div>
-																						<div className="col-sm-6">
-																							<div className="form-group">
-																								<label className="form-label">Հեռախոս</label>
-																								<input className="form-control" type="text" value="" placeholder="Հեռախոս" name="phone" />
-																							</div>
-																						</div>
-																					</div>
-																					<div className="row gx-3">
-																						<div className="col-sm-6">
-																							<div className="form-group">
-																								<label className="form-label" htmlFor="username">Ծածկանուն</label>
-																								<input 
-																								type="text" 
-																								name="username" 
-																								placeholder="Ծածկանուն" 
-																								id="username"
-																								className="form-control" 
-																								autoComplete="off"
-																								value={user?.current.value}
-																								onChange={(e) => (user.current = e.target.value)}
-																								required 
-																								/>
-																							</div>
-																						</div>
-																						<div className="col-sm-6">
-																							<div className="form-group">
-																								<label className="form-label" htmlFor="password">Ծածկագիր</label>
-																								<input 
-																								type="password" 
-																								name="password" 
-																								placeholder="Ծածկագիր" 
-																								id="password"
-																								className="form-control" 
-																								autoComplete="off"
-																								value={pwd.current.value}
-																								onChange={(e) => (pwd.current = e.target.value)}
-																								required 
-																								/>
-																							</div>
-																						</div>
-																					</div>
-																					<div className="row gx-3">
-																						<div className="col-sm-12">
-																							<label className="form-label">Location</label>
-																							<div className="form-group">
-																								<input className="form-control" type="text" value="Lane 1" placeholder="Line 1" name="add1" />
-																							</div>	
-																							<div className="form-group">
-																								<input className="form-control" type="text" value="Newyork" placeholder="Line 2" name="add2" />
-																							</div>
-																						</div>
-																					</div>
-																				</form>
-																			</div>
 									
-																			
-																			
-																		</div>
-																	</div>
-																	<div className="separator-full"></div>
-																	<div className="card">
-																		<div className="card-header">
-																			<a href="#">Հավելյալ տվյալներ</a>
-																			<button className="btn btn-xs btn-icon btn-rounded btn-light" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Edit"><span class="icon"  data-bs-toggle="modal" data-bs-target="#moreContact"><span class="feather-icon"><FeatherIcon icon="edit-2" /></span></span></button>
-																		</div>
-																		<div className="card-body">
-																			<div className="modal-body">
-																				<form>
-																					<div className="row gx-3">
-																						<div className="col-sm-6">
-																							<div className="form-group">
-																								<label className="form-label">Designation</label>
-																								<input className="form-control" type="text" value="Mandaline" placeholder="First Name" name="name1" />
-																							</div>
-																						</div>
-																						<div className="col-sm-6">
-																							<div className="form-group">
-																								<label className="form-label">Company</label>
-																								<input className="form-control" type="text" value="Shane" placeholder="Last Name" name="lastname1" />
-																							</div>
-																						</div>
-																					</div>
-																					<div className="row gx-3">
-																						<div className="col-sm-6">
-																							<div className="form-group">
-																								<label className="form-label">Language</label>
-																								<input className="form-control" type="email" value="contct@hencework.com" placeholder="Email Id" name="emailid1" />
-																							</div>
-																						</div>
-																						<div className="col-sm-6">
-																							<div className="form-group">
-																								<label className="form-label">Birthday</label>
-																								<input className="form-control" type="text" value="10/24/1984" placeholder="Phone No" name="birthday1"/>
-																							</div>
-																						</div>
-																					</div>
-																					
-																				</form>
-																			</div>
-																		</div>
-																	</div>
-																	<div className="separator-full"></div>
-																	<div className="card">
-																		<div className="card-header">
-																			<a href="#">Դերեր</a>
-																			<button className="btn btn-xs btn-icon btn-rounded btn-light" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Add Tags"><span className="icon" data-bs-toggle="modal" data-bs-target="#tagsInput"><span className="feather-icon"><FeatherIcon icon="edit-2" /></span></span></button>
-																		</div>
-																		<div className="card-body">
-																			<div className="modal-body">
-																				<button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close">
-																					<span aria-hidden="true">×</span>
-																				</button>
-																				<h6 className="text-uppercase fw-bold mb-3">Add Tag</h6>
-																				<form>
-																					<div className="row gx-3">
-																						<div className="col-sm-12">
-																							<div className="form-group">
-																								<Multiselect
-																									options={roleState.options} // Options to display in the dropdown
-																									displayValue="name" // Property name to display in the dropdown options
-																									//selectedValues={this.state.selectedValue} // Preselected value to persist in dropdown
-																									onSelect={onRoleSelect} // Function will trigger on select event
-																									onRemove={onRoleDelete} // Function will trigger on remove event
-																									closeOnSelect = {true}
-																									id="input_tags_3"
-																									className="form-control"
-																									ref={multiselectRef}
-																									hidePlaceholder={true}
-																									placeholder = "Select Role"
-																								/>
-																								{/* <select id="input_tags_3" className="form-control" multiple="multiple">
-																									<option selected="selected">Collaborator</option>
-																									<option selected="selected">Designer</option>
-																									<option selected="selected">React Developer</option>
-																									<option selected="selected">Promotion</option>
-																									<option selected="selected">Advertisement</option>
-																								</select> */}
-																							</div>
-																						</div>
-																					</div>
-																					<button type="button" className="btn btn-primary float-end" onClick={onAdd} data-bs-dismiss="modal">Add</button>
-																				</form>
-																			</div>
-																		</div>
-																	</div>
+										
+										 <div className="dropdown ms-3">
+											 <Dropdown>
+											  <Dropdown.Toggle variant="success" id="dropdown-basic" className="btn btn-sm btn-outline-secondary flex-shrink-0 dropdown-toggle d-lg-inline-block d-none">
+												Ավելացնել նոր
+											  </Dropdown.Toggle>
 
-
-																	<div className="modal-footer align-items-center">
-																		<button type="button" className="btn btn-secondary" onClick={() => setIsOpen(false)}>Չեղարկել</button>
-																		<button type="button" onClick={handleSubmit} className="btn btn-primary" data-bs-dismiss="modal">Ավելացնել</button>
-																	</div>
-																</div>
-																
-															</div>
-														</div>
-													</div>
-												</div>
-										   </Modal.Body>
-										 </Modal>
-                                        
-                                        {/*
-										<a className="dropdown-item" href="#">Type2</a>
-										<a className="dropdown-item" href="#">Type3</a>
-										<a className="dropdown-item" href="#">Type4</a>
-										*/}
-									</div>
-								</div>
+											  <Dropdown.Menu>
+												<Dropdown.Item onClick={() => setIsOpen(true)}>Հետազոտություն</Dropdown.Item>
+												
+											  </Dropdown.Menu>
+											</Dropdown>
+										
+										 
+										 
+										  {isOpen && (
+											  <AddResearch
+												handleSubmit={handleSubmit}
+												//onRoleSelect={}
+												//onRoleDelete={}
+												//onAdd={onAdd}
+												handleChangeFile={handleChangeFile}
+												handleDrop={handleDrop}
+												handleDragEmpty={handleDragEmpty}
+												handleToggleCreateModal={handleToggleCreateModal}
+												imageUrl={imageUrl}
+												user={user}
+												firstname={firstname}
+												lastname={lastname}
+												pwd={pwd}
+												roles={roles}
+											  />
+											)}
+										 
+										 
+										 
+										 
+										 
+										</div>
+								
+								
 							</div>
 							<div className="contact-options-wrap">	
 								<a className="btn btn-icon btn-flush-dark flush-soft-hover dropdown-toggle no-caret active" href="#" data-bs-toggle="dropdown">

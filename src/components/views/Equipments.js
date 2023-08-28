@@ -1,19 +1,16 @@
-import React, { useState, useEffect,useRef } from "react";
-import InfiniteScroll from 'react-infinite-scroll-component';
+import React, { useState, useEffect, useRef, useMemo } from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { useNavigate, useLocation } from "react-router-dom";
-import FeatherIcon from 'feather-icons-react';
+import FeatherIcon from "feather-icons-react";
 import LoadingSpinner from "../LoadingSpinner";
-import ReactPaginate from "react-paginate"
-import MissingAvatar from "../../dist/img/Missing.svg"
-import Multiselect from 'multiselect-react-dropdown';
-import axios from './../../api/axios';
-import Loading from '../Loading';
-import { useTable } from 'react-table';
-import { Modal, Button } from 'react-bootstrap';
-
-
-
+import ReactPaginate from "react-paginate";
+import MissingAvatar from "../../dist/img/Missing.svg";
+import axios from "./../../api/axios";
+import Loading from "../Loading";
+import { useSortBy, useTable } from "react-table";
+import AddEquipment from "../views/AddEquipment";
+import { Dropdown } from "react-bootstrap";
 
 
 
@@ -30,14 +27,11 @@ const REGISTER_URL = '/register';
 
 
 
-
-
-
 const Equipments = () => {
 	
 	
 	
-	const [researches, setResearches] = useState([]);
+	const [equipments, setEquipments] = useState([]);
 	
 	
 	
@@ -49,12 +43,13 @@ const Equipments = () => {
     const axiosPrivate = useAxiosPrivate();
     const navigate = useNavigate();
     const location = useLocation();
-	const [image,setImage] = useState('')
-	const [imageUrl,setImageUrl] = useState(MissingAvatar)
-	const intupAvatarRef = useRef(null)
+	const [image,setImage] = useState('');
+	const [imageUrl,setImageUrl] = useState(MissingAvatar);
+	const intupAvatarRef = useRef(null);
 	const imageMimeType = /image\/(png|jpg|jpeg)/i;
-	const fileReader = new FileReader()
-	const multiselectRef  = useRef('')	
+	const fileReader = new FileReader();
+	const multiselectRef  = useRef('');	
+
 	let roleState = {
     options: [{name: 'Collaborator', id: 1},
 	{name: 'Designer', id: 2},
@@ -76,7 +71,11 @@ const Equipments = () => {
 
 
 
-
+  /*------------------ Create user Component --------------------*/
+  const handleToggleCreateModal = (value) => {
+    setIsOpen(prev => value);
+  };
+  /*------------------------------------------------*/
 
 
 /*----------------ADD USER---------------------*/
@@ -103,13 +102,7 @@ useEffect(() => {
 const handleSubmit = async (e) => {
 	e.preventDefault();
 
-	//if button enabled with JS hack
-	// const v1 = USER_REGEX.test(user.current);
-	// const v2 = PWD_REGEX.test(pwd.current);
-	// if (!v1 || !v2) {
-	// 	setErrMsg("Invalid Entry");
-	// 	return;
-	// }     
+	
 
 	const newUser = {
 		user:user.current, 
@@ -237,15 +230,15 @@ const onAdd = (e) => {
 
 
     const pagesVisited = currentPage * usersPerPage
-    const currentUsers = researches.slice(pagesVisited,pagesVisited+usersPerPage)
-    const pageCount = Math.ceil(researches.length/usersPerPage)
+    const currentUsers = equipments.slice(pagesVisited,pagesVisited+usersPerPage)
+    const pageCount = Math.ceil(equipments.length/usersPerPage)
 
 
     useEffect(() => {
         let isMounted = true;
         const controller = new AbortController();
 
-        const getResearches = async () => {
+        const getEquipments = async () => {
             try {
                 const response = await axiosPrivate.post('/equipmentList', {
                     signal: controller.signal,
@@ -256,7 +249,7 @@ const onAdd = (e) => {
 					if(response.data.jsonString.length === 0 || response.data.jsonString.length < 12){
 						setHasMore(false)
 					}
-					setResearches(prevUsers => [...prevUsers,...response.data.jsonString]);
+					setEquipments(prevUsers => [...prevUsers,...response.data.jsonString]);
 					setCurrentPage(prev => prev+1)
 				}, 500);
             } catch (err) {
@@ -265,7 +258,7 @@ const onAdd = (e) => {
             }
         }
 
-        getResearches();
+        getEquipments();
 
         return () => {
             isMounted = false;
@@ -277,17 +270,9 @@ const onAdd = (e) => {
 	
 
 
+
 	
-const generateData = (start, length = 1) =>
-  Array.from({ length }).map((_, i) => ({
-    username: 'hgzraryan',
-    firstname: 'Hartyun',
-    lastname: 'Gzraryan',
-    email: 'hgzraryan@yandex.ru',
-    roles: 'dded',
-  }));
-	
-	const getUsers = async () => {
+	const getEquipments = async () => {
 		try {
 			const response = await axiosPrivate.post('/equipmentList', {
 				page:currentPage,
@@ -301,7 +286,7 @@ const generateData = (start, length = 1) =>
 				if(response.data.jsonString.length === 0 || response.data.jsonString.length < 12){
 					setHasMore(false)
 				}
-				setResearches(prevUsers => [...prevUsers,...response.data.jsonString]);
+				setEquipments(prevUsers => [...prevUsers,...response.data.jsonString]);
 				setCurrentPage(prev => prev+1)
 			}, 500);
 		} catch (err) {
@@ -329,34 +314,14 @@ const generateData = (start, length = 1) =>
     };
 
   
-    //-------------------
-
-
-
-    const setUserTypeStyle = (userType) => {
-
-        switch (userType) {
-         case "Admin":
-         return "badge badge-soft-success  my-1  me-2"
-         case "Editor":
-         return "badge badge-soft-violet my-1  me-2"
-         case "User":
-         return "badge badge-soft-danger my-1  me-2"
-         case "Approver":
-         return "badge badge-soft-light my-1  me-2"
-         
-         default:
-             break;
-        }
-     }
+    
 
 
 
 
 
 
-
-     const [items, setItems] = useState(generateData(0));
+    // const [items, setItems] = useState(generateData(0));
      const [isOpen, setIsOpen] = useState(false);
    /*
      const fetchMoreData = () => {
@@ -369,32 +334,96 @@ const generateData = (start, length = 1) =>
      };
 	 */
 	 
-     const columns = React.useMemo(
-       () => [
-	     {
-           Header: ' ',
-           //accessor: 'select',
-         },
-         {
-           Header: 'Սարքի անվանումը',
-           accessor: 'equipmentname',
-         },
-         {
-           Header: 'Նկարագիր',
-           accessor: 'description',
-         }
-       ],
-       []
-     );
-   
-     const tableInstance = useTable({ columns, data: items });
-   
-     const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-       tableInstance;
-	   
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 const columns = React.useMemo(
+    () => [
+      {
+        Header: () => (
+          <input
+            type="checkbox"
+            className="form-check-input check-select-all"
+          />
+        ),
+        Cell: () => (
+          <input
+            type="checkbox"
+            className="form-check-input check-select-all"
+          />
+        ),
+        accessor: "select",
+        disableSortBy: true,
+      },
+      {
+        Header: 'Սարքի անվանումը',
+        accessor: 'name',
+        sortable: true,
+      },
+      {
+        Header: 'Նկարագիր',
+        accessor: 'description',
+        sortable: true,
+      },
+      {
+        Header: "Գործողություններ",
+        accessor: "actions",
+        Cell: ({ row }) => (
+          <div className="d-flex align-items-center">
+            <div className="d-flex">
+              <a
+                className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover"
+                data-bs-toggle="tooltip"
+                data-placement="top"
+                title="Edit"
+                href="edit-contact.html"
+              >
+                <span className="icon">
+                  <span className="feather-icon">
+                    <FeatherIcon icon="edit" />
+                  </span>
+                </span>
+              </a>
+              <a
+                className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover del-button"
+                data-bs-toggle="tooltip"
+                /*onClick={() => handleOpenModal(row.values)}*/
+                data-placement="top"
+                title=""
+                data-bs-original-title="Delete"
+                href="#"
+              >
+                <span className="icon">
+                  <span className="feather-icon">
+                    <FeatherIcon icon="trash" />
+                  </span>
+                </span>
+              </a>
+            </div>
+          </div>
+        ),
+        disableSortBy: true,
+      },
+    ],
+    []
+  );
 
-	   
-	   
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
+    useTable(
+      {
+        columns,
+        data: equipments,
+      },
+      useSortBy
+    );
+
+	 
+	 
+	 
 	   
 	   
 	   
@@ -411,46 +440,53 @@ const generateData = (start, length = 1) =>
 									<a className="contactapp-title link-dark" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
 										<h1>Սարքավորումներ</h1>
 									</a>
-									{/*
-									<div className={showUserMenu ? 'dropdown-menu show' : 'dropdown-menu'} >
-										<a className="dropdown-item" href="#"><span className="feather-icon dropdown-icon"><FeatherIcon icon="users" /></span><span>Users1</span></a>
-										<a className="dropdown-item" href="#"><span className="feather-icon dropdown-icon"><FeatherIcon icon="star" /></span><span>Users2</span></a>
-										<a className="dropdown-item" href="#"><span className="feather-icon dropdown-icon"><FeatherIcon icon="archive" /></span><span>Users3</span></a>
-										<a className="dropdown-item" href="#"><span className="feather-icon dropdown-icon"><FeatherIcon icon="edit" /></span><span>Users4</span></a>
-									</div>
-									*/}
 								</div>
+								
+								
+								
+								
 								<div className="dropdown ms-3">
-									<button className="btn btn-sm btn-outline-secondary flex-shrink-0 dropdown-toggle d-lg-inline-block d-none" data-bs-toggle="dropdown" onClick={CreateNew}>Գրանցել նոր</button>
-									<div className={showCreateNew ? 'dropdown-menu show' : 'dropdown-menu'} data-popper-placement="bottom">
+
+
+									 <Dropdown>
+									  <Dropdown.Toggle variant="success" id="dropdown-basic" className="btn btn-sm btn-outline-secondary flex-shrink-0 dropdown-toggle d-lg-inline-block d-none">
+										Ավելացնել նոր
+									  </Dropdown.Toggle>
+
+									  <Dropdown.Menu>
+										<Dropdown.Item onClick={() => setIsOpen(true)}>Սարքավորում</Dropdown.Item>
+										
+									  </Dropdown.Menu>
+									</Dropdown>
+
+									
+									
 										
 										
 
 										
-										<a className="dropdown-item" href="#" onClick={() => setIsOpen(true)}>
-                                             <span className="feather-icon dropdown-icon"></span><span>Սարքավորում</span>
-                                        </a>
 										
-										<Modal show={isOpen} size='xl' onHide={() => setIsOpen(false)}>
-										   <Modal.Header closeButton>
-											 <Modal.Title style={{ width: '100%', textAlign: 'center' }}>
-											   Ավելացնել նոր սարքավորում
-											 </Modal.Title>
-										   </Modal.Header>
-										   <Modal.Body>
-												<div>
-													
-													
-												</div>
-										   </Modal.Body>
-										 </Modal>
-                                        
-                                        {/*
-										<a className="dropdown-item" href="#">Type2</a>
-										<a className="dropdown-item" href="#">Type3</a>
-										<a className="dropdown-item" href="#">Type4</a>
-										*/}
-									</div>
+										
+									{
+									 isOpen &&
+									<AddEquipment                     
+									  handleSubmit = {handleSubmit}
+									  onRoleSelect = {onRoleSelect}
+									  onRoleDelete = {onRoleDelete}
+									  onAdd = {onAdd}
+									  handleChangeFile = {handleChangeFile}
+									  handleDrop = {handleDrop}
+									  handleDragEmpty = {handleDragEmpty}
+									  handleToggleCreateModal = {handleToggleCreateModal}
+									  imageUrl = {imageUrl}
+									  user = {user}
+									  firstname = {firstname}
+									  lastname = {lastname}
+									  pwd = {pwd}
+									  roles = {roles}
+									/>
+									}
+									
 								</div>
 							</div>
 							<div className="contact-options-wrap">	
@@ -501,8 +537,8 @@ const generateData = (start, length = 1) =>
 											
 											<div id='scrollableDiv' style={{ height: '80vh', overflow: 'auto' }}>
 											   <InfiniteScroll
-												 dataLength={researches.length}
-												 next={getUsers}
+												 dataLength={equipments.length}
+												 next={getEquipments}
 												 hasMore={hasMore}
 												 loader={<Loading />}
 												 scrollableTarget='scrollableDiv'
@@ -510,92 +546,54 @@ const generateData = (start, length = 1) =>
 											   >
 												 <table  className='table table-striped'>
 												   <thead>
-													 {headerGroups.map((headerGroup) => (
-													   <tr {...headerGroup.getHeaderGroupProps()}>
-														 {headerGroup.headers.map((column) => (
-														   <th {...column.getHeaderProps()}>
-															 {column.render('Header')}
-														   </th>
-														 ))}
-													   </tr>
-													 ))}
-												   </thead>
+													  {headerGroups.map((headerGroup) => (
+														<tr {...headerGroup.getHeaderGroupProps()}>
+														  {headerGroup.headers.map((column) => (
+															<th
+															  //className="sorting"
+															  {...column.getHeaderProps(
+																column.getSortByToggleProps()
+															  )}
+															>
+															 
+																{column.isSorted
+																  ? column.isSortedDesc
+																	? <span className="sorting_asc" ></span>
+																	: <span className="sorting_desc" ></span>
+																  : <span className="sorting" ></span>}
+															  
+																  {column.render("Header")}
+															</th>
+														  ))}
+														</tr>
+													  ))}
+													</thead>
 												   
 												   
 												   
-												   {/*
-												   <tbody {...getTableBodyProps()}>
-													 {rows.map((row, i) => {
-													   prepareRow(row);
-													   return (
-														 <tr {...row.getRowProps()}>
-														   {row.cells.map((cell) => {
-															 return (
-															   <td {...cell.getCellProps()}>
-																 {cell.render('Cell')}
-															   </td>
-															 );
-														   })}
-														 </tr>
-													   );
-													 })}
-												   </tbody>
-												   */}
+												  	{equipments?.length && (
+													  <tbody {...getTableBodyProps()}>
+														{rows.map((row) => {
+														  prepareRow(row);
+														  return (
+															<tr {...row.getRowProps()}>
+															  {row.cells.map((cell) => {
+																return (
+																  <td {...cell.getCellProps()}>
+																	{cell.render("Cell")}
+																  </td>
+																);
+															  })}
+															</tr>
+														  );
+														})}											   
 												   
-												   
-												  {researches?.length &&
-                                                  (<tbody {...getTableBodyProps()}>
-                                                     {researches.map((user,i) => 
-                                                     (<tr>
-                                                        <td><input type="checkbox" className="form-check-input check-select-all" id="customCheck1"/></td>
-                                                        
-                                                         <td>
-                                                             <div className="media align-items-center">
-                                                                 <div className="media-head me-2">
-                                                                     <div className="avatar avatar-xs avatar-rounded">
-																	 {/*<img src={user.img ?? "dist/img/avatar1.jpg"} alt="user" className="avatar-img"/>*/}
-                                                                     </div>
-                                                                 </div>
-                                                                 <div className="media-body">
-                                                                     <span className="d-block text-high-em">{user.name}</span> 
-                                                                 </div>
-                                                             </div>
-                                                         </td>
-                                                         <td>{user.description}</td>
-                                                        
-
-                                                         <td>
-                                                             <div className="d-flex align-items-center">
-                                                                 <div className="d-flex">
-                                                                     <a className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover" data-bs-toggle="tooltip" data-placement="top" title="" data-bs-original-title="Archive" href="#"><span className="icon"><span className="feather-icon"><FeatherIcon icon="archive" /></span></span></a>
-                                                                     <a className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover" data-bs-toggle="tooltip" data-placement="top" title="" data-bs-original-title="Edit" href="edit-contact.html"><span className="icon"><span className="feather-icon"><FeatherIcon icon="edit" /></span></span></a>
-                                                                     <a className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover del-button" data-bs-toggle="tooltip" data-placement="top" title="" data-bs-original-title="Delete" href="#"><span className="icon"><span className="feather-icon"><FeatherIcon icon="trash" /></span></span></a>
-                                                                 </div>
-                                                                 <div className="dropdown">
-                                                                     <button className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover dropdown-toggle no-caret" aria-expanded="false" data-bs-toggle="dropdown"><span className="icon"><span className="feather-icon"><FeatherIcon icon="more-vertical" /></span></span></button>
-                                                                     <div className="dropdown-menu dropdown-menu-end">
-                                                                         <a className="dropdown-item" href="edit-contact.html"><span className="feather-icon dropdown-icon"><FeatherIcon icon="list" /><FeatherIcon icon="edit" /></span><span>Edit Contact</span></a>
-                                                                         <a className="dropdown-item" href="#"><span className="feather-icon dropdown-icon"><FeatherIcon icon="list" /><i data-feather="trash-2"></i></span><span>Delete</span></a>
-                                                                         <a className="dropdown-item" href="#"><span className="feather-icon dropdown-icon"><FeatherIcon icon="list" /><i data-feather="copy"></i></span><span>Duplicate</span></a>
-                                                                         <div className="dropdown-divider"></div>
-                                                                         <h6 className="dropdown-header dropdown-header-bold">Change Labels</h6>
-                                                                         <a className="dropdown-item" href="#">Design</a>
-                                                                         <a className="dropdown-item" href="#">Developer</a>
-                                                                         <a className="dropdown-item" href="#">Inventory</a>
-                                                                         <a className="dropdown-item" href="#">Human Resource</a>
-                                                                     </div>
-                                                                 </div>
-                                                             </div>
-                                                         </td>
-                                                     </tr>
-                                                     ))}
-                                                     
-                                                 </tbody>
-                                                 )}
+												  
 												   
 												   
 												   
-												   
+												                           </tbody>
+                        )}{" "}  
 												   
 												   
 												   
