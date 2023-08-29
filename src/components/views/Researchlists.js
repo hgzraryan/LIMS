@@ -284,14 +284,7 @@ const onAdd = (e) => {
 
 
 	
-const generateData = (start, length = 1) =>
-  Array.from({ length }).map((_, i) => ({
-    username: 'hgzraryan',
-    firstname: 'Hartyun',
-    lastname: 'Gzraryan',
-    email: 'hgzraryan@yandex.ru',
-    roles: 'dded',
-  }));
+
 	
 	const getUsers = async () => {
 		try {
@@ -362,7 +355,6 @@ const generateData = (start, length = 1) =>
 
 
 
-     const [items, setItems] = useState(generateData(0));
      const [isOpen, setIsOpen] = useState(false);
    /*
      const fetchMoreData = () => {
@@ -375,99 +367,127 @@ const generateData = (start, length = 1) =>
      };
 	 */
 	 
-     const columns = React.useMemo(
-       () => [
-	     {
-           Header: ' ',
-           //accessor: 'select',
-         },
-         {
-           Header: 'Հետազոտության տեսակը',
-           accessor: 'username',
-         },
-         {
-           Header: 'Դասակարգ',
-           accessor: 'firstname',
-         }
-       ],
-       []
-     );
-   
-     const tableInstance = useTable({ columns, data: items });
-   
-     const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-       tableInstance;
-	   
+	 
+	 
+	 
+	const columns = React.useMemo(
+    () => [
+      {
+        Header: () => (
+          <input
+            type="checkbox"
+            className="form-check-input check-select-all"
+          />
+        ),
+        Cell: () => (
+          <input
+            type="checkbox"
+            className="form-check-input check-select-all"
+          />
+        ),
+        accessor: "select",
+        disableSortBy: true,
+      },
+      {
+        Header: "Հետազոտության տեսակը",
+        accessor: "research",
+        sortable: true,
+      },
+      {
+        Header: "Դասակարգ",
+        accessor: "category_name",
+      },
+      {
+        Header: "Գործողություններ",
+        accessor: "actions",
+        Cell: ({ row }) => (
+          <div className="d-flex align-items-center">
+            <div className="d-flex">
+              <a
+                className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover"
+                data-bs-toggle="tooltip"
+                data-placement="top"
+                title="Edit"
+                href="edit-contact.html"
+              >
+                <span className="icon">
+                  <span className="feather-icon">
+                    <FeatherIcon icon="edit" />
+                  </span>
+                </span>
+              </a>
+             
+            </div>
+          </div>
+        ),
+        disableSortBy: true,
+      },
+    ],
+    []
+  );
 
-	   
-	   
-	   
-	   
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
+    useTable(
+      {
+        columns,
+        data: researches,
+      },
+      useSortBy
+    );
+	 
 	   
 	   
 	   
   return (
      <div>
-			<div className="contactapp-wrap">                
-                <div className="contactapp-content">
-					<div className="contactapp-detail-wrap">
-						<header className="contact-header">
-							<div className="d-flex align-items-center">
-								<div className="dropdown">
-									<a className="contactapp-title link-dark" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-										<h1>Հետ․ տեսակներ</h1>
-									</a>
-									{/*
-									<div className={showUserMenu ? 'dropdown-menu show' : 'dropdown-menu'} >
-										<a className="dropdown-item" href="#"><span className="feather-icon dropdown-icon"><FeatherIcon icon="users" /></span><span>Users1</span></a>
-										<a className="dropdown-item" href="#"><span className="feather-icon dropdown-icon"><FeatherIcon icon="star" /></span><span>Users2</span></a>
-										<a className="dropdown-item" href="#"><span className="feather-icon dropdown-icon"><FeatherIcon icon="archive" /></span><span>Users3</span></a>
-										<a className="dropdown-item" href="#"><span className="feather-icon dropdown-icon"><FeatherIcon icon="edit" /></span><span>Users4</span></a>
-									</div>
-									*/}
+		<div className="contactapp-wrap">                
+			<div className="contactapp-content">
+				<div className="contactapp-detail-wrap">
+					<header className="contact-header">
+						<div className="d-flex align-items-center">
+							<div className="dropdown">
+								<a className="contactapp-title link-dark" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+									<h1>Հետ․ տեսակներ</h1>
+								</a>
+								{/*
+								<div className={showUserMenu ? 'dropdown-menu show' : 'dropdown-menu'} >
+									<a className="dropdown-item" href="#"><span className="feather-icon dropdown-icon"><FeatherIcon icon="users" /></span><span>Users1</span></a>
+									<a className="dropdown-item" href="#"><span className="feather-icon dropdown-icon"><FeatherIcon icon="star" /></span><span>Users2</span></a>
+									<a className="dropdown-item" href="#"><span className="feather-icon dropdown-icon"><FeatherIcon icon="archive" /></span><span>Users3</span></a>
+									<a className="dropdown-item" href="#"><span className="feather-icon dropdown-icon"><FeatherIcon icon="edit" /></span><span>Users4</span></a>
 								</div>
-									
-										
-										 <div className="dropdown ms-3">
-											 <Dropdown>
-											  <Dropdown.Toggle variant="success" id="dropdown-basic" className="btn btn-sm btn-outline-secondary flex-shrink-0 dropdown-toggle d-lg-inline-block d-none">
-												Ավելացնել նոր
-											  </Dropdown.Toggle>
-
-											  <Dropdown.Menu>
-												<Dropdown.Item onClick={() => setIsOpen(true)}>Հետազոտություն</Dropdown.Item>
-												
-											  </Dropdown.Menu>
-											</Dropdown>
-										
-										 
-										 
-										  {isOpen && (
-											  <AddResearch
-												handleSubmit={handleSubmit}
-												//onRoleSelect={}
-												//onRoleDelete={}
-												//onAdd={onAdd}
-												handleChangeFile={handleChangeFile}
-												handleDrop={handleDrop}
-												handleDragEmpty={handleDragEmpty}
-												handleToggleCreateModal={handleToggleCreateModal}
-												imageUrl={imageUrl}
-												user={user}
-												firstname={firstname}
-												lastname={lastname}
-												pwd={pwd}
-												roles={roles}
-											  />
-											)}
-										 
-										 
-										 
-										 
-										 
-										</div>
-								
-								
+								*/}
+								</div>
+								<div className="dropdown ms-3">
+									<Dropdown>
+										<Dropdown.Toggle variant="success" id="dropdown-basic" className="btn btn-sm btn-outline-secondary flex-shrink-0 dropdown-toggle d-lg-inline-block d-none">
+											Ավելացնել նոր
+										</Dropdown.Toggle>
+										<Dropdown.Menu>
+											<Dropdown.Item onClick={() => setIsOpen(true)}>Հետազոտություն</Dropdown.Item>
+										</Dropdown.Menu>
+									</Dropdown>
+									{isOpen && (
+										<AddResearch
+											handleSubmit={handleSubmit}
+											//onRoleSelect={}
+											//onRoleDelete={}
+											//onAdd={onAdd}
+											handleChangeFile={handleChangeFile}
+											handleDrop={handleDrop}
+											handleDragEmpty={handleDragEmpty}
+											handleToggleCreateModal={handleToggleCreateModal}
+											imageUrl={imageUrl}
+											user={user}
+											firstname={firstname}
+											lastname={lastname}
+											pwd={pwd}
+											roles={roles}
+										  />
+										)
+									}
+									 
+								</div>
 							</div>
 							<div className="contact-options-wrap">	
 								<a className="btn btn-icon btn-flush-dark flush-soft-hover dropdown-toggle no-caret active" href="#" data-bs-toggle="dropdown">

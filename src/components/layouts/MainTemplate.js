@@ -400,6 +400,7 @@ const MainTemplate = () => {
                                                     </div>
                                                 </div>
                                             </div>
+											{/*
                                             <div className="dropdown-divider"></div>
                                                 <a className="dropdown-item" href="profile.html">Profile</a>
                                                 <a className="dropdown-item" href="/privacy-policy">
@@ -414,8 +415,8 @@ const MainTemplate = () => {
                                                 <div className="dropdown-divider"></div>
                                                 <a className="dropdown-item" href="/privacy-policy"><span className="dropdown-icon feather-icon"><i data-feather="tag"></i></span><span>Raise a ticket</span></a>
                                       <div className="dropdown-divider"></div>
-                                      <a className="dropdown-item" href="/privacy-policy">Terms & Conditions</a>
-                                      <a className="dropdown-item" href="/privacy-policy">Help & Support</a>
+											*/}
+                                      <a className="dropdown-item" href="/">Օգնություն և սպասարկում</a>
                                   </div>
                               </div>
                           </li>
@@ -434,7 +435,6 @@ const MainTemplate = () => {
                           <a className="navbar-brand" href="/dashboard">
                               <img className="brand-img img-fluid" src="/dist/img/icon.svg" alt="brand" />
                               <img className="brand-img img-fluid" src="/dist/img/text.svg" alt="brand" />
-                              
                           </a>
                           <button className="btn btn-icon btn-rounded btn-flush-dark flush-soft-hover navbar-toggle" onClick={mmenuClick}>
                               <span className="icon">
@@ -458,8 +458,9 @@ const MainTemplate = () => {
                       <div className="menu-content-wrap">
                           <div className="menu-group">
                               <ul className="navbar-nav flex-column">
-                                  <li className="nav-item active">
-                                      <a className="nav-link" href="/">
+								  <li className="nav-item">
+                                      <Link className={misActive1 === "/" ||  location.pathname==="/" ?"nav-link active":"nav-link"} to="./"
+                                      onClick={() => handleSubmenuClick("home","")}>
                                           <span className="nav-icon-wrap">
                                               <span className="svg-icon">
                                                   <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-template" width="24" height="24" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
@@ -473,9 +474,8 @@ const MainTemplate = () => {
                                               </span>
                                           </span>
                                           <span className="nav-link-text">Կառ․ վահանակ</span>
-                                          {/*<span className="badge badge-sm badge-soft-pink ms-auto">Hot</span>*/}
-                                      </a>
-                                  </li>
+                                      </Link>
+                                  </li>	
                               </ul>	
                           </div>
                           <div className="menu-gap"></div>
@@ -483,7 +483,6 @@ const MainTemplate = () => {
                               <div className="nav-header">
                                   <span>Գործիքակազմ</span>
                               </div>
-                              
                               <ul className="navbar-nav flex-column">
                                   <li className="nav-item">
                                       <Link className={misActive1 === "patients"||  location.pathname==="/patients" ?"nav-link active":"nav-link"} to="./patients"
@@ -627,10 +626,6 @@ const MainTemplate = () => {
                                       </Link>
                                   </li>
 								  */}
-
-
-
-
                                   <li className="nav-item">
                                   <Link className={(misActive1 === "users" ||  location.pathname==="/users")?"nav-link active":"nav-link"} to="/users"
                                   onClick={() => handleSubmenuClick("users","")}>
@@ -653,12 +648,6 @@ const MainTemplate = () => {
                                           <span className="nav-link-text">Աշխատակիցներ</span>
                                       </Link>
                                   </li>
-
-
-
-
-
-                                  
                                   <li className="nav-item">
                                   <Link className={misActive1 === "departments"?"nav-link active":"nav-link"} to="#" data-bs-toggle="collapse" data-bs-target="#dash_contact">
                                           <span className="nav-icon-wrap">
@@ -706,25 +695,23 @@ const MainTemplate = () => {
                                               <ul className="nav flex-column">
                                                   <li className="nav-item">
                                                       <Link className={sisActive1 === "contractList"?"nav-link active":"nav-link"} to="contact.html"><span className="nav-link-text"
-                                   onClick={() => handleSubmenuClick("departments","contractList")}>Contact List</span></Link>
+														onClick={() => handleSubmenuClick("departments","contractList")}>Contact List</span></Link>
                                                   </li>
                                                   <li className="nav-item">
                                                       <Link className={sisActive1 === "contractCard"?"nav-link active":"nav-link"} to="contact-cards.html"><span className="nav-link-text"
-                                   onClick={() => handleSubmenuClick("departments","contractCard")}>Contact Cards</span></Link>
+														onClick={() => handleSubmenuClick("departments","contractCard")}>Contact Cards</span></Link>
                                                   </li>
                                                   <li className="nav-item">
                                                       <Link className={sisActive1 === "edidContract"?"nav-link active":"nav-link"} to="edit-contact.html"><span className="nav-link-text"
-                                   onClick={() => handleSubmenuClick("departments","edidContract")}>Edit Contact</span></Link>
+														onClick={() => handleSubmenuClick("departments","edidContract")}>Edit Contact</span></Link>
                                                   </li>
                                               </ul>	
                                           </li>	
                                       </ul>	
                                   </li>
                                   <li className="nav-item">
-                                      
-									  
-                                  <Link className={misActive1 === "diagnoses" || location.pathname==="/diagnoses" ?"nav-link active":"nav-link"} to="./diagnoses"
-                                  onClick={() => handleSubmenuClick("diagnoses","")}>
+									  <Link className={misActive1 === "diagnoses" || location.pathname==="/diagnoses" ?"nav-link active":"nav-link"} to="./diagnoses"
+									  onClick={() => handleSubmenuClick("diagnoses","")}>
                                           <span className="nav-icon-wrap">
                                               <span className="svg-icon">
                                               <svg fill="#000000" width="23" height="23" viewBox="0 0 512 512" id="Layer_1" version="1.1">

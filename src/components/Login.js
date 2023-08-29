@@ -273,7 +273,7 @@ const Login = () => {
                                   {/*<button className="btn  btn-flush-primary btn-uppercase mt-2">Take Tour</button>*/}
                               </div>
                           </div>
-                          <img src="dist/img/lab-login.png"  className="img-fluid w-sm-50 mt-7" alt="login"/>
+                          <img src="dist/img/lab-login.png"  className="img-fluid w-sm-60 mt-7" alt="login"/>
                       </div>
                   </div>
               </div>
