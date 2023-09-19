@@ -14,9 +14,9 @@ import { useSortBy, useTable } from "react-table";
 import ComponentToConfirm from "../ComponentToConfirm";
 import CreateUser from "../views/CreateUser";
 import Swal from "sweetalert2";
-import {Context} from "../Context"
-import { useContext } from "react";
 import { Dropdown } from "react-bootstrap";
+import { checkUsersCount } from "../../redux/features/users/usersCountSlice";
+import { useDispatch } from "react-redux";
 
 
 
@@ -39,6 +39,7 @@ const Users = () => {
   const [selectedItem, setSelectedItem] = useState("");
   const [selectedItemId, setSelectedItemId] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
+  const dispatch = useDispatch()
   /*----------------ADD USER---------------------*/
   const errRef = useRef("");
   const user = useRef("");
@@ -55,16 +56,11 @@ const Users = () => {
   const [errMsg, setErrMsg] = useState("");
 
   const formData = new FormData();
-
-  const [posts, setPosts] = useState([]);
-
-  const {count, countUsers} = useContext(Context)
-
   /*------------------ Delete Component --------------------*/
   const updateUsersCount = async () => {
     try {
       const response = await axiosPrivate.get('/usersCount');
-      countUsers(response.data)      
+      dispatch(checkUsersCount(response.data));      
   } catch (err) {
       console.error(err);
       navigate('/login', { state: { from: location }, replace: true });

@@ -2,6 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 //import './index.css';
 import App from './App';
+import { Provider } from 'react-redux';
+import store from './redux/store';
 import { AuthProvider } from './context/AuthProvider';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
@@ -14,9 +16,8 @@ import './dist/css/style.css';
 
 
 ReactDOM.render(
- 
-
-  <React.StrictMode>
+   <React.StrictMode>
+    <Provider store = {store}>
     <BrowserRouter>
       <AuthProvider>
         <Routes>
@@ -24,6 +25,7 @@ ReactDOM.render(
         </Routes>
       </AuthProvider>
     </BrowserRouter>
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );
