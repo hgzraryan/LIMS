@@ -3,8 +3,11 @@ import { Modal } from "react-bootstrap";
 import Multiselect from "multiselect-react-dropdown";
 import FeatherIcon from "feather-icons-react";
 import { Editor } from "@tinymce/tinymce-react";
+import { useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
-function createPatient({
+function CreatePatient({
   handleToggleCreateModal,
   researchState,
   onResearchSelect,
@@ -18,14 +21,22 @@ function createPatient({
   ageRef,
   emailRef,
   addressRef,
+  mobileRef,
+  handlingDate,
   editorRef,
 }) {
+  const [startDate, setStartDate] = useState(new Date());
+  const getDate = (date) => {
+    setStartDate(date);
+    handlingDate.current =
+      date.toLocaleDateString("en-GB") + " " + date.toLocaleTimeString("en-GB");
+  };
   return (
     <Modal
-    show={() => handleToggleCreateModal(true)}
-    size="xl"
-    onHide={() => handleToggleCreateModal(false)}
-  >
+      show={() => handleToggleCreateModal(true)}
+      size="xl"
+      onHide={() => handleToggleCreateModal(false)}
+    >
       <Modal.Header closeButton>
         <Modal.Title style={{ width: "100%", textAlign: "center" }}>
           Ավելացնել նոր Հիվանդի
@@ -190,6 +201,48 @@ function createPatient({
                                 />
                               </div>
                             </div>
+                            <div className="col-sm-6">
+                              <div className="form-group">
+                                <label className="form-label" htmlFor="mobile">
+                                  Հեռախոս
+                                </label>
+                                <input
+                                  type="text"
+                                  name="mobile"
+                                  placeholder="Հեռախոս"
+                                  id="mobile"
+                                  className="form-control"
+                                  autoComplete="off"
+                                  value={mobileRef.current.value}
+                                  onChange={(e) =>
+                                    (mobileRef.current = e.target.value)
+                                  }
+                                  required
+                                />
+                              </div>
+                            </div>
+                            <div className="col-sm-6">
+                              <div className="form-group">
+                                <label
+                                  className="form-label"
+                                  htmlFor="handlingDate"
+                                >
+                                  Հանձնման ամսաթիվ
+                                </label>
+                                <div>
+                                  <DatePicker
+                                    selected={startDate}
+                                    showTimeSelect
+                                    onChange={(date) => getDate(date)}
+                                    dateFormat={"dd/MM/yyyy HH:mm"}
+                                    timeFormat="HH:mm"
+                                    minDate={new Date()}
+                                    isClearable
+                                    placeholderText="Select date"
+                                  />
+                                </div>
+                              </div>
+                            </div>
                           </div>
                         </form>
                       </div>
@@ -336,4 +389,4 @@ function createPatient({
   );
 }
 
-export default createPatient;
+export default CreatePatient;

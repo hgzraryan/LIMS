@@ -8,18 +8,18 @@ import LoadingSpinner from "../LoadingSpinner";
 import axios from "./../../api/axios";
 import Loading from "../Loading";
 import { useTable, useSortBy } from "react-table";
-import CreatePatient from "./CreatePatient"
+import CreatePatient from "./CreatePatient";
 import ReactToPrint from "react-to-print";
 import { ComponentToPrint } from "./../ComponentToPrint";
 import { Dropdown } from "react-bootstrap";
 
-const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
-const EMAIL_REGEX =/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-const REGISTER_URL = "/register";
+
+const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+const REGISTER_URL = "/registerPatient";
 
 const Patients = () => {
   const [patients, setPatients] = useState([]);
-  const [reserarchesArray, setResearchesArray] = useState([]);
+  const [researchesArray, setResearchesArray] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [usersPerPage, setUsersPerPage] = useState(12);
   const [hasMore, setHasMore] = useState(true);
@@ -28,16 +28,18 @@ const Patients = () => {
   const location = useLocation();
   const multiselectRef = useRef("");
   const [isOpen, setIsOpen] = useState(false);
+  const [errMsg, setErrMsg] = useState("");
 
   const errRef = useRef("");
-  const userRef = useRef("");
   const firstnameRef = useRef("");
   const lastnameRef = useRef("");
   const mnameRef = useRef("");
   const ageRef = useRef("");
   const emailRef = useRef("");
   const addressRef = useRef("");
+  const mobileRef = useRef("");
   const researchesRef = useRef("");
+  const handlingDate = useRef("");
 
   let researchState = {
     options: [
@@ -188,11 +190,11 @@ const Patients = () => {
   };
   /*------------------ tiny mce --------------------*/
   const editorRef = useRef(null);
-  const log = () => {
-    if (editorRef.current) {
-      console.log(editorRef.current.getContent());
-    }
-  };
+  // const log = () => {
+  //   if (editorRef.current) {
+  //     additionalRef=editorRef.current.getContent({ format: "text" });
+  //   }
+  // };
   /*------------------------------------------------*/
 
   /*------------------ print component --------------------*/
@@ -229,30 +231,42 @@ const Patients = () => {
   };
   /*------------------------------------------------*/
 
-  const [validName, setValidName] = useState(false);
-  const [validPwd, setValidPwd] = useState(false);
-  const [errMsg, setErrMsg] = useState("");
-
   const formData = new FormData();
 
   const handleToggleCreateModal = (value) => {
     setIsOpen((prev) => value);
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    // const checkEmail = EMAIL_REGEX.test(emailRef.current);
+    // console.log(checkEmail)
+    // if (!checkEmail) {
+    //     setErrMsg("Invalid Entry");
+    //     console.log("errMsg",errMsg)
+    //     return;
+    // }
     const newPatient = {
-      user: userRef.current,
-      pwd: addressRef.current,
-      firstname: firstnameRef.current,
-      lastname: lastnameRef.current,
-      roles: researchesRef.current,
+      firstName: firstnameRef.current,
+      lastName: lastnameRef.current,
+      middleName: mnameRef.current,
+      age: parseInt(ageRef.current),
+      email: emailRef.current,
+      address: addressRef.currentRef,
+      mobile: mobileRef.current,
+      handlingDate: handlingDate.current,
+      researchList: researchesRef.current,
+      additional: editorRef.current.getContent({ format: "text" }),
     };
 
-    formData.append("text", JSON.stringify(newPatient));
+    //formData.append("text", JSON.stringify(newPatient));
+	
+	const formData = JSON.stringify(newPatient);
+	
+	
     try {
-      await axios.post(REGISTER_URL, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
+      await axiosPrivate.post(REGISTER_URL, formData, {
+        headers: { "Content-Type": "application/json" },
         withCredentials: true,
       });
       navigate("/patients", { state: { from: location }, replace: true });
@@ -267,18 +281,18 @@ const Patients = () => {
     }
   };
   const onResearchSelect = (data) => {
-    let researchessArr = [];
+    let researchesArr = [];
     for (let research of data) {
-      researchessArr.push(Object.values(research)[0]);
+      researchesArr.push(Object.values(research)[1]);
     }
-    setResearchesArray((prev) => (prev = researchessArr));
+    setResearchesArray((prev) => (prev = researchesArr));
   };
   const onResearchDelete = (data) => {
-    let researchessArr = [];
+    let researchesArr = [];
     for (let research of data) {
-      researchessArr.push(Object.values(research)[0]);
+      researchesArr.push(Object.values(research)[0]);
     }
-    setResearchesArray((prev) => (prev = researchessArr));
+    setResearchesArray((prev) => (prev = researchesArr));
 
     //reset selected options colors
     const elems = document.querySelectorAll(".chips");
@@ -287,7 +301,7 @@ const Patients = () => {
     });
   };
   const onAdd = (e) => {
-    researchesRef.current = reserarchesArray;
+    researchesRef.current = researchesArray;
     //multiselectRef.current.resetSelectedValues()
     const elems = document.querySelectorAll(".chip");
     elems.forEach((element) => {
@@ -296,7 +310,10 @@ const Patients = () => {
   };
 
   const pagesVisited = currentPage * usersPerPage;
-  const currentUsers = patients.slice(pagesVisited, pagesVisited + usersPerPage);
+  const currentUsers = patients.slice(
+    pagesVisited,
+    pagesVisited + usersPerPage
+  );
   const pageCount = Math.ceil(patients.length / usersPerPage);
 
   useEffect(() => {
@@ -305,7 +322,7 @@ const Patients = () => {
 
     const getPatients = async () => {
       try {
-        const response = await axiosPrivate.post("/patients", {
+        const response = await axiosPrivate.get("/patients", {
           signal: controller.signal,
           page: currentPage,
           onPage: 1,
@@ -317,7 +334,11 @@ const Patients = () => {
           ) {
             setHasMore(false);
           }
-          setPatients((prevUsers) => [...prevUsers, ...response.data.jsonString]);
+          isMounted &&
+            setPatients((prevPatients) => [
+              ...prevPatients,
+              ...response.data.jsonString,
+            ]);
           setCurrentPage((prev) => prev + 1);
         }, 500);
       } catch (err) {
@@ -347,7 +368,10 @@ const Patients = () => {
         ) {
           setHasMore(false);
         }
-        setPatients((prevUsers) => [...prevUsers, ...response.data.jsonString]);
+        setPatients((prevPatients) => [
+          ...prevPatients,
+          ...response.data.jsonString,
+        ]);
         setCurrentPage((prev) => prev + 1);
       }, 500);
     } catch (err) {
@@ -394,31 +418,26 @@ const Patients = () => {
         Header: "Անուն",
         accessor: "firstName",
         sortable: true,
-
       },
       {
         Header: "Ազգանուն",
         accessor: "lastName",
         sortable: true,
-
       },
       {
         Header: "Հայրանուն",
         accessor: "midName",
         sortable: true,
-
       },
       {
         Header: "Էլ․ հասցե",
         accessor: "email",
         sortable: true,
-
       },
       {
         Header: "Տարիք",
         accessor: "age",
         sortable: true,
-
       },
       {
         Header: "Հետազոտություններ",
@@ -536,16 +555,21 @@ const Patients = () => {
                 </div>
                 <div className="dropdown ms-3">
                   <Dropdown>
-					  <Dropdown.Toggle variant="success" id="dropdown-basic" className="btn btn-sm btn-outline-secondary flex-shrink-0 dropdown-toggle d-lg-inline-block d-none">
-						Գրանցել նոր
-					  </Dropdown.Toggle>
+                    <Dropdown.Toggle
+                      variant="success"
+                      id="dropdown-basic"
+                      className="btn btn-sm btn-outline-secondary flex-shrink-0 dropdown-toggle d-lg-inline-block d-none"
+                    >
+                      Գրանցել նոր
+                    </Dropdown.Toggle>
 
-					  <Dropdown.Menu>
-						<Dropdown.Item onClick={() => setIsOpen(true)}>Հիվանդի</Dropdown.Item>
-						
-					  </Dropdown.Menu>
-					</Dropdown>
-                    {isOpen && 
+                    <Dropdown.Menu>
+                      <Dropdown.Item onClick={() => setIsOpen(true)}>
+                        Հիվանդի
+                      </Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                  {isOpen && (
                     <CreatePatient
                       handleToggleCreateModal={handleToggleCreateModal}
                       researchState={researchState}
@@ -561,9 +585,10 @@ const Patients = () => {
                       ageRef={ageRef}
                       emailRef={emailRef}
                       addressRef={addressRef}
+                      mobileRef={mobileRef}
+                      handlingDate={handlingDate}
                     />
-                    }
-
+                  )}
                 </div>
               </div>
               <div className="contact-options-wrap">
@@ -736,7 +761,7 @@ const Patients = () => {
                       }
                     >
                       <table className="table nowrap w-100 mb-5 dataTable no-footer">
-                      <thead>
+                        <thead>
                           {headerGroups.map((headerGroup) => (
                             <tr {...headerGroup.getHeaderGroupProps()}>
                               {headerGroup.headers.map((column) => (
@@ -744,13 +769,17 @@ const Patients = () => {
                                   {...column.getHeaderProps(
                                     column.getSortByToggleProps()
                                   )}
-                                >                                 
-                                    {column.isSorted
-                                      ? column.isSortedDesc
-                                        ? <span className="sorting_asc" ></span>
-                                        : <span className="sorting_desc" ></span>
-                                      : <span className="sorting" ></span>}
-                                      {column.render("Header")}
+                                >
+                                  {column.isSorted ? (
+                                    column.isSortedDesc ? (
+                                      <span className="sorting_asc"></span>
+                                    ) : (
+                                      <span className="sorting_desc"></span>
+                                    )
+                                  ) : (
+                                    <span className="sorting"></span>
+                                  )}
+                                  {column.render("Header")}
                                 </th>
                               ))}
                             </tr>

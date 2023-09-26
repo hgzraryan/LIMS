@@ -61,61 +61,16 @@ const MainTemplate = () => {
 	const dropDownMenu2Click = event => {
         console.log(event)
 		dropDownMenu2IsActive(current => !current);
-
 	};
    //--------------------------------------
-
-
 	useEffect(() => {
         let isMounted = true;
         const controller = new AbortController();
-
-
-/*
-        const getUsersCount = async () => {
-            try {
-                const response = await axiosPrivate.get('/usersCount', {
-                    signal: controller.signal
-                });
-                //console.log(response.data);
-				isMounted && dispatch(checkUsersCount(response.data));
-            } catch (err) {
-                console.error(err);
-                navigate('/login', { state: { from: location }, replace: true });
-            }
-        }
-
-        getUsersCount();
-		
-		
-        const getPatientsCount = async () => {
-            try {
-                const response = await axiosPrivate.get('/usersCount', {
-                    signal: controller.signal
-                });
-                //console.log(response.data);
-				isMounted && dispatch(checkPatientsCount(response.data));
-                
-            } catch (err) {
-                console.error(err);
-                navigate('/login', { state: { from: location }, replace: true });
-            }
-        }
-
-        getPatientsCount();
-		
-		
-*/		
-		
 		const getAllCount = async () => {
             try {
                 const response = await axiosPrivate.get('/allCount', {
                     signal: controller.signal
                 });
-                console.log("-------------+++");
-                console.log(response.data);
-                console.log("-------------+++");
-				
 				isMounted && dispatch(checkUsersCount(response.data.usersCount));
 				isMounted && dispatch(checkPatientsCount(response.data.patientsCount));
             } catch (err) {
@@ -123,17 +78,12 @@ const MainTemplate = () => {
                 navigate('/login', { state: { from: location }, replace: true });
             }
         }
-
         getAllCount();
-
         return () => {
             isMounted = false;
             controller.abort();
         }
     }, [])
-	
-
-
     const signOut = async () => {
         await logout();
         navigate('/login');

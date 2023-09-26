@@ -59,8 +59,8 @@ const Users = () => {
   /*------------------ Delete Component --------------------*/
   const updateUsersCount = async () => {
     try {
-      const response = await axiosPrivate.get('/usersCount');
-      dispatch(checkUsersCount(response.data));      
+      const response = await axiosPrivate.get('/allCount');
+      dispatch(checkUsersCount(response.data.usersCount));      
   } catch (err) {
       console.error(err);
       navigate('/login', { state: { from: location }, replace: true });
@@ -88,7 +88,7 @@ const Users = () => {
         //navigate('/login', { state: { from: location }, replace: true });
       }
     }else{
-      Swal.fire('Write wright username');
+      Swal.fire('Write right username');
     }
     updateUsersCount()
   };
