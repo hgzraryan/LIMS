@@ -65,7 +65,7 @@ const Agents = () => {
           userId: selectedItem.id,
         });
         setTimeout(() => {
-          setOrganizations((prev) => response.data.jsonString);
+          setAgents((prev) => [...response.data.jsonString]);
           setSelectedItemId(null); // Close the modal after deletion
         }, 500);
       } catch (err) {

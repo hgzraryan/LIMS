@@ -232,7 +232,7 @@ const Organizations = () => {
 				if(response.data.jsonString.length === 0 || response.data.jsonString.length < 12){
 					setHasMore(false)
 				}
-				setOrganizations(prevUsers => [...prevUsers,...response.data.jsonString]);
+				setOrganizations((prev) => [...response.data.jsonString]);
 				setCurrentPage(prev => prev+1)
 			}, 500);
 		} catch (err) {

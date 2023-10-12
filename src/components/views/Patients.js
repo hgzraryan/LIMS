@@ -128,10 +128,7 @@ const Patients = () => {
         ) {
           setHasMore(false);
         }
-        setPatients((prevPatients) => [
-          ...prevPatients,
-          ...response.data.jsonString,
-        ]);
+        setPatients((prev) => [...response.data.jsonString]);
         setCurrentPage((prev) => prev + 1);
       }, 500);
     } catch (err) {
@@ -207,7 +204,7 @@ const Patients = () => {
       {
         Header: "Արժեք (դրամ)",
         accessor: "totalPrice",
-        Cell: ({ row }) => <div>{row.values.age}</div>,
+        Cell: ({ row }) => <div>{row.values.totalPrice}</div>,
       },
       {
         Header: "Կարգաբերումներ",

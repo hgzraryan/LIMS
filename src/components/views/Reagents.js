@@ -258,7 +258,7 @@ const Reagents = () => {
 				if(response.data.jsonString.length === 0 || response.data.jsonString.length < 12){
 					setHasMore(false)
 				}
-				setReagents(prevUsers => [...prevUsers,...response.data.jsonString]);
+				setReagents((prev) => [...response.data.jsonString]);
 				setCurrentPage(prev => prev+1)
 			}, 500);
 		} catch (err) {

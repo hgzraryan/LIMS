@@ -300,7 +300,7 @@ const onAdd = (e) => {
 				if(response.data.jsonString.length === 0 || response.data.jsonString.length < 12){
 					setHasMore(false)
 				}
-				setResearches(prevUsers => [...prevUsers,...response.data.jsonString]);
+				setResearches((prev) => [...response.data.jsonString]);
 				setCurrentPage(prev => prev+1)
 			}, 500);
 		} catch (err) {
