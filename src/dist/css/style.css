@@ -91010,8 +91010,70 @@ Project:	Jampack
 
 /*-------------------Multiselect Dropdown---------------------*/
 .chips{
-  background-color: green;
+  background-color: green !important;
 }
+/*----------------------------------------*/
+/*-------------------Multiselect Dropdown---------------------*/
+.discount-section_title{
+  margin-bottom: 4rem;
+  text-align: center;
+  font-size: 4.5rem;
+}
+.discount-section_container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 2.5rem;
+  margin: 20px;
+}
+.discount-section_box,.new_discount-box{
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 2rem;
+  max-width: 300px;
+  box-shadow: 0 0 1rem #0ef;
+  overflow: hidden;
+  display: flex;
+  padding: 0;
+  cursor: pointer;
+}
+.section_box-content, .new_box-content{
+  position: absolute;
+  color: #ecc694;
+}
+.section_box-image, .new_box-image{
+  width: 100%;
+}
+.custom_discount{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.custom_discount-form{
+  display: flex;
+  flex-direction: column;
+}
+.custom_discount_form-input{
+  min-width: 20rem;
+      min-height: 3rem;
+      font-size: 1.5rem;
+      font-weight: 600;
+      padding: 0 10px;
+      border-radius: 20px;
+      margin-bottom: 5px;
+}
+.new_discount-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2.5rem;
+}
+
 /*----------------------------------------*/
 
 @media (max-width: 991px) {

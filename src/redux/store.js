@@ -1,10 +1,13 @@
 import {configureStore} from '@reduxjs/toolkit'
-import usersCountReduser from './features/users/usersCountSlice'
-import patiensCountReduser from './features/patients/patientsCountSlice'
-
+import usersCountReducer from './features/users/usersCountSlice'
+import patiensCountReducer from './features/patients/patientsCountSlice'
+import researchesReducer from './features/researches/researchesSlice'
+import discountValueReducer from './features/discounts/discountValueSlice'
 export default configureStore({
     reducer:{
-        usersCount:usersCountReduser,
-        patientsCount:patiensCountReduser
+        usersCount:usersCountReducer,
+        patientsCount:patiensCountReducer,
+        researches:researchesReducer,
+        discountValue:discountValueReducer
     }
 })

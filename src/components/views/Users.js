@@ -7,8 +7,6 @@ import { useNavigate, useLocation } from "react-router-dom";
 import FeatherIcon from "feather-icons-react";
 import LoadingSpinner from "../LoadingSpinner";
 import ReactPaginate from "react-paginate";
-import MissingAvatar from "../../dist/img/Missing.svg";
-import axios from "./../../api/axios";
 import Loading from "../Loading";
 import { useSortBy, useTable } from "react-table";
 import ComponentToConfirm from "../ComponentToConfirm";
@@ -18,79 +16,60 @@ import { Dropdown } from "react-bootstrap";
 import { checkUsersCount } from "../../redux/features/users/usersCountSlice";
 import { useDispatch } from "react-redux";
 
-
-
-
-const REGISTER_URL = "/register";
-
 const Users = () => {
   const [users, setUsers] = useState([]);
-  const [rolesArray, setRolesArray] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [usersPerPage, setUsersPerPage] = useState(12);
   const [hasMore, setHasMore] = useState(true);
+  const confirmUserRef = useRef("");
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
   const location = useLocation();
-  const [image, setImage] = useState("");
-  const [imageUrl, setImageUrl] = useState(MissingAvatar);
-  const imageMimeType = /image\/(png|jpg|jpeg)/i;
-  const fileReader = new FileReader();
   const [selectedItem, setSelectedItem] = useState("");
   const [selectedItemId, setSelectedItemId] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   /*----------------ADD USER---------------------*/
   const errRef = useRef("");
-  const user = useRef("");
-  const firstname = useRef("");
-  const lastname = useRef("");
-  const pwd = useRef("");
-  const roles = useRef("");
-  const confirmUserRef = useRef("");
-  const emailRef = useRef("");
-  const phoneRef = useRef("");
 
   const [validName, setValidName] = useState(false);
   const [validPwd, setValidPwd] = useState(false);
   const [errMsg, setErrMsg] = useState("");
 
-  const formData = new FormData();
   /*------------------ Delete Component --------------------*/
   const updateUsersCount = async () => {
     try {
-      const response = await axiosPrivate.get('/allCount');
-      dispatch(checkUsersCount(response.data.usersCount));      
-  } catch (err) {
+      const response = await axiosPrivate.get("/allCount");
+      dispatch(checkUsersCount(response.data.usersCount));
+    } catch (err) {
       console.error(err);
-      navigate('/login', { state: { from: location }, replace: true });
-  }
-  }
+      navigate("/login", { state: { from: location }, replace: true });
+    }
+  };
   const handleDeleteItem = async (delid) => {
     if (selectedItem?.username.trim() === confirmUserRef.current?.trim()) {
       try {
         const response = await axiosPrivate.delete("/users", {
           data: { id: delid },
         });
-        
-          setSelectedItemId(null); // Close the modal after deletion
-          Swal.fire(`The user ${response.data.username} has been deleted`);
-          const updatedUsers = users.filter((user) => user._id !== delid )
-          setUsers(updatedUsers);
 
+        setSelectedItemId(null); // Close the modal after deletion
+        Swal.fire(`The user ${response.data.username} has been deleted`);
+        const updatedUsers = users.filter((user) => user._id !== delid);
+        setUsers(updatedUsers);
       } catch (err) {
         Swal.fire({
           icon: "error",
           title: "Oops...",
-          text: "Something went wrong!"
+          text: "Something went wrong!",
         });
         console.error(err);
         //navigate('/login', { state: { from: location }, replace: true });
       }
-    }else{
-      Swal.fire('Write right username');
+    } else {
+      Swal.fire("Write right username");
     }
-    updateUsersCount()
+    updateUsersCount();
   };
   const handleOpenModal = (user) => {
     setSelectedItemId(true);
@@ -100,134 +79,6 @@ const Users = () => {
     setSelectedItemId(null);
   };
   /*------------------------------------------------*/
-  /*------------------ Create user Component --------------------*/
-  const handleToggleCreateModal = (value) => {
-    setIsOpen((prev) => value);
-  };
-  /*------------------------------------------------*/
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    //if button enabled with JS hack
-    // const checkUsername = USER_REGEX.test(user.current);
-    // const checkPassword = PWD_REGEX.test(pwd.current);
-    // const checkPhone = PWD_REGEX.test(phoneRef.current);
-    // const checkEmail = PWD_REGEX.test(emailRef.current);
-    // if (!checkUsername || !checkPassword || !checkPhone || !checkEmail) {
-    // 	setErrMsg("Invalid Entry");
-    // 	return;
-    // }
-
-    const newUser = {
-      user: user.current,
-      pwd: pwd.current,
-      firstname: firstname.current,
-      lastname: lastname.current,
-      roles: roles.current,
-    };
-
-    formData.append("text", JSON.stringify(newUser));
-    formData.append("image", image);
-    try {
-      await axios.post(REGISTER_URL, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-        withCredentials: true,
-      });
-      //console.log(JSON.stringify(response?.data));
-      //console.log(JSON.stringify(response))
-      navigate("/users", { state: { from: location }, replace: true });
-    } catch (err) {
-      if (!err?.response) {
-        setErrMsg("No Server Response");
-      } else if (err.response?.status === 409) {
-        setErrMsg("Username Taken");
-      } else {
-        setErrMsg(" Failed");
-      }
-    }
-  };
-  const onRoleSelect = (data) => {
-    let rolesArr = [];
-    for (let role of data) {
-      rolesArr.push(Object.values(role)[0]);
-    }
-    setRolesArray((prev) => (prev = rolesArr));
-  };
-  const onRoleDelete = (data) => {
-    let rolesArr = [];
-    for (let role of data) {
-      rolesArr.push(Object.values(role)[0]);
-    }
-    setRolesArray((prev) => (prev = rolesArr));
-
-    //reset selected options colors
-    const elems = document.querySelectorAll(".chips");
-    elems.forEach((element) => {
-      element.classList.remove("chips");
-    });
-  };
-  const onAdd = (e) => {
-    roles.current = rolesArray;
-    //multiselectRef.current.resetSelectedValues()
-    const elems = document.querySelectorAll(".chip");
-    elems.forEach((element) => {
-      element.classList.add("chips");
-    });
-  };
-  /*----------------ADD USER END---------------------*/
-  fileReader.onloadend = () => {
-    setImageUrl(fileReader.result);
-  };
-
-  const handleChangeFile = async (event) => {
-    const image = event.target.files[0];
-    if (!image.type.match(imageMimeType)) {
-      alert("Image mime type is not valid");
-      return;
-    }
-    setImage(image);
-    try {
-      formData.append("image", event.target.files[0]);
-    } catch (err) {
-      console.warn(err);
-    }
-  };
-  useEffect(() => {
-    let fileReader,
-      isCancel = false;
-    if (image) {
-      fileReader = new FileReader();
-      fileReader.onload = (e) => {
-        const { result } = e.target;
-        if (result && !isCancel) {
-          setImageUrl(result);
-        }
-      };
-      fileReader.readAsDataURL(image);
-    }
-    return () => {
-      isCancel = true;
-      if (fileReader && fileReader.readyState === 1) {
-        fileReader.abort();
-      }
-    };
-  }, [image]);
-  const handleDrop = (event) => {
-    event.preventDefault();
-    if (event.stopPropagation) {
-      event.stopPropagation();
-    }
-    if (event.dataTransfer.files && event.dataTransfer.files.length) {
-      setImage(event.dataTransfer.files[0]);
-      fileReader.readAsDataURL(event.dataTransfer.files[0]);
-    }
-  };
-  const handleDragEmpty = (event) => {
-    event.preventDefault();
-    if (event.stopPropagation) {
-      event.stopPropagation();
-    }
-  };
 
   const pagesVisited = currentPage * usersPerPage;
   const currentUsers = users.slice(pagesVisited, pagesVisited + usersPerPage);
@@ -254,7 +105,6 @@ const Users = () => {
         isMounted &&
           setUsers((prevUsers) => [...prevUsers, ...response.data.jsonString]);
         setCurrentPage((prev) => prev + 1);
-        
       } catch (err) {
         console.error(err);
         navigate("/login", { state: { from: location }, replace: true });
@@ -468,42 +318,28 @@ const Users = () => {
                   </a>
                 </div>
                 <div className="dropdown ms-3">
-					 <Dropdown>
-					  <Dropdown.Toggle variant="success" id="dropdown-basic" className="btn btn-sm btn-outline-secondary flex-shrink-0 dropdown-toggle d-lg-inline-block d-none">
-						Գրանցել նոր
-					  </Dropdown.Toggle>
+                  <Dropdown>
+                    <Dropdown.Toggle
+                      variant="success"
+                      id="dropdown-basic"
+                      className="btn btn-sm btn-outline-secondary flex-shrink-0 dropdown-toggle d-lg-inline-block d-none"
+                    >
+                      Գրանցել նոր
+                    </Dropdown.Toggle>
 
-					  <Dropdown.Menu>
-						<Dropdown.Item onClick={() => setIsOpen(true)}>Աշխատակից</Dropdown.Item>
-						
-					  </Dropdown.Menu>
-					</Dropdown>
-					
-					
-                    {isOpen && (
-                      <CreateUser
-                        handleSubmit={handleSubmit}
-                        onRoleSelect={onRoleSelect}
-                        onRoleDelete={onRoleDelete}
-                        onAdd={onAdd}
-                        handleChangeFile={handleChangeFile}
-                        handleDrop={handleDrop}
-                        handleDragEmpty={handleDragEmpty}
-                        handleToggleCreateModal={handleToggleCreateModal}
-                        imageUrl={imageUrl}
-                        user={user}
-                        firstname={firstname}
-                        lastname={lastname}
-                        pwd={pwd}
-                        roles={roles}
-                      />
-                    )}
-                    {/*
+                    <Dropdown.Menu>
+                      <Dropdown.Item onClick={() => setIsOpen(true)}>
+                        Աշխատակից
+                      </Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+
+                  {isOpen && <CreateUser setIsOpen={setIsOpen} />}
+                  {/*
 										<a className="dropdown-item" href="#">Type2</a>
 										<a className="dropdown-item" href="#">Type3</a>
 										<a className="dropdown-item" href="#">Type4</a>
 										*/}
-
                 </div>
               </div>
               <div className="contact-options-wrap">

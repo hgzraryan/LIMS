@@ -13,183 +13,19 @@ import ReactToPrint from "react-to-print";
 import { ComponentToPrint } from "./../ComponentToPrint";
 import { Dropdown } from "react-bootstrap";
 
-
-const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-const REGISTER_URL = "/registerPatient";
-
 const Patients = () => {
   const [patients, setPatients] = useState([]);
-  const [researchesArray, setResearchesArray] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [usersPerPage, setUsersPerPage] = useState(12);
   const [hasMore, setHasMore] = useState(true);
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
   const location = useLocation();
-  const multiselectRef = useRef("");
   const [isOpen, setIsOpen] = useState(false);
-  const [errMsg, setErrMsg] = useState("");
+ // const [errMsg, setErrMsg] = useState("");
 
-  const errRef = useRef("");
-  const firstnameRef = useRef("");
-  const lastnameRef = useRef("");
-  const mnameRef = useRef("");
-  const ageRef = useRef("");
-  const emailRef = useRef("");
-  const addressRef = useRef("");
-  const mobileRef = useRef("");
-  const researchesRef = useRef("");
-  const handlingDate = useRef("");
-
-  let researchState = {
-    options: [
-      {
-        name: "Կարիոտիպի հետազոտում պերիֆերիկ արյան լիմֆոցիտներում (քանակական և որակական փոփոխություններ) ",
-        id: 1,
-        category: "Գենետիկա ",
-      },
-      {
-        name: "Կարիոտիպի հետազոտում պերիֆերիկ արյան լիմֆոցիտներում (քանակական և որակական փոփոխություններ) / զույգ",
-        id: 2,
-        category: "Գենետիկա ",
-      },
-      {
-        name: "Պտղի կարիոտիպի հետազոտում (քանակական և որակական փոփոխություններ) շուրջպտղային հեղուկում",
-        id: 3,
-        category: "Գենետիկա ",
-      },
-      {
-        name: "Կարիոտիպի հետազոտում պերիֆերիկ արյան լիմֆոցիտներում (քանակական և որակական փոփոխություններ)",
-        id: 4,
-        category: "Գենետիկա ",
-      },
-      {
-        name: "Անեուպլոիդիաների (13, 18, 21, X/Y) ախտորոշում պտղի մոտ FISH մեթոդով",
-        id: 5,
-        category: "Գենետիկա ",
-      },
-      {
-        name: "Վիլյամս, Պրադեր-Վիլլի, Անգելման, Դի-Ջորջ միկրոդելեցիոն սինդրոմների ախտորոշում FISH մեթոդով, յուրաքանչյուրը",
-        id: 6,
-        category: "Գենետիկա ",
-      },
-      {
-        name: "Արյան ընդհանուր հետազոտություն",
-        id: 7,
-        category: "Ընդհանուր կլինիկական քննություն ",
-      },
-      {
-        name: "Արյան խումբ/ռեզուս, ABO/Rh",
-        id: 8,
-        category: "Ընդհանուր կլինիկական քննություն ",
-      },
-      {
-        name: "Մեզի ընդհանուր հետազոտություն",
-        id: 9,
-        category: "Ընդհանուր կլինիկական քննություն ",
-      },
-      {
-        name: "Մեզի երկբաժին հետազոտություն",
-        id: 10,
-        category: "Ընդհանուր կլինիկական քննություն ",
-      },
-      {
-        name: "Միզասեռական քսուկների մանրադիտակային հետազոտություն",
-        id: 11,
-        category: "Ընդհանուր կլինիկական քննություն ",
-      },
-      {
-        name: "Սպերմոգրամմա",
-        id: 12,
-        category: "Ընդհանուր կլինիկական քննություն ",
-      },
-      {
-        name: "MAR-թեստ, IgG+Սպերմոգրամմա",
-        id: 13,
-        category: "Ընդհանուր կլինիկական քննություն ",
-      },
-      {
-        name: "MAR-թեստ, IgG/IgA+Սպերմոգրամմա",
-        id: 14,
-        category: "Ընդհանուր կլինիկական քննություն ",
-      },
-      {
-        name: "Բջջաբանական հետազոտություն (Հեղուկային)",
-        id: 15,
-        category: "Ընդհանուր կլինիկական քննություն ",
-      },
-      {
-        name: "Բջջաբանական հետազոտություն+ՄՊՎ ԴՆԹ",
-        id: 16,
-        category: "Ընդհանուր կլինիկական քննություն ",
-      },
-      {
-        name: "Շագանակագեղձի հյութի մանրադիտակային հետազոտություն",
-        id: 17,
-        category: "Ընդհանուր կլինիկական քննություն ",
-      },
-      {
-        name: "Եղունգների մանրէաբանական հետազոտություն (սնկեր)",
-        id: 18,
-        category: "Ընդհանուր կլինիկական քննություն ",
-      },
-      {
-        name: "Դեմոդեկոզ (Հրաչյա Քոչար մ/ճ)",
-        id: 19,
-        category: "Ընդհանուր կլինիկական քննություն ",
-      },
-      { name: "Սրատուտ", id: 20, category: "Ընդհանուր կլինիկական քննություն " },
-      {
-        name: "Կոպրոգրամմա",
-        id: 21,
-        category: "Ընդհանուր կլինիկական քննություն ",
-      },
-      {
-        name: "Հելմինթների ձվեր",
-        id: 22,
-        category: "Ընդհանուր կլինիկական քննություն ",
-      },
-      {
-        name: "Հելմինթների ձվեր (10)",
-        id: 23,
-        category: "Ընդհանուր կլինիկական քննություն ",
-      },
-      {
-        name: "Կղանքի թաքնված արյան թեստ",
-        id: 24,
-        category: "Ընդհանուր կլինիկական քննություն ",
-      },
-      {
-        name: "Պրոկալցիտոնին",
-        id: 25,
-        category: "Ընդհանուր կլինիկական քննություն ",
-      },
-      {
-        name: "Ինտերլեյկին-6",
-        id: 26,
-        category: "Ընդհանուր կլինիկական քննություն ",
-      },
-      {
-        name: "Մասնակի ակտիվացված տրոմբոպլասթինային ժամանակ",
-        id: 27,
-        category: "Կոագուլոգրամմա",
-      },
-      {
-        name: "MHO Պրոտրոմբին/ ինդեքս/ INR",
-        id: 28,
-        category: "Կոագուլոգրամմա",
-      },
-      { name: "Պրոտրոմբինային ժամանակ", id: 29, category: "Կոագուլոգրամմա" },
-      { name: "Ֆիբրինոգեն", id: 30, category: "Կոագուլոգրամմա" },
-      { name: "D - Դիմեր", id: 31, category: "Կոագուլոգրամմա" },
-      { name: "Գայլախտային հակամակարդիչ", id: 32, category: "Կոագուլոգրամմա" },
-      { name: "Պրոտեին С", id: 33, category: "Կոագուլոգրամմա" },
-      { name: "Պրոտեին S", id: 34, category: "Կոագուլոգրամմա" },
-      { name: "Հակաթրոմբին III", id: 35, category: "Կոագուլոգրամմա" },
-    ],
-  };
   /*------------------ tiny mce --------------------*/
-  const editorRef = useRef(null);
+  //const editorRef = useRef(null);
   // const log = () => {
   //   if (editorRef.current) {
   //     additionalRef=editorRef.current.getContent({ format: "text" });
@@ -231,82 +67,8 @@ const Patients = () => {
   };
   /*------------------------------------------------*/
 
-  const formData = new FormData();
-
   const handleToggleCreateModal = (value) => {
     setIsOpen((prev) => value);
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    // const checkEmail = EMAIL_REGEX.test(emailRef.current);
-    // console.log(checkEmail)
-    // if (!checkEmail) {
-    //     setErrMsg("Invalid Entry");
-    //     console.log("errMsg",errMsg)
-    //     return;
-    // }
-    const newPatient = {
-      firstName: firstnameRef.current,
-      lastName: lastnameRef.current,
-      middleName: mnameRef.current,
-      age: parseInt(ageRef.current),
-      email: emailRef.current,
-      address: addressRef.currentRef,
-      mobile: mobileRef.current,
-      handlingDate: handlingDate.current,
-      researchList: researchesRef.current,
-      additional: editorRef.current.getContent({ format: "text" }),
-    };
-
-    //formData.append("text", JSON.stringify(newPatient));
-	
-	const formData = JSON.stringify(newPatient);
-	
-	
-    try {
-      await axiosPrivate.post(REGISTER_URL, formData, {
-        headers: { "Content-Type": "application/json" },
-        withCredentials: true,
-      });
-      navigate("/patients", { state: { from: location }, replace: true });
-    } catch (err) {
-      if (!err?.response) {
-        setErrMsg("No Server Response");
-      } else if (err.response?.status === 409) {
-        setErrMsg("Username Taken");
-      } else {
-        setErrMsg(" Failed");
-      }
-    }
-  };
-  const onResearchSelect = (data) => {
-    let researchesArr = [];
-    for (let research of data) {
-      researchesArr.push(Object.values(research)[1]);
-    }
-    setResearchesArray((prev) => (prev = researchesArr));
-  };
-  const onResearchDelete = (data) => {
-    let researchesArr = [];
-    for (let research of data) {
-      researchesArr.push(Object.values(research)[0]);
-    }
-    setResearchesArray((prev) => (prev = researchesArr));
-
-    //reset selected options colors
-    const elems = document.querySelectorAll(".chips");
-    elems.forEach((element) => {
-      element.classList.remove("chips");
-    });
-  };
-  const onAdd = (e) => {
-    researchesRef.current = researchesArray;
-    //multiselectRef.current.resetSelectedValues()
-    const elems = document.querySelectorAll(".chip");
-    elems.forEach((element) => {
-      element.classList.add("chips");
-    });
   };
 
   const pagesVisited = currentPage * usersPerPage;
@@ -327,20 +89,18 @@ const Patients = () => {
           page: currentPage,
           onPage: 1,
         });
-        setTimeout(() => {
-          if (
-            response.data.jsonString.length === 0 ||
-            response.data.jsonString.length < 12
-          ) {
-            setHasMore(false);
-          }
-          isMounted &&
-            setPatients((prevPatients) => [
-              ...prevPatients,
-              ...response.data.jsonString,
-            ]);
-          setCurrentPage((prev) => prev + 1);
-        }, 500);
+        if (
+          response.data.jsonString.length === 0 ||
+          response.data.jsonString.length < 12
+        ) {
+          setHasMore(false);
+        }
+        isMounted &&
+          setPatients((prevUsers) => [
+            ...prevUsers,
+            ...response.data.jsonString,
+          ]);
+        setCurrentPage((prev) => prev + 1);
       } catch (err) {
         console.error(err);
         navigate("/login", { state: { from: location }, replace: true });
@@ -357,7 +117,7 @@ const Patients = () => {
 
   const getPatients = async () => {
     try {
-      const response = await axiosPrivate.post("/patients", {
+      const response = await axiosPrivate.get("/patients", {
         page: currentPage,
         onPage: usersPerPage,
       });
@@ -441,7 +201,13 @@ const Patients = () => {
       },
       {
         Header: "Հետազոտություններ",
-        accessor: "researchlist",
+        accessor: "researchList",
+        Cell: ({ row }) => <div>{row.values.researchList.length}</div>,
+      },
+      {
+        Header: "Արժեք (դրամ)",
+        accessor: "totalPrice",
+        Cell: ({ row }) => <div>{row.values.age}</div>,
       },
       {
         Header: "Կարգաբերումներ",
@@ -572,21 +338,9 @@ const Patients = () => {
                   {isOpen && (
                     <CreatePatient
                       handleToggleCreateModal={handleToggleCreateModal}
-                      researchState={researchState}
-                      onResearchSelect={onResearchSelect}
-                      onResearchDelete={onResearchDelete}
-                      onAdd={onAdd}
-                      handleSubmit={handleSubmit}
-                      editorRef={editorRef}
-                      multiselectRef={multiselectRef}
-                      firstnameRef={firstnameRef}
-                      lastnameRef={lastnameRef}
-                      mnameRef={mnameRef}
-                      ageRef={ageRef}
-                      emailRef={emailRef}
-                      addressRef={addressRef}
-                      mobileRef={mobileRef}
-                      handlingDate={handlingDate}
+                     // researchState={researchState}
+                      getPatients={getPatients}
+                      //errMsg={errMsg}
                     />
                   )}
                 </div>
