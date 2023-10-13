@@ -12,6 +12,8 @@ import CreatePatient from "./CreatePatient";
 import ReactToPrint from "react-to-print";
 import { ComponentToPrint } from "./../ComponentToPrint";
 import { Dropdown } from "react-bootstrap";
+import { BiSolidInfoCircle } from "react-icons/bi";
+import PatientInfo from "../PatientInfo";
 
 const Patients = () => {
   const [patients, setPatients] = useState([]);
@@ -22,8 +24,8 @@ const Patients = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState("");
  // const [errMsg, setErrMsg] = useState("");
-
   /*------------------ tiny mce --------------------*/
   //const editorRef = useRef(null);
   // const log = () => {
@@ -128,7 +130,7 @@ const Patients = () => {
         ) {
           setHasMore(false);
         }
-        setPatients((prev) => [...response.data.jsonString]);
+        setPatients((prev) => response.data.jsonString);
         setCurrentPage((prev) => prev + 1);
       }, 500);
     } catch (err) {
@@ -137,6 +139,13 @@ const Patients = () => {
     }
   };
 
+  //-------------------------
+  const handleOpenModal = (user) => {
+    setSelectedItem((prev)=>user)
+  };
+  const handleCloseModal = () => {
+    setSelectedItem(null);
+  };
   //-------------------------
 
   const refreshPage = () => {
@@ -199,7 +208,14 @@ const Patients = () => {
       {
         Header: "Հետազոտություններ",
         accessor: "researchList",
-        Cell: ({ row }) => <div>{row.values.researchList.length}</div>,
+        Cell: ({ row }) => <div className="d-flex">
+          <div className="pe-2">{row.values.researchList.length}</div>
+        <BiSolidInfoCircle
+            cursor={'pointer'}
+              size={"1.5rem"}
+              onClick={() => handleOpenModal(row.values)}
+            />
+        </div>
       },
       {
         Header: "Արժեք (դրամ)",
@@ -552,6 +568,10 @@ const Patients = () => {
                                 </tr>
                               );
                             })}
+                            <PatientInfo
+                            selectedItem={selectedItem}
+                            handleCloseModal={handleCloseModal}
+                            />
                           </tbody>
                         )}{" "}
                       </table>

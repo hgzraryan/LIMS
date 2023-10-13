@@ -233,7 +233,7 @@ const Agents = () => {
 				if(response.data.jsonString.length === 0 || response.data.jsonString.length < 12){
 					setHasMore(false)
 				}
-				setAgents(prevUsers => [...prevUsers,...response.data.jsonString]);
+				setAgents((prev) => response.data.jsonString);
 				setCurrentPage(prev => prev+1)
 			}, 500);
 		} catch (err) {

@@ -232,7 +232,7 @@ const Prices = () => {
 				if(response.data.jsonString.length === 0 || response.data.jsonString.length < 12){
 					setHasMore(false)
 				}
-				setPrices((prev) => [...response.data.jsonString]);
+				setPrices(prevUsers => [...prevUsers,...response.data.jsonString]);
 				setCurrentPage(prev => prev+1)
 			}, 500);
 		} catch (err) {
@@ -259,7 +259,7 @@ const Prices = () => {
 				if(response.data.jsonString.length === 0 || response.data.jsonString.length < 12){
 					setHasMore(false)
 				}
-				setPrices(prevUsers => [...prevUsers,...response.data.jsonString]);
+				setPrices((prev) => response.data.jsonString);
 				setCurrentPage(prev => prev+1)
 			}, 500);
 		} catch (err) {

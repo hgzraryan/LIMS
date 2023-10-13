@@ -256,7 +256,7 @@ const Equipments = () => {
         ) {
           setHasMore(false);
         }
-        setEquipments((prev) => [...response.data.jsonString]);
+        setEquipments((prev) => response.data.jsonString);
 
         setCurrentPage((prev) => prev + 1);
       }, 500);
