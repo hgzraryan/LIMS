@@ -132,7 +132,7 @@ const Users = () => {
         ) {
           setHasMore(false);
         }
-        setUsers((prev) => response.data.jsonString);
+        setUsers((prevUsers) => [...prevUsers, ...response.data.jsonString]);
         setCurrentPage((prev) => prev + 1);
       }, 500);
     } catch (err) {

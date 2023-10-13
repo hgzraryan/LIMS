@@ -91145,4 +91145,9 @@ Project:	Jampack
 
 /*# sourceMappingURL=style.css.map */
 
-
+/* Change react multiselect dropdown size */
+.optionContainer {
+  height: 10rem;
+  overflow: hidden;
+}
+/*______________________________________________*/

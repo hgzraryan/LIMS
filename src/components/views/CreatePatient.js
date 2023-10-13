@@ -9,9 +9,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { Form, FormProvider, useForm } from "react-hook-form";
 import { Input } from "../Input";
 import { useRef } from "react";
-import {  selectResearches} from '../../redux/features/researches/researchesSlice'
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
-import { useSelector } from "react-redux";
 import {
   firstName_validation,
   lastName_validation,
@@ -22,21 +20,21 @@ import {
   age_validation,
 } from "../../utils/inputValidations";
 
-
 const REGISTER_URL = "/registerPatient";
-
 function CreatePatient({
   handleToggleCreateModal,
   getPatients,
+  researchState,
 }) {
   const [researchesArray, setResearchesArray] = useState([]);
   const [researchesPrice, setResearchesPrice] = useState([]);
   const [startDate, setStartDate] = useState(new Date());
-  const researchState = useSelector(selectResearches)
+
   const [errMsg, setErrMsg] = useState("");
   const methods = useForm({
     mode: "onChange",
   });
+
   const axiosPrivate = useAxiosPrivate();
   const researchesRef = useRef("");
   const handlingDate = useRef("");
@@ -52,13 +50,12 @@ function CreatePatient({
     const newPatient = {
       ...data,
       age: parseInt(data["age"]),
-      totalPrice:researchesPrice,
+      totalPrice: researchesPrice,
       handlingDate: handlingDate.current,
       researchList: researchesRef.current,
       additional: editorRef.current.getContent({ format: "text" }),
     };
     const formData = JSON.stringify(newPatient);
-
     try {
       await axiosPrivate.post(REGISTER_URL, formData, {
         headers: { "Content-Type": "application/json" },
@@ -80,10 +77,10 @@ function CreatePatient({
     let researchesArr = [];
     let researchesPrice = [];
     for (let research of data) {
-      researchesArr.push(Object.values(research)[1]);
+      researchesArr.push(Object.values(research)[0]);
       researchesPrice.push(Object.values(research)[3]);
     }
-    researchesPrice=researchesPrice.reduce((acc,el)=>acc+=el,0)
+    researchesPrice = researchesPrice.reduce((acc, el) => (acc += el), 0);
     setResearchesArray((prev) => (prev = researchesArr));
     setResearchesPrice((prev) => (prev = researchesPrice));
   };
@@ -241,8 +238,8 @@ function CreatePatient({
                               <div className="col-sm-12">
                                 <div className="form-group">
                                   <Multiselect
-                                    options={researchState.options} // Options to display in the dropdown
-                                    displayValue="name" // Property name to display in the dropdown options
+                                    options={researchState} // Options to display in the dropdown
+                                    displayValue="research" // Property name to display in the dropdown options
                                     onSelect={onResearchSelect} // Function will trigger on select event
                                     onRemove={onResearchDelete} // Function will trigger on remove event
                                     closeOnSelect={true}
@@ -252,6 +249,10 @@ function CreatePatient({
                                     hidePlaceholder={true}
                                     placeholder="Հետազոտություններ"
                                     groupBy="category"
+                                    style={{
+                                      height: "10rem",
+                                      overflow: "hidden",
+                                    }}
                                   />
                                 </div>
                               </div>

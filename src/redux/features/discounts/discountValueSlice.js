@@ -9,8 +9,6 @@ export const discountValueSlice = createSlice({
   reducers: {
     disValue: (state, action) => {state.value = action.payload},
     deleteDisValue: (state, action) => {state.value = 0},
-    
-
   },
 });
 export const { disValue,deleteDisValue} = discountValueSlice.actions;

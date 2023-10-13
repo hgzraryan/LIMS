@@ -59,7 +59,6 @@ const MainTemplate = () => {
 	
 	const [dropDownMenu2, dropDownMenu2IsActive] = useState(false);
 	const dropDownMenu2Click = event => {
-        console.log(event)
 		dropDownMenu2IsActive(current => !current);
 	};
    //--------------------------------------

@@ -6,14 +6,13 @@ import { useSelector } from "react-redux";
 function PatientInfo({
   handleCloseModal,
   selectedItem,
+  researchState
 }) {
-  const { options } = useSelector(selectResearches);
   const currentResearches = selectedItem?.researchList
     ?.map(
-      (mapEl) => (mapEl = options.filter((el) => el.id === parseInt(mapEl)))
+      (mapEl) => (mapEl = researchState.filter((el) => el._id === mapEl))
     )
     .flat(1);
-
   return (
     <Modal show={selectedItem} size="xl" onHide={handleCloseModal}>
       <Modal.Header closeButton>
@@ -41,7 +40,7 @@ function PatientInfo({
                               {currentResearches &&
                                 currentResearches.map((el, index) => (
                                   <div className="mb-2">
-                                    {index + 1}. {el.name}
+                                    {index + 1}. {el.research}
                                   </div>
                                 ))}
                             </div>

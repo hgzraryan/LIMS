@@ -14,8 +14,17 @@ import { ComponentToPrint } from "./../ComponentToPrint";
 import { Dropdown } from "react-bootstrap";
 import { BiSolidInfoCircle } from "react-icons/bi";
 import PatientInfo from "../PatientInfo";
+import { useDispatch, useSelector } from "react-redux";
+
+import {
+  reserchesList,
+  selectResearches,
+} from "../../redux/features/researches/researchesSlice";
+const GET_RESEARCHES = "/researchLists";
 
 const Patients = () => {
+  const researchState = useSelector(selectResearches)
+  const dispatch = useDispatch()
   const [patients, setPatients] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [usersPerPage, setUsersPerPage] = useState(12);
@@ -79,7 +88,30 @@ const Patients = () => {
     pagesVisited + usersPerPage
   );
   const pageCount = Math.ceil(patients.length / usersPerPage);
+  useEffect(() => {
+    let isMounted = true;
+    const controller = new AbortController();
 
+    const getResearches = async () => {
+      try {
+        const response = await axiosPrivate.post(GET_RESEARCHES, {
+          signal: controller.signal,
+        });
+          isMounted && dispatch(reserchesList(response.data.jsonString));      
+      } catch (err) {
+        console.error(err);
+        navigate("/login", { state: { from: location }, replace: true });
+      }
+    };
+
+    getResearches();
+
+    return () => {
+      isMounted = false;
+      controller.abort();
+    };
+  }, []);
+  
   useEffect(() => {
     let isMounted = true;
     const controller = new AbortController();
@@ -351,7 +383,7 @@ const Patients = () => {
                   {isOpen && (
                     <CreatePatient
                       handleToggleCreateModal={handleToggleCreateModal}
-                     // researchState={researchState}
+                      researchState={researchState}
                       getPatients={getPatients}
                       //errMsg={errMsg}
                     />
@@ -571,6 +603,7 @@ const Patients = () => {
                             <PatientInfo
                             selectedItem={selectedItem}
                             handleCloseModal={handleCloseModal}
+                            researchState={researchState}
                             />
                           </tbody>
                         )}{" "}
