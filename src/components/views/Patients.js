@@ -44,11 +44,37 @@ const Patients = () => {
   // };
   /*------------------------------------------------*/
 
-  /*------------------ print component --------------------*/
-  const ComponentToPrintWrapper = ({ user }) => {
-    // 1.
-    const componentRef = useRef(); // 2.
+  /*------------------------------------------------------------------Get Researches----------------------------------------------------*/
+  useEffect(() => {
+    let isMounted = true;
+    const controller = new AbortController();
 
+    const getResearches = async () => {
+      try {
+        const response = await axiosPrivate.post(GET_RESEARCHES, {
+          signal: controller.signal,
+        });
+        
+          isMounted && dispatch(reserchesList(response.data.jsonString));
+       
+      } catch (err) {
+        console.error(err);
+        navigate("/login", { state: { from: location }, replace: true });
+      }
+    };
+
+    getResearches();
+
+    return () => {
+      isMounted = false;
+      controller.abort();
+    };
+  }, []);
+  /*--------------------------------------------------------------------------------------------------------------------*/
+  /*------------------ print component --------------------*/
+  const ComponentToPrintWrapper = ({ user}) => {
+    // 1.
+    let componentRef = useRef(null); // 2.
     return (
       <div style={{ display: "flex" }}>
         <ReactToPrint
@@ -70,14 +96,13 @@ const Patients = () => {
           )}
           content={() => componentRef.current}
         />
-        <div style={{ display: "none" }}>
+        <div style={{display:'none'}} >
           <ComponentToPrint ref={componentRef} value={user} />
         </div>
       </div>
     );
   };
   /*------------------------------------------------*/
-
   const handleToggleCreateModal = (value) => {
     setIsOpen((prev) => value);
   };
@@ -88,30 +113,8 @@ const Patients = () => {
     pagesVisited + usersPerPage
   );
   const pageCount = Math.ceil(patients.length / usersPerPage);
-  useEffect(() => {
-    let isMounted = true;
-    const controller = new AbortController();
 
-    const getResearches = async () => {
-      try {
-        const response = await axiosPrivate.post(GET_RESEARCHES, {
-          signal: controller.signal,
-        });
-          isMounted && dispatch(reserchesList(response.data.jsonString));      
-      } catch (err) {
-        console.error(err);
-        navigate("/login", { state: { from: location }, replace: true });
-      }
-    };
 
-    getResearches();
-
-    return () => {
-      isMounted = false;
-      controller.abort();
-    };
-  }, []);
-  
   useEffect(() => {
     let isMounted = true;
     const controller = new AbortController();
@@ -383,8 +386,8 @@ const Patients = () => {
                   {isOpen && (
                     <CreatePatient
                       handleToggleCreateModal={handleToggleCreateModal}
-                      researchState={researchState}
                       getPatients={getPatients}
+                      researchState={researchState}
                       //errMsg={errMsg}
                     />
                   )}

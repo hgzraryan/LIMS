@@ -248,7 +248,7 @@ function CreatePatient({
                                     ref={multiselectRef}
                                     hidePlaceholder={true}
                                     placeholder="Հետազոտություններ"
-                                    groupBy="category"
+                                    groupBy="category_name"
                                     style={{
                                       height: "10rem",
                                       overflow: "hidden",

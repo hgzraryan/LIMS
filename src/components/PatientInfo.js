@@ -6,13 +6,13 @@ import { useSelector } from "react-redux";
 function PatientInfo({
   handleCloseModal,
   selectedItem,
-  researchState
 }) {
-  const currentResearches = selectedItem?.researchList
-    ?.map(
-      (mapEl) => (mapEl = researchState.filter((el) => el._id === mapEl))
-    )
-    .flat(1);
+  //console.log(researchState)
+  // const currentResearches = selectedItem?.researchList
+  //   ?.map(
+  //     (mapEl) => (mapEl = researchState.filter((el) => el._id === mapEl))
+  //   )
+  //   .flat(1);
   return (
     <Modal show={selectedItem} size="xl" onHide={handleCloseModal}>
       <Modal.Header closeButton>
@@ -37,10 +37,10 @@ function PatientInfo({
                         <form>
                           <div className="row gx-12 ">
                             <div className="col-sm-12">
-                              {currentResearches &&
-                                currentResearches.map((el, index) => (
+                              {selectedItem &&
+                                selectedItem.researchList.map((el, index) => (
                                   <div className="mb-2">
-                                    {index + 1}. {el.research}
+                                    {index + 1}. {el}
                                   </div>
                                 ))}
                             </div>

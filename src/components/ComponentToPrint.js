@@ -1,19 +1,28 @@
-import Button from 'react-bootstrap/Button';
-import React, { useState } from "react";
+import Button from "react-bootstrap/Button";
+import React, { useState, forwardRef, useRef } from "react";
 import Table from "react-bootstrap/Container";
 import { useTable } from "react-table";
 import Barcode from "react-barcode";
+import mainLogo from "../dist/img/main-logo.png";
+import {
+  BiSolidHome,
+  BiSolidPhoneCall,
+  BiGlobe,
+  BiMailSend,
+} from "react-icons/bi";
+import { HiMiniCalendarDays } from "react-icons/hi2";
+import { connect, useSelector } from "react-redux";
+import { selectResearches } from "../redux/features/researches/researchesSlice";
 
-export const ComponentToPrint = React.forwardRef(({ value }, ref) => {
-  const generateData = (start, length = 1) =>
-    Array.from({ length }).map((_, i) => ({
-      id: "1",
-      testName: "Progresteron",
-      testSubstance: "Shijuk",
-      price: "1000",
-    }));
+export const ComponentToPrint = forwardRef(({ value }, ref) => {
+  const researchState = useSelector(selectResearches);
 
-  const [items, setItems] = useState(generateData(0));
+  const currentResearches = value?.researchList
+    ?.map(
+      (mapEl) => (mapEl = researchState.filter((el) => el.research === mapEl))
+    )
+    .flat(1);
+
   const columns = React.useMemo(
     () => [
       {
@@ -21,15 +30,15 @@ export const ComponentToPrint = React.forwardRef(({ value }, ref) => {
         accessor: "id",
       },
       {
-        Header: "Test Name",
-        accessor: "testName",
+        Header: "Հետազոտություն",
+        accessor: "research",
       },
       {
-        Header: "Test substance",
+        Header: "Նյութեր",
         accessor: "testSubstance",
       },
       {
-        Header: "Price",
+        Header: "Արժեք",
         accessor: "price",
       },
     ],
@@ -52,33 +61,35 @@ const { inputRef } = Barcode({
   //-----------------------barcode ------------------
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable({ columns, data: items });
-
+    useTable({
+      columns,
+      data: currentResearches,
+    });
   return (
-    <div className="wrapper" ref={ref}>
+    <div className="wrapper m-1" ref={ref}>
       <header className="header">
-        <div className="container d-flex justify-content-between mt-3">
+        <div className="container d-flex justify-content-between mt-3 ">
           <div className="header__logo d-flex">
-            <img
-              width={"120px"}
-              src="./../dist/img/avatar1.jpg"
-              alt="Logo"
-              style={{ marginRight: "10px" }}
-            />
-            <div>
-              <h1>Prom-test</h1>
-              <h4>Laboratories</h4>
-            </div>
+            <img className="m-0" width={"156px"} src={mainLogo} alt="Logo" />
           </div>
-          <div className="header__info">
+          <div className="header__info mt-3">
             <div>
               <ul>
-                Country
-                <li>address</li>
-                <li>address</li>
-                <li>address</li>
-                <li>address</li>
-                <li>Phone Number</li>
+                <li>
+                  <BiSolidHome /> Babayan 5/8,4548 Yerevan,Armenia
+                </li>
+                <li>
+                  <BiSolidPhoneCall /> +37480589658
+                </li>
+                <li>
+                  <HiMiniCalendarDays /> Mon.-Fr.08:00-18:00,Sat 08:00-13:00
+                </li>
+                <li>
+                  <BiGlobe /> www.Evalab.am
+                </li>
+                <li>
+                  <BiMailSend /> info@EvaLab.am
+                </li>
               </ul>
             </div>
           </div>
@@ -94,31 +105,28 @@ const { inputRef } = Barcode({
         }}
       />
       <main>
-        <article className="container">
+        <section className="container">
           <div className="Requisites d-flex flex-column justify-content-center align-items-center">
-            <p>Prom-test</p>
+            <p>EVA LAB</p>
             <p>hvhh12457888</p>
             <p>h/h 220090120845000 ACBA bank</p>
           </div>
-        </article>
-        <article className="container ">
-          <div className="qr-code d-flex justify-content-between mb-3">
-            <Barcode value="barcode-example" />;
-            <img width={"120px"} src="./../dist/img/avatar1.jpg" alt="Logo" />
-          </div>
-        </article>
-        <article className="container">
-          <div className="mb-3r">
+        </section>
+        <section className="container d-flex justify-content-between mb-2">
+          <div className=" mb-3r">
             <ul>
-              <li>Order: {}</li>
-              <li>Fullname: {value.firstname} {value.lastname}</li>
-              <li>Phone number: </li>
-              <li>Date: </li>
-              <li>ID: </li>
+              <li>
+                Անուն Ազգանուն: {value.firstName} {value.lastName}
+              </li>
+              <li>Տարիք: {value.age}</li>
+              <li>Հեռախոս: {value.mobile}</li>
+              <li>Տրման ամսաթիվ: {value.date}</li>
             </ul>
           </div>
-        </article>
-        <article className="container">
+          <Barcode value="barcode-example" width={1} />;
+        </section>
+        <section className="container "></section>
+        <section className="container">
           <div className="container">
             <table
               className="table table-striped"
@@ -142,7 +150,7 @@ const { inputRef } = Barcode({
                 {rows.map((row, i) => {
                   prepareRow(row);
                   return (
-                    <tr {...row.getRowProps()}>
+                    <tr key={i} {...row.getRowProps()}>
                       {row.cells.map((cell) => {
                         return (
                           <td
@@ -159,19 +167,12 @@ const { inputRef } = Barcode({
               </tbody>
             </table>
           </div>
-        </article>
-        <article className="container">
+        </section>
+        <section className="container">
           <div className="total d-flex flex-column align-items-end">
-            <p>total amount {}</p>
-            <p>total debth {}</p>
+            <p>Ընդհանուր արժեք {value.totalPrice}10000 դր․</p>
           </div>
-        </article>
-        <article className="container">
-          <div className="substances d-flex">
-            <Button style={{ margin: "0 10px" }}>Barikor</Button>
-            <Button>Citrat</Button>
-          </div>
-        </article>
+        </section>
       </main>
     </div>
   );
