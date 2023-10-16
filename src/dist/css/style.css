@@ -91033,11 +91033,12 @@ Project:	Jampack
   justify-content: center;
   align-items: center;
   border-radius: 2rem;
-  max-width: 300px;
+  max-width: 200px;
   box-shadow: 0 0 1rem #0ef;
   overflow: hidden;
   display: flex;
   padding: 0;
+  margin-bottom: 20px;
   cursor: pointer;
 }
 .section_box-content, .new_box-content{
@@ -91071,7 +91072,6 @@ Project:	Jampack
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 2.5rem;
 }
 
 /*----------------------------------------*/

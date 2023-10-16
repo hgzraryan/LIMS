@@ -2,6 +2,7 @@ import { createSlice, current } from "@reduxjs/toolkit";
 
 const initialState = {
   options: [],
+  savedUniqDis:[]
 };
 export const researchesSlice = createSlice({
   name: "researches",
@@ -17,11 +18,13 @@ export const researchesSlice = createSlice({
         };
       });
     },
-    clearDiscounts:(state)=>initialState
-
+    savedUniqDiscounts:(state,action)=>{
+      state.savedUniqDis = action.payload
+    }
   },
 });
-export const { createDiscount, reserchesList, clearDiscounts} = researchesSlice.actions;
+export const { createDiscount, reserchesList, clearDiscounts,savedUniqDiscounts} = researchesSlice.actions;
 export const selectResearches = (state) => state.researches.options
+export const selectUniqResearches = (state) => state.researches.savedUniqDis
 
 export default researchesSlice.reducer;
