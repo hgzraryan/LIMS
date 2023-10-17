@@ -48,9 +48,6 @@ const Researchlists = () => {
   const pwd = useRef("");
   const roles = useRef("");
 
-  const [validName, setValidName] = useState(false);
-  const [validPwd, setValidPwd] = useState(false);
-  const [errMsg, setErrMsg] = useState("");
 
   const pagesVisited = currentPage * usersPerPage;
   // const currentUsers = researches.slice(
@@ -77,8 +74,9 @@ const Researchlists = () => {
           ) {
             setHasMore(false);
           }
-          isMounted && dispatch(reserchesList(response.data.jsonString));
-          setResearches((prev) => respResearches);
+          isMounted && //dispatch(reserchesList(response.data.jsonString));
+          console.log(response)
+          setResearches((prev) => response.data.jsonString);
           setCurrentPage((prev) => prev + 1);
         }, 500);
       } catch (err) {
@@ -95,7 +93,7 @@ const Researchlists = () => {
     };
   }, []);
 
-  const getUsers = async () => {
+  const getResearches = async (check='') => {
     try {
       const response = await axiosPrivate.post(GET_RESEARCHES, {
         page: currentPage,
@@ -108,9 +106,21 @@ const Researchlists = () => {
         ) {
           setHasMore(false);
         }
-        dispatch(reserchesList(response.data.jsonString));
-        setResearches((prev) => respResearches);
-        setCurrentPage((prev) => prev + 1);
+        switch (check) {
+          case "check":
+            setResearches((prev) => ([...prev,...response.data.jsonString]));
+            //console.log(researches)
+            //dispatch(reserchesList(researches));
+            break;
+          case "update":
+            setResearches((prevUsers) => response.data.jsonString);
+            console.log('update')
+            setCurrentPage((prev) => prev + 1);
+            break;
+          default:
+            setResearches((prevUsers) => response.data.jsonString);
+            setCurrentPage((prev) => prev + 1);
+        }
       }, 500);
     } catch (err) {
       console.error(err);
@@ -433,7 +443,7 @@ const Researchlists = () => {
                   >
                     <InfiniteScroll
                       dataLength={researches.length}
-                      next={getUsers}
+                      next={()=>getResearches('check')}
                       hasMore={hasMore}
                       loader={<Loading />}
                       scrollableTarget="scrollableDiv"
