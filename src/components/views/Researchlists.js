@@ -6,7 +6,6 @@ import { useNavigate, useLocation } from "react-router-dom";
 import FeatherIcon from "feather-icons-react";
 import LoadingSpinner from "../LoadingSpinner";
 import ReactPaginate from "react-paginate";
-import MissingAvatar from "../../dist/img/Missing.svg";
 import Multiselect from "multiselect-react-dropdown";
 import axios from "../../api/axios";
 import Loading from "../Loading";
@@ -75,7 +74,6 @@ const Researchlists = () => {
             setHasMore(false);
           }
           isMounted && //dispatch(reserchesList(response.data.jsonString));
-          console.log(response)
           setResearches((prev) => response.data.jsonString);
           setCurrentPage((prev) => prev + 1);
         }, 500);
@@ -109,12 +107,10 @@ const Researchlists = () => {
         switch (check) {
           case "check":
             setResearches((prev) => ([...prev,...response.data.jsonString]));
-            //console.log(researches)
             //dispatch(reserchesList(researches));
             break;
           case "update":
             setResearches((prevUsers) => response.data.jsonString);
-            console.log('update')
             setCurrentPage((prev) => prev + 1);
             break;
           default:
