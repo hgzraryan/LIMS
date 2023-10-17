@@ -23,8 +23,8 @@ import {
 const GET_RESEARCHES = "/researchLists";
 
 const Patients = () => {
-  const researchState = useSelector(selectResearches)
-  const dispatch = useDispatch()
+  const researchState = useSelector(selectResearches);
+  const dispatch = useDispatch();
   const [patients, setPatients] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [usersPerPage, setUsersPerPage] = useState(12);
@@ -34,7 +34,7 @@ const Patients = () => {
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState("");
- // const [errMsg, setErrMsg] = useState("");
+  // const [errMsg, setErrMsg] = useState("");
   /*------------------ tiny mce --------------------*/
   //const editorRef = useRef(null);
   // const log = () => {
@@ -54,9 +54,8 @@ const Patients = () => {
         const response = await axiosPrivate.post(GET_RESEARCHES, {
           signal: controller.signal,
         });
-        
-          isMounted && dispatch(reserchesList(response.data.jsonString));
-       
+
+        isMounted && dispatch(reserchesList(response.data.jsonString));
       } catch (err) {
         console.error(err);
         navigate("/login", { state: { from: location }, replace: true });
@@ -72,7 +71,7 @@ const Patients = () => {
   }, []);
   /*--------------------------------------------------------------------------------------------------------------------*/
   /*------------------ print component --------------------*/
-  const ComponentToPrintWrapper = ({ user}) => {
+  const ComponentToPrintWrapper = ({ user }) => {
     // 1.
     let componentRef = useRef(null); // 2.
     return (
@@ -96,7 +95,7 @@ const Patients = () => {
           )}
           content={() => componentRef.current}
         />
-        <div style={{display:'none'}} >
+        <div style={{ display: "none" }}>
           <ComponentToPrint ref={componentRef} value={user} />
         </div>
       </div>
@@ -113,7 +112,6 @@ const Patients = () => {
     pagesVisited + usersPerPage
   );
   const pageCount = Math.ceil(patients.length / usersPerPage);
-
 
   useEffect(() => {
     let isMounted = true;
@@ -152,7 +150,7 @@ const Patients = () => {
     };
   }, []);
 
-  const getPatients = async () => {
+  const getPatients = async (check = "") => {
     try {
       const response = await axiosPrivate.get("/patients", {
         page: currentPage,
@@ -165,8 +163,21 @@ const Patients = () => {
         ) {
           setHasMore(false);
         }
-        setPatients((prev) => response.data.jsonString);
-        setCurrentPage((prev) => prev + 1);
+        switch (check) {
+          case "check":
+            setPatients((prevUsers) => [
+              ...prevUsers,
+              ...response.data.jsonString,
+            ]);
+            break;
+          case "update":
+            setPatients((prevUsers) => response.data.jsonString);
+            setCurrentPage((prev) => prev + 1);
+            break;
+          default:
+            setPatients((prevUsers) => response.data.jsonString);
+            setCurrentPage((prev) => prev + 1);
+        }
       }, 500);
     } catch (err) {
       console.error(err);
@@ -176,7 +187,7 @@ const Patients = () => {
 
   //-------------------------
   const handleOpenModal = (user) => {
-    setSelectedItem((prev)=>user)
+    setSelectedItem((prev) => user);
   };
   const handleCloseModal = () => {
     setSelectedItem(null);
@@ -243,14 +254,16 @@ const Patients = () => {
       {
         Header: "Հետազոտություններ",
         accessor: "researchList",
-        Cell: ({ row }) => <div className="d-flex">
-          <div className="pe-2">{row.values.researchList.length}</div>
-        <BiSolidInfoCircle
-            cursor={'pointer'}
+        Cell: ({ row }) => (
+          <div className="d-flex">
+            <div className="pe-2">{row.values.researchList.length}</div>
+            <BiSolidInfoCircle
+              cursor={"pointer"}
               size={"1.5rem"}
               onClick={() => handleOpenModal(row.values)}
             />
-        </div>
+          </div>
+        ),
       },
       {
         Header: "Արժեք (դրամ)",
@@ -386,7 +399,7 @@ const Patients = () => {
                   {isOpen && (
                     <CreatePatient
                       handleToggleCreateModal={handleToggleCreateModal}
-                      getPatients={getPatients}
+                      getPatients={()=>getPatients()}
                       researchState={researchState}
                       //errMsg={errMsg}
                     />
@@ -554,7 +567,7 @@ const Patients = () => {
                   >
                     <InfiniteScroll
                       dataLength={patients.length}
-                      next={getPatients}
+                      next={()=>getPatients("check")}
                       hasMore={hasMore}
                       loader={<Loading />}
                       scrollableTarget="scrollableDiv"
@@ -604,9 +617,9 @@ const Patients = () => {
                               );
                             })}
                             <PatientInfo
-                            selectedItem={selectedItem}
-                            handleCloseModal={handleCloseModal}
-                            researchState={researchState}
+                              selectedItem={selectedItem}
+                              handleCloseModal={handleCloseModal}
+                              researchState={researchState}
                             />
                           </tbody>
                         )}{" "}

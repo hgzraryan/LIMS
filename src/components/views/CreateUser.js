@@ -23,7 +23,7 @@ import {
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
 const REGISTER_URL = "/register";
-function CreateUser({ setIsOpen }) {
+function CreateUser({ setIsOpen,getUsers }) {
   const user = useRef("");
   const firstname = useRef("");
   const lastname = useRef("");
@@ -70,9 +70,9 @@ function CreateUser({ setIsOpen }) {
         headers: { "Content-Type": "multipart/form-data" },
         withCredentials: true,
       });
-      //console.log(JSON.stringify(response?.data));
-      //console.log(JSON.stringify(response))
+
       handleToggleCreateModal(false);
+      getUsers("update");
     } catch (err) {
       if (!err?.response) {
         setErrMsg("No Server Response");

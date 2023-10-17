@@ -62,7 +62,7 @@ function CreatePatient({
         withCredentials: true,
       });
       handleToggleCreateModal(false);
-      getPatients();
+      getPatients("update");
     } catch (err) {
       if (!err?.response) {
         setErrMsg("No Server Response");

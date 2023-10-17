@@ -103,7 +103,7 @@ const Users = () => {
           setHasMore(false);
         }
         isMounted &&
-          setUsers((prevUsers) => [...prevUsers, ...response.data.jsonString]);
+          setUsers((prevUsers) => response.data.jsonString);
         setCurrentPage((prev) => prev + 1);
       } catch (err) {
         console.error(err);
@@ -119,7 +119,7 @@ const Users = () => {
     };
   }, []);
 
-  const getUsers = async () => {
+  const getUsers = async (check='') => {
     try {
       const response = await axiosPrivate.post("/users", {
         page: currentPage,
@@ -132,8 +132,21 @@ const Users = () => {
         ) {
           setHasMore(false);
         }
-        setUsers((prevUsers) => [...prevUsers, ...response.data.jsonString]);
-        setCurrentPage((prev) => prev + 1);
+        switch (check) {
+          case "check":
+            setUsers((prevUsers) => [
+              ...prevUsers,
+              ...response.data.jsonString,
+            ]);
+            break;
+          case "update":
+            setUsers((prevUsers) => response.data.jsonString);
+            setCurrentPage((prev) => prev + 1);
+            break;
+          default:
+            setUsers((prevUsers) => response.data.jsonString);
+            setCurrentPage((prev) => prev + 1);
+        }
       }, 500);
     } catch (err) {
       console.error(err);
@@ -334,7 +347,7 @@ const Users = () => {
                     </Dropdown.Menu>
                   </Dropdown>
 
-                  {isOpen && <CreateUser setIsOpen={setIsOpen} />}
+                  {isOpen && <CreateUser setIsOpen={setIsOpen} getUsers={()=>getUsers()}/>}
                   {/*
 										<a className="dropdown-item" href="#">Type2</a>
 										<a className="dropdown-item" href="#">Type3</a>
@@ -434,7 +447,7 @@ const Users = () => {
                   >
                     <InfiniteScroll
                       dataLength={users.length}
-                      next={getUsers}
+                      next={()=>getUsers('check')}
                       hasMore={hasMore}
                       loader={<Loading />}
                       scrollableTarget="scrollableDiv"
