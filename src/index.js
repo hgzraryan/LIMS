@@ -14,6 +14,9 @@ import './vendors/datatables.net-bs5/css/dataTables.bootstrap5.min.css';
 
 import './dist/css/style.css';
 
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 ReactDOM.render(
    <React.StrictMode>
@@ -26,6 +29,7 @@ ReactDOM.render(
       </AuthProvider>
     </BrowserRouter>
     </Provider>
+    <ToastContainer />
   </React.StrictMode>,
   document.getElementById('root')
 );

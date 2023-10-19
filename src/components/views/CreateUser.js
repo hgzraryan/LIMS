@@ -21,6 +21,7 @@ import {
   birthday_validation,
 } from "../../utils/inputValidations";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import {  toast } from 'react-toastify';
 
 const REGISTER_URL = "/register";
 function CreateUser({ setIsOpen,getUsers }) {
@@ -58,6 +59,16 @@ function CreateUser({ setIsOpen,getUsers }) {
     setIsOpen((prev) => value);
   };
   /*------------------------------------------------*/
+  const notify = (text) => toast.success(text, {
+    position: "top-right",
+    autoClose: 3000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+    });
   const onSubmit = methods.handleSubmit(async (data) => {
     const newUser = {
       ...data,
@@ -70,9 +81,11 @@ function CreateUser({ setIsOpen,getUsers }) {
         headers: { "Content-Type": "multipart/form-data" },
         withCredentials: true,
       });
-
+      
       handleToggleCreateModal(false);
       getUsers("update");
+      notify(`${newUser.firstName} ${newUser.lastName} աշխատակիցը ավելացված է`)
+
     } catch (err) {
       if (!err?.response) {
         setErrMsg("No Server Response");

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { Modal } from "react-bootstrap";
 import Multiselect from "multiselect-react-dropdown";
 import FeatherIcon from "feather-icons-react";
@@ -8,7 +8,8 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Form, FormProvider, useForm } from "react-hook-form";
 import { Input } from "../Input";
-import { useRef } from "react";
+import {  toast } from 'react-toastify';
+
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import {
   firstName_validation,
@@ -46,6 +47,16 @@ function CreatePatient({
     handlingDate.current =
       date.toLocaleDateString("en-GB") + " " + date.toLocaleTimeString("en-GB");
   };
+  const notify = (text) => toast.success(text, {
+    position: "top-right",
+    autoClose: 3000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+    });
   const onSubmit = methods.handleSubmit(async (data) => {
     const newPatient = {
       ...data,
@@ -63,6 +74,8 @@ function CreatePatient({
       });
       handleToggleCreateModal(false);
       getPatients("update");
+      notify(`${newPatient.firstName} ${newPatient.lastName} հաճախորդը ավելացված է`)
+
     } catch (err) {
       if (!err?.response) {
         setErrMsg("No Server Response");
