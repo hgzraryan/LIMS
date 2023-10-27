@@ -1,9 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable no-lone-blocks */
-import React, { useState, useEffect, useRef, useMemo } from "react";
+import React, { useState, useRef, useMemo } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import useAxiosPrivate from "../../hooks/useAxiosPrivate";
-import { useNavigate, useLocation } from "react-router-dom";
 import FeatherIcon from "feather-icons-react";
 import LoadingSpinner from "../LoadingSpinner";
 import ReactPaginate from "react-paginate";
@@ -11,66 +9,50 @@ import Loading from "../Loading";
 import { useSortBy, useTable } from "react-table";
 import ComponentToConfirm from "../ComponentToConfirm";
 import CreateUser from "../views/CreateUser";
-import Swal from "sweetalert2";
 import { Dropdown } from "react-bootstrap";
+import useGetData from "../../hooks/useGetData";
+import useDeleteData from "../../hooks/useDeleteData";
+import useUpdateCount from "../../hooks/useUpdateCount";
 import { checkUsersCount } from "../../redux/features/users/usersCountSlice";
-import { useDispatch } from "react-redux";
 
 const Users = () => {
-  const [users, setUsers] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [usersPerPage, setUsersPerPage] = useState(12);
-  const [hasMore, setHasMore] = useState(true);
   const confirmUserRef = useRef("");
-  const axiosPrivate = useAxiosPrivate();
-  const navigate = useNavigate();
-  const location = useLocation();
+  const [isOpen, setIsOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState("");
   const [selectedItemId, setSelectedItemId] = useState(null);
-  const [isOpen, setIsOpen] = useState(false);
-  const dispatch = useDispatch();
+  /*-------------------Custom Hook--------------------*/
+  const {
+    data: users,
+    setData: setUsers,
+    hasMore,
+    getData: getUsers,
+  } = useGetData("/users");
+
+  //TODO need correct
+  const {updateDataCount} =useUpdateCount("/allCount",checkUsersCount,'usersCount')
+  
+  const { handleDeleteItem } = useDeleteData(
+    "/users",
+    confirmUserRef,
+    selectedItem,
+    setSelectedItemId,
+    users,
+    setUsers,
+    'username'
+  );
+  /*------------------------------------------------*/
   /*----------------ADD USER---------------------*/
   const errRef = useRef("");
 
   const [validName, setValidName] = useState(false);
   const [validPwd, setValidPwd] = useState(false);
   const [errMsg, setErrMsg] = useState("");
-
-  /*------------------ Delete Component --------------------*/
-  const updateUsersCount = async () => {
-    try {
-      const response = await axiosPrivate.get("/allCount");
-      dispatch(checkUsersCount(response.data.usersCount));
-    } catch (err) {
-      console.error(err);
-      navigate("/login", { state: { from: location }, replace: true });
-    }
+  /*------------------------------------------------*/
+  const refreshPage = () => {
+    let paglink = document.querySelectorAll(".page-item");
+    paglink[0].firstChild.click();
   };
-  const handleDeleteItem = async (delid) => {
-    if (selectedItem?.username.trim() === confirmUserRef.current?.trim()) {
-      try {
-        const response = await axiosPrivate.delete("/users", {
-          data: { id: delid },
-        });
-
-        setSelectedItemId(null); // Close the modal after deletion
-        Swal.fire(`The user ${response.data.username} has been deleted`);
-        const updatedUsers = users.filter((user) => user._id !== delid);
-        setUsers(updatedUsers);
-      } catch (err) {
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: "Something went wrong!",
-        });
-        console.error(err);
-        //navigate('/login', { state: { from: location }, replace: true });
-      }
-    } else {
-      Swal.fire("Write right username");
-    }
-    updateUsersCount();
-  };
+  //-------------------
   const handleOpenModal = (user) => {
     setSelectedItemId(true);
     setSelectedItem((prev) => user);
@@ -78,91 +60,6 @@ const Users = () => {
   const handleCloseModal = () => {
     setSelectedItemId(null);
   };
-  /*------------------------------------------------*/
-
-  const pagesVisited = currentPage * usersPerPage;
-  const currentUsers = users.slice(pagesVisited, pagesVisited + usersPerPage);
-  const pageCount = Math.ceil(users.length / usersPerPage);
-
-  useEffect(() => {
-    let isMounted = true;
-    const controller = new AbortController();
-
-    const getUsers = async () => {
-      try {
-        const response = await axiosPrivate.post("/users", {
-          signal: controller.signal,
-          page: currentPage,
-          onPage: Math.round((window.innerHeight / 100) * 1.5),
-        });
-        console.log(response);
-        if (
-          response.data.jsonString.length === 0 ||
-          response.data.jsonString.length < 12
-        ) {
-          setHasMore(false);
-        }
-        isMounted &&
-          setUsers((prevUsers) => response.data.jsonString);
-        setCurrentPage((prev) => prev + 1);
-      } catch (err) {
-        console.error(err);
-        navigate("/login", { state: { from: location }, replace: true });
-      }
-    };
-
-    getUsers();
-
-    return () => {
-      isMounted = false;
-      controller.abort();
-    };
-  }, []);
-
-  const getUsers = async (check='') => {
-    try {
-      const response = await axiosPrivate.post("/users", {
-        page: currentPage,
-        onPage: usersPerPage,
-      });
-      setTimeout(() => {
-        if (
-          response.data.jsonString.length === 0 ||
-          response.data.jsonString.length < 12
-        ) {
-          setHasMore(false);
-        }
-        switch (check) {
-          case "check":
-            setUsers((prevUsers) => [
-              ...prevUsers,
-              ...response.data.jsonString,
-            ]);
-            break;
-          case "update":
-            setUsers((prevUsers) => response.data.jsonString);
-            setCurrentPage((prev) => prev + 1);
-            break;
-          default:
-            setUsers((prevUsers) => response.data.jsonString);
-            setCurrentPage((prev) => prev + 1);
-        }
-      }, 500);
-    } catch (err) {
-      console.error(err);
-      navigate("/login", { state: { from: location }, replace: true });
-    }
-  };
-
-  //-------------------------
-
-  const refreshPage = () => {
-    let paglink = document.querySelectorAll(".page-item");
-    paglink[0].firstChild.click();
-  };
-  //-------------------
-
-  //-------------------
   const [showCreateNew, setIsActive] = useState(false);
   const CreateNew = (event) => {
     setIsActive((current) => !current);
@@ -196,7 +93,7 @@ const Users = () => {
         break;
     }
   };
-  const columns = React.useMemo(
+  const columns = useMemo(
     () => [
       {
         Header: () => (
@@ -309,8 +206,6 @@ const Users = () => {
       useSortBy
     );
 
-  // const [items, setItems] = useState(generateData(0));
-
   return (
     <div>
       <div className="contactapp-wrap">
@@ -347,7 +242,12 @@ const Users = () => {
                     </Dropdown.Menu>
                   </Dropdown>
 
-                  {isOpen && <CreateUser setIsOpen={setIsOpen} getUsers={()=>getUsers()}/>}
+                  {isOpen && (
+                    <CreateUser
+                      setIsOpen={setIsOpen}
+                      getUsers={() => getUsers()}
+                    />
+                  )}
                   {/*
 										<a className="dropdown-item" href="#">Type2</a>
 										<a className="dropdown-item" href="#">Type3</a>
@@ -447,7 +347,7 @@ const Users = () => {
                   >
                     <InfiniteScroll
                       dataLength={users.length}
-                      next={()=>getUsers('check')}
+                      next={() => getUsers("check")}
                       hasMore={hasMore}
                       loader={<Loading />}
                       scrollableTarget="scrollableDiv"
@@ -518,49 +418,6 @@ const Users = () => {
           </div>
         </div>
       </div>
-
-      {/*
-   <!-- <div id='scrollableDiv' style={{ height: '80vh', overflow: 'auto' }}>
-           <InfiniteScroll
-             dataLength={items.length}
-             next={fetchMoreData}
-             hasMore={true}
-             loader={<Loading />}
-             scrollableTarget='scrollableDiv'
-           >
-             <table {...getTableProps()} className='table table-striped'>
-               <thead>
-                 {headerGroups.map((headerGroup) => (
-                   <tr {...headerGroup.getHeaderGroupProps()}>
-                     {headerGroup.headers.map((column) => (
-                       <th {...column.getHeaderProps()}>
-                         {column.render('Header')}
-                       </th>
-                     ))}
-                   </tr>
-                 ))}
-               </thead>
-               <tbody {...getTableBodyProps()}>
-                 {rows.map((row, i) => {
-                   prepareRow(row);
-                   return (
-                     <tr {...row.getRowProps()}>
-                       {row.cells.map((cell) => {
-                         return (
-                           <td {...cell.getCellProps()}>
-                             {cell.render('Cell')}
-                           </td>
-                         );
-                       })}
-                     </tr>
-                   );
-                 })}
-               </tbody>
-             </table>
-           </InfiniteScroll>
-         </div>
-   -->
-  */}
     </div>
   );
 };
