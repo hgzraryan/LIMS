@@ -1,78 +1,42 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable no-lone-blocks */
-import React, { useState, useEffect, useRef, useMemo } from "react";
+import React, { useState, useRef, useMemo } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import useAxiosPrivate from "../../hooks/useAxiosPrivate";
-import { useNavigate, useLocation } from "react-router-dom";
 import FeatherIcon from "feather-icons-react";
 import LoadingSpinner from "../LoadingSpinner";
 import ReactPaginate from "react-paginate";
-import MissingAvatar from "../../dist/img/Missing.svg";
-import axios from "./../../api/axios";
 import Loading from "../Loading";
 import { useSortBy, useTable } from "react-table";
 import ComponentToConfirm from "../ComponentToConfirm";
 import AddPrice from "../views/CreateUser";
 import { Dropdown } from "react-bootstrap";
-
-
-const REGISTER_URL = "/register";
+import useGetData from "../../hooks/useGetData";
+import useDeleteData from "../../hooks/useDeleteData";
 
 const Prices = () => {
-  const [prices, setPrices] = useState([]);
-  
-  
-  //const [rolesArray, setRolesArray] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [usersPerPage, setUsersPerPage] = useState(12);
-  const [hasMore, setHasMore] = useState(true);
-  const axiosPrivate = useAxiosPrivate();
-  const navigate = useNavigate();
-  const location = useLocation();
-  const [image, setImage] = useState("");
-  const [imageUrl, setImageUrl] = useState(MissingAvatar);
-  const imageMimeType = /image\/(png|jpg|jpeg)/i;
-  const fileReader = new FileReader();
   const [selectedItem, setSelectedItem] = useState("");
   const [selectedItemId, setSelectedItemId] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
-  /*----------------ADD USER---------------------*/
-  const errRef = useRef("");
-  const user = useRef("");
-  const firstname = useRef("");
-  const lastname = useRef("");
-  const pwd = useRef("");
-  const roles = useRef("");
-  const confirmUserRef = useRef("");
-  const emailRef = useRef("")
-  const phoneRef = useRef("")
-
-  const [validName, setValidName] = useState(false);
-  const [validPwd, setValidPwd] = useState(false);
-  const [errMsg, setErrMsg] = useState("");
-
-  const formData = new FormData();
-
-
-
+  const confirmPriceRef = useRef("");
   /*------------------ Delete Component --------------------*/
-  const handleDeleteItem = async () => {
-    if (selectedItem?.username.trim() === confirmUserRef.current?.trim()) {
-      try {
-        const response = await axiosPrivate.post("/prices", {
-          message: "delete",
-          userId: selectedItem.id,
-        });
-        setTimeout(() => {
-          setPrices((prev) => response.data.jsonString);
-          setSelectedItemId(null); // Close the modal after deletion
-        }, 500);
-      } catch (err) {
-        console.error(err);
-        //navigate('/login', { state: { from: location }, replace: true });
-      }
-    }
-  };
+  // const handleDeleteItem = async () => {
+  //   if (selectedItem?.username.trim() === confirmUserRef.current?.trim()) {
+  //     try {
+  //       const response = await axiosPrivate.post("/prices", {
+  //         message: "delete",
+  //         userId: selectedItem.id,
+  //       });
+  //       setTimeout(() => {
+  //         setPrices((prev) => response.data.jsonString);
+  //         setSelectedItemId(null); // Close the modal after deletion
+  //       }, 500);
+  //     } catch (err) {
+  //       console.error(err);
+  //       //navigate('/login', { state: { from: location }, replace: true });
+  //     }
+  //   }
+  // };
+  
   const handleOpenModal = (user) => {
     setSelectedItemId(true);
     setSelectedItem((prev) => user);
@@ -81,193 +45,23 @@ const Prices = () => {
     setSelectedItemId(null);
   };
   /*------------------------------------------------*/
-  /*------------------ Create user Component --------------------*/
-  const handleToggleCreateModal = (value) => {
-    setIsOpen(prev => value);
-  };
-  /*------------------------------------------------*/
-  const handleSubmit = async (e) => {
-    e.preventDefault();
 
-    //if button enabled with JS hack
-    // const checkUsername = USER_REGEX.test(user.current);
-    // const checkPassword = PWD_REGEX.test(pwd.current);
-    // const checkPhone = PWD_REGEX.test(phoneRef.current);
-    // const checkEmail = PWD_REGEX.test(emailRef.current);
-    // if (!checkUsername || !checkPassword || !checkPhone || !checkEmail) {
-    // 	setErrMsg("Invalid Entry");
-    // 	return;
-    // }
+  const {
+    data: prices,
+    setData: setPrices,
+    hasMore,
+    getData: getPrices,
+  } = useGetData("/priceList");
 
-    const newUser = {
-      user: user.current,
-      pwd: pwd.current,
-      firstname: firstname.current,
-      lastname: lastname.current,
-      roles: roles.current,
-    };
-
-    formData.append("text", JSON.stringify(newUser));
-    formData.append("image", image);
-    try {
-      await axios.post(REGISTER_URL, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-        withCredentials: true,
-      });
-      //console.log(JSON.stringify(response?.data));
-      //console.log(JSON.stringify(response))
-      navigate("/users", { state: { from: location }, replace: true });      
-    } catch (err) {
-      if (!err?.response) {
-        setErrMsg("No Server Response");
-      } else if (err.response?.status === 409) {
-        setErrMsg("Username Taken");
-      } else {
-        setErrMsg(" Failed");
-      }
-    }
-  };
-  /*
-  const onRoleSelect = (data) => {
-    let rolesArr = [];
-    for (let role of data) {
-      rolesArr.push(Object.values(role)[0]);
-    }
-    setRolesArray((prev) => (prev = rolesArr));
-  };
-  const onRoleDelete = (data) => {
-    let rolesArr = [];
-    for (let role of data) {
-      rolesArr.push(Object.values(role)[0]);
-    }
-    setRolesArray((prev) => (prev = rolesArr));
-
-    //reset selected options colors
-    const elems = document.querySelectorAll(".chips");
-    elems.forEach((element) => {
-      element.classList.remove("chips");
-    });
-  };
-  const onAdd = (e) => {
-    roles.current = rolesArray;
-    //multiselectRef.current.resetSelectedValues()
-    const elems = document.querySelectorAll(".chip");
-    elems.forEach((element) => {
-      element.classList.add("chips");
-    });
-  };
-  
-  */
-  fileReader.onloadend = () => {
-    setImageUrl(fileReader.result);
-  };
-
-  const handleChangeFile = async (event) => {
-    const image = event.target.files[0];
-    if (!image.type.match(imageMimeType)) {
-      alert("Image mime type is not valid");
-      return;
-    }
-    setImage(image);
-    try {
-      formData.append("image", event.target.files[0]);
-    } catch (err) {
-      console.warn(err);
-    }
-  };
-  useEffect(() => {
-    let fileReader,
-      isCancel = false;
-    if (image) {
-      fileReader = new FileReader();
-      fileReader.onload = (e) => {
-        const { result } = e.target;
-        if (result && !isCancel) {
-          setImageUrl(result);
-        }
-      };
-      fileReader.readAsDataURL(image);
-    }
-    return () => {
-      isCancel = true;
-      if (fileReader && fileReader.readyState === 1) {
-        fileReader.abort();
-      }
-    };
-  }, [image]);
-  const handleDrop = (event) => {
-    event.preventDefault();
-    if (event.stopPropagation) {
-      event.stopPropagation();
-    }
-    if (event.dataTransfer.files && event.dataTransfer.files.length) {
-      setImage(event.dataTransfer.files[0]);
-      fileReader.readAsDataURL(event.dataTransfer.files[0]);
-    }
-  };
-  const handleDragEmpty = (event) => {
-    event.preventDefault();
-    if (event.stopPropagation) {
-      event.stopPropagation();
-    }
-  };
-
-  const pagesVisited = currentPage * usersPerPage;
-  const currentPrices = prices.slice(pagesVisited, pagesVisited + usersPerPage);
-  const pageCount = Math.ceil(prices.length / usersPerPage);
-
- useEffect(() => {
-	let isMounted = true;
-	const controller = new AbortController();
-
-	const getPrices = async () => {
-		try {
-			const response = await axiosPrivate.post('/priceList', {
-				signal: controller.signal,
-				page:currentPage,
-				onPage:1
-			});
-			console.log(response);
-			setTimeout(() => {
-				if(response.data.jsonString.length === 0 || response.data.jsonString.length < 12){
-					setHasMore(false)
-				}
-				setPrices(prevUsers => [...prevUsers,...response.data.jsonString]);
-				setCurrentPage(prev => prev+1)
-			}, 500);
-		} catch (err) {
-			console.error(err);
-			navigate('/login', { state: { from: location }, replace: true });
-		}
-	}
-
-	getPrices();
-
-	return () => {
-		isMounted = false;
-		controller.abort();
-	}
-}, [])
-
-  const getPrices = async () => {
-		try {
-			const response = await axiosPrivate.post('/priceList', {
-				page:currentPage,
-				onPage:usersPerPage
-			});
-			setTimeout(() => {
-				if(response.data.jsonString.length === 0 || response.data.jsonString.length < 12){
-					setHasMore(false)
-				}
-				setPrices((prev) => response.data.jsonString);
-				setCurrentPage(prev => prev+1)
-			}, 500);
-		} catch (err) {
-			console.error(err);
-			navigate('/login', { state: { from: location }, replace: true });
-		}
-	}
-
+  const { handleDeleteItem } = useDeleteData(
+    "/prices",
+    confirmPriceRef,
+    selectedItem,
+    setSelectedItemId,
+    prices,
+    setPrices,
+    "username" //TODO need to correct for prices
+  );
   //-------------------------
 
   const refreshPage = () => {
@@ -283,33 +77,6 @@ const Prices = () => {
   };
 
   //-------------------
-
-  const setUserTypeStyle = (userType) => {
-    switch (userType) {
-      case "Admin":
-        return "badge badge-soft-success  my-1  me-2";
-      case "Editor":
-        return "badge badge-soft-violet my-1  me-2";
-      case "User":
-        return "badge badge-soft-danger my-1  me-2";
-      case "Approver":
-        return "badge badge-soft-light my-1  me-2";
-
-      default:
-        break;
-    }
-  };
-
-  const setUserActiveState = (activeState) => {
-    switch (activeState) {
-      case 0:
-        return ["badge badge-soft-danger  my-1  me-2", "Ոչ ակտիվ"];
-      case 1:
-        return ["badge badge-soft-success my-1  me-2  my-1  me-2", "Ակտիվ"];
-      default:
-        break;
-    }
-  };
   const columns = React.useMemo(
     () => [
       {
@@ -402,10 +169,6 @@ const Prices = () => {
       useSortBy
     );
 
-  // const [items, setItems] = useState(generateData(0));
-
-
-
   return (
     <div>
       <div className="contactapp-wrap">
@@ -426,46 +189,31 @@ const Prices = () => {
                   </a>
                 </div>
                 <div className="dropdown ms-3">
-					 <Dropdown>
-					  <Dropdown.Toggle variant="success" id="dropdown-basic" className="btn btn-sm btn-outline-secondary flex-shrink-0 dropdown-toggle d-lg-inline-block d-none">
-						Ավելացնել նոր
-					  </Dropdown.Toggle>
+                  <Dropdown>
+                    <Dropdown.Toggle
+                      variant="success"
+                      id="dropdown-basic"
+                      className="btn btn-sm btn-outline-secondary flex-shrink-0 dropdown-toggle d-lg-inline-block d-none"
+                    >
+                      Ավելացնել նոր
+                    </Dropdown.Toggle>
 
-					  <Dropdown.Menu>
-						<Dropdown.Item onClick={() => setIsOpen(true)}>Գնառաջարկ</Dropdown.Item>
-						
-					  </Dropdown.Menu>
-					</Dropdown>
-				
-                 
-				 
-				  {isOpen && (
-                      <AddPrice
-                        handleSubmit={handleSubmit}
-                        //onRoleSelect={}
-                        //onRoleDelete={}
-                        //onAdd={onAdd}
-                        handleChangeFile={handleChangeFile}
-                        handleDrop={handleDrop}
-                        handleDragEmpty={handleDragEmpty}
-                        handleToggleCreateModal={handleToggleCreateModal}
-                        imageUrl={imageUrl}
-                        user={user}
-                        firstname={firstname}
-                        lastname={lastname}
-                        pwd={pwd}
-                        roles={roles}
-                      />
-                    )}
-				 
-				 
-				 
-				 
-				 
+                    <Dropdown.Menu>
+                      <Dropdown.Item onClick={() => setIsOpen(true)}>
+                        Գնառաջարկ
+                      </Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+
+                  {isOpen && (
+                    <AddPrice
+                      setIsOpen={setIsOpen}
+                      getPrices={() => getPrices()}
+                    />
+                  )}
                 </div>
               </div>
               <div className="contact-options-wrap">
-               
                 <div className="dropdown-menu dropdown-menu-end">
                   <a className="dropdown-item active" href="contact.html">
                     <span className="feather-icon dropdown-icon">
@@ -502,7 +250,6 @@ const Prices = () => {
                     </span>
                   </span>
                 </a>
-
               </div>
             </header>
             <div className="contact-body">
@@ -533,14 +280,17 @@ const Prices = () => {
                                     column.getSortByToggleProps()
                                   )}
                                 >
-                                 
-                                    {column.isSorted
-                                      ? column.isSortedDesc
-                                        ? <span className="sorting_asc" ></span>
-                                        : <span className="sorting_desc" ></span>
-                                      : <span className="sorting" ></span>}
-                                  
-                                      {column.render("Header")}
+                                  {column.isSorted ? (
+                                    column.isSortedDesc ? (
+                                      <span className="sorting_asc"></span>
+                                    ) : (
+                                      <span className="sorting_desc"></span>
+                                    )
+                                  ) : (
+                                    <span className="sorting"></span>
+                                  )}
+
+                                  {column.render("Header")}
                                 </th>
                               ))}
                             </tr>
@@ -559,17 +309,16 @@ const Prices = () => {
                                       </td>
                                     );
                                   })}
-                                 
                                 </tr>
                               );
                             })}
                             <ComponentToConfirm
-                                    handleCloseModal={handleCloseModal}
-                                    handleOpenModal={handleOpenModal}
-                                    handleDeleteItem={handleDeleteItem}
-                                    selectedItemId={selectedItemId}
-                                    confirmUserRef={confirmUserRef}
-									userName = {selectedItem.username}
+                              handleCloseModal={handleCloseModal}
+                              handleOpenModal={handleOpenModal}
+                              handleDeleteItem={handleDeleteItem}
+                              selectedItemId={selectedItemId}
+                              confirmUserRef={confirmPriceRef}
+                              userName={selectedItem.username}
                             />
                           </tbody>
                         )}{" "}
@@ -582,8 +331,6 @@ const Prices = () => {
           </div>
         </div>
       </div>
-
-
     </div>
   );
 };
