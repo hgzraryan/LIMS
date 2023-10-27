@@ -8,34 +8,16 @@ import ReactPaginate from "react-paginate";
 import Loading from "../Loading";
 import { useSortBy, useTable } from "react-table";
 import ComponentToConfirm from "../ComponentToConfirm";
-import AddPrice from "../views/CreateUser";
 import { Dropdown } from "react-bootstrap";
 import useGetData from "../../hooks/useGetData";
 import useDeleteData from "../../hooks/useDeleteData";
+import AddPrice from "./AddPrice";
 
 const Prices = () => {
   const [selectedItem, setSelectedItem] = useState("");
   const [selectedItemId, setSelectedItemId] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const confirmPriceRef = useRef("");
-  /*------------------ Delete Component --------------------*/
-  // const handleDeleteItem = async () => {
-  //   if (selectedItem?.username.trim() === confirmUserRef.current?.trim()) {
-  //     try {
-  //       const response = await axiosPrivate.post("/prices", {
-  //         message: "delete",
-  //         userId: selectedItem.id,
-  //       });
-  //       setTimeout(() => {
-  //         setPrices((prev) => response.data.jsonString);
-  //         setSelectedItemId(null); // Close the modal after deletion
-  //       }, 500);
-  //     } catch (err) {
-  //       console.error(err);
-  //       //navigate('/login', { state: { from: location }, replace: true });
-  //     }
-  //   }
-  // };
   
   const handleOpenModal = (user) => {
     setSelectedItemId(true);
@@ -45,7 +27,9 @@ const Prices = () => {
     setSelectedItemId(null);
   };
   /*------------------------------------------------*/
-
+  const handleToggleCreateModal = (value) => {
+    setIsOpen((prev) => value);
+  };
   const {
     data: prices,
     setData: setPrices,
@@ -77,7 +61,7 @@ const Prices = () => {
   };
 
   //-------------------
-  const columns = React.useMemo(
+  const columns = useMemo(
     () => [
       {
         Header: () => (
@@ -207,7 +191,7 @@ const Prices = () => {
 
                   {isOpen && (
                     <AddPrice
-                      setIsOpen={setIsOpen}
+                      handleToggleCreateModal={handleToggleCreateModal}
                       getPrices={() => getPrices()}
                     />
                   )}
@@ -318,7 +302,7 @@ const Prices = () => {
                               handleDeleteItem={handleDeleteItem}
                               selectedItemId={selectedItemId}
                               confirmUserRef={confirmPriceRef}
-                              userName={selectedItem.username}
+                              userName={selectedItem.name}
                             />
                           </tbody>
                         )}{" "}

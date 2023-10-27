@@ -1,5 +1,5 @@
-import React, { useState, useRef } from "react";
-import { Modal, Button } from "react-bootstrap";
+import React from "react";
+import { Modal } from "react-bootstrap";
 
 const ComponentToConfirm = ({
   confirmUserRef,
@@ -18,7 +18,7 @@ const ComponentToConfirm = ({
             textAlign: "center",
           }}
         >
-          Հեռացնել աշխատակցին
+          Հեռացում
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
@@ -38,7 +38,7 @@ const ComponentToConfirm = ({
                                   className="form-label"
                                   htmlFor="confirmUser"
                                 >
-                                  Աշխատակցի հեռացման համար խնդրում ենք մուտքագրել "{userName}" տեքստը
+                                  Հեռացման համար խնդրում ենք մուտքագրել "{userName}" տեքստը
                                 </label>
                                 <input
                                   ref={confirmUserRef}

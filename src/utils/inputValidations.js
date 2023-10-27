@@ -192,13 +192,116 @@ export const mobile_validation = {
     },
   },
 }
+export const name_validation = {
+  name: 'name',
+  label: 'Անվանում',
+  type: 'text',
+  id: 'name',
+  placeholder: "Անվանում",
+  validation: {
+    required: {
+      value: true,
+      message: 'required',
+    },
+    maxLength: {
+      value: 30,
+      message: '30 characters max',
+    },
+  },
+}
+export const price_validation = {
+  name: 'price',
+  label: 'Արժեք',
+  type: 'number',
+  id: 'price',
+  placeholder: "Արժեք",
+  validation: {
+    required: {
+      value: true,
+      message: 'required',
+    },
+    maxLength: {
+      value: 10,
+      message: '10 characters max',
+    },
+  },
+}
+export const unit_validation = {
+  name: 'unit',
+  label: 'Չափման միավոր',
+  type: 'text',
+  id: 'unit',
+  placeholder: "Չափման միավոր",
+  validation: {
+    required: {
+      value: true,
+      message: 'required',
+    },
+    maxLength: {
+      value: 30,
+      message: '30 characters max',
+    },
+  },
+}
+
+export const currency_validation = {
+  name: 'currency',
+  label: 'Արժույթ',
+  type: 'text',
+  id: 'currency',
+  placeholder: "Արժույթ",
+  validation: {
+    required: {
+      value: true,
+      message: 'required',
+    },
+    maxLength: {
+      value: 30,
+      message: '30 characters max',
+    },
+  },
+}
+export const useage_validation = {
+  name: 'useage',
+  label: 'Կիրառություն',
+  type: 'text',
+  id: 'useage',
+  placeholder: "Կիրառություն",
+  validation: {
+    required: {
+      value: true,
+      message: 'required',
+    },
+    maxLength: {
+      value: 30,
+      message: '30 characters max',
+    },
+  },
+}
+export const producer_validation = {
+  name: 'producer',
+  label: 'Թողարկող',
+  type: 'text',
+  id: 'producer',
+  placeholder: "Թողարկող",
+  validation: {
+    required: {
+      value: true,
+      message: 'required',
+    },
+    maxLength: {
+      value: 30,
+      message: '30 characters max',
+    },
+  },
+}
 
 export const desc_validation = {
   name: 'description',
-  label: 'description',
+  label: 'Նկարագիր',
   multiline: true,
   id: 'description',
-  placeholder: 'write description ...',
+  placeholder: 'Նկարագիր',
   validation: {
     required: {
       value: true,
