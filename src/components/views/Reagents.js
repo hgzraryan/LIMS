@@ -11,7 +11,7 @@ import { Dropdown } from "react-bootstrap";
 import AddReagent from "./AddReagent";
 import useGetData from "../../hooks/useGetData";
 import useDeleteData from "../../hooks/useDeleteData";
-
+const REAGENTS_URL = "/reagentList"
 const Reagents = () => {
   const [selectedItem, setSelectedItem] = useState("");
   const [selectedItemId, setSelectedItemId] = useState(null);
@@ -35,9 +35,9 @@ const Reagents = () => {
     setData: setReagents,
     hasMore,
     getData: getReagents,
-  } = useGetData("/reagentList");
+  } = useGetData(REAGENTS_URL);
   const { handleDeleteItem } = useDeleteData(
-    "/reagentList",
+    "/reagents",
     confirmReagentRef,
     selectedItem,
     setSelectedItemId,
@@ -202,7 +202,7 @@ const Reagents = () => {
                   {isOpen && (
                     <AddReagent
                       handleToggleCreateModal={handleToggleCreateModal}
-                      getPrices={() => getReagents()}
+                      getReagents={() => getReagents()}
                     />
                   )}
                 </div>

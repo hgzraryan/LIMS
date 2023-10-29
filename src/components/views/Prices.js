@@ -12,7 +12,7 @@ import { Dropdown } from "react-bootstrap";
 import useGetData from "../../hooks/useGetData";
 import useDeleteData from "../../hooks/useDeleteData";
 import AddPrice from "./AddPrice";
-
+const PRICES_URL = "/priceList"
 const Prices = () => {
   const [selectedItem, setSelectedItem] = useState("");
   const [selectedItemId, setSelectedItemId] = useState(null);
@@ -35,7 +35,7 @@ const Prices = () => {
     setData: setPrices,
     hasMore,
     getData: getPrices,
-  } = useGetData("/priceList");
+  } = useGetData(PRICES_URL);
 
   const { handleDeleteItem } = useDeleteData(
     "/prices",

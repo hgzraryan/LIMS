@@ -7,15 +7,14 @@ import "react-datepicker/dist/react-datepicker.css";
 import { Form, FormProvider, useForm } from "react-hook-form";
 import { Input } from "../Input";
 import { toast } from "react-toastify";
-
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import {
   name_validation,
-  class_validation
+  class_validation,
 } from "../../utils/inputValidations";
 
 const REGISTER_URL = "/registerResearch";
-function AddResearch({ handleToggleCreateModal, getPrices }) {
+function AddResearch({ handleToggleCreateModal, getResearches }) {
   const [errMsg, setErrMsg] = useState("");
   const methods = useForm({
     mode: "onChange",
@@ -46,10 +45,8 @@ function AddResearch({ handleToggleCreateModal, getPrices }) {
         withCredentials: true,
       });
       handleToggleCreateModal(false);
-      getPrices("update");
-      notify(
-        `${newResearch.name} գնառաջարկը ավելացված է`
-      );
+      getResearches("update");
+      notify(`${newResearch.name} գնառաջարկը ավելացված է`);
     } catch (err) {
       if (!err?.response) {
         setErrMsg("No Server Response");
@@ -115,7 +112,6 @@ function AddResearch({ handleToggleCreateModal, getPrices }) {
                               <Input {...class_validation} />
                             </div>
                           </div>
-                          
                         </div>
                       </div>
                     </div>

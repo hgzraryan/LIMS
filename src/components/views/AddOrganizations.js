@@ -7,11 +7,12 @@ import "react-datepicker/dist/react-datepicker.css";
 import { Form, FormProvider, useForm } from "react-hook-form";
 import { Input } from "../Input";
 import { toast } from "react-toastify";
+
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { name_validation, desc_validation } from "../../utils/inputValidations";
 
-const REGISTER_URL = "/registerEquipment";
-function AddEquipment({ handleToggleCreateModal, getEquipments }) {
+const REGISTER_URL = "/registerOrganizations";
+function AddOrganization({ handleToggleCreateModal, getOrganizations }) {
   const [errMsg, setErrMsg] = useState("");
   const methods = useForm({
     mode: "onChange",
@@ -31,19 +32,19 @@ function AddEquipment({ handleToggleCreateModal, getEquipments }) {
       theme: "light",
     });
   const onSubmit = methods.handleSubmit(async (data) => {
-    const newEquipment = {
+    const newAgent = {
       ...data,
       additional: editorRef.current.getContent({ format: "text" }),
     };
-    const formData = JSON.stringify(newEquipment);
+    const formData = JSON.stringify(newAgent);
     try {
       await axiosPrivate.post(REGISTER_URL, formData, {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
       });
       handleToggleCreateModal(false);
-      getEquipments("update");
-      notify(`${newEquipment.name} սարքավորումը ավելացված է`);
+      getOrganizations("update");
+      notify(`${newAgent.name} Կազմակերպությունը ավելացված է`);
     } catch (err) {
       if (!err?.response) {
         setErrMsg("No Server Response");
@@ -63,7 +64,7 @@ function AddEquipment({ handleToggleCreateModal, getEquipments }) {
     >
       <Modal.Header closeButton>
         <Modal.Title style={{ width: "100%", textAlign: "center" }}>
-          Ավելացնել նոր Սարքավորում
+          Ավելացնել նոր Գործակալ
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
@@ -80,7 +81,7 @@ function AddEquipment({ handleToggleCreateModal, getEquipments }) {
                   >
                     <div className="card">
                       <div className="card-header">
-                        <a href="#">Սարքավորման տվյալներ</a>
+                        <a href="#">Կազմակերպության տվյալներ</a>
                         <button
                           className="btn btn-xs btn-icon btn-rounded btn-light"
                           data-bs-toggle="tooltip"
@@ -198,4 +199,4 @@ function AddEquipment({ handleToggleCreateModal, getEquipments }) {
   );
 }
 
-export default AddEquipment;
+export default AddOrganization;

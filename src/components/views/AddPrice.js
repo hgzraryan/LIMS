@@ -50,9 +50,7 @@ function AddPrice({ handleToggleCreateModal, getPrices }) {
       });
       handleToggleCreateModal(false);
       getPrices("update");
-      notify(
-        `${newPrice.name} գնառաջարկը ավելացված է`
-      );
+      notify(`${newPrice.name} գնառաջարկը ավելացված է`);
     } catch (err) {
       if (!err?.response) {
         setErrMsg("No Server Response");

@@ -15,12 +15,12 @@ import {
   currency_validation,
   desc_validation,
   useage_validation,
-producer_validation
+  producer_validation,
 } from "../../utils/inputValidations";
 import Multiselect from "multiselect-react-dropdown";
 
 const REGISTER_URL = "/registerReagent";
-function AddReagent({ handleToggleCreateModal, getPrices }) {
+function AddReagent({ handleToggleCreateModal, getReagents }) {
   const [errMsg, setErrMsg] = useState("");
   const [unitType, setUnitType] = useState("");
   const methods = useForm({
@@ -57,7 +57,7 @@ function AddReagent({ handleToggleCreateModal, getPrices }) {
         withCredentials: true,
       });
       handleToggleCreateModal(false);
-      getPrices("update");
+      getReagents("update");
       notify(`${newReagent.name}  ռեագենտը ավելացված է`);
     } catch (err) {
       if (!err?.response) {
@@ -129,9 +129,7 @@ function AddReagent({ handleToggleCreateModal, getPrices }) {
                               <Input {...unit_validation} />
                             </div>
                             <div className="col-sm-6">
-                              <label className="form-label">
-                                Չափման Տեսակ
-                              </label>
+                              <label className="form-label">Չափման Տեսակ</label>
                               <Multiselect
                                 options={[
                                   { name: "Տուփ", id: 1 },

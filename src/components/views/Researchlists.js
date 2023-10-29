@@ -11,7 +11,7 @@ import AddResearch from "./AddResearch";
 import useGetData from "../../hooks/useGetData";
 import useDeleteData from "../../hooks/useDeleteData";
 import ComponentToConfirm from "../ComponentToConfirm";
-const GET_RESEARCHES = "/researchLists";
+const RESEARCHES_URL = "/researchLists";
 
 const Researchlists = () => {
   /*------------------ Create user Component --------------------*/
@@ -37,16 +37,16 @@ const Researchlists = () => {
     setData: setResearches,
     hasMore,
     getData: getResearches,
-  } = useGetData(GET_RESEARCHES);
+  } = useGetData(RESEARCHES_URL);
 
   const { handleDeleteItem } = useDeleteData(
-    "/prices",
+    "/researches",
     confirmResearchRef,
     selectedItem,
     setSelectedItemId,
     researches,
     setResearches,
-    "username" //TODO need to correct for prices
+    "username" //TODO need to correct 
   );
   //-------------------------
 
@@ -188,7 +188,7 @@ const Researchlists = () => {
                   {isOpen && (
                     <AddResearch
                     handleToggleCreateModal={handleToggleCreateModal}
-                    getPrices={() => getResearches()}
+                    getResearches={() => getResearches()}
                     />
                   )}
                 </div>

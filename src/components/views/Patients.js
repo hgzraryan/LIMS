@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef,useMemo } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -20,31 +20,19 @@ import {
   reserchesList,
   selectResearches,
 } from "../../redux/features/researches/researchesSlice";
+import useGetData from "../../hooks/useGetData";
 const GET_RESEARCHES = "/researchLists";
+const PATIENTS_URL = "/patients";
 
 const Patients = () => {
   const researchState = useSelector(selectResearches);
   const dispatch = useDispatch();
-  const [patients, setPatients] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [usersPerPage, setUsersPerPage] = useState(12);
-  const [hasMore, setHasMore] = useState(true);
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState("");
-  // const [errMsg, setErrMsg] = useState("");
-  /*------------------ tiny mce --------------------*/
-  //const editorRef = useRef(null);
-  // const log = () => {
-  //   if (editorRef.current) {
-  //     additionalRef=editorRef.current.getContent({ format: "text" });
-  //   }
-  // };
-  /*------------------------------------------------*/
-
-  /*------------------------------------------------------------------Get Researches----------------------------------------------------*/
+/*-----------------------------------------------------Get Researches----------------------------------------------------*/
   useEffect(() => {
     let isMounted = true;
     const controller = new AbortController();
@@ -105,85 +93,84 @@ const Patients = () => {
   const handleToggleCreateModal = (value) => {
     setIsOpen((prev) => value);
   };
+  const {
+    data: patients,
+    setData: setPatients,
+    hasMore,
+    getData: getPatients,
+  } = useGetData(PATIENTS_URL);
 
-  const pagesVisited = currentPage * usersPerPage;
-  const currentUsers = patients.slice(
-    pagesVisited,
-    pagesVisited + usersPerPage
-  );
-  const pageCount = Math.ceil(patients.length / usersPerPage);
+  // useEffect(() => {
+  //   let isMounted = true;
+  //   const controller = new AbortController();
 
-  useEffect(() => {
-    let isMounted = true;
-    const controller = new AbortController();
+  //   const getPatients = async () => {
+  //     try {
+  //       const response = await axiosPrivate.get("/patients", {
+  //         signal: controller.signal,
+  //         page: currentPage,
+  //         onPage: 1,
+  //       });
+  //       if (
+  //         response.data.jsonString.length === 0 ||
+  //         response.data.jsonString.length < 12
+  //       ) {
+  //         setHasMore(false);
+  //       }
+  //       isMounted &&
+  //         setPatients((prevUsers) => [
+  //           ...prevUsers,
+  //           ...response.data.jsonString,
+  //         ]);
+  //       setCurrentPage((prev) => prev + 1);
+  //     } catch (err) {
+  //       console.error(err);
+  //       navigate("/login", { state: { from: location }, replace: true });
+  //     }
+  //   };
 
-    const getPatients = async () => {
-      try {
-        const response = await axiosPrivate.get("/patients", {
-          signal: controller.signal,
-          page: currentPage,
-          onPage: 1,
-        });
-        if (
-          response.data.jsonString.length === 0 ||
-          response.data.jsonString.length < 12
-        ) {
-          setHasMore(false);
-        }
-        isMounted &&
-          setPatients((prevUsers) => [
-            ...prevUsers,
-            ...response.data.jsonString,
-          ]);
-        setCurrentPage((prev) => prev + 1);
-      } catch (err) {
-        console.error(err);
-        navigate("/login", { state: { from: location }, replace: true });
-      }
-    };
+  //   getPatients();
 
-    getPatients();
+  //   return () => {
+  //     isMounted = false;
+  //     controller.abort();
+  //   };
+  // }, []);
 
-    return () => {
-      isMounted = false;
-      controller.abort();
-    };
-  }, []);
-
-  const getPatients = async (check = "") => {
-    try {
-      const response = await axiosPrivate.get("/patients", {
-        page: currentPage,
-        onPage: usersPerPage,
-      });
-      setTimeout(() => {
-        if (
-          response.data.jsonString.length === 0 ||
-          response.data.jsonString.length < 12
-        ) {
-          setHasMore(false);
-        }
-        switch (check) {
-          case "check":
-            setPatients((prevUsers) => [
-              ...prevUsers,
-              ...response.data.jsonString,
-            ]);
-            break;
-          case "update":
-            setPatients((prevUsers) => response.data.jsonString);
-            setCurrentPage((prev) => prev + 1);
-            break;
-          default:
-            setPatients((prevUsers) => response.data.jsonString);
-            setCurrentPage((prev) => prev + 1);
-        }
-      }, 500);
-    } catch (err) {
-      console.error(err);
-      navigate("/login", { state: { from: location }, replace: true });
-    }
-  };
+  // const getPatients = async (check = "") => {
+  //   try {
+  //     const response = await axiosPrivate.get("/patients", {
+  //       page: currentPage,
+  //       onPage: usersPerPage,
+  //     });
+  //     setTimeout(() => {
+  //       if (
+  //         response.data.jsonString.length === 0 ||
+  //         response.data.jsonString.length < 12
+  //       ) {
+  //         setHasMore(false);
+  //       }
+  //       switch (check) {
+  //         case "check":
+  //           setPatients((prevUsers) => [
+  //             ...prevUsers,
+  //             ...response.data.jsonString,
+  //           ]);
+  //           break;
+  //         case "update":
+  //           setPatients((prevUsers) => response.data.jsonString);
+  //           setCurrentPage((prev) => prev + 1);
+  //           break;
+  //         default:
+  //           setPatients((prevUsers) => response.data.jsonString);
+  //           setCurrentPage((prev) => prev + 1);
+  //       }
+  //     }, 500);
+  //   } catch (err) {
+  //     console.error(err);
+  //     navigate("/login", { state: { from: location }, replace: true });
+  //   }
+  // };
 
   //-------------------------
   const handleOpenModal = (user) => {
@@ -208,7 +195,7 @@ const Patients = () => {
 
   //-------------------
 
-  const columns = React.useMemo(
+  const columns = useMemo(
     () => [
       {
         Header: () => (
@@ -567,7 +554,7 @@ const Patients = () => {
                   >
                     <InfiniteScroll
                       dataLength={patients.length}
-                      next={()=>getPatients("check")}
+                      next={()=>getPatients}
                       hasMore={hasMore}
                       loader={<Loading />}
                       scrollableTarget="scrollableDiv"

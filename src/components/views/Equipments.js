@@ -12,7 +12,7 @@ import useDeleteData from "../../hooks/useDeleteData";
 import useGetData from "../../hooks/useGetData";
 import ComponentToConfirm from "../ComponentToConfirm";
 
-const REGISTER_URL = "/equipmentList";
+const EQUIPMENTS_URL = "/equipmentList";
 
 const Equipments = () => {
   const [selectedItem, setSelectedItem] = useState("");
@@ -37,10 +37,10 @@ const Equipments = () => {
     setData: setEquipments,
     hasMore,
     getData: getEquipments,
-  } = useGetData(REGISTER_URL);
+  } = useGetData(EQUIPMENTS_URL);
 
   const { handleDeleteItem } = useDeleteData(
-    "/equipment",
+    "/equipments",
     confirmResearchRef,
     selectedItem,
     setSelectedItemId,
@@ -179,7 +179,7 @@ const Equipments = () => {
                   {isOpen && (
                     <AddEquipment
                       handleToggleCreateModal={handleToggleCreateModal}
-                      getPrices={() => getEquipments()}
+                      getEquipments={() => getEquipments()}
                     />
                   )}
                 </div>

@@ -3,18 +3,14 @@ import { Modal } from "react-bootstrap";
 import Multiselect from "multiselect-react-dropdown";
 import FeatherIcon from "feather-icons-react";
 import MissingAvatar from "../../dist/img/Missing.svg";
-
 import axios from "./../../api/axios";
 import { Form, FormProvider, useForm } from "react-hook-form";
 import { Input } from "../Input";
 import {
   firstName_validation,
   lastName_validation,
-  midName_validation,
   email_validation,
   mobile_validation,
-  address_validation,
-  age_validation,
   pwd_validation,
   user_validation,
   position_validation,
@@ -25,25 +21,13 @@ import {  toast } from 'react-toastify';
 
 const REGISTER_URL = "/register";
 function CreateUser({ setIsOpen,getUsers }) {
-  const user = useRef("");
-  const firstname = useRef("");
-  const lastname = useRef("");
-  const pwd = useRef("");
   const roles = useRef("");
-  const emailRef = useRef("");
-  const phoneRef = useRef("");
-  const errRef = useRef("");
   const multiselectRef = useRef("");
   const intupAvatarRef = useRef(null);
-  const axiosPrivate = useAxiosPrivate();
   const [imageUrl, setImageUrl] = useState(MissingAvatar);
-
   const [rolesArray, setRolesArray] = useState([]);
-
   const [image, setImage] = useState("");
-
   const imageMimeType = /image\/(png|jpg|jpeg)/i;
-
   const fileReader = new FileReader();
   const formData = new FormData();
 

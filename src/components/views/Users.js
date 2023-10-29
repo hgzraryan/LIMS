@@ -14,6 +14,7 @@ import useGetData from "../../hooks/useGetData";
 import useDeleteData from "../../hooks/useDeleteData";
 import useUpdateCount from "../../hooks/useUpdateCount";
 import { checkUsersCount } from "../../redux/features/users/usersCountSlice";
+const  USERS_URL ="/users"
 
 const Users = () => {
   const confirmUserRef = useRef("");
@@ -26,7 +27,7 @@ const Users = () => {
     setData: setUsers,
     hasMore,
     getData: getUsers,
-  } = useGetData("/users");
+  } = useGetData(USERS_URL);
 
   //TODO need correct
   const {updateDataCount} =useUpdateCount("/allCount",checkUsersCount,'usersCount')
