@@ -23,6 +23,7 @@ import {
 } from "../../redux/features/discounts/discountValueSlice";
 import "../../dist/css/style.css";
 import FeatherIcon from "feather-icons-react/build/FeatherIcon";
+import { toast } from "react-toastify";
 
 const GET_RESEARCHES = "/researchLists";
 
@@ -44,6 +45,18 @@ export default function DiscountCards() {
   const getUniqDiscountValue = useSelector(selectdiscounUniqValue);
   const getUniqDiscountResearches = useSelector(selectUniqResearches);
 
+
+  const notify = (text) =>
+  toast.success(text, {
+    position: "top-right",
+    autoClose: 3000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+  });
   useEffect(() => {
     setResearchState(() => getResearchState);
   }, [getResearchState]);
@@ -101,6 +114,9 @@ export default function DiscountCards() {
       // formRef.current.reset();
       dispatch(createDiscount(parseInt(discount)));
       dispatch(disValue(discount));
+      notify(
+        `Դուք ստեղծել եք ${discount}% զեղչ`
+      );
     }
 
     if (
@@ -123,6 +139,9 @@ export default function DiscountCards() {
       });
       dispatch(reserchesList(uniqState));
       multiselectRef.current.resetSelectedValues();
+      notify(
+        `Դուք ստեղծել եք ${customUniqDisRef.current}% զեղչ`
+      );
     }
   };
   const deleteCommonDiscount = () => {
@@ -131,6 +150,9 @@ export default function DiscountCards() {
     dispatch(createDiscount(0));
     dispatch(deleteDisValue());
     multiselectRef.current.resetSelectedValues();
+    notify(
+      `Դուք ջնջել եք  զեղչը`
+    );
   };
   const deleteUniqDiscount = () => {
     formRefInd.current.reset();
@@ -139,6 +161,9 @@ export default function DiscountCards() {
     dispatch(createDiscount(0));
     dispatch(deleteDisUniqValue());
     multiselectRef.current.resetSelectedValues();
+    notify(
+      `Դուք ջնջել եք  զեղչը`
+    );
   };
   const refreshPage = () => {
     let paglink = document.querySelectorAll(".page-item");
