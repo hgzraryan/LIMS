@@ -1,129 +1,53 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import useAxiosPrivate from "../../hooks/useAxiosPrivate";
-import { useNavigate, useLocation } from "react-router-dom";
 import FeatherIcon from "feather-icons-react";
 import LoadingSpinner from "../LoadingSpinner";
 import ReactPaginate from "react-paginate";
-import Multiselect from "multiselect-react-dropdown";
-import axios from "../../api/axios";
 import Loading from "../Loading";
 import { useSortBy, useTable } from "react-table";
 import { Dropdown } from "react-bootstrap";
-
-import AddResearch from "./CreateUser";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  reserchesList,
-  selectResearches,
-} from "../../redux/features/researches/researchesSlice";
+import AddResearch from "./AddResearch";
+import useGetData from "../../hooks/useGetData";
+import useDeleteData from "../../hooks/useDeleteData";
+import ComponentToConfirm from "../ComponentToConfirm";
 const GET_RESEARCHES = "/researchLists";
 
 const Researchlists = () => {
-  const [researches, setResearches] = useState([]);
-
-  const [rolesArray, setRolesArray] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [usersPerPage, setUsersPerPage] = useState(12);
-  const [hasMore, setHasMore] = useState(true);
-  const axiosPrivate = useAxiosPrivate();
-  const navigate = useNavigate();
-  const location = useLocation();
-  const multiselectRef = useRef("");
-  const dispatch = useDispatch();
-  const respResearches = useSelector(selectResearches);
   /*------------------ Create user Component --------------------*/
   const handleToggleCreateModal = (value) => {
     setIsOpen((prev) => value);
   };
+  const [selectedItem, setSelectedItem] = useState("");
+  const [selectedItemId, setSelectedItemId] = useState(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const confirmResearchRef = useRef("");
+  
+  const handleOpenModal = (user) => {
+    setSelectedItemId(true);
+    setSelectedItem((prev) => user);
+  };
+  const handleCloseModal = () => {
+    setSelectedItemId(null);
+  };
   /*------------------------------------------------*/
 
-  /*----------------ADD USER---------------------*/
-  const errRef = useRef("");
-  const user = useRef("");
-  const firstname = useRef("");
-  const lastname = useRef("");
-  const pwd = useRef("");
-  const roles = useRef("");
+  const {
+    data: researches,
+    setData: setResearches,
+    hasMore,
+    getData: getResearches,
+  } = useGetData(GET_RESEARCHES);
 
-
-  const pagesVisited = currentPage * usersPerPage;
-  // const currentUsers = researches.slice(
-  //   pagesVisited,
-  //   pagesVisited + usersPerPage
-  // );
-  const pageCount = Math.ceil(researches.length / usersPerPage);
-
-  useEffect(() => {
-    let isMounted = true;
-    const controller = new AbortController();
-
-    const getResearches = async () => {
-      try {
-        const response = await axiosPrivate.post(GET_RESEARCHES, {
-          signal: controller.signal,
-          page: currentPage,
-          onPage: Math.round((window.innerHeight / 100) * 1.5),
-        });
-        setTimeout(() => {
-          if (
-            response.data.jsonString.length === 0 ||
-            response.data.jsonString.length < 12
-          ) {
-            setHasMore(false);
-          }
-          isMounted && //dispatch(reserchesList(response.data.jsonString));
-          setResearches((prev) => response.data.jsonString);
-          setCurrentPage((prev) => prev + 1);
-        }, 500);
-      } catch (err) {
-        console.error(err);
-        navigate("/login", { state: { from: location }, replace: true });
-      }
-    };
-
-    getResearches();
-
-    return () => {
-      isMounted = false;
-      controller.abort();
-    };
-  }, []);
-
-  const getResearches = async (check='') => {
-    try {
-      const response = await axiosPrivate.post(GET_RESEARCHES, {
-        page: currentPage,
-        onPage: usersPerPage,
-      });
-      setTimeout(() => {
-        if (
-          response.data.jsonString.length === 0 ||
-          response.data.jsonString.length < 12
-        ) {
-          setHasMore(false);
-        }
-        switch (check) {
-          case "check":
-            setResearches((prev) => ([...prev,...response.data.jsonString]));
-            //dispatch(reserchesList(researches));
-            break;
-          case "update":
-            setResearches((prevUsers) => response.data.jsonString);
-            setCurrentPage((prev) => prev + 1);
-            break;
-          default:
-            setResearches((prevUsers) => response.data.jsonString);
-            setCurrentPage((prev) => prev + 1);
-        }
-      }, 500);
-    } catch (err) {
-      console.error(err);
-      navigate("/login", { state: { from: location }, replace: true });
-    }
-  };
-
+  const { handleDeleteItem } = useDeleteData(
+    "/prices",
+    confirmResearchRef,
+    selectedItem,
+    setSelectedItemId,
+    researches,
+    setResearches,
+    "username" //TODO need to correct for prices
+  );
   //-------------------------
 
   const refreshPage = () => {
@@ -139,18 +63,6 @@ const Researchlists = () => {
   };
 
   //-------------------
-
-  const [isOpen, setIsOpen] = useState(false);
-  /*
-     const fetchMoreData = () => {
-       setTimeout(() => {
-         setItems((prevItems) => [
-           ...prevItems,
-           ...generateData(prevItems.length),
-         ]);
-       }, 1500);
-     };
-	 */
 
   const columns = React.useMemo(
     () => [
@@ -195,6 +107,21 @@ const Researchlists = () => {
                 <span className="icon">
                   <span className="feather-icon">
                     <FeatherIcon icon="edit" />
+                  </span>
+                </span>
+              </a>
+              <a
+                className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover del-button"
+                data-bs-toggle="tooltip"
+                onClick={() => handleOpenModal(row.values)}
+                data-placement="top"
+                title=""
+                data-bs-original-title="Delete"
+                href="#"
+              >
+                <span className="icon">
+                  <span className="feather-icon">
+                    <FeatherIcon icon="trash" />
                   </span>
                 </span>
               </a>
@@ -253,27 +180,15 @@ const Researchlists = () => {
                       Ավելացնել նոր
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
-                      <Dropdown.Item onClick={() => setIsOpen(true)}>
+                    <Dropdown.Item onClick={() => setIsOpen(true)}>
                         Հետազոտություն
                       </Dropdown.Item>
                     </Dropdown.Menu>
                   </Dropdown>
                   {isOpen && (
                     <AddResearch
-                      //handleSubmit={handleSubmit}
-                      //onRoleSelect={}
-                      //onRoleDelete={}
-                      //onAdd={onAdd}
-                      //handleChangeFile={handleChangeFile}
-                      //handleDrop={handleDrop}
-                      //handleDragEmpty={handleDragEmpty}
-                      handleToggleCreateModal={handleToggleCreateModal}
-                      //imageUrl={imageUrl}
-                      user={user}
-                      firstname={firstname}
-                      lastname={lastname}
-                      pwd={pwd}
-                      roles={roles}
+                    handleToggleCreateModal={handleToggleCreateModal}
+                    getPrices={() => getResearches()}
                     />
                   )}
                 </div>
@@ -490,6 +405,14 @@ const Researchlists = () => {
                                 </tr>
                               );
                             })}
+                            <ComponentToConfirm
+                              handleCloseModal={handleCloseModal}
+                              handleOpenModal={handleOpenModal}
+                              handleDeleteItem={handleDeleteItem}
+                              selectedItemId={selectedItemId}
+                              confirmUserRef={confirmResearchRef}
+                              userName={selectedItem.research}
+                            />
                           </tbody>
                         )}{" "}
                       </table>

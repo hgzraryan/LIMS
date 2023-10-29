@@ -313,6 +313,23 @@ export const desc_validation = {
     },
   },
 }
+export const class_validation = {
+  name: 'class',
+  label: 'Դասակարգ',
+  multiline: true,
+  id: 'class',
+  placeholder: 'Դասակարգ',
+  validation: {
+    required: {
+      value: true,
+      message: 'required',
+    },
+    maxLength: {
+      value: 200,
+      message: '200 characters max',
+    },
+  },
+}
 
 
 

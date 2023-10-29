@@ -245,7 +245,7 @@ const Prices = () => {
                   >
                     <InfiniteScroll
                       dataLength={prices.length}
-                      next={getPrices}
+                      next={getPrices("check")}
                       hasMore={hasMore}
                       loader={<Loading />}
                       scrollableTarget="scrollableDiv"
