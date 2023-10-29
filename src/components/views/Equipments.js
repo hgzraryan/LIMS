@@ -1,299 +1,65 @@
-import React, { useState, useEffect, useRef, useMemo } from "react";
+/* eslint-disable jsx-a11y/anchor-is-valid */
+import React, { useState, useRef, useMemo } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import useAxiosPrivate from "../../hooks/useAxiosPrivate";
-import { useNavigate, useLocation } from "react-router-dom";
 import FeatherIcon from "feather-icons-react";
 import LoadingSpinner from "../LoadingSpinner";
 import ReactPaginate from "react-paginate";
-import MissingAvatar from "../../dist/img/Missing.svg";
-import axios from "./../../api/axios";
 import Loading from "../Loading";
 import { useSortBy, useTable } from "react-table";
 import AddEquipment from "../views/AddEquipment";
 import { Dropdown } from "react-bootstrap";
+import useDeleteData from "../../hooks/useDeleteData";
+import useGetData from "../../hooks/useGetData";
+import ComponentToConfirm from "../ComponentToConfirm";
 
-const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
-const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
-const EMAIL_REGEX =
-  /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-const MOBILE_REGEX = /^\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$/;
-const REGISTER_URL = "/register";
+const REGISTER_URL = "/equipmentList";
 
 const Equipments = () => {
-  const [equipments, setEquipments] = useState([]);
+  const [selectedItem, setSelectedItem] = useState("");
+  const [selectedItemId, setSelectedItemId] = useState(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const confirmResearchRef = useRef("");
 
-  const [rolesArray, setRolesArray] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [usersPerPage, setUsersPerPage] = useState(12);
-  const [hasMore, setHasMore] = useState(true);
-  const axiosPrivate = useAxiosPrivate();
-  const navigate = useNavigate();
-  const location = useLocation();
-  const [image, setImage] = useState("");
-  const [imageUrl, setImageUrl] = useState(MissingAvatar);
-  const intupAvatarRef = useRef(null);
-  const imageMimeType = /image\/(png|jpg|jpeg)/i;
-  const fileReader = new FileReader();
-  const multiselectRef = useRef("");
-
-  let roleState = {
-    options: [
-      { name: "Collaborator", id: 1 },
-      { name: "Designer", id: 2 },
-      { name: "React Developer", id: 3 },
-      { name: "Promotion", id: 4 },
-      { name: "Advertisement", id: 5 },
-    ],
+  const handleOpenModal = (data) => {
+    setSelectedItemId(true);
+    setSelectedItem((prev) => data);
+    console.log(data);
   };
-
-  /*------------------ Create user Component --------------------*/
+  const handleCloseModal = () => {
+    setSelectedItemId(null);
+  };
+  /*------------------------------------------------*/
   const handleToggleCreateModal = (value) => {
     setIsOpen((prev) => value);
   };
-  /*------------------------------------------------*/
+  const {
+    data: equipments,
+    setData: setEquipments,
+    hasMore,
+    getData: getEquipments,
+  } = useGetData(REGISTER_URL);
 
-  /*----------------ADD USER---------------------*/
-  const errRef = useRef("");
-  const user = useRef("");
-  const firstname = useRef("");
-  const lastname = useRef("");
-  const pwd = useRef("");
-  const roles = useRef("");
-
-  const [validName, setValidName] = useState(false);
-  const [validPwd, setValidPwd] = useState(false);
-  const [errMsg, setErrMsg] = useState("");
-
-  const formData = new FormData();
-
-  useEffect(() => {
-    setValidName(USER_REGEX.test(user.current));
-  }, [user]);
-
-  useEffect(() => {
-    setValidPwd(PWD_REGEX.test(pwd.current));
-  }, [pwd]);
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const newUser = {
-      user: user.current,
-      pwd: pwd.current,
-      firstname: firstname.current,
-      lastname: lastname.current,
-      roles: roles.current,
-    };
-
-    formData.append("text", JSON.stringify(newUser));
-    formData.append("image", image);
-    try {
-      const response = await axios.post(REGISTER_URL, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-        withCredentials: true,
-      });
-      //console.log(JSON.stringify(response?.data));
-      //console.log(JSON.stringify(response))
-
-      //clear state and controlled inputs
-      debugger;
-      firstname.current = "";
-      lastname.current = "";
-      pwd.current = "";
-      user.current = "";
-      user.roles = "";
-    } catch (err) {
-      if (!err?.response) {
-        setErrMsg("No Server Response");
-      } else if (err.response?.status === 409) {
-        setErrMsg("Username Taken");
-      } else {
-        setErrMsg(" Failed");
-      }
-    }
-  };
-  const onRoleSelect = (data) => {
-    let rolesArr = [];
-    for (let role of data) {
-      rolesArr.push(Object.values(role)[0]);
-    }
-    setRolesArray((prev) => (prev = rolesArr));
-  };
-  const onRoleDelete = (data) => {
-    let rolesArr = [];
-    for (let role of data) {
-      rolesArr.push(Object.values(role)[0]);
-    }
-    setRolesArray((prev) => (prev = rolesArr));
-
-    //reset selected options colors
-    const elems = document.querySelectorAll(".chips");
-    elems.forEach((element) => {
-      element.classList.remove("chips");
-    });
-  };
-  const onAdd = (e) => {
-    roles.current = rolesArray;
-    //multiselectRef.current.resetSelectedValues()
-    const elems = document.querySelectorAll(".chip");
-    elems.forEach((element) => {
-      element.classList.add("chips");
-    });
-  };
-  /*----------------ADD USER END---------------------*/
-  fileReader.onloadend = () => {
-    setImageUrl(fileReader.result);
-  };
-
-  const handleChangeFile = async (event) => {
-    const image = event.target.files[0];
-    if (!image.type.match(imageMimeType)) {
-      alert("Image mime type is not valid");
-      return;
-    }
-    debugger;
-    setImage(image);
-    try {
-      formData.append("image", event.target.files[0]);
-    } catch (err) {
-      console.warn(err);
-    }
-  };
-  useEffect(() => {
-    let fileReader,
-      isCancel = false;
-    if (image) {
-      fileReader = new FileReader();
-      fileReader.onload = (e) => {
-        const { result } = e.target;
-        if (result && !isCancel) {
-          setImageUrl(result);
-        }
-      };
-      fileReader.readAsDataURL(image);
-    }
-    return () => {
-      isCancel = true;
-      if (fileReader && fileReader.readyState === 1) {
-        fileReader.abort();
-      }
-    };
-  }, [image]);
-  const handleDrop = (event) => {
-    event.preventDefault();
-    if (event.stopPropagation) {
-      event.stopPropagation();
-    }
-    if (event.dataTransfer.files && event.dataTransfer.files.length) {
-      setImage(event.dataTransfer.files[0]);
-      fileReader.readAsDataURL(event.dataTransfer.files[0]);
-    }
-  };
-  const handleDragEmpty = (event) => {
-    event.preventDefault();
-    if (event.stopPropagation) {
-      event.stopPropagation();
-    }
-  };
-
-  const pagesVisited = currentPage * usersPerPage;
-  const currentUsers = equipments.slice(
-    pagesVisited,
-    pagesVisited + usersPerPage
+  const { handleDeleteItem } = useDeleteData(
+    "/equipment",
+    confirmResearchRef,
+    selectedItem,
+    setSelectedItemId,
+    equipments,
+    setEquipments,
+    "username" //TODO need to correct for prices
   );
-  const pageCount = Math.ceil(equipments.length / usersPerPage);
-
-  useEffect(() => {
-    let isMounted = true;
-    const controller = new AbortController();
-
-    const getEquipments = async () => {
-      try {
-        const response = await axiosPrivate.post("/equipmentList", {
-          signal: controller.signal,
-          page: currentPage,
-          onPage: Math.round((window.innerHeight / 100) * 1.5),
-        });
-        setTimeout(() => {
-          if (
-            response.data.jsonString.length === 0 ||
-            response.data.jsonString.length < 12
-          ) {
-            setHasMore(false);
-          }
-          setEquipments((prevUsers) => [
-            ...prevUsers,
-            ...response.data.jsonString,
-          ]);
-          setCurrentPage((prev) => prev + 1);
-        }, 500);
-      } catch (err) {
-        console.error(err);
-        navigate("/login", { state: { from: location }, replace: true });
-      }
-    };
-
-    getEquipments();
-
-    return () => {
-      isMounted = false;
-      controller.abort();
-    };
-  }, []);
-
-  const getEquipments = async () => {
-    try {
-      const response = await axiosPrivate.post("/equipmentList", {
-        page: currentPage,
-        onPage: usersPerPage,
-      });
-
-      //console.log(response);
-
-      setTimeout(() => {
-        if (
-          response.data.jsonString.length === 0 ||
-          response.data.jsonString.length < 12
-        ) {
-          setHasMore(false);
-        }
-        setEquipments((prev) => response.data.jsonString);
-
-        setCurrentPage((prev) => prev + 1);
-      }, 500);
-    } catch (err) {
-      console.error(err);
-      navigate("/login", { state: { from: location }, replace: true });
-    }
-  };
-
   //-------------------------
-
   const refreshPage = () => {
     let paglink = document.querySelectorAll(".page-item");
     paglink[0].firstChild.click();
   };
-  //-------------------
-
   //-------------------
   const [showCreateNew, setIsActive] = useState(false);
   const CreateNew = (event) => {
     setIsActive((current) => !current);
   };
 
-  // const [items, setItems] = useState(generateData(0));
-  const [isOpen, setIsOpen] = useState(false);
-  /*
-     const fetchMoreData = () => {
-       setTimeout(() => {
-         setItems((prevItems) => [
-           ...prevItems,
-           ...generateData(prevItems.length),
-         ]);
-       }, 1500);
-     };
-	 */
-
-  const columns = React.useMemo(
+  const columns = useMemo(
     () => [
       {
         Header: () => (
@@ -343,7 +109,7 @@ const Equipments = () => {
               <a
                 className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover del-button"
                 data-bs-toggle="tooltip"
-                /*onClick={() => handleOpenModal(row.values)}*/
+                onClick={() => handleOpenModal(row.values)}
                 data-placement="top"
                 title=""
                 data-bs-original-title="Delete"
@@ -412,20 +178,8 @@ const Equipments = () => {
 
                   {isOpen && (
                     <AddEquipment
-                      handleSubmit={handleSubmit}
-                      onRoleSelect={onRoleSelect}
-                      onRoleDelete={onRoleDelete}
-                      onAdd={onAdd}
-                      handleChangeFile={handleChangeFile}
-                      handleDrop={handleDrop}
-                      handleDragEmpty={handleDragEmpty}
                       handleToggleCreateModal={handleToggleCreateModal}
-                      imageUrl={imageUrl}
-                      user={user}
-                      firstname={firstname}
-                      lastname={lastname}
-                      pwd={pwd}
-                      roles={roles}
+                      getPrices={() => getEquipments()}
                     />
                   )}
                 </div>
@@ -642,6 +396,14 @@ const Equipments = () => {
                                 </tr>
                               );
                             })}
+                            <ComponentToConfirm
+                              handleCloseModal={handleCloseModal}
+                              handleOpenModal={handleOpenModal}
+                              handleDeleteItem={handleDeleteItem}
+                              selectedItemId={selectedItemId}
+                              confirmUserRef={confirmResearchRef}
+                              userName={selectedItem.name}
+                            />
                           </tbody>
                         )}{" "}
                       </table>
