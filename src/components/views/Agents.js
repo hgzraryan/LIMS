@@ -235,7 +235,7 @@ const Agents = () => {
                   >
                     <InfiniteScroll
                       dataLength={agents.length}
-                      next={getAgents}
+                      next={()=>getAgents('check')}
                       hasMore={hasMore}
                       loader={<Loading />}
                       scrollableTarget="scrollableDiv"

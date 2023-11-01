@@ -99,79 +99,6 @@ const Patients = () => {
     hasMore,
     getData: getPatients,
   } = useGetData(PATIENTS_URL);
-
-  // useEffect(() => {
-  //   let isMounted = true;
-  //   const controller = new AbortController();
-
-  //   const getPatients = async () => {
-  //     try {
-  //       const response = await axiosPrivate.get("/patients", {
-  //         signal: controller.signal,
-  //         page: currentPage,
-  //         onPage: 1,
-  //       });
-  //       if (
-  //         response.data.jsonString.length === 0 ||
-  //         response.data.jsonString.length < 12
-  //       ) {
-  //         setHasMore(false);
-  //       }
-  //       isMounted &&
-  //         setPatients((prevUsers) => [
-  //           ...prevUsers,
-  //           ...response.data.jsonString,
-  //         ]);
-  //       setCurrentPage((prev) => prev + 1);
-  //     } catch (err) {
-  //       console.error(err);
-  //       navigate("/login", { state: { from: location }, replace: true });
-  //     }
-  //   };
-
-  //   getPatients();
-
-  //   return () => {
-  //     isMounted = false;
-  //     controller.abort();
-  //   };
-  // }, []);
-
-  // const getPatients = async (check = "") => {
-  //   try {
-  //     const response = await axiosPrivate.get("/patients", {
-  //       page: currentPage,
-  //       onPage: usersPerPage,
-  //     });
-  //     setTimeout(() => {
-  //       if (
-  //         response.data.jsonString.length === 0 ||
-  //         response.data.jsonString.length < 12
-  //       ) {
-  //         setHasMore(false);
-  //       }
-  //       switch (check) {
-  //         case "check":
-  //           setPatients((prevUsers) => [
-  //             ...prevUsers,
-  //             ...response.data.jsonString,
-  //           ]);
-  //           break;
-  //         case "update":
-  //           setPatients((prevUsers) => response.data.jsonString);
-  //           setCurrentPage((prev) => prev + 1);
-  //           break;
-  //         default:
-  //           setPatients((prevUsers) => response.data.jsonString);
-  //           setCurrentPage((prev) => prev + 1);
-  //       }
-  //     }, 500);
-  //   } catch (err) {
-  //     console.error(err);
-  //     navigate("/login", { state: { from: location }, replace: true });
-  //   }
-  // };
-
   //-------------------------
   const handleOpenModal = (user) => {
     setSelectedItem((prev) => user);
@@ -554,7 +481,7 @@ const Patients = () => {
                   >
                     <InfiniteScroll
                       dataLength={patients.length}
-                      next={()=>getPatients}
+                      next={()=>getPatients('check')}
                       hasMore={hasMore}
                       loader={<Loading />}
                       scrollableTarget="scrollableDiv"

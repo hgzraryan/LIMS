@@ -237,7 +237,7 @@ const Organizations = () => {
                   >
                     <InfiniteScroll
                       dataLength={organizations.length}
-                      next={getOrganizations}
+                      next={()=>getOrganizations('check')}
                       hasMore={hasMore}
                       loader={<Loading />}
                       scrollableTarget="scrollableDiv"

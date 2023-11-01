@@ -345,7 +345,7 @@ const Equipments = () => {
                   >
                     <InfiniteScroll
                       dataLength={equipments.length}
-                      next={getEquipments}
+                      next={()=>getEquipments("check")}
                       hasMore={hasMore}
                       loader={<Loading />}
                       scrollableTarget="scrollableDiv"

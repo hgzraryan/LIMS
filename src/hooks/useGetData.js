@@ -68,6 +68,7 @@ const useGetData = (url) => {
                     ...prevUsers,
                     ...response.data.jsonString,
                   ]);
+                  setCurrentPage((prev) => prev + 1);
                   break;
                 case "update":
                   setData((prevUsers) => response.data.jsonString);

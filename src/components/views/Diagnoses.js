@@ -232,7 +232,7 @@ const Diagnoses = () => {
                   >
                     <InfiniteScroll
                       dataLength={diagnoses.length}
-                      next={getDiagnoses}
+                      next={()=>getDiagnoses('check')}
                       hasMore={hasMore}
                       loader={<Loading />}
                       scrollableTarget="scrollableDiv"

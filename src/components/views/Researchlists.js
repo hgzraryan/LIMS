@@ -13,7 +13,7 @@ import useDeleteData from "../../hooks/useDeleteData";
 import ComponentToConfirm from "../ComponentToConfirm";
 const RESEARCHES_URL = "/researchLists";
 
-const Researchlists = () => {
+const ResearchLists = () => {
   /*------------------ Create user Component --------------------*/
   const handleToggleCreateModal = (value) => {
     setIsOpen((prev) => value);
@@ -428,4 +428,4 @@ const Researchlists = () => {
   );
 };
 
-export default Researchlists;
+export default ResearchLists;
