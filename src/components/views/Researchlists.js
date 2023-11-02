@@ -36,6 +36,7 @@ const ResearchLists = () => {
     data: researches,
     setData: setResearches,
     hasMore,
+    checkData,
     getData: getResearches,
   } = useGetData(RESEARCHES_URL);
 
@@ -354,7 +355,7 @@ const ResearchLists = () => {
                   >
                     <InfiniteScroll
                       dataLength={researches.length}
-                      next={()=>getResearches('check')}
+                      next={()=>checkData()}
                       hasMore={hasMore}
                       loader={<Loading />}
                       scrollableTarget="scrollableDiv"

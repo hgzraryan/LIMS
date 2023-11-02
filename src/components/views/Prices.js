@@ -34,6 +34,7 @@ const Prices = () => {
     data: prices,
     setData: setPrices,
     hasMore,
+    checkData,
     getData: getPrices,
   } = useGetData(PRICES_URL);
 
@@ -245,7 +246,7 @@ const Prices = () => {
                   >
                     <InfiniteScroll
                       dataLength={prices.length}
-                      next={()=>getPrices('check')}
+                      next={()=>checkData()}
                       hasMore={hasMore}
                       loader={<Loading />}
                       scrollableTarget="scrollableDiv"

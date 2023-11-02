@@ -26,6 +26,7 @@ const Users = () => {
     data: users,
     setData: setUsers,
     hasMore,
+    checkData,
     getData: getUsers,
   } = useGetData(USERS_URL);
 
@@ -348,7 +349,7 @@ const Users = () => {
                   >
                     <InfiniteScroll
                       dataLength={users.length}
-                      next={() => getUsers("check")}
+                      next={()=>checkData()}
                       hasMore={hasMore}
                       loader={<Loading />}
                       scrollableTarget="scrollableDiv"

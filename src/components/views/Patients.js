@@ -97,7 +97,9 @@ const Patients = () => {
     data: patients,
     setData: setPatients,
     hasMore,
+    checkData,
     getData: getPatients,
+
   } = useGetData(PATIENTS_URL);
   //-------------------------
   const handleOpenModal = (user) => {
@@ -481,7 +483,7 @@ const Patients = () => {
                   >
                     <InfiniteScroll
                       dataLength={patients.length}
-                      next={()=>getPatients('check')}
+                      next={()=>checkData()}
                       hasMore={hasMore}
                       loader={<Loading />}
                       scrollableTarget="scrollableDiv"

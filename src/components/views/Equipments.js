@@ -36,6 +36,7 @@ const Equipments = () => {
     data: equipments,
     setData: setEquipments,
     hasMore,
+    checkData,
     getData: getEquipments,
   } = useGetData(EQUIPMENTS_URL);
 
@@ -345,7 +346,7 @@ const Equipments = () => {
                   >
                     <InfiniteScroll
                       dataLength={equipments.length}
-                      next={()=>getEquipments("check")}
+                      next={()=>checkData()}
                       hasMore={hasMore}
                       loader={<Loading />}
                       scrollableTarget="scrollableDiv"

@@ -35,6 +35,7 @@ const Organizations = () => {
     data: organizations,
     setData: setOrganizations,
     hasMore,
+    checkData,
     getData: getOrganizations,
   } = useGetData(ORGANIZATIONS_URL);
 
@@ -237,7 +238,7 @@ const Organizations = () => {
                   >
                     <InfiniteScroll
                       dataLength={organizations.length}
-                      next={()=>getOrganizations('check')}
+                      next={()=>checkData()}
                       hasMore={hasMore}
                       loader={<Loading />}
                       scrollableTarget="scrollableDiv"

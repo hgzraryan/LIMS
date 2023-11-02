@@ -35,6 +35,7 @@ const Agents = () => {
     data: agents,
     setData: setAgents,
     hasMore,
+    checkData,
     getData: getAgents,
   } = useGetData(AGENTS_URL);
 
@@ -45,7 +46,7 @@ const Agents = () => {
     setSelectedItemId,
     agents,
     setAgents,
-    "username" //TODO need to correct
+    "name" //TODO need to correct
   );
   //-------------------------
 
@@ -235,7 +236,7 @@ const Agents = () => {
                   >
                     <InfiniteScroll
                       dataLength={agents.length}
-                      next={()=>getAgents('check')}
+                      next={()=>checkData()}
                       hasMore={hasMore}
                       loader={<Loading />}
                       scrollableTarget="scrollableDiv"
@@ -292,7 +293,7 @@ const Agents = () => {
                               handleDeleteItem={handleDeleteItem}
                               selectedItemId={selectedItemId}
                               confirmUserRef={confirmAgentsRef}
-                              userName={selectedItem.username}
+                              userName={selectedItem.name}
                             />
                           </tbody>
                         )}{" "}

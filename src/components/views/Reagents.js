@@ -34,6 +34,7 @@ const Reagents = () => {
     data: reagents,
     setData: setReagents,
     hasMore,
+    checkData,
     getData: getReagents,
   } = useGetData(REAGENTS_URL);
   const { handleDeleteItem } = useDeleteData(
@@ -255,7 +256,7 @@ const Reagents = () => {
                   >
                     <InfiniteScroll
                       dataLength={reagents.length}
-                      next={() => getReagents("check")}
+                      next={()=>checkData()}
                       hasMore={hasMore}
                       loader={<Loading />}
                       scrollableTarget="scrollableDiv"

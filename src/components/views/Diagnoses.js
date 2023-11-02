@@ -32,6 +32,7 @@ const Diagnoses = () => {
     data: diagnoses,
     setData: setDiagnoses,
     hasMore,
+    checkData,
     getData: getDiagnoses,
   } = useGetData(DIAGNOSES_URL);
 
@@ -232,7 +233,7 @@ const Diagnoses = () => {
                   >
                     <InfiniteScroll
                       dataLength={diagnoses.length}
-                      next={()=>getDiagnoses('check')}
+                      next={()=>checkData()}
                       hasMore={hasMore}
                       loader={<Loading />}
                       scrollableTarget="scrollableDiv"

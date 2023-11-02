@@ -49,7 +49,21 @@ const useGetData = (url) => {
           controller.abort();
         };
       }, [url]);
-      const getData = async (check='') => {
+      const getData = async () => {
+          try {
+            const response = await axiosPrivate.get(url);
+            setTimeout(() => {             
+              
+                  setData((prevUsers) => response.data.jsonString);
+                  setCurrentPage((prev) => prev = 1);
+              
+            }, 500);
+          } catch (err) {
+            console.error(err);
+            navigate("/login", { state: { from: location }, replace: true });
+          }
+        };
+      const checkData = async () => {
           try {
             const response = await axiosPrivate.post(url, {
               page: currentPage,
@@ -61,24 +75,13 @@ const useGetData = (url) => {
                 response.data.jsonString.length < 12
               ) {
                 setHasMore(false);
-              }
-              switch (check) {
-                case "check":
+              }             
                   setData((prevUsers) => [
                     ...prevUsers,
                     ...response.data.jsonString,
                   ]);
                   setCurrentPage((prev) => prev + 1);
-                  break;
-                case "update":
-                  setData((prevUsers) => response.data.jsonString);
-                  setCurrentPage((prev) => prev + 1);
-                  break;
-                default:
-                  setData((prevUsers) => response.data.jsonString);
-                  setCurrentPage((prev) => prev + 1);
-              }
-            }, 500);
+                             }, 500);
           } catch (err) {
             console.error(err);
             navigate("/login", { state: { from: location }, replace: true });
@@ -88,7 +91,8 @@ const useGetData = (url) => {
         data,
         setData,
         hasMore,
-        getData
+        getData,
+        checkData
     }
 }
 export default useGetData;
