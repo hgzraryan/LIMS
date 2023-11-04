@@ -47,7 +47,7 @@ const Equipments = () => {
     setSelectedItemId,
     equipments,
     setEquipments,
-    "username" //TODO need to correct for prices
+    "name" 
   );
   //-------------------------
   const refreshPage = () => {

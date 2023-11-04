@@ -47,7 +47,7 @@ const ResearchLists = () => {
     setSelectedItemId,
     researches,
     setResearches,
-    "username" //TODO need to correct 
+    "research" 
   );
   //-------------------------
 

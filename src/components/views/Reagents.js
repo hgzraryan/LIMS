@@ -44,7 +44,7 @@ const Reagents = () => {
     setSelectedItemId,
     reagents,
     setReagents,
-    'username'
+    'product_name'
   );
   const refreshPage = () => {
     let paglink = document.querySelectorAll(".page-item");

@@ -10,51 +10,21 @@ import { toast } from "react-toastify";
 
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { name_validation, desc_validation } from "../../utils/inputValidations";
+import useSubmitForm from "../../hooks/useSubmitForm";
+import { useEffect } from "react";
 
 const REGISTER_URL = "/registerAgent";
 function AddAgent({ handleToggleCreateModal, getAgents }) {
   const [errMsg, setErrMsg] = useState("");
-  const methods = useForm({
-    mode: "onChange",
-  });
-  const axiosPrivate = useAxiosPrivate();
-  const editorRef = useRef(null);
 
-  const notify = (text) =>
-    toast.success(text, {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
-  const onSubmit = methods.handleSubmit(async (data) => {
-    const newAgent = {
-      ...data,
-      additional: editorRef.current.getContent({ format: "text" }),
-    };
-    const formData = JSON.stringify(newAgent);
-    try {
-      await axiosPrivate.post(REGISTER_URL, formData, {
-        headers: { "Content-Type": "application/json" },
-        withCredentials: true,
-      });
-      handleToggleCreateModal(false);
-      getAgents("update");
-      notify(`${newAgent.name} գործակալը ավելացված է`);
-    } catch (err) {
-      if (!err?.response) {
-        setErrMsg("No Server Response");
-      } else if (err.response?.status === 409) {
-        setErrMsg("Username Taken");
-      } else {
-        setErrMsg(" Failed");
-      }
-    }
-  });
+  const editorRef = useRef(null);
+  const { onSubmit, methods } = useSubmitForm(
+    REGISTER_URL,
+    editorRef,
+    getAgents,
+    setErrMsg,
+    handleToggleCreateModal
+  );
 
   return (
     <Modal
@@ -142,6 +112,7 @@ function AddAgent({ handleToggleCreateModal, getAgents }) {
                               <div className="col-sm-12">
                                 <Editor
                                   apiKey="wiejyphh2h0z879p5bvha1lqdfd0z7utg4rqsw6cyjhd28lx"
+                                  name="fieldName"
                                   onInit={(evt, editor) =>
                                     (editorRef.current = editor)
                                   }
@@ -162,7 +133,7 @@ function AddAgent({ handleToggleCreateModal, getAgents }) {
                                     content_style:
                                       "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
                                   }}
-                                />
+                                  />
                               </div>
                             </div>
                           </form>

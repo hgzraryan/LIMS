@@ -43,7 +43,7 @@ const Diagnoses = () => {
     setSelectedItemId,
     diagnoses,
     setDiagnoses,
-    "username" //TODO need to correct
+    "name"
   );
   //-------------------------
 

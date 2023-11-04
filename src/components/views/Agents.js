@@ -46,7 +46,7 @@ const Agents = () => {
     setSelectedItemId,
     agents,
     setAgents,
-    "name" //TODO need to correct
+    "name" 
   );
   //-------------------------
 

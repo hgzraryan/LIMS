@@ -46,7 +46,7 @@ const Organizations = () => {
     setSelectedItemId,
     organizations,
     setOrganizations,
-    "username" //TODO need to correct
+    "name" 
   );
   //-------------------------
 

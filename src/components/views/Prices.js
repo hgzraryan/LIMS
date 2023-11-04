@@ -45,7 +45,7 @@ const Prices = () => {
     setSelectedItemId,
     prices,
     setPrices,
-    "username" //TODO need to correct for prices
+    "name" 
   );
   //-------------------------
 
