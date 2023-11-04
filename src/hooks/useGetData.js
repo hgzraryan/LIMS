@@ -14,6 +14,7 @@ const useGetData = (url) => {
     const pagesVisited = currentPage * usersPerPage;
     const currentUsers = data.slice(pagesVisited, pagesVisited + usersPerPage);
     const pageCount = Math.ceil(data.length / usersPerPage);
+    const onPageCount =  Math.round((window.innerHeight / 100) * 1.5);
 
     useEffect(() => {
         let isMounted = true;
@@ -24,12 +25,12 @@ const useGetData = (url) => {
             const response = await axiosPrivate.post(url, {
               signal: controller.signal,
               page: currentPage,
-              onPage: Math.round((window.innerHeight / 100) * 1.5),
+              onPage: onPageCount,
             });
             console.log(response);
             if (
               response.data.jsonString.length === 0 ||
-              response.data.jsonString.length < 12
+              response.data.jsonString.length < onPageCount
             ) {
               setHasMore(false);
             }
@@ -67,12 +68,12 @@ const useGetData = (url) => {
           try {
             const response = await axiosPrivate.post(url, {
               page: currentPage,
-              onPage: usersPerPage,
+              onPage:  onPageCount,
             });
             setTimeout(() => {
               if (
                 response.data.jsonString.length === 0 ||
-                response.data.jsonString.length < 12
+                response.data.jsonString.length < onPageCount
               ) {
                 setHasMore(false);
               }             
