@@ -28,8 +28,6 @@ function AddReagent({ handleToggleCreateModal, getReagents }) {
   });
   const multiselectRef = useRef("");
   const axiosPrivate = useAxiosPrivate();
-  const researchesRef = useRef("");
-  const handlingDate = useRef("");
   const editorRef = useRef(null);
 
   const notify = (text) =>

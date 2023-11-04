@@ -4,14 +4,10 @@ import FeatherIcon from "feather-icons-react";
 import { Editor } from "@tinymce/tinymce-react";
 import { useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
-import { Form, FormProvider, useForm } from "react-hook-form";
+import { Form, FormProvider} from "react-hook-form";
 import { Input } from "../Input";
-import { toast } from "react-toastify";
-
-import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { name_validation, desc_validation } from "../../utils/inputValidations";
 import useSubmitForm from "../../hooks/useSubmitForm";
-import { useEffect } from "react";
 
 const REGISTER_URL = "/registerAgent";
 function AddAgent({ handleToggleCreateModal, getAgents }) {

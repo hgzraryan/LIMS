@@ -4,11 +4,9 @@ import FeatherIcon from "feather-icons-react";
 import { Editor } from "@tinymce/tinymce-react";
 import { useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
-import { Form, FormProvider, useForm } from "react-hook-form";
+import { Form, FormProvider } from "react-hook-form";
 import { Input } from "../Input";
-import { toast } from "react-toastify";
 
-import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import {
   name_validation,
   price_validation,

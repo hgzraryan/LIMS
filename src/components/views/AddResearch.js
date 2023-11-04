@@ -4,60 +4,26 @@ import FeatherIcon from "feather-icons-react";
 import { Editor } from "@tinymce/tinymce-react";
 import { useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
-import { Form, FormProvider, useForm } from "react-hook-form";
+import { Form, FormProvider } from "react-hook-form";
 import { Input } from "../Input";
-import { toast } from "react-toastify";
-import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import {
   name_validation,
   class_validation,
 } from "../../utils/inputValidations";
+import useSubmitForm from "../../hooks/useSubmitForm";
 
 const REGISTER_URL = "/registerResearch";
 function AddResearch({ handleToggleCreateModal, getResearches }) {
   const [errMsg, setErrMsg] = useState("");
-  const methods = useForm({
-    mode: "onChange",
-  });
-  const axiosPrivate = useAxiosPrivate();
+
   const editorRef = useRef(null);
-
-  const notify = (text) =>
-    toast.success(text, {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
-  const onSubmit = methods.handleSubmit(async (data) => {
-    const newResearch = {
-      ...data,
-      additional: editorRef.current.getContent({ format: "text" }),
-    };
-    const formData = JSON.stringify(newResearch);
-    try {
-      await axiosPrivate.post(REGISTER_URL, formData, {
-        headers: { "Content-Type": "application/json" },
-        withCredentials: true,
-      });
-      handleToggleCreateModal(false);
-      getResearches("update");
-      notify(`${newResearch.name} գնառաջարկը ավելացված է`);
-    } catch (err) {
-      if (!err?.response) {
-        setErrMsg("No Server Response");
-      } else if (err.response?.status === 409) {
-        setErrMsg("Username Taken");
-      } else {
-        setErrMsg(" Failed");
-      }
-    }
-  });
-
+  const { onSubmit, methods } = useSubmitForm(
+    REGISTER_URL,
+    editorRef,
+    getResearches,
+    setErrMsg,
+    handleToggleCreateModal
+  );
   return (
     <Modal
       show={() => true}

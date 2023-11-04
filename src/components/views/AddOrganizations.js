@@ -4,57 +4,23 @@ import FeatherIcon from "feather-icons-react";
 import { Editor } from "@tinymce/tinymce-react";
 import { useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
-import { Form, FormProvider, useForm } from "react-hook-form";
+import { Form, FormProvider} from "react-hook-form";
 import { Input } from "../Input";
-import { toast } from "react-toastify";
-
-import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { name_validation, desc_validation } from "../../utils/inputValidations";
+import useSubmitForm from "../../hooks/useSubmitForm";
 
 const REGISTER_URL = "/registerOrganizations";
 function AddOrganization({ handleToggleCreateModal, getOrganizations }) {
   const [errMsg, setErrMsg] = useState("");
-  const methods = useForm({
-    mode: "onChange",
-  });
-  const axiosPrivate = useAxiosPrivate();
-  const editorRef = useRef(null);
 
-  const notify = (text) =>
-    toast.success(text, {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
-  const onSubmit = methods.handleSubmit(async (data) => {
-    const newAgent = {
-      ...data,
-      additional: editorRef.current.getContent({ format: "text" }),
-    };
-    const formData = JSON.stringify(newAgent);
-    try {
-      await axiosPrivate.post(REGISTER_URL, formData, {
-        headers: { "Content-Type": "application/json" },
-        withCredentials: true,
-      });
-      handleToggleCreateModal(false);
-      getOrganizations("update");
-      notify(`${newAgent.name} Կազմակերպությունը ավելացված է`);
-    } catch (err) {
-      if (!err?.response) {
-        setErrMsg("No Server Response");
-      } else if (err.response?.status === 409) {
-        setErrMsg("Username Taken");
-      } else {
-        setErrMsg(" Failed");
-      }
-    }
-  });
+  const editorRef = useRef(null);
+  const { onSubmit, methods } = useSubmitForm(
+    REGISTER_URL,
+    editorRef,
+    getOrganizations,
+    setErrMsg,
+    handleToggleCreateModal
+  );
 
   return (
     <Modal
