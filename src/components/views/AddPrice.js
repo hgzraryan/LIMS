@@ -16,51 +16,20 @@ import {
   currency_validation,
   desc_validation,
 } from "../../utils/inputValidations";
+import useSubmitForm from "../../hooks/useSubmitForm";
 
 const REGISTER_URL = "/registerPrice";
 function AddPrice({ handleToggleCreateModal, getPrices }) {
   const [errMsg, setErrMsg] = useState("");
-  const methods = useForm({
-    mode: "onChange",
-  });
-  const axiosPrivate = useAxiosPrivate();
-  const editorRef = useRef(null);
 
-  const notify = (text) =>
-    toast.success(text, {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
-  const onSubmit = methods.handleSubmit(async (data) => {
-    const newPrice = {
-      ...data,
-      additional: editorRef.current.getContent({ format: "text" }),
-    };
-    const formData = JSON.stringify(newPrice);
-    try {
-      await axiosPrivate.post(REGISTER_URL, formData, {
-        headers: { "Content-Type": "application/json" },
-        withCredentials: true,
-      });
-      handleToggleCreateModal(false);
-      getPrices("update");
-      notify(`${newPrice.name} գնառաջարկը ավելացված է`);
-    } catch (err) {
-      if (!err?.response) {
-        setErrMsg("No Server Response");
-      } else if (err.response?.status === 409) {
-        setErrMsg("Username Taken");
-      } else {
-        setErrMsg(" Failed");
-      }
-    }
-  });
+  const editorRef = useRef(null);
+  const { onSubmit, methods } = useSubmitForm(
+    REGISTER_URL,
+    editorRef,
+    getPrices,
+    setErrMsg,
+    handleToggleCreateModal
+  );
 
   return (
     <Modal
