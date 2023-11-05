@@ -5,12 +5,11 @@ import FeatherIcon from "feather-icons-react";
 import LoadingSpinner from "../LoadingSpinner";
 import ReactPaginate from "react-paginate";
 import Loading from "../Loading";
-import { useSortBy, useTable } from "react-table";
 import { Dropdown } from "react-bootstrap";
 import AddResearch from "./AddResearch";
 import useGetData from "../../hooks/useGetData";
 import useDeleteData from "../../hooks/useDeleteData";
-import ComponentToConfirm from "../ComponentToConfirm";
+import CustomTable from "../CustomTable";
 const RESEARCHES_URL = "/researchLists";
 
 const ResearchLists = () => {
@@ -134,15 +133,6 @@ const ResearchLists = () => {
     ],
     []
   );
-
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable(
-      {
-        columns,
-        data: researches,
-      },
-      useSortBy
-    );
 
   return (
     <div>
@@ -363,60 +353,16 @@ const ResearchLists = () => {
                         <p>Տվյալներ չեն հայտնաբերվել բեռնելու համար:</p>
                       }
                     >
-                      <table className="table nowrap w-100 mb-5 dataTable no-footer">
-                        <thead>
-                          {headerGroups.map((headerGroup) => (
-                            <tr {...headerGroup.getHeaderGroupProps()}>
-                              {headerGroup.headers.map((column) => (
-                                <th
-                                  //className="sorting"
-                                  {...column.getHeaderProps(
-                                    column.getSortByToggleProps()
-                                  )}
-                                >
-                                  {column.isSorted ? (
-                                    column.isSortedDesc ? (
-                                      <span className="sorting_asc"></span>
-                                    ) : (
-                                      <span className="sorting_desc"></span>
-                                    )
-                                  ) : (
-                                    <span className="sorting"></span>
-                                  )}
-
-                                  {column.render("Header")}
-                                </th>
-                              ))}
-                            </tr>
-                          ))}
-                        </thead>
-                        {researches?.length && (
-                          <tbody {...getTableBodyProps()}>
-                            {rows.map((row) => {
-                              prepareRow(row);
-                              return (
-                                <tr {...row.getRowProps()}>
-                                  {row.cells.map((cell) => {
-                                    return (
-                                      <td {...cell.getCellProps()}>
-                                        {cell.render("Cell")}
-                                      </td>
-                                    );
-                                  })}
-                                </tr>
-                              );
-                            })}
-                            <ComponentToConfirm
-                              handleCloseModal={handleCloseModal}
-                              handleOpenModal={handleOpenModal}
-                              handleDeleteItem={handleDeleteItem}
-                              selectedItemId={selectedItemId}
-                              confirmUserRef={confirmResearchRef}
-                              userName={selectedItem.research}
-                            />
-                          </tbody>
-                        )}{" "}
-                      </table>
+                         <CustomTable
+                        confirmRef={confirmResearchRef}
+                        selectedItem={selectedItem}
+                        selectedItemId={selectedItemId}
+                        tableData={researches}
+                        handleDeleteItem={handleDeleteItem}
+                        handleOpenModal={handleOpenModal}
+                        handleCloseModal={handleCloseModal}
+                        columns={columns}
+                      />
                     </InfiniteScroll>
                   </div>
                 </div>

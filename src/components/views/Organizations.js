@@ -5,12 +5,11 @@ import FeatherIcon from "feather-icons-react";
 import LoadingSpinner from "../LoadingSpinner";
 import ReactPaginate from "react-paginate";
 import Loading from "../Loading";
-import { useSortBy, useTable } from "react-table";
-import ComponentToConfirm from "../ComponentToConfirm";
 import { Dropdown } from "react-bootstrap";
 import useGetData from "../../hooks/useGetData";
 import useDeleteData from "../../hooks/useDeleteData";
 import AddOrganization from "./AddOrganizations";
+import CustomTable from "../CustomTable";
 
 const ORGANIZATIONS_URL = "/organizations";
 
@@ -135,17 +134,6 @@ const Organizations = () => {
     []
   );
 
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable(
-      {
-        columns,
-        data: organizations,
-      },
-      useSortBy
-    );
-
-  // const [items, setItems] = useState(generateData(0));
-
   return (
     <div>
       <div className="contactapp-wrap">
@@ -246,60 +234,16 @@ const Organizations = () => {
                         <p>Տվյալներ չեն հայտնաբերվել բեռնելու համար:</p>
                       }
                     >
-                      <table className="table nowrap w-100 mb-5 dataTable no-footer">
-                        <thead>
-                          {headerGroups.map((headerGroup) => (
-                            <tr {...headerGroup.getHeaderGroupProps()}>
-                              {headerGroup.headers.map((column) => (
-                                <th
-                                  //className="sorting"
-                                  {...column.getHeaderProps(
-                                    column.getSortByToggleProps()
-                                  )}
-                                >
-                                  {column.isSorted ? (
-                                    column.isSortedDesc ? (
-                                      <span className="sorting_asc"></span>
-                                    ) : (
-                                      <span className="sorting_desc"></span>
-                                    )
-                                  ) : (
-                                    <span className="sorting"></span>
-                                  )}
-
-                                  {column.render("Header")}
-                                </th>
-                              ))}
-                            </tr>
-                          ))}
-                        </thead>
-                        {organizations?.length && (
-                          <tbody {...getTableBodyProps()}>
-                            {rows.map((row) => {
-                              prepareRow(row);
-                              return (
-                                <tr {...row.getRowProps()}>
-                                  {row.cells.map((cell) => {
-                                    return (
-                                      <td {...cell.getCellProps()}>
-                                        {cell.render("Cell")}
-                                      </td>
-                                    );
-                                  })}
-                                </tr>
-                              );
-                            })}
-                            <ComponentToConfirm
-                              handleCloseModal={handleCloseModal}
-                              handleOpenModal={handleOpenModal}
-                              handleDeleteItem={handleDeleteItem}
-                              selectedItemId={selectedItemId}
-                              confirmUserRef={confirmOrganizationRef}
-                              userName={selectedItem.name}
-                            />
-                          </tbody>
-                        )}{" "}
-                      </table>
+                      <CustomTable
+                        confirmRef={confirmOrganizationRef}
+                        selectedItem={selectedItem}
+                        selectedItemId={selectedItemId}
+                        tableData={organizations}
+                        handleDeleteItem={handleDeleteItem}
+                        handleOpenModal={handleOpenModal}
+                        handleCloseModal={handleCloseModal}
+                        columns={columns}
+                      />
                     </InfiniteScroll>
                   </div>
                 </div>

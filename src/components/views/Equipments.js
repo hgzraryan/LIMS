@@ -5,12 +5,11 @@ import FeatherIcon from "feather-icons-react";
 import LoadingSpinner from "../LoadingSpinner";
 import ReactPaginate from "react-paginate";
 import Loading from "../Loading";
-import { useSortBy, useTable } from "react-table";
 import AddEquipment from "../views/AddEquipment";
 import { Dropdown } from "react-bootstrap";
 import useDeleteData from "../../hooks/useDeleteData";
 import useGetData from "../../hooks/useGetData";
-import ComponentToConfirm from "../ComponentToConfirm";
+import CustomTable from "../CustomTable";
 
 const EQUIPMENTS_URL = "/equipmentList";
 
@@ -18,7 +17,7 @@ const Equipments = () => {
   const [selectedItem, setSelectedItem] = useState("");
   const [selectedItemId, setSelectedItemId] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
-  const confirmResearchRef = useRef("");
+  const confirmEquipmentsRef = useRef("");
 
   const handleOpenModal = (data) => {
     setSelectedItemId(true);
@@ -42,7 +41,7 @@ const Equipments = () => {
 
   const { handleDeleteItem } = useDeleteData(
     "/equipments",
-    confirmResearchRef,
+    confirmEquipmentsRef,
     selectedItem,
     setSelectedItemId,
     equipments,
@@ -130,16 +129,6 @@ const Equipments = () => {
     ],
     []
   );
-
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable(
-      {
-        columns,
-        data: equipments,
-      },
-      useSortBy
-    );
-
   return (
     <div>
       <div className="contactapp-wrap">
@@ -354,60 +343,16 @@ const Equipments = () => {
                         <p>Տվյալներ չեն հայտնաբերվել բեռնելու համար:</p>
                       }
                     >
-                      <table className="table table-striped">
-                        <thead>
-                          {headerGroups.map((headerGroup) => (
-                            <tr {...headerGroup.getHeaderGroupProps()}>
-                              {headerGroup.headers.map((column) => (
-                                <th
-                                  //className="sorting"
-                                  {...column.getHeaderProps(
-                                    column.getSortByToggleProps()
-                                  )}
-                                >
-                                  {column.isSorted ? (
-                                    column.isSortedDesc ? (
-                                      <span className="sorting_asc"></span>
-                                    ) : (
-                                      <span className="sorting_desc"></span>
-                                    )
-                                  ) : (
-                                    <span className="sorting"></span>
-                                  )}
-
-                                  {column.render("Header")}
-                                </th>
-                              ))}
-                            </tr>
-                          ))}
-                        </thead>
-                        {equipments?.length && (
-                          <tbody {...getTableBodyProps()}>
-                            {rows.map((row) => {
-                              prepareRow(row);
-                              return (
-                                <tr {...row.getRowProps()}>
-                                  {row.cells.map((cell) => {
-                                    return (
-                                      <td {...cell.getCellProps()}>
-                                        {cell.render("Cell")}
-                                      </td>
-                                    );
-                                  })}
-                                </tr>
-                              );
-                            })}
-                            <ComponentToConfirm
-                              handleCloseModal={handleCloseModal}
-                              handleOpenModal={handleOpenModal}
-                              handleDeleteItem={handleDeleteItem}
-                              selectedItemId={selectedItemId}
-                              confirmUserRef={confirmResearchRef}
-                              userName={selectedItem.name}
-                            />
-                          </tbody>
-                        )}{" "}
-                      </table>
+                      <CustomTable
+                        confirmRef={confirmEquipmentsRef}
+                        selectedItem={selectedItem}
+                        selectedItemId={selectedItemId}
+                        tableData={equipments}
+                        handleDeleteItem={handleDeleteItem}
+                        handleOpenModal={handleOpenModal}
+                        handleCloseModal={handleCloseModal}
+                        columns={columns}
+                      />
                     </InfiniteScroll>
                   </div>
                 </div>

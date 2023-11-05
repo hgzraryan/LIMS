@@ -6,15 +6,16 @@ import FeatherIcon from "feather-icons-react";
 import LoadingSpinner from "../LoadingSpinner";
 import ReactPaginate from "react-paginate";
 import Loading from "../Loading";
-import { useSortBy, useTable } from "react-table";
-import ComponentToConfirm from "../ComponentToConfirm";
 import CreateUser from "../views/CreateUser";
 import { Dropdown } from "react-bootstrap";
 import useGetData from "../../hooks/useGetData";
 import useDeleteData from "../../hooks/useDeleteData";
 import useUpdateCount from "../../hooks/useUpdateCount";
 import { checkUsersCount } from "../../redux/features/users/usersCountSlice";
-const  USERS_URL ="/users"
+import CustomTable from "../CustomTable";
+const USERS_URL = "/users";
+
+
 
 const Users = () => {
   const confirmUserRef = useRef("");
@@ -31,8 +32,12 @@ const Users = () => {
   } = useGetData(USERS_URL);
 
   //TODO need correct
-  const {updateDataCount} =useUpdateCount("/allCount",checkUsersCount,'usersCount')
-  
+  const { updateDataCount } = useUpdateCount(
+    "/allCount",
+    checkUsersCount,
+    "usersCount"
+  );
+
   const { handleDeleteItem } = useDeleteData(
     "/users",
     confirmUserRef,
@@ -40,7 +45,7 @@ const Users = () => {
     setSelectedItemId,
     users,
     setUsers,
-    'username'
+    "username"
   );
   /*------------------------------------------------*/
   /*----------------ADD USER---------------------*/
@@ -199,14 +204,7 @@ const Users = () => {
     []
   );
 
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable(
-      {
-        columns,
-        data: users,
-      },
-      useSortBy
-    );
+
 
   return (
     <div>
@@ -349,7 +347,7 @@ const Users = () => {
                   >
                     <InfiniteScroll
                       dataLength={users.length}
-                      next={()=>checkData()}
+                      next={() => checkData()}
                       hasMore={hasMore}
                       loader={<Loading />}
                       scrollableTarget="scrollableDiv"
@@ -357,61 +355,16 @@ const Users = () => {
                         <p>Տվյալներ չեն հայտնաբերվել բեռնելու համար:</p>
                       }
                     >
-                      <table className="table nowrap w-100 mb-5 dataTable no-footer">
-                        <thead>
-                          {headerGroups.map((headerGroup) => (
-                            <tr {...headerGroup.getHeaderGroupProps()}>
-                              {headerGroup.headers.map((column) => (
-                                <th
-                                  //className="sorting"
-                                  {...column.getHeaderProps(
-                                    column.getSortByToggleProps()
-                                  )}
-                                >
-                                  {column.isSorted ? (
-                                    column.isSortedDesc ? (
-                                      <span className="sorting_asc"></span>
-                                    ) : (
-                                      <span className="sorting_desc"></span>
-                                    )
-                                  ) : (
-                                    <span className="sorting"></span>
-                                  )}
-
-                                  {column.render("Header")}
-                                </th>
-                              ))}
-                            </tr>
-                          ))}
-                        </thead>
-                        {users?.length && (
-                          <tbody {...getTableBodyProps()}>
-                            {rows.map((row) => {
-                              prepareRow(row);
-                              return (
-                                <tr {...row.getRowProps()}>
-                                  {row.cells.map((cell) => {
-                                    return (
-                                      <td {...cell.getCellProps()}>
-                                        {cell.render("Cell")}
-                                      </td>
-                                    );
-                                  })}
-                                </tr>
-                              );
-                            })}
-                            <ComponentToConfirm
-                              handleCloseModal={handleCloseModal}
-                              handleOpenModal={handleOpenModal}
-                              handleDeleteItem={handleDeleteItem}
-                              selectedItemId={selectedItemId}
-                              confirmUserRef={confirmUserRef}
-                              userName={selectedItem.username}
-                              userId={selectedItem._id}
-                            />
-                          </tbody>
-                        )}{" "}
-                      </table>
+                      <CustomTable
+                        confirmRef={confirmUserRef}
+                        selectedItem={selectedItem}
+                        selectedItemId={selectedItemId}
+                        tableData={users}
+                        handleDeleteItem={handleDeleteItem}
+                        handleOpenModal={handleOpenModal}
+                        handleCloseModal={handleCloseModal}
+                        columns={columns}
+                      />
                     </InfiniteScroll>
                   </div>
                 </div>
