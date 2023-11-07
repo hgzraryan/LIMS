@@ -1,14 +1,22 @@
 import React, { useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
+import useGetSearchData from "../hooks/useGetSearchData";
+import { PATIENTS_ROUTE } from "../utils/consts";
 function SearchBar({ data, placeholder }) {
   const [filteredData, setFilteredData] = useState([]);
   const [wordEntered, setWordEntered] = useState("");
+  const {
+    data:searchedData
+  } = useGetSearchData("/patients");
+
+
 
   const handleFilter = (event) => {
-    const searchWord = event.target.value;
-    setWordEntered(searchWord);
-    const newFilter = data.filter((value) => {
+      const searchWord = event.target.value;
+      setWordEntered(searchWord);
+      console.log(searchedData)
+    const newFilter = searchedData.filter((value) => {
       return value.firstName.toLowerCase().includes(searchWord.toLowerCase());
     });
 
@@ -84,15 +92,16 @@ function SearchBar({ data, placeholder }) {
           <div className="dropdown-divider"></div>
           <h6 className="dropdown-header">Արդյունք</h6>
 
-          {filteredData.slice(0, 5).map((value, key) => {
+          {filteredData.slice(0, 5).map((patient, key) => {
             return (
               <a
-                href="/patients"
+                href={PATIENTS_ROUTE + '/:id'}
+                rel="noreferrer"
                 target="_blank"
                 className="dropdown-item"
               >
                 <p>
-                  {value.firstName} {value.lastName}
+                  {patient.firstName} {patient.lastName}
                 </p>
               </a>
             );

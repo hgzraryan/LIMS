@@ -26,6 +26,26 @@ import ResearchLists from "./components/views/ResearchLists";
 import Diagnoses from "./components/views/Diagnoses";
 
 import { Routes, Route } from "react-router-dom";
+import CurentPatient from "./components/views/CurentPatient";
+import { LOGIN_ROUTE,
+  PRIVACY_POLICY_ROUTE,
+  REGISTER_ROUTE,
+  LINKPAGE_ROUTE,
+  UNAUTHORIZED_ROUTE,
+  DASHBOARD_ROUTE,
+  ORGANIZATIONS_ROUTE,
+  AGENTS_ROUTE,
+  PATIENTS_ROUTE,
+  USERS_ROUTE,
+  ADMIN_ROUTE,
+  PRICES_ROUTE,
+  DISCOUNTCARDS_ROUTE,
+  REAGENTS_ROUTE,
+  EQUIPMENTS_ROUTE,
+  RESEARCHLISTS_ROUTE,
+  DIAGNOSES_ROUTE,
+  EDITOR_ROUTE, 
+  LOUNGE_ROUTE} from "./utils/consts";
 //import React, { useState, useEffect } from "react";
 
 const ROLES = {
@@ -41,44 +61,45 @@ function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           {/* public routes */}
-          <Route path="login" element={<Login />} />
-          <Route path="privacy-policy" element={<PrivacyPolicy />} />
-          <Route path="register" element={<Register />} />
-          <Route path="linkpage" element={<LinkPage />} />
-          <Route path="unauthorized" element={<Unauthorized />} />
+          <Route path={LOGIN_ROUTE} element={<Login />} />
+          <Route path={PRIVACY_POLICY_ROUTE} element={<PrivacyPolicy />} />
+          <Route path={REGISTER_ROUTE} element={<Register />} />
+          <Route path={LINKPAGE_ROUTE} element={<LinkPage />} />
+          <Route path={UNAUTHORIZED_ROUTE} element={<Unauthorized />} />
 
           {/* we want to protect these routes */}
           <Route element={<PersistLogin />}>
             <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
               <Route path="/" element={<MainTemplate />}>
-                <Route index path="dashboard" element={<Home />} />
+                <Route index path={DASHBOARD_ROUTE} element={<Home />} />
                 
 				<Route index path="/" element={<Home />} />
 				
-				<Route path="agents" element={<Agents />} />
-                <Route path="organizations" element={<Organizations />} />
+				<Route path={AGENTS_ROUTE} element={<Agents />} />
+                <Route path={ORGANIZATIONS_ROUTE} element={<Organizations />} />
 
                 <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
-                  <Route path="patients" element={<Patients />} />
+                  <Route path={PATIENTS_ROUTE} element={<Patients />} />
                   <Route path="admin/useradd" element={<UserAdd />} />
-                  <Route path="users" element={<Users />} />
-                  <Route path="admin" element={<Admin />} />
-                  <Route path="settings/prices" element={<Prices />} />
+                  <Route path={USERS_ROUTE} element={<Users />} />
+                  <Route path={ADMIN_ROUTE} element={<Admin />} />
+                  <Route path={PRICES_ROUTE} element={<Prices />} />
                   <Route
-                    path="settings/discountCards"
+                    path={DISCOUNTCARDS_ROUTE}
                     element={<DiscountCards />}
                   />
-                  <Route path="settings/reagents" element={<Reagents />} />
-                  <Route path="settings/equipments" element={<Equipments />} />
+                  <Route path={REAGENTS_ROUTE} element={<Reagents />} />
+                  <Route path={EQUIPMENTS_ROUTE} element={<Equipments />} />
                   <Route
-                    path="settings/researchlists"
+                    path={RESEARCHLISTS_ROUTE}
                     element={<ResearchLists />}
                   />
-                  <Route path="diagnoses" element={<Diagnoses />} />
+                  <Route path={DIAGNOSES_ROUTE} element={<Diagnoses />} />
+                  <Route path={PATIENTS_ROUTE + '/:id'} element={<CurentPatient />} />
                 </Route>
 
                 <Route element={<RequireAuth allowedRoles={[ROLES.Editor]} />}>
-                  <Route path="editor" element={<Editor />} />
+                  <Route path={EDITOR_ROUTE} element={<Editor />} />
                 </Route>
 
                 <Route
@@ -86,7 +107,7 @@ function App() {
                     <RequireAuth allowedRoles={[ROLES.Editor, ROLES.Admin]} />
                   }
                 >
-                  <Route path="lounge" element={<Lounge />} />
+                  <Route path={LOUNGE_ROUTE} element={<Lounge />} />
                 </Route>
 
                 {/* catch all */}

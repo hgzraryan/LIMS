@@ -15,7 +15,7 @@ import { Dropdown } from "react-bootstrap";
 import { BiSolidInfoCircle } from "react-icons/bi";
 import PatientInfo from "../PatientInfo";
 import { useDispatch, useSelector } from "react-redux";
-
+import { PATIENTS_ROUTE, RESEARCHLISTS_ROUTE } from "../../utils/consts";
 import {
   reserchesList,
   selectResearches,
@@ -23,8 +23,6 @@ import {
 import useGetData from "../../hooks/useGetData";
 import SearchBar from "../SearchBar";
 const GET_RESEARCHES = "/researchLists";
-const PATIENTS_URL = "/patients";
-
 const Patients = () => {
   const researchState = useSelector(selectResearches);
   const dispatch = useDispatch();
@@ -100,7 +98,7 @@ const Patients = () => {
     hasMore,
     checkData,
     getData: getPatients,
-  } = useGetData(PATIENTS_URL);
+  } = useGetData(PATIENTS_ROUTE);
   //-------------------------
   const handleOpenModal = (user) => {
     setSelectedItem((prev) => user);
