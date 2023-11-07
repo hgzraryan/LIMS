@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState, useEffect, useRef,useMemo } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -21,6 +21,7 @@ import {
   selectResearches,
 } from "../../redux/features/researches/researchesSlice";
 import useGetData from "../../hooks/useGetData";
+import SearchBar from "../SearchBar";
 const GET_RESEARCHES = "/researchLists";
 const PATIENTS_URL = "/patients";
 
@@ -32,7 +33,7 @@ const Patients = () => {
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState("");
-/*-----------------------------------------------------Get Researches----------------------------------------------------*/
+  /*-----------------------------------------------------Get Researches----------------------------------------------------*/
   useEffect(() => {
     let isMounted = true;
     const controller = new AbortController();
@@ -99,7 +100,6 @@ const Patients = () => {
     hasMore,
     checkData,
     getData: getPatients,
-
   } = useGetData(PATIENTS_URL);
   //-------------------------
   const handleOpenModal = (user) => {
@@ -293,7 +293,7 @@ const Patients = () => {
 						<a className="dropdown-item" href="#"><span className="feather-icon dropdown-icon"><FeatherIcon icon="star" /></span><span>Users2</span></a>
 						<a className="dropdown-item" href="#"><span className="feather-icon dropdown-icon"><FeatherIcon icon="archive" /></span><span>Users3</span></a>
 						<a className="dropdown-item" href="#"><span className="feather-icon dropdown-icon"><FeatherIcon icon="edit" /></span><span>Users4</span></a>
-					</div>
+            </div>
 					*/}
                 </div>
                 <div className="dropdown ms-3">
@@ -315,12 +315,15 @@ const Patients = () => {
                   {isOpen && (
                     <CreatePatient
                       handleToggleCreateModal={handleToggleCreateModal}
-                      getPatients={()=>getPatients()}
+                      getPatients={() => getPatients()}
                       researchState={researchState}
                       //errMsg={errMsg}
                     />
                   )}
                 </div>
+              </div>
+              <div className="searchBar">
+                <SearchBar data={patients} placeholder="ՀԻվանդի անուն" />
               </div>
               <div className="contact-options-wrap">
                 <a
@@ -473,6 +476,7 @@ const Patients = () => {
                   </span>
                 </a>
               </div>
+              
             </header>
             <div className="contact-body">
               <div data-simplebar className="nicescroll-bar">
@@ -483,7 +487,7 @@ const Patients = () => {
                   >
                     <InfiniteScroll
                       dataLength={patients.length}
-                      next={()=>checkData()}
+                      next={() => checkData()}
                       hasMore={hasMore}
                       loader={<Loading />}
                       scrollableTarget="scrollableDiv"
