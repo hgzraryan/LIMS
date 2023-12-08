@@ -9,6 +9,8 @@ import Loading from "../Loading";
 import CreatePatient from "./CreatePatient";
 import { Dropdown } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
+import {Helmet} from "react-helmet";
+
 
 import {
   reserchesList,
@@ -80,7 +82,13 @@ const Patients = () => {
   };
   //-------------------
   return (
+ 
     <div>
+	 <Helmet>
+    <meta charSet="utf-8" />
+    <title>Vteam LIMS | Patients</title>
+    <link rel="icon" type="image/x-icon" href="dist/img/favicon.ico"></link>
+	</Helmet>
       <div className="contactapp-wrap">
         <div className="contactapp-content">
           <div className="contactapp-detail-wrap">

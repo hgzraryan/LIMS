@@ -76,11 +76,15 @@ const Diagnoses = () => {
         disableSortBy: true,
       },
       {
-        Header: "Անվանում",
-        accessor: "name",
+        Header: "Հիվանդի ID",
+        accessor: "patientId",
         sortable: true,
       },
-
+      {
+        Header: "Հետազոտություններ",
+        accessor: "researchList",
+        sortable: true,
+      },
       {
         Header: "Նկարագիր",
         accessor: "description",

@@ -3,7 +3,7 @@ import React, { useState, forwardRef, useRef } from "react";
 import Table from "react-bootstrap/Container";
 import { useTable } from "react-table";
 import Barcode from "react-barcode";
-import mainLogo from "../dist/img/main-logo.png";
+import mainLogo from "../dist/img/main-logo.jpg";
 import {
   BiSolidHome,
   BiSolidPhoneCall,
@@ -45,6 +45,9 @@ export const ComponentToPrint = forwardRef(({ value }, ref) => {
     []
   );
 
+
+console.log(value);
+
   //-----------------------barcode ------------------
   /*
 const [barcode, setBarcode] = useState('lintangwisesa');
@@ -68,27 +71,27 @@ const { inputRef } = Barcode({
   return (
     <div className="wrapper m-1" ref={ref}>
       <header className="header">
-        <div className="container d-flex justify-content-between mt-3 ">
+        <div className="container d-flex justify-content-between mt-0 ">
           <div className="header__logo d-flex">
-            <img className="m-0" width={"156px"} src={mainLogo} alt="Logo" />
+            <img className="m-0" width={"136px"} height={"136px"} src={mainLogo} alt="Logo" />
           </div>
-          <div className="header__info mt-3">
+          <div className="header__info mt-1">
             <div>
               <ul>
                 <li>
-                  <BiSolidHome /> Babayan 5/8,4548 Yerevan,Armenia
+                  <BiSolidHome /> Ք․Վանաձոր, Բաբայան 5/8,4548
                 </li>
                 <li>
-                  <BiSolidPhoneCall /> +37480589658
+                  <BiSolidPhoneCall /> +374 99 942-200, +374 32 242-200
                 </li>
                 <li>
-                  <HiMiniCalendarDays /> Mon.-Fr.08:00-18:00,Sat 08:00-13:00
+                  <HiMiniCalendarDays /> Երկ. - Ուրբ. 08:00-18:00, Շաբ․ 08:00-13:00
                 </li>
                 <li>
-                  <BiGlobe /> www.Evalab.am
+                  <BiGlobe /> www.evalab.am
                 </li>
                 <li>
-                  <BiMailSend /> info@EvaLab.am
+                  <BiMailSend /> info@evaLab.am
                 </li>
               </ul>
             </div>
@@ -107,9 +110,9 @@ const { inputRef } = Barcode({
       <main>
         <section className="container">
           <div className="Requisites d-flex flex-column justify-content-center align-items-center">
-            <p>EVA LAB</p>
-            <p>hvhh12457888</p>
-            <p>h/h 220090120845000 ACBA bank</p>
+            <p>Եվալաբ</p>
+            <p>ՀՎՀՀ 12457888</p>
+            <p>h/h 220090120845000 ACBA բանկ</p>
           </div>
         </section>
         <section className="container d-flex justify-content-between mb-2">
@@ -123,7 +126,7 @@ const { inputRef } = Barcode({
               <li>Տրման ամսաթիվ: {value.date}</li>
             </ul>
           </div>
-          <Barcode value="barcode-example" width={1} />;
+          <Barcode value="298875855" width={1} />;
         </section>
         <section className="container "></section>
         <section className="container">
