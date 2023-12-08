@@ -91151,3 +91151,10 @@ Project:	Jampack
   overflow: hidden;
 }
 /*______________________________________________*/
+/*--------------------Table Column Header------------------------------*/
+.columnHeader{
+  display:flex;
+  justify-content:center;
+  align-items:center
+}
+/*---------------------------------------------------------------------*/

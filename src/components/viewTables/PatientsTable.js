@@ -1,6 +1,12 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useMemo, useRef } from "react";
-import { useBlockLayout, useResizeColumns, useRowSelect, useSortBy, useTable } from "react-table";
+import {
+  useBlockLayout,
+  useResizeColumns,
+  useRowSelect,
+  useSortBy,
+  useTable,
+} from "react-table";
 import { Checkbox } from "../Checkbox";
 import PatientInfo from "../PatientInfo";
 import FeatherIcon from "feather-icons-react/build/FeatherIcon";
@@ -23,7 +29,7 @@ function PatientsTable({
     () => ({
       minWidth: 20,
       width: 20,
-      maxWidth: 400
+      maxWidth: 400,
     }),
     []
   );
@@ -60,15 +66,16 @@ function PatientsTable({
   const columns = useMemo(
     () => [
       {
-        Header: (event) => (
+        Header: (event,) => (
           <>
-            <div>Անուն</div>
             <ColumnFilter
               event={event}
               setData={setPatients}
               data={patients}
               getData={() => getPatients()}
-            />
+              />
+              <div className="columnHeader">Անուն</div>
+            
           </>
         ),
         accessor: "firstName",
@@ -77,36 +84,35 @@ function PatientsTable({
       },
       {
         Header: (event) => (
-          <>
-          <div>
-          Ազգանուն
-          </div>
-          <ColumnFilter
+          <div style={{overflow:'hidden'}}>
+            <ColumnFilter
               event={event}
               setData={setPatients}
               data={patients}
               getData={() => getPatients()}
-            />
-                </>
-            ),
+              />
+              <span className="columnHeader">Ազգանուն</span>
+          </div>
+        ),
         accessor: "lastName",
-        sortable: true,
         width: 200,
+        display:"block",
+        className:"asd",
+
+        
       },
       {
         Header: (event) => (
           <>
-          <div>
-          Հայրանուն
-          </div>
-          <ColumnFilter
+            <ColumnFilter
               event={event}
               setData={setPatients}
               data={patients}
               getData={() => getPatients()}
             />
-                </>
-            ),
+            <div className="columnHeader">Հայրանուն</div>
+          </>
+        ),
         accessor: "midName",
         sortable: true,
         width: 200,
@@ -114,17 +120,15 @@ function PatientsTable({
       {
         Header: (event) => (
           <>
-          <div>
-          Էլ․ հասցե
-          </div>
-          <ColumnFilter
+            <ColumnFilter
               event={event}
               setData={setPatients}
               data={patients}
               getData={() => getPatients()}
             />
-                </>
-            ),
+            <div className="columnHeader">Էլ․ հասցե</div>
+          </>
+        ),
         accessor: "email",
         sortable: true,
         width: 200,
@@ -132,23 +136,26 @@ function PatientsTable({
       {
         Header: (event) => (
           <>
-          <div>
-          Տարիք
-          </div>
-          <ColumnFilter
+            <ColumnFilter
               event={event}
               setData={setPatients}
               data={patients}
               getData={() => getPatients()}
             />
-                </>
-            ),
+            <div className="columnHeader">Տարիք</div>
+            
+          </>
+        ),
         accessor: "age",
         sortable: true,
         width: 200,
       },
       {
-        Header: "Հետազոտություններ",
+        Header: (event) => (
+          <>
+            <div className="columnHeader">Հետազոտություններ</div>
+          </>
+        ),
         accessor: "researchList",
         width: 200,
         Cell: ({ row }) => (
@@ -163,13 +170,21 @@ function PatientsTable({
         ),
       },
       {
-        Header: "Արժեք (դրամ)",
+        Header: (event) => (
+          <>
+            <div className="columnHeader">Արժեք (դրամ)</div>
+          </>
+        ),
         accessor: "totalPrice",
         width: 200,
         Cell: ({ row }) => <div>{row.values.totalPrice}</div>,
       },
       {
-        Header: "Կարգաբերումներ",
+        Header: (event) => (
+          <>
+            <div className="columnHeader">Կարգաբերումներ</div>
+          </>
+        ),
         accessor: "options",
         width: 200,
         Cell: ({ row }) => (
@@ -253,9 +268,12 @@ function PatientsTable({
   } = useTable(
     {
       columns,
-      data: patients, defaultColumn      
+      data: patients,
+      defaultColumn,
     },
-    useBlockLayout,useResizeColumns,useSortBy,
+    useBlockLayout,
+    useResizeColumns,
+    useSortBy,
     useRowSelect,
     (hooks) => {
       hooks.visibleColumns.push((columns) => [
@@ -272,55 +290,63 @@ function PatientsTable({
   );
   console.log(selectedFlatRows);
   return (
-    <table  className="table nowrap w-100 mb-5 dataTable no-footer" {...getTableProps()} >
+    <table
+      className="table nowrap w-100 mb-5 dataTable no-footer"
+      {...getTableProps()}
+    >
       <thead>
-      {headerGroups.map((headerGroup) => (
-              <tr {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column) => (
-              <th {...column.getHeaderProps(column.getSortByToggleProps())}>
-              
-                
-                    {column.isSorted ? (
-                      column.isSortedDesc ? (
-                        <span className="sorting_asc"></span>
-                        ) : (
-                          <span className="sorting_desc"></span>
-                          )
+        {headerGroups.map((headerGroup) => (
+          <tr {...headerGroup.getHeaderGroupProps()}>
+            {headerGroup.headers.map((column) => (
+              <th style={{ overflow: "hidden" }}  >
+                  {column.render("Header")}
+                <div  {...column.getHeaderProps(column.getSortByToggleProps())} >
+                  {column.id !== "selection" ? (
+                    <span className="columnHeader" >
+                      {column.isSorted ? (
+                        column.isSortedDesc ? (
+                          <span className="sorting_asc"></span>
                           ) : (
-                            <span className="sorting"></span>
-                            )}
-    
-                            {column.render("Header")}
-                            <div
-                  {...column.getResizerProps() }
-                  className={`resizer ${
-                    column.isResizing ? "isResizing" : ""
-                  }`}
-                  />
+                            <span className="sorting_desc"></span>
+                            )
+                            ) : (
+                              <span className="sorting"></span>
+                              )}
+                    </span>
+                  ) : (
+                    ""
+                    )}
+                    </div>
+                    <span
+                      {...column.getResizerProps()}
+                      className={`resizer ${column.isResizing ? "isResizing" : ""}`}
+                      />
               </th>
             ))}
           </tr>
         ))}
       </thead>
       {patients?.length && (
-            <tbody {...getTableBodyProps()}>
-            {rows.map(row => {
-              prepareRow(row)
-              return (
-                <tr {...row.getRowProps()}>
-                  {row.cells.map(cell => {
-                    return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-                  })}
-                </tr>
-              )
-            })}           
-            <PatientInfo
-                              selectedItem={selectedItem}
-                              handleCloseModal={handleCloseModal}
-                              researchState={researchState}
-                            />  
-            </tbody>
-          )}{" "}
+        <tbody {...getTableBodyProps()}>
+          {rows.map((row) => {
+            prepareRow(row);
+            return (
+              <tr {...row.getRowProps()}>
+                {row.cells.map((cell) => {
+                  return (
+                    <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                  );
+                })}
+              </tr>
+            );
+          })}
+          <PatientInfo
+            selectedItem={selectedItem}
+            handleCloseModal={handleCloseModal}
+            researchState={researchState}
+          />
+        </tbody>
+      )}{" "}
     </table>
   );
 }

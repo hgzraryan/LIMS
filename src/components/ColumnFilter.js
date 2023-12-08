@@ -3,7 +3,7 @@ import { axiosPrivate } from "../api/axios";
 import { useState } from "react";
 import { useEffect } from "react";
 import useDebounce from "../hooks/useDebounce";
-export const ColumnFilter = ( {event,setData,getData} ) => {  
+export const ColumnFilter = ( {event,setData,getData,placeholder='search'} ) => {  
   const [searchData, setSearchData] = useState('')
   const debouncedSearch = useDebounce(searchData,1000)
 
@@ -32,14 +32,14 @@ export const ColumnFilter = ( {event,setData,getData} ) => {
     
   },[debouncedSearch])
   return (
-    <span>
+    <div style={{display:'flex',justifyContent:'center',alignItems:'center'}}>
       <input
       type="search"
-      placeholder="search"
+      placeholder={placeholder}
         value={searchData || ""}
         onChange={(e)=>setSearchData(e.target.value)}
       />
-    </span>
+    </div>
     
   );
 };
