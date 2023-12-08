@@ -10,6 +10,7 @@ import useGetData from "../../hooks/useGetData";
 import useDeleteData from "../../hooks/useDeleteData";
 import AddOrganization from "./AddOrganizations";
 import OrganizationsTable from "../viewTables/OrganizationsTable";
+import {Helmet} from "react-helmet";
 
 const ORGANIZATIONS_URL = "/organizations";
 
@@ -65,6 +66,11 @@ const Organizations = () => {
 
   return (
     <div>
+	<Helmet>
+		<meta charSet="utf-8" />
+		<title>Vteam LIMS | Organisations</title>
+		<link rel="icon" type="image/x-icon" href="dist/img/favicon.ico"></link>
+	</Helmet>
       <div className="contactapp-wrap">
         <div className="contactapp-content">
           <div className="contactapp-detail-wrap">
