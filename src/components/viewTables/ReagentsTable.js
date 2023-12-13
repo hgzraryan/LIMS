@@ -1,7 +1,14 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useMemo } from "react";
 import ComponentToConfirm from "../ComponentToConfirm";
-import { useBlockLayout, useResizeColumns, useRowSelect, useSortBy, useTable } from "react-table";
+import {
+  useBlockLayout,
+  useFilters,
+  useResizeColumns,
+  useRowSelect,
+  useSortBy,
+  useTable,
+} from "react-table";
 import { Checkbox } from "../Checkbox";
 import FeatherIcon from "feather-icons-react/build/FeatherIcon";
 import { ColumnFilter } from "../ColumnFilter";
@@ -17,134 +24,122 @@ function ReagentsTable({
   setReagents,
   getReagents,
 }) {
+  const defaultColumn = useMemo(
+    () => ({
+      minWidth: 20,
+      width: 20,
+      maxWidth: 600,
+    }),
+    []
+  );
   const columns = useMemo(
     () => [
       {
         Header: (event) => (
           <>
-            <div>Անվանում</div>
-            <ColumnFilter
-              event={event}
-              setData={setReagents}
-              data={reagents}
-              getData={() => getReagents()}
-            />
+            <div className="columnHeader">Անվանում</div>
           </>
         ),
         accessor: "product_name",
         sortable: true,
-        width:200
+        width: 200,
+        Filter: ({ column: { id } }) => (
+          <ColumnFilter id={id} setData={setReagents} />
+        ),
       },
       {
         Header: (event) => (
           <>
-            <div>Արժեք</div>
-            <ColumnFilter
-              event={event}
-              setData={setReagents}
-              data={reagents}
-              getData={() => getReagents()}
-            />
+            <div className="columnHeader">Արժեք</div>
           </>
         ),
         accessor: "price",
-        width:200
+        width: 200,
+        Filter: ({ column: { id } }) => (
+          <ColumnFilter id={id} setData={setReagents} />
+        ),
       },
       {
         Header: (event) => (
           <>
-            <div>Չափման միավոր</div>
-            <ColumnFilter
-              event={event}
-              setData={setReagents}
-              data={reagents}
-              getData={() => getReagents()}
-            />
+            <div className="columnHeader">Չափման միավոր</div>
           </>
         ),
         accessor: "quantity_unit",
         sortable: true,
-        width:200
+        width: 200,
+        Filter: ({ column: { id } }) => (
+          <ColumnFilter id={id} setData={setReagents} />
+        ),
       },
       {
         Header: (event) => (
           <>
-            <div>Չափման տեսակ</div>
-            <ColumnFilter
-              event={event}
-              setData={setReagents}
-              data={reagents}
-              getData={() => getReagents()}
-            />
+            <div className="columnHeader">Չափման տեսակ</div>
           </>
         ),
         accessor: "unit",
         sortable: true,
-        width:200
+        width: 200,
+        Filter: ({ column: { id } }) => (
+          <ColumnFilter id={id} setData={setReagents} />
+        ),
       },
       {
         Header: (event) => (
           <>
-            <div>Կիրառություն</div>
-            <ColumnFilter
-              event={event}
-              setData={setReagents}
-              data={reagents}
-              getData={() => getReagents()}
-            />
+            <div className="columnHeader">Կիրառություն</div>
           </>
         ),
         accessor: "used_for",
         sortable: true,
-        width:250
+        width: 250,
+        Filter: ({ column: { id } }) => (
+          <ColumnFilter id={id} setData={setReagents} />
+        ),
       },
       {
         Header: (event) => (
           <>
-            <div>Արժույթ</div>
-            <ColumnFilter
-              event={event}
-              setData={setReagents}
-              data={reagents}
-              getData={() => getReagents()}
-            />
+            <div className="columnHeader">Արժույթ</div>
           </>
         ),
         accessor: "currency",
-        width:200
+        width: 200,
+        Filter: ({ column: { id } }) => (
+          <ColumnFilter id={id} setData={setReagents} />
+        ),
       },
       {
         Header: (event) => (
           <>
-            <div>Նկարագիր</div>
-            <ColumnFilter
-              event={event}
-              setData={setReagents}
-              data={reagents}
-              getData={() => getReagents()}
-            />
+            <div className="columnHeader">Նկարագիր</div>
           </>
         ),
         accessor: "description",
-        width:200
+        width: 200,
+        Filter: ({ column: { id } }) => (
+          <ColumnFilter id={id} setData={setReagents} />
+        ),
       },
       {
         Header: (event) => (
           <>
-            <div>Թողարկող</div>
-            <ColumnFilter
-              event={event}
-              setData={setReagents}
-              data={reagents}
-              getData={() => getReagents()}
-            />
+            <div className="columnHeader">Թողարկող</div>
           </>
         ),
         accessor: "vendor",
-        width:200
+        width: 200,
+        Filter: ({ column: { id } }) => (
+          <ColumnFilter id={id} setData={setReagents} />
+        ),
       },
       {
-        Header: "Գործողություններ",
+        Header: (event) => (
+          <>
+            <div className="columnHeader">Գործողություններ</div>
+          </>
+        ),
         accessor: "actions",
         Cell: ({ row }) => (
           <div className="d-flex align-items-center">
@@ -181,19 +176,13 @@ function ReagentsTable({
           </div>
         ),
         disableSortBy: true,
-        width:200
+        width: 200,
+        Filter: ({ column: { id } }) => <></>,
       },
     ],
     []
   );
-  const defaultColumn = useMemo(
-    () => ({
-      minWidth: 20,
-      width: 20,
-      maxWidth: 600
-    }),
-    []
-  );
+
   const {
     getTableProps,
     getTableBodyProps,
@@ -201,13 +190,17 @@ function ReagentsTable({
     rows,
     prepareRow,
     selectedFlatRows,
+    toggleHideColumn,
   } = useTable(
     {
       columns,
-      data: reagents, 
-      defaultColumn      
+      data: reagents,
+      defaultColumn,
     },
-    useBlockLayout,useResizeColumns,useSortBy,
+    useFilters,
+    useBlockLayout,
+    useResizeColumns,
+    useSortBy,
     useRowSelect,
     (hooks) => {
       hooks.visibleColumns.push((columns) => [
@@ -224,49 +217,71 @@ function ReagentsTable({
   );
   console.log(selectedFlatRows);
   return (
-    <table  className="table nowrap w-100 mb-5 dataTable no-footer" {...getTableProps()} >
+    <table
+      className="table nowrap w-100 mb-5 dataTable no-footer"
+      {...getTableProps()}
+    >
       <thead>
-      {headerGroups.map((headerGroup) => (
-              <tr {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column) => (
+        {headerGroups.map((headerGroup) => (
+          <tr {...headerGroup.getHeaderGroupProps()}>
+            {headerGroup.headers.map((column) => (
               <th {...column.getHeaderProps(column.getSortByToggleProps())}>
-              
-                
-                    {column.isSorted ? (
-                      column.isSortedDesc ? (
-                        <span className="sorting_asc"></span>
-                        ) : (
-                          <span className="sorting_desc"></span>
-                          )
+                <div>
+                  {column.id !== "selection" && (
+                    <>
+                      <div>
+                        {column.canFilter ? column.render("Filter") : null}
+                      </div>
+
+                      <div
+                        style={{
+                          marginTop: "2px",
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                        }}
+                      >
+                        <div>{column.render("Header")}</div>
+
+                        <div style={{ paddingTop: "20px" }}>
+                          {column.isSorted ? (
+                            column.isSortedDesc ? (
+                              <span className="sorting_asc"></span>
+                            ) : (
+                              <span className="sorting_desc"></span>
+                            )
                           ) : (
                             <span className="sorting"></span>
-                            )}
-    
-                            {column.render("Header")}
-                            <div
-                  {...column.getResizerProps() }
-                  className={`resizer ${
-                    column.isResizing ? "isResizing" : ""
-                  }`}
-                  />
+                          )}
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </div>
+                <div
+                  {...column.getResizerProps()}
+                  className={`resizer ${column.isResizing ? "isResizing" : ""}`}
+                />
               </th>
             ))}
           </tr>
         ))}
       </thead>
       {reagents?.length && (
-            <tbody {...getTableBodyProps()}>
-            {rows.map(row => {
-              prepareRow(row)
-              return (
-                <tr {...row.getRowProps()}>
-                  {row.cells.map(cell => {
-                    return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-                  })}
-                </tr>
-              )
-            })}
-             <ComponentToConfirm
+        <tbody {...getTableBodyProps()}>
+          {rows.map((row) => {
+            prepareRow(row);
+            return (
+              <tr {...row.getRowProps()}>
+                {row.cells.map((cell) => {
+                  return (
+                    <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                  );
+                })}
+              </tr>
+            );
+          })}
+          <ComponentToConfirm
             handleCloseModal={handleCloseModal}
             handleOpenModal={handleOpenModal}
             handleDeleteItem={handleDeleteItem}
@@ -275,8 +290,8 @@ function ReagentsTable({
             userName={selectedItem.username}
             userId={selectedItem._id}
           />
-            </tbody>
-          )}{" "}
+        </tbody>
+      )}{" "}
     </table>
   );
 }

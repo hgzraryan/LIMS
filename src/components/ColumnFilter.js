@@ -3,43 +3,70 @@ import { axiosPrivate } from "../api/axios";
 import { useState } from "react";
 import { useEffect } from "react";
 import useDebounce from "../hooks/useDebounce";
-export const ColumnFilter = ( {event,setData,getData,placeholder='search'} ) => {  
-  const [searchData, setSearchData] = useState('')
-  const debouncedSearch = useDebounce(searchData,1000)
+import useGetData from "../hooks/useGetData";
+export const ColumnFilter = ( {setData,id,placeholder='search',url} ) => {  
+  const [searchTerms, setSearchTerms] = useState({});
 
-  useEffect(()=>{
+  const debouncedSearch = useDebounce(searchTerms,1000)
 
-    const getSearchedData = async (searchBy,seachSatring) =>{
-     
-      console.log('searchData',searchData.trim()==='')
-      
-      setData((prev) => {return[{
-            email: "azat@mail.ru",
-            firstname:"Axvan",            
-            lastname:"Sahakyan",
-            midname: "Hayriki"}]})
-            // const response = await axiosPrivate.post('/searchData',{
-          //   searchBy: searchBy,
-          //   searchString: seachSatring
-          // });  
+  const {
+    data: mainData,
+  } = useGetData('/users');
+
+  useEffect(() => {
+    let isMounted = true;
+    const controller = new AbortController();
+    console.log(Object.values(searchTerms).toString().length);
+
+    const getData = async () => {
+      try {
+        const response = await axiosPrivate.get(
+          "/users"
+          // , {
+          //    searchBy: searchBy,
+          //    searchString: seachSatring
+          //   }
+        );
+        setData((prev) => {
+          return [
+            {
+              email: "azat@mail.ru",
+              firstname: "Axvan",
+              lastname: "Sahakyan",
+              midname: "Hayriki",
+              isActive:0,
+            roles:{}}]})
+        // isMounted &&
+        // isMounted &&
+        //   setUsers((prevUsers) => response.data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    if (Object.values(searchTerms).toString().length) {
+      getData();
+    } else {
+      console.log("else")
+      setData(mainData);
     }
-    if(debouncedSearch){
-      getSearchedData(event.column?.id,searchData)
-    }
-    else{
-      getData()
-    }
-    
-  },[debouncedSearch])
+
+    return () => {
+      isMounted = false;
+      controller.abort();
+    };
+  }, [debouncedSearch]);
+  const handleSearchInputChange = (column, value) => {
+    const updatedSearchTerms = {  [column]: value };
+    setSearchTerms(updatedSearchTerms);
+   console.log(updatedSearchTerms);
+  };
   return (
-    <div style={{display:'flex',justifyContent:'center',alignItems:'center'}}>
-      <input
-      type="search"
-      placeholder={placeholder}
-        value={searchData || ""}
-        onChange={(e)=>setSearchData(e.target.value)}
-      />
-    </div>
-    
-  );
+    <>
+     <input
+            onClick={(e) => e.stopPropagation()}
+            onChange={(e) => handleSearchInputChange(id, e.target.value)}
+            placeholder={`Search ${id}`}
+          />
+    </>
+    );
 };

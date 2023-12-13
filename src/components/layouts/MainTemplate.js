@@ -163,7 +163,7 @@ const MainTemplate = () => {
                                                     <div className="avatar avatar-icon avatar-xs avatar-soft-light avatar-rounded">
                                                         <span className="initial-wrap">
                                                             <span className="svg-icon">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-corner-down-right" width="24" height="24" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="0c4f71" strokeLinecap="round" strokeLinejoin="round">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-corner-down-right" width="24" height="24" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="#0c4f71" strokeLinecap="round" strokeLinejoin="round">
                                                                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                                                     <path d="M6 6v6a3 3 0 0 0 3 3h10l-4 -4m0 8l4 -4"></path>
                                                                 </svg>
@@ -498,6 +498,29 @@ const MainTemplate = () => {
                                       </Link>
                                   </li>	
                                   <li className="nav-item">
+									  <Link className={misActive1 === "diagnoses" || location.pathname==="/diagnoses" ?"nav-link active":"nav-link"} to="./diagnoses"
+									  onClick={() => handleSubmenuClick("diagnoses","")}>
+                                          <span className="nav-icon-wrap">
+                                              <span className="svg-icon">
+                                              <svg fill="#000000" width="23" height="23" viewBox="0 0 512 512" id="Layer_1" version="1.1">
+                                                <g>
+                                                <g>
+                                                <path d="M398.4,468.9H113.6c-15.4,0-29.7-7.6-38.3-20.4s-10.3-28.9-4.5-43.2l100.8-248.7c3.7-9.2,5.6-19,5.6-29V97.8h-11.1    c-15.1,0-27.3-12.3-27.3-27.3c0-15.1,12.3-27.3,27.3-27.3h179.8c15.1,0,27.3,12.3,27.3,27.3c0,15.1-12.3,27.3-27.3,27.3h-11.1    v29.8c0,10,1.9,19.7,5.6,29l100.8,248.8c5.8,14.3,4.1,30.4-4.5,43.2C428.2,461.3,413.8,468.9,398.4,468.9z M166.1,58.1    c-6.8,0-12.3,5.5-12.3,12.3s5.5,12.3,12.3,12.3h18.6c4.1,0,7.5,3.4,7.5,7.5v37.4c0,11.9-2.3,23.6-6.7,34.6L84.6,411    c-4,9.8-2.9,20.4,3,29.2s15.3,13.8,25.9,13.8h284.9c10.6,0,20-5,25.9-13.8s7-19.4,3-29.2L326.5,162.2c-4.5-11-6.7-22.7-6.7-34.6    V90.3c0-4.1,3.4-7.5,7.5-7.5h18.6c6.8,0,12.3-5.5,12.3-12.3s-5.5-12.3-12.3-12.3L166.1,58.1L166.1,58.1z"/>
+                                                </g>
+                                                <g>
+                                                <path d="M377.1,281.6h-49.4c-4.1,0-7.5-3.4-7.5-7.5s3.4-7.5,7.5-7.5h49.4c4.1,0,7.5,3.4,7.5,7.5S381.2,281.6,377.1,281.6z"/>
+                                                </g>
+                                                <g>
+                                                <path d="M287,281.6H132c-4.1,0-7.5-3.4-7.5-7.5s3.4-7.5,7.5-7.5h155c4.1,0,7.5,3.4,7.5,7.5S291.1,281.6,287,281.6z"/>
+                                                </g>
+                                                </g>
+                                                </svg>
+                                              </span>
+                                          </span>
+                                          <span className="nav-link-text">Ախտորոշումներ</span>
+                                      </Link>
+                                  </li>
+                                  <li className="nav-item">
                                   <Link className={misActive1 === "agents" || location.pathname==="/agents"?"nav-link active":"nav-link"} to="./agents"
                                    onClick={() => handleSubmenuClick("agents","")}>
                                           <span className="nav-icon-wrap">
@@ -625,28 +648,6 @@ const MainTemplate = () => {
                                   </li>
 								  */}
                                   <li className="nav-item">
-                                  <Link className={(misActive1 === "users" ||  location.pathname==="/users")?"nav-link active":"nav-link"} to="/users"
-                                  onClick={() => handleSubmenuClick("users","")}>
-                                          <span className="nav-icon-wrap position-relative">
-                                              <span className="svg-icon">
-                                              <span className="badge badge-sm badge-primary badge-sm badge-pill position-top-end-overflow">{usersCount}</span>
-                                              <svg width="800px" height="800px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                    <title/>
-                                                    <g id="Complete">
-                                                    <g id="user">
-                                                    <g>
-                                                    <path d="M20,21V19a4,4,0,0,0-4-4H8a4,4,0,0,0-4,4v2" fill="none" stroke="#000000" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"/>
-                                                    <circle cx="12" cy="7" fill="none" r="4" stroke="#000000" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"/>
-                                                    </g>
-                                                    </g>
-                                                    </g>
-                                                    </svg>
-                                              </span>
-                                          </span>
-                                          <span className="nav-link-text">Աշխատակիցներ</span>
-                                      </Link>
-                                  </li>
-                                  <li className="nav-item">
                                   <Link className={misActive1 === "departments"?"nav-link active":"nav-link"} to="#" data-bs-toggle="collapse" data-bs-target="#dash_contact">
                                           <span className="nav-icon-wrap">
                                               <span className="svg-icon">
@@ -707,29 +708,6 @@ const MainTemplate = () => {
                                           </li>	
                                       </ul>	
                                   </li>
-                                  <li className="nav-item">
-									  <Link className={misActive1 === "diagnoses" || location.pathname==="/diagnoses" ?"nav-link active":"nav-link"} to="./diagnoses"
-									  onClick={() => handleSubmenuClick("diagnoses","")}>
-                                          <span className="nav-icon-wrap">
-                                              <span className="svg-icon">
-                                              <svg fill="#000000" width="23" height="23" viewBox="0 0 512 512" id="Layer_1" version="1.1">
-                                                <g>
-                                                <g>
-                                                <path d="M398.4,468.9H113.6c-15.4,0-29.7-7.6-38.3-20.4s-10.3-28.9-4.5-43.2l100.8-248.7c3.7-9.2,5.6-19,5.6-29V97.8h-11.1    c-15.1,0-27.3-12.3-27.3-27.3c0-15.1,12.3-27.3,27.3-27.3h179.8c15.1,0,27.3,12.3,27.3,27.3c0,15.1-12.3,27.3-27.3,27.3h-11.1    v29.8c0,10,1.9,19.7,5.6,29l100.8,248.8c5.8,14.3,4.1,30.4-4.5,43.2C428.2,461.3,413.8,468.9,398.4,468.9z M166.1,58.1    c-6.8,0-12.3,5.5-12.3,12.3s5.5,12.3,12.3,12.3h18.6c4.1,0,7.5,3.4,7.5,7.5v37.4c0,11.9-2.3,23.6-6.7,34.6L84.6,411    c-4,9.8-2.9,20.4,3,29.2s15.3,13.8,25.9,13.8h284.9c10.6,0,20-5,25.9-13.8s7-19.4,3-29.2L326.5,162.2c-4.5-11-6.7-22.7-6.7-34.6    V90.3c0-4.1,3.4-7.5,7.5-7.5h18.6c6.8,0,12.3-5.5,12.3-12.3s-5.5-12.3-12.3-12.3L166.1,58.1L166.1,58.1z"/>
-                                                </g>
-                                                <g>
-                                                <path d="M377.1,281.6h-49.4c-4.1,0-7.5-3.4-7.5-7.5s3.4-7.5,7.5-7.5h49.4c4.1,0,7.5,3.4,7.5,7.5S381.2,281.6,377.1,281.6z"/>
-                                                </g>
-                                                <g>
-                                                <path d="M287,281.6H132c-4.1,0-7.5-3.4-7.5-7.5s3.4-7.5,7.5-7.5h155c4.1,0,7.5,3.4,7.5,7.5S291.1,281.6,287,281.6z"/>
-                                                </g>
-                                                </g>
-                                                </svg>
-                                              </span>
-                                          </span>
-                                          <span className="nav-link-text">Ախտորոշումներ</span>
-                                      </Link>
-                                  </li>
 								  {/*
                                   <li className="nav-item">
                                       <Link className="nav-link" to="gallery.html">
@@ -777,6 +755,28 @@ const MainTemplate = () => {
                                               </ul>	
                                           </li>	
                                       </ul>	
+                                  </li>
+                                  <li className="nav-item">
+                                  <Link className={(misActive1 === "users" ||  location.pathname==="/users")?"nav-link active":"nav-link"} to="/users"
+                                  onClick={() => handleSubmenuClick("users","")}>
+                                          <span className="nav-icon-wrap position-relative">
+                                              <span className="svg-icon">
+                                              <span className="badge badge-sm badge-primary badge-sm badge-pill position-top-end-overflow">{usersCount}</span>
+                                              <svg width="800px" height="800px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                    <title/>
+                                                    <g id="Complete">
+                                                    <g id="user">
+                                                    <g>
+                                                    <path d="M20,21V19a4,4,0,0,0-4-4H8a4,4,0,0,0-4,4v2" fill="none" stroke="#000000" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"/>
+                                                    <circle cx="12" cy="7" fill="none" r="4" stroke="#000000" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"/>
+                                                    </g>
+                                                    </g>
+                                                    </g>
+                                                    </svg>
+                                              </span>
+                                          </span>
+                                          <span className="nav-link-text">Աշխատակիցներ</span>
+                                      </Link>
                                   </li>
 								  <li className="nav-item">
                                       <a className={misActive1 === "settings" ?"nav-link active":"nav-link"} href="#" data-bs-toggle="collapse" onClick={dropDownMenu2Click}  data-bs-target="#dash_integ">

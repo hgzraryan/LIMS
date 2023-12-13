@@ -91157,4 +91157,7 @@ Project:	Jampack
   justify-content:center;
   align-items:center
 }
+td{
+  overflow: hidden;
+}
 /*---------------------------------------------------------------------*/

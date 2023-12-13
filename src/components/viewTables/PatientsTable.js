@@ -2,6 +2,7 @@
 import React, { useMemo, useRef } from "react";
 import {
   useBlockLayout,
+  useFilters,
   useResizeColumns,
   useRowSelect,
   useSortBy,
@@ -23,16 +24,7 @@ function PatientsTable({
   researchState,
   patients,
   setPatients,
-  getPatients,
 }) {
-  const defaultColumn = React.useMemo(
-    () => ({
-      minWidth: 20,
-      width: 20,
-      maxWidth: 400,
-    }),
-    []
-  );
   const ComponentToPrintWrapper = ({ user }) => {
     // 1.
     let componentRef = useRef(null); // 2.
@@ -63,17 +55,20 @@ function PatientsTable({
       </div>
     );
   };
+  const defaultColumn = React.useMemo(
+    () => ({
+      minWidth: 20,
+      width: 20,
+      maxWidth: 400,
+    }),
+    []
+  );  
   const columns = useMemo(
     () => [
       {
         Header: (event,) => (
           <>
-            <ColumnFilter
-              event={event}
-              setData={setPatients}
-              data={patients}
-              getData={() => getPatients()}
-              />
+            
               <div className="columnHeader">Անուն</div>
             
           </>
@@ -81,67 +76,69 @@ function PatientsTable({
         accessor: "firstName",
         sortable: true,
         width: 200,
+        Filter: ({ column: { id } })=>(
+          <ColumnFilter
+            id={id}
+            setData={setPatients}
+          />
+        ),
       },
       {
         Header: (event) => (
           <div style={{overflow:'hidden'}}>
-            <ColumnFilter
-              event={event}
-              setData={setPatients}
-              data={patients}
-              getData={() => getPatients()}
-              />
+            
               <span className="columnHeader">Ազգանուն</span>
           </div>
         ),
         accessor: "lastName",
         width: 200,
-        display:"block",
-        className:"asd",
+        Filter: ({ column: { id } })=>(
+          <ColumnFilter
+            id={id}
+            setData={setPatients}
+          />
+        ),
 
         
       },
       {
         Header: (event) => (
           <>
-            <ColumnFilter
-              event={event}
-              setData={setPatients}
-              data={patients}
-              getData={() => getPatients()}
-            />
+           
             <div className="columnHeader">Հայրանուն</div>
           </>
         ),
         accessor: "midName",
         sortable: true,
         width: 200,
+        Filter: ({ column: { id } })=>(
+          <ColumnFilter
+            id={id}
+            setData={setPatients}
+          />
+        ),
       },
       {
         Header: (event) => (
           <>
-            <ColumnFilter
-              event={event}
-              setData={setPatients}
-              data={patients}
-              getData={() => getPatients()}
-            />
+           
             <div className="columnHeader">Էլ․ հասցե</div>
           </>
         ),
         accessor: "email",
         sortable: true,
         width: 200,
+        Filter: ({ column: { id } })=>(
+          <ColumnFilter
+            id={id}
+            setData={setPatients}
+          />
+        ),
       },
       {
         Header: (event) => (
           <>
-            <ColumnFilter
-              event={event}
-              setData={setPatients}
-              data={patients}
-              getData={() => getPatients()}
-            />
+            
             <div className="columnHeader">Տարիք</div>
             
           </>
@@ -149,6 +146,12 @@ function PatientsTable({
         accessor: "age",
         sortable: true,
         width: 200,
+        Filter: ({ column: { id } })=>(
+          <ColumnFilter
+            id={id}
+            setData={setPatients}
+          />
+        ),
       },
       {
         Header: (event) => (
@@ -156,8 +159,6 @@ function PatientsTable({
             <div className="columnHeader">Հետազոտություններ</div>
           </>
         ),
-        accessor: "researchList",
-        width: 200,
         Cell: ({ row }) => (
           <div className="d-flex">
             <div className="pe-2">{row.values.researchList.length}</div>
@@ -168,6 +169,9 @@ function PatientsTable({
             />
           </div>
         ),
+        accessor: "researchList",
+        width: 200,
+        Filter: ({ column: { id } }) => <></>,
       },
       {
         Header: (event) => (
@@ -175,9 +179,11 @@ function PatientsTable({
             <div className="columnHeader">Արժեք (դրամ)</div>
           </>
         ),
+        Cell: ({ row }) => <div>{row.values.totalPrice}</div>,
         accessor: "totalPrice",
         width: 200,
-        Cell: ({ row }) => <div>{row.values.totalPrice}</div>,
+        Filter: ({ column: { id } }) => <></>,
+
       },
       {
         Header: (event) => (
@@ -185,8 +191,6 @@ function PatientsTable({
             <div className="columnHeader">Կարգաբերումներ</div>
           </>
         ),
-        accessor: "options",
-        width: 200,
         Cell: ({ row }) => (
           <div className="d-flex align-items-center">
             <div className="d-flex">
@@ -194,16 +198,16 @@ function PatientsTable({
 
               {/*
                         <a className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover" data-bs-toggle="tooltip" data-placement="top" title="" data-bs-original-title="Archive" href="#"><span className="icon"><span className="feather-icon"><FeatherIcon icon="archive" /></span></span></a>
-                         <a className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover" data-bs-toggle="tooltip" data-placement="top" title="" data-bs-original-title="Edit" href="edit-contact.html"><span className="icon"><span className="feather-icon"><FeatherIcon icon="edit" /></span></span></a>
-                         <a className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover del-button" data-bs-toggle="tooltip" data-placement="top" title="" data-bs-original-title="Delete" href="#"><span className="icon"><span className="feather-icon"><FeatherIcon icon="trash" /></span></span></a>
-                        */}
+                        <a className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover" data-bs-toggle="tooltip" data-placement="top" title="" data-bs-original-title="Edit" href="edit-contact.html"><span className="icon"><span className="feather-icon"><FeatherIcon icon="edit" /></span></span></a>
+                        <a className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover del-button" data-bs-toggle="tooltip" data-placement="top" title="" data-bs-original-title="Delete" href="#"><span className="icon"><span className="feather-icon"><FeatherIcon icon="trash" /></span></span></a>
+                      */}
             </div>
             <div className="dropdown">
               <button
                 className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover dropdown-toggle no-caret"
                 aria-expanded="false"
                 data-bs-toggle="dropdown"
-              >
+                >
                 <span className="icon">
                   <span className="feather-icon">
                     <FeatherIcon icon="more-vertical" />
@@ -252,25 +256,33 @@ function PatientsTable({
             </div>
           </div>
         ),
+        accessor: "options",
+        width: 200,
         disableSortBy: true,
+        Filter: ({ column: { id } }) => <></>,
+
       },
     ],
     []
-  );
-
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
+    );
+    
+    const {
+      getTableProps,
+      getTableBodyProps,
+      headerGroups,
+      rows,
+      state,
+    setGlobalFilter,
     prepareRow,
     selectedFlatRows,
+    toggleHideColumn,
   } = useTable(
     {
       columns,
       data: patients,
       defaultColumn,
     },
+    useFilters,
     useBlockLayout,
     useResizeColumns,
     useSortBy,
@@ -298,30 +310,44 @@ function PatientsTable({
         {headerGroups.map((headerGroup) => (
           <tr {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map((column) => (
-              <th style={{ overflow: "hidden" }}  >
-                  {column.render("Header")}
-                <div  {...column.getHeaderProps(column.getSortByToggleProps())} >
-                  {column.id !== "selection" ? (
-                    <span className="columnHeader" >
-                      {column.isSorted ? (
-                        column.isSortedDesc ? (
-                          <span className="sorting_asc"></span>
-                          ) : (
-                            <span className="sorting_desc"></span>
-                            )
-                            ) : (
-                              <span className="sorting"></span>
-                              )}
-                    </span>
-                  ) : (
-                    ""
-                    )}
+                  <th  {...column.getHeaderProps(column.getSortByToggleProps())}>
+                  <div>
+                    {column.id !== "selection" && (
+                      <>
+                      <div>
+                        {column.canFilter ? column.render("Filter") : null}
+                      </div>
+                    
+                    <div  style={{
+                      marginTop: "2px",
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                    }}>
+                      <div>{column.render("Header")}</div>
+                      
+                        <div style={{paddingTop:'20px'}} >
+                          {column.isSorted ? (
+                            column.isSortedDesc ? (
+                              <span className="sorting_asc"></span>
+                              ) : (
+                                <span className="sorting_desc"></span>
+                                )
+                                ) : (
+                                  <span className="sorting"></span>
+                                  )}
+                        </div>
                     </div>
-                    <span
-                      {...column.getResizerProps()}
-                      className={`resizer ${column.isResizing ? "isResizing" : ""}`}
-                      />
-              </th>
+                                  </>
+                      )}
+                  </div>
+                  <div
+                  {...column.getResizerProps()}
+                    className={`resizer ${
+                      column.isResizing ? "isResizing" : ""
+                    }`}
+                  />
+                </th>
             ))}
           </tr>
         ))}
