@@ -1,0 +1,170 @@
+.custom-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+#popover-releasepopover {
+  width: 145px !important;
+}
+.custom-scroll::-webkit-scrollbar-thumb {
+  border-radius: 50px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+}
+.releas-control{
+  padding: 10px 30px !important;
+}
+.custom-scroll::-webkit-scrollbar-thumb:hover {
+  border: 1px solid gray;
+}
+
+.statusBoardContainer {
+  // Styling for the vertical scrollbar.
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  // Custom scroll bar to be shown on the top of planning board instead bottom.
+  .empty-release-block {
+    height: 100%;
+    min-height: 100vh;
+    width: 380px;
+    min-width: 380px;
+    max-width: 380px;
+    border-radius: 8px 8px 0 0;
+    background-color: rgba(var(--theme-dark-blue), 0.05);
+    // box-shadow: 0 4px 8px 0 rgb(232 233 240 / 50%);
+    .empty-content-block {
+      padding-top: 180px;
+    }
+    .ic-empty-release {
+      margin: 0 auto;
+    }
+    .description {
+      color: var(--secondary-color);
+      font-family: var(--Poppins-Regular);
+      font-size: 14px;
+      letter-spacing: 0;
+      line-height: 21px;
+      text-align: center;
+      padding: 25px 12px 30px;
+      
+    }
+    .add-board-button-block {
+      margin: 0 12px;
+      border-radius: 8px;
+    }
+    .btn-add-board {
+      color: var(--third-color);
+      font-family: var(--Poppins-Medium);
+      font-size: 14px;
+      letter-spacing: 0;
+      line-height: 21px;
+      text-align: center;
+      box-sizing: border-box;
+      height: 44px;
+      width: 356px;
+      border: 1px solid var(--tenth-color);
+      border-radius: 8px;
+      cursor: pointer;
+    }
+  }
+  
+  .statusBoardHeader {
+    box-shadow: 0 1px 20px rgba(56, 40, 40, 0.05);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    position: inherit;
+    top: 0;
+    background-color: #fff;
+    .staus-board-fliters{
+      color: #8D98A1;
+      .clear-all{
+        color: #61A39F;
+        cursor: pointer;
+      }
+      .pointer{
+        cursor: pointer;
+      }
+    }
+  }
+  .statusBoardBody, .column {
+    // Styling for the horizontal scrollbar.
+    &::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    /* Track */
+    &::-webkit-scrollbar-track {
+      box-shadow: inset 0 0 5px #eee;
+      border-radius: 4px;
+    }
+    /* Handle */
+    &::-webkit-scrollbar-thumb {
+      border-radius: 4px;
+    }
+  }
+
+  .filter-hdr-title {
+    color: var(--ninth-color);
+    font-family: var(--Poppins-Regular);
+    font-size: 14px;
+    letter-spacing: 0;
+    line-height: 21px;
+    text-align: right;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    background-color: #EAECEE;
+    padding: 5px 10px;
+    margin-right: 10px;
+    span {
+      color: var(--bg-theme-green);
+      font-family: var(--Poppins-Medium);
+      font-size: 14px;
+      letter-spacing: 0;
+      line-height: 21px;
+      margin-left: 15px;
+      cursor: pointer;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .statusBoardBody {
+    flex: 1;
+    width: 100%;
+    height: calc(100vh - 170px);
+    padding-top: 20px;
+    overflow: auto;
+    .boardOuter {
+      height: auto;
+      width: fit-content;
+      padding: 10px 30px;
+      display: flex;
+      gap: 20px;
+    }
+    .lastColumn {
+      flex-basis: 290px;
+      min-width: 290px;
+      .statusAdd{
+        background-color: #e7e9eb;
+        padding: 5%;
+        border-radius: 5px;
+        .addStatus{
+          color: var(--third-color);
+          width: 100%;
+          text-align: center;
+          border: 1px solid #D1D5D9;
+          border-radius: 8px;
+          font-family: var(--Poppins-Medium);
+          font-size: 14px;
+          padding: 10px;
+          cursor: pointer;
+        }
+        .addStatus:hover{
+          background-color: #ddd;
+        }
+      }
+    }
+  }
+}

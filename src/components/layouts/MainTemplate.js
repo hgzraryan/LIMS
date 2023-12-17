@@ -498,8 +498,8 @@ const MainTemplate = () => {
                                       </Link>
                                   </li>	
                                   <li className="nav-item">
-									  <Link className={misActive1 === "diagnoses" || location.pathname==="/diagnoses" ?"nav-link active":"nav-link"} to="./diagnoses"
-									  onClick={() => handleSubmenuClick("diagnoses","")}>
+									  <Link className={misActive1 === "researches" || location.pathname==="/researches" ?"nav-link active":"nav-link"} to="./researches"
+									  onClick={() => handleSubmenuClick("researches","")}>
                                           <span className="nav-icon-wrap">
                                               <span className="svg-icon">
                                               <svg fill="#000000" width="23" height="23" viewBox="0 0 512 512" id="Layer_1" version="1.1">

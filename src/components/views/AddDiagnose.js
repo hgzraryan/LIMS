@@ -9,15 +9,15 @@ import { Input } from "../Input";
 import { name_validation, desc_validation } from "../../utils/inputValidations";
 import useSubmitForm from "../../hooks/useSubmitForm";
 
-const REGISTER_URL = "/registerDiagnose";
-function AddDiagnose({ handleToggleCreateModal, getDiagnoses }) {
+const REGISTER_URL = "/registerResearch";
+function AddResearch({ handleToggleCreateModal, getResearches }) {
   const [errMsg, setErrMsg] = useState("");
 
   const editorRef = useRef(null);
   const { onSubmit, methods } = useSubmitForm(
     REGISTER_URL,
     editorRef,
-    getDiagnoses,
+    getResearches,
     setErrMsg,
     handleToggleCreateModal
   );
@@ -165,4 +165,4 @@ function AddDiagnose({ handleToggleCreateModal, getDiagnoses }) {
   );
 }
 
-export default AddDiagnose;
+export default AddResearch;

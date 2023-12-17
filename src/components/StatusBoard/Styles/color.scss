@@ -1,0 +1,45 @@
+$backdrop-color: #F4F5F9;
+$bg-white: #FFF;
+$bg-theme-green:  #61A39F;
+$font-white: #fff;
+$font-gray: #6B7782;
+
+// Button without border
+$btn-bg-color: var(--third-color);
+$btn-text-color: #FFF;
+// Disabled Button without border
+$btn-disable-bg-color: var(--third-color);
+$btn-disable-text-color: gray;
+// Button with border
+$btn--no-bg-color: #FFF;
+$btn-border-color: var(--third-color);
+$btn-border-text-color: var(--third-color);
+
+
+:root {
+  --bg-theme-white: #ffffff;
+  --bg-theme-green: #61A39F;
+  --primary-color: #1C3144;
+  --secondary-color: #6B7782;
+  --third-color: #287DA1;
+  --fourth-color: #4D908E;
+  --fithy-color: #A0A9B0;
+  --sixth-color: #90BE6D;
+  --seventh-color: #EF4347;
+  --eighth-color:  #F5834A;
+  --ninth-color: #8D98A1;
+  --tenth-color: #D1D5D9;
+  --eleventh-color: #C6CBD0;
+  --twelfth-color: #333333;
+  --thirteenth-color: #122536;
+  --theme-dark-blue: 28,49,68;        // #1C3144;
+  --theme-dashed-color: 28,50,68;     // #1C3244
+  --theme-white-rgba: 255, 255, 255;  // #FFFFFF
+  --theme-red-rgba: 239, 67, 71;      // #EF4347
+  --third-color-rgba: 40, 125, 161;
+  --background-color: #F3F4F5;
+  --background-spotlight-color: #fdefe9;
+  --theme-bg-blue: #6192B7;
+  --acclaim-logo-orange: #EB5E26;
+  --rdcl-vision-pink: #ff0058;
+}

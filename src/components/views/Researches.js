@@ -1,19 +1,20 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState, useMemo, useRef } from "react";
+import React, { useState, useRef } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import FeatherIcon from "feather-icons-react";
 import Loading from "../Loading";
 import { Dropdown } from "react-bootstrap";
 import useGetData from "../../hooks/useGetData";
 import useDeleteData from "../../hooks/useDeleteData";
-import AddDiagnose from "./AddDiagnose";
+import ResearchesTable from "../viewTables/ResearchesTable";
+import AddResearch from "./AddResearch";
 
-const DIAGNOSES_URL = '/diagnoses'
-const Diagnoses = () => {
+const RESEARCHES_URL = "/diagnoses";
+const Researches = () => {
   const [selectedItem, setSelectedItem] = useState("");
   const [selectedItemId, setSelectedItemId] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
-  const confirmDiagnosessRef = useRef("");
+  const confirmResearchesRef = useRef("");
 
   const handleOpenModal = (user) => {
     setSelectedItemId(true);
@@ -27,20 +28,20 @@ const Diagnoses = () => {
     setIsOpen((prev) => value);
   };
   const {
-    data: diagnoses,
-    setData: setDiagnoses,
+    data: researches,
+    setData: setResearches,
     hasMore,
     checkData,
-    getData: getDiagnoses,
-  } = useGetData(DIAGNOSES_URL);
+    getData: getResearches,
+  } = useGetData(RESEARCHES_URL);
 
   const { handleDeleteItem } = useDeleteData(
-    "/diagnoses",
-    confirmDiagnosessRef,
+    RESEARCHES_URL,
+    confirmResearchesRef,
     selectedItem,
     setSelectedItemId,
-    diagnoses,
-    setDiagnoses,
+    researches,
+    setResearches,
     "name"
   );
   //-------------------------
@@ -56,81 +57,6 @@ const Diagnoses = () => {
   const CreateNew = (event) => {
     setIsActive((current) => !current);
   };
-
-  const columns = useMemo(
-    () => [
-      {
-        Header: () => (
-          <input
-            type="checkbox"
-            className="form-check-input check-select-all"
-          />
-        ),
-        Cell: () => (
-          <input
-            type="checkbox"
-            className="form-check-input check-select-all"
-          />
-        ),
-        accessor: "select",
-        disableSortBy: true,
-      },
-      {
-        Header: "Հիվանդի ID",
-        accessor: "patientId",
-        sortable: true,
-      },
-      {
-        Header: "Հետազոտություններ",
-        accessor: "researchList",
-        sortable: true,
-      },
-      {
-        Header: "Նկարագիր",
-        accessor: "description",
-      },
-      {
-        Header: "Գործողություններ",
-        accessor: "actions",
-        Cell: ({ row }) => (
-          <div className="d-flex align-items-center">
-            <div className="d-flex">
-              <a
-                className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover"
-                data-bs-toggle="tooltip"
-                data-placement="top"
-                title="Edit"
-                href="edit-contact.html"
-              >
-                <span className="icon">
-                  <span className="feather-icon">
-                    <FeatherIcon icon="edit" />
-                  </span>
-                </span>
-              </a>
-              <a
-                className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover del-button"
-                data-bs-toggle="tooltip"
-                onClick={() => handleOpenModal(row.values)}
-                data-placement="top"
-                title=""
-                data-bs-original-title="Delete"
-                href="#"
-              >
-                <span className="icon">
-                  <span className="feather-icon">
-                    <FeatherIcon icon="trash" />
-                  </span>
-                </span>
-              </a>
-            </div>
-          </div>
-        ),
-        disableSortBy: true,
-      },
-    ],
-    []
-  );
 
   return (
     <div>
@@ -169,9 +95,9 @@ const Diagnoses = () => {
                   </Dropdown>
 
                   {isOpen && (
-                    <AddDiagnose
+                    <AddResearch
                       handleToggleCreateModal={handleToggleCreateModal}
-                      getDiagnoses={() => getDiagnoses()}
+                      getResearches={() => getResearches()}
                     />
                   )}
                 </div>
@@ -223,8 +149,8 @@ const Diagnoses = () => {
                     style={{ height: "80vh", overflow: "auto" }}
                   >
                     <InfiniteScroll
-                      dataLength={diagnoses.length}
-                      next={()=>checkData()}
+                      dataLength={researches.length}
+                      next={() => checkData()}
                       hasMore={hasMore}
                       loader={<Loading />}
                       scrollableTarget="scrollableDiv"
@@ -232,16 +158,18 @@ const Diagnoses = () => {
                         <p>Տվյալներ չեն հայտնաբերվել բեռնելու համար:</p>
                       }
                     >
-                      {/* <CustomTable
-                        confirmRef={confirmDiagnosessRef}
+                      <ResearchesTable
+                        confirmRef={confirmResearchesRef}
                         selectedItem={selectedItem}
                         selectedItemId={selectedItemId}
-                        tableData={diagnoses}
+                        setSelectedItemId={setSelectedItemId}
+                        setSelectedItem={setSelectedItem}
+                        researches={researches}
                         handleDeleteItem={handleDeleteItem}
-                        handleOpenModal={handleOpenModal}
+                        setResearches={setResearches}
                         handleCloseModal={handleCloseModal}
-                        columns={columns}
-                      /> */}
+                        handleOpenModal={handleOpenModal}
+                      />
                     </InfiniteScroll>
                   </div>
                 </div>
@@ -253,4 +181,4 @@ const Diagnoses = () => {
     </div>
   );
 };
-export default Diagnoses;
+export default Researches;

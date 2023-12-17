@@ -51,10 +51,11 @@ const ResearchLists = () => {
   //-------------------------
 
   const refreshPage = () => {
-    let paglink = document.querySelectorAll(".page-item");
-    paglink[0].firstChild.click();
+    setResearches([])
+    setTimeout(() => {
+      setResearches(prev=>researches)
+   }, 0);
   };
-
   return (
     <div>
       <div className="contactapp-wrap">
@@ -274,7 +275,7 @@ const ResearchLists = () => {
                         <p>Տվյալներ չեն հայտնաբերվել բեռնելու համար:</p>
                       }
                     >
-                         <ResearchListsTable
+                         {/* <ResearchListsTable
                         confirmRef={confirmResearchRef}
                         selectedItem={selectedItem}
                         selectedItemId={selectedItemId}
@@ -284,7 +285,7 @@ const ResearchLists = () => {
                         researches={researches}
                         setResearches={setResearches}
                         getResearches={getResearches}
-                      />
+                      /> */}
                     </InfiniteScroll>
                   </div>
                 </div>

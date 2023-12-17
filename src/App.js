@@ -23,7 +23,7 @@ import DiscountCards from "./components/views/DiscountCards";
 import Reagents from "./components/views/Reagents";
 import Equipments from "./components/views/Equipments";
 import ResearchLists from "./components/views/ResearchLists";
-import Diagnoses from "./components/views/Diagnoses";
+import Researches from "./components/views/Researches";
 
 import { Routes, Route } from "react-router-dom";
 //import React, { useState, useEffect } from "react";
@@ -74,7 +74,7 @@ function App() {
                     path="settings/researchlists"
                     element={<ResearchLists />}
                   />
-                  <Route path="diagnoses" element={<Diagnoses />} />
+                  <Route path="researches" element={<Researches/>} />
                 </Route>
 
                 <Route element={<RequireAuth allowedRoles={[ROLES.Editor]} />}>

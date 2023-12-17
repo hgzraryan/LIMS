@@ -1,0 +1,372 @@
+@import "./all.scss";
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  overflow: hidden;
+  .main-container {
+    padding: 0;
+    overflow: auto;
+  }
+  .container,
+  .row,
+  .col-6 {
+    padding: 0;
+  }
+
+  ul.gallery {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+  a {
+    text-decoration: none;
+  }
+  .hand {
+    cursor: pointer;
+  }
+  .not-allowed {
+    cursor: not-allowed !important;
+  }
+  p {
+    margin: 0;
+    padding: 0;
+  }
+  textarea {
+    resize: none;
+  }
+  .no-border {
+    border: 0;
+  }
+  .table > tbody > tr > td,
+  .table > tbody > tr > th {
+    vertical-align: middle;
+  }
+  .btn,
+  button {
+    text-transform: uppercase;
+    border-radius: 8px;
+  }
+  .btn:focus {
+    outline: 0;
+    box-shadow: unset;
+  }
+  .btn-primary {
+    color: #fff;
+    background-color: var(--third-color);
+  }
+  .confirm-modal-button-bar {
+    text-align: right;
+  }
+  .isBlured {
+    filter: blur(2px);
+    -webkit-filter: blur(2px);
+  }
+  textarea.form-control {
+    min-height: calc(9.5em + 0.75rem + 2px);
+  }
+  .redLabel {
+    color: var(--seventh-color) !important;
+  }
+
+  .content-wrap {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .h-80 {
+    height: 80px !important;
+  }
+
+  .w-80 {
+    width: 80px !important;
+  }
+  .w-115 {
+    width: 115px !important;
+  }
+
+  .w-400 {
+    width: 400px !important;
+  }
+
+  .h-345 {
+    height: 345px !important;
+  }
+
+  .h-350 {
+    height: 350px !important;
+  }
+
+  .activity-attachment-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+    object-fit: cover;
+  }
+
+  .font-10 {
+    font-size: 10px;
+  }
+
+  // ************************** Tab start *********************** //
+  .pb-tab-row {
+    height: 100%;
+  }
+  .react-tabs {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  .react-tabs__tab-list {
+    height: 60px;
+    display: flex;
+    color: var(--secondary-color);
+    border-bottom: none;
+    font-family: var(--Poppins-SemiBold);
+    font-size: 16px;
+    letter-spacing: 0;
+    line-height: 25px;
+    background-color: var(--bg-theme-white);
+    border: 1px solid rgba(100, 116, 139, 0.25);
+    margin: 0;
+    li {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: var(--secondary-color);
+      font-family: var(--Poppins-Regular);
+      font-size: 16px;
+      letter-spacing: 0;
+      line-height: 25px;
+      margin: 10px 15px 0 15px;
+      padding: 0 0 10px 0;
+      cursor: pointer;
+      &:first-child {
+        margin: 10px 20px 0 30px;
+      }
+    }
+    li.react-tabs__tab--selected {
+      color: var(--third-color);
+      font-family: var(--Poppins-Medium);
+      border: none;
+      border-bottom: 3px solid;
+      position: inherit;
+      &:focus-visible {
+        outline: none;
+      }
+    }
+  }
+  .react-tabs__tab-panel--selected {
+    width: 100%;
+    overflow: auto;
+
+    // TODO Removing this overflow: auto is required to support the sticky column
+    // headers in the new BeautifulDndBoard. But, it breaks how horizontal scroll
+    // works in the tabs. As a different solution, I set overflow-x to clip.  Then,
+    // The content of the tab-panel becomes responsible for handling horizontal scroll.
+    // This works well for the workboards tab and the value/effort tab, but we may need
+    // to work with the timeline tab.
+    // overflow-x: clip;
+
+  }
+
+  // ******************** Tab end *************************** //
+
+  // ***************Custom scrollbar***********************
+  ::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+  /* Track */
+  ::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px #eee;
+    border-radius: 10px;
+  }
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #b5b5b5;
+    border-radius: 10px;
+  }
+  /* Chrome, Safari, Edge, Opera */
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* popover start */
+  .popover {
+    z-index: 10;
+    border: none !important;
+    border-radius: 8px;
+    .popover-arrow::before {
+      border-bottom-color: #fff !important;
+    }
+    .popover-header {
+      padding: 14px;
+      background-color: #fff;
+      border-bottom: none !important;
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
+      color: var(--primary-color);
+      font-family: var(--Poppins-SemiBold);
+      font-size: 14px;
+      letter-spacing: 0;
+      line-height: 21px;
+    }
+    .popover-body {
+      padding: 0 8px;
+    }
+  }
+  /* popover end */
+
+  /* custom arrow start */
+
+  .arrow {
+    border-style: solid;
+    border-width: 0 2px 2px 0;
+    display: inline-block;
+    padding: 2px;
+    margin-bottom: 2px;
+  }
+
+  .right {
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+  }
+
+  .left {
+    transform: rotate(135deg);
+    -webkit-transform: rotate(135deg);
+  }
+
+  .up {
+    transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg);
+  }
+
+  .down {
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+  }
+
+  /* custom arrow end*/
+
+  /* horizontal line start*/
+  .fade-rule-both-side {
+    height: 2px;
+    background-color: var(--tenth-color);
+    width: 100%;
+    margin: 0 auto;
+    background-image: -webkit-gradient(
+      linear,
+      left bottom,
+      right bottom,
+      color-stop(0.02, white),
+      color-stop(0.5, var(--tenth-color)),
+      color-stop(0.98, white)
+    );
+  }
+
+  .fade-rule-left-side {
+    display: block;
+    border: none;
+    color: white;
+    height: 1px;
+    background: black;
+    background: -webkit-gradient(radial, 0% 2%, 0, 50% 50%, 553, from(#fff), to(#000));
+  }
+
+  .fade-rule-right-side {
+    display: block;
+    border: none;
+    color: white;
+    height: 1px;
+    background: black;
+    background: -webkit-gradient(radial, 0% 2%, 0, 50% 50%, 553, from(#fff), to(#000));
+    transform: rotate(180deg);
+  }
+
+  .w-150 {
+    width: 150px;
+  }
+  /* horizontal line end*/
+
+  .activityDrop .Dropdown-placeholder,
+  .Dropdown-control.Dropdown-disabled .Dropdown-placeholder.is-selected {
+    color: #a0a9b0;
+  }
+
+  .Dropdown-control .Dropdown-placeholder.is-selected {
+    color: #000;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.w-295 {
+  width: 295px;
+}
+
+//disable quickInsertButtons in rich text editor
+.fr-quick-insert {
+  display: none;
+}
+
+button[data-cmd="videoEmbed"] {
+  display: none !important;
+}
+
+.fr-popup {
+  z-index: 13 !important;
+  .fr-color-hex-layer {
+    .fr-action-buttons {
+      button.fr-command {
+        width: 40px !important;
+      }
+    }
+  }
+}
+
+// Tribute custome style
+
+span.fr-tribute {
+  color: white;
+  background: var(--third-color);
+  border-radius: 10px;
+  padding: 1px 5px;
+  display: inline;
+  white-space: nowrap;
+  line-height: 24px;
+}
+
+.tribute-container {
+  min-width: 150px;
+  background-color: rgba(255, 255, 255, 0.9490196078);
+  color: var(--primary-color);
+  font-family: var(--Poppins-Regular);
+  border: 1px solid var(--tenth-color);
+  border-radius: 5px;
+  ul {
+    background: none !important;
+    li {
+      height: 38px;
+      border-radius: 6px;
+      padding: 10px 8px;
+      cursor: pointer;
+      font-family: var(--Poppins-Regular);
+      font-size: 14px;
+    }
+    li:hover,
+    li.highlight {
+      background-color: #f2f9fc;
+    }
+  }
+}

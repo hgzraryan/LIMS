@@ -1,0 +1,123 @@
+@import './color.scss';
+
+.activity {
+  background-color: white;
+  border-radius: 4px;
+  box-sizing: border-box;
+  min-height: 140px;
+  margin-bottom: 8px;
+  padding: 12px 12px 10px 12px;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.activity-card-header {
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+
+.activity-card-avatar {
+  display: flex;
+  align-items: center;
+  width: 16px;
+  height: 16px;
+  background-color: var(--ninth-color);
+  border-radius: 100%;
+  font-family: var(--Poppins-Regular);
+  text-transform: uppercase;
+  color: #fff;
+  font-size: 8px;
+  padding: 2px;
+}
+
+.activity-card-avatar.empty {
+  padding: 8px;
+}
+
+.activity-icon {
+  padding-left: 5px;
+}
+
+.activity-number {
+  display: flex;
+  width: 100%;
+  color: $font-gray;
+  color: #4d908e;
+  font-family: var(--Poppins-Medium);
+  font-size: 14px;
+  letter-spacing: 0;
+  line-height: 12px;
+  padding-left: 5px;
+}
+
+.activity-right-info {
+  justify-content: flex-end;
+  display: flex;
+  width: 100%;
+}
+
+.activity-value-effort {
+  border-radius: 4px;
+  background-color: #fef2ed;
+  color: var(--secondary-color);
+  font-family: var(--Poppins-Regular);
+  font-size: 9px;
+  line-height: 12px;
+  text-align: center;
+  padding: 1.5px 3px 1.5px 3px;
+  margin-left: 8px;
+  white-space: nowrap;
+}
+
+.activity-card-status-feature {
+  color: #6b7782;
+  font-family: var(--Poppins-Regular);
+  font-size: 12px;
+  letter-spacing: 0;
+  line-height: 18px;
+  padding-bottom: 6px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-height: 36px;
+}
+
+.activity-card-footer {
+  padding-top: 8px;
+  height: 15px;
+}
+
+.activity-card-due-date {
+  color: #6b7782;
+  font-family: var(--Poppins-Regular);
+  font-size: 10px;
+}
+
+.activity-kpi-info {
+  justify-content: flex-end;
+  display: flex;
+  width: 100%;
+  position: relative;
+  bottom: 15px;
+  margin-bottom: 0px;
+  padding-bottom: 0px;
+  .kpi-code {
+    border-radius: 4px;
+    background-color: #e9f2f5;
+    color: var(--secondary-color);
+    font-family: var(--Poppins-SemiBold);
+    font-size: 9px;
+    letter-spacing: 0;
+    line-height: 13px;
+    text-align: center;
+    padding: 0px 5px 0 5px;
+    margin-right: 8px;
+  }
+
+  .kpi-code:last-child {
+    margin-right: 0; // Ensures the rightmost KPI has no margin.
+  }
+}
