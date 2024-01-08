@@ -44,6 +44,20 @@ const Reagents = () => {
     setReagents,
     'product_name'
   );
+   //-------------------------PAGINATION---------------------------//
+   const [currentPage, setCurrentPage] = useState(0);  
+   const [usersPerPage, setUsersPerPage] = useState(10);
+  
+ 
+   const pagesVisited = currentPage * usersPerPage
+   const currentReagents = reagents.slice(pagesVisited,pagesVisited+usersPerPage)
+   const pageCount = Math.ceil(reagents.length/usersPerPage)
+ 
+   const handlePageClick = ({ selected: selectedPage }) => {
+     setCurrentPage(selectedPage);
+     //updateUsersCount();
+ }
+   //--------------------------------------------------------------//
   const refreshPage = () => {
     let paglink = document.querySelectorAll(".page-item");
     paglink[0].firstChild.click();
@@ -138,7 +152,7 @@ const Reagents = () => {
                     id="scrollableDiv"
                     style={{ height: "80vh", overflow: "auto" }}
                   >
-                    <InfiniteScroll
+                    {/* <InfiniteScroll
                       dataLength={reagents.length}
                       next={()=>checkData()}
                       hasMore={hasMore}
@@ -148,6 +162,7 @@ const Reagents = () => {
                         <p>Տվյալներ չեն հայտնաբերվել բեռնելու համար:</p>
                       }
                     >
+                      </InfiniteScroll> */}
                       <ReagentsTable
                         confirmRef={confirmReagentRef}
                         selectedItem={selectedItem}
@@ -155,11 +170,25 @@ const Reagents = () => {
                         handleDeleteItem={handleDeleteItem}
                         handleOpenModal={handleOpenModal}
                         handleCloseModal={handleCloseModal}
-                        reagents={reagents}
+                        reagents={currentReagents}
                         setReagents={setReagents}
                         getReagents={getReagents}
                       />
-                    </InfiniteScroll>
+                       <ReactPaginate
+                                           previousLabel = {"Հետ"}    
+                                           nextLabel = {"Առաջ"}
+                                            pageCount = {pageCount}
+                                            onPageChange = {handlePageClick}
+                                            initialPage = {0}
+                                            containerClassName={"pagination"}
+                                            pageLinkClassName = {"page-link"}
+                                            pageClassName = {"page-item"}
+                                            previousLinkClassName={"page-link"}
+                                            nextLinkClassName={"page-link"}
+                                            disabledLinkClassName={"disabled"}
+                                            //activeLinkClassName={"active"}
+                                            activeClassName={"active"}
+											/>
                   </div>
                 </div>
               </div>

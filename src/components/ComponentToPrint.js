@@ -46,8 +46,6 @@ export const ComponentToPrint = forwardRef(({ value }, ref) => {
   );
 
 
-console.log(value);
-
   //-----------------------barcode ------------------
   /*
 const [barcode, setBarcode] = useState('lintangwisesa');

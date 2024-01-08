@@ -18,6 +18,7 @@ import {
 } from "../../redux/features/researches/researchesSlice";
 import useGetData from "../../hooks/useGetData";
 import PatientsTable from "../viewTables/PatientsTable";
+import ReactPaginate from "react-paginate";
 const GET_RESEARCHES = "/researchLists";
 const PATIENTS_URL = "/patients";
 
@@ -29,6 +30,7 @@ const Patients = () => {
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState("");
+
 /*-----------------------------------------------------Get Researches----------------------------------------------------*/
   useEffect(() => {
     let isMounted = true;
@@ -74,6 +76,20 @@ const Patients = () => {
   const handleCloseModal = () => {
     setSelectedItem(null);
   };
+    //-------------------------PAGINATION---------------------------//
+    const [currentPage, setCurrentPage] = useState(0);  
+    const [usersPerPage, setUsersPerPage] = useState(10);
+   
+  
+    const pagesVisited = currentPage * usersPerPage
+    const currentPatients = patients.slice(pagesVisited,pagesVisited+usersPerPage)
+    const pageCount = Math.ceil(patients.length/usersPerPage)
+  
+    const handlePageClick = ({ selected: selectedPage }) => {
+      setCurrentPage(selectedPage);
+      //updateUsersCount();
+  }
+    //--------------------------------------------------------------//
   //-------------------------
 
   const refreshPage = () => {
@@ -81,6 +97,7 @@ const Patients = () => {
     paglink[0].firstChild.click();
   };
   //-------------------
+
   return (
  
     <div>
@@ -299,7 +316,7 @@ const Patients = () => {
                     id="scrollableDiv"
                     style={{ height: "80vh", overflow: "auto" }}
                   >
-                    <InfiniteScroll
+                    {/* <InfiniteScroll
                       dataLength={patients.length}
                       next={()=>checkData()}
                       hasMore={hasMore}
@@ -308,18 +325,34 @@ const Patients = () => {
                       endMessage={
                         <p>Տվյալներ չեն հայտնաբերվել բեռնելու համար:</p>
                       }
-                    >
+                      >
+                      </InfiniteScroll> */}
+                    
                     <PatientsTable
                     tableData={patients}
                     handleOpenModal={handleOpenModal}
                     handleCloseModal={handleCloseModal}
                     researchState={researchState}
                     selectedItem={selectedItem}
-                    patients={patients}
+                    patients={currentPatients}
                     setPatients={setPatients}
                     getPatients={getPatients}
                     />
-                    </InfiniteScroll>
+                      <ReactPaginate
+                                            previousLabel = {"Հետ"}    
+                                            nextLabel = {"Առաջ"}
+                                            pageCount = {pageCount}
+                                            onPageChange = {handlePageClick}
+                                            initialPage = {0}
+                                            containerClassName={"pagination"}
+                                            pageLinkClassName = {"page-link"}
+                                            pageClassName = {"page-item"}
+                                            previousLinkClassName={"page-link"}
+                                            nextLinkClassName={"page-link"}
+                                            disabledLinkClassName={"disabled"}
+                                            //activeLinkClassName={"active"}
+                                            activeClassName={"active"}
+											/>
                   </div>
                 </div>
               </div>

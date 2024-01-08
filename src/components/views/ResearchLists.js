@@ -32,7 +32,7 @@ const ResearchLists = () => {
   /*------------------------------------------------*/
 
   const {
-    data: researches,
+    data: researchList,
     setData: setResearches,
     hasMore,
     checkData,
@@ -44,16 +44,30 @@ const ResearchLists = () => {
     confirmResearchRef,
     selectedItem,
     setSelectedItemId,
-    researches,
+    researchList,
     setResearches,
     "research" 
   );
+   //-------------------------PAGINATION---------------------------//
+   const [currentPage, setCurrentPage] = useState(0);  
+   const [usersPerPage, setUsersPerPage] = useState(10);
+  
+ 
+   const pagesVisited = currentPage * usersPerPage
+   const currentResearchList = researchList.slice(pagesVisited,pagesVisited+usersPerPage)
+   const pageCount = Math.ceil(researchList.length/usersPerPage)
+ 
+   const handlePageClick = ({ selected: selectedPage }) => {
+     setCurrentPage(selectedPage);
+     //updateUsersCount();
+ }
+   //--------------------------------------------------------------//
   //-------------------------
 
   const refreshPage = () => {
     setResearches([])
     setTimeout(() => {
-      setResearches(prev=>researches)
+      setResearches(prev=>researchList)
    }, 0);
   };
   return (
@@ -265,7 +279,7 @@ const ResearchLists = () => {
                     id="scrollableDiv"
                     style={{ height: "80vh", overflow: "auto" }}
                   >
-                    <InfiniteScroll
+                    {/* <InfiniteScroll
                       dataLength={researches.length}
                       next={()=>checkData()}
                       hasMore={hasMore}
@@ -274,19 +288,34 @@ const ResearchLists = () => {
                       endMessage={
                         <p>Տվյալներ չեն հայտնաբերվել բեռնելու համար:</p>
                       }
-                    >
-                         {/* <ResearchListsTable
+                      >
+                      </InfiniteScroll> */}
+                         <ResearchListsTable
                         confirmRef={confirmResearchRef}
                         selectedItem={selectedItem}
                         selectedItemId={selectedItemId}
                         handleDeleteItem={handleDeleteItem}
                         handleOpenModal={handleOpenModal}
                         handleCloseModal={handleCloseModal}
-                        researches={researches}
+                        researches={currentResearchList}
                         setResearches={setResearches}
                         getResearches={getResearches}
-                      /> */}
-                    </InfiniteScroll>
+                      />
+                          <ReactPaginate
+                                           previousLabel = {"Հետ"}    
+                                           nextLabel = {"Առաջ"}
+                                            pageCount = {pageCount}
+                                            onPageChange = {handlePageClick}
+                                            initialPage = {0}
+                                            containerClassName={"pagination"}
+                                            pageLinkClassName = {"page-link"}
+                                            pageClassName = {"page-item"}
+                                            previousLinkClassName={"page-link"}
+                                            nextLinkClassName={"page-link"}
+                                            disabledLinkClassName={"disabled"}
+                                            //activeLinkClassName={"active"}
+                                            activeClassName={"active"}
+											/>
                   </div>
                 </div>
               </div>

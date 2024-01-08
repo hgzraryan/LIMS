@@ -88,7 +88,7 @@ function UsersTable({
         ),
         accessor: "username",
         sortable: true,
-        width: 200,
+        width: 190,
         Filter: ({ column: { id } })=>(
           <ColumnFilter
             id={id}
@@ -103,7 +103,7 @@ function UsersTable({
           </>
         ),
         accessor: "firstname",
-        width: 200,
+        width: 190,
         Filter: ({ column: { id } })=>(
           <ColumnFilter
             id={id}
@@ -119,7 +119,7 @@ function UsersTable({
         ),
         accessor: "lastname",
         sortable: true,
-        width: 200,
+        width: 190,
         Filter: ({ column: { id } })=>(
           <ColumnFilter
             id={id}
@@ -134,23 +134,13 @@ function UsersTable({
           </>
         ),
         accessor: "email",
-        width: 200,
+        width: 190,
         Filter: ({ column: { id } })=>(
           <ColumnFilter
             id={id}
             setData={setUsers}
           />
         ),
-      },
-      {
-        Header: (event) => (
-          <>
-            <div>Էլ․ հասցե</div>
-          </>
-        ),
-        accessor: "emailq",
-        width: 200,
-        Filter: ({ column: { id } }) => <></>,
       },
       {
         Header: "Դերեր",
@@ -162,7 +152,7 @@ function UsersTable({
               {role}
             </span>
           )),
-        width: 200,
+        width: 190,
         Filter: ({ column: { id } }) => <></>,
       },
       {
@@ -173,7 +163,7 @@ function UsersTable({
             {setUserActiveState(value)[1]}
           </span>
         ),
-        width: 200,
+        width: 150,
         Filter: ({ column: { id } }) => <></>,
       },
       {
@@ -214,7 +204,7 @@ function UsersTable({
           </div>
         ),
         disableSortBy: true,
-        width: 200,
+        width: 160,
         Filter: ({ column: { id } }) => <></>,
       },
     ],

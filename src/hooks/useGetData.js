@@ -5,15 +5,15 @@ import { useLocation, useNavigate } from "react-router-dom";
 const useGetData = (url) => {
     const [data, setData] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);  
-    const [usersPerPage, setUsersPerPage] = useState(12);
+    //const [usersPerPage, setUsersPerPage] = useState(12);
     const [hasMore, setHasMore] = useState(true);  
     const axiosPrivate = useAxiosPrivate();  
     const navigate = useNavigate();  
     const location = useLocation();    
 
-    const pagesVisited = currentPage * usersPerPage;
-    const currentUsers = data.slice(pagesVisited, pagesVisited + usersPerPage);
-    const pageCount = Math.ceil(data.length / usersPerPage);
+    // const pagesVisited = currentPage * usersPerPage;
+    // const currentUsers = data.slice(pagesVisited, pagesVisited + usersPerPage);
+    // const pageCount = Math.ceil(data.length / usersPerPage);
     const onPageCount =  Math.round((window.innerHeight / 100) * 1.5);
 
     useEffect(() => {
@@ -22,10 +22,10 @@ const useGetData = (url) => {
     
         const getData = async () => {
           try {
-            const response = await axiosPrivate.post(url, {
+            const response = await axiosPrivate.post(url,{
               signal: controller.signal,
-              page: currentPage,
-              onPage: onPageCount,
+              // page: currentPage,
+              // onPage: onPageCount,
             });
             console.log(response);
             if (

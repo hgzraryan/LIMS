@@ -1,9 +1,24 @@
 import useAxiosPrivate from "./useAxiosPrivate";
 import Swal from "sweetalert2";
+import { useDispatch } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
+import { checkUsersCount } from "../redux/features/users/usersCountSlice";
 
 const useDeleteData = (url,itemRef,selectedItem,setSelectedItemId,items,setItems,name) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
   const axiosPrivate = useAxiosPrivate();
-
+  const updateUsersCount = async () => {
+    try {
+      const response = await axiosPrivate.get("/allCount");
+      console.log(response)
+      dispatch(checkUsersCount(response.data.usersCount));
+    } catch (err) {
+      console.error(err);
+      navigate("/login", { state: { from: location }, replace: true });
+    }
+  };
 
   const handleDeleteItem = async (delid) => {
       if (selectedItem[name].trim() === itemRef.current?.trim()) {
@@ -15,6 +30,7 @@ const useDeleteData = (url,itemRef,selectedItem,setSelectedItemId,items,setItems
         Swal.fire(`${response.data[name]} has been deleted`);
         const updatedItems = items.filter((data) => data._id !== delid);
         setItems(updatedItems);
+        updateUsersCount()
       } catch (err) {
         Swal.fire({
           icon: "error",
@@ -28,6 +44,6 @@ const useDeleteData = (url,itemRef,selectedItem,setSelectedItemId,items,setItems
       Swal.fire("Write right name");
     }
   };
-  return {handleDeleteItem};
+  return {handleDeleteItem,updateUsersCount};
 };
 export default useDeleteData;

@@ -47,7 +47,20 @@ const Prices = () => {
     "name" 
   );
   //-------------------------
+ //-------------------------PAGINATION---------------------------//
+ const [currentPage, setCurrentPage] = useState(0);  
+ const [usersPerPage, setUsersPerPage] = useState(10);
 
+
+ const pagesVisited = currentPage * usersPerPage
+ const currentPrices = prices.slice(pagesVisited,pagesVisited+usersPerPage)
+ const pageCount = Math.ceil(prices.length/usersPerPage)
+
+ const handlePageClick = ({ selected: selectedPage }) => {
+   setCurrentPage(selectedPage);
+   //updateUsersCount();
+}
+ //--------------------------------------------------------------//
   const refreshPage = () => {
     let paglink = document.querySelectorAll(".page-item");
     paglink[0].firstChild.click();
@@ -57,7 +70,7 @@ const Prices = () => {
     <div>
       <div className="contactapp-wrap">
         <div className="contactapp-content">
-          <div className="contactapp-detail-wrap">
+          <div className="contactapp-detail-wrap ">
             <header className="contact-header">
               <div className="d-flex align-items-center">
                 <div className="dropdown">
@@ -143,7 +156,7 @@ const Prices = () => {
                     id="scrollableDiv"
                     style={{ height: "80vh", overflow: "auto" }}
                   >
-                    <InfiniteScroll
+                    {/* <InfiniteScroll
                       dataLength={prices.length}
                       next={()=>checkData()}
                       hasMore={hasMore}
@@ -153,6 +166,7 @@ const Prices = () => {
                         <p>Տվյալներ չեն հայտնաբերվել բեռնելու համար:</p>
                       }
                     >
+                      </InfiniteScroll> */}
                       <PricesTable
                         confirmRef={confirmPriceRef}
                         selectedItem={selectedItem}
@@ -160,11 +174,25 @@ const Prices = () => {
                         handleDeleteItem={handleDeleteItem}
                         handleOpenModal={handleOpenModal}
                         handleCloseModal={handleCloseModal}
-                        prices={prices}
+                        prices={currentPrices}
                         setPrices={setPrices}
                         getPrices={getPrices}
                       />
-                    </InfiniteScroll>
+                      <ReactPaginate
+                                           previousLabel = {"Հետ"}    
+                                           nextLabel = {"Առաջ"}
+                                            pageCount = {pageCount}
+                                            onPageChange = {handlePageClick}
+                                            initialPage = {0}
+                                            containerClassName={"pagination"}
+                                            pageLinkClassName = {"page-link"}
+                                            pageClassName = {"page-item"}
+                                            previousLinkClassName={"page-link"}
+                                            nextLinkClassName={"page-link"}
+                                            disabledLinkClassName={"disabled"}
+                                            //activeLinkClassName={"active"}
+                                            activeClassName={"active"}
+											/>
                   </div>
                 </div>
               </div>

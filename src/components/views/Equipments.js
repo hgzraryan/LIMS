@@ -48,6 +48,20 @@ const Equipments = () => {
     setEquipments,
     "name"
   );
+   //-------------------------PAGINATION---------------------------//
+   const [currentPage, setCurrentPage] = useState(0);  
+   const [usersPerPage, setUsersPerPage] = useState(10);
+  
+ 
+   const pagesVisited = currentPage * usersPerPage
+   const currentEquipments = equipments.slice(pagesVisited,pagesVisited+usersPerPage)
+   const pageCount = Math.ceil(equipments.length/usersPerPage)
+ 
+   const handlePageClick = ({ selected: selectedPage }) => {
+     setCurrentPage(selectedPage);
+     //updateUsersCount();
+ }
+   //--------------------------------------------------------------//
   //-------------------------
   const refreshPage = () => {
     let paglink = document.querySelectorAll(".page-item");
@@ -258,7 +272,7 @@ const Equipments = () => {
                     id="scrollableDiv"
                     style={{ height: "80vh", overflow: "auto" }}
                   >
-                    <InfiniteScroll
+                    {/* <InfiniteScroll
                       dataLength={equipments.length}
                       next={() => checkData()}
                       hasMore={hasMore}
@@ -267,7 +281,8 @@ const Equipments = () => {
                       endMessage={
                         <p>Տվյալներ չեն հայտնաբերվել բեռնելու համար:</p>
                       }
-                    >
+                      >
+                      </InfiniteScroll> */}
                       <EquipmentsTable
                         confirmRef={confirmEquipmentsRef}
                         selectedItem={selectedItem}
@@ -275,11 +290,25 @@ const Equipments = () => {
                         handleDeleteItem={handleDeleteItem}
                         handleOpenModal={handleOpenModal}
                         handleCloseModal={handleCloseModal}
-                        equipments={equipments}
+                        equipments={currentEquipments}
                         setEquipments={setEquipments}
                         getEquipments={getEquipments}
                         />
-                    </InfiniteScroll>
+                        <ReactPaginate
+                                           previousLabel = {"Հետ"}    
+                                           nextLabel = {"Առաջ"}
+                                            pageCount = {pageCount}
+                                            onPageChange = {handlePageClick}
+                                            initialPage = {0}
+                                            containerClassName={"pagination"}
+                                            pageLinkClassName = {"page-link"}
+                                            pageClassName = {"page-item"}
+                                            previousLinkClassName={"page-link"}
+                                            nextLinkClassName={"page-link"}
+                                            disabledLinkClassName={"disabled"}
+                                            //activeLinkClassName={"active"}
+                                            activeClassName={"active"}
+											/>
                   </div>
                 </div>
               </div>

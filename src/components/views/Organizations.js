@@ -55,7 +55,20 @@ const Organizations = () => {
     paglink[0].firstChild.click();
   };
   //-------------------
+ //-------------------------PAGINATION---------------------------//
+ const [currentPage, setCurrentPage] = useState(0);  
+ const [usersPerPage, setUsersPerPage] = useState(10);
 
+
+ const pagesVisited = currentPage * usersPerPage
+ const currentOrganizations = organizations.slice(pagesVisited,pagesVisited+usersPerPage)
+ const pageCount = Math.ceil(organizations.length/usersPerPage)
+
+ const handlePageClick = ({ selected: selectedPage }) => {
+   setCurrentPage(selectedPage);
+   //updateUsersCount();
+}
+ //--------------------------------------------------------------//
   //-------------------
   const [showCreateNew, setIsActive] = useState(false);
   const CreateNew = (event) => {
@@ -159,7 +172,7 @@ const Organizations = () => {
                     id="scrollableDiv"
                     style={{ height: "80vh", overflow: "auto" }}
                   >
-                    <InfiniteScroll
+                    {/* <InfiniteScroll
                       dataLength={organizations.length}
                       next={()=>checkData()}
                       hasMore={hasMore}
@@ -169,6 +182,7 @@ const Organizations = () => {
                         <p>Տվյալներ չեն հայտնաբերվել բեռնելու համար:</p>
                       }
                     >
+                      </InfiniteScroll> */}
                       <OrganizationsTable
                         confirmRef={confirmOrganizationRef}
                         selectedItem={selectedItem}
@@ -176,11 +190,25 @@ const Organizations = () => {
                         handleDeleteItem={handleDeleteItem}
                         handleOpenModal={handleOpenModal}
                         handleCloseModal={handleCloseModal}
-                        organizations={organizations}
+                        organizations={currentOrganizations}
                         setOrganizations={setOrganizations}
                         getOrganizations={getOrganizations}
                       />
-                    </InfiniteScroll>
+                    <ReactPaginate
+                                           previousLabel = {"Հետ"}    
+                                           nextLabel = {"Առաջ"}
+                                            pageCount = {pageCount}
+                                            onPageChange = {handlePageClick}
+                                            initialPage = {0}
+                                            containerClassName={"pagination"}
+                                            pageLinkClassName = {"page-link"}
+                                            pageClassName = {"page-item"}
+                                            previousLinkClassName={"page-link"}
+                                            nextLinkClassName={"page-link"}
+                                            disabledLinkClassName={"disabled"}
+                                            //activeLinkClassName={"active"}
+                                            activeClassName={"active"}
+											/>
                   </div>
                 </div>
               </div>

@@ -8,8 +8,9 @@ import useGetData from "../../hooks/useGetData";
 import useDeleteData from "../../hooks/useDeleteData";
 import ResearchesTable from "../viewTables/ResearchesTable";
 import AddResearch from "./AddResearch";
+import ReactPaginate from "react-paginate";
 
-const RESEARCHES_URL = "/diagnoses";
+const RESEARCHES_URL = "/research";
 const Researches = () => {
   const [selectedItem, setSelectedItem] = useState("");
   const [selectedItemId, setSelectedItemId] = useState(null);
@@ -44,6 +45,20 @@ const Researches = () => {
     setResearches,
     "name"
   );
+   //-------------------------PAGINATION---------------------------//
+   const [currentPage, setCurrentPage] = useState(0);  
+   const [usersPerPage, setUsersPerPage] = useState(10);
+  
+ 
+   const pagesVisited = currentPage * usersPerPage
+   const currentResearches = researches.slice(pagesVisited,pagesVisited+usersPerPage)
+   const pageCount = Math.ceil(researches.length/usersPerPage)
+ 
+   const handlePageClick = ({ selected: selectedPage }) => {
+     setCurrentPage(selectedPage);
+     //updateUsersCount();
+ }
+   //--------------------------------------------------------------//
   //-------------------------
 
   const refreshPage = () => {
@@ -148,7 +163,7 @@ const Researches = () => {
                     id="scrollableDiv"
                     style={{ height: "80vh", overflow: "auto" }}
                   >
-                    <InfiniteScroll
+                    {/* <InfiniteScroll
                       dataLength={researches.length}
                       next={() => checkData()}
                       hasMore={hasMore}
@@ -157,20 +172,36 @@ const Researches = () => {
                       endMessage={
                         <p>Տվյալներ չեն հայտնաբերվել բեռնելու համար:</p>
                       }
-                    >
+                      >
+                      </InfiniteScroll> */}
+                     
                       <ResearchesTable
                         confirmRef={confirmResearchesRef}
                         selectedItem={selectedItem}
                         selectedItemId={selectedItemId}
                         setSelectedItemId={setSelectedItemId}
                         setSelectedItem={setSelectedItem}
-                        researches={researches}
+                        researches={currentResearches}
                         handleDeleteItem={handleDeleteItem}
                         setResearches={setResearches}
                         handleCloseModal={handleCloseModal}
                         handleOpenModal={handleOpenModal}
                       />
-                    </InfiniteScroll>
+                         <ReactPaginate
+                                            previousLabel = {"Previous"}    
+                                            nextLabel = {"Next"}
+                                            pageCount = {pageCount}
+                                            onPageChange = {handlePageClick}
+                                            initialPage = {0}
+                                            containerClassName={"pagination"}
+                                            pageLinkClassName = {"page-link"}
+                                            pageClassName = {"page-item"}
+                                            previousLinkClassName={"page-link"}
+                                            nextLinkClassName={"page-link"}
+                                            disabledLinkClassName={"disabled"}
+                                            //activeLinkClassName={"active"}
+                                            activeClassName={"active"}
+											/>
                   </div>
                 </div>
               </div>

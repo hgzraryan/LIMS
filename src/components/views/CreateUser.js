@@ -21,6 +21,7 @@ import {  toast } from 'react-toastify';
 
 const REGISTER_URL = "/register";
 function CreateUser({ setIsOpen,getUsers }) {
+  const axiosPrivate = useAxiosPrivate();
   const roles = useRef("");
   const multiselectRef = useRef("");
   const intupAvatarRef = useRef(null);
@@ -61,7 +62,7 @@ function CreateUser({ setIsOpen,getUsers }) {
     formData.append("text", JSON.stringify(newUser));
     formData.append("image", image);
     try {
-      await axios.post(REGISTER_URL, formData, {
+      await axiosPrivate.post(REGISTER_URL, formData, {
         headers: { "Content-Type": "multipart/form-data" },
         withCredentials: true,
       });

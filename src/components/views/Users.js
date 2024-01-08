@@ -14,12 +14,19 @@ import useUpdateCount from "../../hooks/useUpdateCount";
 import { checkUsersCount } from "../../redux/features/users/usersCountSlice";
 import UsersTable from "../viewTables/UsersTable";
 import {Helmet} from "react-helmet";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate"
+import { useDispatch } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const USERS_URL = "/users";
 
 
 
 const Users = () => {
+  // const axiosPrivate = useAxiosPrivate();
+  // const dispatch = useDispatch();
+  // const navigate = useNavigate();
+  // const location = useLocation();
   const confirmUserRef = useRef("");
   const [isOpen, setIsOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState("");
@@ -33,24 +40,57 @@ const Users = () => {
     getData: getUsers,
   } = useGetData(USERS_URL);
   //-------------------
+  const [currentPage, setCurrentPage] = useState(0);  
+  const [usersPerPage, setUsersPerPage] = useState(12);
+ 
 
-  //TODO need correct
-  const { updateDataCount } = useUpdateCount(
-    "/allCount",
-    checkUsersCount,
-    "usersCount"
-  );
+  const pagesVisited = currentPage * usersPerPage
+  const currentUsers = users.slice(pagesVisited,pagesVisited+usersPerPage)
+  const pageCount = Math.ceil(users.length/usersPerPage)
 
-  const { handleDeleteItem } = useDeleteData(
+
+  
+
+//   const pagesVisited = currentPage * usersPerPage;
+//   const currentUsers = users.slice(pagesVisited, pagesVisited + usersPerPage);
+//   const pageCount = Math.ceil(currentUsers.length / usersPerPage);
+//   const handlePageClick = ({ selected: selectedPage }) => {
+//     setCurrentPage(selectedPage);
+// }
+
+  // //TODO need correct
+  // const { updateDataCount } = useUpdateCount(
+  //   "/allCount",
+  //   checkUsersCount,
+  //   'usersCount'
+  // );
+
+  // const updateUsersCount = async () => {
+  //   try {
+  //     const response = await axiosPrivate.get("/allCount");
+  //     console.log(response)
+  //     dispatch(checkUsersCount(response.data.usersCount));
+  //   } catch (err) {
+  //     console.error(err);
+  //     navigate("/login", { state: { from: location }, replace: true });
+  //   }
+  // };
+  
+  const { handleDeleteItem,updateUsersCount } = useDeleteData(
     "/users",
     confirmUserRef,
     selectedItem,
     setSelectedItemId,
     users,
     setUsers,
-    "username"
+    "username",
+    
   );
-
+  
+  const handlePageClick = ({ selected: selectedPage }) => {
+    setCurrentPage(selectedPage);
+    //updateUsersCount();
+}
   const refreshPage = () => {
     let paglink = document.querySelectorAll(".page-item");
     paglink[0].firstChild.click();
@@ -66,6 +106,10 @@ const Users = () => {
   // const CreateNew = (event) => {
   //   setIsActive((current) => !current);
   // };
+
+	
+	//-------------------------
+   
   return (
     <div>
 	<Helmet>
@@ -75,7 +119,7 @@ const Users = () => {
 	</Helmet>
       <div className="contactapp-wrap">
         <div className="contactapp-content">
-          <div className="contactapp-detail-wrap">
+          <div className="contactapp-detail-wrap w-100">
             <header className="contact-header">
               <div className="d-flex align-items-center">
                 <div className="dropdown">
@@ -111,6 +155,7 @@ const Users = () => {
                     <CreateUser
                       setIsOpen={setIsOpen}
                       getUsers={() => getUsers()}
+                      updateUsersCount={updateUsersCount}
                     />
                   )}
                   {/*
@@ -210,7 +255,7 @@ const Users = () => {
                     id="scrollableDiv"
                     style={{ height: "80vh", overflow: "auto" }}
                   >
-                    <InfiniteScroll
+                    {/* <InfiniteScroll
                       dataLength={users.length}
                       next={() => checkData()}
                       hasMore={hasMore}
@@ -219,7 +264,7 @@ const Users = () => {
                       endMessage={
                         <p>Տվյալներ չեն հայտնաբերվել բեռնելու համար:</p>
                       }
-                    >
+                    > */}
                       <UsersTable
                         confirmRef={confirmUserRef}
                         selectedItem={selectedItem}
@@ -227,11 +272,25 @@ const Users = () => {
                         handleDeleteItem={handleDeleteItem}
                         handleOpenModal={handleOpenModal}
                         handleCloseModal={handleCloseModal}
-                        users={users}
+                        users={currentUsers}
                         setUsers={setUsers}
                         getUsers={getUsers}
                       />
-                    </InfiniteScroll>
+                     <ReactPaginate
+                                           previousLabel = {"Հետ"}    
+                                           nextLabel = {"Առաջ"}
+                                            pageCount = {pageCount}
+                                            onPageChange = {handlePageClick}
+                                            initialPage = {0}
+                                            containerClassName={"pagination"}
+                                            pageLinkClassName = {"page-link"}
+                                            pageClassName = {"page-item"}
+                                            previousLinkClassName={"page-link"}
+                                            nextLinkClassName={"page-link"}
+                                            disabledLinkClassName={"disabled"}
+                                            //activeLinkClassName={"active"}
+                                            activeClassName={"active"}
+											/>
                   </div>
                 </div>
               </div>

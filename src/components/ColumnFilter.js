@@ -16,8 +16,6 @@ export const ColumnFilter = ( {setData,id,placeholder='search',url} ) => {
   useEffect(() => {
     let isMounted = true;
     const controller = new AbortController();
-    console.log(Object.values(searchTerms).toString().length);
-
     const getData = async () => {
       try {
         const response = await axiosPrivate.get(
@@ -46,7 +44,6 @@ export const ColumnFilter = ( {setData,id,placeholder='search',url} ) => {
     if (Object.values(searchTerms).toString().length) {
       getData();
     } else {
-      console.log("else")
       setData(mainData);
     }
 
@@ -58,7 +55,6 @@ export const ColumnFilter = ( {setData,id,placeholder='search',url} ) => {
   const handleSearchInputChange = (column, value) => {
     const updatedSearchTerms = {  [column]: value };
     setSearchTerms(updatedSearchTerms);
-   console.log(updatedSearchTerms);
   };
   return (
     <>

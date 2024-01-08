@@ -47,6 +47,20 @@ const Agents = () => {
     setAgents,
     "name" 
   );
+   //-------------------------PAGINATION---------------------------//
+   const [currentPage, setCurrentPage] = useState(0);  
+   const [usersPerPage, setUsersPerPage] = useState(10);
+  
+ 
+   const pagesVisited = currentPage * usersPerPage
+   const currentAgents = agents.slice(pagesVisited,pagesVisited+usersPerPage)
+   const pageCount = Math.ceil(agents.length/usersPerPage)
+ 
+   const handlePageClick = ({ selected: selectedPage }) => {
+     setCurrentPage(selectedPage);
+     //updateUsersCount();
+ }
+   //--------------------------------------------------------------//
   //-------------------------
 
   const refreshPage = () => {
@@ -145,7 +159,7 @@ const Agents = () => {
                     id="scrollableDiv"
                     style={{ height: "80vh", overflow: "auto" }}
                   >
-                    <InfiniteScroll
+                    {/* <InfiniteScroll
                       dataLength={agents.length}
                       next={()=>checkData()}
                       hasMore={hasMore}
@@ -154,7 +168,8 @@ const Agents = () => {
                       endMessage={
                         <p>Տվյալներ չեն հայտնաբերվել բեռնելու համար:</p>
                       }
-                    >
+                      >
+                      </InfiniteScroll> */}
                       <AgentsTable
                         confirmRef={confirmAgentsRef}
                         selectedItem={selectedItem}
@@ -162,11 +177,25 @@ const Agents = () => {
                         handleDeleteItem={handleDeleteItem}
                         handleOpenModal={handleOpenModal}
                         handleCloseModal={handleCloseModal}
-                        agents={agents}
+                        agents={currentAgents}
                         setAgents={setAgents}
                         getAgents={getAgents}
                       />
-                    </InfiniteScroll>
+                      <ReactPaginate
+                                           previousLabel = {"Հետ"}    
+                                           nextLabel = {"Առաջ"}
+                                            pageCount = {pageCount}
+                                            onPageChange = {handlePageClick}
+                                            initialPage = {0}
+                                            containerClassName={"pagination"}
+                                            pageLinkClassName = {"page-link"}
+                                            pageClassName = {"page-item"}
+                                            previousLinkClassName={"page-link"}
+                                            nextLinkClassName={"page-link"}
+                                            disabledLinkClassName={"disabled"}
+                                            //activeLinkClassName={"active"}
+                                            activeClassName={"active"}
+											/>
                   </div>
                 </div>
               </div>
