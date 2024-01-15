@@ -34,8 +34,6 @@ const Organizations = () => {
   const {
     data: organizations,
     setData: setOrganizations,
-    hasMore,
-    checkData,
     getData: getOrganizations,
   } = useGetData(ORGANIZATIONS_URL);
 
@@ -98,7 +96,7 @@ const Organizations = () => {
                     aria-haspopup="true"
                     aria-expanded="false"
                   >
-                    <h1>Կազմակերպություն</h1>
+                    <h1>Պատվիրատուներ</h1>
                   </a>
                 </div>
                 <div className="dropdown ms-3">
@@ -113,7 +111,7 @@ const Organizations = () => {
 
                     <Dropdown.Menu>
                       <Dropdown.Item onClick={() => setIsOpen(true)}>
-                        Կազմակերպություն
+                      Պատվիրատու
                       </Dropdown.Item>
                     </Dropdown.Menu>
                   </Dropdown>
@@ -172,17 +170,6 @@ const Organizations = () => {
                     id="scrollableDiv"
                     style={{ height: "80vh", overflow: "auto" }}
                   >
-                    {/* <InfiniteScroll
-                      dataLength={organizations.length}
-                      next={()=>checkData()}
-                      hasMore={hasMore}
-                      loader={<Loading />}
-                      scrollableTarget="scrollableDiv"
-                      endMessage={
-                        <p>Տվյալներ չեն հայտնաբերվել բեռնելու համար:</p>
-                      }
-                    >
-                      </InfiniteScroll> */}
                       <OrganizationsTable
                         confirmRef={confirmOrganizationRef}
                         selectedItem={selectedItem}

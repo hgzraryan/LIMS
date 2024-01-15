@@ -16,6 +16,8 @@ import ResearchViewBoard from "../StatusBoard/ResearchViewBoard";
 import { v4 as uuidv4 } from "uuid";
 import { data } from "../StatusBoard/data";
 import { data1 } from "../StatusBoard/data";
+import { Modal } from "react-bootstrap";
+import EditModal from "../views/EditModal";
 const ResearchData = [
   {
     researchId: "23001",
@@ -70,6 +72,8 @@ function ResearchesTable({
   const [resData,setResData]=useState(ResearchData)
   const [selectedItem1, setSelectedItem1] = useState("");
   const [selectedItemId1, setSelectedItemId1] = useState(null);
+  const [isOpen, setIsopen] = useState(false);
+  const [editRow, setEditRow] = useState(false);
 //  console.log(resData)
   const handleOpenStatusModal = (user) => {
     setSelectedItem1((prev) => user);
@@ -77,6 +81,12 @@ function ResearchesTable({
   const handleCloseStatusModal = () => {
     setSelectedItem1("");
   };
+  const handleOpenEditModal = (value) =>{
+    setEditRow(prev => value)
+  }
+  const handleCloseEditModal = () =>{
+    setEditRow(false)
+  }
   const defaultColumn = React.useMemo(
     () => ({
       minWidth: 20,
@@ -88,7 +98,7 @@ function ResearchesTable({
   const columns = useMemo(
     () => [
       {
-        Header: "Հետազոտության ID",
+        Header: "Ախտորոշման ID",
         accessor: "researchId",
         sortable: true,
         width: 300,
@@ -97,7 +107,7 @@ function ResearchesTable({
         ),
       },
       {
-        Header: "Հիվանդի ID",
+        Header: "Հաճախորդի ID",
         accessor: "patientId",
         sortable: true,
         width: 300,
@@ -141,7 +151,8 @@ function ResearchesTable({
                 data-bs-toggle="tooltip"
                 data-placement="top"
                 title="Edit"
-                href="edit-contact.html"
+                href="#"
+                onClick={() => handleOpenEditModal(row)}
               >
                 <span className="icon">
                   <span className="feather-icon">
@@ -149,18 +160,34 @@ function ResearchesTable({
                   </span>
                 </span>
               </a>
+              {!row.values.patientId &&
               <a
-                className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover del-button"
-                data-bs-toggle="tooltip"
-                onClick={() => handleOpenModal(row.values)}
-                data-placement="top"
-                title=""
-                data-bs-original-title="Delete"
-                href="#"
+              className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover del-button"
+              data-bs-toggle="tooltip"
+              onClick={() => handleOpenModal(row.values)}
+              data-placement="top"
+              title="Delete"
+              data-bs-original-title="Delete"
+              href="#"
               >
                 <span className="icon">
                   <span className="feather-icon">
                     <FeatherIcon icon="trash" />
+                  </span>
+                </span>
+              </a>
+              }
+              <a
+                className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover"
+                data-bs-toggle="tooltip"
+                onClick={() => console.log('send report')}
+                data-placement="top"
+                title="Send"
+                href="#"
+              >
+                <span className="icon">
+                  <span className="feather-icon">
+                    <FeatherIcon icon="send" />
                   </span>
                 </span>
               </a>
@@ -208,6 +235,8 @@ function ResearchesTable({
   );
  
   return (
+    <>
+
     <table
       className="table nowrap w-100 mb-5 dataTable no-footer"
       {...getTableProps()}
@@ -272,6 +301,14 @@ function ResearchesTable({
               </tr>
             );
           })}
+          {
+  editRow && 
+  <EditModal
+
+  handleCloseEditModal={handleCloseEditModal}
+  rowData={editRow.values}
+  />
+}
           <ResearchViewBoard
             selectedItem={selectedItem1}
             handleCloseStatusModal={handleCloseStatusModal}
@@ -286,12 +323,14 @@ function ResearchesTable({
             handleDeleteItem={handleDeleteItem}
             selectedItemId={selectedItemId}
             confirmUserRef={confirmRef}
-            userName={selectedItem.username}
-            userId={selectedItem._id}
+            keyName={selectedItem.patientId}
+            delId={selectedItem._id}
           />
         </tbody>
       )}{" "}
     </table>
+    
+    </>
   );
 }
 

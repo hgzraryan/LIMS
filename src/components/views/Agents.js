@@ -33,8 +33,6 @@ const Agents = () => {
   const {
     data: agents,
     setData: setAgents,
-    hasMore,
-    checkData,
     getData: getAgents,
   } = useGetData(AGENTS_URL);
 
@@ -85,7 +83,7 @@ const Agents = () => {
                     aria-haspopup="true"
                     aria-expanded="false"
                   >
-                    <h1>Գործակալներ</h1>
+                    <h1>Գործընկերներ</h1>
                   </a>
                 </div>
                 <div className="dropdown ms-3">
@@ -100,7 +98,7 @@ const Agents = () => {
 
                     <Dropdown.Menu>
                       <Dropdown.Item onClick={() => setIsOpen(true)}>
-                        Գործակալ
+                        Գործընկեր
                       </Dropdown.Item>
                     </Dropdown.Menu>
                   </Dropdown>
@@ -159,17 +157,6 @@ const Agents = () => {
                     id="scrollableDiv"
                     style={{ height: "80vh", overflow: "auto" }}
                   >
-                    {/* <InfiniteScroll
-                      dataLength={agents.length}
-                      next={()=>checkData()}
-                      hasMore={hasMore}
-                      loader={<Loading />}
-                      scrollableTarget="scrollableDiv"
-                      endMessage={
-                        <p>Տվյալներ չեն հայտնաբերվել բեռնելու համար:</p>
-                      }
-                      >
-                      </InfiniteScroll> */}
                       <AgentsTable
                         confirmRef={confirmAgentsRef}
                         selectedItem={selectedItem}

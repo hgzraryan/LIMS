@@ -208,8 +208,8 @@ function EquipmentsTable({
             handleDeleteItem={handleDeleteItem}
             selectedItemId={selectedItemId}
             confirmUserRef={confirmRef}
-            userName={selectedItem.username}
-            userId={selectedItem._id}
+            keyName={selectedItem.name}
+            delId={selectedItem._id}
           />
             </tbody>
           )}{" "}

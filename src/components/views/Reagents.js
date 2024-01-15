@@ -31,10 +31,9 @@ const Reagents = () => {
   const {
     data: reagents,
     setData: setReagents,
-    hasMore,
-    checkData,
     getData: getReagents,
   } = useGetData(REAGENTS_URL);
+
   const { handleDeleteItem } = useDeleteData(
     "/reagents",
     confirmReagentRef,
@@ -67,7 +66,7 @@ const Reagents = () => {
     <div>
       <div className="contactapp-wrap">
         <div className="contactapp-content">
-          <div className="contactapp-detail-wrap">
+          <div className="contactapp-detail-wrap w-100">
             <header className="contact-header">
               <div className="d-flex align-items-center">
                 <div className="dropdown">
@@ -152,17 +151,6 @@ const Reagents = () => {
                     id="scrollableDiv"
                     style={{ height: "80vh", overflow: "auto" }}
                   >
-                    {/* <InfiniteScroll
-                      dataLength={reagents.length}
-                      next={()=>checkData()}
-                      hasMore={hasMore}
-                      loader={<Loading />}
-                      scrollableTarget="scrollableDiv"
-                      endMessage={
-                        <p>Տվյալներ չեն հայտնաբերվել բեռնելու համար:</p>
-                      }
-                    >
-                      </InfiniteScroll> */}
                       <ReagentsTable
                         confirmRef={confirmReagentRef}
                         selectedItem={selectedItem}

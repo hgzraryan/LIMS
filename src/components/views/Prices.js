@@ -9,15 +9,19 @@ import Loading from "../Loading";
 import { Dropdown } from "react-bootstrap";
 import useGetData from "../../hooks/useGetData";
 import useDeleteData from "../../hooks/useDeleteData";
-import AddPrice from "./AddPrice";
 import PricesTable from "../viewTables/PricesTable";
+import AddPrice from "./AddPrice";
+import { useGetResearchList } from "../../hooks/useGetResearchList";
+const GET_RESEARCHES = "/researchLists";
+
 const PRICES_URL = "/priceList"
 const Prices = () => {
   const [selectedItem, setSelectedItem] = useState("");
   const [selectedItemId, setSelectedItemId] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const confirmPriceRef = useRef("");
-  
+  const [researchState] = useGetResearchList(GET_RESEARCHES)
+
   const handleOpenModal = (user) => {
     setSelectedItemId(true);
     setSelectedItem((prev) => user);
@@ -32,8 +36,6 @@ const Prices = () => {
   const {
     data: prices,
     setData: setPrices,
-    hasMore,
-    checkData,
     getData: getPrices,
   } = useGetData(PRICES_URL);
 
@@ -106,6 +108,7 @@ const Prices = () => {
                     <AddPrice
                       handleToggleCreateModal={handleToggleCreateModal}
                       getPrices={() => getPrices()}
+                      researchState={researchState}
                     />
                   )}
                 </div>
@@ -156,17 +159,6 @@ const Prices = () => {
                     id="scrollableDiv"
                     style={{ height: "80vh", overflow: "auto" }}
                   >
-                    {/* <InfiniteScroll
-                      dataLength={prices.length}
-                      next={()=>checkData()}
-                      hasMore={hasMore}
-                      loader={<Loading />}
-                      scrollableTarget="scrollableDiv"
-                      endMessage={
-                        <p>Տվյալներ չեն հայտնաբերվել բեռնելու համար:</p>
-                      }
-                    >
-                      </InfiniteScroll> */}
                       <PricesTable
                         confirmRef={confirmPriceRef}
                         selectedItem={selectedItem}
@@ -177,6 +169,7 @@ const Prices = () => {
                         prices={currentPrices}
                         setPrices={setPrices}
                         getPrices={getPrices}
+
                       />
                       <ReactPaginate
                                            previousLabel = {"Հետ"}    

@@ -37,7 +37,7 @@ function AgentsTable({
         ),
         accessor: "name",
         sortable: true,
-        width: 200,
+        width: 400,
         Filter: ({ column: { id } })=>(
           <ColumnFilter
             id={id}
@@ -45,7 +45,36 @@ function AgentsTable({
           />
         ),
       },
-
+      {
+        Header: (event) => (
+          <>
+            <div>Էլ․ հասցե</div>
+          </>
+        ),
+        accessor: "email",
+        width: 300,
+        Filter: ({ column: { id } })=>(
+          <ColumnFilter
+            id={id}
+            setData={setAgents}
+          />
+        ),
+      },
+      {
+        Header: (event) => (
+          <>
+            <div>Հեռախոս</div>
+          </>
+        ),
+        accessor: "mobile",
+        width: 300,
+        Filter: ({ column: { id } })=>(
+          <ColumnFilter
+            id={id}
+            setData={setAgents}
+          />
+        ),
+      },
       {
         Header: (event) => (
           <>
@@ -54,7 +83,10 @@ function AgentsTable({
           </>
         ),
         accessor: "description",
-        width: 500,
+        style: {
+           // Custom style for the 'description' column
+        },
+        width: 300,
         Filter: ({ column: { id } })=>(
           <ColumnFilter
             id={id}
@@ -69,7 +101,7 @@ function AgentsTable({
           </>
         ),
         accessor: "actions",
-        width: 200,
+        width: 300,
         Cell: ({ row }) => (
           <div className="d-flex align-items-center">
             <div className="d-flex">
@@ -147,9 +179,11 @@ function AgentsTable({
     <table  className="table nowrap w-100 mb-5 dataTable no-footer" {...getTableProps()} >
       <thead>
         {headerGroups.map((headerGroup) => (
-          <tr {...headerGroup.getHeaderGroupProps()}>
+          <tr {...headerGroup.getHeaderGroupProps({style:{width:'100%'}})}>
             {headerGroup.headers.map((column) => (
-              <th  {...column.getHeaderProps(column.getSortByToggleProps())}>
+              <th  {...column.getHeaderProps(column.getSortByToggleProps({
+                style: column.style // Apply custom style to the column header
+              }))}>
               <div>
                 {column.id !== "selection" && (
                   <>
@@ -196,9 +230,11 @@ function AgentsTable({
             {rows.map(row => {
               prepareRow(row)
               return (
-                <tr {...row.getRowProps()}>
+                <tr {...row.getRowProps({style:{width:'100%'}})}>
                   {row.cells.map(cell => {
-                    return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                    return <td {...cell.getCellProps({
+                      style: cell.column.style // Apply custom style to the column cells
+                    })}>{cell.render('Cell')}</td>
                   })}
                 </tr>
               )
@@ -209,8 +245,8 @@ function AgentsTable({
             handleDeleteItem={handleDeleteItem}
             selectedItemId={selectedItemId}
             confirmUserRef={confirmRef}
-            userName={selectedItem.username}
-            userId={selectedItem._id}
+            keyName={selectedItem.name}
+            delId={selectedItem._id}
           />
             </tbody>
           )}{" "}

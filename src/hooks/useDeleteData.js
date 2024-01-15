@@ -19,7 +19,6 @@ const useDeleteData = (url,itemRef,selectedItem,setSelectedItemId,items,setItems
       navigate("/login", { state: { from: location }, replace: true });
     }
   };
-
   const handleDeleteItem = async (delid) => {
       if (selectedItem[name].trim() === itemRef.current?.trim()) {
       try {

@@ -6,8 +6,8 @@ const ComponentToConfirm = ({
   handleCloseModal,
   handleDeleteItem,
   selectedItemId,
-  userName,
-  userId
+  keyName,
+  delId
 }) => {
   return (
     <Modal show={selectedItemId !== null} size="xl" onHide={handleCloseModal}>
@@ -38,7 +38,7 @@ const ComponentToConfirm = ({
                                   className="form-label"
                                   htmlFor="confirmUser"
                                 >
-                                  Հեռացման համար խնդրում ենք մուտքագրել "{userName}" տեքստը
+                                  Հեռացման համար խնդրում ենք մուտքագրել "{keyName}" տեքստը
                                 </label>
                                 <input
                                   ref={confirmUserRef}
@@ -65,7 +65,7 @@ const ComponentToConfirm = ({
                   <div className="modal-footer align-items-center">
                     <button
                       type="button"
-                      onClick={() => handleDeleteItem(userId)}
+                      onClick={() => handleDeleteItem(delId)}
                       className="btn btn-primary"
                       data-bs-dismiss="modal"
                     >

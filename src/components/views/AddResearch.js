@@ -11,24 +11,52 @@ import {
   class_validation,
 } from "../../utils/inputValidations";
 import useSubmitForm from "../../hooks/useSubmitForm";
+import Multiselect from "multiselect-react-dropdown";
 
 const REGISTER_URL = "/registerResearch";
-function AddResearch({ handleToggleCreateModal, getResearches }) {
+function AddResearch({ handleToggleCreateModal, getResearches,researchState }) {
   const [errMsg, setErrMsg] = useState("");
-
+  const multiselectRef = useRef("");
+  const [researchesArray, setResearchesArray] = useState([]);
+  const [researchesPrice, setResearchesPrice] = useState([]);
   const editorRef = useRef(null);
+  const additionalData = {}
+
+  const onResearchSelect = (data) => {
+    let researchesArr = [];
+    let researchesPrice = [];
+    for (let research of data) {
+      researchesArr.push(Object.values(research)[0]);
+      researchesPrice.push(Object.values(research)[3]);
+    }
+    researchesPrice = researchesPrice.reduce((acc, el) => (acc += el), 0);
+    additionalData.researchesList = researchesArr
+    additionalData.researchesPrice = ''
+  };
+  
+
+  const onResearchDelete = (data) => {
+    let researchesArr = [];
+    for (let research of data) {
+      researchesArr.push(Object.values(research)[0]);
+    }
+    additionalData.researchesPrice = ''
+    additionalData.researchList = researchesArr 
+   };
+  
   const { onSubmit, methods } = useSubmitForm(
     REGISTER_URL,
     editorRef,
     getResearches,
     setErrMsg,
-    handleToggleCreateModal
+    handleToggleCreateModal,
+    additionalData
   );
   return (
     <Modal
-      show={() => true}
-      size="xl"
-      onHide={() => handleToggleCreateModal(false)}
+    show={() => true}
+    size="xl"
+    onHide={() => handleToggleCreateModal(false)}
     >
       <Modal.Header closeButton>
         <Modal.Title style={{ width: "100%", textAlign: "center" }}>
@@ -77,6 +105,33 @@ function AddResearch({ handleToggleCreateModal, getResearches }) {
                             <div className="col-sm-6">
                               <Input {...class_validation} />
                             </div>
+                          </div>
+                          <div className="row gx-3">
+                            
+                            <label
+                                  className="form-label"
+                                  htmlFor="research"
+                                >
+                                  Հետազոտություններ
+                                </label>
+                            <Multiselect
+                                    options={researchState} // Options to display in the dropdown
+                                    displayValue="research" // Property name to display in the dropdown options
+                                    onSelect={onResearchSelect} // Function will trigger on select event
+                                    onRemove={onResearchDelete} // Function will trigger on remove event
+                                    closeOnSelect={true}
+                                    id="input_tags_3"
+                                    className="form-control"
+                                    ref={multiselectRef}
+                                    hidePlaceholder={true}
+                                    placeholder="Հետազոտություններ"
+                                    groupBy="category_name"
+                                    style={{
+                                      height: "10rem",
+                                      overflow: "hidden",
+                                    }}
+                                  />
+                            
                           </div>
                         </div>
                       </div>

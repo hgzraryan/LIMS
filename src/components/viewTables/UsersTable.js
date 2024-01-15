@@ -315,8 +315,8 @@ function UsersTable({
               handleDeleteItem={handleDeleteItem}
               selectedItemId={selectedItemId}
               confirmUserRef={confirmRef}
-              userName={selectedItem.username}
-              userId={selectedItem._id}
+              keyName={selectedItem.username}
+              delId={selectedItem._id}
             />
           </tbody>
         )}{" "}

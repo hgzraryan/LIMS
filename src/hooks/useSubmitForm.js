@@ -3,7 +3,7 @@ import useAxiosPrivate from "./useAxiosPrivate";
 import { useLocation, useNavigate } from "react-router-dom";
 import {  toast } from 'react-toastify';
 
-const useSubmitForm = (REGISTER_URL,editorRef, getData,setErrMsg,handleToggleCreateModal) => {
+const useSubmitForm = (REGISTER_URL,editorRef, getData,setErrMsg,handleToggleCreateModal,additionalData={}) => {
     
     const axiosPrivate = useAxiosPrivate();  
     const navigate = useNavigate();  
@@ -23,27 +23,30 @@ const useSubmitForm = (REGISTER_URL,editorRef, getData,setErrMsg,handleToggleCre
         });
 
         const onSubmit = methods.handleSubmit(async (data) => {
+          console.log(additionalData)
             const newData = {
               ...data,
+              ...additionalData,
               additional: editorRef.current?.getContent({ format: "text" }),
             };
-            try {
-              await axiosPrivate.post(REGISTER_URL, newData, {
-                headers: { "Content-Type": "application/json" },
-                withCredentials: true,
-              });
-              handleToggleCreateModal(false);
-              getData();
-              notify(`${newData.name} ավելացված է`);
-            } catch (err) {
-              if (!err?.response) {
-                setErrMsg("No Server Response");
-              } else if (err.response?.status === 409) {
-                setErrMsg("Username Taken");
-              } else {
-                setErrMsg(" Failed");
-              }
-            }
+            console.log(newData)
+            // try {
+            //   await axiosPrivate.post(REGISTER_URL, newData, {
+            //     headers: { "Content-Type": "application/json" },
+            //     withCredentials: true,
+            //   });
+            //   handleToggleCreateModal(false);
+            //   getData();
+            //   notify(`${newData.name} ավելացված է`);
+            // } catch (err) {
+            //   if (!err?.response) {
+            //     setErrMsg("No Server Response");
+            //   } else if (err.response?.status === 409) {
+            //     setErrMsg("Username Taken");
+            //   } else {
+            //     setErrMsg(" Failed");
+            //   }
+            // }
           });
     
       return {

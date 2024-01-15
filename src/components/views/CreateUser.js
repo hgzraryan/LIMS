@@ -22,7 +22,6 @@ import {  toast } from 'react-toastify';
 const REGISTER_URL = "/register";
 function CreateUser({ setIsOpen,getUsers }) {
   const axiosPrivate = useAxiosPrivate();
-  const roles = useRef("");
   const multiselectRef = useRef("");
   const intupAvatarRef = useRef(null);
   const [imageUrl, setImageUrl] = useState(MissingAvatar);
@@ -57,7 +56,7 @@ function CreateUser({ setIsOpen,getUsers }) {
   const onSubmit = methods.handleSubmit(async (data) => {
     const newUser = {
       ...data,
-      roles: roles.current,
+      roles: rolesArray,
     };
     formData.append("text", JSON.stringify(newUser));
     formData.append("image", image);
@@ -95,19 +94,7 @@ function CreateUser({ setIsOpen,getUsers }) {
     }
     setRolesArray((prev) => (prev = rolesArr));
 
-    //reset selected options colors
-    const elems = document.querySelectorAll(".chips");
-    elems.forEach((element) => {
-      element.classList.remove("chips");
-    });
-  };
-  const onAdd = (e) => {
-    roles.current = rolesArray;
-    //multiselectRef.current.resetSelectedValues()
-    const elems = document.querySelectorAll(".chip");
-    elems.forEach((element) => {
-      element.classList.add("chips");
-    });
+    
   };
   /*----------------ADD USER END---------------------*/
   fileReader.onloadend = () => {
@@ -437,14 +424,6 @@ function CreateUser({ setIsOpen,getUsers }) {
                                 </div>
                               </div>
                             </div>
-                            <button
-                              type="button"
-                              className="btn btn-primary float-end"
-                              onClick={onAdd}
-                              data-bs-dismiss="modal"
-                            >
-                              Ավելացնել
-                            </button>
                           </form>
                         </div>
                       </div>

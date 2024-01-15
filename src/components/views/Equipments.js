@@ -34,8 +34,6 @@ const Equipments = () => {
   const {
     data: equipments,
     setData: setEquipments,
-    hasMore,
-    checkData,
     getData: getEquipments,
   } = useGetData(EQUIPMENTS_URL);
 
@@ -272,17 +270,6 @@ const Equipments = () => {
                     id="scrollableDiv"
                     style={{ height: "80vh", overflow: "auto" }}
                   >
-                    {/* <InfiniteScroll
-                      dataLength={equipments.length}
-                      next={() => checkData()}
-                      hasMore={hasMore}
-                      loader={<Loading />}
-                      scrollableTarget="scrollableDiv"
-                      endMessage={
-                        <p>Տվյալներ չեն հայտնաբերվել բեռնելու համար:</p>
-                      }
-                      >
-                      </InfiniteScroll> */}
                       <EquipmentsTable
                         confirmRef={confirmEquipmentsRef}
                         selectedItem={selectedItem}

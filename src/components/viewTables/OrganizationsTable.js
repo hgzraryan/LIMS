@@ -42,12 +42,41 @@ function OrganizationsTable({
         ),
         accessor: "name",
         sortable: true,
-        width: 200,
+        width: 400,
         Filter: ({ column: { id } }) => (
           <ColumnFilter id={id} setData={setOrganizations} />
         ),
       },
-
+      {
+        Header: (event) => (
+          <>
+            <div>Էլ․ հասցե</div>
+          </>
+        ),
+        accessor: "email",
+        width: 300,
+        Filter: ({ column: { id } })=>(
+          <ColumnFilter
+            id={id}
+            setData={setOrganizations}
+          />
+        ),
+      },
+      {
+        Header: (event) => (
+          <>
+            <div>Հեռախոս</div>
+          </>
+        ),
+        accessor: "mobile",
+        width: 300,
+        Filter: ({ column: { id } })=>(
+          <ColumnFilter
+            id={id}
+            setData={setOrganizations}
+          />
+        ),
+      },
       {
         Header: (event) => (
           <>
@@ -56,7 +85,7 @@ function OrganizationsTable({
         ),
 
         accessor: "description",
-        width: 500,
+        width: 300,
         Filter: ({ column: { id } }) => (
           <ColumnFilter id={id} setData={setOrganizations} />
         ),
@@ -99,7 +128,7 @@ function OrganizationsTable({
           </div>
         ),
         disableSortBy: true,
-        width: 200,
+        width: 300,
         Filter: ({ column: { id } }) => <></>,
       },
     ],
@@ -210,8 +239,8 @@ function OrganizationsTable({
             handleDeleteItem={handleDeleteItem}
             selectedItemId={selectedItemId}
             confirmUserRef={confirmRef}
-            userName={selectedItem.username}
-            userId={selectedItem._id}
+            keyName={selectedItem.username}
+            delId={selectedItem.name}
           />
         </tbody>
       )}{" "}

@@ -1,62 +1,22 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState, useEffect} from "react";
-import InfiniteScroll from "react-infinite-scroll-component";
-import useAxiosPrivate from "../../hooks/useAxiosPrivate";
-import { useNavigate, useLocation } from "react-router-dom";
+import React, { useState} from "react";
 import FeatherIcon from "feather-icons-react";
 import LoadingSpinner from "../LoadingSpinner";
 import Loading from "../Loading";
 import CreatePatient from "./CreatePatient";
 import { Dropdown } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
 import {Helmet} from "react-helmet";
-
-
-import {
-  reserchesList,
-  selectResearches,
-} from "../../redux/features/researches/researchesSlice";
 import useGetData from "../../hooks/useGetData";
 import PatientsTable from "../viewTables/PatientsTable";
 import ReactPaginate from "react-paginate";
+import { useGetResearchList } from "../../hooks/useGetResearchList";
 const GET_RESEARCHES = "/researchLists";
 const PATIENTS_URL = "/patients";
 
 const Patients = () => {
-  const researchState = useSelector(selectResearches);
-  const dispatch = useDispatch();
-  const axiosPrivate = useAxiosPrivate();
-  const navigate = useNavigate();
-  const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState("");
-
-/*-----------------------------------------------------Get Researches----------------------------------------------------*/
-  useEffect(() => {
-    let isMounted = true;
-    const controller = new AbortController();
-
-    const getResearches = async () => {
-      try {
-        const response = await axiosPrivate.post(GET_RESEARCHES, {
-          signal: controller.signal,
-        });
-
-        isMounted && dispatch(reserchesList(response.data.jsonString));
-      } catch (err) {
-        console.error(err);
-        navigate("/login", { state: { from: location }, replace: true });
-      }
-    };
-
-    getResearches();
-
-    return () => {
-      isMounted = false;
-      controller.abort();
-    };
-  }, []);
-  /*--------------------------------------------------------------------------------------------------------------------*/
+  const [researchState] = useGetResearchList(GET_RESEARCHES)
 
   const handleToggleCreateModal = (value) => {
     setIsOpen((prev) => value);
@@ -64,8 +24,6 @@ const Patients = () => {
   const {
     data: patients,
     setData: setPatients,
-    hasMore,
-    checkData,
     getData: getPatients,
 
   } = useGetData(PATIENTS_URL);
@@ -315,19 +273,7 @@ const Patients = () => {
                   <div
                     id="scrollableDiv"
                     style={{ height: "80vh", overflow: "auto" }}
-                  >
-                    {/* <InfiniteScroll
-                      dataLength={patients.length}
-                      next={()=>checkData()}
-                      hasMore={hasMore}
-                      loader={<Loading />}
-                      scrollableTarget="scrollableDiv"
-                      endMessage={
-                        <p>Տվյալներ չեն հայտնաբերվել բեռնելու համար:</p>
-                      }
-                      >
-                      </InfiniteScroll> */}
-                    
+                  >                    
                     <PatientsTable
                     tableData={patients}
                     handleOpenModal={handleOpenModal}

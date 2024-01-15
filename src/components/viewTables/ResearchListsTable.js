@@ -206,8 +206,8 @@ function ResearchListsTable({
             handleDeleteItem={handleDeleteItem}
             selectedItemId={selectedItemId}
             confirmUserRef={confirmRef}
-            userName={selectedItem.username}
-            userId={selectedItem._id}
+            keyName={selectedItem.research}
+            delId={selectedItem._id}
           />
             </tbody>
           )}{" "}

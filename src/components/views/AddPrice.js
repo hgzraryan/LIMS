@@ -15,20 +15,36 @@ import {
   desc_validation,
 } from "../../utils/inputValidations";
 import useSubmitForm from "../../hooks/useSubmitForm";
+import Multiselect from "multiselect-react-dropdown";
 
 const REGISTER_URL = "/registerPrice";
-function AddPrice({ handleToggleCreateModal, getPrices }) {
+function AddPrice({ handleToggleCreateModal, getPrices,researchState }) {
   const [errMsg, setErrMsg] = useState("");
-
+  const multiselectRef = useRef("");
   const editorRef = useRef(null);
+  const currencyRef = useRef(null);
+  const additionalData={}
+  //const additionalData=useRef('')
+  const onResearchSelect = (data) => {
+    let researchesArr = [];
+    for (let research of data) {
+      researchesArr.push(Object.values(research)[0]);
+    }
+    additionalData.researchId=researchesArr[0]
+  };
+  
+  const onCurrencySelect = (data) => {
+    additionalData.currency=data[0].currency
+  };
   const { onSubmit, methods } = useSubmitForm(
     REGISTER_URL,
     editorRef,
     getPrices,
     setErrMsg,
-    handleToggleCreateModal
+    handleToggleCreateModal,
+    additionalData
   );
-
+ 
   return (
     <Modal
       show={() => true}
@@ -88,12 +104,61 @@ function AddPrice({ handleToggleCreateModal, getPrices }) {
                               <Input {...unit_validation} />
                             </div>
                             <div className="col-sm-6">
-                              <Input {...currency_validation} />
+                            <label
+                                  className="form-label"
+                                  htmlFor="research"
+                                >
+                                  Արժույթ
+                                </label>
+                            <Multiselect
+                                    options={[{currency:'AMD'},{currency:'USD'},{currency:'RU'}]} // Options to display in the dropdown
+                                    displayValue="currency" // Property name to display in the dropdown options
+                                    onSelect={onCurrencySelect} // Function will trigger on select event
+                                  //  onRemove={onResearchDelete} // Function will trigger on remove event
+                                    closeOnSelect={true}
+                                    singleSelect
+                                    selectedValues={[{currency:'AMD'}]}
+                                    id="input_tags_4"
+                                    className="form-control"
+                                    ref={currencyRef}
+                                    hidePlaceholder={true}
+                                    placeholder="Արժույթ"
+                                    style={{
+                                      height: "10rem",
+                                      overflow: "hidden",
+                                    }}
+                                  />
                             </div>
                           </div>
                           <div className="row gx-3">
                             <div className="col-sm-6">
                               <Input {...desc_validation} />
+                            </div>
+                            <div className="col-sm-6">
+                            <label
+                                  className="form-label"
+                                  htmlFor="research"
+                                >
+                                  Հետազոտություններ
+                                </label>
+                            <Multiselect
+                                    options={researchState} // Options to display in the dropdown
+                                    displayValue="research" // Property name to display in the dropdown options
+                                    onSelect={onResearchSelect} // Function will trigger on select event
+                                    //onRemove={onResearchDelete} // Function will trigger on remove event
+                                    closeOnSelect={true}
+                                    id="input_tags_3"
+                                    className="form-control"
+                                    ref={multiselectRef}
+                                    hidePlaceholder={true}
+                                    placeholder="Հետազոտություններ"
+                                    groupBy="category_name"
+                                    singleSelect
+                                    style={{
+                                      height: "10rem",
+                                      overflow: "hidden",
+                                    }}
+                                  />
                             </div>
                           </div>
                         </div>

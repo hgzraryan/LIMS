@@ -18,8 +18,8 @@ import {
   email_validation,
   mobile_validation,
   address_validation,
-  age_validation,
 } from "../../utils/inputValidations";
+import { useCalculateAge } from "../../hooks/useCalculateAge";
 
 const REGISTER_URL = "/registerPatient";
 function CreatePatient({
@@ -30,22 +30,29 @@ function CreatePatient({
   const [researchesArray, setResearchesArray] = useState([]);
   const [researchesPrice, setResearchesPrice] = useState([]);
   const [startDate, setStartDate] = useState(new Date());
+  const [birthday, setBirthday] = useState(new Date());
 
   const [errMsg, setErrMsg] = useState("");
   const methods = useForm({
     mode: "onChange",
   });
-
   const axiosPrivate = useAxiosPrivate();
-  const researchesRef = useRef("");
   const handlingDate = useRef("");
+  const genderRef = useRef("");
   const multiselectRef = useRef("");
+  const multiselectRef1 = useRef("");
   const editorRef = useRef(null);
-
+  const {age} = useCalculateAge(birthday)
+  
+  console.log(age)
   const getDate = (date) => {
     setStartDate(date);
     handlingDate.current =
       date.toLocaleDateString("en-GB") + " " + date.toLocaleTimeString("en-GB");
+
+  };
+  const getAge = (date) => {
+    setBirthday(date)
   };
   const notify = (text) => toast.success(text, {
     position: "top-right",
@@ -60,11 +67,13 @@ function CreatePatient({
   const onSubmit = methods.handleSubmit(async (data) => {
     const newPatient = {
       ...data,
-      age: parseInt(data["age"]),
+      age: age,//parseInt(data["age"]),
       totalPrice: researchesPrice,
       handlingDate: handlingDate.current,
-      researchList: researchesRef.current,
+      researchList: researchesArray,
       additional: editorRef.current.getContent({ format: "text" }),
+      gender:genderRef.current,
+      DOB:birthday.toLocaleDateString("en-GB")
     };
     const formData = JSON.stringify(newPatient);
     try {
@@ -86,6 +95,9 @@ function CreatePatient({
       }
     }
   });
+  const onGenderSelect = (data) => {
+    genderRef.current = data[0].gender
+  };
   const onResearchSelect = (data) => {
     let researchesArr = [];
     let researchesPrice = [];
@@ -103,22 +115,7 @@ function CreatePatient({
       researchesArr.push(Object.values(research)[0]);
     }
     setResearchesArray((prev) => (prev = researchesArr));
-
-    //reset selected options colors
-    const elems = document.querySelectorAll(".chips");
-    elems.forEach((element) => {
-      element.classList.remove("chips");
-    });
   };
-  const onAdd = (e) => {
-    researchesRef.current = researchesArray;
-    //multiselectRef.current.resetSelectedValues()
-    const elems = document.querySelectorAll(".chip");
-    elems.forEach((element) => {
-      element.classList.add("chips");
-    });
-  };
-
   return (
     <Modal
       show={() => true}
@@ -190,8 +187,47 @@ function CreatePatient({
                             </div>
                           </div>
                           <div className="row gx-3">
+                            
+                            <Multiselect
+                                    options={[{gender:'Արական'},{gender:'Իգական'}]} // Options to display in the dropdown
+                                    displayValue="gender" // Property name to display in the dropdown options
+                                    onSelect={onGenderSelect} // Function will trigger on select event
+                                  //  onRemove={onResearchDelete} // Function will trigger on remove event
+                                    closeOnSelect={true}
+                                    singleSelect
+                                    id="input_tags_4"
+                                    className="form-control"
+                                    ref={multiselectRef1}
+                                    hidePlaceholder={true}
+                                    placeholder="Սեռ"
+                                    style={{
+                                      height: "10rem",
+                                      overflow: "hidden",
+                                    }}
+                                  />
+                          </div>
+                          <div className="row gx-3">
                             <div className="col-sm-6">
-                              <Input {...age_validation} />
+                            <div className="form-group">
+                                <label
+                                  className="form-label"
+                                  htmlFor="handlingDate"
+                                >
+                                  Ծննդյան ամսաթիվ
+                                </label>
+                                <div>
+                                  <DatePicker
+                                  showYearDropdown
+                                  yearDropdownItemNumber={100}
+                                  scrollableYearDropdown
+                                  selected={birthday}
+                                    onChange={(date) => getAge(date)}
+                                    dateFormat={"dd/MM/yyyy"}
+                                    isClearable
+                                    placeholderText="Select date"
+                                  />
+                                </div>
+                              </div>
                             </div>
                             <div className="col-sm-6">
                               <div className="form-group">
@@ -270,14 +306,6 @@ function CreatePatient({
                                 </div>
                               </div>
                             </div>
-                            <button
-                              type="button"
-                              className="btn btn-primary float-end"
-                              onClick={onAdd}
-                              data-bs-dismiss="modal"
-                            >
-                              Ավելացնել
-                            </button>
                           </form>
                         </div>
                       </div>

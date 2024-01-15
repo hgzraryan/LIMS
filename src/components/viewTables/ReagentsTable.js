@@ -287,8 +287,8 @@ function ReagentsTable({
             handleDeleteItem={handleDeleteItem}
             selectedItemId={selectedItemId}
             confirmUserRef={confirmRef}
-            userName={selectedItem.username}
-            userId={selectedItem._id}
+            keyName={selectedItem.product_name}
+            delId={selectedItem._id}
           />
         </tbody>
       )}{" "}

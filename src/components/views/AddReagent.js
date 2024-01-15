@@ -23,13 +23,19 @@ const REGISTER_URL = "/registerReagent";
 function AddReagent({ handleToggleCreateModal, getReagents }) {
   const [errMsg, setErrMsg] = useState("");
   const [unitType, setUnitType] = useState("");
+  const additionalData={}
+
   const methods = useForm({
     mode: "onChange",
   });
   const multiselectRef = useRef("");
   const axiosPrivate = useAxiosPrivate();
   const editorRef = useRef(null);
+  const currencyRef = useRef(null);
 
+ const onCurrencySelect = (data) => {
+    additionalData.currency=data[0].currency
+  };
   const notify = (text) =>
     toast.success(text, {
       position: "top-right",
@@ -45,6 +51,7 @@ function AddReagent({ handleToggleCreateModal, getReagents }) {
   const onSubmit = methods.handleSubmit(async (data) => {
     const newReagent = {
       ...data,
+      ...additionalData,
       unitType: unitType,
       additional: editorRef.current.getContent({ format: "text" }),
     };
@@ -149,7 +156,29 @@ function AddReagent({ handleToggleCreateModal, getReagents }) {
                               <Input {...useage_validation} />
                             </div>
                             <div className="col-sm-6">
-                              <Input {...currency_validation} />
+                            <label
+                                  className="form-label"
+                                  htmlFor="research"
+                                >
+                                  Արժույթ
+                                </label>
+                            <Multiselect
+                                    options={[{currency:'AMD'},{currency:'USD'},{currency:'RU'}]} // Options to display in the dropdown
+                                    displayValue="currency" // Property name to display in the dropdown options
+                                    onSelect={onCurrencySelect} // Function will trigger on select event
+                                  //  onRemove={onResearchDelete} // Function will trigger on remove event
+                                    closeOnSelect={true}
+                                    singleSelect
+                                    id="input_tags_4"
+                                    className="form-control"
+                                    ref={currencyRef}
+                                    hidePlaceholder={true}
+                                    placeholder="Արժույթ"
+                                    style={{
+                                      height: "10rem",
+                                      overflow: "hidden",
+                                    }}
+                                  />
                             </div>
                           </div>
                           <div className="row gx-3">

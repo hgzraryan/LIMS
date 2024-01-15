@@ -1,15 +1,14 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState, useRef } from "react";
-import InfiniteScroll from "react-infinite-scroll-component";
 import FeatherIcon from "feather-icons-react";
 import LoadingSpinner from "../LoadingSpinner";
 import ReactPaginate from "react-paginate";
 import Loading from "../Loading";
 import { Dropdown } from "react-bootstrap";
-import AddResearch from "./AddResearch";
 import useGetData from "../../hooks/useGetData";
 import useDeleteData from "../../hooks/useDeleteData";
 import ResearchListsTable from "../viewTables/ResearchListsTable";
+import AddResearchList from "./AddResearchList";
 const RESEARCHES_URL = "/researchLists";
 
 const ResearchLists = () => {
@@ -21,7 +20,7 @@ const ResearchLists = () => {
   const [selectedItemId, setSelectedItemId] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const confirmResearchRef = useRef("");
-  
+ 
   const handleOpenModal = (user) => {
     setSelectedItemId(true);
     setSelectedItem((prev) => user);
@@ -34,8 +33,6 @@ const ResearchLists = () => {
   const {
     data: researchList,
     setData: setResearches,
-    hasMore,
-    checkData,
     getData: getResearches,
   } = useGetData(RESEARCHES_URL);
 
@@ -113,9 +110,11 @@ const ResearchLists = () => {
                     </Dropdown.Menu>
                   </Dropdown>
                   {isOpen && (
-                    <AddResearch
+                    <AddResearchList
                     handleToggleCreateModal={handleToggleCreateModal}
                     getResearches={() => getResearches()}
+                    researchState={researchList}
+
                     />
                   )}
                 </div>
@@ -279,17 +278,6 @@ const ResearchLists = () => {
                     id="scrollableDiv"
                     style={{ height: "80vh", overflow: "auto" }}
                   >
-                    {/* <InfiniteScroll
-                      dataLength={researches.length}
-                      next={()=>checkData()}
-                      hasMore={hasMore}
-                      loader={<Loading />}
-                      scrollableTarget="scrollableDiv"
-                      endMessage={
-                        <p>Տվյալներ չեն հայտնաբերվել բեռնելու համար:</p>
-                      }
-                      >
-                      </InfiniteScroll> */}
                          <ResearchListsTable
                         confirmRef={confirmResearchRef}
                         selectedItem={selectedItem}

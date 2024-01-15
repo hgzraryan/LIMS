@@ -6,7 +6,7 @@ import { useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import { Form, FormProvider} from "react-hook-form";
 import { Input } from "../Input";
-import { name_validation, desc_validation } from "../../utils/inputValidations";
+import { name_validation, desc_validation, email_validation, mobile_validation } from "../../utils/inputValidations";
 import useSubmitForm from "../../hooks/useSubmitForm";
 
 const REGISTER_URL = "/registerOrganizations";
@@ -74,6 +74,14 @@ function AddOrganization({ handleToggleCreateModal, getOrganizations }) {
                             </div>
                             <div className="col-sm-6">
                               <Input {...desc_validation} />
+                            </div>
+                          </div>
+                          <div className="row gx-3">
+                            <div className="col-sm-6">
+                              <Input {...email_validation} />
+                            </div>
+                            <div className="col-sm-6">
+                              <Input {...mobile_validation} />
                             </div>
                           </div>
                         </div>

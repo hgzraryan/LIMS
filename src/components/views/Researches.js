@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import FeatherIcon from "feather-icons-react";
 import Loading from "../Loading";
@@ -9,9 +9,12 @@ import useDeleteData from "../../hooks/useDeleteData";
 import ResearchesTable from "../viewTables/ResearchesTable";
 import AddResearch from "./AddResearch";
 import ReactPaginate from "react-paginate";
-
+import { useGetResearchList } from "../../hooks/useGetResearchList";
 const RESEARCHES_URL = "/research";
+const GET_RESEARCHES = "/researchLists";
+
 const Researches = () => {
+  const [researchState] = useGetResearchList(GET_RESEARCHES)
   const [selectedItem, setSelectedItem] = useState("");
   const [selectedItemId, setSelectedItemId] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -31,8 +34,6 @@ const Researches = () => {
   const {
     data: researches,
     setData: setResearches,
-    hasMore,
-    checkData,
     getData: getResearches,
   } = useGetData(RESEARCHES_URL);
 
@@ -104,7 +105,7 @@ const Researches = () => {
 
                     <Dropdown.Menu>
                       <Dropdown.Item onClick={() => setIsOpen(true)}>
-                        Ածտորոշում
+                        Ախտորոշում
                       </Dropdown.Item>
                     </Dropdown.Menu>
                   </Dropdown>
@@ -113,6 +114,7 @@ const Researches = () => {
                     <AddResearch
                       handleToggleCreateModal={handleToggleCreateModal}
                       getResearches={() => getResearches()}
+                      researchState={researchState}
                     />
                   )}
                 </div>
@@ -163,17 +165,6 @@ const Researches = () => {
                     id="scrollableDiv"
                     style={{ height: "80vh", overflow: "auto" }}
                   >
-                    {/* <InfiniteScroll
-                      dataLength={researches.length}
-                      next={() => checkData()}
-                      hasMore={hasMore}
-                      loader={<Loading />}
-                      scrollableTarget="scrollableDiv"
-                      endMessage={
-                        <p>Տվյալներ չեն հայտնաբերվել բեռնելու համար:</p>
-                      }
-                      >
-                      </InfiniteScroll> */}
                      
                       <ResearchesTable
                         confirmRef={confirmResearchesRef}

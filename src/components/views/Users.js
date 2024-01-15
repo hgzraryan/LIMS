@@ -35,8 +35,8 @@ const Users = () => {
   const {
     data: users,
     setData: setUsers,
-    hasMore,
-    checkData,
+    // hasMore,
+    // checkData,
     getData: getUsers,
   } = useGetData(USERS_URL);
   //-------------------
