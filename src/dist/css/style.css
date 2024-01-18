@@ -73279,7 +73279,7 @@ div.hopscotch-bubble .hopscotch-bubble-container .hopscotch-actions .hopscotch-n
 }
 
 .hk-pg-wrapper {
-  /* padding: 65px 0 60px; */
+  padding: 65px 0 60px;
   position: relative;
   min-height: 100vh;
 }
