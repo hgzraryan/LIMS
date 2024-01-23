@@ -78,7 +78,7 @@ function CreatePatient({
     city,
     state,
     country,
-    zipCode,medicalHistory}) => {
+    zipCode}) => {
     const newPatient = {
       firstName:firstName,
       lastName:lastName,
