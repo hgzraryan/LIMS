@@ -90,33 +90,43 @@ const MainTemplate = () => {
     }
 
     return (
-        <section>
-            {/* Wrapper */}
-            <div className="hk-wrapper" data-layout="vertical" data-layout-style={misActive ? 'collapsed' : 'default'} data-hover={misActive ? 'active' : ''} data-menu="light" data-footer="simple">
-                {/* Top Navbar */}
-                
-              {/* /Top Navbar */}
-  <nav className="hk-navbar navbar navbar-expand-xl navbar-light fixed-top">
-                    <div className="container-fluid">
-                    {/* Start Nav */}
-                        <div className="nav-start-wrap">
-                            <button className="btn btn-icon btn-rounded btn-flush-dark flush-soft-hover navbar-toggle d-xl-none" onClick={mmenuClick}>
-                                <span className="icon">
-                                    <span className="feather-icon">
-                                        {/*<i data-feather="align-left"></i>*/}
-                                        <i className="fas fa-align-left"></i>
-                                    </span>
-                                </span>
-                            </button>
-                            {/* Search */}
-                            
-                            {/* /Search */}
-                        </div>
-                        {/* /Start Nav */}
-                        {/* End Nav */}
-                        <div className="nav-end-wrap" onClick={menuClick}>
-                            <ul className="navbar-nav flex-row">
-                            {/*
+      <section>
+        {/* Wrapper */}
+        <div
+          className="hk-wrapper"
+          data-layout="vertical"
+          data-layout-style={misActive ? "collapsed" : "default"}
+          data-hover={misActive ? "active" : ""}
+          data-menu="light"
+          data-footer="simple"
+        >
+          {/* Top Navbar */}
+
+          {/* /Top Navbar */}
+          <nav className="hk-navbar navbar navbar-expand-xl navbar-light fixed-top">
+            <div className="container-fluid">
+              {/* Start Nav */}
+              <div className="nav-start-wrap">
+                <button
+                  className="btn btn-icon btn-rounded btn-flush-dark flush-soft-hover navbar-toggle d-xl-none"
+                  onClick={mmenuClick}
+                >
+                  <span className="icon">
+                    <span className="feather-icon">
+                      {/*<i data-feather="align-left"></i>*/}
+                      <i className="fas fa-align-left"></i>
+                    </span>
+                  </span>
+                </button>
+                {/* Search */}
+
+                {/* /Search */}
+              </div>
+              {/* /Start Nav */}
+              {/* End Nav */}
+              <div className="nav-end-wrap" onClick={menuClick}>
+                <ul className="navbar-nav flex-row">
+                  {/*
                                 <li className="nav-item">
                                     <a href="email.html" className="btn btn-icon btn-rounded btn-flush-dark flush-soft-hover"><span className="icon"><span className=" position-relative"><span className="feather-icon"><i data-feather="inbox"></i></span><span className="badge badge-sm badge-soft-primary badge-sm badge-pill position-top-end-overflow-1">4</span></span></span></a>
                                 </li>
@@ -245,28 +255,53 @@ const MainTemplate = () => {
                                     </div>
                                 </li>
                                 */}
-                                <li className="nav-item">
-                                    <div className="dropdown ps-2">
-                                        <a className=" dropdown-toggle no-caret" href="#" role="button" data-bs-display="static" data-bs-toggle="dropdown" data-dropdown-animation data-bs-auto-close="outside" aria-expanded="false">
-                                            <div className="avatar avatar-rounded avatar-xs">
-                                                <img src="/dist/img/avatar12.jpg" alt="user" className="avatar-img"/>
-                                            </div>
-                                        </a>
-                                        <div className={isActive ? 'dropdown-menu dropdown-menu-end show showSlow' : 'dropdown-menu dropdown-menu-end showSlow'}>
-                                            <div className="p-2">
-                                                <div className="media">
-                                                    <div className="media-head me-2">
-                                                        <div className="avatar avatar-primary avatar-sm avatar-rounded">
-                                                            <span className="initial-wrap">{}</span>
-                                                        </div>
-                                                    </div>
-                                                    <div className="media-body">
-                                                        <div className="fs-7">{}</div>
-                                                        <a href="/login" className="d-block fs-8 link-secondary" onClick={signOut}><u>Դուրս գալ</u></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-											{/*
+                  <li className="nav-item">
+                    <div className="dropdown ps-2">
+                      <a
+                        className=" dropdown-toggle no-caret"
+                        href="#"
+                        role="button"
+                        data-bs-display="static"
+                        data-bs-toggle="dropdown"
+                        data-dropdown-animation
+                        data-bs-auto-close="outside"
+                        aria-expanded="false"
+                      >
+                        <div className="avatar avatar-rounded avatar-xs">
+                          <img
+                            src="/dist/img/avatar12.jpg"
+                            alt="user"
+                            className="avatar-img"
+                          />
+                        </div>
+                      </a>
+                      <div
+                        className={
+                          isActive
+                            ? "dropdown-menu dropdown-menu-end show showSlow"
+                            : "dropdown-menu dropdown-menu-end showSlow"
+                        }
+                      >
+                        <div className="p-2">
+                          <div className="media">
+                            <div className="media-head me-2">
+                              <div className="avatar avatar-primary avatar-sm avatar-rounded">
+                                <span className="initial-wrap">{}</span>
+                              </div>
+                            </div>
+                            <div className="media-body">
+                              <div className="fs-7">{}</div>
+                              <a
+                                href="/login"
+                                className="d-block fs-8 link-secondary"
+                                onClick={signOut}
+                              >
+                                <u>Դուրս գալ</u>
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                        {/*
                                             <div className="dropdown-divider"></div>
                                                 <a className="dropdown-item" href="profile.html">Profile</a>
                                                 <a className="dropdown-item" href="/privacy-policy">
@@ -282,196 +317,543 @@ const MainTemplate = () => {
                                                 <a className="dropdown-item" href="/privacy-policy"><span className="dropdown-icon feather-icon"><i data-feather="tag"></i></span><span>Raise a ticket</span></a>
                                       <div className="dropdown-divider"></div>
 											*/}
-                                      <a className="dropdown-item" href="/">Օգնություն և սպասարկում</a>
-                                  </div>
-                              </div>
-                          </li>
+                        <a className="dropdown-item" href="/">
+                          Օգնություն և սպասարկում
+                        </a>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              {/* /End Nav */}
+            </div>
+          </nav>
+          {/* Vertical Nav */}
+          <div className="hk-menu">
+            {/* Brand */}
+            <div className="menu-header">
+              <span>
+                <a className="navbar-brand" href="/dashboard">
+                  <img
+                    className="brand-img img-fluid"
+                    src="/dist/img/icon.svg"
+                    alt="brand"
+                  />
+                  <img
+                    className="brand-img img-fluid"
+                    src="/dist/img/text.svg"
+                    alt="brand"
+                  />
+                </a>
+                <button
+                  className="btn btn-icon btn-rounded btn-flush-dark flush-soft-hover navbar-toggle"
+                  onClick={mmenuClick}
+                >
+                  <span className="icon">
+                    <span className="svg-icon fs-5">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="icon icon-tabler icon-tabler-arrow-bar-to-left"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        strokeWidth="2"
+                        stroke="currentColor"
+                        fill="none"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path
+                          stroke="none"
+                          d="M0 0h24v24H0z"
+                          fill="none"
+                        ></path>
+                        <line x1="10" y1="12" x2="20" y2="12"></line>
+                        <line x1="10" y1="12" x2="14" y2="16"></line>
+                        <line x1="10" y1="12" x2="14" y2="8"></line>
+                        <line x1="4" y1="4" x2="4" y2="20"></line>
+                      </svg>
+                    </span>
+                  </span>
+                </button>
+              </span>
+            </div>
+            {/* /Brand */}
+
+            {/* Main Menu */}
+            <div data-simplebar className="nicescroll-bar">
+              <div className="menu-content-wrap">
+                <div className="menu-group">
+                  <ul className="navbar-nav flex-column">
+                    <li className="nav-item">
+                      <Link
+                        className={
+                          misActive1 === "/" || location.pathname === "/"
+                            ? "nav-link active"
+                            : "nav-link"
+                        }
+                        to="./"
+                        onClick={() => handleSubmenuClick("home", "")}
+                      >
+                        <span className="nav-icon-wrap">
+                          <span className="svg-icon">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="icon icon-tabler icon-tabler-template"
+                              width="24"
+                              height="24"
+                              viewBox="0 0 24 24"
+                              strokeWidth="2"
+                              stroke="currentColor"
+                              fill="none"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            >
+                              <path
+                                stroke="none"
+                                d="M0 0h24v24H0z"
+                                fill="none"
+                              />
+                              <rect x="4" y="4" width="16" height="4" rx="1" />
+                              <rect x="4" y="12" width="6" height="8" rx="1" />
+                              <line x1="14" y1="12" x2="20" y2="12" />
+                              <line x1="14" y1="16" x2="20" y2="16" />
+                              <line x1="14" y1="20" x2="20" y2="20" />
+                            </svg>
+                          </span>
+                        </span>
+                        <span className="nav-link-text">Կառ․ վահանակ</span>
+                      </Link>
+                    </li>
+                  </ul>
+                </div>
+                <div className="menu-gap"></div>
+                <div className="menu-group">
+                  <div className="nav-header">
+                    <span>Գործիքակազմ</span>
+                  </div>
+                  <ul className="navbar-nav flex-column">
+                    <li className="nav-item">
+                      <Link
+                        className={
+                          misActive1 === "patients" ||
+                          location.pathname === "/patients"
+                            ? "nav-link active"
+                            : "nav-link"
+                        }
+                        to="./patients"
+                        onClick={() => handleSubmenuClick("patients", "")}
+                      >
+                        <span className="nav-icon-wrap position-relative">
+                          <span className="svg-icon">
+                            <span className="badge badge-sm badge-primary badge-sm badge-pill position-top-end-overflow">
+                              {patientsCount}
+                            </span>
+                            <svg
+                              width="800px"
+                              height="800px"
+                              viewBox="0 0 24 24"
+                              fill="#0c4f71"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <g id="User / Users_Group">
+                                <path
+                                  id="Vector"
+                                  d="M17 20C17 18.3431 14.7614 17 12 17C9.23858 17 7 18.3431 7 20M21 17.0004C21 15.7702 19.7659 14.7129 18 14.25M3 17.0004C3 15.7702 4.2341 14.7129 6 14.25M18 10.2361C18.6137 9.68679 19 8.8885 19 8C19 6.34315 17.6569 5 16 5C15.2316 5 14.5308 5.28885 14 5.76389M6 10.2361C5.38625 9.68679 5 8.8885 5 8C5 6.34315 6.34315 5 8 5C8.76835 5 9.46924 5.28885 10 5.76389M12 14C10.3431 14 9 12.6569 9 11C9 9.34315 10.3431 8 12 8C13.6569 8 15 9.34315 15 11C15 12.6569 13.6569 14 12 14Z"
+                                  stroke="#0c4f71"
+                                  strokeWidth="2"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                              </g>
+                            </svg>
+                          </span>
+                        </span>
+                        <span className="nav-link-text">Հիվանդներ</span>
+                      </Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link
+                        className={
+                          misActive1 === "researches" ||
+                          location.pathname === "/researches"
+                            ? "nav-link active"
+                            : "nav-link"
+                        }
+                        to="./researches"
+                        onClick={() => handleSubmenuClick("researches", "")}
+                      >
+                        <span className="nav-icon-wrap">
+                          <span className="svg-icon">
+                            <svg
+                              fill="#000000"
+                              width="23"
+                              height="23"
+                              viewBox="0 0 512 512"
+                              id="Layer_1"
+                              version="1.1"
+                            >
+                              <g>
+                                <g>
+                                  <path d="M398.4,468.9H113.6c-15.4,0-29.7-7.6-38.3-20.4s-10.3-28.9-4.5-43.2l100.8-248.7c3.7-9.2,5.6-19,5.6-29V97.8h-11.1    c-15.1,0-27.3-12.3-27.3-27.3c0-15.1,12.3-27.3,27.3-27.3h179.8c15.1,0,27.3,12.3,27.3,27.3c0,15.1-12.3,27.3-27.3,27.3h-11.1    v29.8c0,10,1.9,19.7,5.6,29l100.8,248.8c5.8,14.3,4.1,30.4-4.5,43.2C428.2,461.3,413.8,468.9,398.4,468.9z M166.1,58.1    c-6.8,0-12.3,5.5-12.3,12.3s5.5,12.3,12.3,12.3h18.6c4.1,0,7.5,3.4,7.5,7.5v37.4c0,11.9-2.3,23.6-6.7,34.6L84.6,411    c-4,9.8-2.9,20.4,3,29.2s15.3,13.8,25.9,13.8h284.9c10.6,0,20-5,25.9-13.8s7-19.4,3-29.2L326.5,162.2c-4.5-11-6.7-22.7-6.7-34.6    V90.3c0-4.1,3.4-7.5,7.5-7.5h18.6c6.8,0,12.3-5.5,12.3-12.3s-5.5-12.3-12.3-12.3L166.1,58.1L166.1,58.1z" />
+                                </g>
+                                <g>
+                                  <path d="M377.1,281.6h-49.4c-4.1,0-7.5-3.4-7.5-7.5s3.4-7.5,7.5-7.5h49.4c4.1,0,7.5,3.4,7.5,7.5S381.2,281.6,377.1,281.6z" />
+                                </g>
+                                <g>
+                                  <path d="M287,281.6H132c-4.1,0-7.5-3.4-7.5-7.5s3.4-7.5,7.5-7.5h155c4.1,0,7.5,3.4,7.5,7.5S291.1,281.6,287,281.6z" />
+                                </g>
+                              </g>
+                            </svg>
+                          </span>
+                        </span>
+                        <span className="nav-link-text">Ախտորոշումներ</span>
+                      </Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link
+                        className={
+                          misActive1 === "agents" ||
+                          location.pathname === "/agents"
+                            ? "nav-link active"
+                            : "nav-link"
+                        }
+                        to="./agents"
+                        onClick={() => handleSubmenuClick("agents", "")}
+                      >
+                        <span className="nav-icon-wrap">
+                          <span className="svg-icon">
+                            <svg
+                              width="800px"
+                              height="800px"
+                              viewBox="0 0 1024 1024"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                fill="#000000"
+                                d="M864 409.6a192 192 0 0 1-37.888 349.44A256.064 256.064 0 0 1 576 960h-96a32 32 0 1 1 0-64h96a192.064 192.064 0 0 0 181.12-128H736a32 32 0 0 1-32-32V416a32 32 0 0 1 32-32h32c10.368 0 20.544.832 30.528 2.432a288 288 0 0 0-573.056 0A193.235 193.235 0 0 1 256 384h32a32 32 0 0 1 32 32v320a32 32 0 0 1-32 32h-32a192 192 0 0 1-96-358.4 352 352 0 0 1 704 0zM256 448a128 128 0 1 0 0 256V448zm640 128a128 128 0 0 0-128-128v256a128 128 0 0 0 128-128z"
+                              />
+                            </svg>
+                          </span>
+                        </span>
+                        <span className="nav-link-text">Գործընկերներ</span>
+                      </Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link
+                        className={
+                          misActive1 === "organizations" ||
+                          location.pathname === "/organizations"
+                            ? "nav-link active"
+                            : "nav-link"
+                        }
+                        to="./organizations"
+                        onClick={() => handleSubmenuClick("organizations", "")}
+                      >
+                        <span className="nav-icon-wrap">
+                          <span className="svg-icon">
+                            <svg
+                              fill="#000000"
+                              width="800px"
+                              height="800px"
+                              viewBox="0 0 15 15"
+                              id="town"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path d="M10.651,7.121a.251.251,0,0,0-.314,0L8.092,8.929A.247.247,0,0,0,8,9.122v4.625A.253.253,0,0,0,8.253,14H9.747A.253.253,0,0,0,10,13.747h0V12h1v1.747a.253.253,0,0,0,.253.253h1.494A.253.253,0,0,0,13,13.747h0V9.12a.25.25,0,0,0-.094-.2ZM10,11H9V10h1Zm2,0H11V10h1ZM5.71,1.815a.252.252,0,0,0-.42,0L2.042,5.936A.252.252,0,0,0,2,6.076v7.671A.252.252,0,0,0,2.251,14h2.5A.252.252,0,0,0,5,13.748V12H6v1.748A.252.252,0,0,0,6.252,14H7V8a.5.5,0,0,1,.188-.391L9,6C9,5.95,5.71,1.815,5.71,1.815ZM4,10H3V9H4ZM4,7H3V6H4Zm2,3H5V9H6ZM6,7H5V6H6Z" />
+                            </svg>
+                          </span>
+                        </span>
+                        <span className="nav-link-text">Պատվիրատուներ</span>
+                      </Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link
+                        className={
+                          misActive1 === "doctors" ||
+                          location.pathname === "/doctors"
+                            ? "nav-link active"
+                            : "nav-link"
+                        }
+                        to="./doctors"
+                        onClick={() => handleSubmenuClick("doctors", "")}
+                      >
+                        <span className="nav-icon-wrap">
+                          <span className="svg-icon">
+                            <svg
+                              viewBox="0 0 48 48"
+                              fill="none"
+                              width="800px"
+                              height="800px"
+                              id="doctor"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M24 25.1333C28.9725 25.1333 33 21.076 33 16.0667C33 11.0573 28.9725 7 24 7C19.0275 7 15 11.0573 15 16.0667C15 21.076 19.0275 25.1333 24 25.1333Z"
+                                fill="#333333"
+                              />
+                              <mask
+                                id="mask0"
+                                mask-type="alpha"
+                                maskUnits="userSpaceOnUse"
+                                x="6"
+                                y="28"
+                                width="36"
+                                height="13"
+                              >
+                                <path
+                                  d="M16.8786 28.3569C17.3814 28.2333 17.8971 28.4861 18.1254 28.9539L22.1893 28.9542C24 28.9538 24 28.9543 25.8105 28.9539L29.8746 28.9539C30.1029 28.4861 30.6186 28.2333 31.1214 28.3569C36.5255 29.6849 42 32.3928 42 36.4664V40.9997H6V36.4664C6 32.3928 11.4745 29.6849 16.8786 28.3569Z"
+                                  fill="#333333"
+                                />
+                              </mask>
+                              <g mask="url(#mask0)"></g>
+                              <path
+                                fill-rule="evenodd"
+                                clip-rule="evenodd"
+                                d="M15.6354 29.9375C15.4505 30.5613 15.4381 31.3074 15.7149 32.1985C15.8088 32.1896 15.9039 32.1851 16 32.1851C17.6569 32.1851 19 33.5382 19 35.2073C19 36.8764 17.6569 38.2295 16 38.2295C14.3431 38.2295 13 36.8764 13 35.2073C13 34.3657 13.3415 33.6044 13.8925 33.0564C13.4321 31.7408 13.3829 30.4996 13.7178 29.3692C13.7252 29.3442 13.7328 29.3193 13.7406 29.2945C9.54212 30.7966 6 33.1897 6 36.4664V42.9997H42V36.4664C42 33.2191 38.5212 30.8396 34.3723 29.3352C34.5763 29.9155 34.6923 30.5333 34.7142 31.1851H34.9412C35.1715 31.1851 35.3947 31.2645 35.5732 31.4101L37.632 33.0891C37.8649 33.279 38 33.5636 38 33.8641V38.2295C38 38.7818 37.5523 39.2295 37 39.2295H34.9412V37.2295H36V34.3389L34.5851 33.1851H34.5045C34.4953 33.2244 34.4858 33.2639 34.476 33.3035L33.9986 33.1851H32.4149L31 34.3389V37.2295H32.0588V39.2295H30C29.4477 39.2295 29 38.7818 29 38.2295V33.8641C29 33.5636 29.1351 33.279 29.368 33.0891L31.4268 31.4101C31.6053 31.2645 31.8285 31.1851 32.0588 31.1851H32.7126C32.6878 30.6727 32.5803 30.2144 32.4114 29.8041C32.2091 29.3129 31.9073 28.8627 31.5142 28.4558C31.3833 28.422 31.2523 28.389 31.1214 28.3569C30.6186 28.2333 30.1029 28.4861 29.8746 28.9539L25.8105 28.9539C24.9218 28.9541 24.4694 28.9541 24.0249 28.954H24.0248H24.0248C23.5637 28.954 23.1112 28.954 22.1893 28.9542L18.1254 28.9539C17.8971 28.4861 17.3814 28.2333 16.8786 28.3569C16.7666 28.3844 16.6544 28.4125 16.5424 28.4413C16.0993 28.8976 15.7951 29.3987 15.6354 29.9375ZM17 35.2073C17 35.7858 16.5384 36.2295 16 36.2295C15.4616 36.2295 15 35.7858 15 35.2073C15 34.6288 15.4616 34.1851 16 34.1851C16.5384 34.1851 17 34.6288 17 35.2073Z"
+                                fill="#333333"
+                              />{" "}
+                            </svg>
+                          </span>
+                        </span>
+                        <span className="nav-link-text">Բժիշկներ</span>
+                      </Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link
+                        className={
+                          misActive1 === "samples" ||
+                          location.pathname === "/samples"
+                            ? "nav-link active"
+                            : "nav-link"
+                        }
+                        to="./samples"
+                        onClick={() => handleSubmenuClick("samples", "")}
+
+                      >
+                        <span className="nav-icon-wrap">
+                          <span className="svg-icon">
+                            <svg
+                              fill="#000000"
+                              width="800px"
+                              height="800px"
+                              viewBox="0 0 1024 1024"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path d="M491.52 618.879v190.075c0 16.968-13.754 30.72-30.72 30.72H71.68c-16.966 0-30.72-13.752-30.72-30.72v-593.91c0-16.968 13.754-30.72 30.72-30.72H460.8c16.966 0 30.72 13.752 30.72 30.72v241.664c0 11.311 9.169 20.48 20.48 20.48s20.48-9.169 20.48-20.48V215.044c0-39.591-32.094-71.68-71.68-71.68H71.68c-39.586 0-71.68 32.089-71.68 71.68v593.91c0 39.591 32.094 71.68 71.68 71.68H460.8c39.586 0 71.68-32.089 71.68-71.68V618.879c0-11.311-9.169-20.48-20.48-20.48s-20.48 9.169-20.48 20.48z" />
+                              <path d="M399.36 327.678c5.657 0 10.24-4.583 10.24-10.24v-40.96c0-5.657-4.583-10.24-10.24-10.24H133.12a10.238 10.238 0 00-10.24 10.24v40.96c0 5.657 4.583 10.24 10.24 10.24h266.24zm0 40.96H133.12c-28.278 0-51.2-22.922-51.2-51.2v-40.96c0-28.278 22.922-51.2 51.2-51.2h266.24c28.278 0 51.2 22.922 51.2 51.2v40.96c0 28.278-22.922 51.2-51.2 51.2zm-216.711 98.593c5.468 28.856-19.364 53.688-48.22 48.22-16.026-3.041-29.143-16.159-32.174-32.184-5.478-28.856 19.354-53.688 48.21-48.22 16.036 3.041 29.143 16.159 32.184 32.184zm122.88 0c5.468 28.856-19.364 53.688-48.22 48.22-16.026-3.041-29.143-16.159-32.174-32.184-5.478-28.856 19.354-53.688 48.21-48.22 16.036 3.041 29.143 16.159 32.184 32.184zm-122.88 123.904c5.468 28.856-19.364 53.688-48.22 48.22-16.026-3.041-29.143-16.159-32.174-32.184-5.478-28.856 19.354-53.688 48.21-48.22 16.036 3.041 29.143 16.159 32.184 32.184zm122.88 0c5.468 28.856-19.364 53.688-48.22 48.22-16.026-3.041-29.143-16.159-32.174-32.184-5.478-28.856 19.354-53.688 48.21-48.22 16.036 3.041 29.143 16.159 32.184 32.184zm122.88 0c5.468 28.856-19.364 53.688-48.22 48.22-16.026-3.041-29.143-16.159-32.174-32.184-5.478-28.856 19.354-53.688 48.21-48.22 16.036 3.041 29.143 16.159 32.184 32.184zm-245.76 122.88c5.468 28.856-19.364 53.688-48.22 48.22-16.026-3.041-29.143-16.159-32.174-32.184-5.478-28.856 19.354-53.688 48.21-48.22 16.036 3.041 29.143 16.159 32.184 32.184zm122.88 0c5.468 28.856-19.364 53.688-48.22 48.22-16.026-3.041-29.143-16.159-32.174-32.184-5.478-28.856 19.354-53.688 48.21-48.22 16.036 3.041 29.143 16.159 32.184 32.184zm122.88 0c5.468 28.856-19.364 53.688-48.22 48.22-16.026-3.041-29.143-16.159-32.174-32.184-5.478-28.856 19.354-53.688 48.21-48.22 16.036 3.041 29.143 16.159 32.184 32.184zm179.469-37.034l-199.67-199.67c-9.738-9.738-9.738-25.535 0-35.272l4.808-4.797c9.756-9.762 25.547-9.762 35.284-.02l199.674 199.664c7.998 7.998 20.965 7.997 28.963-.001s7.997-20.965-.001-28.963l-199.67-199.66c-25.73-25.745-67.468-25.745-93.202.005l-4.803 4.793c-25.749 25.749-25.749 67.48-.015 93.214l199.67 199.67c7.998 7.998 20.965 7.998 28.963 0s7.998-20.965 0-28.963z" />
+                              <path d="M678.341 609.334l-104.54-104.54c-9.747-9.747-9.747-25.531-.004-35.268l4.832-4.843c9.722-9.722 25.519-9.722 35.257.015l104.551 104.541c7.998 7.998 20.966 7.997 28.963-.001s7.997-20.966-.001-28.963l-104.55-104.54c-25.733-25.733-67.464-25.733-93.198.001l-4.828 4.838c-25.729 25.714-25.729 67.439.015 93.183l104.54 104.54c7.998 7.998 20.965 7.998 28.963 0s7.998-20.965 0-28.963z" />
+                              <path d="M766.665 559.551l-104.54-104.54c-9.747-9.747-9.747-25.531-.004-35.268l4.832-4.843c9.722-9.722 25.519-9.722 35.257.015l104.551 104.541c7.998 7.998 20.966 7.997 28.963-.001s7.997-20.966-.001-28.963l-104.55-104.54c-25.733-25.733-67.464-25.733-93.198.001l-4.828 4.838c-25.729 25.714-25.729 67.439.015 93.183l104.54 104.54c7.998 7.998 20.965 7.998 28.963 0s7.998-20.965 0-28.963z" />
+                              <path d="M854.775 510.196l-104.54-104.54c-9.747-9.747-9.747-25.531-.004-35.268l4.832-4.843c9.722-9.722 25.519-9.722 35.257.015l104.551 104.541c7.998 7.998 20.966 7.997 28.963-.001s7.997-20.966-.001-28.963l-104.55-104.54c-25.733-25.733-67.464-25.733-93.198.001l-4.828 4.838c-25.729 25.714-25.729 67.439.015 93.183l104.54 104.54c7.998 7.998 20.965 7.998 28.963 0s7.998-20.965 0-28.963zM685.653 754.755l-93-93-28.963 28.963 93 93z" />
+                              <path d="M818.516 393.754l119.562 119.562 28.963-28.963-119.562-119.562z" />
+                              <path d="M931.165 506.23c32.758 32.579 51.49 76.693 51.49 123.821 0 96.445-78.178 174.623-174.623 174.623-46.962 0-90.924-18.593-123.472-51.141l-28.963 28.963c40.154 40.154 94.499 63.138 152.435 63.138 119.066 0 215.583-96.516 215.583-215.583 0-58.143-23.155-112.673-63.567-152.864l-28.883 29.042z" />
+                            </svg>
+                          </span>
+                        </span>
+                        <span className="nav-link-text">Նմուշառում</span>
+                      </Link>
+                      <Link
+                        className={
+                          misActive1 === "calculations"
+                            ? "nav-link active"
+                            : "nav-link"
+                        }
+                        to="#"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#dash_chatpop"
+                      >
+                        <span className="nav-icon-wrap">
+                          <span className="svg-icon">
+                            <svg
+                              fill="#000000"
+                              width="800px"
+                              height="800px"
+                              viewBox="0 0 1024 1024"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path d="M491.52 618.879v190.075c0 16.968-13.754 30.72-30.72 30.72H71.68c-16.966 0-30.72-13.752-30.72-30.72v-593.91c0-16.968 13.754-30.72 30.72-30.72H460.8c16.966 0 30.72 13.752 30.72 30.72v241.664c0 11.311 9.169 20.48 20.48 20.48s20.48-9.169 20.48-20.48V215.044c0-39.591-32.094-71.68-71.68-71.68H71.68c-39.586 0-71.68 32.089-71.68 71.68v593.91c0 39.591 32.094 71.68 71.68 71.68H460.8c39.586 0 71.68-32.089 71.68-71.68V618.879c0-11.311-9.169-20.48-20.48-20.48s-20.48 9.169-20.48 20.48z" />
+                              <path d="M399.36 327.678c5.657 0 10.24-4.583 10.24-10.24v-40.96c0-5.657-4.583-10.24-10.24-10.24H133.12a10.238 10.238 0 00-10.24 10.24v40.96c0 5.657 4.583 10.24 10.24 10.24h266.24zm0 40.96H133.12c-28.278 0-51.2-22.922-51.2-51.2v-40.96c0-28.278 22.922-51.2 51.2-51.2h266.24c28.278 0 51.2 22.922 51.2 51.2v40.96c0 28.278-22.922 51.2-51.2 51.2zm-216.711 98.593c5.468 28.856-19.364 53.688-48.22 48.22-16.026-3.041-29.143-16.159-32.174-32.184-5.478-28.856 19.354-53.688 48.21-48.22 16.036 3.041 29.143 16.159 32.184 32.184zm122.88 0c5.468 28.856-19.364 53.688-48.22 48.22-16.026-3.041-29.143-16.159-32.174-32.184-5.478-28.856 19.354-53.688 48.21-48.22 16.036 3.041 29.143 16.159 32.184 32.184zm-122.88 123.904c5.468 28.856-19.364 53.688-48.22 48.22-16.026-3.041-29.143-16.159-32.174-32.184-5.478-28.856 19.354-53.688 48.21-48.22 16.036 3.041 29.143 16.159 32.184 32.184zm122.88 0c5.468 28.856-19.364 53.688-48.22 48.22-16.026-3.041-29.143-16.159-32.174-32.184-5.478-28.856 19.354-53.688 48.21-48.22 16.036 3.041 29.143 16.159 32.184 32.184zm122.88 0c5.468 28.856-19.364 53.688-48.22 48.22-16.026-3.041-29.143-16.159-32.174-32.184-5.478-28.856 19.354-53.688 48.21-48.22 16.036 3.041 29.143 16.159 32.184 32.184zm-245.76 122.88c5.468 28.856-19.364 53.688-48.22 48.22-16.026-3.041-29.143-16.159-32.174-32.184-5.478-28.856 19.354-53.688 48.21-48.22 16.036 3.041 29.143 16.159 32.184 32.184zm122.88 0c5.468 28.856-19.364 53.688-48.22 48.22-16.026-3.041-29.143-16.159-32.174-32.184-5.478-28.856 19.354-53.688 48.21-48.22 16.036 3.041 29.143 16.159 32.184 32.184zm122.88 0c5.468 28.856-19.364 53.688-48.22 48.22-16.026-3.041-29.143-16.159-32.174-32.184-5.478-28.856 19.354-53.688 48.21-48.22 16.036 3.041 29.143 16.159 32.184 32.184zm179.469-37.034l-199.67-199.67c-9.738-9.738-9.738-25.535 0-35.272l4.808-4.797c9.756-9.762 25.547-9.762 35.284-.02l199.674 199.664c7.998 7.998 20.965 7.997 28.963-.001s7.997-20.965-.001-28.963l-199.67-199.66c-25.73-25.745-67.468-25.745-93.202.005l-4.803 4.793c-25.749 25.749-25.749 67.48-.015 93.214l199.67 199.67c7.998 7.998 20.965 7.998 28.963 0s7.998-20.965 0-28.963z" />
+                              <path d="M678.341 609.334l-104.54-104.54c-9.747-9.747-9.747-25.531-.004-35.268l4.832-4.843c9.722-9.722 25.519-9.722 35.257.015l104.551 104.541c7.998 7.998 20.966 7.997 28.963-.001s7.997-20.966-.001-28.963l-104.55-104.54c-25.733-25.733-67.464-25.733-93.198.001l-4.828 4.838c-25.729 25.714-25.729 67.439.015 93.183l104.54 104.54c7.998 7.998 20.965 7.998 28.963 0s7.998-20.965 0-28.963z" />
+                              <path d="M766.665 559.551l-104.54-104.54c-9.747-9.747-9.747-25.531-.004-35.268l4.832-4.843c9.722-9.722 25.519-9.722 35.257.015l104.551 104.541c7.998 7.998 20.966 7.997 28.963-.001s7.997-20.966-.001-28.963l-104.55-104.54c-25.733-25.733-67.464-25.733-93.198.001l-4.828 4.838c-25.729 25.714-25.729 67.439.015 93.183l104.54 104.54c7.998 7.998 20.965 7.998 28.963 0s7.998-20.965 0-28.963z" />
+                              <path d="M854.775 510.196l-104.54-104.54c-9.747-9.747-9.747-25.531-.004-35.268l4.832-4.843c9.722-9.722 25.519-9.722 35.257.015l104.551 104.541c7.998 7.998 20.966 7.997 28.963-.001s7.997-20.966-.001-28.963l-104.55-104.54c-25.733-25.733-67.464-25.733-93.198.001l-4.828 4.838c-25.729 25.714-25.729 67.439.015 93.183l104.54 104.54c7.998 7.998 20.965 7.998 28.963 0s7.998-20.965 0-28.963zM685.653 754.755l-93-93-28.963 28.963 93 93z" />
+                              <path d="M818.516 393.754l119.562 119.562 28.963-28.963-119.562-119.562z" />
+                              <path d="M931.165 506.23c32.758 32.579 51.49 76.693 51.49 123.821 0 96.445-78.178 174.623-174.623 174.623-46.962 0-90.924-18.593-123.472-51.141l-28.963 28.963c40.154 40.154 94.499 63.138 152.435 63.138 119.066 0 215.583-96.516 215.583-215.583 0-58.143-23.155-112.673-63.567-152.864l-28.883 29.042z" />
+                            </svg>
+                          </span>
+                        </span>
+                        <span className="nav-link-text">Հաշվարկներ</span>
+                      </Link>
+                      <ul
+                        id="dash_chatpop"
+                        className="nav flex-column collapse  nav-children"
+                      >
+                        <li className="nav-item">
+                          <ul className="nav flex-column">
+                            <li className="nav-item">
+                              <Link
+                                className={
+                                  sisActive1 === "test"
+                                    ? "nav-link active"
+                                    : "nav-link"
+                                }
+                                to="chatpopup.html"
+                              >
+                                <span
+                                  className="nav-link-text"
+                                  onClick={() =>
+                                    handleSubmenuClick("calculations", "test")
+                                  }
+                                >
+                                  Direct Message
+                                </span>
+                              </Link>
+                            </li>
+                            <li className="nav-item">
+                              <Link
+                                className={
+                                  sisActive1 === "test"
+                                    ? "nav-link active"
+                                    : "nav-link"
+                                }
+                                to="chatbot.html"
+                              >
+                                <span
+                                  className="nav-link-text"
+                                  onClick={() =>
+                                    handleSubmenuClick("calculations", "test")
+                                  }
+                                >
+                                  Chatbot
+                                </span>
+                              </Link>
+                            </li>
+                          </ul>
+                        </li>
                       </ul>
-                  </div>
-                  {/* /End Nav */}
-                  </div>									
-              </nav>
-              {/* Vertical Nav */}
-              <div className="hk-menu">
-              {/* Brand */}
-                  <div className="menu-header">
-                      <span>
-                          <a className="navbar-brand" href="/dashboard">
-                              <img className="brand-img img-fluid" src="/dist/img/icon.svg" alt="brand" />
-                              <img className="brand-img img-fluid" src="/dist/img/text.svg" alt="brand" />
-                          </a>
-                          <button className="btn btn-icon btn-rounded btn-flush-dark flush-soft-hover navbar-toggle" onClick={mmenuClick}>
-                              <span className="icon">
-                                  <span className="svg-icon fs-5">
-                                      <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-arrow-bar-to-left" width="24" height="24" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
-                                          <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                          <line x1="10" y1="12" x2="20" y2="12"></line>
-                                          <line x1="10" y1="12" x2="14" y2="16"></line>
-                                          <line x1="10" y1="12" x2="14" y2="8"></line>
-                                          <line x1="4" y1="4" x2="4" y2="20"></line>
-                                      </svg>
-                                  </span>
-                              </span>
-                          </button>
-                      </span>
-                  </div>
-                  {/* /Brand */}
-  
-                  {/* Main Menu */}
-                  <div data-simplebar className="nicescroll-bar">
-                      <div className="menu-content-wrap">
-                          <div className="menu-group">
-                              <ul className="navbar-nav flex-column">
-								  <li className="nav-item">
-                                      <Link className={misActive1 === "/" ||  location.pathname==="/" ?"nav-link active":"nav-link"} to="./"
-                                      onClick={() => handleSubmenuClick("home","")}>
-                                          <span className="nav-icon-wrap">
-                                              <span className="svg-icon">
-                                                  <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-template" width="24" height="24" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
-                                                      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                                                      <rect x="4" y="4" width="16" height="4" rx="1" />
-                                                      <rect x="4" y="12" width="6" height="8" rx="1" />
-                                                      <line x1="14" y1="12" x2="20" y2="12" />
-                                                      <line x1="14" y1="16" x2="20" y2="16" />
-                                                      <line x1="14" y1="20" x2="20" y2="20" />
-                                                  </svg>
-                                              </span>
-                                          </span>
-                                          <span className="nav-link-text">Կառ․ վահանակ</span>
-                                      </Link>
-                                  </li>	
-                              </ul>	
-                          </div>
-                          <div className="menu-gap"></div>
-                          <div className="menu-group">
-                              <div className="nav-header">
-                                  <span>Գործիքակազմ</span>
-                              </div>
-                              <ul className="navbar-nav flex-column">
-                                  <li className="nav-item">
-                                      <Link className={misActive1 === "patients"||  location.pathname==="/patients" ?"nav-link active":"nav-link"} to="./patients"
-                                      onClick={() => handleSubmenuClick("patients","")}>
-                                          <span className="nav-icon-wrap position-relative">
-                                              <span className="svg-icon">
-                                              <span className="badge badge-sm badge-primary badge-sm badge-pill position-top-end-overflow">{patientsCount}</span>
-                                                <svg width="800px" height="800px" viewBox="0 0 24 24" fill="#0c4f71" xmlns="http://www.w3.org/2000/svg">
-                                                    <g id="User / Users_Group">
-                                                        <path id="Vector" d="M17 20C17 18.3431 14.7614 17 12 17C9.23858 17 7 18.3431 7 20M21 17.0004C21 15.7702 19.7659 14.7129 18 14.25M3 17.0004C3 15.7702 4.2341 14.7129 6 14.25M18 10.2361C18.6137 9.68679 19 8.8885 19 8C19 6.34315 17.6569 5 16 5C15.2316 5 14.5308 5.28885 14 5.76389M6 10.2361C5.38625 9.68679 5 8.8885 5 8C5 6.34315 6.34315 5 8 5C8.76835 5 9.46924 5.28885 10 5.76389M12 14C10.3431 14 9 12.6569 9 11C9 9.34315 10.3431 8 12 8C13.6569 8 15 9.34315 15 11C15 12.6569 13.6569 14 12 14Z" stroke="#0c4f71" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                                                    </g>
-                                                </svg>
-                                              </span>
-                                          </span>
-                                          <span className="nav-link-text">Հիվանդներ</span>
-                                      </Link>
-                                  </li>	
-                                  <li className="nav-item">
-									  <Link className={misActive1 === "researches" || location.pathname==="/researches" ?"nav-link active":"nav-link"} to="./researches"
-									  onClick={() => handleSubmenuClick("researches","")}>
-                                          <span className="nav-icon-wrap">
-                                              <span className="svg-icon">
-                                              <svg fill="#000000" width="23" height="23" viewBox="0 0 512 512" id="Layer_1" version="1.1">
-                                                <g>
-                                                <g>
-                                                <path d="M398.4,468.9H113.6c-15.4,0-29.7-7.6-38.3-20.4s-10.3-28.9-4.5-43.2l100.8-248.7c3.7-9.2,5.6-19,5.6-29V97.8h-11.1    c-15.1,0-27.3-12.3-27.3-27.3c0-15.1,12.3-27.3,27.3-27.3h179.8c15.1,0,27.3,12.3,27.3,27.3c0,15.1-12.3,27.3-27.3,27.3h-11.1    v29.8c0,10,1.9,19.7,5.6,29l100.8,248.8c5.8,14.3,4.1,30.4-4.5,43.2C428.2,461.3,413.8,468.9,398.4,468.9z M166.1,58.1    c-6.8,0-12.3,5.5-12.3,12.3s5.5,12.3,12.3,12.3h18.6c4.1,0,7.5,3.4,7.5,7.5v37.4c0,11.9-2.3,23.6-6.7,34.6L84.6,411    c-4,9.8-2.9,20.4,3,29.2s15.3,13.8,25.9,13.8h284.9c10.6,0,20-5,25.9-13.8s7-19.4,3-29.2L326.5,162.2c-4.5-11-6.7-22.7-6.7-34.6    V90.3c0-4.1,3.4-7.5,7.5-7.5h18.6c6.8,0,12.3-5.5,12.3-12.3s-5.5-12.3-12.3-12.3L166.1,58.1L166.1,58.1z"/>
-                                                </g>
-                                                <g>
-                                                <path d="M377.1,281.6h-49.4c-4.1,0-7.5-3.4-7.5-7.5s3.4-7.5,7.5-7.5h49.4c4.1,0,7.5,3.4,7.5,7.5S381.2,281.6,377.1,281.6z"/>
-                                                </g>
-                                                <g>
-                                                <path d="M287,281.6H132c-4.1,0-7.5-3.4-7.5-7.5s3.4-7.5,7.5-7.5h155c4.1,0,7.5,3.4,7.5,7.5S291.1,281.6,287,281.6z"/>
-                                                </g>
-                                                </g>
-                                                </svg>
-                                              </span>
-                                          </span>
-                                          <span className="nav-link-text">Ախտորոշումներ</span>
-                                      </Link>
-                                  </li>
-                                  <li className="nav-item">
-                                  <Link className={misActive1 === "agents" || location.pathname==="/agents"?"nav-link active":"nav-link"} to="./agents"
-                                   onClick={() => handleSubmenuClick("agents","")}>
-                                          <span className="nav-icon-wrap">
-                                              <span className="svg-icon">
-                                              <svg width="800px" height="800px" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
-                                                <path fill="#000000" d="M864 409.6a192 192 0 0 1-37.888 349.44A256.064 256.064 0 0 1 576 960h-96a32 32 0 1 1 0-64h96a192.064 192.064 0 0 0 181.12-128H736a32 32 0 0 1-32-32V416a32 32 0 0 1 32-32h32c10.368 0 20.544.832 30.528 2.432a288 288 0 0 0-573.056 0A193.235 193.235 0 0 1 256 384h32a32 32 0 0 1 32 32v320a32 32 0 0 1-32 32h-32a192 192 0 0 1-96-358.4 352 352 0 0 1 704 0zM256 448a128 128 0 1 0 0 256V448zm640 128a128 128 0 0 0-128-128v256a128 128 0 0 0 128-128z"/>
-                                              </svg>
-                                              </span>
-                                          </span>
-                                          <span className="nav-link-text">Գործընկերներ</span>
-                                      </Link>
-                                  </li>	
-                                  <li className="nav-item">
-                                  <Link className={misActive1 === "organizations" || location.pathname==="/organizations" ?"nav-link active":"nav-link"}  to="./organizations"
-                                   onClick={() => handleSubmenuClick("organizations","")}>
-                                          <span className="nav-icon-wrap">
-                                              <span className="svg-icon">
-                                              <svg fill="#000000" width="800px" height="800px" viewBox="0 0 15 15" id="town" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M10.651,7.121a.251.251,0,0,0-.314,0L8.092,8.929A.247.247,0,0,0,8,9.122v4.625A.253.253,0,0,0,8.253,14H9.747A.253.253,0,0,0,10,13.747h0V12h1v1.747a.253.253,0,0,0,.253.253h1.494A.253.253,0,0,0,13,13.747h0V9.12a.25.25,0,0,0-.094-.2ZM10,11H9V10h1Zm2,0H11V10h1ZM5.71,1.815a.252.252,0,0,0-.42,0L2.042,5.936A.252.252,0,0,0,2,6.076v7.671A.252.252,0,0,0,2.251,14h2.5A.252.252,0,0,0,5,13.748V12H6v1.748A.252.252,0,0,0,6.252,14H7V8a.5.5,0,0,1,.188-.391L9,6C9,5.95,5.71,1.815,5.71,1.815ZM4,10H3V9H4ZM4,7H3V6H4Zm2,3H5V9H6ZM6,7H5V6H6Z"/>
-                                                </svg>
-                                              </span>
-                                          </span>
-                                          <span className="nav-link-text">Պատվիրատուներ</span>
-                                      </Link>
-                                  </li>	
-                                  <li className="nav-item">
-                                  <Link className={misActive1 === "calculations"?"nav-link active":"nav-link"} to="#" data-bs-toggle="collapse" data-bs-target="#dash_chatpop">
-                                          <span className="nav-icon-wrap">
-                                              <span className="svg-icon">
-                                               <svg fill="#000000" width="800px" height="800px" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
-                                               <path d="M491.52 618.879v190.075c0 16.968-13.754 30.72-30.72 30.72H71.68c-16.966 0-30.72-13.752-30.72-30.72v-593.91c0-16.968 13.754-30.72 30.72-30.72H460.8c16.966 0 30.72 13.752 30.72 30.72v241.664c0 11.311 9.169 20.48 20.48 20.48s20.48-9.169 20.48-20.48V215.044c0-39.591-32.094-71.68-71.68-71.68H71.68c-39.586 0-71.68 32.089-71.68 71.68v593.91c0 39.591 32.094 71.68 71.68 71.68H460.8c39.586 0 71.68-32.089 71.68-71.68V618.879c0-11.311-9.169-20.48-20.48-20.48s-20.48 9.169-20.48 20.48z"/><path d="M399.36 327.678c5.657 0 10.24-4.583 10.24-10.24v-40.96c0-5.657-4.583-10.24-10.24-10.24H133.12a10.238 10.238 0 00-10.24 10.24v40.96c0 5.657 4.583 10.24 10.24 10.24h266.24zm0 40.96H133.12c-28.278 0-51.2-22.922-51.2-51.2v-40.96c0-28.278 22.922-51.2 51.2-51.2h266.24c28.278 0 51.2 22.922 51.2 51.2v40.96c0 28.278-22.922 51.2-51.2 51.2zm-216.711 98.593c5.468 28.856-19.364 53.688-48.22 48.22-16.026-3.041-29.143-16.159-32.174-32.184-5.478-28.856 19.354-53.688 48.21-48.22 16.036 3.041 29.143 16.159 32.184 32.184zm122.88 0c5.468 28.856-19.364 53.688-48.22 48.22-16.026-3.041-29.143-16.159-32.174-32.184-5.478-28.856 19.354-53.688 48.21-48.22 16.036 3.041 29.143 16.159 32.184 32.184zm-122.88 123.904c5.468 28.856-19.364 53.688-48.22 48.22-16.026-3.041-29.143-16.159-32.174-32.184-5.478-28.856 19.354-53.688 48.21-48.22 16.036 3.041 29.143 16.159 32.184 32.184zm122.88 0c5.468 28.856-19.364 53.688-48.22 48.22-16.026-3.041-29.143-16.159-32.174-32.184-5.478-28.856 19.354-53.688 48.21-48.22 16.036 3.041 29.143 16.159 32.184 32.184zm122.88 0c5.468 28.856-19.364 53.688-48.22 48.22-16.026-3.041-29.143-16.159-32.174-32.184-5.478-28.856 19.354-53.688 48.21-48.22 16.036 3.041 29.143 16.159 32.184 32.184zm-245.76 122.88c5.468 28.856-19.364 53.688-48.22 48.22-16.026-3.041-29.143-16.159-32.174-32.184-5.478-28.856 19.354-53.688 48.21-48.22 16.036 3.041 29.143 16.159 32.184 32.184zm122.88 0c5.468 28.856-19.364 53.688-48.22 48.22-16.026-3.041-29.143-16.159-32.174-32.184-5.478-28.856 19.354-53.688 48.21-48.22 16.036 3.041 29.143 16.159 32.184 32.184zm122.88 0c5.468 28.856-19.364 53.688-48.22 48.22-16.026-3.041-29.143-16.159-32.174-32.184-5.478-28.856 19.354-53.688 48.21-48.22 16.036 3.041 29.143 16.159 32.184 32.184zm179.469-37.034l-199.67-199.67c-9.738-9.738-9.738-25.535 0-35.272l4.808-4.797c9.756-9.762 25.547-9.762 35.284-.02l199.674 199.664c7.998 7.998 20.965 7.997 28.963-.001s7.997-20.965-.001-28.963l-199.67-199.66c-25.73-25.745-67.468-25.745-93.202.005l-4.803 4.793c-25.749 25.749-25.749 67.48-.015 93.214l199.67 199.67c7.998 7.998 20.965 7.998 28.963 0s7.998-20.965 0-28.963z"/><path d="M678.341 609.334l-104.54-104.54c-9.747-9.747-9.747-25.531-.004-35.268l4.832-4.843c9.722-9.722 25.519-9.722 35.257.015l104.551 104.541c7.998 7.998 20.966 7.997 28.963-.001s7.997-20.966-.001-28.963l-104.55-104.54c-25.733-25.733-67.464-25.733-93.198.001l-4.828 4.838c-25.729 25.714-25.729 67.439.015 93.183l104.54 104.54c7.998 7.998 20.965 7.998 28.963 0s7.998-20.965 0-28.963z"/><path d="M766.665 559.551l-104.54-104.54c-9.747-9.747-9.747-25.531-.004-35.268l4.832-4.843c9.722-9.722 25.519-9.722 35.257.015l104.551 104.541c7.998 7.998 20.966 7.997 28.963-.001s7.997-20.966-.001-28.963l-104.55-104.54c-25.733-25.733-67.464-25.733-93.198.001l-4.828 4.838c-25.729 25.714-25.729 67.439.015 93.183l104.54 104.54c7.998 7.998 20.965 7.998 28.963 0s7.998-20.965 0-28.963z"/><path d="M854.775 510.196l-104.54-104.54c-9.747-9.747-9.747-25.531-.004-35.268l4.832-4.843c9.722-9.722 25.519-9.722 35.257.015l104.551 104.541c7.998 7.998 20.966 7.997 28.963-.001s7.997-20.966-.001-28.963l-104.55-104.54c-25.733-25.733-67.464-25.733-93.198.001l-4.828 4.838c-25.729 25.714-25.729 67.439.015 93.183l104.54 104.54c7.998 7.998 20.965 7.998 28.963 0s7.998-20.965 0-28.963zM685.653 754.755l-93-93-28.963 28.963 93 93z"/><path d="M818.516 393.754l119.562 119.562 28.963-28.963-119.562-119.562z"/><path d="M931.165 506.23c32.758 32.579 51.49 76.693 51.49 123.821 0 96.445-78.178 174.623-174.623 174.623-46.962 0-90.924-18.593-123.472-51.141l-28.963 28.963c40.154 40.154 94.499 63.138 152.435 63.138 119.066 0 215.583-96.516 215.583-215.583 0-58.143-23.155-112.673-63.567-152.864l-28.883 29.042z"/>
-                                               </svg>
-                                              </span>
-                                          </span>
-                                          <span className="nav-link-text">Հաշվարկներ</span>                                          
-                                      </Link>
-                                      <ul id="dash_chatpop" className="nav flex-column collapse  nav-children">
-                                          <li className="nav-item">
-                                              <ul className="nav flex-column">
-                                                  <li className="nav-item">
-                                                      <Link className={sisActive1 === "test"?"nav-link active":"nav-link"} to="chatpopup.html"><span className="nav-link-text"
-                                                      onClick={() => handleSubmenuClick("calculations","test")}>Direct Message</span></Link>
-                                                  </li>
-                                                  <li className="nav-item">
-                                                  <Link className={sisActive1 === "test"?"nav-link active":"nav-link"} to="chatbot.html"><span className="nav-link-text"
-                                                  onClick={() => handleSubmenuClick("calculations","test")}>Chatbot</span></Link>
-                                                  </li>
-                                              </ul>	
-                                          </li>	
-                                      </ul>	
-                                  </li>	
-                                  <li className="nav-item">
-                                  <Link className={misActive1 === "payments"?"nav-link active":"nav-link"} to="#" onClick={dropDownMenu1Click} data-bs-toggle="collapse" data-bs-target="#dash_chat">
-                                          <span className="nav-icon-wrap">
-                                              <span className="svg-icon">
-                                              <svg width="800px" height="800px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <rect x="3" y="6" width="18" height="13" rx="2" stroke="#000000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                                                <path d="M3 10H20.5" stroke="#000000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                                                <path d="M7 15H9" stroke="#000000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                                                </svg>
-                                              </span>
-                                          </span>
-                                          <span className="nav-link-text">Վճարման մեթոդները</span>
-                                      </Link>
-                                      <ul id="dash_chat" className={dropDownMenu1 ? 'nav flex-column collapse  nav-children' : 'nav flex-column collapse  nav-children show'}>
-                                          <li className="nav-item">
-                                              <ul className="nav flex-column">
-                                                  <li className="nav-item">
-                                                      <Link className={sisActive1 === "menu1"?"nav-link active":"nav-link"} to="./menu1"><span className="nav-link-text"
-                                                      onClick={() => handleSubmenuClick("payments","menu1")}>Մենյու1</span></Link>
-                                                  </li>
-                                                  <li className="nav-item">
-                                                      <Link className={sisActive1 === "menu2"?"nav-link active":"nav-link"} to="./menu2"><span className="nav-link-text"
-                                                      onClick={() => handleSubmenuClick("payments","menu2")}>Մենյու2</span></Link>
-                                                  </li>
-                                                  <li className="nav-item">
-                                                      <Link className={sisActive1 === "menu3"?"nav-link active":"nav-link"} to="./menu3"><span className="nav-link-text"
-                                                      onClick={() => handleSubmenuClick("payments","menu3")}>Մենյու3</span></Link>
-                                                  </li>
-                                              </ul>	
-                                          </li>	
-                                      </ul>	
-                                  </li>	
-								  {/*
+                    </li>
+                    <li className="nav-item">
+                      <Link
+                        className={
+                          misActive1 === "payments"
+                            ? "nav-link active"
+                            : "nav-link"
+                        }
+                        to="#"
+                        onClick={dropDownMenu1Click}
+                        data-bs-toggle="collapse"
+                        data-bs-target="#dash_chat"
+                      >
+                        <span className="nav-icon-wrap">
+                          <span className="svg-icon">
+                            <svg
+                              width="800px"
+                              height="800px"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <rect
+                                x="3"
+                                y="6"
+                                width="18"
+                                height="13"
+                                rx="2"
+                                stroke="#000000"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                              <path
+                                d="M3 10H20.5"
+                                stroke="#000000"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                              <path
+                                d="M7 15H9"
+                                stroke="#000000"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                            </svg>
+                          </span>
+                        </span>
+                        <span className="nav-link-text">Վճարման մեթոդները</span>
+                      </Link>
+                      <ul
+                        id="dash_chat"
+                        className={
+                          dropDownMenu1
+                            ? "nav flex-column collapse  nav-children"
+                            : "nav flex-column collapse  nav-children show"
+                        }
+                      >
+                        <li className="nav-item">
+                          <ul className="nav flex-column">
+                            <li className="nav-item">
+                              <Link
+                                className={
+                                  sisActive1 === "menu1"
+                                    ? "nav-link active"
+                                    : "nav-link"
+                                }
+                                to="./menu1"
+                              >
+                                <span
+                                  className="nav-link-text"
+                                  onClick={() =>
+                                    handleSubmenuClick("payments", "menu1")
+                                  }
+                                >
+                                  Մենյու1
+                                </span>
+                              </Link>
+                            </li>
+                            <li className="nav-item">
+                              <Link
+                                className={
+                                  sisActive1 === "menu2"
+                                    ? "nav-link active"
+                                    : "nav-link"
+                                }
+                                to="./menu2"
+                              >
+                                <span
+                                  className="nav-link-text"
+                                  onClick={() =>
+                                    handleSubmenuClick("payments", "menu2")
+                                  }
+                                >
+                                  Մենյու2
+                                </span>
+                              </Link>
+                            </li>
+                            <li className="nav-item">
+                              <Link
+                                className={
+                                  sisActive1 === "menu3"
+                                    ? "nav-link active"
+                                    : "nav-link"
+                                }
+                                to="./menu3"
+                              >
+                                <span
+                                  className="nav-link-text"
+                                  onClick={() =>
+                                    handleSubmenuClick("payments", "menu3")
+                                  }
+                                >
+                                  Մենյու3
+                                </span>
+                              </Link>
+                            </li>
+                          </ul>
+                        </li>
+                      </ul>
+                    </li>
+                    {/*
                                   <li className="nav-item">
                                       <Link className="nav-link" to="prices">
                                           <span className="nav-icon-wrap">
@@ -514,29 +896,50 @@ const MainTemplate = () => {
                                       </Link>
                                   </li>
 								  */}
-                                  <li className="nav-item">
-                                  <Link className={misActive1 === "departments"?"nav-link active":"nav-link"} to="#" data-bs-toggle="collapse" data-bs-target="#dash_contact">
-                                          <span className="nav-icon-wrap">
-                                              <span className="svg-icon">
-                                              <svg fill="#000000" height="800px" width="800px" version="1.1" id="Layer_1"  viewBox="0 0 480 480" >
-                                            <g>
-                                                <g>
-                                                    <g>
-                                                        <path d="M131.34,298.066c0-34.351-27.974-62.297-62.358-62.297c-34.368,0-62.329,27.946-62.329,62.297
+                    <li className="nav-item">
+                      <Link
+                        className={
+                          misActive1 === "departments"
+                            ? "nav-link active"
+                            : "nav-link"
+                        }
+                        to="#"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#dash_contact"
+                      >
+                        <span className="nav-icon-wrap">
+                          <span className="svg-icon">
+                            <svg
+                              fill="#000000"
+                              height="800px"
+                              width="800px"
+                              version="1.1"
+                              id="Layer_1"
+                              viewBox="0 0 480 480"
+                            >
+                              <g>
+                                <g>
+                                  <g>
+                                    <path
+                                      d="M131.34,298.066c0-34.351-27.974-62.297-62.358-62.297c-34.368,0-62.329,27.946-62.329,62.297
                                                             c0,22.89,12.405,42.924,30.835,53.767c-19.855,11.578-31.634,35.215-31.634,66.538V470c0,5.523,4.477,10,10,10h105.039
                                                             c5.523,0,10-4.477,10-10v-51.629c0-31.001-11.534-54.478-31.02-66.183C118.651,341.434,131.34,321.21,131.34,298.066z
                                                             M110.893,419.978V460H25.854v-40.022H110.893z M108.954,399.978H27.793c3.574-16.441,13.514-36.055,40.58-36.055
                                                             C95.439,363.923,105.379,383.537,108.954,399.978z M68.982,340.41c-23.34,0-42.329-18.995-42.329-42.344
-                                                            c0-23.323,18.989-42.297,42.329-42.297c23.356,0,42.358,18.974,42.358,42.297C111.34,321.415,92.338,340.41,68.982,340.41z"/>
-                                                        <path d="M444.904,354.608c17.548-11.043,29.242-30.572,29.242-52.791c0-34.35-27.971-62.296-62.352-62.296
+                                                            c0-23.323,18.989-42.297,42.329-42.297c23.356,0,42.358,18.974,42.358,42.297C111.34,321.415,92.338,340.41,68.982,340.41z"
+                                    />
+                                    <path
+                                      d="M444.904,354.608c17.548-11.043,29.242-30.572,29.242-52.791c0-34.35-27.971-62.296-62.352-62.296
                                                             c-34.377,0-62.344,27.946-62.344,62.296c0,21.325,10.768,40.175,27.145,51.421c-18.478,12.022-29.365,35.023-29.365,65.132V470
                                                             c0,5.523,4.478,10,10,10h105.039c5.522,0,10-4.477,10-10v-51.629C472.269,389.366,462.163,366.961,444.904,354.608z
                                                             M369.451,301.817c0-23.322,18.995-42.296,42.344-42.296c23.353,0,42.352,18.974,42.352,42.296
                                                             c0,22.515-17.668,40.974-39.867,42.265c-1.49-0.095-2.994-0.16-4.529-0.16c-0.647,0-1.281,0.03-1.922,0.046
                                                             C386.334,341.962,369.451,323.828,369.451,301.817z M407.328,363.984c1.476,0.105,2.963,0.177,4.467,0.177
                                                             c0.758,0,1.508-0.03,2.259-0.057c23.83,1.973,32.899,20.337,36.277,35.874h-81.162
-                                                            C372.635,384.039,382.089,365.123,407.328,363.984z M452.269,460H367.23v-40.022h85.039V460z"/>
-                                                        <path d="M317.528,338.121l-61.089-25.127v-59.443c0-2.316-0.795-4.441-2.116-6.137h46.638c5.522,0,10-4.477,10-10V178.85
+                                                            C372.635,384.039,382.089,365.123,407.328,363.984z M452.269,460H367.23v-40.022h85.039V460z"
+                                    />
+                                    <path
+                                      d="M317.528,338.121l-61.089-25.127v-59.443c0-2.316-0.795-4.441-2.116-6.137h46.638c5.522,0,10-4.477,10-10V178.85
                                                             c0-29.68-10.57-52.466-28.572-64.623c16.775-11.185,27.853-30.272,27.853-51.904C310.242,27.958,282.274,0,247.898,0
                                                             c-34.373,0-62.336,27.958-62.336,62.322c0,21.875,11.332,41.142,28.423,52.272c-17.688,12.243-28.064,34.864-28.064,64.255
                                                             v58.564c0,5.523,4.477,10,10,10h42.634c-1.321,1.695-2.116,3.821-2.116,6.137v59.227l-57.708,22.412
@@ -547,35 +950,93 @@ const MainTemplate = () => {
                                                             c-1.321,0-2.622,0.044-3.911,0.114C222.76,102.802,205.562,84.54,205.562,62.322z M244.417,124.567
                                                             c1.153,0.063,2.313,0.102,3.481,0.102c1.358,0,2.702-0.059,4.039-0.145c20.33,1.344,30.136,14.448,34.824,27.862h-76.64
                                                             C214.769,139.092,224.448,126.106,244.417,124.567z M205.92,227.414V178.85h0.001c0-1.698,0.056-3.91,0.242-6.464h84.555
-                                                            c0.187,2.554,0.242,4.766,0.242,6.464v48.564H205.92z"/>
-                                                    </g>
-                                                </g>
-                                            </g>
-                                            </svg>
-                                              </span>
-                                          </span>
-                                          <span className="nav-link-text">Ստորաբաժանումներ</span>
-                                      </Link>
-                                      <ul id="dash_contact" className="nav flex-column collapse  nav-children">
-                                          <li className="nav-item">
-                                              <ul className="nav flex-column">
-                                                  <li className="nav-item">
-                                                      <Link className={sisActive1 === "contractList"?"nav-link active":"nav-link"} to="contact.html"><span className="nav-link-text"
-														onClick={() => handleSubmenuClick("departments","contractList")}>Contact List</span></Link>
-                                                  </li>
-                                                  <li className="nav-item">
-                                                      <Link className={sisActive1 === "contractCard"?"nav-link active":"nav-link"} to="contact-cards.html"><span className="nav-link-text"
-														onClick={() => handleSubmenuClick("departments","contractCard")}>Contact Cards</span></Link>
-                                                  </li>
-                                                  <li className="nav-item">
-                                                      <Link className={sisActive1 === "edidContract"?"nav-link active":"nav-link"} to="edit-contact.html"><span className="nav-link-text"
-														onClick={() => handleSubmenuClick("departments","edidContract")}>Edit Contact</span></Link>
-                                                  </li>
-                                              </ul>	
-                                          </li>	
-                                      </ul>	
-                                  </li>
-								  {/*
+                                                            c0.187,2.554,0.242,4.766,0.242,6.464v48.564H205.92z"
+                                    />
+                                  </g>
+                                </g>
+                              </g>
+                            </svg>
+                          </span>
+                        </span>
+                        <span className="nav-link-text">Ստորաբաժանումներ</span>
+                      </Link>
+                      <ul
+                        id="dash_contact"
+                        className="nav flex-column collapse  nav-children"
+                      >
+                        <li className="nav-item">
+                          <ul className="nav flex-column">
+                            <li className="nav-item">
+                              <Link
+                                className={
+                                  sisActive1 === "contractList"
+                                    ? "nav-link active"
+                                    : "nav-link"
+                                }
+                                to="contact.html"
+                              >
+                                <span
+                                  className="nav-link-text"
+                                  onClick={() =>
+                                    handleSubmenuClick(
+                                      "departments",
+                                      "contractList"
+                                    )
+                                  }
+                                >
+                                  Contact List
+                                </span>
+                              </Link>
+                            </li>
+                            <li className="nav-item">
+                              <Link
+                                className={
+                                  sisActive1 === "contractCard"
+                                    ? "nav-link active"
+                                    : "nav-link"
+                                }
+                                to="contact-cards.html"
+                              >
+                                <span
+                                  className="nav-link-text"
+                                  onClick={() =>
+                                    handleSubmenuClick(
+                                      "departments",
+                                      "contractCard"
+                                    )
+                                  }
+                                >
+                                  Contact Cards
+                                </span>
+                              </Link>
+                            </li>
+                            <li className="nav-item">
+                              <Link
+                                className={
+                                  sisActive1 === "edidContract"
+                                    ? "nav-link active"
+                                    : "nav-link"
+                                }
+                                to="edit-contact.html"
+                              >
+                                <span
+                                  className="nav-link-text"
+                                  onClick={() =>
+                                    handleSubmenuClick(
+                                      "departments",
+                                      "edidContract"
+                                    )
+                                  }
+                                >
+                                  Edit Contact
+                                </span>
+                              </Link>
+                            </li>
+                          </ul>
+                        </li>
+                      </ul>
+                    </li>
+                    {/*
                                   <li className="nav-item">
                                       <Link className="nav-link" to="gallery.html">
                                           <span className="nav-icon-wrap">
@@ -593,120 +1054,320 @@ const MainTemplate = () => {
                                       </Link>
                                   </li>
 								  */}
-                                  <li className="nav-item">
-                                  <Link className={misActive1 === "reports"?"nav-link active":"nav-link"} to="./" data-bs-toggle="collapse" data-bs-target="#dash_integ">
-                                          <span className="nav-icon-wrap">
-                                              <span className="svg-icon">
-                                                <svg width="800px" height="800px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                    <path className="a" d="M12,2A10,10,0,1,0,22,12H12Z"/><path className="a" d="M15,9h6.54077A10.02174,10.02174,0,0,0,15,2.45923Z"/>
-                                                </svg>
-                                              </span>
-                                          </span>
-                                          <span className="nav-link-text">Հաշվետվություններ</span>
-                                      </Link>
-                                      <ul id="dash_integ" className="nav flex-column collapse  nav-children">
-                                          <li className="nav-item">
-                                              <ul className="nav flex-column">
-                                                  <li className="nav-item">
-                                                      <Link className={sisActive1 === "allApps"?"nav-link active":"nav-link"} to="all-apps.html"><span className="nav-link-text"
-                                                      onClick={()=>handleSubmenuClick("reports","allApps")}>All Apps</span></Link>
-                                                  </li>
-                                                  <li className="nav-item">
-                                                      <Link className={sisActive1 === "allDetails"?"nav-link active":"nav-link"} to="integrations-detail.html"><span className="nav-link-text"
-                                                      onClick={()=>handleSubmenuClick("reports","allDetails")}>App Detail</span></Link>
-                                                  </li>
-                                                  <li className="nav-item">
-                                                     <Link className={sisActive1 === "integrations"?"nav-link active":"nav-link"} to="integrations.html"><span className="nav-link-text"
-                                                     onClick={()=>handleSubmenuClick("reports","integrations")}>Integrations</span></Link>
-                                                  </li>
-                                              </ul>	
-                                          </li>	
-                                      </ul>	
-                                  </li>
-                                  <li className="nav-item">
-                                  <Link className={(misActive1 === "users" ||  location.pathname==="/users")?"nav-link active":"nav-link"} to="/users"
-                                  onClick={() => handleSubmenuClick("users","")}>
-                                          <span className="nav-icon-wrap position-relative">
-                                              <span className="svg-icon">
-                                              <span className="badge badge-sm badge-primary badge-sm badge-pill position-top-end-overflow">{usersCount}</span>
-                                              <svg width="800px" height="800px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                    <title/>
-                                                    <g id="Complete">
-                                                    <g id="user">
-                                                    <g>
-                                                    <path d="M20,21V19a4,4,0,0,0-4-4H8a4,4,0,0,0-4,4v2" fill="none" stroke="#000000" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"/>
-                                                    <circle cx="12" cy="7" fill="none" r="4" stroke="#000000" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"/>
-                                                    </g>
-                                                    </g>
-                                                    </g>
-                                                    </svg>
-                                              </span>
-                                          </span>
-                                          <span className="nav-link-text">Աշխատակիցներ</span>
-                                      </Link>
-                                  </li>
-								  <li className="nav-item">
-                                      <a className={misActive1 === "settings" ?"nav-link active":"nav-link"} href="#" data-bs-toggle="collapse" onClick={dropDownMenu2Click}  data-bs-target="#dash_integ">
-                                          <span className="nav-icon-wrap">
-                                              <span className="svg-icon">
-                                                <svg fill="#000000" height="800px" width="800px"  id="Capa_1" viewBox="0 0 482.568 482.568">
-													<g>
-														<g>
-															<path d="M116.993,203.218c13.4-1.8,26.8,2.8,36.3,12.3l24,24l22.7-22.6l-32.8-32.7c-5.1-5.1-5.1-13.4,0-18.5s13.4-5.1,18.5,0
+                    <li className="nav-item">
+                      <Link
+                        className={
+                          misActive1 === "reports"
+                            ? "nav-link active"
+                            : "nav-link"
+                        }
+                        to="./"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#dash_integ"
+                      >
+                        <span className="nav-icon-wrap">
+                          <span className="svg-icon">
+                            <svg
+                              width="800px"
+                              height="800px"
+                              viewBox="0 0 24 24"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                className="a"
+                                d="M12,2A10,10,0,1,0,22,12H12Z"
+                              />
+                              <path
+                                className="a"
+                                d="M15,9h6.54077A10.02174,10.02174,0,0,0,15,2.45923Z"
+                              />
+                            </svg>
+                          </span>
+                        </span>
+                        <span className="nav-link-text">Հաշվետվություններ</span>
+                      </Link>
+                      <ul
+                        id="dash_integ"
+                        className="nav flex-column collapse  nav-children"
+                      >
+                        <li className="nav-item">
+                          <ul className="nav flex-column">
+                            <li className="nav-item">
+                              <Link
+                                className={
+                                  sisActive1 === "allApps"
+                                    ? "nav-link active"
+                                    : "nav-link"
+                                }
+                                to="all-apps.html"
+                              >
+                                <span
+                                  className="nav-link-text"
+                                  onClick={() =>
+                                    handleSubmenuClick("reports", "allApps")
+                                  }
+                                >
+                                  All Apps
+                                </span>
+                              </Link>
+                            </li>
+                            <li className="nav-item">
+                              <Link
+                                className={
+                                  sisActive1 === "allDetails"
+                                    ? "nav-link active"
+                                    : "nav-link"
+                                }
+                                to="integrations-detail.html"
+                              >
+                                <span
+                                  className="nav-link-text"
+                                  onClick={() =>
+                                    handleSubmenuClick("reports", "allDetails")
+                                  }
+                                >
+                                  App Detail
+                                </span>
+                              </Link>
+                            </li>
+                            <li className="nav-item">
+                              <Link
+                                className={
+                                  sisActive1 === "integrations"
+                                    ? "nav-link active"
+                                    : "nav-link"
+                                }
+                                to="integrations.html"
+                              >
+                                <span
+                                  className="nav-link-text"
+                                  onClick={() =>
+                                    handleSubmenuClick(
+                                      "reports",
+                                      "integrations"
+                                    )
+                                  }
+                                >
+                                  Integrations
+                                </span>
+                              </Link>
+                            </li>
+                          </ul>
+                        </li>
+                      </ul>
+                    </li>
+                    <li className="nav-item">
+                      <Link
+                        className={
+                          misActive1 === "users" ||
+                          location.pathname === "/users"
+                            ? "nav-link active"
+                            : "nav-link"
+                        }
+                        to="/users"
+                        onClick={() => handleSubmenuClick("users", "")}
+                      >
+                        <span className="nav-icon-wrap position-relative">
+                          <span className="svg-icon">
+                            <span className="badge badge-sm badge-primary badge-sm badge-pill position-top-end-overflow">
+                              {usersCount}
+                            </span>
+                            <svg
+                              width="800px"
+                              height="800px"
+                              viewBox="0 0 24 24"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <title />
+                              <g id="Complete">
+                                <g id="user">
+                                  <g>
+                                    <path
+                                      d="M20,21V19a4,4,0,0,0-4-4H8a4,4,0,0,0-4,4v2"
+                                      fill="none"
+                                      stroke="#000000"
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth="2"
+                                    />
+                                    <circle
+                                      cx="12"
+                                      cy="7"
+                                      fill="none"
+                                      r="4"
+                                      stroke="#000000"
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth="2"
+                                    />
+                                  </g>
+                                </g>
+                              </g>
+                            </svg>
+                          </span>
+                        </span>
+                        <span className="nav-link-text">Աշխատակիցներ</span>
+                      </Link>
+                    </li>
+                    <li className="nav-item">
+                      <a
+                        className={
+                          misActive1 === "settings"
+                            ? "nav-link active"
+                            : "nav-link"
+                        }
+                        href="#"
+                        data-bs-toggle="collapse"
+                        onClick={dropDownMenu2Click}
+                        data-bs-target="#dash_integ"
+                      >
+                        <span className="nav-icon-wrap">
+                          <span className="svg-icon">
+                            <svg
+                              fill="#000000"
+                              height="800px"
+                              width="800px"
+                              id="Capa_1"
+                              viewBox="0 0 482.568 482.568"
+                            >
+                              <g>
+                                <g>
+                                  <path
+                                    d="M116.993,203.218c13.4-1.8,26.8,2.8,36.3,12.3l24,24l22.7-22.6l-32.8-32.7c-5.1-5.1-5.1-13.4,0-18.5s13.4-5.1,18.5,0
 																l32.8,32.8l22.7-22.6l-24.1-24.1c-9.5-9.5-14.1-23-12.3-36.3c4-30.4-5.7-62.2-29-85.6c-23.8-23.8-56.4-33.4-87.3-28.8
 																c-4.9,0.7-6.9,6.8-3.4,10.3l30.9,30.9c14.7,14.7,14.7,38.5,0,53.1l-19,19c-14.7,14.7-38.5,14.7-53.1,0l-31-30.9
-																c-3.5-3.5-9.5-1.5-10.3,3.4c-4.6,30.9,5,63.5,28.8,87.3C54.793,197.518,86.593,207.218,116.993,203.218z"/>
-															<path d="M309.193,243.918l-22.7,22.6l134.8,134.8c5.1,5.1,5.1,13.4,0,18.5s-13.4,5.1-18.5,0l-134.8-134.8l-22.7,22.6l138.9,138.9
-																c17.6,17.6,46.1,17.5,63.7-0.1s17.6-46.1,0.1-63.7L309.193,243.918z"/>
-															<path d="M361.293,153.918h59.9l59.9-119.7l-29.9-29.9l-119.8,59.8v59.9l-162.8,162.3l-29.3-29.2l-118,118
-																c-24.6,24.6-24.6,64.4,0,89s64.4,24.6,89,0l118-118l-29.9-29.9L361.293,153.918z"/>
-														</g>
-													</g>
-												</svg>
-                                              </span>
-                                          </span>
-                                          <span className="nav-link-text">Կարգաբերումներ</span>
-                                      </a>
-                                      <ul id="dash_integ" className={dropDownMenu2 ? 'nav flex-column collapse  nav-children' : 'nav flex-column collapse  nav-children show'} >
-                                          <li className="nav-item">
-                                              <ul className="nav flex-column">
-                                                  <li className="nav-item">
-													  <Link className={sisActive1==="prices" || location.pathname==="/settings/prices"?"nav-link active":"nav-link"} to="./settings/prices"
-                                                       onClick={()=>handleSubmenuClick("settings","prices")}>
-														  <span className="nav-link-text">Գնացուցակներ</span>
-													  </Link>
-                                                  </li>
-                                                  <li className="nav-item">
-													  <Link className={sisActive1==="discountCards" || location.pathname==="/settings/discountCards"?"nav-link active":"nav-link"} to="./settings/discountCards"
-                                                      onClick={()=>handleSubmenuClick("settings","discountCards")}>
-														  <span className="nav-link-text">Զեղչի քարտեր</span>
-													  </Link>
-                                                  </li>
-                                                  <li className="nav-item">
-                                                       <Link className={sisActive1==="reagents" || location.pathname==="/settings/reagents"?"nav-link active":"nav-link"} to="./settings/reagents"
-                                                       onClick={()=>handleSubmenuClick("settings","reagents")}>                                                       
-														  <span className="nav-link-text">Ռեագենտներ</span>
-													  </Link>
-                                                  </li>
-												   <li className="nav-item">
-                                                       <Link className={sisActive1==="equipments" || location.pathname==="/settings/equipments"?"nav-link active":"nav-link"} to="./settings/equipments"
-                                                       onClick={()=>handleSubmenuClick("settings","equipments")}>
-														  <span className="nav-link-text">Սարքավորումներ</span>
-													  </Link>
-                                                  </li>
-												   <li className="nav-item">
-                                                       <Link className={sisActive1==="researchlists" || location.pathname==="/settings/researchlists"?"nav-link active":"nav-link"} to="./settings/researchlists"
-                                                       onClick={()=>handleSubmenuClick("settings","researchlists")}>
-														  <span className="nav-link-text">Հետ․ տեսակներ</span>
-													  </Link>
-                                                  </li>
-                                              </ul>	
-                                          </li>	
-                                      </ul>	
-                                  </li>
-                              </ul>
-                          </div>
-                          {/*
+																c-3.5-3.5-9.5-1.5-10.3,3.4c-4.6,30.9,5,63.5,28.8,87.3C54.793,197.518,86.593,207.218,116.993,203.218z"
+                                  />
+                                  <path
+                                    d="M309.193,243.918l-22.7,22.6l134.8,134.8c5.1,5.1,5.1,13.4,0,18.5s-13.4,5.1-18.5,0l-134.8-134.8l-22.7,22.6l138.9,138.9
+																c17.6,17.6,46.1,17.5,63.7-0.1s17.6-46.1,0.1-63.7L309.193,243.918z"
+                                  />
+                                  <path
+                                    d="M361.293,153.918h59.9l59.9-119.7l-29.9-29.9l-119.8,59.8v59.9l-162.8,162.3l-29.3-29.2l-118,118
+																c-24.6,24.6-24.6,64.4,0,89s64.4,24.6,89,0l118-118l-29.9-29.9L361.293,153.918z"
+                                  />
+                                </g>
+                              </g>
+                            </svg>
+                          </span>
+                        </span>
+                        <span className="nav-link-text">Կարգաբերումներ</span>
+                      </a>
+                      <ul
+                        id="dash_integ"
+                        className={
+                          dropDownMenu2
+                            ? "nav flex-column collapse  nav-children"
+                            : "nav flex-column collapse  nav-children show"
+                        }
+                      >
+                        <li className="nav-item">
+                          <ul className="nav flex-column">
+                            <li className="nav-item">
+                              <Link
+                                className={
+                                  sisActive1 === "prices" ||
+                                  location.pathname === "/settings/prices"
+                                    ? "nav-link active"
+                                    : "nav-link"
+                                }
+                                to="./settings/prices"
+                                onClick={() =>
+                                  handleSubmenuClick("settings", "prices")
+                                }
+                              >
+                                <span className="nav-link-text">
+                                  Գնացուցակներ
+                                </span>
+                              </Link>
+                            </li>
+                            <li className="nav-item">
+                              <Link
+                                className={
+                                  sisActive1 === "discountCards" ||
+                                  location.pathname ===
+                                    "/settings/discountCards"
+                                    ? "nav-link active"
+                                    : "nav-link"
+                                }
+                                to="./settings/discountCards"
+                                onClick={() =>
+                                  handleSubmenuClick(
+                                    "settings",
+                                    "discountCards"
+                                  )
+                                }
+                              >
+                                <span className="nav-link-text">
+                                  Զեղչի քարտեր
+                                </span>
+                              </Link>
+                            </li>
+                            <li className="nav-item">
+                              <Link
+                                className={
+                                  sisActive1 === "reagents" ||
+                                  location.pathname === "/settings/reagents"
+                                    ? "nav-link active"
+                                    : "nav-link"
+                                }
+                                to="./settings/reagents"
+                                onClick={() =>
+                                  handleSubmenuClick("settings", "reagents")
+                                }
+                              >
+                                <span className="nav-link-text">
+                                  Ռեագենտներ
+                                </span>
+                              </Link>
+                            </li>
+                            <li className="nav-item">
+                              <Link
+                                className={
+                                  sisActive1 === "equipments" ||
+                                  location.pathname === "/settings/equipments"
+                                    ? "nav-link active"
+                                    : "nav-link"
+                                }
+                                to="./settings/equipments"
+                                onClick={() =>
+                                  handleSubmenuClick("settings", "equipments")
+                                }
+                              >
+                                <span className="nav-link-text">
+                                  Սարքավորումներ
+                                </span>
+                              </Link>
+                            </li>
+                            <li className="nav-item">
+                              <Link
+                                className={
+                                  sisActive1 === "researchlists" ||
+                                  location.pathname ===
+                                    "/settings/researchlists"
+                                    ? "nav-link active"
+                                    : "nav-link"
+                                }
+                                to="./settings/researchlists"
+                                onClick={() =>
+                                  handleSubmenuClick(
+                                    "settings",
+                                    "researchlists"
+                                  )
+                                }
+                              >
+                                <span className="nav-link-text">
+                                  Հետ․ տեսակներ
+                                </span>
+                              </Link>
+                            </li>
+                          </ul>
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
+                </div>
+                {/*
                           <div className="menu-gap"></div>
                           <div className="menu-group">
                               <div className="nav-header">
@@ -869,219 +1530,333 @@ const MainTemplate = () => {
                               </ul>
                           </div>
                           */}
-                      </div>
-                  </div>
-                  {/* /Main Menu */}
               </div>
-              <div id="hk_menu_backdrop" className="hk-menu-backdrop"></div>
-              {/* /Vertical Nav */}
-  
-              {/* Chat Popup */}
-              <div className="hk-chatbot-popup">
-                  <header>
-                      <div className="chatbot-head-top">
-                          <a className="btn btn-sm btn-icon btn-dark btn-rounded" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                              <span className="icon"><span className="feather-icon"><i data-feather="more-horizontal"></i></span></span>
-                          </a>
-                          <div className="dropdown-menu">
-                              <a className="dropdown-item" href="#"><i className="dropdown-icon zmdi zmdi-notifications-active"></i><span>Send push notifications</span></a>
-                              <a className="dropdown-item" href="#"><i className="dropdown-icon zmdi zmdi-volume-off"></i><span>Mute Chat</span></a>
-                          </div>
-                          <span className="text-white">Chat with Us</span>
-                          <a id="minimize_chatbot" href="#" className="btn btn-sm btn-icon btn-dark btn-rounded">
-                              <span className="icon"><span className="feather-icon"><i data-feather="minus"></i></span></span>
-                          </a>
-                      </div>
-                      <div className="separator-full separator-light mt-0 opacity-10"></div>
-                      <div className="media-wrap">
-                          <div className="media">
-                              <div className="media-head">
-                                  <div className="avatar avatar-sm avatar-soft-primary avatar-icon avatar-rounded position-relative">
-                                      <span className="initial-wrap">
-                                          <i className="ri-customer-service-2-line"></i>
-                                      </span>
-                                      <span className="badge badge-success badge-indicator badge-indicator-lg badge-indicator-nobdr position-bottom-end-overflow-1"></span>
-                                  </div>
-                              </div>
-                              <div className="media-body">
-                                  <div className="user-name">Chat Robot</div>
-                                  <div className="user-status">Online</div>
-                              </div>
-                          </div>
-                      </div>
-                  </header>
-                  <div className="chatbot-popup-body">
-                      <div data-simplebar className="nicescroll-bar">
-                          <div>
-                              <div className="init-content-wrap">
-                                  <div className="card card-shadow">
-                                      <div className="card-body">
-                                          <p className="card-text">Hey I am chat robot 😈<br/>Do yo have any question regarding our tools?<br/><br/>Select the topic or start chatting.</p>
-                                          <button className="btn btn-block btn-primary text-nonecase start-conversation">Start a conversation</button>
-                                      </div>
-                                  </div>
-                                  <div className="btn-wrap">
-                                      <button className="btn btn-soft-primary text-nonecase btn-rounded start-conversation"><span><span className="icon"><span className="feather-icon"><i data-feather="eye"></i></span></span><span className="btn-text">Just browsing</span></span></button>
-                                      <button className="btn btn-soft-danger text-nonecase btn-rounded start-conversation"><span><span className="icon"><span className="feather-icon"><i data-feather="credit-card"></i></span></span><span className="btn-text">I have a question regarding pricing</span></span></button>
-                                      <button className="btn btn-soft-warning text-nonecase btn-rounded start-conversation"><span><span className="icon"><span className="feather-icon"><i data-feather="cpu"></i></span></span><span className="btn-text">Need help for technical query</span></span></button>
-                                      <button className="btn btn-soft-success text-nonecase btn-rounded start-conversation"><span><span className="icon"><span className="feather-icon"><i data-feather="zap"></i></span></span><span className="btn-text">I have a pre purchase question</span></span></button>
-                                  </div>
-                              </div>
-                              <ul className="list-unstyled d-none">
-                                  <li className="media sent">
-                                      <div className="media-body">
-                                          <div className="msg-box">
-                                              <div>
-                                                  <p>I have a plan regarding pricing</p>
-                                              </div>
-                                          </div>
-                                      </div>
-                                  </li>
-                                  <li className="media received">
-                                      <div className="avatar avatar-xs avatar-soft-primary avatar-icon avatar-rounded">
-                                          <span className="initial-wrap">
-                                              <i className="ri-customer-service-2-line"></i>
-                                          </span>
-                                      </div>
-                                      <div className="media-body">
-                                          <div className="msg-box">
-                                              <div>
-                                                  <p>Welcome back!<br/>Are you looking to upgrade your existing plan?</p>
-                                              </div>
-                                          </div>
-                                          <div className="msg-box typing-wrap">
-                                              <div>
-                                                  <div className="typing">
-                                                    <div className="dot"></div>
-                                                    <div className="dot"></div>
-                                                    <div className="dot"></div>
-                                                  </div>
-                                              </div>
-                                          </div>
-                                      </div>
-                                  </li>
-                              </ul>
-                          </div>
-                      </div>
-                  </div>
-                  <footer>
-                      <div className="chatbot-intro-text fs-7">
-                          <div className="separator-full separator-light"></div>
-                          <p className="mb-2">This is jampack's beta version please sign up now to get early access to our full version</p>
-                          <a className="d-block mb-2" href="#"><u>Give Feedback</u></a>		
-                      </div>
-                        <div className="input-group d-none">
-                            <div className="input-group-text overflow-show border-0">
-                                <button className="btn btn-icon btn-flush-dark flush-soft-hover btn-rounded dropdown-toggle no-caret" data-bs-toggle="dropdown"  aria-haspopup="true" aria-expanded="false">
-                                    <span className="icon"><span className="feather-icon"><i data-feather="share"></i></span></span>
-                                </button>
-                                <div className="dropdown-menu">
-                                    <a className="dropdown-item" href="#">
-                                        <div className="d-flex align-items-center">
-                                            <div className="avatar avatar-icon avatar-xs avatar-soft-primary avatar-rounded me-3">
-                                                <span className="initial-wrap">
-                                                    <i className="ri-image-line"></i>
-                                                </span>
-                                            </div>
-                                            <div>
-                                                <span className="h6 mb-0">Photo or Video Library</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a className="dropdown-item" href="#">
-                                        <div className="d-flex align-items-center">
-                                            <div className="avatar avatar-icon avatar-xs avatar-soft-info avatar-rounded me-3">
-                                                <span className="initial-wrap">
-                                                    <i className="ri-file-4-line"></i>
-                                                </span>
-                                            </div>
-                                            <div>
-                                                <span className="h6 mb-0">Documents</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a className="dropdown-item" href="#">
-                                        <div className="d-flex align-items-center">
-                                            <div className="avatar avatar-icon avatar-xs avatar-soft-success avatar-rounded me-3">
-                                                <span className="initial-wrap">
-                                                    <i className="ri-map-pin-line"></i>
-                                                </span>
-                                            </div>
-                                            <div>
-                                                <span className="h6 mb-0">Location</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a className="dropdown-item" href="/contact">
-                                        <div className="d-flex align-items-center">
-                                            <div className="avatar avatar-icon avatar-xs avatar-soft-blue avatar-rounded me-3">
-                                                <span className="initial-wrap">
-                                                    <i className="ri-contacts-line"></i>
-                                                </span>
-                                            </div>
-                                            <div>
-                                                <span className="h6 mb-0">Contact</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                            <input type="text" id="input_msg_chat_popup" name="send-msg" className="input-msg-send form-control border-0 shadow-none" placeholder="Type something..."/>
-                            <div className="input-group-text overflow-show border-0">
-                                <button className="btn btn-icon btn-flush-dark flush-soft-hover btn-rounded">
-                                    <span className="icon"><span className="feather-icon"><i data-feather="smile"></i></span></span>
-                                </button>
-                            </div>
-                        </div>
-                        <div className="footer-copy-text">Powered by 
-                            <a className="brand-link" href="#">
-                                <img src="/dist/img/logo-light.png" alt="logo-brand"/>
-                            </a>
-                        </div>
-                    </footer>
+            </div>
+            {/* /Main Menu */}
+          </div>
+          <div id="hk_menu_backdrop" className="hk-menu-backdrop"></div>
+          {/* /Vertical Nav */}
+
+          {/* Chat Popup */}
+          <div className="hk-chatbot-popup">
+            <header>
+              <div className="chatbot-head-top">
+                <a
+                  className="btn btn-sm btn-icon btn-dark btn-rounded"
+                  href="#"
+                  data-bs-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  <span className="icon">
+                    <span className="feather-icon">
+                      <i data-feather="more-horizontal"></i>
+                    </span>
+                  </span>
+                </a>
+                <div className="dropdown-menu">
+                  <a className="dropdown-item" href="#">
+                    <i className="dropdown-icon zmdi zmdi-notifications-active"></i>
+                    <span>Send push notifications</span>
+                  </a>
+                  <a className="dropdown-item" href="#">
+                    <i className="dropdown-icon zmdi zmdi-volume-off"></i>
+                    <span>Mute Chat</span>
+                  </a>
                 </div>
-                {/*
+                <span className="text-white">Chat with Us</span>
+                <a
+                  id="minimize_chatbot"
+                  href="#"
+                  className="btn btn-sm btn-icon btn-dark btn-rounded"
+                >
+                  <span className="icon">
+                    <span className="feather-icon">
+                      <i data-feather="minus"></i>
+                    </span>
+                  </span>
+                </a>
+              </div>
+              <div className="separator-full separator-light mt-0 opacity-10"></div>
+              <div className="media-wrap">
+                <div className="media">
+                  <div className="media-head">
+                    <div className="avatar avatar-sm avatar-soft-primary avatar-icon avatar-rounded position-relative">
+                      <span className="initial-wrap">
+                        <i className="ri-customer-service-2-line"></i>
+                      </span>
+                      <span className="badge badge-success badge-indicator badge-indicator-lg badge-indicator-nobdr position-bottom-end-overflow-1"></span>
+                    </div>
+                  </div>
+                  <div className="media-body">
+                    <div className="user-name">Chat Robot</div>
+                    <div className="user-status">Online</div>
+                  </div>
+                </div>
+              </div>
+            </header>
+            <div className="chatbot-popup-body">
+              <div data-simplebar className="nicescroll-bar">
+                <div>
+                  <div className="init-content-wrap">
+                    <div className="card card-shadow">
+                      <div className="card-body">
+                        <p className="card-text">
+                          Hey I am chat robot 😈
+                          <br />
+                          Do yo have any question regarding our tools?
+                          <br />
+                          <br />
+                          Select the topic or start chatting.
+                        </p>
+                        <button className="btn btn-block btn-primary text-nonecase start-conversation">
+                          Start a conversation
+                        </button>
+                      </div>
+                    </div>
+                    <div className="btn-wrap">
+                      <button className="btn btn-soft-primary text-nonecase btn-rounded start-conversation">
+                        <span>
+                          <span className="icon">
+                            <span className="feather-icon">
+                              <i data-feather="eye"></i>
+                            </span>
+                          </span>
+                          <span className="btn-text">Just browsing</span>
+                        </span>
+                      </button>
+                      <button className="btn btn-soft-danger text-nonecase btn-rounded start-conversation">
+                        <span>
+                          <span className="icon">
+                            <span className="feather-icon">
+                              <i data-feather="credit-card"></i>
+                            </span>
+                          </span>
+                          <span className="btn-text">
+                            I have a question regarding pricing
+                          </span>
+                        </span>
+                      </button>
+                      <button className="btn btn-soft-warning text-nonecase btn-rounded start-conversation">
+                        <span>
+                          <span className="icon">
+                            <span className="feather-icon">
+                              <i data-feather="cpu"></i>
+                            </span>
+                          </span>
+                          <span className="btn-text">
+                            Need help for technical query
+                          </span>
+                        </span>
+                      </button>
+                      <button className="btn btn-soft-success text-nonecase btn-rounded start-conversation">
+                        <span>
+                          <span className="icon">
+                            <span className="feather-icon">
+                              <i data-feather="zap"></i>
+                            </span>
+                          </span>
+                          <span className="btn-text">
+                            I have a pre purchase question
+                          </span>
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+                  <ul className="list-unstyled d-none">
+                    <li className="media sent">
+                      <div className="media-body">
+                        <div className="msg-box">
+                          <div>
+                            <p>I have a plan regarding pricing</p>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                    <li className="media received">
+                      <div className="avatar avatar-xs avatar-soft-primary avatar-icon avatar-rounded">
+                        <span className="initial-wrap">
+                          <i className="ri-customer-service-2-line"></i>
+                        </span>
+                      </div>
+                      <div className="media-body">
+                        <div className="msg-box">
+                          <div>
+                            <p>
+                              Welcome back!
+                              <br />
+                              Are you looking to upgrade your existing plan?
+                            </p>
+                          </div>
+                        </div>
+                        <div className="msg-box typing-wrap">
+                          <div>
+                            <div className="typing">
+                              <div className="dot"></div>
+                              <div className="dot"></div>
+                              <div className="dot"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <footer>
+              <div className="chatbot-intro-text fs-7">
+                <div className="separator-full separator-light"></div>
+                <p className="mb-2">
+                  This is jampack's beta version please sign up now to get early
+                  access to our full version
+                </p>
+                <a className="d-block mb-2" href="#">
+                  <u>Give Feedback</u>
+                </a>
+              </div>
+              <div className="input-group d-none">
+                <div className="input-group-text overflow-show border-0">
+                  <button
+                    className="btn btn-icon btn-flush-dark flush-soft-hover btn-rounded dropdown-toggle no-caret"
+                    data-bs-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  >
+                    <span className="icon">
+                      <span className="feather-icon">
+                        <i data-feather="share"></i>
+                      </span>
+                    </span>
+                  </button>
+                  <div className="dropdown-menu">
+                    <a className="dropdown-item" href="#">
+                      <div className="d-flex align-items-center">
+                        <div className="avatar avatar-icon avatar-xs avatar-soft-primary avatar-rounded me-3">
+                          <span className="initial-wrap">
+                            <i className="ri-image-line"></i>
+                          </span>
+                        </div>
+                        <div>
+                          <span className="h6 mb-0">
+                            Photo or Video Library
+                          </span>
+                        </div>
+                      </div>
+                    </a>
+                    <a className="dropdown-item" href="#">
+                      <div className="d-flex align-items-center">
+                        <div className="avatar avatar-icon avatar-xs avatar-soft-info avatar-rounded me-3">
+                          <span className="initial-wrap">
+                            <i className="ri-file-4-line"></i>
+                          </span>
+                        </div>
+                        <div>
+                          <span className="h6 mb-0">Documents</span>
+                        </div>
+                      </div>
+                    </a>
+                    <a className="dropdown-item" href="#">
+                      <div className="d-flex align-items-center">
+                        <div className="avatar avatar-icon avatar-xs avatar-soft-success avatar-rounded me-3">
+                          <span className="initial-wrap">
+                            <i className="ri-map-pin-line"></i>
+                          </span>
+                        </div>
+                        <div>
+                          <span className="h6 mb-0">Location</span>
+                        </div>
+                      </div>
+                    </a>
+                    <a className="dropdown-item" href="/contact">
+                      <div className="d-flex align-items-center">
+                        <div className="avatar avatar-icon avatar-xs avatar-soft-blue avatar-rounded me-3">
+                          <span className="initial-wrap">
+                            <i className="ri-contacts-line"></i>
+                          </span>
+                        </div>
+                        <div>
+                          <span className="h6 mb-0">Contact</span>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                </div>
+                <input
+                  type="text"
+                  id="input_msg_chat_popup"
+                  name="send-msg"
+                  className="input-msg-send form-control border-0 shadow-none"
+                  placeholder="Type something..."
+                />
+                <div className="input-group-text overflow-show border-0">
+                  <button className="btn btn-icon btn-flush-dark flush-soft-hover btn-rounded">
+                    <span className="icon">
+                      <span className="feather-icon">
+                        <i data-feather="smile"></i>
+                      </span>
+                    </span>
+                  </button>
+                </div>
+              </div>
+              <div className="footer-copy-text">
+                Powered by
+                <a className="brand-link" href="#">
+                  <img src="/dist/img/logo-light.png" alt="logo-brand" />
+                </a>
+              </div>
+            </footer>
+          </div>
+          {/*
                 <a href="#" className="btn btn-icon btn-floating btn-primary btn-lg btn-rounded btn-popup-open">
                     <span className="icon">
                         <span className="feather-icon"><i data-feather="message-circle"></i></span>
                     </span>
                 </a>
                 */}
-                <div className="chat-popover shadow-xl"><p>Try Jampack Chat for free and connect with your customers now!</p></div>
-                {/* /Chat Popup */}
-                
-                {/* Main Content */}
-                <div className="hk-pg-wrapper">
-                    {/*<div className="container-xxl">*/}
-						<Suspense fallback = {<LoadingSpinner/>}>
-							<Outlet/>
-						</Suspense>
-                    </div>
-                    {/* Page Footer */}
-                    <div className="hk-footer">
-                        <footer className="container-xxl footer">
-                            <div className="row">
-                                <div className="col-xl-8 text-center">
-                                    <p className="footer-text pb-0">
-                                        <span className="copy-text">Vteam LIMS © {new Date().getFullYear()}</span> 
-                                        <span className="footer-link-sep">|</span>
-                                        <a href="/privacy-policy" className="" target="_blank">Գաղտնիության քաղաքականություն</a>
-                                        {/*
+          <div className="chat-popover shadow-xl">
+            <p>
+              Try Jampack Chat for free and connect with your customers now!
+            </p>
+          </div>
+          {/* /Chat Popup */}
+
+          {/* Main Content */}
+          <div className="hk-pg-wrapper">
+            {/*<div className="container-xxl">*/}
+            <Suspense fallback={<LoadingSpinner />}>
+              <Outlet />
+            </Suspense>
+          </div>
+          {/* Page Footer */}
+          <div className="hk-footer">
+            <footer className="container-xxl footer">
+              <div className="row">
+                <div className="col-xl-8 text-center">
+                  <p className="footer-text pb-0">
+                    <span className="copy-text">
+                      Vteam LIMS © {new Date().getFullYear()}
+                    </span>
+                    <span className="footer-link-sep">|</span>
+                    <a href="/privacy-policy" className="" target="_blank">
+                      Գաղտնիության քաղաքականություն
+                    </a>
+                    {/*
                                         <span className="footer-link-sep">|</span><a href="#" className="" target="_blank">T&C</a>
                                         <span className="footer-link-sep">|</span><a href="#" className="" target="_blank">System Status</a>
                                         */}
-                                    </p>
-                                </div>
-                            </div>
-                        </footer>
-                    </div>
-                    {/* Page Footer */}  
-                {/*</div>*/}
-                {/* /Main Content */}
-            </div>
-            {/* /Wrapper */}  
-        </section>
-    )
+                  </p>
+                </div>
+              </div>
+            </footer>
+          </div>
+          {/* Page Footer */}
+          {/*</div>*/}
+          {/* /Main Content */}
+        </div>
+        {/* /Wrapper */}
+      </section>
+    );
 }
 
 export default MainTemplate

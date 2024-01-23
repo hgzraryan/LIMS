@@ -24,8 +24,8 @@ const useGetData = (url) => {
           try {
             const response = await axiosPrivate.post(url,{
               signal: controller.signal,
-              // page: currentPage,
-              // onPage: onPageCount,
+              page: currentPage,
+              onPage: onPageCount,
             });
             console.log(response);
             if (

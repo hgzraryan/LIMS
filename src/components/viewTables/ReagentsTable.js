@@ -40,7 +40,7 @@ function ReagentsTable({
             <div className="columnHeader">Անվանում</div>
           </>
         ),
-        accessor: "product_name",
+        accessor: "name",
         sortable: true,
         width: 200,
         Filter: ({ column: { id } }) => (
@@ -65,7 +65,7 @@ function ReagentsTable({
             <div className="columnHeader">Չափման միավոր</div>
           </>
         ),
-        accessor: "quantity_unit",
+        accessor: "unit",
         sortable: true,
         width: 200,
         Filter: ({ column: { id } }) => (
@@ -78,7 +78,7 @@ function ReagentsTable({
             <div className="columnHeader">Չափման տեսակ</div>
           </>
         ),
-        accessor: "unit",
+        accessor: "unitType",
         sortable: true,
         width: 200,
         Filter: ({ column: { id } }) => (
@@ -91,7 +91,7 @@ function ReagentsTable({
             <div className="columnHeader">Կիրառություն</div>
           </>
         ),
-        accessor: "used_for",
+        accessor: "usage",
         sortable: true,
         width: 250,
         Filter: ({ column: { id } }) => (
@@ -128,7 +128,7 @@ function ReagentsTable({
             <div className="columnHeader">Թողարկող</div>
           </>
         ),
-        accessor: "vendor",
+        accessor: "producer",
         width: 200,
         Filter: ({ column: { id } }) => (
           <ColumnFilter id={id} setData={setReagents} />
@@ -215,7 +215,7 @@ function ReagentsTable({
       ]);
     }
   );
-  console.log(selectedFlatRows);
+  // console.log(selectedFlatRows);
   return (
     <table
       className="table nowrap w-100 mb-5 dataTable no-footer"

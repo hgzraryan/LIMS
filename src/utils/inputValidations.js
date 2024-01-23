@@ -9,328 +9,543 @@
 // const MOBILE_REGEX = /^\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$/;
 
 export const firstName_validation = {
-  name: 'firstName',
-  label: 'Անուն',
-  type: 'text',
-  id: 'firstName',
+  name: "firstName",
+  label: "Անուն",
+  type: "text",
+  id: "firstName",
   placeholder: "Անուն",
   validation: {
     required: {
       value: true,
-      message: 'required',
+      message: "required",
     },
     maxLength: {
       value: 30,
-      message: '30 characters max',
+      message: "30 characters max",
     },
   },
-}
+};
 export const lastName_validation = {
-  name: 'lastName',
-  label: 'Ազգանուն',
-  type: 'text',
-  id: 'lastName',
+  name: "lastName",
+  label: "Ազգանուն",
+  type: "text",
+  id: "lastName",
   placeholder: "Ազգանուն",
   validation: {
     required: {
       value: true,
-      message: 'required',
+      message: "required",
     },
     maxLength: {
       value: 30,
-      message: '30 characters max',
+      message: "30 characters max",
     },
   },
-}
+};
 export const midName_validation = {
-  name: 'midName',
-  label: 'Հայրանուն',
-  type: 'text',
-  id: 'midName',
+  name: "midName",
+  label: "Հայրանուն",
+  type: "text",
+  id: "midName",
   placeholder: "Հայրանուն",
   validation: {
     required: {
       value: true,
-      message: 'required',
+      message: "required",
     },
     maxLength: {
       value: 30,
-      message: '30 characters max',
+      message: "30 characters max",
     },
   },
-}
+};
 export const user_validation = {
-    name: 'user',
-    label: 'Ծածկանուն',
-    type: 'text',
-    id: 'user',
-    placeholder: "Ծածկանուն",
-    validation: {
-      required: {
-        value: true,
-        message: 'required',
-      },
-      maxLength: {
-        value: 30,
-        message: '30 characters max',
-      },
+  name: "user",
+  label: "Ծածկանուն",
+  type: "text",
+  id: "user",
+  placeholder: "Ծածկանուն",
+  validation: {
+    required: {
+      value: true,
+      message: "required",
     },
-  }
-  export const pwd_validation = {
-    name: 'pwd',
-    label: 'Ծածկագիր',
-    type: 'password',
-    id: 'pwd',
-    placeholder: 'Ծածկագիր',
-    validation: {
-      required: {
-        value: true,
-        message: 'required',
-      },
-      minLength: {
-        value: 6,
-        message: 'min 6 characters',
-      },
+    maxLength: {
+      value: 30,
+      message: "30 characters max",
     },
-  }
+  },
+};
+export const pwd_validation = {
+  name: "pwd",
+  label: "Ծածկագիր",
+  type: "password",
+  id: "pwd",
+  placeholder: "Ծածկագիր",
+  validation: {
+    required: {
+      value: true,
+      message: "required",
+    },
+    minLength: {
+      value: 6,
+      message: "min 6 characters",
+    },
+  },
+};
 export const position_validation = {
-    name: 'position',
-    label: 'Պաշտոն',
-    type: 'text',
-    id: 'position',
-    placeholder: "Պաշտոն",
-    validation: {
-      required: {
-        value: true,
-        message: 'required',
-      },
-      maxLength: {
-        value: 30,
-        message: '30 characters max',
-      },
+  name: "position",
+  label: "Պաշտոն",
+  type: "text",
+  id: "position",
+  placeholder: "Պաշտոն",
+  validation: {
+    required: {
+      value: true,
+      message: "required",
     },
-  }
+    maxLength: {
+      value: 30,
+      message: "30 characters max",
+    },
+  },
+};
 export const birthday_validation = {
-  name: 'birthday',
-  label: 'Ծննդյան ամսաթիվ',
-  type: 'text',
-  id: 'birthday',
+  name: "birthday",
+  label: "Ծննդյան ամսաթիվ",
+  type: "text",
+  id: "birthday",
   placeholder: "DD/MM/YYYY",
   validation: {
     required: {
       value: true,
-      message: 'required',
+      message: "required",
     },
     maxLength: {
       value: 10,
-      message: '10 symbols max',
+      message: "10 symbols max",
     },
   },
-}
+};
 export const age_validation = {
-  name: 'age',
-  label: 'Տարիք',
-  type: 'number',
-  id: 'age',
+  name: "age",
+  label: "Տարիք",
+  type: "number",
+  id: "age",
   placeholder: "Տարիք",
   validation: {
     required: {
       value: true,
-      message: 'required',
+      message: "required",
     },
     maxLength: {
       value: 3,
-      message: '3 numbers max',
+      message: "3 numbers max",
     },
   },
-}
+};
 export const address_validation = {
-  name: 'address',
-  label: 'Հասցե',
-  type: 'text',
-  id: 'address',
+  name: "address",
+  label: "Հասցե",
+  type: "text",
+  id: "address",
   placeholder: "Հասցե",
   validation: {
     required: {
       value: true,
-      message: 'required',
-    }
+      message: "required",
+    },
   },
-}
+};
 export const email_validation = {
-  name: 'email',
-  label: 'Էլ․ հասցե',
-  type: 'email',
-  id: 'email',
-  placeholder: 'Էլ․ հասցե',
+  name: "email",
+  label: "Էլ․ հասցե",
+  type: "email",
+  id: "email",
+  placeholder: "Էլ․ հասցե",
   validation: {
     required: {
       value: true,
-      message: 'required',
+      message: "required",
     },
     pattern: {
       value:
         /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-      message: 'not valid',
+      message: "not valid",
     },
   },
-}
+};
 export const mobile_validation = {
-  name: 'mobile',
-  label: 'Հեռախոս',
-  type: 'text',
-  id: 'mobile',
+  name: "mobile",
+  label: "Հեռախոս",
+  type: "text",
+  id: "mobile",
   placeholder: "Հեռախոս",
   validation: {
     required: {
       value: true,
-      message: 'required',
+      message: "required",
     },
     maxLength: {
       value: 15,
-      message: '15 numbers max',
+      message: "15 numbers max",
     },
   },
-}
+};
 export const name_validation = {
-  name: 'name',
-  label: 'Անվանում',
-  type: 'text',
-  id: 'name',
+  name: "name",
+  label: "Անվանում",
+  type: "text",
+  id: "name",
   placeholder: "Անվանում",
   validation: {
     required: {
       value: true,
-      message: 'required',
+      message: "required",
     },
     maxLength: {
       value: 30,
-      message: '30 characters max',
+      message: "30 characters max",
     },
   },
-}
+};
+export const fullName_validation = {
+  name: "fullName",
+  label: "Անուն Ազգանուն",
+  type: "text",
+  id: "fullName",
+  placeholder: "Անուն Ազգանուն",
+  validation: {
+    required: {
+      value: true,
+      message: "required",
+    },
+    maxLength: {
+      value: 30,
+      message: "30 characters max",
+    },
+  },
+};
+export const additional_validation = {
+  name: "additional",
+  label: "Հավելյալ տվյալներ",
+  type: "text",
+  id: "additional",
+  placeholder: "Հավելյալ տվյալներ",
+  validation: {
+    required: false,
+    maxLength: {
+      value: 30,
+      message: "30 characters max",
+    },
+  },
+};
+export const doctorState_validation = {
+  name: "doctorState",
+  label: "Կարգավիճակ",
+  type: "text",
+  id: "doctorState",
+  placeholder: "Կարգավիճակ",
+  validation: {
+    required: {
+      value: true,
+      message: "required",
+    },
+    maxLength: {
+      value: 30,
+      message: "30 characters max",
+    },
+  },
+};
+export const specialty_validation = {
+  name: "specialty",
+  label: "Մասնագիտություն",
+  type: "text",
+  id: "specialty",
+  placeholder: "Մասնագիտություն",
+  validation: {
+    required: {
+      value: true,
+      message: "required",
+    },
+    maxLength: {
+      value: 30,
+      message: "30 characters max",
+    },
+  },
+};
+export const licenseNumber_validation = {
+  name: "licenseNumber",
+  label: "Լիցենզավորման համար",
+  type: "text",
+  id: "licenseNumber",
+  placeholder: "Լիցենզավորման համար",
+  validation: {
+    required: {
+      value: true,
+      message: "required",
+    },
+    maxLength: {
+      value: 30,
+      message: "30 characters max",
+    },
+  },
+};
+export const qualification_validation = {
+  name: "qualification",
+  label: "Որակավորում",
+  type: "text",
+  id: "qualification",
+  placeholder: "Որակավորում",
+  validation: {
+    required: {
+      value: true,
+      message: "required",
+    },
+    maxLength: {
+      value: 30,
+      message: "30 characters max",
+    },
+  },
+};
 export const price_validation = {
-  name: 'price',
-  label: 'Արժեք',
-  type: 'number',
-  id: 'price',
+  name: "price",
+  label: "Արժեք",
+  type: "number",
+  id: "price",
   placeholder: "Արժեք",
   validation: {
     required: {
       value: true,
-      message: 'required',
+      message: "required",
     },
     maxLength: {
       value: 10,
-      message: '10 characters max',
+      message: "10 characters max",
     },
   },
-}
+};
 export const unit_validation = {
-  name: 'unit',
-  label: 'Չափման միավոր',
-  type: 'text',
-  id: 'unit',
+  name: "unit",
+  label: "Չափման միավոր",
+  type: "text",
+  id: "unit",
   placeholder: "Չափման միավոր",
   validation: {
     required: {
       value: true,
-      message: 'required',
+      message: "required",
     },
     maxLength: {
       value: 30,
-      message: '30 characters max',
+      message: "30 characters max",
     },
   },
-}
+};
 
 export const currency_validation = {
-  name: 'currency',
-  label: 'Արժույթ',
-  type: 'text',
-  id: 'currency',
+  name: "currency",
+  label: "Արժույթ",
+  type: "text",
+  id: "currency",
   placeholder: "Արժույթ",
   validation: {
     required: {
       value: true,
-      message: 'required',
+      message: "required",
     },
     maxLength: {
       value: 30,
-      message: '30 characters max',
+      message: "30 characters max",
     },
   },
-}
-export const useage_validation = {
-  name: 'useage',
-  label: 'Կիրառություն',
-  type: 'text',
-  id: 'useage',
+};
+export const usage_validation = {
+  name: "usage",
+  label: "Կիրառություն",
+  type: "text",
+  id: "usage",
   placeholder: "Կիրառություն",
   validation: {
     required: {
       value: true,
-      message: 'required',
+      message: "required",
     },
     maxLength: {
       value: 30,
-      message: '30 characters max',
+      message: "30 characters max",
     },
   },
-}
+};
 export const producer_validation = {
-  name: 'producer',
-  label: 'Թողարկող',
-  type: 'text',
-  id: 'producer',
+  name: "producer",
+  label: "Թողարկող",
+  type: "text",
+  id: "producer",
   placeholder: "Թողարկող",
   validation: {
     required: {
       value: true,
-      message: 'required',
+      message: "required",
     },
     maxLength: {
       value: 30,
-      message: '30 characters max',
+      message: "30 characters max",
     },
   },
-}
+};
 
 export const desc_validation = {
-  name: 'description',
-  label: 'Նկարագիր',
+  name: "description",
+  label: "Նկարագիր",
   multiline: true,
-  id: 'description',
-  placeholder: 'Նկարագիր',
+  id: "description",
+  placeholder: "Նկարագիր",
   validation: {
     required: {
       value: true,
-      message: 'required',
+      message: "required",
     },
     maxLength: {
       value: 200,
-      message: '200 characters max',
+      message: "200 characters max",
     },
   },
-}
+};
 export const class_validation = {
-  name: 'class',
-  label: 'Դասակարգ',
+  name: "class",
+  label: "Դասակարգ",
   multiline: true,
-  id: 'class',
-  placeholder: 'Դասակարգ',
+  id: "class",
+  placeholder: "Դասակարգ",
   validation: {
     required: {
       value: true,
-      message: 'required',
+      message: "required",
     },
     maxLength: {
       value: 200,
-      message: '200 characters max',
+      message: "200 characters max",
     },
   },
-}
-
-
-
-
+};
+export const state_validation = {
+  name: "state",
+  label: "Մարզ",
+  multiline: true,
+  id: "state",
+  placeholder: "Մարզ",
+  validation: {
+    required: {
+      value: false,
+      message: "required",
+    },
+    maxLength: {
+      value: 200,
+      message: "200 characters max",
+    },
+  },
+};
+export const city_validation = {
+  name: "city",
+  label: "Քաղաք/Գյուղ",
+  multiline: true,
+  id: "city",
+  placeholder: "Քաղաք/Գյուղ",
+  validation: {
+    required: {
+      value: false,
+      message: "required",
+    },
+    maxLength: {
+      value: 200,
+      message: "200 characters max",
+    },
+  },
+};
+export const country_validation = {
+  name: "country",
+  label: "Երկիր",
+  multiline: true,
+  id: "country",
+  placeholder: "Երկիր",
+  validation: {
+    required: {
+      value: false,
+      message: "required",
+    },
+    maxLength: {
+      value: 200,
+      message: "200 characters max",
+    },
+  },
+};
+export const street_validation = {
+  name: "street",
+  label: "Փողոց",
+  multiline: true,
+  id: "street",
+  placeholder: "Փողոց",
+  validation: {
+    required: {
+      value: false,
+      message: "required",
+    },
+    maxLength: {
+      value: 200,
+      message: "200 characters max",
+    },
+  },
+};
+export const zipCode_validation = {
+  name: "zipCode",
+  label: "Փոստային համար",
+  multiline: true,
+  id: "zipCode",
+  placeholder: "Փոստային համար",
+  validation: {
+    required: {
+      value: false,
+      message: "required",
+    },
+    maxLength: {
+      value: 200,
+      message: "200 characters max",
+    },
+  },
+};
+export const emergencyContactName_validation = {
+  name: "emergencyContactName",
+  label: "Լրացուցիչ կոնտակտ",
+  multiline: true,
+  id: "emergencyContactName",
+  placeholder: "Լրացուցիչ կոնտակտ",
+  validation: {
+    required: {
+      value: true,
+      message: "required",
+    },
+    maxLength: {
+      value: 200,
+      message: "200 characters max",
+    },
+  },
+};
+export const emergencyContactNumber_validation = {
+  name: "emergencyContactNumber",
+  label: "Լրացուցիչ կոնտակտի հեռախոս",
+  multiline: true,
+  type: "number",
+  id: "emergencyContactNumber",
+  placeholder: "Լրացուցիչ կոնտակտ հեռախոս",
+  validation: {
+    required: {
+      value: true,
+      message: "required",
+    },
+    maxLength: {
+      value: 200,
+      message: "200 characters max",
+    },
+  },
+};

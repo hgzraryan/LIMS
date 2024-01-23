@@ -12,15 +12,15 @@ import {
 } from "../../utils/inputValidations";
 import useSubmitForm from "../../hooks/useSubmitForm";
 import Multiselect from "multiselect-react-dropdown";
-const REGISTER_URL = "/registerResearchList";
+const REGISTER_URL = "/registerResearchLists";
 
 function AddResearchList({ handleToggleCreateModal, getResearches,researchState }) {
     const [errMsg, setErrMsg] = useState("");
     const [externalType, setExternalType] = useState(false);
     const multiselectRef = useRef("");
     const researchTypeRef = useRef("");
+    const additionalData = useRef({});
     const editorRef = useRef(null);
-    const additionalData = {}
 
     const { onSubmit, methods } = useSubmitForm(
       REGISTER_URL,

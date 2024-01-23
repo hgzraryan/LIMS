@@ -30,7 +30,7 @@ function AddOrganization({ handleToggleCreateModal, getOrganizations }) {
     >
       <Modal.Header closeButton>
         <Modal.Title style={{ width: "100%", textAlign: "center" }}>
-          Ավելացնել նոր Գործակալ
+          Ավելացնել նոր Պատվիրատու
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
@@ -47,7 +47,7 @@ function AddOrganization({ handleToggleCreateModal, getOrganizations }) {
                   >
                     <div className="card">
                       <div className="card-header">
-                        <a href="#">Կազմակերպության տվյալներ</a>
+                        <a href="#">Պատվիրատուի տվյալներ</a>
                         <button
                           className="btn btn-xs btn-icon btn-rounded btn-light"
                           data-bs-toggle="tooltip"

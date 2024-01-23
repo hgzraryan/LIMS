@@ -36,7 +36,7 @@ function ResearchListsTable({
         ),
         accessor: "research",
         sortable: true,
-        width:1000,
+        width:600,
         Filter: ({ column: { id } })=>(
           <ColumnFilter
             id={id}
@@ -52,6 +52,22 @@ function ResearchListsTable({
           </>
         ),
         accessor: "category_name",
+        width:300,
+        Filter: ({ column: { id } })=>(
+          <ColumnFilter
+            id={id}
+            setData={setResearches}
+          />
+        ),
+      },
+      {
+        Header: (event) => (
+          <>
+            
+            <div className="columnHeader">Գին</div>
+          </>
+        ),
+        accessor: "researchesPrice",
         width:300,
         Filter: ({ column: { id } })=>(
           <ColumnFilter

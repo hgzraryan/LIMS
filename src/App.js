@@ -24,8 +24,10 @@ import Reagents from "./components/views/Reagents";
 import Equipments from "./components/views/Equipments";
 import ResearchLists from "./components/views/ResearchLists";
 import Researches from "./components/views/Researches";
+import Doctors from "./components/views/Doctors";
 
 import { Routes, Route } from "react-router-dom";
+import Samples from "./components/views/Samples";
 //import React, { useState, useEffect } from "react";
 
 const ROLES = {
@@ -60,9 +62,11 @@ function App() {
 
                 <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
                   <Route path="patients" element={<Patients />} />
+                  <Route path="doctors" element={<Doctors />} />
                   <Route path="admin/useradd" element={<UserAdd />} />
                   <Route path="users" element={<Users />} />
                   <Route path="admin" element={<Admin />} />
+                  <Route path="samples" element={<Samples />} />
                   <Route path="settings/prices" element={<Prices />} />
                   <Route
                     path="settings/discountCards"

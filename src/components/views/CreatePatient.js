@@ -17,7 +17,11 @@ import {
   midName_validation,
   email_validation,
   mobile_validation,
-  address_validation,
+  zipCode_validation,
+  street_validation,
+  city_validation,
+  state_validation,
+  country_validation,
 } from "../../utils/inputValidations";
 import { useCalculateAge } from "../../hooks/useCalculateAge";
 
@@ -44,7 +48,7 @@ function CreatePatient({
   const editorRef = useRef(null);
   const {age} = useCalculateAge(birthday)
   
-  console.log(age)
+ 
   const getDate = (date) => {
     setStartDate(date);
     handlingDate.current =
@@ -52,6 +56,7 @@ function CreatePatient({
 
   };
   const getAge = (date) => {
+    
     setBirthday(date)
   };
   const notify = (text) => toast.success(text, {
@@ -64,36 +69,63 @@ function CreatePatient({
     progress: undefined,
     theme: "light",
     });
-  const onSubmit = methods.handleSubmit(async (data) => {
+  const onSubmit = methods.handleSubmit(async ({firstName,
+    lastName,
+    midName,
+    email,
+    mobile,
+    street,
+    city,
+    state,
+    country,
+    zipCode,medicalHistory}) => {
     const newPatient = {
-      ...data,
-      age: age,//parseInt(data["age"]),
-      totalPrice: researchesPrice,
-      handlingDate: handlingDate.current,
+      firstName:firstName,
+      lastName:lastName,
+      midName:midName,
+      age: age,
+      lastHandlingDate: handlingDate.current,
       researchList: researchesArray,
       additional: editorRef.current.getContent({ format: "text" }),
       gender:genderRef.current,
-      DOB:birthday.toLocaleDateString("en-GB")
+      contact:{
+        email: email,
+        phone: mobile,
+        address: {
+            street: street,
+            city: city,
+            state: state,
+            country: country,
+            zip_code: zipCode,
+        },
+      },
+     // medicalHistory:'medicalHistory',
+      dateOfBirth:new Date(birthday.getTime() - (birthday.getTimezoneOffset() * 60000))
+      .toISOString()
+      .split('T')[0]
     };
-    const formData = JSON.stringify(newPatient);
-    try {
-      await axiosPrivate.post(REGISTER_URL, formData, {
-        headers: { "Content-Type": "application/json" },
-        withCredentials: true,
-      });
-      handleToggleCreateModal(false);
-      getPatients("update");
-      notify(`${newPatient.firstName} ${newPatient.lastName} հաճախորդը ավելացված է`)
 
-    } catch (err) {
-      if (!err?.response) {
-        setErrMsg("No Server Response");
-      } else if (err.response?.status === 409) {
-        setErrMsg("Username Taken");
-      } else {
-        setErrMsg(" Failed");
-      }
-    }
+    
+    const formData = JSON.stringify(newPatient);
+    console.log(newPatient)
+    // try {
+    //   await axiosPrivate.post(REGISTER_URL, formData, {
+    //     headers: { "Content-Type": "application/json" },
+    //     withCredentials: true,
+    //   });
+    //   handleToggleCreateModal(false);
+    //   getPatients("update");
+    //   notify(`${newPatient.firstName} ${newPatient.lastName} հաճախորդը ավելացված է`)
+
+    // } catch (err) {
+    //   if (!err?.response) {
+    //     setErrMsg("No Server Response");
+    //   } else if (err.response?.status === 409) {
+    //     setErrMsg("Username Taken");
+    //   } else {
+    //     setErrMsg(" Failed");
+    //   }
+    // }
   });
   const onGenderSelect = (data) => {
     genderRef.current = data[0].gender
@@ -175,9 +207,27 @@ function CreatePatient({
                               <Input {...midName_validation} />
                             </div>
                             <div className="col-sm-6">
-                              <Input {...address_validation} />
+                              <Input {...country_validation} />
                             </div>
                           </div>
+                          <div className="row gx-3">
+                            
+                            <div className="col-sm-6">
+                              <Input {...state_validation} />
+                            </div>
+                            <div className="col-sm-6">
+                              <Input {...city_validation} />
+                            </div>
+                          </div>
+                          <div className="row gx-3">
+                            
+                            <div className="col-sm-6">
+                              <Input {...street_validation} />
+                            </div>
+                            <div className="col-sm-6">
+                              <Input {...zipCode_validation} />
+                            </div>
+                          </div>                          
                           <div className="row gx-3">
                             <div className="col-sm-6">
                               <Input {...email_validation} />
@@ -189,7 +239,7 @@ function CreatePatient({
                           <div className="row gx-3">
                             
                             <Multiselect
-                                    options={[{gender:'Արական'},{gender:'Իգական'}]} // Options to display in the dropdown
+                                    options={[{gender:'Արական'},{gender:'Իգական'},{gender:'այլ'}]} // Options to display in the dropdown
                                     displayValue="gender" // Property name to display in the dropdown options
                                     onSelect={onGenderSelect} // Function will trigger on select event
                                   //  onRemove={onResearchDelete} // Function will trigger on remove event
@@ -222,7 +272,7 @@ function CreatePatient({
                                   scrollableYearDropdown
                                   selected={birthday}
                                     onChange={(date) => getAge(date)}
-                                    dateFormat={"dd/MM/yyyy"}
+                                    dateFormat={"yyyy-MM-dd"}
                                     isClearable
                                     placeholderText="Select date"
                                   />

@@ -3,7 +3,6 @@ import { Modal } from "react-bootstrap";
 import Multiselect from "multiselect-react-dropdown";
 import FeatherIcon from "feather-icons-react";
 import MissingAvatar from "../../dist/img/Missing.svg";
-import axios from "./../../api/axios";
 import { Form, FormProvider, useForm } from "react-hook-form";
 import { Input } from "../Input";
 import {
@@ -19,7 +18,7 @@ import {
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import {  toast } from 'react-toastify';
 
-const REGISTER_URL = "/register";
+const REGISTER_URL = "/registerUser";
 function CreateUser({ setIsOpen,getUsers }) {
   const axiosPrivate = useAxiosPrivate();
   const multiselectRef = useRef("");
@@ -56,7 +55,7 @@ function CreateUser({ setIsOpen,getUsers }) {
   const onSubmit = methods.handleSubmit(async (data) => {
     const newUser = {
       ...data,
-      roles: rolesArray,
+      roles: {"User":2001},
     };
     formData.append("text", JSON.stringify(newUser));
     formData.append("image", image);
@@ -67,7 +66,7 @@ function CreateUser({ setIsOpen,getUsers }) {
       });
       
       handleToggleCreateModal(false);
-      getUsers("update");
+      getUsers();
       notify(`${newUser.firstName} ${newUser.lastName} աշխատակիցը ավելացված է`)
 
     } catch (err) {

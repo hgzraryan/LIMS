@@ -99,7 +99,7 @@ function ResearchesTable({
     () => [
       {
         Header: "Ախտորոշման ID",
-        accessor: "researchId",
+        accessor: "_id",
         sortable: true,
         width: 300,
         Filter: ({ column: { id } }) => (

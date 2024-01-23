@@ -177,7 +177,7 @@ function PricesTable({
       ]);
     }
   );
-  console.log(selectedFlatRows);
+  // console.log(selectedFlatRows);
   return (
     <table
       className="table nowrap w-100 mb-5 dataTable no-footer"

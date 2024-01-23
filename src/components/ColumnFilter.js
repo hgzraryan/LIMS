@@ -8,10 +8,10 @@ export const ColumnFilter = ( {setData,id,placeholder='search',url} ) => {
   const [searchTerms, setSearchTerms] = useState({});
 
   const debouncedSearch = useDebounce(searchTerms,1000)
-
-  const {
-    data: mainData,
-  } = useGetData('/users');
+//todo data needed for correct work
+  //const {
+  //   data: mainData,
+  // } = useGetData('/users');
 
   useEffect(() => {
     let isMounted = true;
@@ -41,11 +41,11 @@ export const ColumnFilter = ( {setData,id,placeholder='search',url} ) => {
         console.error(err);
       }
     };
-    if (Object.values(searchTerms).toString().length) {
-      getData();
-    } else {
-      setData(mainData);
-    }
+    // if (Object.values(searchTerms).toString().length) {
+    //   getData();
+    // } else {
+    //   setData(mainData);
+    // }
 
     return () => {
       isMounted = false;

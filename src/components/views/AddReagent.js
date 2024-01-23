@@ -14,7 +14,7 @@ import {
   unit_validation,
   currency_validation,
   desc_validation,
-  useage_validation,
+  usage_validation,
   producer_validation,
 } from "../../utils/inputValidations";
 import Multiselect from "multiselect-react-dropdown";
@@ -56,13 +56,14 @@ function AddReagent({ handleToggleCreateModal, getReagents }) {
       additional: editorRef.current.getContent({ format: "text" }),
     };
     const formData = JSON.stringify(newReagent);
+
     try {
       await axiosPrivate.post(REGISTER_URL, formData, {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
       });
       handleToggleCreateModal(false);
-      getReagents("update");
+      getReagents();
       notify(`${newReagent.name}  ռեագենտը ավելացված է`);
     } catch (err) {
       if (!err?.response) {
@@ -153,7 +154,7 @@ function AddReagent({ handleToggleCreateModal, getReagents }) {
                           </div>
                           <div className="row gx-3">
                             <div className="col-sm-6">
-                              <Input {...useage_validation} />
+                              <Input {...usage_validation} />
                             </div>
                             <div className="col-sm-6">
                             <label
