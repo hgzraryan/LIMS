@@ -10,7 +10,7 @@ import {
   lastName_validation,
   email_validation,
   mobile_validation,
-  pwd_validation,
+  password_validation,
   user_validation,
   position_validation,
   birthday_validation,
@@ -24,7 +24,7 @@ function CreateUser({ setIsOpen,getUsers }) {
   const multiselectRef = useRef("");
   const intupAvatarRef = useRef(null);
   const [imageUrl, setImageUrl] = useState(MissingAvatar);
-  const [rolesArray, setRolesArray] = useState([]);
+  const [roles, setRoles] = useState([]);
   const [image, setImage] = useState("");
   const imageMimeType = /image\/(png|jpg|jpeg)/i;
   const fileReader = new FileReader();
@@ -52,22 +52,37 @@ function CreateUser({ setIsOpen,getUsers }) {
     progress: undefined,
     theme: "light",
     });
-  const onSubmit = methods.handleSubmit(async (data) => {
+  const onSubmit = methods.handleSubmit(async (firstName,
+    lastName,
+    position,
+    birthday,
+    email,
+    mobile,
+    user,
+    password,) => {
+   
     const newUser = {
-      ...data,
-      roles: {"User":2001},
+      firstname:firstName,
+      lastname:lastName,
+      position:position,
+      birthday:birthday,
+      email:email,
+      mobile:mobile,
+      username:user,
+      password:password,
+      roles: roles,
     };
     formData.append("text", JSON.stringify(newUser));
     formData.append("image", image);
     try {
-      await axiosPrivate.post(REGISTER_URL, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
+      await axiosPrivate.post(REGISTER_URL, newUser, {
+        headers: { "Content-Type": "application/json"  },
         withCredentials: true,
       });
       
       handleToggleCreateModal(false);
       getUsers();
-      notify(`${newUser.firstName} ${newUser.lastName} աշխատակիցը ավելացված է`)
+      notify(`${newUser.firstname} ${newUser.lastname} աշխատակիցը ավելացված է`)
 
     } catch (err) {
       if (!err?.response) {
@@ -80,20 +95,18 @@ function CreateUser({ setIsOpen,getUsers }) {
     }
   });
   const onRoleSelect = (data) => {
-    let rolesArr = [];
+    let rolesArr = {};
     for (let role of data) {
-      rolesArr.push(Object.values(role)[1]);
+      rolesArr[role.name]=role.id
     }
-    setRolesArray((prev) => (prev = rolesArr));
+    setRoles((prev) => (prev = rolesArr));
   };
   const onRoleDelete = (data) => {
-    let rolesArr = [];
+    let rolesArr = {};
     for (let role of data) {
-      rolesArr.push(Object.values(role)[0]);
+      rolesArr[role.name]=role.id
     }
-    setRolesArray((prev) => (prev = rolesArr));
-
-    
+    setRoles((prev) => (prev = rolesArr));
   };
   /*----------------ADD USER END---------------------*/
   fileReader.onloadend = () => {
@@ -152,9 +165,11 @@ function CreateUser({ setIsOpen,getUsers }) {
   };
   let roleState = {
     options: [
-      { name: "Admin", id: 1 },
-      { name: "Editor", id: 2 },
-      { name: "User", id: 3 },
+      { name: "Admin", id: 5150 },
+      { name: "Approver", id: 6010 },
+      { name: "Editor", id: 1984 },
+      { name: "User", id: 2001 },
+      { name: "Sampling", id: 1212 },
     ],
   };
 
@@ -270,7 +285,7 @@ function CreateUser({ setIsOpen,getUsers }) {
                               <Input {...user_validation} />
                             </div>
                             <div className="col-sm-6">
-                              <Input {...pwd_validation} />
+                              <Input {...password_validation} />
                             </div>
                           </div>
                         </div>

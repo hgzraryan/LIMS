@@ -46,6 +46,7 @@ function CreatePatient({
   const multiselectRef = useRef("");
   const multiselectRef1 = useRef("");
   const editorRef = useRef(null);
+  const doctorRef = useRef(null);
   const {age} = useCalculateAge(birthday)
   
  
@@ -130,6 +131,10 @@ function CreatePatient({
   const onGenderSelect = (data) => {
     genderRef.current = data[0].gender
   };
+  const onDoctorSelect = (data)=>{
+    doctorRef.current=data[0].doctor
+    console.log(doctorRef.current)
+  }
   const onResearchSelect = (data) => {
     let researchesArr = [];
     let researchesPrice = [];
@@ -211,7 +216,6 @@ function CreatePatient({
                             </div>
                           </div>
                           <div className="row gx-3">
-                            
                             <div className="col-sm-6">
                               <Input {...state_validation} />
                             </div>
@@ -220,14 +224,13 @@ function CreatePatient({
                             </div>
                           </div>
                           <div className="row gx-3">
-                            
                             <div className="col-sm-6">
                               <Input {...street_validation} />
                             </div>
                             <div className="col-sm-6">
                               <Input {...zipCode_validation} />
                             </div>
-                          </div>                          
+                          </div>
                           <div className="row gx-3">
                             <div className="col-sm-6">
                               <Input {...email_validation} />
@@ -237,28 +240,63 @@ function CreatePatient({
                             </div>
                           </div>
                           <div className="row gx-3">
-                            
-                            <Multiselect
-                                    options={[{gender:'Արական'},{gender:'Իգական'},{gender:'այլ'}]} // Options to display in the dropdown
-                                    displayValue="gender" // Property name to display in the dropdown options
-                                    onSelect={onGenderSelect} // Function will trigger on select event
-                                  //  onRemove={onResearchDelete} // Function will trigger on remove event
-                                    closeOnSelect={true}
-                                    singleSelect
-                                    id="input_tags_4"
-                                    className="form-control"
-                                    ref={multiselectRef1}
-                                    hidePlaceholder={true}
-                                    placeholder="Սեռ"
-                                    style={{
-                                      height: "10rem",
-                                      overflow: "hidden",
-                                    }}
-                                  />
+                            <div className="col-sm-6">
+                          <label className="form-label" htmlFor="gender">
+                                Սեռ
+                              </label>
+                              <Multiselect
+                                options={[
+                                  { gender: "Արական" },
+                                  { gender: "Իգական" },
+                                  { gender: "այլ" },
+                                ]} // Options to display in the dropdown
+                                displayValue="gender" // Property name to display in the dropdown options
+                                onSelect={onGenderSelect} // Function will trigger on select event
+                                //  onRemove={onResearchDelete} // Function will trigger on remove event
+                                closeOnSelect={true}
+                                singleSelect
+                                id="input_tags_4"
+                                className="form-control"
+                                ref={multiselectRef1}
+                                hidePlaceholder={true}
+                                placeholder="Սեռ"
+                                style={{
+                                  height: "10rem",
+                                  overflow: "hidden",
+                                }}
+                              />
+                            </div>
+
+                            <div className="col-sm-6">
+                              <label className="form-label" htmlFor="doctor">
+                                Բժիշկներ
+                              </label>
+                              <Multiselect
+                                options={[
+                                  { doctor: "Համլետ Պետրոսյան" },
+                                  { doctor: "Կիմա Խաչատրյան" },
+                                  { doctor: "Վլադիմիր Մարգարյան" },
+                                ]} // Options to display in the dropdown
+                                displayValue="doctor" // Property name to display in the dropdown options
+                                onSelect={onDoctorSelect} // Function will trigger on select event
+                                //  onRemove={onResearchDelete} // Function will trigger on remove event
+                                closeOnSelect={true}
+                                singleSelect
+                                id="input_tags_4"
+                                className="form-control"
+                                ref={multiselectRef}
+                                hidePlaceholder={true}
+                                placeholder="Ընտրել Բժշկին"
+                                style={{
+                                  height: "10rem",
+                                  overflow: "hidden",
+                                }}
+                              />
+                            </div>
                           </div>
                           <div className="row gx-3">
                             <div className="col-sm-6">
-                            <div className="form-group">
+                              <div className="form-group">
                                 <label
                                   className="form-label"
                                   htmlFor="handlingDate"
@@ -267,10 +305,10 @@ function CreatePatient({
                                 </label>
                                 <div>
                                   <DatePicker
-                                  showYearDropdown
-                                  yearDropdownItemNumber={100}
-                                  scrollableYearDropdown
-                                  selected={birthday}
+                                    showYearDropdown
+                                    yearDropdownItemNumber={100}
+                                    scrollableYearDropdown
+                                    selected={birthday}
                                     onChange={(date) => getAge(date)}
                                     dateFormat={"yyyy-MM-dd"}
                                     isClearable

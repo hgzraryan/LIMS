@@ -185,7 +185,6 @@ function Doctors() {
                       setDoctors={setDoctors}
                       //getDoctors={getDoctors}
                     />
-                    //TODO need to check after Backend endpoit registration
                     <ReactPaginate
                                            previousLabel = {"Հետ"}    
                                            nextLabel = {"Առաջ"}

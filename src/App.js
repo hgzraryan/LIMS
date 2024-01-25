@@ -28,7 +28,7 @@ import Doctors from "./components/views/Doctors";
 
 import { Routes, Route } from "react-router-dom";
 import AddSample from "./components/views/AddSample";
-import Samples from "./components/views/Samples";
+import Samples from "./components/viewTables/SamplesTable";
 //import React, { useState, useEffect } from "react";
 //TODO add roles to constants,recover constants file, please
 const ROLES = {

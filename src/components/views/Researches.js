@@ -11,6 +11,7 @@ import AddResearch from "./AddResearch";
 import ReactPaginate from "react-paginate";
 import { useGetResearchList } from "../../hooks/useGetResearchList";
 const RESEARCHES_URL = "/research";
+const PATIENTS_URL = "/patients";
 const GET_RESEARCHES = "/researchLists";
 
 const Researches = () => {
@@ -36,6 +37,10 @@ const Researches = () => {
     setData: setResearches,
     getData: getResearches,
   } = useGetData(RESEARCHES_URL);
+  const {
+    data: patients,
+    setData: setPatients,
+  } = useGetData(PATIENTS_URL);
 
   const { handleDeleteItem } = useDeleteData(
     RESEARCHES_URL,
@@ -115,6 +120,7 @@ const Researches = () => {
                       handleToggleCreateModal={handleToggleCreateModal}
                       getResearches={() => getResearches()}
                       researchState={researchState}
+                      patients={patients}
                     />
                   )}
                 </div>

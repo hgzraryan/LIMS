@@ -76,11 +76,11 @@ export const user_validation = {
     },
   },
 };
-export const pwd_validation = {
-  name: "pwd",
+export const password_validation = {
+  name: "password",
   label: "Ծածկագիր",
   type: "password",
-  id: "pwd",
+  id: "password",
   placeholder: "Ծածկագիր",
   validation: {
     required: {
