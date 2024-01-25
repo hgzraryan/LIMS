@@ -1263,7 +1263,7 @@ const MainTemplate = () => {
                       >
                         <li className="nav-item">
                           <ul className="nav flex-column">
-                            <li className="nav-item">
+                            {/* <li className="nav-item">
                               <Link
                                 className={
                                   sisActive1 === "prices" ||
@@ -1280,7 +1280,7 @@ const MainTemplate = () => {
                                   Գնացուցակներ
                                 </span>
                               </Link>
-                            </li>
+                            </li> */}
                             <li className="nav-item">
                               <Link
                                 className={
