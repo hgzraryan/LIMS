@@ -564,7 +564,7 @@ const MainTemplate = () => {
                             </svg>
                           </span>
                         </span>
-                        <span className="nav-link-text">Պատվիրատուներ</span>
+                        <span className="nav-link-text">Պատվիրումներ</span>
                       </Link>
                     </li>
                     <li className="nav-item">
@@ -650,7 +650,7 @@ const MainTemplate = () => {
                             </svg>
                           </span>
                         </span>
-                        <span className="nav-link-text">Նմուշառում</span>
+                        <span className="nav-link-text">Նմուշառումներ</span>
                       </Link>
                       <Link
                         className={

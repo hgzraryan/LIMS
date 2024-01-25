@@ -53,13 +53,17 @@ const Login = () => {
             const isActive = decodedJWT.UserInfo.isActive;
 
 
-            console.log(roles);
+            console.log('roles',roles);
 
             
             setAuth({ user, pwd, roles, isActive, accessToken });
             resetUser();
-            setPwd('');
-            navigate(from, { replace: true });
+            setPwd('');  
+            if (roles.includes(2001)) {
+                navigate('/samples');
+              } else{
+                  navigate(from, { replace: true });
+              }
         } catch (err) {
             if (!err?.response) {
                 
