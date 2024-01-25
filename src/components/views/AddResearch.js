@@ -14,13 +14,18 @@ import useSubmitForm from "../../hooks/useSubmitForm";
 import Multiselect from "multiselect-react-dropdown";
 
 const REGISTER_URL = "/registerResearch";
-function AddResearch({ handleToggleCreateModal, getResearches,researchState }) {
+function AddResearch({ handleToggleCreateModal, getResearches,researchState,patients }) {
   const [errMsg, setErrMsg] = useState("");
   const multiselectRef = useRef("");
   const [researchesArray, setResearchesArray] = useState([]);
   const [researchesPrice, setResearchesPrice] = useState([]);
   const editorRef = useRef(null);
-  const additionalData = {}
+  const patientRef = useRef('');
+  const additionalData = useRef('');
+  const researchTypeRef = useRef("");
+  const [externalType, setExternalType] = useState(false);
+
+
 
   const onResearchSelect = (data) => {
     let researchesArr = [];
@@ -32,9 +37,18 @@ function AddResearch({ handleToggleCreateModal, getResearches,researchState }) {
     researchesPrice = researchesPrice.reduce((acc, el) => (acc += el), 0);
     additionalData.researchesList = researchesArr
     additionalData.researchesPrice = ''
+  }; 
+  const onResearchTypeSelect = (data) => {
+    additionalData.researchType=data[0].researchType
+    if(data[0].researchType=== "Արտաքին" ){
+      setExternalType(true)
+    }else{
+      setExternalType(false)
+    }
   };
-  
-
+  const onPartnerSelect = (data) => {
+    additionalData.partnerName =  data[0].partner
+  };
   const onResearchDelete = (data) => {
     let researchesArr = [];
     for (let research of data) {
@@ -43,7 +57,10 @@ function AddResearch({ handleToggleCreateModal, getResearches,researchState }) {
     additionalData.researchesPrice = ''
     additionalData.researchList = researchesArr 
    };
-  
+  const onPatientSelect = (data)=>{
+    patientRef.current=data[0].doctor
+    console.log(patientRef.current)
+  }
   const { onSubmit, methods } = useSubmitForm(
     REGISTER_URL,
     editorRef,
@@ -52,6 +69,7 @@ function AddResearch({ handleToggleCreateModal, getResearches,researchState }) {
     handleToggleCreateModal,
     additionalData
   );
+  console.log(patients)
   return (
     <Modal
     show={() => true}
@@ -133,6 +151,87 @@ function AddResearch({ handleToggleCreateModal, getResearches,researchState }) {
                                   />
                             
                           </div>
+                          <div className="row gx-3">
+                            
+                            <label
+                                  className="form-label"
+                                  htmlFor="research"
+                                >
+                                  Հետազոտության տեսակ
+                                </label>
+                                <Multiselect
+                                    options={[{researchType:'Ներքին'},{researchType:'Արտաքին'}]} // Options to display in the dropdown
+                                    displayValue="researchType" // Property name to display in the dropdown options
+                                    onSelect={onResearchTypeSelect} // Function will trigger on select event
+                                  //  onRemove={onResearchDelete} // Function will trigger on remove event
+                                    closeOnSelect={true}
+                                    singleSelect
+                                    id="input_tags_4"
+                                    className="form-control"
+                                    ref={researchTypeRef}
+                                    hidePlaceholder={true}
+                                    placeholder="Արժույթ"
+                                    selectedValues={[{researchType:'Ներքին'}]}
+                                    style={{
+                                      height: "10rem",
+                                      overflow: "hidden",
+                                    }}
+                                  />
+                           
+                          </div>
+                          {externalType && (                              
+                              <div className="row gx-3">
+                                    <label
+                                  className="form-label"
+                                  htmlFor="partner"
+                                >
+                                  Գործընկեր
+                                </label>
+                            <Multiselect
+                                    options={[{partner:'Diagen+'},{partner:'Dialab'}]} // Options to display in the dropdown
+                                    displayValue="partner" // Property name to display in the dropdown options
+                                    onSelect={onPartnerSelect} // Function will trigger on select event
+                                  //  onRemove={onResearchDelete} // Function will trigger on remove event
+                                    closeOnSelect={true}
+                                    singleSelect
+                                    id="input_tags_4"
+                                    className="form-control"
+                                    ref={researchTypeRef}
+                                    hidePlaceholder={true}
+                                    placeholder="Գործընկեր"
+                                    style={{
+                                      height: "10rem",
+                                      overflow: "hidden",
+                                    }}
+                                  />
+                            </div>
+                                )
+                            }
+                          <div className="row gx-3">
+                              <label className="form-label" htmlFor="patient">
+                                Հիվանդ
+                              </label>
+                              <Multiselect
+                                options={patients} // Options to display in the dropdown
+                                displayValue="firstName" // Property name to display in the dropdown options
+                                onSelect={onPatientSelect} // Function will trigger on select event
+                                //  onRemove={onResearchDelete} // Function will trigger on remove event
+                                closeOnSelect={true}
+                                
+                                id="input_tags_4"
+                                className="form-control"
+                                ref={multiselectRef}
+                                hidePlaceholder={true}
+                                placeholder="Ընտրել Հիվանդին"
+                                style={{
+                                  height: "10rem",
+                                  overflow: "hidden",
+                                }}
+                              />
+                          </div>
+                         
+                          
+
                         </div>
                       </div>
                     </div>
