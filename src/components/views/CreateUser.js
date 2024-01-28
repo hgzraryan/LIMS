@@ -17,6 +17,7 @@ import {
 } from "../../utils/inputValidations";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import {  toast } from 'react-toastify';
+import ReactDatePicker from "react-datepicker";
 
 const REGISTER_URL = "/registerUser";
 function CreateUser({ setIsOpen,getUsers }) {
@@ -26,6 +27,7 @@ function CreateUser({ setIsOpen,getUsers }) {
   const [imageUrl, setImageUrl] = useState(MissingAvatar);
   const [roles, setRoles] = useState([]);
   const [image, setImage] = useState("");
+  const [birthday, setBirthday] = useState(new Date());
   const imageMimeType = /image\/(png|jpg|jpeg)/i;
   const fileReader = new FileReader();
   const formData = new FormData();
@@ -42,6 +44,11 @@ function CreateUser({ setIsOpen,getUsers }) {
     setIsOpen((prev) => value);
   };
   /*------------------------------------------------*/
+  const getAge = (date) => {
+    
+    setBirthday(date)
+  };
+
   const notify = (text) => toast.success(text, {
     position: "top-right",
     autoClose: 3000,
@@ -55,7 +62,6 @@ function CreateUser({ setIsOpen,getUsers }) {
   const onSubmit = methods.handleSubmit(async (firstName,
     lastName,
     position,
-    birthday,
     email,
     mobile,
     user,
@@ -269,7 +275,26 @@ function CreateUser({ setIsOpen,getUsers }) {
                               <Input {...position_validation} />
                             </div>
                             <div className="col-sm-6">
-                              <Input {...birthday_validation} />
+                              <div className="form-group">
+                                <label
+                                  className="form-label"
+                                  htmlFor="handlingDate"
+                                >
+                                  Ծննդյան ամսաթիվ
+                                </label>
+                                <div>
+                                  <ReactDatePicker
+                                    showYearDropdown
+                                    yearDropdownItemNumber={100}
+                                    scrollableYearDropdown
+                                    selected={birthday}
+                                    onChange={(date) => getAge(date)}
+                                    dateFormat={"yyyy-MM-dd"}
+                                    isClearable
+                                    placeholderText="Select date"
+                                  />
+                                </div>
+                              </div>
                             </div>
                           </div>
                           <div className="row gx-3">
