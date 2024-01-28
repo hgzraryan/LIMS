@@ -8,7 +8,7 @@ import doctorCountReducer from './features/doctor/doctorCountSlice'
 import equipmentCountReducer from './features/equipment/equipmentCountSlice'
 import organisationCountReducer from './features/organisation/organisationCountSlice'
 import reagentsCountReducer from './features/reagents/reagentsCountSlice'
-import researchCountReducer from './features/researches/researchCountSlice'
+import researchCountReducer from './features/diagnostics/researchCountSlice'
 export default configureStore({
     reducer:{
         agentsCount:agentsCountReducer,

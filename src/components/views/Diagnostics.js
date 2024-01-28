@@ -6,24 +6,25 @@ import Loading from "../Loading";
 import { Dropdown } from "react-bootstrap";
 import useGetData from "../../hooks/useGetData";
 import useDeleteData from "../../hooks/useDeleteData";
-import ResearchesTable from "../viewTables/ResearchesTable";
-import AddResearch from "./AddResearch";
+import DiagnosticsTable from "../viewTables/DiagnosticsTable";
 import ReactPaginate from "react-paginate";
 import { useGetResearchList } from "../../hooks/useGetResearchList";
 import { useSelector } from "react-redux";
-import { selectResearchCount } from "../../redux/features/researches/researchCountSlice";
-const RESEARCHES_URL = "/research";
+
+import AddDiagnostic from "./AddDiagnostic";
+import { selectResearchCount } from "../../redux/features/diagnostics/researchCountSlice";
+const Diagnostics_URL = "/diagnostics";
 const PATIENTS_URL = "/patients";
 const GET_RESEARCHES = "/researchLists";
 
-const Researches = () => {
-  const [researchState] = useGetResearchList(GET_RESEARCHES)
+const Diagnostics = () => {
+  const [researchesState] = useGetResearchList(GET_RESEARCHES)
   const [selectedItem, setSelectedItem] = useState("");
   const [selectedItemId, setSelectedItemId] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
-  const confirmResearchesRef = useRef("");
+  const confirmDiagnosticRef = useRef("");
   //TODO need to correct researchesCount to researchListCount or smth. else-> backend
-  const researchCount = useSelector(selectResearchCount)
+  const diagnosticCount = useSelector(selectResearchCount)
   const handleOpenModal = (user) => {
     setSelectedItemId(true);
     setSelectedItem((prev) => user);
@@ -36,22 +37,22 @@ const Researches = () => {
     setIsOpen((prev) => value);
   };
   const {
-    data: researches,
-    setData: setResearches,
-    getData: getResearches,
-  } = useGetData(RESEARCHES_URL);
+    data: diagnostics,
+    setData: setDiagnostics,
+    getData: getDiagnostics,
+  } = useGetData(Diagnostics_URL);
   const {
     data: patients,
     setData: setPatients,
   } = useGetData(PATIENTS_URL);
 
   const { handleDeleteItem } = useDeleteData(
-    RESEARCHES_URL,
-    confirmResearchesRef,
+    Diagnostics_URL,
+    confirmDiagnosticRef,
     selectedItem,
     setSelectedItemId,
-    researches,
-    setResearches,
+    diagnostics,
+    setDiagnostics,
     "name"
   );
    //-------------------------PAGINATION---------------------------//
@@ -60,8 +61,8 @@ const Researches = () => {
   
  
    const pagesVisited = currentPage * usersPerPage
-   const currentResearches = researches.slice(pagesVisited,pagesVisited+usersPerPage)
-   const pageCount = Math.ceil(researchCount/usersPerPage)
+   const currentDiagnostics = diagnostics.slice(pagesVisited,pagesVisited+usersPerPage)
+   const pageCount = Math.ceil(diagnosticCount/usersPerPage)
  
    const handlePageClick = ({ selected: selectedPage }) => {
      setCurrentPage(selectedPage);
@@ -119,10 +120,10 @@ const Researches = () => {
                   </Dropdown>
 
                   {isOpen && (
-                    <AddResearch
+                    <AddDiagnostic
                       handleToggleCreateModal={handleToggleCreateModal}
-                      getResearches={() => getResearches()}
-                      researchState={researchState}
+                      getDiagnostics={() => getDiagnostics()}
+                      researchesState={researchesState}
                       patients={patients}
                     />
                   )}
@@ -175,15 +176,15 @@ const Researches = () => {
                     style={{ height: "80vh", overflow: "auto" }}
                   >
                      
-                      <ResearchesTable
-                        confirmRef={confirmResearchesRef}
+                      <DiagnosticsTable
+                        confirmRef={confirmDiagnosticRef}
                         selectedItem={selectedItem}
                         selectedItemId={selectedItemId}
                         setSelectedItemId={setSelectedItemId}
                         setSelectedItem={setSelectedItem}
-                        researches={currentResearches}
+                        diagnostics={currentDiagnostics}
                         handleDeleteItem={handleDeleteItem}
-                        setResearches={setResearches}
+                        setDiagnostics={setDiagnostics}
                         handleCloseModal={handleCloseModal}
                         handleOpenModal={handleOpenModal}
                       />
@@ -212,4 +213,4 @@ const Researches = () => {
     </div>
   );
 };
-export default Researches;
+export default Diagnostics;

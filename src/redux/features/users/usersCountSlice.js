@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { current } from "@reduxjs/toolkit"; 
 
 const initialState = {
   value: 0,
@@ -9,6 +10,8 @@ export const usersCountSlice = createSlice({
   initialState,
   reducers: {
     checkUsersCount: (state, action) => {
+            //console.log(current(state));
+
       state.value = action.payload;
     },
   },

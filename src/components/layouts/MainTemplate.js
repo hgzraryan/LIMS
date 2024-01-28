@@ -6,12 +6,12 @@ import LoadingSpinner from "../LoadingSpinner";
 import { prefix } from "@fortawesome/free-solid-svg-icons";
 import { checkUsersCount, selectUsersCount } from "../../redux/features/users/usersCountSlice";
 import { checkPatientsCount, selectPatientsCount } from "../../redux/features/patients/patientsCountSlice";
-import { checkAgentsCount, selectAgentsCount } from "../../redux/features/agents/agentsCountSlice";
-import { checkDoctorCount, selectDoctorCount } from "../../redux/features/doctor/doctorCountSlice";
-import { checkEquipmentCount, selectEquipmentCount } from "../../redux/features/equipment/equipmentCountSlice";
-import { checkOrganisationCount, selectOrganisationCount } from "../../redux/features/organisation/organisationCountSlice";
-import { checkReagentsCount, selectReagentsCount } from "../../redux/features/reagents/reagentsCountSlice";
-import { checkResearchCount, selectResearchCount } from "../../redux/features/researches/researchCountSlice";
+import { checkAgentsCount } from "../../redux/features/agents/agentsCountSlice";
+import { checkDoctorCount } from "../../redux/features/doctor/doctorCountSlice";
+import { checkEquipmentCount } from "../../redux/features/equipment/equipmentCountSlice";
+import { checkOrganisationCount } from "../../redux/features/organisation/organisationCountSlice";
+import { checkReagentsCount } from "../../redux/features/reagents/reagentsCountSlice";
+import { checkResearchCount } from "../../redux/features/diagnostics/researchCountSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 
@@ -25,13 +25,7 @@ const MainTemplate = () => {
 
     //-------------------
     const dispatch = useDispatch()
-    const agentsCount = useSelector(selectAgentsCount)
-    const doctorCount = useSelector(selectDoctorCount)
-    const equipmentCount = useSelector(selectEquipmentCount)
-    //const organisationCount = useSelector(selectOrganisationCount)
     const patientsCount = useSelector(selectPatientsCount)
-    const reagentsCount = useSelector(selectReagentsCount)
-    const researchCount = useSelector(selectResearchCount)
     const usersCount = useSelector(selectUsersCount)
     //-------------------
 
@@ -83,7 +77,6 @@ const MainTemplate = () => {
                 const response = await axiosPrivate.get('/allCount', {
                     signal: controller.signal
                 });
-                console.log(response)
 				 isMounted && dispatch(checkAgentsCount(response.data.agentsCount));
 				isMounted && dispatch(checkDoctorCount(response.data.doctorCount));
 				isMounted && dispatch(checkEquipmentCount(response.data.equipmentCount));

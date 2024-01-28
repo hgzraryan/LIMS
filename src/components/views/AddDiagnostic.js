@@ -13,16 +13,16 @@ import {
 import useSubmitForm from "../../hooks/useSubmitForm";
 import Multiselect from "multiselect-react-dropdown";
 
-const REGISTER_URL = "/registerResearch";
-function AddResearch({ handleToggleCreateModal, getResearches,researchState,patients }) {
+const REGISTER_URL = "/registerDiagnostics";
+
+function AddDiagnostic({ handleToggleCreateModal, getDiagnostics,researchesState,patients }) {
   const [errMsg, setErrMsg] = useState("");
   const multiselectRef = useRef("");
-  const [researchesArray, setResearchesArray] = useState([]);
-  const [researchesPrice, setResearchesPrice] = useState([]);
   const editorRef = useRef(null);
   const patientRef = useRef('');
   const additionalData = useRef('');
-  const researchTypeRef = useRef("");
+  const diagnosticTypeRef = useRef("");
+  const partnerSelectRef = useRef("");
   const [externalType, setExternalType] = useState(false);
 
 
@@ -38,9 +38,9 @@ function AddResearch({ handleToggleCreateModal, getResearches,researchState,pati
     additionalData.researchesList = researchesArr
     additionalData.researchesPrice = ''
   }; 
-  const onResearchTypeSelect = (data) => {
-    additionalData.researchType=data[0].researchType
-    if(data[0].researchType=== "Արտաքին" ){
+  const onDiagnosticTypeSelect = (data) => {
+    additionalData.diagnosticType=data[0].diagnosticType
+    if(data[0].diagnosticType=== "Արտաքին" ){
       setExternalType(true)
     }else{
       setExternalType(false)
@@ -64,7 +64,7 @@ function AddResearch({ handleToggleCreateModal, getResearches,researchState,pati
   const { onSubmit, methods } = useSubmitForm(
     REGISTER_URL,
     editorRef,
-    getResearches,
+    getDiagnostics,
     setErrMsg,
     handleToggleCreateModal,
     additionalData
@@ -133,7 +133,7 @@ function AddResearch({ handleToggleCreateModal, getResearches,researchState,pati
                                   Հետազոտություններ
                                 </label>
                             <Multiselect
-                                    options={researchState} // Options to display in the dropdown
+                                    options={researchesState} // Options to display in the dropdown
                                     displayValue="research" // Property name to display in the dropdown options
                                     onSelect={onResearchSelect} // Function will trigger on select event
                                     onRemove={onResearchDelete} // Function will trigger on remove event
@@ -155,23 +155,23 @@ function AddResearch({ handleToggleCreateModal, getResearches,researchState,pati
                             
                             <label
                                   className="form-label"
-                                  htmlFor="research"
+                                  htmlFor="diagnostic"
                                 >
                                   Հետազոտության տեսակ
                                 </label>
                                 <Multiselect
-                                    options={[{researchType:'Ներքին'},{researchType:'Արտաքին'}]} // Options to display in the dropdown
-                                    displayValue="researchType" // Property name to display in the dropdown options
-                                    onSelect={onResearchTypeSelect} // Function will trigger on select event
+                                    options={[{diagnosticType:'Ներքին'},{diagnosticType:'Արտաքին'}]} // Options to display in the dropdown
+                                    displayValue="diagnosticType" // Property name to display in the dropdown options
+                                    onSelect={onDiagnosticTypeSelect} // Function will trigger on select event
                                   //  onRemove={onResearchDelete} // Function will trigger on remove event
                                     closeOnSelect={true}
                                     singleSelect
                                     id="input_tags_4"
                                     className="form-control"
-                                    ref={researchTypeRef}
+                                    ref={diagnosticTypeRef}
                                     hidePlaceholder={true}
                                     placeholder="Արժույթ"
-                                    selectedValues={[{researchType:'Ներքին'}]}
+                                    selectedValues={[{diagnosticType:'Ներքին'}]}
                                     style={{
                                       height: "10rem",
                                       overflow: "hidden",
@@ -196,7 +196,7 @@ function AddResearch({ handleToggleCreateModal, getResearches,researchState,pati
                                     singleSelect
                                     id="input_tags_4"
                                     className="form-control"
-                                    ref={researchTypeRef}
+                                    ref={partnerSelectRef}
                                     hidePlaceholder={true}
                                     placeholder="Գործընկեր"
                                     style={{
@@ -321,4 +321,4 @@ function AddResearch({ handleToggleCreateModal, getResearches,researchState,pati
   );
 }
 
-export default AddResearch;
+export default AddDiagnostic;

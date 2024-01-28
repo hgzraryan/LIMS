@@ -59,11 +59,11 @@ const ResearchData = [
   },
 ];
 
-function ResearchesTable({
+function DiagnosticsTable({
   confirmRef,
   handleDeleteItem,
-  researches,
-  setResearches,
+  diagnostics,
+  setDiagnostics,
   handleCloseModal,
   handleOpenModal,
   selectedItemId,
@@ -103,7 +103,7 @@ function ResearchesTable({
         sortable: true,
         width: 300,
         Filter: ({ column: { id } }) => (
-          <ColumnFilter id={id} setData={setResearches} />
+          <ColumnFilter id={id} setData={setDiagnostics} />
         ),
       },
       {
@@ -112,7 +112,7 @@ function ResearchesTable({
         sortable: true,
         width: 300,
         Filter: ({ column: { id } }) => (
-          <ColumnFilter id={id} setData={setResearches} />
+          <ColumnFilter id={id} setData={setDiagnostics} />
         ),
       },
       {
@@ -131,7 +131,7 @@ function ResearchesTable({
           </div>
         ),
         Filter: ({ column: { id } }) => (
-          <ColumnFilter id={id} setData={setResearches} />
+          <ColumnFilter id={id} setData={setDiagnostics} />
         ),
       },
       {
@@ -313,8 +313,8 @@ function ResearchesTable({
             selectedItem={selectedItem1}
             handleCloseStatusModal={handleCloseStatusModal}
             selectedItemId={selectedItemId1}
-            setResearches={setResearches}
-            researches={researches}
+            setResearches={setDiagnostics}
+            researches={diagnostics}
           />
 
           <ComponentToConfirm
@@ -334,4 +334,4 @@ function ResearchesTable({
   );
 }
 
-export default ResearchesTable;
+export default DiagnosticsTable;
