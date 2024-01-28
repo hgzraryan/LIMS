@@ -10,6 +10,8 @@ import useGetData from "../../hooks/useGetData";
 import PatientsTable from "../viewTables/PatientsTable";
 import ReactPaginate from "react-paginate";
 import { useGetResearchList } from "../../hooks/useGetResearchList";
+import { useSelector } from "react-redux";
+import { selectPatientsCount } from "../../redux/features/patients/patientsCountSlice";
 const GET_RESEARCHES = "/researchLists";
 const PATIENTS_URL = "/patients";
 
@@ -17,6 +19,7 @@ const Patients = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState("");
   const [researchState] = useGetResearchList(GET_RESEARCHES)
+  const patientsCount = useSelector(selectPatientsCount)
 
   const handleToggleCreateModal = (value) => {
     setIsOpen((prev) => value);
@@ -41,7 +44,7 @@ const Patients = () => {
   
     const pagesVisited = currentPage * usersPerPage
     const currentPatients = patients.slice(pagesVisited,pagesVisited+usersPerPage)
-    const pageCount = Math.ceil(patients.length/usersPerPage)
+    const pageCount = Math.ceil(patientsCount/usersPerPage)
   
     const handlePageClick = ({ selected: selectedPage }) => {
       setCurrentPage(selectedPage);

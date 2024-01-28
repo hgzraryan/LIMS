@@ -11,6 +11,8 @@ import useDeleteData from "../../hooks/useDeleteData";
 import AddOrganization from "./AddOrganizations";
 import OrganizationsTable from "../viewTables/OrganizationsTable";
 import {Helmet} from "react-helmet";
+import { useSelector } from "react-redux";
+import { selectOrganisationCount } from "../../redux/features/organisation/organisationCountSlice";
 
 const ORGANIZATIONS_URL = "/organizations";
 
@@ -19,7 +21,7 @@ const Organizations = () => {
   const [selectedItemId, setSelectedItemId] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const confirmOrganizationRef = useRef("");
-
+  const organisationCount = useSelector(selectOrganisationCount)
   const handleOpenModal = (user) => {
     setSelectedItemId(true);
     setSelectedItem((prev) => user);
@@ -60,7 +62,7 @@ const Organizations = () => {
 
  const pagesVisited = currentPage * usersPerPage
  const currentOrganizations = organizations.slice(pagesVisited,pagesVisited+usersPerPage)
- const pageCount = Math.ceil(organizations.length/usersPerPage)
+ const pageCount = Math.ceil(organisationCount/usersPerPage)
 
  const handlePageClick = ({ selected: selectedPage }) => {
    setCurrentPage(selectedPage);

@@ -11,12 +11,13 @@ import { Dropdown } from "react-bootstrap";
 import useGetData from "../../hooks/useGetData";
 import useDeleteData from "../../hooks/useDeleteData";
 import useUpdateCount from "../../hooks/useUpdateCount";
-import { checkUsersCount } from "../../redux/features/users/usersCountSlice";
+import { checkUsersCount, selectUsersCount } from "../../redux/features/users/usersCountSlice";
 import UsersTable from "../viewTables/UsersTable";
 import {Helmet} from "react-helmet";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate"
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const USERS_URL = "/users";
 
@@ -31,6 +32,8 @@ const Users = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState("");
   const [selectedItemId, setSelectedItemId] = useState(null);
+  const useersCount = useSelector(selectUsersCount)
+
   /*-------------------Custom Hook--------------------*/
   const {
     data: users,
@@ -46,7 +49,7 @@ const Users = () => {
 
   const pagesVisited = currentPage * usersPerPage
   const currentUsers = users.slice(pagesVisited,pagesVisited+usersPerPage)
-  const pageCount = Math.ceil(users.length/usersPerPage)
+  const pageCount = Math.ceil(useersCount/usersPerPage)
 
 
   

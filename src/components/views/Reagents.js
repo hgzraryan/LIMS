@@ -10,13 +10,15 @@ import AddReagent from "./AddReagent";
 import useGetData from "../../hooks/useGetData";
 import useDeleteData from "../../hooks/useDeleteData";
 import ReagentsTable from "../viewTables/ReagentsTable";
+import { useSelector } from "react-redux";
+import { selectReagentsCount } from "../../redux/features/reagents/reagentsCountSlice";
 const REAGENTS_URL = "/reagentList"
 const Reagents = () => {
   const [selectedItem, setSelectedItem] = useState("");
   const [selectedItemId, setSelectedItemId] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const confirmReagentRef = useRef("");
-
+  const reagentsCount = useSelector(selectReagentsCount)
   const handleOpenModal = (user) => {
     setSelectedItemId(true);
     setSelectedItem((prev) => user);
@@ -50,7 +52,7 @@ const Reagents = () => {
  
    const pagesVisited = currentPage * usersPerPage
    const currentReagents = reagents.slice(pagesVisited,pagesVisited+usersPerPage)
-   const pageCount = Math.ceil(reagents.length/usersPerPage)
+   const pageCount = Math.ceil(reagentsCount/usersPerPage)
  
    const handlePageClick = ({ selected: selectedPage }) => {
      setCurrentPage(selectedPage);

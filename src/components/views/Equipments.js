@@ -10,6 +10,9 @@ import { Dropdown } from "react-bootstrap";
 import useDeleteData from "../../hooks/useDeleteData";
 import useGetData from "../../hooks/useGetData";
 import EquipmentsTable from "../viewTables/EquipmentsTable";
+import { useSelector } from "react-redux";
+import { selectEquipmentCount } from "../../redux/features/equipment/equipmentCountSlice";
+import { selectOrganisationCount } from "../../redux/features/organisation/organisationCountSlice";
 
 const EQUIPMENTS_URL = "/equipmentList";
 
@@ -18,6 +21,7 @@ const Equipments = () => {
   const [selectedItemId, setSelectedItemId] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const confirmEquipmentsRef = useRef("");
+  const equipmentCount = useSelector(selectEquipmentCount)
 
   const handleOpenModal = (data) => {
     setSelectedItemId(true);
@@ -53,7 +57,7 @@ const Equipments = () => {
  
    const pagesVisited = currentPage * usersPerPage
    const currentEquipments = equipments.slice(pagesVisited,pagesVisited+usersPerPage)
-   const pageCount = Math.ceil(equipments.length/usersPerPage)
+   const pageCount = Math.ceil(equipmentCount/usersPerPage)
  
    const handlePageClick = ({ selected: selectedPage }) => {
      setCurrentPage(selectedPage);

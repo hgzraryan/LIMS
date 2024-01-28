@@ -10,6 +10,8 @@ import useDeleteData from "../../hooks/useDeleteData";
 import useGetData from "../../hooks/useGetData";
 import AddAgent from "./AddAgent";
 import AgentsTable from "../viewTables/AgentsTable";
+import { useSelector } from "react-redux";
+import { selectAgentsCount } from "../../redux/features/agents/agentsCountSlice";
 
 const AGENTS_URL = "/agents";
 
@@ -18,7 +20,7 @@ const Agents = () => {
   const [selectedItemId, setSelectedItemId] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const confirmAgentsRef = useRef("");
-
+  const agentsCount = useSelector(selectAgentsCount)
   const handleOpenModal = (user) => {
     setSelectedItemId(true);
     setSelectedItem((prev) => user);
@@ -52,7 +54,7 @@ const Agents = () => {
  
    const pagesVisited = currentPage * usersPerPage
    const currentAgents = agents.slice(pagesVisited,pagesVisited+usersPerPage)
-   const pageCount = Math.ceil(agents.length/usersPerPage)
+   const pageCount = Math.ceil(agentsCount/usersPerPage)
  
    const handlePageClick = ({ selected: selectedPage }) => {
      setCurrentPage(selectedPage);

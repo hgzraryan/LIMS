@@ -7,6 +7,8 @@ import useGetData from "../../hooks/useGetData";
 import useDeleteData from "../../hooks/useDeleteData";
 import AddDoctor from "./AddDoctor";
 import ReactPaginate from "react-paginate";
+import { useSelector } from "react-redux";
+import { selectDoctorCount } from "../../redux/features/doctor/doctorCountSlice";
 const DOCTORS_URL = "/doctors";
 const tmpDoctors = [
   {
@@ -34,6 +36,7 @@ function Doctors() {
   const [selectedItemId, setSelectedItemId] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const confirmAgentsRef = useRef("");
+  const doctorCount = useSelector(selectDoctorCount)
   const handleOpenModal = (doctor) => {
     setSelectedItemId(true);
     setSelectedItem((prev) => doctor);
@@ -70,7 +73,7 @@ function Doctors() {
     pagesVisited,
     pagesVisited + usersPerPage
   );
-  const pageCount = Math.ceil(doctors.length / usersPerPage);
+  const pageCount = Math.ceil(doctorCount/ usersPerPage);
 
   const handlePageClick = ({ selected: selectedPage }) => {
     setCurrentPage(selectedPage);

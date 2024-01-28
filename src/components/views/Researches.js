@@ -10,6 +10,8 @@ import ResearchesTable from "../viewTables/ResearchesTable";
 import AddResearch from "./AddResearch";
 import ReactPaginate from "react-paginate";
 import { useGetResearchList } from "../../hooks/useGetResearchList";
+import { useSelector } from "react-redux";
+import { selectResearchCount } from "../../redux/features/researches/researchCountSlice";
 const RESEARCHES_URL = "/research";
 const PATIENTS_URL = "/patients";
 const GET_RESEARCHES = "/researchLists";
@@ -20,7 +22,8 @@ const Researches = () => {
   const [selectedItemId, setSelectedItemId] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const confirmResearchesRef = useRef("");
-
+  //TODO need to correct researchesCount to researchListCount or smth. else-> backend
+  const researchCount = useSelector(selectResearchCount)
   const handleOpenModal = (user) => {
     setSelectedItemId(true);
     setSelectedItem((prev) => user);
@@ -58,7 +61,7 @@ const Researches = () => {
  
    const pagesVisited = currentPage * usersPerPage
    const currentResearches = researches.slice(pagesVisited,pagesVisited+usersPerPage)
-   const pageCount = Math.ceil(researches.length/usersPerPage)
+   const pageCount = Math.ceil(researchCount/usersPerPage)
  
    const handlePageClick = ({ selected: selectedPage }) => {
      setCurrentPage(selectedPage);
