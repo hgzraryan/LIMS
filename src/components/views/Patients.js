@@ -22,16 +22,19 @@ const Patients = () => {
 
   const [isOpen, setIsOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState("");
+  const [currentPage, setCurrentPage] = useState(0);  
+  const [usersPerPage, setUsersPerPage] = useState(Math.round((window.innerHeight / 100) * 1.5));
+  const pageCount = Math.ceil(patientsCount/usersPerPage)
+  
+    const {
+      data: patients,
+      setData: setPatients,
+      getData: getPatients,  
+    } = useGetData(PATIENTS_URL,currentPage,usersPerPage);
 
   const handleToggleCreateModal = (value) => {
     setIsOpen((prev) => value);
   };
-  const {
-    data: patients,
-    setData: setPatients,
-    getData: getPatients,
-
-  } = useGetData(PATIENTS_URL);
   //-------------------------
   const handleOpenModal = (user) => {
     setSelectedItem((prev) => user);
@@ -39,15 +42,7 @@ const Patients = () => {
   const handleCloseModal = () => {
     setSelectedItem(null);
   };
-    //-------------------------PAGINATION---------------------------//
-    const [currentPage, setCurrentPage] = useState(0);  
-    const [usersPerPage, setUsersPerPage] = useState(10);
-   
-  
-    const pagesVisited = currentPage * usersPerPage
-    const currentPatients = patients.slice(pagesVisited,pagesVisited+usersPerPage)
-    const pageCount = Math.ceil(patientsCount/usersPerPage)
-  
+    //-------------------------PAGINATION---------------------------//  
     const handlePageClick = ({ selected: selectedPage }) => {
       setCurrentPage(selectedPage);
       //updateUsersCount();
@@ -285,7 +280,7 @@ const Patients = () => {
                     handleCloseModal={handleCloseModal}
                     researchState={researchState}
                     selectedItem={selectedItem}
-                    patients={currentPatients}
+                    patients={patients}
                     setPatients={setPatients}
                     getPatients={getPatients}
                     />

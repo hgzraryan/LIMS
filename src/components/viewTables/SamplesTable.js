@@ -3,7 +3,17 @@ import { useBlockLayout, useFilters, useResizeColumns, useRowSelect, useSortBy, 
 import { Checkbox } from "../Checkbox";
 import FeatherIcon from "feather-icons-react/build/FeatherIcon";
 import { ColumnFilter } from "../ColumnFilter";
+
 function Samples() {
+  // const [currentPage, setCurrentPage] = useState(0);  
+  // const [usersPerPage, setUsersPerPage] = useState(Math.round((window.innerHeight / 100) * 1.5));
+  // const pageCount = Math.ceil(patientsCount/usersPerPage)
+  
+  //   const {
+  //     data: patients,
+  //     setData: setPatients,
+  //     getData: getPatients,  
+  //   } = useGetData(PATIENTS_URL,currentPage,usersPerPage);
   const [samples,setSamples]=useState([{name:'asd',email:"dsa",mobile:123}])
 console.log(samples)
   const defaultColumn = React.useMemo(

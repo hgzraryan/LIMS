@@ -130,9 +130,9 @@ const Login = () => {
     }
 
     return (
-<HelmetProvider>
         <section>
 <div>
+<HelmetProvider>
 <Helmet>
     <meta charSet="utf-8" />
     <title>Vteam Laboratory information management system</title>
@@ -274,9 +274,9 @@ const Login = () => {
   {/* /Main Content */}
 </div>
 {/* /Wrapper */}
+        </HelmetProvider>
 </div>
         </section>   
-        </HelmetProvider>
     )
 }
 

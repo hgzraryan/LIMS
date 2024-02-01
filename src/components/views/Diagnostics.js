@@ -25,6 +25,16 @@ const Diagnostics = () => {
   const [isOpen, setIsOpen] = useState(false);
   const confirmDiagnosticRef = useRef("");
   const diagnosticsCount = useSelector(selectDiagnosticsCount)
+  const [currentPage, setCurrentPage] = useState(0);  
+  const [usersPerPage, setUsersPerPage] = useState(Math.round((window.innerHeight / 100) * 1.5));
+  const pageCount = Math.ceil(diagnosticsCount/usersPerPage)
+  
+  const {
+    data: diagnostics,
+    setData: setDiagnostics,
+    getData: getDiagnostics,
+  } = useGetData(Diagnostics_URL,currentPage,usersPerPage);
+
   const handleOpenModal = (user) => {
     setSelectedItemId(true);
     setSelectedItem((prev) => user);
@@ -36,15 +46,10 @@ const Diagnostics = () => {
   const handleToggleCreateModal = (value) => {
     setIsOpen((prev) => value);
   };
-  const {
-    data: diagnostics,
-    setData: setDiagnostics,
-    getData: getDiagnostics,
-  } = useGetData(Diagnostics_URL);
-  const {
-    data: patients,
-    setData: setPatients,
-  } = useGetData(PATIENTS_URL);
+  // const {
+  //   data: patients,
+  //   setData: setPatients,
+  // } = useGetData(PATIENTS_URL);
 
   const { handleDeleteItem } = useDeleteData(
     Diagnostics_URL,
@@ -56,14 +61,6 @@ const Diagnostics = () => {
     "name"
   );
    //-------------------------PAGINATION---------------------------//
-   const [currentPage, setCurrentPage] = useState(0);  
-   const [usersPerPage, setUsersPerPage] = useState(10);
-  
- 
-   const pagesVisited = currentPage * usersPerPage
-   const currentDiagnostics = diagnostics.slice(pagesVisited,pagesVisited+usersPerPage)
-   const pageCount = Math.ceil(diagnosticsCount/usersPerPage)
- 
    const handlePageClick = ({ selected: selectedPage }) => {
      setCurrentPage(selectedPage);
      //updateUsersCount();
@@ -124,7 +121,7 @@ const Diagnostics = () => {
                       handleToggleCreateModal={handleToggleCreateModal}
                       getDiagnostics={() => getDiagnostics()}
                       researchesState={researchesState}
-                      patients={patients}
+                     // patients={patients}
                     />
                   )}
                 </div>
@@ -182,26 +179,26 @@ const Diagnostics = () => {
                         selectedItemId={selectedItemId}
                         setSelectedItemId={setSelectedItemId}
                         setSelectedItem={setSelectedItem}
-                        diagnostics={currentDiagnostics}
+                        diagnostics={diagnostics}
                         handleDeleteItem={handleDeleteItem}
                         setDiagnostics={setDiagnostics}
                         handleCloseModal={handleCloseModal}
                         handleOpenModal={handleOpenModal}
                       />
                          <ReactPaginate
-                                            previousLabel = {"Previous"}    
-                                            nextLabel = {"Next"}
-                                            pageCount = {pageCount}
-                                            onPageChange = {handlePageClick}
-                                            initialPage = {0}
-                                            containerClassName={"pagination"}
-                                            pageLinkClassName = {"page-link"}
-                                            pageClassName = {"page-item"}
-                                            previousLinkClassName={"page-link"}
-                                            nextLinkClassName={"page-link"}
-                                            disabledLinkClassName={"disabled"}
-                                            //activeLinkClassName={"active"}
-                                            activeClassName={"active"}
+                          previousLabel = {"Previous"}    
+                          nextLabel = {"Next"}
+                          pageCount = {pageCount}
+                          onPageChange = {handlePageClick}
+                          initialPage = {0}
+                          containerClassName={"pagination"}
+                          pageLinkClassName = {"page-link"}
+                          pageClassName = {"page-item"}
+                          previousLinkClassName={"page-link"}
+                          nextLinkClassName={"page-link"}
+                          disabledLinkClassName={"disabled"}
+                          //activeLinkClassName={"active"}
+                          activeClassName={"active"}
 											/>
                   </div>
                 </div>

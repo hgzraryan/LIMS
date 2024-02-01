@@ -23,7 +23,16 @@ const ResearchLists = () => {
   const [selectedItemId, setSelectedItemId] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const confirmResearchRef = useRef("");
- 
+  
+  const [currentPage, setCurrentPage] = useState(0);  
+  const [usersPerPage, setUsersPerPage] = useState(Math.round((window.innerHeight / 100) * 1.5));
+  const pageCount = Math.ceil(researchListCount/usersPerPage)
+
+  const {
+    data: researchList,
+    setData: setResearches,
+    getData: getResearches,
+  } = useGetData(RESEARCHES_URL,currentPage,usersPerPage);
   const handleOpenModal = (user) => {
     setSelectedItemId(true);
     setSelectedItem((prev) => user);
@@ -31,14 +40,8 @@ const ResearchLists = () => {
   const handleCloseModal = () => {
     setSelectedItemId(null);
   };
+
   /*------------------------------------------------*/
-
-  const {
-    data: researchList,
-    setData: setResearches,
-    getData: getResearches,
-  } = useGetData(RESEARCHES_URL);
-
   const { handleDeleteItem } = useDeleteData(
     "/researches",
     confirmResearchRef,
@@ -49,13 +52,7 @@ const ResearchLists = () => {
     "research" 
   );
    //-------------------------PAGINATION---------------------------//
-   const [currentPage, setCurrentPage] = useState(0);  
-   const [usersPerPage, setUsersPerPage] = useState(10);
   
- 
-   const pagesVisited = currentPage * usersPerPage
-   const currentResearchList = researchList.slice(pagesVisited,pagesVisited+usersPerPage)
-   const pageCount = Math.ceil(researchListCount/usersPerPage)
  
    const handlePageClick = ({ selected: selectedPage }) => {
      setCurrentPage(selectedPage);
@@ -288,24 +285,25 @@ const ResearchLists = () => {
                         handleDeleteItem={handleDeleteItem}
                         handleOpenModal={handleOpenModal}
                         handleCloseModal={handleCloseModal}
-                        researches={currentResearchList}
+                        researches={researchList}
                         setResearches={setResearches}
                         getResearches={getResearches}
                       />
-                          <ReactPaginate
-                                           previousLabel = {"Հետ"}    
-                                           nextLabel = {"Առաջ"}
-                                            pageCount = {pageCount}
-                                            onPageChange = {handlePageClick}
-                                            initialPage = {0}
-                                            containerClassName={"pagination"}
-                                            pageLinkClassName = {"page-link"}
-                                            pageClassName = {"page-item"}
-                                            previousLinkClassName={"page-link"}
-                                            nextLinkClassName={"page-link"}
-                                            disabledLinkClassName={"disabled"}
-                                            //activeLinkClassName={"active"}
-                                            activeClassName={"active"}
+                      <ReactPaginate
+                        previousLabel = {"Հետ"}    
+                        nextLabel = {"Առաջ"}
+                        pageCount = {pageCount}
+                        onPageChange = {handlePageClick}
+                        initialPage = {0}
+                        pageRangeDisplayed={3}
+                        containerClassName={"pagination"}
+                        pageLinkClassName = {"page-link"}
+                        pageClassName = {"page-item"}
+                        previousLinkClassName={"page-link"}
+                        nextLinkClassName={"page-link"}
+                        disabledLinkClassName={"disabled"}
+                        //activeLinkClassName={"active"}
+                        activeClassName={"active"}
 											/>
                   </div>
                 </div>

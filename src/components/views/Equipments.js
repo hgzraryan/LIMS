@@ -22,6 +22,14 @@ const Equipments = () => {
   const [isOpen, setIsOpen] = useState(false);
   const confirmEquipmentsRef = useRef("");
   const equipmentCount = useSelector(selectEquipmentCount)
+  const [currentPage, setCurrentPage] = useState(0);  
+  const [usersPerPage, setUsersPerPage] = useState(Math.round((window.innerHeight / 100) * 1.5));
+  const pageCount = Math.ceil(equipmentCount/usersPerPage)
+  const {
+    data: equipments,
+    setData: setEquipments,
+    getData: getEquipments,
+  } = useGetData(EQUIPMENTS_URL,currentPage,usersPerPage);
 
   const handleOpenModal = (data) => {
     setSelectedItemId(true);
@@ -35,11 +43,6 @@ const Equipments = () => {
   const handleToggleCreateModal = (value) => {
     setIsOpen((prev) => value);
   };
-  const {
-    data: equipments,
-    setData: setEquipments,
-    getData: getEquipments,
-  } = useGetData(EQUIPMENTS_URL);
 
   const { handleDeleteItem } = useDeleteData(
     "/equipments",
@@ -51,14 +54,6 @@ const Equipments = () => {
     "name"
   );
    //-------------------------PAGINATION---------------------------//
-   const [currentPage, setCurrentPage] = useState(0);  
-   const [usersPerPage, setUsersPerPage] = useState(10);
-  
- 
-   const pagesVisited = currentPage * usersPerPage
-   const currentEquipments = equipments.slice(pagesVisited,pagesVisited+usersPerPage)
-   const pageCount = Math.ceil(equipmentCount/usersPerPage)
- 
    const handlePageClick = ({ selected: selectedPage }) => {
      setCurrentPage(selectedPage);
      //updateUsersCount();
@@ -281,24 +276,24 @@ const Equipments = () => {
                         handleDeleteItem={handleDeleteItem}
                         handleOpenModal={handleOpenModal}
                         handleCloseModal={handleCloseModal}
-                        equipments={currentEquipments}
+                        equipments={equipments}
                         setEquipments={setEquipments}
                         getEquipments={getEquipments}
                         />
                         <ReactPaginate
-                                           previousLabel = {"Հետ"}    
-                                           nextLabel = {"Առաջ"}
-                                            pageCount = {pageCount}
-                                            onPageChange = {handlePageClick}
-                                            initialPage = {0}
-                                            containerClassName={"pagination"}
-                                            pageLinkClassName = {"page-link"}
-                                            pageClassName = {"page-item"}
-                                            previousLinkClassName={"page-link"}
-                                            nextLinkClassName={"page-link"}
-                                            disabledLinkClassName={"disabled"}
-                                            //activeLinkClassName={"active"}
-                                            activeClassName={"active"}
+                        previousLabel = {"Հետ"}    
+                        nextLabel = {"Առաջ"}
+                        pageCount = {pageCount}
+                        onPageChange = {handlePageClick}
+                        initialPage = {0}
+                        containerClassName={"pagination"}
+                        pageLinkClassName = {"page-link"}
+                        pageClassName = {"page-item"}
+                        previousLinkClassName={"page-link"}
+                        nextLinkClassName={"page-link"}
+                        disabledLinkClassName={"disabled"}
+                        //activeLinkClassName={"active"}
+                        activeClassName={"active"}
 											/>
                   </div>
                 </div>

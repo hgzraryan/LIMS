@@ -21,6 +21,16 @@ const Agents = () => {
   const [isOpen, setIsOpen] = useState(false);
   const confirmAgentsRef = useRef("");
   const agentsCount = useSelector(selectAgentsCount)
+  const [currentPage, setCurrentPage] = useState(0);  
+  const [usersPerPage, setUsersPerPage] = useState(Math.round((window.innerHeight / 100) * 1.5));
+  const pageCount = Math.ceil(agentsCount/usersPerPage)
+  
+  const {
+    data: agents,
+    setData: setAgents,
+    getData: getAgents,
+  } = useGetData(AGENTS_URL,currentPage,usersPerPage);
+
   const handleOpenModal = (user) => {
     setSelectedItemId(true);
     setSelectedItem((prev) => user);
@@ -32,11 +42,7 @@ const Agents = () => {
   const handleToggleCreateModal = (value) => {
     setIsOpen((prev) => value);
   };
-  const {
-    data: agents,
-    setData: setAgents,
-    getData: getAgents,
-  } = useGetData(AGENTS_URL);
+ 
 
   const { handleDeleteItem } = useDeleteData(
     "/agents",
@@ -48,21 +54,12 @@ const Agents = () => {
     "name" 
   );
    //-------------------------PAGINATION---------------------------//
-   const [currentPage, setCurrentPage] = useState(0);  
-   const [usersPerPage, setUsersPerPage] = useState(10);
-  
- 
-   const pagesVisited = currentPage * usersPerPage
-   const currentAgents = agents.slice(pagesVisited,pagesVisited+usersPerPage)
-   const pageCount = Math.ceil(agentsCount/usersPerPage)
- 
    const handlePageClick = ({ selected: selectedPage }) => {
      setCurrentPage(selectedPage);
-     //updateUsersCount();
- }
+     //updateUsersCount(); 
+    }
    //--------------------------------------------------------------//
   //-------------------------
-
   const refreshPage = () => {
     let paglink = document.querySelectorAll(".page-item");
     paglink[0].firstChild.click();
@@ -166,24 +163,24 @@ const Agents = () => {
                         handleDeleteItem={handleDeleteItem}
                         handleOpenModal={handleOpenModal}
                         handleCloseModal={handleCloseModal}
-                        agents={currentAgents}
+                        agents={agents}
                         setAgents={setAgents}
                         getAgents={getAgents}
                       />
                       <ReactPaginate
-                                           previousLabel = {"Հետ"}    
-                                           nextLabel = {"Առաջ"}
-                                            pageCount = {pageCount}
-                                            onPageChange = {handlePageClick}
-                                            initialPage = {0}
-                                            containerClassName={"pagination"}
-                                            pageLinkClassName = {"page-link"}
-                                            pageClassName = {"page-item"}
-                                            previousLinkClassName={"page-link"}
-                                            nextLinkClassName={"page-link"}
-                                            disabledLinkClassName={"disabled"}
-                                            //activeLinkClassName={"active"}
-                                            activeClassName={"active"}
+                        previousLabel = {"Հետ"}    
+                        nextLabel = {"Առաջ"}
+                        pageCount = {pageCount}
+                        onPageChange = {handlePageClick}
+                        initialPage = {0}
+                        containerClassName={"pagination"}
+                        pageLinkClassName = {"page-link"}
+                        pageClassName = {"page-item"}
+                        previousLinkClassName={"page-link"}
+                        nextLinkClassName={"page-link"}
+                        disabledLinkClassName={"disabled"}
+                        //activeLinkClassName={"active"}
+                        activeClassName={"active"}
 											/>
                   </div>
                 </div>

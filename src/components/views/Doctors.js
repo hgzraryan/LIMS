@@ -37,6 +37,16 @@ function Doctors() {
   const [isOpen, setIsOpen] = useState(false);
   const confirmAgentsRef = useRef("");
   const doctorCount = useSelector(selectDoctorCount)
+  const [currentPage, setCurrentPage] = useState(0);  
+  const [usersPerPage, setUsersPerPage] = useState(Math.round((window.innerHeight / 100) * 1.5));
+  const pageCount = Math.ceil(doctorCount/usersPerPage)
+  
+  // const {
+  //        data: doctors,
+  //        setData: setDoctors,
+  //        getData: getDoctors,
+  // } = useGetData(DOCTORS_URL,currentPage,usersPerPage);
+
   const handleOpenModal = (doctor) => {
     setSelectedItemId(true);
     setSelectedItem((prev) => doctor);
@@ -48,12 +58,7 @@ function Doctors() {
   const handleToggleCreateModal = (value) => {
     setIsOpen((prev) => value);
   };
-  //     const {
-  //       data: doctors,
-  //       setData: setDoctors,
-  //       getData: getDoctors,
-  //       count
-  //     } = useGetData(DOCTORS_URL);
+
   //   console.log(doctors)
   //     const { handleDeleteItem } = useDeleteData(
   //       "/agents",
@@ -65,16 +70,6 @@ function Doctors() {
   //       "name"
   //     );
   //-------------------------PAGINATION---------------------------//
-  const [currentPage, setCurrentPage] = useState(0);
-  const [usersPerPage, setUsersPerPage] = useState(10);
-
-  const pagesVisited = currentPage * usersPerPage;
-  const currentDoctors = tmpDoctors.slice(
-    pagesVisited,
-    pagesVisited + usersPerPage
-  );
-  const pageCount = Math.ceil(doctorCount/ usersPerPage);
-
   const handlePageClick = ({ selected: selectedPage }) => {
     setCurrentPage(selectedPage);
     //updateUsersCount();
@@ -184,7 +179,7 @@ function Doctors() {
                       //handleDeleteItem={handleDeleteItem}
                       handleOpenModal={handleOpenModal}
                       handleCloseModal={handleCloseModal}
-                      doctors={currentDoctors}
+                      doctors={doctors}
                       setDoctors={setDoctors}
                       //getDoctors={getDoctors}
                     />

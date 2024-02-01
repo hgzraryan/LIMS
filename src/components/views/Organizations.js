@@ -22,6 +22,16 @@ const Organizations = () => {
   const [isOpen, setIsOpen] = useState(false);
   const confirmOrganizationRef = useRef("");
   const organisationCount = useSelector(selectOrganisationCount)
+  const [currentPage, setCurrentPage] = useState(0);  
+  const [usersPerPage, setUsersPerPage] = useState(Math.round((window.innerHeight / 100) * 1.5));
+  const pageCount = Math.ceil(organisationCount/usersPerPage)
+  
+  const {
+    data: organizations,
+    setData: setOrganizations,
+    getData: getOrganizations,
+  } = useGetData(ORGANIZATIONS_URL,currentPage,usersPerPage);
+  
   const handleOpenModal = (user) => {
     setSelectedItemId(true);
     setSelectedItem((prev) => user);
@@ -33,11 +43,6 @@ const Organizations = () => {
   const handleToggleCreateModal = (value) => {
     setIsOpen((prev) => value);
   };
-  const {
-    data: organizations,
-    setData: setOrganizations,
-    getData: getOrganizations,
-  } = useGetData(ORGANIZATIONS_URL);
 
   const { handleDeleteItem } = useDeleteData(
     "/organzations",
@@ -56,14 +61,6 @@ const Organizations = () => {
   };
   //-------------------
  //-------------------------PAGINATION---------------------------//
- const [currentPage, setCurrentPage] = useState(0);  
- const [usersPerPage, setUsersPerPage] = useState(10);
-
-
- const pagesVisited = currentPage * usersPerPage
- const currentOrganizations = organizations.slice(pagesVisited,pagesVisited+usersPerPage)
- const pageCount = Math.ceil(organisationCount/usersPerPage)
-
  const handlePageClick = ({ selected: selectedPage }) => {
    setCurrentPage(selectedPage);
    //updateUsersCount();
@@ -180,7 +177,7 @@ const Organizations = () => {
                         handleDeleteItem={handleDeleteItem}
                         handleOpenModal={handleOpenModal}
                         handleCloseModal={handleCloseModal}
-                        organizations={currentOrganizations}
+                        organizations={organizations}
                         setOrganizations={setOrganizations}
                         getOrganizations={getOrganizations}
                       />

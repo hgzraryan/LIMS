@@ -19,6 +19,16 @@ const Reagents = () => {
   const [isOpen, setIsOpen] = useState(false);
   const confirmReagentRef = useRef("");
   const reagentsCount = useSelector(selectReagentsCount)
+  const [currentPage, setCurrentPage] = useState(0);  
+  const [usersPerPage, setUsersPerPage] = useState(Math.round((window.innerHeight / 100) * 1.5));
+  const pageCount = Math.ceil(reagentsCount/usersPerPage)
+
+  const {
+    data: reagents,
+    setData: setReagents,
+    getData: getReagents,
+  } = useGetData(REAGENTS_URL,currentPage,usersPerPage);
+
   const handleOpenModal = (user) => {
     setSelectedItemId(true);
     setSelectedItem((prev) => user);
@@ -30,11 +40,6 @@ const Reagents = () => {
   const handleToggleCreateModal = (value) => {
     setIsOpen((prev) => value);
   };
-  const {
-    data: reagents,
-    setData: setReagents,
-    getData: getReagents,
-  } = useGetData(REAGENTS_URL);
 
   const { handleDeleteItem } = useDeleteData(
     "/reagents",
@@ -46,14 +51,6 @@ const Reagents = () => {
     'product_name'
   );
    //-------------------------PAGINATION---------------------------//
-   const [currentPage, setCurrentPage] = useState(0);  
-   const [usersPerPage, setUsersPerPage] = useState(10);
-  
- 
-   const pagesVisited = currentPage * usersPerPage
-   const currentReagents = reagents.slice(pagesVisited,pagesVisited+usersPerPage)
-   const pageCount = Math.ceil(reagentsCount/usersPerPage)
- 
    const handlePageClick = ({ selected: selectedPage }) => {
      setCurrentPage(selectedPage);
      //updateUsersCount();
@@ -160,24 +157,24 @@ const Reagents = () => {
                         handleDeleteItem={handleDeleteItem}
                         handleOpenModal={handleOpenModal}
                         handleCloseModal={handleCloseModal}
-                        reagents={currentReagents}
+                        reagents={reagents}
                         setReagents={setReagents}
                         getReagents={getReagents}
                       />
                        <ReactPaginate
-                                           previousLabel = {"Հետ"}    
-                                           nextLabel = {"Առաջ"}
-                                            pageCount = {pageCount}
-                                            onPageChange = {handlePageClick}
-                                            initialPage = {0}
-                                            containerClassName={"pagination"}
-                                            pageLinkClassName = {"page-link"}
-                                            pageClassName = {"page-item"}
-                                            previousLinkClassName={"page-link"}
-                                            nextLinkClassName={"page-link"}
-                                            disabledLinkClassName={"disabled"}
-                                            //activeLinkClassName={"active"}
-                                            activeClassName={"active"}
+                        previousLabel = {"Հետ"}    
+                        nextLabel = {"Առաջ"}
+                        pageCount = {pageCount}
+                        onPageChange = {handlePageClick}
+                        initialPage = {0}
+                        containerClassName={"pagination"}
+                        pageLinkClassName = {"page-link"}
+                        pageClassName = {"page-item"}
+                        previousLinkClassName={"page-link"}
+                        nextLinkClassName={"page-link"}
+                        disabledLinkClassName={"disabled"}
+                        //activeLinkClassName={"active"}
+                        activeClassName={"active"}
 											/>
                   </div>
                 </div>

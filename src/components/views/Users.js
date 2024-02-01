@@ -24,50 +24,24 @@ const USERS_URL = "/users";
 
 
 const Users = () => {
-  // const axiosPrivate = useAxiosPrivate();
-  // const dispatch = useDispatch();
-  // const navigate = useNavigate();
-  // const location = useLocation();
+
   const confirmUserRef = useRef("");
   const [isOpen, setIsOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState("");
   const [selectedItemId, setSelectedItemId] = useState(null);
   const useersCount = useSelector(selectUsersCount)
+  const [currentPage, setCurrentPage] = useState(0);  
+  const [usersPerPage, setUsersPerPage] = useState(Math.round((window.innerHeight / 100) * 1.5));
+  const pageCount = Math.ceil(useersCount/usersPerPage)
 
-  /*-------------------Custom Hook--------------------*/
   const {
     data: users,
     setData: setUsers,
     // hasMore,
     // checkData,
     getData: getUsers,
-  } = useGetData(USERS_URL);
+  } = useGetData(USERS_URL,currentPage,usersPerPage);
   //-------------------
-  const [currentPage, setCurrentPage] = useState(0);  
-  const [usersPerPage, setUsersPerPage] = useState(12);
- 
-
-  const pagesVisited = currentPage * usersPerPage
-  const currentUsers = users.slice(pagesVisited,pagesVisited+usersPerPage)
-  const pageCount = Math.ceil(useersCount/usersPerPage)
-
-
-  
-
-//   const pagesVisited = currentPage * usersPerPage;
-//   const currentUsers = users.slice(pagesVisited, pagesVisited + usersPerPage);
-//   const pageCount = Math.ceil(currentUsers.length / usersPerPage);
-//   const handlePageClick = ({ selected: selectedPage }) => {
-//     setCurrentPage(selectedPage);
-// }
-
-  // //TODO need correct
-  // const { updateDataCount } = useUpdateCount(
-  //   "/allCount",
-  //   checkUsersCount,
-  //   'usersCount'
-  // );
-
   // const updateUsersCount = async () => {
   //   try {
   //     const response = await axiosPrivate.get("/allCount");
@@ -276,24 +250,24 @@ const Users = () => {
                         handleDeleteItem={handleDeleteItem}
                         handleOpenModal={handleOpenModal}
                         handleCloseModal={handleCloseModal}
-                        users={currentUsers}
+                        users={users}
                         setUsers={setUsers}
                         getUsers={getUsers}
                       />
                      <ReactPaginate
-                                           previousLabel = {"Հետ"}    
-                                           nextLabel = {"Առաջ"}
-                                            pageCount = {pageCount}
-                                            onPageChange = {handlePageClick}
-                                            initialPage = {0}
-                                            containerClassName={"pagination"}
-                                            pageLinkClassName = {"page-link"}
-                                            pageClassName = {"page-item"}
-                                            previousLinkClassName={"page-link"}
-                                            nextLinkClassName={"page-link"}
-                                            disabledLinkClassName={"disabled"}
-                                            //activeLinkClassName={"active"}
-                                            activeClassName={"active"}
+                      previousLabel = {"Հետ"}    
+                      nextLabel = {"Առաջ"}
+                      pageCount = {pageCount}
+                      onPageChange = {handlePageClick}
+                      initialPage = {0}
+                      containerClassName={"pagination"}
+                      pageLinkClassName = {"page-link"}
+                      pageClassName = {"page-item"}
+                      previousLinkClassName={"page-link"}
+                      nextLinkClassName={"page-link"}
+                      disabledLinkClassName={"disabled"}
+                      //activeLinkClassName={"active"}
+                      activeClassName={"active"}
 											/>
                   </div>
                 </div>
