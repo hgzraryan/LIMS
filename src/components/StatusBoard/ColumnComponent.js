@@ -17,6 +17,9 @@ function ColumnComponent({
   const [editStatusName, setEditStatusName] = useState(false);
   const [optionsList] = useState(["Edit", "Delete"]);
   // const [, setOverlayNameActivity] = useState('');
+  const handleOpenOverlayActivity =()=>{
+    console.log('add research')
+  }
   return (
     <>
       <Draggable
@@ -57,7 +60,15 @@ function ColumnComponent({
                        <CardComponent item={item} index={index}/>
                       ))}
                     </div>
-
+                    
+                    <button
+                        type="button"
+                        onClick={() => handleOpenOverlayActivity()}
+                        className="btn btn-primary"
+                        data-bs-dismiss="modal"
+                      >
+                        Ավելացնել Հետազոտություն
+                      </button>
                     {provided.placeholder}
                   </div>
                 )}

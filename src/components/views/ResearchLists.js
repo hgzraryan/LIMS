@@ -9,6 +9,8 @@ import useGetData from "../../hooks/useGetData";
 import useDeleteData from "../../hooks/useDeleteData";
 import ResearchListsTable from "../viewTables/ResearchListsTable";
 import AddResearchList from "./AddResearchList";
+import { useSelector } from "react-redux";
+import { selectResearchListCount } from "../../redux/features/researches/researchListCountSlice";
 const RESEARCHES_URL = "/researchLists";
 
 const ResearchLists = () => {
@@ -16,6 +18,7 @@ const ResearchLists = () => {
   const handleToggleCreateModal = (value) => {
     setIsOpen((prev) => value);
   };
+  const researchListCount = useSelector(selectResearchListCount)
   const [selectedItem, setSelectedItem] = useState("");
   const [selectedItemId, setSelectedItemId] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -52,7 +55,7 @@ const ResearchLists = () => {
  
    const pagesVisited = currentPage * usersPerPage
    const currentResearchList = researchList.slice(pagesVisited,pagesVisited+usersPerPage)
-   const pageCount = Math.ceil(researchList.length/usersPerPage)
+   const pageCount = Math.ceil(researchListCount/usersPerPage)
  
    const handlePageClick = ({ selected: selectedPage }) => {
      setCurrentPage(selectedPage);

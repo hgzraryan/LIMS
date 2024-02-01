@@ -11,6 +11,7 @@ import {
 import { Checkbox } from "../Checkbox";
 import FeatherIcon from "feather-icons-react/build/FeatherIcon";
 import { ColumnFilter } from "../ColumnFilter";
+import DefaultProfileImage from "../../../src/dist/img/Missing.svg";
 
 function DoctorsTable({
   confirmRef,
@@ -33,6 +34,20 @@ function DoctorsTable({
   );
   const columns = useMemo(
     () => [
+      {
+        Header: "",
+        accessor: "photo", 
+        Cell: ({ row }) => (
+          <img
+            src={row.values.photo || DefaultProfileImage}
+            alt="User Photo"
+            style={{ width: "50px", height: "50px", borderRadius: "50%" }}
+          />
+        ),
+        width: 100,
+        disableSortBy: true,
+        Filter: ({ column: { id } }) => <></>,
+      },
       {
         Header: (event) => (
           <>

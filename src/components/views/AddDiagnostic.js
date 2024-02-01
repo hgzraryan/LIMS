@@ -78,7 +78,7 @@ function AddDiagnostic({ handleToggleCreateModal, getDiagnostics,researchesState
     >
       <Modal.Header closeButton>
         <Modal.Title style={{ width: "100%", textAlign: "center" }}>
-          Ավելացնել նոր Հետազոտություն
+          Ավելացնել նոր Ախտորոշում
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
@@ -95,7 +95,7 @@ function AddDiagnostic({ handleToggleCreateModal, getDiagnostics,researchesState
                   >
                     <div className="card">
                       <div className="card-header">
-                        <a href="#">Հետազոտության տվյալներ</a>
+                        <a href="#">Ախտորոշման տվյալներ</a>
                         <button
                           className="btn btn-xs btn-icon btn-rounded btn-light"
                           data-bs-toggle="tooltip"
@@ -157,7 +157,7 @@ function AddDiagnostic({ handleToggleCreateModal, getDiagnostics,researchesState
                                   className="form-label"
                                   htmlFor="diagnostic"
                                 >
-                                  Հետազոտության տեսակ
+                                  Ախտորոշման տեսակ
                                 </label>
                                 <Multiselect
                                     options={[{diagnosticType:'Ներքին'},{diagnosticType:'Արտաքին'}]} // Options to display in the dropdown

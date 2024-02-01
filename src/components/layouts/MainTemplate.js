@@ -11,8 +11,11 @@ import { checkDoctorCount } from "../../redux/features/doctor/doctorCountSlice";
 import { checkEquipmentCount } from "../../redux/features/equipment/equipmentCountSlice";
 import { checkOrganisationCount } from "../../redux/features/organisation/organisationCountSlice";
 import { checkReagentsCount } from "../../redux/features/reagents/reagentsCountSlice";
-import { checkResearchCount } from "../../redux/features/diagnostics/researchCountSlice";
+import { checkDiagnosticsCount } from "../../redux/features/diagnostics/diagnosticsCountSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { useGetResearchList } from "../../hooks/useGetResearchList";
+import { checkResearchListCount } from "../../redux/features/researches/researchListCountSlice";
+const GET_RESEARCHES = "/researchLists";
 
 
 const MainTemplate = () => {
@@ -27,6 +30,7 @@ const MainTemplate = () => {
     const dispatch = useDispatch()
     const patientsCount = useSelector(selectPatientsCount)
     const usersCount = useSelector(selectUsersCount)
+    const [researchState] = useGetResearchList(GET_RESEARCHES)
     //-------------------
 
     //-------------------
@@ -83,8 +87,9 @@ const MainTemplate = () => {
 				isMounted && dispatch(checkOrganisationCount(response.data.organisationCount));
 				isMounted && dispatch(checkPatientsCount(response.data.patientsCount));
 				isMounted && dispatch(checkReagentsCount(response.data.reagentsCount));
-				isMounted && dispatch(checkResearchCount(response.data.researchCount));
+				isMounted && dispatch(checkDiagnosticsCount(response.data.diagnosticsCount));
 				isMounted && dispatch(checkUsersCount(response.data.usersCount));
+				isMounted && dispatch(checkResearchListCount(response.data.researchListCount));
             } catch (err) {
                 console.error(err);
                 navigate('/login', { state: { from: location }, replace: true });

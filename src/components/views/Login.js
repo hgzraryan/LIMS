@@ -5,7 +5,7 @@ import useInput from '../../hooks/useInput';
 import useToggle from '../../hooks/useToggle';
 import jwt from 'jwt-decode'
 import Swal from "sweetalert2";
-import {Helmet} from "react-helmet";
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 
 
 import axios from '../../api/axios';
@@ -130,18 +130,14 @@ const Login = () => {
     }
 
     return (
-
+<HelmetProvider>
         <section>
-
 <div>
-
 <Helmet>
     <meta charSet="utf-8" />
     <title>Vteam Laboratory information management system</title>
     <link rel="icon" type="image/x-icon" href="dist/img/favicon.ico"></link>
 </Helmet>
-              
-	 
 {/* Wrapper */}
 <div className="hk-wrapper hk-pg-auth" data-footer="simple">
 {/* Main Content */}
@@ -178,8 +174,6 @@ const Login = () => {
                                               autoComplete="off"
                                               {...userAttribs}
                                               required
-                                              
-                                              
                                               />
                                           </div>
                                           <div className="form-group col-lg-12">
@@ -195,11 +189,7 @@ const Login = () => {
                                                         id="password"
                                                         onChange={(e) => setPwd(e.target.value)}
                                                         value={pwd}
-                                                        required
-                                                      
-                                                      
-                                                      
-                                                      
+                                                        required 
                                                       />
                                                       
                                                           <div className="input-group-btn input-suffix text-primary text-uppercase fs-8 fw-medium">
@@ -207,12 +197,6 @@ const Login = () => {
                                                            { passwordType==="password"? <i className="bi bi-eye-slash"></i> :<i className="bi bi-eye"></i> }
                                                            </span>
                                                           </div>
-                                                
-                                                          
-                                                          
-                                                          
-                                                          
-                                                      
                                                   </span>
                                               </div>
                                           </div>
@@ -290,20 +274,9 @@ const Login = () => {
   {/* /Main Content */}
 </div>
 {/* /Wrapper */}
-
-
-
-
 </div>
-
-
-        </section>
-
-
-   
-
-
-
+        </section>   
+        </HelmetProvider>
     )
 }
 

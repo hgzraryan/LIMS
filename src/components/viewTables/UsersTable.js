@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/img-redundant-alt */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect, useMemo, useState } from "react";
 import ComponentToConfirm from "../ComponentToConfirm";
@@ -16,6 +17,8 @@ import FeatherIcon from "feather-icons-react/build/FeatherIcon";
 import { axiosPrivate } from "../../api/axios";
 import useGetData from "../../hooks/useGetData";
 import useDebounce from "../../hooks/useDebounce";
+import DefaultProfileImage from "../../../src/dist/img/Missing.svg";
+
 function UsersTable({
   confirmRef,
   selectedItem,
@@ -64,8 +67,23 @@ function UsersTable({
     }),
     []
   );
+  
   const columns = useMemo(
     () => [
+      {
+        Header: "",
+        accessor: "photo", 
+        Cell: ({ row }) => (
+          <img
+            src={row.values.photo || DefaultProfileImage}
+            alt="User Photo"
+            style={{ width: "50px", height: "50px", borderRadius: "50%" }}
+          />
+        ),
+        width: 100,
+        disableSortBy: true,
+        Filter: ({ column: { id } }) => <></>,
+      },
       {
         Header: "ID",
         accessor: "_id",

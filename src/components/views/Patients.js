@@ -5,21 +5,23 @@ import LoadingSpinner from "../LoadingSpinner";
 import Loading from "../Loading";
 import CreatePatient from "./CreatePatient";
 import { Dropdown } from "react-bootstrap";
-import {Helmet} from "react-helmet";
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 import useGetData from "../../hooks/useGetData";
 import PatientsTable from "../viewTables/PatientsTable";
 import ReactPaginate from "react-paginate";
-import { useGetResearchList } from "../../hooks/useGetResearchList";
 import { useSelector } from "react-redux";
 import { selectPatientsCount } from "../../redux/features/patients/patientsCountSlice";
-const GET_RESEARCHES = "/researchLists";
+import { selectResearches } from "../../redux/features/researches/researchesSlice";
+//const GET_RESEARCHES = "/researchLists";
 const PATIENTS_URL = "/patients";
 
 const Patients = () => {
+  const patientsCount = useSelector(selectPatientsCount)
+  const researchState= useSelector(selectResearches)
+  // const [researchState] = useGetResearchList(GET_RESEARCHES)
+
   const [isOpen, setIsOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState("");
-  const [researchState] = useGetResearchList(GET_RESEARCHES)
-  const patientsCount = useSelector(selectPatientsCount)
 
   const handleToggleCreateModal = (value) => {
     setIsOpen((prev) => value);
@@ -60,7 +62,7 @@ const Patients = () => {
   //-------------------
 
   return (
- 
+    <HelmetProvider>
     <div>
 	 <Helmet>
     <meta charSet="utf-8" />
@@ -310,6 +312,7 @@ const Patients = () => {
         </div>
       </div>
     </div>
+    </HelmetProvider>
   );
 };
 export default Patients;

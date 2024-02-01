@@ -110,6 +110,74 @@ export const position_validation = {
     },
   },
 };
+export const shortName_validation = {
+  name: "shortName",
+  label: "Հապավում",
+  type: "text",
+  id: "shortName",
+  placeholder: "Հապավում",
+  validation: {
+    required: {
+      value: true,
+      message: "required",
+    },
+    maxLength: {
+      value: 30,
+      message: "30 characters max",
+    },
+  },
+};
+export const category_validation = {
+  name: "category",
+  label: "Կատեգորիա",
+  type: "text",
+  id: "category",
+  placeholder: "Կատեգորիա",
+  validation: {
+    required: {
+      value: true,
+      message: "required",
+    },
+    maxLength: {
+      value: 30,
+      message: "30 characters max",
+    },
+  },
+};
+export const researchUnit_validation = {
+  name: "researchUnit",
+  label: "Հետազոտության միավոր",
+  type: "text",
+  id: "researchUnit",
+  placeholder: "Հետազոտության միավոր",
+  validation: {
+    required: {
+      value: true,
+      message: "required",
+    },
+    maxLength: {
+      value: 30,
+      message: "30 characters max",
+    },
+  },
+};
+export const referenceRange_validation = {
+  name: "referenceRange",
+  label: "Հետազոտության նորմա",
+  type: "text",
+  id: "referenceRange",
+  placeholder: "Հետազոտության նորմա",
+  validation: {
+    required: {
+      value: true,
+      message: "required",
+    },
+    maxLength: {
+      value: 30,
+      message: "30 characters max",
+    },
+  },
+};
 export const birthday_validation = {
   name: "birthday",
   label: "Ծննդյան ամսաթիվ",

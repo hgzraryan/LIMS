@@ -146,6 +146,7 @@ function PatientsTable({
         accessor: "age",
         sortable: true,
         width: 200,
+
         Filter: ({ column: { id } })=>(
           <ColumnFilter
             id={id}
@@ -156,7 +157,7 @@ function PatientsTable({
       {
         Header: (event) => (
           <>
-            <div className="columnHeader">Հետազոտություններ</div>
+            <div className="columnHeader">Ախտորոշումներ</div>
           </>
         ),
         Cell: ({ row }) => (

@@ -4,14 +4,23 @@ import FeatherIcon from "feather-icons-react";
 import { Editor } from "@tinymce/tinymce-react";
 import { useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
-import { Form, FormProvider } from "react-hook-form";
+import { Form, FormProvider, useForm } from "react-hook-form";
 import { Input } from "../Input";
 import {
   name_validation,
   class_validation,
+  shortName_validation,
+  category_validation,
+  researchUnit_validation,
+  price_validation,
+  currency_validation,
+  referenceRange_validation,
 } from "../../utils/inputValidations";
 import useSubmitForm from "../../hooks/useSubmitForm";
 import Multiselect from "multiselect-react-dropdown";
+import {  toast } from 'react-toastify';
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+
 const REGISTER_URL = "/registerResearchLists";
 
 function AddResearchList({ handleToggleCreateModal, getResearches,researchState }) {
@@ -21,15 +30,66 @@ function AddResearchList({ handleToggleCreateModal, getResearches,researchState 
     const researchTypeRef = useRef("");
     const additionalData = useRef({});
     const editorRef = useRef(null);
+    const axiosPrivate = useAxiosPrivate();
 
-    const { onSubmit, methods } = useSubmitForm(
-      REGISTER_URL,
-      editorRef,
-      getResearches,
-      setErrMsg,
-      handleToggleCreateModal,
-      additionalData
-    );
+    // const { onSubmit, methods } = useSubmitForm(
+    //   REGISTER_URL,
+    //   editorRef,
+    //   getResearches,
+    //   setErrMsg,
+    //   handleToggleCreateModal,
+    //   additionalData
+    // );
+    const notify = (text) => toast.success(text, {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      });
+    const methods = useForm({
+      mode: "onChange",
+    });
+    const onSubmit = methods.handleSubmit(async (data
+      ) => {
+     
+      const newResearchList = {
+        researchName:data.name,
+        shortName:data.shortName,
+        category:data.category,
+        referenceRange:data.referenceRange,
+        units:data.researchUnit,
+        researchesPrice:data.price,
+        currencyCode:data.currency,
+        class:additionalData.researchType,
+      };
+      console.log('**********');
+      console.log('newResearchList',newResearchList);
+      console.log('**********',);
+      
+      try {
+        await axiosPrivate.post(REGISTER_URL, newResearchList, {
+          headers: { "Content-Type": "application/json"  },
+          withCredentials: true,
+        });
+        
+        handleToggleCreateModal(false);
+       //getUsers();
+        notify(`${newResearchList.name} ավելացված է`)
+  
+      } catch (err) {
+        if (!err?.response) {
+          setErrMsg("No Server Response");
+        } else if (err.response?.status === 409) {
+          setErrMsg("Username Taken");
+        } else {
+          setErrMsg(" Failed");
+        }
+      }
+    });
     const onResearchSelect = (data) => {
       let researchesArr = [];
       let researchesPrice = [];
@@ -111,11 +171,28 @@ function AddResearchList({ handleToggleCreateModal, getResearches,researchState 
                                 <Input {...name_validation} />
                               </div>
                               <div className="col-sm-6">
-                                <Input {...class_validation} />
+                                <Input {...shortName_validation} />
                               </div>
                             </div>
                             <div className="row gx-3">
                               <div className="col-sm-6">
+                                <Input {...class_validation} />
+                              </div>
+                              <div className="col-sm-6">
+                                <Input {...category_validation} />
+                              </div>
+                            </div>
+                            <div className="row gx-3">
+                              <div className="col-sm-6">
+                                <Input {...researchUnit_validation} />
+                              </div>
+                              <div className="col-sm-6">
+                                <Input {...price_validation} />
+                              </div>
+                            </div>
+                            
+                            <div className="row gx-3">
+                              {/* <div className="col-sm-6">
                               <label
                                     className="form-label"
                                     htmlFor="research"
@@ -139,7 +216,10 @@ function AddResearchList({ handleToggleCreateModal, getResearches,researchState 
                                         overflow: "hidden",
                                       }}
                                     />
-                              </div>
+                              </div> */}
+                              <div className="col-sm-6">
+                                    <Input {...referenceRange_validation} />
+                                  </div>
                               <div className="col-sm-6">
                             <label
                                   className="form-label"
@@ -167,13 +247,24 @@ function AddResearchList({ handleToggleCreateModal, getResearches,researchState 
                                   />
                             </div>
                             </div>
-                            {externalType && (                              
-                              <div className="row gx-3">
+                            <div className="row gx-3">
+                                    <div className="col-sm-6">
+                                    <Input {...currency_validation} />
+                                  </div>
+                            {externalType && (
+                              
+                                                              <div className="col-sm-6">
+                               <label
+                                  className="form-label"
+                                  htmlFor="research"
+                                >
+                                  Գործընկեր
+                                </label>
                             <Multiselect
                                     options={[{partner:'Diagen+'},{partner:'Dialab'}]} // Options to display in the dropdown
                                     displayValue="partner" // Property name to display in the dropdown options
                                     onSelect={onPartnerSelect} // Function will trigger on select event
-                                  //  onRemove={onResearchDelete} // Function will trigger on remove event
+                                    //  onRemove={onResearchDelete} // Function will trigger on remove event
                                     closeOnSelect={true}
                                     singleSelect
                                     id="input_tags_4"
@@ -185,15 +276,18 @@ function AddResearchList({ handleToggleCreateModal, getResearches,researchState 
                                       height: "10rem",
                                       overflow: "hidden",
                                     }}
-                                  />
-                            </div>
-                                )
-                            }
+                                    />
+                                                              </div>
+                                  )
+                                }
+
+                             
+                                </div>
                           </div>
-                        </div>
-                      </div>
-                      <div className="separator-full"></div>
-                      <div className="card">
+                          </div>
+                          </div>
+                          <div className="separator-full"></div>
+                          <div className="card">
                         <div className="card-header">
                           <a href="#">Հավելյալ տվյալներ</a>
                           <button

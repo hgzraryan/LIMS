@@ -13,7 +13,7 @@ import useDeleteData from "../../hooks/useDeleteData";
 import useUpdateCount from "../../hooks/useUpdateCount";
 import { checkUsersCount, selectUsersCount } from "../../redux/features/users/usersCountSlice";
 import UsersTable from "../viewTables/UsersTable";
-import {Helmet} from "react-helmet";
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 import useAxiosPrivate from "../../hooks/useAxiosPrivate"
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -114,6 +114,8 @@ const Users = () => {
 	//-------------------------
    
   return (
+    <HelmetProvider>
+
     <div>
 	<Helmet>
 		<meta charSet="utf-8" />
@@ -198,7 +200,6 @@ const Users = () => {
                     <span>Compact View</span>
                   </a>
                 </div>
-
                 <a
                   className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover no-caret d-sm-inline-block d-none"
                   href="#"
@@ -302,6 +303,7 @@ const Users = () => {
         </div>
       </div>
     </div>
+    </HelmetProvider>
   );
 };
 

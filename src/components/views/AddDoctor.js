@@ -14,7 +14,6 @@ import {
   mobile_validation,
   specialty_validation,
   qualification_validation,
-  doctorState_validation,
   state_validation,
   country_validation,
   city_validation,
@@ -151,7 +150,7 @@ function AddDoctor({ handleToggleCreateModal, getDoctors }) {
           city: city,
           state: state,
           country: country,
-          zip_code: zipCode,
+          zipCode: zipCode,
         },
         specialty: specialty,
         qualification: qualification,
@@ -166,29 +165,33 @@ function AddDoctor({ handleToggleCreateModal, getDoctors }) {
         profilePictureUrl: "profilePictureUrl",
         isActive: doctorState,
       };
+     
+
       console.log(newDoctor);
 
       formData.append("text", JSON.stringify(newDoctor));
       formData.append("image", image);
-      // try {
-      //   await axiosPrivate.post(REGISTER_DOCTOR, formData, {
-      //     headers: { "Content-Type": "multipart/form-data" },
-      //     withCredentials: true,
-      //   });
+      try {
+        await axiosPrivate.post(REGISTER_DOCTOR, newDoctor, {
+          headers: { "Content-Type": "application/json" },
+         // headers: { "Content-Type": "multipart/form-data" },
+          withCredentials: true,
+        });
 
-      //   handleToggleCreateModal(false);
-      //   getDoctors("update");
-      //   notify(`${newUser.firstName} ${newUser.lastName} Բժիշկը ավելացված է`)
+        handleToggleCreateModal(false);
+        getDoctors("update");
+        notify(`${newDoctor.fullName}  Բժիշկը ավելացված է`)
 
-      // } catch (err) {
-      // //   if (!err?.response) {
-      // //     setErrMsg("No Server Response");
-      // //   } else if (err.response?.status === 409) {
-      // //     setErrMsg("Username Taken");
-      // //   } else {
-      // //     setErrMsg(" Failed");
-      // //   }
-      // }
+      } catch (err) {
+        console.log(err)
+      //   if (!err?.response) {
+      //     setErrMsg("No Server Response");
+      //   } else if (err.response?.status === 409) {
+      //     setErrMsg("Username Taken");
+      //   } else {
+      //     setErrMsg(" Failed");
+      //   }
+      }
     }
   );
   return (

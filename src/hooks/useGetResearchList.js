@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
@@ -13,7 +13,7 @@ export const useGetResearchList = (url) => {
     const navigate = useNavigate();  
     const location = useLocation();  
     const dispatch = useDispatch();
-    const researchState = useSelector(selectResearches);
+    const [researchState,setResearchState] = useState([]);
 
     useEffect(() => {
         let isMounted = true;
@@ -23,9 +23,14 @@ export const useGetResearchList = (url) => {
           try {
             const response = await axiosPrivate.post(url, {
               signal: controller.signal,
+              page: 1,
+              onPage: 84,
             });
       
-            isMounted && dispatch(reserchesList(response.data.jsonString));
+            isMounted && 
+            dispatch(reserchesList(response.data.jsonString));
+            setResearchState(prev=>setResearchState(response.data.jsonString))
+
           } catch (err) {
             console.error(err);
             navigate("/login", { state: { from: location }, replace: true });

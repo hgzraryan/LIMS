@@ -87,7 +87,7 @@ function CreatePatient({
       age: age,
       lastHandlingDate: handlingDate.current,
       researchList: researchesArray,
-      additional: editorRef.current.getContent({ format: "text" }),
+      //additional: editorRef.current.getContent({ format: "text" }),
       gender:genderRef.current,
       contact:{
         email: email,
@@ -100,33 +100,31 @@ function CreatePatient({
             zip_code: zipCode,
         },
       },
-     // medicalHistory:'medicalHistory',
+      medicalHistory:'medicalHistory',
       dateOfBirth:new Date(birthday.getTime() - (birthday.getTimezoneOffset() * 60000))
       .toISOString()
       .split('T')[0]
     };
 
-    
-    const formData = JSON.stringify(newPatient);
     console.log(newPatient)
-    // try {
-    //   await axiosPrivate.post(REGISTER_URL, formData, {
-    //     headers: { "Content-Type": "application/json" },
-    //     withCredentials: true,
-    //   });
-    //   handleToggleCreateModal(false);
-    //   getPatients("update");
-    //   notify(`${newPatient.firstName} ${newPatient.lastName} հաճախորդը ավելացված է`)
+    try {
+      await axiosPrivate.post(REGISTER_URL, newPatient, {
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+      });
+      handleToggleCreateModal(false);
+      //getPatients("update");
+      notify(`${newPatient.firstName} ${newPatient.lastName} հաճախորդը ավելացված է`)
 
-    // } catch (err) {
-    //   if (!err?.response) {
-    //     setErrMsg("No Server Response");
-    //   } else if (err.response?.status === 409) {
-    //     setErrMsg("Username Taken");
-    //   } else {
-    //     setErrMsg(" Failed");
-    //   }
-    // }
+    } catch (err) {
+      if (!err?.response) {
+        setErrMsg("No Server Response");
+      } else if (err.response?.status === 409) {
+        setErrMsg("Username Taken");
+      } else {
+        setErrMsg(" Failed");
+      }
+    }
   });
   const onGenderSelect = (data) => {
     genderRef.current = data[0].gender

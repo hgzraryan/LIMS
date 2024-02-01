@@ -10,7 +10,7 @@ import useGetData from "../../hooks/useGetData";
 import useDeleteData from "../../hooks/useDeleteData";
 import AddOrganization from "./AddOrganizations";
 import OrganizationsTable from "../viewTables/OrganizationsTable";
-import {Helmet} from "react-helmet";
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { useSelector } from "react-redux";
 import { selectOrganisationCount } from "../../redux/features/organisation/organisationCountSlice";
 
@@ -78,6 +78,7 @@ const Organizations = () => {
   //-------------------
 
   return (
+    <HelmetProvider>
     <div>
 	<Helmet>
 		<meta charSet="utf-8" />
@@ -206,6 +207,7 @@ const Organizations = () => {
         </div>
       </div>
     </div>
+    </HelmetProvider>
   );
 };
 
