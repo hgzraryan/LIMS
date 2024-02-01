@@ -16,6 +16,7 @@ import { ComponentToPrint } from "../ComponentToPrint";
 import ReactToPrint from "react-to-print";
 import { ColumnFilter } from "../ColumnFilter";
 import "../../dist/css/data-table.css";
+import {  useNavigate } from 'react-router-dom';
 
 function PatientsTable({
   selectedItem,
@@ -25,6 +26,8 @@ function PatientsTable({
   patients,
   setPatients,
 }) {
+  const navigate = useNavigate();
+
   const ComponentToPrintWrapper = ({ user }) => {
     // 1.
     let componentRef = useRef(null); // 2.
@@ -82,6 +85,15 @@ function PatientsTable({
             setData={setPatients}
           />
         ),
+        Cell: ({ row }) => (
+          <div
+            onClick={() => navigate(`/patients/${row.id}`)}
+            style={{ cursor: 'pointer' }}
+          >
+            {row.original.firstName}
+          </div>
+        ),
+
       },
       {
         Header: (event) => (
@@ -264,7 +276,7 @@ function PatientsTable({
 
       },
     ],
-    []
+    [navigate, setPatients]
     );
     
     const {

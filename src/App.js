@@ -25,6 +25,7 @@ import Equipments from "./components/views/Equipments";
 import ResearchLists from "./components/views/ResearchLists";
 import Diagnostics from "./components/views/Diagnostics";
 import Doctors from "./components/views/Doctors";
+import PatientDetails from "./components/views/PatientDetails";
 
 import { Routes, Route } from "react-router-dom";
 import AddSample from "./components/views/AddSample";
@@ -70,6 +71,7 @@ function App() {
 
             <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
               <Route path="patients" element={<Patients />} />
+              <Route path="patients/:id" element={<PatientDetails/>} />
               <Route path="admin/useradd" element={<UserAdd />} />
               <Route path="users" element={<Users />} />
               <Route path="admin" element={<Admin />} />
