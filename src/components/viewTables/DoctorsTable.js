@@ -12,6 +12,8 @@ import { Checkbox } from "../Checkbox";
 import FeatherIcon from "feather-icons-react/build/FeatherIcon";
 import { ColumnFilter } from "../ColumnFilter";
 import DefaultProfileImage from "../../../src/dist/img/Missing.svg";
+import { Modal } from "react-bootstrap";
+import MissingAvatar from "../../dist/img/Missing.svg";
 
 function DoctorsTable({
   confirmRef,
@@ -24,6 +26,10 @@ function DoctorsTable({
   setDoctors,
   // getDoctors
 }) {
+  const [openModal,setOpenModal]=useState(false)
+  const [modalInfo,setModalInfo]=useState({})
+  const [imageUrl, setImageUrl] = useState(MissingAvatar);
+
   const defaultColumn = React.useMemo(
     () => ({
       minWidth: 20,
@@ -32,6 +38,10 @@ function DoctorsTable({
     }),
     []
   );
+  const handlePatientInfo =(data)=>{
+    setOpenModal(true)
+    setModalInfo(data)
+  }
   const columns = useMemo(
     () => [
       {
@@ -60,6 +70,9 @@ function DoctorsTable({
         Filter: ({ column: { id } }) => (
           <ColumnFilter id={id} setData={setDoctors} />
         ),
+        Cell:()=>{
+          
+        }
       },
       {
         Header: (event) => (
@@ -73,6 +86,17 @@ function DoctorsTable({
         Filter: ({ column: { id } }) => (
           <ColumnFilter id={id} setData={setDoctors} />
         ),
+        Cell: ({ row }) => (
+          <div
+            onClick={(e) => {
+              e.stopPropagation();
+              handlePatientInfo(row.original);
+            }}
+            style={{ cursor: 'pointer' }}
+          >
+            {row.original.name}
+          </div>
+        ),
       },
       {
         Header: (event) => (
@@ -80,7 +104,7 @@ function DoctorsTable({
             <div className="columnHeader">Մասնագիտություն</div>
           </>
         ),
-        accessor: "specialty",
+        accessor: "speciality",
         width: 300,
         Filter: ({ column: { id } }) => (
           <ColumnFilter id={id} setData={setDoctors} />
@@ -344,6 +368,73 @@ function DoctorsTable({
 
   return (
     <>
+    {
+      openModal && (
+        <Modal
+      show={() => true}
+      size="xs"
+      onHide={() => setOpenModal(false)}
+    >
+      <Modal.Header closeButton>
+        <Modal.Title style={{ width: "100%", textAlign: "center" }}>
+        {modalInfo.name}
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        
+          <div className="contact-body contact-detail-body">
+            <div data-simplebar className="nicescroll-bar">
+              <div className="d-flex flex-xxl-nowrap flex-wrap">
+                <div className="contact-info w-100">
+                  <div className="d-flex justify-content-center align-items-center">
+                    
+                    <img
+                          width={"200px"}
+                          height={"300px"}
+                          style={{
+                            borderRadius: "5px",
+                          }}
+                          src={imageUrl}
+                          className="avatar_upload_preview"
+                          alt="preview"
+                        />
+                  </div>
+                  <div className="w-100">
+                       <div className="d-flex justify-content-between">  <span>Անուն Ազգանուն Հայրանուն </span> <span>{modalInfo.name}</span></div>
+                       <div className="separator-full m-0"></div>
+                       <div className="d-flex justify-content-between">  <span>Մասնագիտություն </span> <span>{modalInfo.speciality}</span></div>
+                       <div className="separator-full m-0"></div>
+                       <div className="d-flex justify-content-between">  <span>Ծննդյան ամսաթիվ </span> <span>{modalInfo.date_of_birth}</span></div>
+                       <div className="separator-full m-0"></div>
+                       <div className="d-flex justify-content-between">  <span>Հասցե </span> <span>{modalInfo.address}</span></div>
+                       <div className="separator-full m-0"></div>
+                       <div className="d-flex justify-content-between">  <span>Էլ․ Հասցե </span> <span>{modalInfo.email}</span></div>
+                       <div className="separator-full m-0"></div>
+                       <div className="d-flex justify-content-between">  <span>սեռ </span> <span>{modalInfo.gender}</span></div>
+                       <div className="separator-full m-0"></div>
+                       <div className="d-flex justify-content-between">  <span>Կարգավիճակ </span> <span>{modalInfo.is_active}</span></div>
+                       <div className="separator-full m-0"></div>
+                       <div className="d-flex justify-content-between">  <span>Ընդունվել է </span> <span>{modalInfo.joining_date}</span></div>
+                       <div className="separator-full m-0"></div>
+                       <div className="d-flex justify-content-between">  <span>Լիցենզավորման համար </span> <span>{modalInfo.license_number}</span></div>
+                       <div className="separator-full m-0"></div>
+                       <div className="d-flex justify-content-between">  <span>Հեռախոս </span> <span>{modalInfo.mobile}</span></div>
+                       <div className="separator-full m-0"></div>
+                       <div className="d-flex justify-content-between">  <span>Որակավորում </span> <span>{modalInfo.qualification}</span></div>
+                       <div className="separator-full m-0"></div>
+                       <div className="d-flex justify-content-between">  <span>Լրացուցիչ կոնտակտ </span> <span>{modalInfo.emergency_contact_name}</span></div>
+                       <div className="separator-full m-0"></div>
+                       <div className="d-flex justify-content-between">  <span>Լրացուցիչ կոնտակտի հեռախոս </span> <span>{modalInfo.emergency_contact_number}</span></div>                    
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        
+      </Modal.Body>
+    </Modal>
+      )
+    }
       <table
         className="table nowrap w-100 mb-5 dataTable no-footer"
         {...getTableProps()}

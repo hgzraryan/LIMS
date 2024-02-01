@@ -46,10 +46,9 @@ const Diagnostics = () => {
   const handleToggleCreateModal = (value) => {
     setIsOpen((prev) => value);
   };
-  // const {
-  //   data: patients,
-  //   setData: setPatients,
-  // } = useGetData(PATIENTS_URL);
+  const {
+    data: patients,
+  } = useGetData(PATIENTS_URL);
 
   const { handleDeleteItem } = useDeleteData(
     Diagnostics_URL,
@@ -121,7 +120,7 @@ const Diagnostics = () => {
                       handleToggleCreateModal={handleToggleCreateModal}
                       getDiagnostics={() => getDiagnostics()}
                       researchesState={researchesState}
-                     // patients={patients}
+                      patients={patients}
                     />
                   )}
                 </div>

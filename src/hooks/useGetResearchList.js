@@ -14,7 +14,6 @@ export const useGetResearchList = (url) => {
     const location = useLocation();  
     const dispatch = useDispatch();
     const [researchState,setResearchState] = useState([]);
-
     useEffect(() => {
         let isMounted = true;
         const controller = new AbortController();
@@ -29,7 +28,7 @@ export const useGetResearchList = (url) => {
       
             isMounted && 
             dispatch(reserchesList(response.data.jsonString));
-            setResearchState(prev=>setResearchState(response.data.jsonString))
+            setResearchState(prev=>response.data.jsonString)
 
           } catch (err) {
             console.error(err);
