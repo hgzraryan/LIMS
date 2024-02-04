@@ -20,11 +20,7 @@ export const useGetPatients = (url) => {
       
         const getPatients = async () => {
           try {
-            const response = await axiosPrivate.post(url, {
-              signal: controller.signal,
-              page: 1,
-              onPage: 84,
-            });
+            const response = await axiosPrivate.get(url);
       
             isMounted && 
             dispatch(checkPatients(response.data.jsonString));
