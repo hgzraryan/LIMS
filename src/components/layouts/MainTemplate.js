@@ -496,13 +496,13 @@ const MainTemplate = () => {
                     <li className="nav-item">
                       <Link
                         className={
-                          misActive1 === "researches" ||
-                          location.pathname === "/researches"
+                          misActive1 === "diagnostics" ||
+                          location.pathname === "/diagnostics"
                             ? "nav-link active"
                             : "nav-link"
                         }
-                        to="./researches"
-                        onClick={() => handleSubmenuClick("researches", "")}
+                        to="./diagnostics"
+                        onClick={() => handleSubmenuClick("diagnostics", "")}
                       >
                         <span className="nav-icon-wrap">
                           <span className="svg-icon">
