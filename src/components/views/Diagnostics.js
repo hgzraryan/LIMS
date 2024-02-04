@@ -13,8 +13,9 @@ import { useSelector } from "react-redux";
 import AddDiagnostic from "./AddDiagnostic";
 import { selectDiagnosticsCount} from "../../redux/features/diagnostics/diagnosticsCountSlice";
 import { selectResearches } from "../../redux/features/researches/researchesSlice";
+import { selectPatients } from "../../redux/features/patients/patientsSlice";
 const Diagnostics_URL = "/diagnostics";
-const PATIENTS_URL = "/patients";
+//const PATIENTS_URL = "/patients";
 //const GET_RESEARCHES = "/researchLists";
 
 const Diagnostics = () => {
@@ -28,7 +29,8 @@ const Diagnostics = () => {
   const [currentPage, setCurrentPage] = useState(0);  
   const [usersPerPage, setUsersPerPage] = useState(Math.round((window.innerHeight / 100) * 1.5));
   const pageCount = Math.ceil(diagnosticsCount/usersPerPage)
-  
+  const patients = useSelector(selectPatients)
+
   const {
     data: diagnostics,
     setData: setDiagnostics,
@@ -46,9 +48,9 @@ const Diagnostics = () => {
   const handleToggleCreateModal = (value) => {
     setIsOpen((prev) => value);
   };
-  const {
-    data: patients,
-  } = useGetData(PATIENTS_URL);
+  // const {
+  //   data: patients,
+  // } = useGetData(PATIENTS_URL);
 
   const { handleDeleteItem } = useDeleteData(
     Diagnostics_URL,

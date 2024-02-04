@@ -15,7 +15,10 @@ import { checkDiagnosticsCount } from "../../redux/features/diagnostics/diagnost
 import { useDispatch, useSelector } from "react-redux";
 import { useGetResearchList } from "../../hooks/useGetResearchList";
 import { checkResearchListCount } from "../../redux/features/researches/researchListCountSlice";
+import { selectPatients } from "../../redux/features/patients/patientsSlice";
+import { useGetPatients } from "../../hooks/useGetPatients";
 const GET_RESEARCHES = "/researchLists";
+const PATIENTS_URL = "/patients";
 
 
 const MainTemplate = () => {
@@ -31,6 +34,7 @@ const MainTemplate = () => {
     const patientsCount = useSelector(selectPatientsCount)
     const usersCount = useSelector(selectUsersCount)
     const [researchState] = useGetResearchList(GET_RESEARCHES)
+    const [patientsState] = useGetPatients(PATIENTS_URL)
     //-------------------
 
     //-------------------
