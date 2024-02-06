@@ -30,23 +30,23 @@ const useSubmitForm = (REGISTER_URL,editorRef, getData,setErrMsg,handleToggleCre
               additional: editorRef.current?.getContent({ format: "text" }),
             };
             console.log(newData)
-            // try {
-            //   await axiosPrivate.post(REGISTER_URL, newData, {
-            //     headers: { "Content-Type": "application/json" },
-            //     withCredentials: true,
-            //   });
-            //   handleToggleCreateModal(false);
-            //   getData();
-            //   notify(`${newData.name} ավելացված է`);
-            // } catch (err) {
-            //   if (!err?.response) {
-            //     setErrMsg("No Server Response");
-            //   } else if (err.response?.status === 409) {
-            //     setErrMsg("Username Taken");
-            //   } else {
-            //     setErrMsg(" Failed");
-            //   }
-            // }
+            try {
+              await axiosPrivate.post(REGISTER_URL, newData, {
+                headers: { "Content-Type": "application/json" },
+                withCredentials: true,
+              });
+              handleToggleCreateModal(false);
+              getData();
+              notify(`${newData.name} ավելացված է`);
+            } catch (err) {
+              if (!err?.response) {
+                setErrMsg("No Server Response");
+              } else if (err.response?.status === 409) {
+                setErrMsg("Username Taken");
+              } else {
+                setErrMsg(" Failed");
+              }
+            }
           });
     
       return {

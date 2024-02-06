@@ -105,7 +105,7 @@ function CreatePatient({
       .split('T')[0]
     };
 
-    //console.log(newPatient)
+    console.log(newPatient)
     try {
       await axiosPrivate.post(REGISTER_PATIENT, newPatient, {
         headers: { "Content-Type": "application/json" },
@@ -113,7 +113,7 @@ function CreatePatient({
       });
 
       handleToggleCreateModal(false);
-      //getPatients("update");
+      getPatients();
       notify(`${newPatient.firstName} ${newPatient.lastName} հաճախորդը ավելացված է`)
 
     } catch (err) {
@@ -249,8 +249,8 @@ function CreatePatient({
                                   className="form-check-input"
                                   type="radio"
                                   id="male"
-                                  value="Արական"
-                                  checked={gender === "Արական"}
+                                  value="Male"
+                                  checked={gender === "Male"}
                                   onChange={onGenderSelect} 
                                 />
                               <label className="form-check-label" htmlFor="male">
@@ -262,8 +262,8 @@ function CreatePatient({
                                 className="form-check-input"
                                 type="radio"
                                 id="female"
-                                value="Իգական"
-                                checked={gender === "Իգական"} 
+                                value="Female"
+                                checked={gender === "Female"} 
                                 onChange={onGenderSelect} 
                               />
                               <label className="form-check-label" htmlFor="female">

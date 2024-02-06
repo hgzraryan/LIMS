@@ -59,8 +59,9 @@ const Login = () => {
             setAuth({ user, pwd, roles, isActive, accessToken });
             resetUser();
             setPwd('');  
+            
             if (roles.includes(1212)) {
-                navigate('/samples');
+                navigate('/addsample');
               } else{
                   navigate(from, { replace: true });
               }

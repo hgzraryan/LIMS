@@ -66,7 +66,7 @@ function DoctorsTable({
         ),
         accessor: "doctorName",
         sortable: true,
-        width: 400,
+        width: 300,
         Filter: ({ column: { id } }) => (
           <ColumnFilter id={id} setData={setDoctors} />
         ),
@@ -109,81 +109,11 @@ function DoctorsTable({
       {
         Header: (event) => (
           <>
-            <div className="columnHeader">Լիցենզավորման համար</div>
-          </>
-        ),
-        accessor: "licenseNumber",
-        width: 300,
-        Filter: ({ column: { id } }) => (
-          <ColumnFilter id={id} setData={setDoctors} />
-        ),
-      },
-      {
-        Header: (event) => (
-          <>
-            <div className="columnHeader">Գրանցման ամսաթիվ</div>
-          </>
-        ),
-        accessor: "joiningDate",
-        width: 300,
-        Filter: ({ column: { id } }) => (
-          <ColumnFilter id={id} setData={setDoctors} />
-        ),
-      },
-      {
-        Header: (event) => (
-          <>
-            <div className="columnHeader">Հասցե</div>
-          </>
-        ),
-        accessor: "city",
-        width: 300,
-        Filter: ({ column: { id } }) => (
-          <ColumnFilter id={id} setData={setDoctors} />
-        ),
-        Cell: ({ row }) => (
-          <div>
-            {row.original.contact?.address?.city}
-          </div>
-        ),
-      },
-      {
-        Header: (event) => (
-          <>
-            <div className="columnHeader">Սեռ</div>
-          </>
-        ),
-        accessor: "gender",
-        width: 300,
-        Filter: ({ column: { id } }) => (
-          <ColumnFilter id={id} setData={setDoctors} />
-        ),
-      },
-      {
-        Header: (event) => (
-          <>
-            <div className="columnHeader">Էլ․ հասցե</div>
-          </>
-        ),
-        accessor: "email",
-        width: 300,
-        Filter: ({ column: { id } }) => (
-          <ColumnFilter id={id} setData={setDoctors} />
-        ),
-        Cell: ({ row }) => (
-          <div>
-            {row.original.contact?.email}
-          </div>
-        ),
-      },
-      {
-        Header: (event) => (
-          <>
             <div className="columnHeader">Հեռախոս</div>
           </>
         ),
         accessor: "mobile",
-        width: 300,
+        width: 200,
         Filter: ({ column: { id } }) => (
           <ColumnFilter id={id} setData={setDoctors} />
         ),
@@ -196,51 +126,6 @@ function DoctorsTable({
       {
         Header: (event) => (
           <>
-            <div className="columnHeader">Ծննդյան ամսաթիվ</div>
-          </>
-        ),
-        accessor: "dateOfBirth",
-        style: {
-          // Custom style for the 'description' column
-        },
-        width: 300,
-        Filter: ({ column: { id } }) => (
-          <ColumnFilter id={id} setData={setDoctors} />
-        ),
-      },
-      {
-        Header: (event) => (
-          <>
-            <div className="columnHeader">Լրացուցիչ կոնտակտ</div>
-          </>
-        ),
-        accessor: "emergencyContactName",
-        style: {
-          // Custom style for the 'description' column
-        },
-        width: 300,
-        Filter: ({ column: { id } }) => (
-          <ColumnFilter id={id} setData={setDoctors} />
-        ),
-      },
-      {
-        Header: (event) => (
-          <>
-            <div className="columnHeader">Լրացուցիչ կոնտակտի հեռախոս</div>
-          </>
-        ),
-        accessor: "emergencyContactPhone",
-        style: {
-          // Custom style for the 'description' column
-        },
-        width: 300,
-        Filter: ({ column: { id } }) => (
-          <ColumnFilter id={id} setData={setDoctors} />
-        ),
-      },
-      {
-        Header: (event) => (
-          <>
             <div className="columnHeader">Կարգավիճակ</div>
           </>
         ),
@@ -248,37 +133,7 @@ function DoctorsTable({
         style: {
           // Custom style for the 'description' column
         },
-        width: 300,
-        Filter: ({ column: { id } }) => (
-          <ColumnFilter id={id} setData={setDoctors} />
-        ),
-      },
-      {
-        Header: (event) => (
-          <>
-            <div className="columnHeader">Ստեղծման ամսաթիվ</div>
-          </>
-        ),
-        accessor: "createdAt",
-        style: {
-          // Custom style for the 'description' column
-        },
-        width: 300,
-        Filter: ({ column: { id } }) => (
-          <ColumnFilter id={id} setData={setDoctors} />
-        ),
-      },
-      {
-        Header: (event) => (
-          <>
-            <div className="columnHeader">Թարմացման ամսաթիվ</div>
-          </>
-        ),
-        accessor: "updatedAt",
-        style: {
-          // Custom style for the 'description' column
-        },
-        width: 300,
+        width: 200,
         Filter: ({ column: { id } }) => (
           <ColumnFilter id={id} setData={setDoctors} />
         ),

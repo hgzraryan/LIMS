@@ -134,8 +134,8 @@ function AddDoctor({ handleToggleCreateModal, getDoctors }) {
       specialty,
       qualification,
       licenseNumber,
-      current,
       emergencyContactName,
+      emergencyContactNumber,
       doctorState,
     }) => {
       const newDoctor = {
@@ -148,7 +148,7 @@ function AddDoctor({ handleToggleCreateModal, getDoctors }) {
             city: city,
             state: state,
             country: country,
-            zip_code: zipCode,
+            zipCode: zipCode,
           },
         },
         specialty: specialty,
@@ -161,6 +161,7 @@ function AddDoctor({ handleToggleCreateModal, getDoctors }) {
           .toISOString()
           .split("T")[0],
         emergencyContactName: emergencyContactName,
+        emergencyContactNumber: emergencyContactNumber,
         profilePictureUrl: "profilePictureUrl",
         isActive: isActive,
       };

@@ -58,13 +58,13 @@ function CreateUser({ setIsOpen,getUsers }) {
     progress: undefined,
     theme: "light",
     });
-  const onSubmit = methods.handleSubmit(async (firstName,
+  const onSubmit = methods.handleSubmit(async ({firstName,
     lastName,
     position,
     email,
     mobile,
     user,
-    password,) => {
+    password,}) => {
    
     const newUser = {
       firstname:firstName,
