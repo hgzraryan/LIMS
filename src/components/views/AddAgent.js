@@ -8,14 +8,14 @@ import { Form, FormProvider} from "react-hook-form";
 import { Input } from "../Input";
 import { name_validation, desc_validation, email_validation, mobile_validation } from "../../utils/inputValidations";
 import useSubmitForm from "../../hooks/useSubmitForm";
+const REGISTER_AGENT = "/registerAgent";
 
-const REGISTER_URL = "/registerAgent";
 function AddAgent({ handleToggleCreateModal, getAgents }) {
   const [errMsg, setErrMsg] = useState("");
 
   const editorRef = useRef(null);
   const { onSubmit, methods } = useSubmitForm(
-    REGISTER_URL,
+    REGISTER_AGENT,
     editorRef,
     getAgents,
     setErrMsg,

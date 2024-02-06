@@ -20,8 +20,7 @@ import useSubmitForm from "../../hooks/useSubmitForm";
 import Multiselect from "multiselect-react-dropdown";
 import {  toast } from 'react-toastify';
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
-
-const REGISTER_URL = "/registerResearchLists";
+import { REGISTER_RESEARCHLISTS } from "../../utils/constants";
 
 function AddResearchList({ handleToggleCreateModal, getResearches,researchState }) {
     const [errMsg, setErrMsg] = useState("");
@@ -71,7 +70,7 @@ function AddResearchList({ handleToggleCreateModal, getResearches,researchState 
       console.log('**********',);
       
       try {
-        await axiosPrivate.post(REGISTER_URL, newResearchList, {
+        await axiosPrivate.post(REGISTER_RESEARCHLISTS, newResearchList, {
           headers: { "Content-Type": "application/json"  },
           withCredentials: true,
         });

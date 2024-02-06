@@ -8,14 +8,13 @@ import { Form, FormProvider} from "react-hook-form";
 import { Input } from "../Input";
 import { name_validation, desc_validation, email_validation, mobile_validation } from "../../utils/inputValidations";
 import useSubmitForm from "../../hooks/useSubmitForm";
-
-const REGISTER_URL = "/registerOrganizations";
+import { REGISTER_ORGANIZATIONS } from "../../utils/constants";
 function AddOrganization({ handleToggleCreateModal, getOrganizations }) {
   const [errMsg, setErrMsg] = useState("");
 
   const editorRef = useRef(null);
   const { onSubmit, methods } = useSubmitForm(
-    REGISTER_URL,
+    REGISTER_ORGANIZATIONS,
     editorRef,
     getOrganizations,
     setErrMsg,

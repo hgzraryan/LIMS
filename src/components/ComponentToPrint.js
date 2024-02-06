@@ -29,10 +29,10 @@ export const ComponentToPrint = forwardRef(({ value }, ref) => {
         Header: "ID",
         accessor: "id",
       },
-      {
-        Header: "Հետազոտություն",
-        accessor: "research",
-      },
+      // {
+      //   Header: "Հետազոտություն",
+      //   accessor: "research",
+      // },
       {
         Header: "Նյութեր",
         accessor: "testSubstance",
@@ -64,7 +64,7 @@ const { inputRef } = Barcode({
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({
       columns,
-      data: currentResearches,
+      data: currentResearches || [],
     });
   return (
     <div className="wrapper m-1" ref={ref}>

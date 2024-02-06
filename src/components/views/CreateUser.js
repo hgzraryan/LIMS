@@ -13,13 +13,12 @@ import {
   password_validation,
   user_validation,
   position_validation,
-  birthday_validation,
 } from "../../utils/inputValidations";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import {  toast } from 'react-toastify';
 import ReactDatePicker from "react-datepicker";
+import { REGISTER_USER } from "../../utils/constants";
 
-const REGISTER_URL = "/registerUser";
 function CreateUser({ setIsOpen,getUsers }) {
   const axiosPrivate = useAxiosPrivate();
   const multiselectRef = useRef("");
@@ -81,7 +80,7 @@ function CreateUser({ setIsOpen,getUsers }) {
     formData.append("text", JSON.stringify(newUser));
     formData.append("image", image);
     try {
-      await axiosPrivate.post(REGISTER_URL, newUser, {
+      await axiosPrivate.post(REGISTER_USER, newUser, {
         headers: { "Content-Type": "application/json"  },
         withCredentials: true,
       });

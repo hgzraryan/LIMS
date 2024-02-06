@@ -9,8 +9,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import { Form, FormProvider, useForm } from "react-hook-form";
 import { Input } from "../Input";
 import {  toast } from 'react-toastify';
-
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import { REGISTER_PATIENT } from "../../utils/constants";
 import {
   firstName_validation,
   lastName_validation,
@@ -25,7 +25,6 @@ import {
 } from "../../utils/inputValidations";
 import { useCalculateAge } from "../../hooks/useCalculateAge";
 
-const REGISTER_URL = "/registerPatient";
 function CreatePatient({
   handleToggleCreateModal,
   getPatients,
@@ -35,6 +34,7 @@ function CreatePatient({
   const [researchesPrice, setResearchesPrice] = useState([]);
   const [startDate, setStartDate] = useState(new Date());
   const [birthday, setBirthday] = useState(new Date());
+  const [gender, setGender] = useState(""); 
 
   const [errMsg, setErrMsg] = useState("");
   const methods = useForm({
@@ -42,9 +42,7 @@ function CreatePatient({
   });
   const axiosPrivate = useAxiosPrivate();
   const handlingDate = useRef("");
-  const genderRef = useRef("");
   const multiselectRef = useRef("");
-  const multiselectRef1 = useRef("");
   const editorRef = useRef(null);
   const doctorRef = useRef(null);
   const {age} = useCalculateAge(birthday)
@@ -80,15 +78,16 @@ function CreatePatient({
     state,
     country,
     zipCode}) => {
+      
     const newPatient = {
       firstName:firstName,
       lastName:lastName,
       midName:midName,
       age: age,
       lastHandlingDate: handlingDate.current,
-      researchList: researchesArray,
+      //researchList: researchesArray,
       //additional: editorRef.current.getContent({ format: "text" }),
-      gender:genderRef.current,
+      gender:gender,
       contact:{
         email: email,
         phone: mobile,
@@ -97,7 +96,7 @@ function CreatePatient({
             city: city,
             state: state,
             country: country,
-            zip_code: zipCode,
+            zipCode: zipCode,
         },
       },
       medicalHistory:'medicalHistory',
@@ -106,12 +105,13 @@ function CreatePatient({
       .split('T')[0]
     };
 
-    console.log(newPatient)
+    //console.log(newPatient)
     try {
-      await axiosPrivate.post(REGISTER_URL, newPatient, {
+      await axiosPrivate.post(REGISTER_PATIENT, newPatient, {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
       });
+
       handleToggleCreateModal(false);
       //getPatients("update");
       notify(`${newPatient.firstName} ${newPatient.lastName} հաճախորդը ավելացված է`)
@@ -126,12 +126,11 @@ function CreatePatient({
       }
     }
   });
-  const onGenderSelect = (data) => {
-    genderRef.current = data[0].gender
+  const onGenderSelect = (event) => {
+    setGender(prev=>event.target.value)
   };
   const onDoctorSelect = (data)=>{
     doctorRef.current=data[0].doctor
-    console.log(doctorRef.current)
   }
   const onResearchSelect = (data) => {
     let researchesArr = [];
@@ -238,33 +237,41 @@ function CreatePatient({
                             </div>
                           </div>
                           <div className="row gx-3">
-                            <div className="col-sm-6">
-                          <label className="form-label" htmlFor="gender">
+                          <div className="col-sm-6">
+                            <div className="mb-2">
+                              <label className="form-check-label" htmlFor="male">
                                 Սեռ
                               </label>
-                              <Multiselect
-                                options={[
-                                  { gender: "Արական" },
-                                  { gender: "Իգական" },
-                                  { gender: "այլ" },
-                                ]} // Options to display in the dropdown
-                                displayValue="gender" // Property name to display in the dropdown options
-                                onSelect={onGenderSelect} // Function will trigger on select event
-                                //  onRemove={onResearchDelete} // Function will trigger on remove event
-                                closeOnSelect={true}
-                                singleSelect
-                                id="input_tags_4"
-                                className="form-control"
-                                ref={multiselectRef1}
-                                hidePlaceholder={true}
-                                placeholder="Սեռ"
-                                style={{
-                                  height: "10rem",
-                                  overflow: "hidden",
-                                }}
-                              />
                             </div>
-
+                            <div className="d-flex  align-items-center">
+                              <div className="form-check form-check-inline">
+                                <input
+                                  className="form-check-input"
+                                  type="radio"
+                                  id="male"
+                                  value="Արական"
+                                  checked={gender === "Արական"}
+                                  onChange={onGenderSelect} 
+                                />
+                              <label className="form-check-label" htmlFor="male">
+                                Արական
+                              </label>
+                            </div>
+                            <div className="form-check form-check-inline">
+                              <input
+                                className="form-check-input"
+                                type="radio"
+                                id="female"
+                                value="Իգական"
+                                checked={gender === "Իգական"} 
+                                onChange={onGenderSelect} 
+                              />
+                              <label className="form-check-label" htmlFor="female">
+                                Իգական
+                              </label>
+                              </div>
+                              </div>
+                            </div>
                             <div className="col-sm-6">
                               <label className="form-label" htmlFor="doctor">
                                 Բժիշկներ
@@ -374,7 +381,7 @@ function CreatePatient({
                                 <div className="form-group">
                                   <Multiselect
                                     options={researchState} // Options to display in the dropdown
-                                    displayValue="research" // Property name to display in the dropdown options
+                                    displayValue={researchState[0] ? "research" : "researchName"} // Property name to display in the dropdown options
                                     onSelect={onResearchSelect} // Function will trigger on select event
                                     onRemove={onResearchDelete} // Function will trigger on remove event
                                     closeOnSelect={true}
@@ -383,7 +390,7 @@ function CreatePatient({
                                     ref={multiselectRef}
                                     hidePlaceholder={true}
                                     placeholder="Հետազոտություններ"
-                                    groupBy="category_name"
+                                    groupBy="category"
                                     style={{
                                       height: "10rem",
                                       overflow: "hidden",

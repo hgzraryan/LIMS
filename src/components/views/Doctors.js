@@ -10,28 +10,8 @@ import ReactPaginate from "react-paginate";
 import { useSelector } from "react-redux";
 import { selectDoctorCount } from "../../redux/features/doctor/doctorCountSlice";
 const DOCTORS_URL = "/doctors";
-const tmpDoctors = [
-  {
-    name: "Vachik Gabrielyan",
-    email: "Vach@mail.ru",
-    speciality: "Վիրաբույժ",
-    mobile: "+37488574859",
-    joining_date: "2024-01-19",
-    qualification: "AAA",
-    license_number: "A5178-01",
-    address: "ք․Երևան, Պարոնյան 5-4",
-    gender: "Արական",
-    date_of_birth: "1974-02-24",
-    emergency_contact_name: "Բաբկեն Մկրտչյան",
-    emergency_contact_number: "+37488458652",
-    profile_picture_url: "url",
-    is_active: "ակտիվ",
-    created_at: "2024-01-19",
-    updated_at: "----------",
-  },
-];
+
 function Doctors() {
-  const [doctors, setDoctors] = useState(tmpDoctors);
   const [selectedItem, setSelectedItem] = useState("");
   const [selectedItemId, setSelectedItemId] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -41,11 +21,11 @@ function Doctors() {
   const [usersPerPage, setUsersPerPage] = useState(Math.round((window.innerHeight / 100) * 1.5));
   const pageCount = Math.ceil(doctorCount/usersPerPage)
   
-  // const {
-  //        data: doctors,
-  //        setData: setDoctors,
-  //        getData: getDoctors,
-  // } = useGetData(DOCTORS_URL,currentPage,usersPerPage);
+  const {
+         data: doctors,
+         setData: setDoctors,
+         getData: getDoctors,
+  } = useGetData(DOCTORS_URL,currentPage,usersPerPage);
 
   const handleOpenModal = (doctor) => {
     setSelectedItemId(true);

@@ -135,7 +135,7 @@ function PatientDetails() {
             <BiSolidInfoCircle
               cursor={"pointer"}
               size={"1.5rem"}
-              onClick={() => handleOpenModal(row.values)}
+              onClick={() => handleOpenModal(row.original)}
             />
           </div>
         ),

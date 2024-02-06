@@ -102,7 +102,7 @@ function ResearchListsTable({
               <a
                 className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover del-button"
                 data-bs-toggle="tooltip"
-                onClick={() => handleOpenModal(row.values)}
+                onClick={() => handleOpenModal(row.original)}
                 data-placement="top"
                 title=""
                 data-bs-original-title="Delete"
@@ -222,7 +222,7 @@ function ResearchListsTable({
             handleDeleteItem={handleDeleteItem}
             selectedItemId={selectedItemId}
             confirmUserRef={confirmRef}
-            keyName={selectedItem.research}
+            keyName={selectedItem.researchName}
             delId={selectedItem._id}
           />
             </tbody>

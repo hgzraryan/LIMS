@@ -12,8 +12,7 @@ import {
 } from "../../utils/inputValidations";
 import useSubmitForm from "../../hooks/useSubmitForm";
 import Multiselect from "multiselect-react-dropdown";
-
-const REGISTER_URL = "/registerDiagnostics";
+import { REGISTER_DIAGNOSTICS } from "../../utils/constants";
 
 function AddDiagnostic({ handleToggleCreateModal, getDiagnostics,researchesState,patients }) {
   const [errMsg, setErrMsg] = useState("");
@@ -62,7 +61,7 @@ function AddDiagnostic({ handleToggleCreateModal, getDiagnostics,researchesState
     console.log(patientRef.current)
   }
   const { onSubmit, methods } = useSubmitForm(
-    REGISTER_URL,
+    REGISTER_DIAGNOSTICS,
     editorRef,
     getDiagnostics,
     setErrMsg,

@@ -8,14 +8,13 @@ import { Form, FormProvider } from "react-hook-form";
 import { Input } from "../Input";
 import { name_validation, desc_validation } from "../../utils/inputValidations";
 import useSubmitForm from "../../hooks/useSubmitForm";
-
-const REGISTER_URL = "/registerEquipment";
+import { REGISTER_EQUIPMENT } from "../../utils/constants";
 function AddEquipment({ handleToggleCreateModal, getEquipments }) {
   const [errMsg, setErrMsg] = useState("");
 
   const editorRef = useRef(null);
   const { onSubmit, methods } = useSubmitForm(
-    REGISTER_URL,
+    REGISTER_EQUIPMENT,
     editorRef,
     getEquipments,
     setErrMsg,

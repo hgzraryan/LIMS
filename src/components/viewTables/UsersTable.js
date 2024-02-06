@@ -75,7 +75,7 @@ function UsersTable({
         accessor: "photo", 
         Cell: ({ row }) => (
           <img
-            src={row.values.photo || DefaultProfileImage}
+            src={row.original.photo || DefaultProfileImage}
             alt="User Photo"
             style={{ width: "50px", height: "50px", borderRadius: "50%" }}
           />
@@ -206,7 +206,7 @@ function UsersTable({
               <a
                 className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover del-button"
                 data-bs-toggle="tooltip"
-                onClick={() => handleOpenModal(row.values)}
+                onClick={() => handleOpenModal(row.original)}
                 data-placement="top"
                 title=""
                 data-bs-original-title="Delete"

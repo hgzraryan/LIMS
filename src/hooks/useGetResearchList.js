@@ -20,11 +20,7 @@ export const useGetResearchList = (url) => {
       
         const getResearches = async () => {
           try {
-            const response = await axiosPrivate.post(url, {
-              signal: controller.signal,
-              page: 1,
-              onPage: 84,
-            });
+            const response = await axiosPrivate.get(url);
       
             isMounted && 
             dispatch(reserchesList(response.data.jsonString));

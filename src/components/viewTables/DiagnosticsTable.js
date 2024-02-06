@@ -122,11 +122,11 @@ function DiagnosticsTable({
         width: 300,
         Cell: ({ row }) => (
           <div className="d-flex">
-            <div className="pe-2">{row.values.researchList.length}</div>
+            <div className="pe-2">{row.original.researchList.length}</div>
             <BiSolidInfoCircle
               cursor={"pointer"}
               size={"1.5rem"}
-              onClick={() => handleOpenStatusModal(row.values)}
+              onClick={() => handleOpenStatusModal(row.original)}
             />
           </div>
         ),
@@ -160,11 +160,11 @@ function DiagnosticsTable({
                   </span>
                 </span>
               </a>
-              {!row.values.patientId &&
+              {!row.original.patientId &&
               <a
               className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover del-button"
               data-bs-toggle="tooltip"
-              onClick={() => handleOpenModal(row.values)}
+              onClick={() => handleOpenModal(row.original)}
               data-placement="top"
               title="Delete"
               data-bs-original-title="Delete"

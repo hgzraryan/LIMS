@@ -28,14 +28,13 @@ import Multiselect from "multiselect-react-dropdown";
 import DatePicker from "react-datepicker";
 import { useCalculateAge } from "../../hooks/useCalculateAge";
 import { toast } from "react-toastify";
-
-const REGISTER_DOCTOR = "/registerDoctor";
+import { REGISTER_DOCTORS } from "../../utils/constants";
 function AddDoctor({ handleToggleCreateModal, getDoctors }) {
   const axiosPrivate = useAxiosPrivate();
   const multiselectRef = useRef("");
   const [birthday, setBirthday] = useState(new Date());
-  const genderRef = useRef("");
-  const doctorStateRef = useRef("");
+  const [gender, setGender] = useState(""); 
+  const [isActive, setIsActive] = useState(""); 
   const intupAvatarRef = useRef(null);
   const [imageUrl, setImageUrl] = useState(MissingAvatar);
   const [image, setImage] = useState("");
@@ -45,11 +44,11 @@ function AddDoctor({ handleToggleCreateModal, getDoctors }) {
   const editorRef = useRef(null);
   const { age } = useCalculateAge(birthday);
 
-  const onGenderSelect = (data) => {
-    genderRef.current = data[0].gender;
+  const onGenderSelect = (event) => {
+    setGender(prev=>event.target.value)
   };
-  const onDoctorStateSelect = (data) => {
-    doctorStateRef.current = data[0].gender;
+  const onDoctorStateSelect = (event) => {
+    setIsActive(prev=>event.target.value)
   };
   const getAge = (date) => {
     setBirthday(date);
@@ -144,18 +143,18 @@ function AddDoctor({ handleToggleCreateModal, getDoctors }) {
         contact: {
           email: email,
           phone: mobile,
-        },
-        address: {
-          street: street,
-          city: city,
-          state: state,
-          country: country,
-          zipCode: zipCode,
+          address: {
+            street: street,
+            city: city,
+            state: state,
+            country: country,
+            zip_code: zipCode,
+          },
         },
         specialty: specialty,
         qualification: qualification,
         licenseNumber: licenseNumber,
-        gender: genderRef.current,
+        gender: gender,
         dateOfBirth: new Date(
           birthday.getTime() - birthday.getTimezoneOffset() * 60000
         )
@@ -163,16 +162,13 @@ function AddDoctor({ handleToggleCreateModal, getDoctors }) {
           .split("T")[0],
         emergencyContactName: emergencyContactName,
         profilePictureUrl: "profilePictureUrl",
-        isActive: doctorState,
+        isActive: isActive,
       };
      
-
-      console.log(newDoctor);
-
       formData.append("text", JSON.stringify(newDoctor));
       formData.append("image", image);
       try {
-        await axiosPrivate.post(REGISTER_DOCTOR, newDoctor, {
+        await axiosPrivate.post(REGISTER_DOCTORS, newDoctor, {
           headers: { "Content-Type": "application/json" },
          // headers: { "Content-Type": "multipart/form-data" },
           withCredentials: true,
@@ -326,33 +322,77 @@ function AddDoctor({ handleToggleCreateModal, getDoctors }) {
                             </div>
                           </div>
                           <div className="row gx-3">
-                            <div className="col-sm-6">
-                              <label className="form-label" htmlFor="gender">
+                          <div className="col-sm-6">
+                            <div className="mb-2">
+                              <label className="form-check-label" htmlFor="male">
                                 Սեռ
                               </label>
-                              <Multiselect
-                                options={[
-                                  { gender: "Արական" },
-                                  { gender: "Իգական" },
-                                  { gender: "այլ" },
-                                ]} // Options to display in the dropdown
-                                displayValue="gender" // Property name to display in the dropdown options
-                                onSelect={onGenderSelect} // Function will trigger on select event
-                                //  onRemove={onResearchDelete} // Function will trigger on remove event
-                                closeOnSelect={true}
-                                singleSelect
-                                id="input_tags_4"
-                                className="form-control"
-                                ref={multiselectRef}
-                                hidePlaceholder={true}
-                                placeholder="Սեռ"
-                                style={{
-                                  height: "10rem",
-                                  overflow: "hidden",
-                                }}
+                            </div>
+                            <div className="d-flex  align-items-center">
+                              <div className="form-check form-check-inline">
+                                <input
+                                  className="form-check-input"
+                                  type="radio"
+                                  id="male"
+                                  value="Արական"
+                                  checked={gender === "Արական"}
+                                  onChange={onGenderSelect} 
+                                />
+                              <label className="form-check-label" htmlFor="male">
+                                Արական
+                              </label>
+                            </div>
+                            <div className="form-check form-check-inline">
+                              <input
+                                className="form-check-input"
+                                type="radio"
+                                id="female"
+                                value="Իգական"
+                                checked={gender === "Իգական"} 
+                                onChange={onGenderSelect} 
                               />
+                              <label className="form-check-label" htmlFor="female">
+                                Իգական
+                              </label>
+                              </div>
+                              </div>
                             </div>
                             <div className="col-sm-6">
+                            <div className="mb-2">
+                              <label className="form-check-label" htmlFor="male">
+                              Կարգավիճակ
+                              </label>
+                            </div>
+                            <div className="d-flex  align-items-center">
+                              <div className="form-check form-check-inline">
+                                <input
+                                  className="form-check-input"
+                                  type="radio"
+                                  id="isActive"
+                                  value="Ակտիվ"
+                                  checked={isActive === "Ակտիվ"}
+                                  onChange={onDoctorStateSelect} 
+                                />
+                              <label className="form-check-label" htmlFor="male">
+                              Ակտիվ
+                              </label>
+                            </div>
+                            <div className="form-check form-check-inline">
+                              <input
+                                className="form-check-input"
+                                type="radio"
+                                id="notActive"
+                                value="Ոչ Ակտիվ"
+                                checked={isActive === "Ոչ Ակտիվ"} 
+                                onChange={onDoctorStateSelect} 
+                              />
+                              <label className="form-check-label" htmlFor="female">
+                              Ոչ Ակտիվ
+                              </label>
+                              </div>
+                              </div>
+                            </div>
+                            {/* <div className="col-sm-6">
                               <label className="form-label" htmlFor="gender">
                                 Կարգավիճակ
                               </label>
@@ -376,7 +416,7 @@ function AddDoctor({ handleToggleCreateModal, getDoctors }) {
                                   overflow: "hidden",
                                 }}
                               />
-                            </div>
+                            </div> */}
                             <div className="col-sm-6">
                               <div className="form-group">
                                 <label

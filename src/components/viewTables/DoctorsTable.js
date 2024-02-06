@@ -49,7 +49,7 @@ function DoctorsTable({
         accessor: "photo", 
         Cell: ({ row }) => (
           <img
-            src={row.values.photo || DefaultProfileImage}
+            src={row.original.photo || DefaultProfileImage}
             alt="User Photo"
             style={{ width: "50px", height: "50px", borderRadius: "50%" }}
           />
@@ -61,26 +61,10 @@ function DoctorsTable({
       {
         Header: (event) => (
           <>
-            <div className="columnHeader">Նկար</div>
-          </>
-        ),
-        accessor: "profile_picture_url",
-        sortable: true,
-        width: 400,
-        Filter: ({ column: { id } }) => (
-          <ColumnFilter id={id} setData={setDoctors} />
-        ),
-        Cell:()=>{
-          
-        }
-      },
-      {
-        Header: (event) => (
-          <>
             <div className="columnHeader">Անուն</div>
           </>
         ),
-        accessor: "name",
+        accessor: "doctorName",
         sortable: true,
         width: 400,
         Filter: ({ column: { id } }) => (
@@ -94,7 +78,7 @@ function DoctorsTable({
             }}
             style={{ cursor: 'pointer' }}
           >
-            {row.original.name}
+            {row.original.doctorName}
           </div>
         ),
       },
@@ -104,7 +88,7 @@ function DoctorsTable({
             <div className="columnHeader">Մասնագիտություն</div>
           </>
         ),
-        accessor: "speciality",
+        accessor: "specialty",
         width: 300,
         Filter: ({ column: { id } }) => (
           <ColumnFilter id={id} setData={setDoctors} />
@@ -128,7 +112,7 @@ function DoctorsTable({
             <div className="columnHeader">Լիցենզավորման համար</div>
           </>
         ),
-        accessor: "license_number",
+        accessor: "licenseNumber",
         width: 300,
         Filter: ({ column: { id } }) => (
           <ColumnFilter id={id} setData={setDoctors} />
@@ -140,7 +124,7 @@ function DoctorsTable({
             <div className="columnHeader">Գրանցման ամսաթիվ</div>
           </>
         ),
-        accessor: "joining_date",
+        accessor: "joiningDate",
         width: 300,
         Filter: ({ column: { id } }) => (
           <ColumnFilter id={id} setData={setDoctors} />
@@ -152,10 +136,15 @@ function DoctorsTable({
             <div className="columnHeader">Հասցե</div>
           </>
         ),
-        accessor: "address",
+        accessor: "city",
         width: 300,
         Filter: ({ column: { id } }) => (
           <ColumnFilter id={id} setData={setDoctors} />
+        ),
+        Cell: ({ row }) => (
+          <div>
+            {row.original.contact?.address?.city}
+          </div>
         ),
       },
       {
@@ -181,6 +170,11 @@ function DoctorsTable({
         Filter: ({ column: { id } }) => (
           <ColumnFilter id={id} setData={setDoctors} />
         ),
+        Cell: ({ row }) => (
+          <div>
+            {row.original.contact?.email}
+          </div>
+        ),
       },
       {
         Header: (event) => (
@@ -193,6 +187,11 @@ function DoctorsTable({
         Filter: ({ column: { id } }) => (
           <ColumnFilter id={id} setData={setDoctors} />
         ),
+        Cell: ({ row }) => (
+          <div>
+            {row.original.contact?.phone}
+          </div>
+        ),
       },
       {
         Header: (event) => (
@@ -200,7 +199,7 @@ function DoctorsTable({
             <div className="columnHeader">Ծննդյան ամսաթիվ</div>
           </>
         ),
-        accessor: "date_of_birth",
+        accessor: "dateOfBirth",
         style: {
           // Custom style for the 'description' column
         },
@@ -215,7 +214,7 @@ function DoctorsTable({
             <div className="columnHeader">Լրացուցիչ կոնտակտ</div>
           </>
         ),
-        accessor: "emergency_contact_name",
+        accessor: "emergencyContactName",
         style: {
           // Custom style for the 'description' column
         },
@@ -230,7 +229,7 @@ function DoctorsTable({
             <div className="columnHeader">Լրացուցիչ կոնտակտի հեռախոս</div>
           </>
         ),
-        accessor: "emergency_contact_number",
+        accessor: "emergencyContactPhone",
         style: {
           // Custom style for the 'description' column
         },
@@ -245,7 +244,7 @@ function DoctorsTable({
             <div className="columnHeader">Կարգավիճակ</div>
           </>
         ),
-        accessor: "is_active",
+        accessor: "isActive",
         style: {
           // Custom style for the 'description' column
         },
@@ -260,7 +259,7 @@ function DoctorsTable({
             <div className="columnHeader">Ստեղծման ամսաթիվ</div>
           </>
         ),
-        accessor: "created_at",
+        accessor: "createdAt",
         style: {
           // Custom style for the 'description' column
         },
@@ -275,7 +274,7 @@ function DoctorsTable({
             <div className="columnHeader">Թարմացման ամսաթիվ</div>
           </>
         ),
-        accessor: "updated_at",
+        accessor: "updatedAt",
         style: {
           // Custom style for the 'description' column
         },
@@ -311,7 +310,7 @@ function DoctorsTable({
               <a
                 className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover del-button"
                 data-bs-toggle="tooltip"
-                onClick={() => handleOpenModal(row.values)}
+                onClick={() => handleOpenModal(row.original)}
                 data-placement="top"
                 title=""
                 data-bs-original-title="Delete"
@@ -400,31 +399,31 @@ function DoctorsTable({
                         />
                   </div>
                   <div className="w-100">
-                       <div className="d-flex justify-content-between">  <span>Անուն Ազգանուն Հայրանուն </span> <span>{modalInfo.name}</span></div>
+                       <div className="d-flex justify-content-between">  <span>Անուն Ազգանուն Հայրանուն </span> <span>{modalInfo.doctorName}</span></div>
                        <div className="separator-full m-0"></div>
-                       <div className="d-flex justify-content-between">  <span>Մասնագիտություն </span> <span>{modalInfo.speciality}</span></div>
+                       <div className="d-flex justify-content-between">  <span>Մասնագիտություն </span> <span>{modalInfo.specialty}</span></div>
                        <div className="separator-full m-0"></div>
-                       <div className="d-flex justify-content-between">  <span>Ծննդյան ամսաթիվ </span> <span>{modalInfo.date_of_birth}</span></div>
+                       <div className="d-flex justify-content-between">  <span>Ծննդյան ամսաթիվ </span> <span>{modalInfo.dateOfBirth}</span></div>
                        <div className="separator-full m-0"></div>
-                       <div className="d-flex justify-content-between">  <span>Հասցե </span> <span>{modalInfo.address}</span></div>
+                       <div className="d-flex justify-content-between">  <span>Հասցե </span> <span>{modalInfo.contact?.address?.city}</span></div>
                        <div className="separator-full m-0"></div>
-                       <div className="d-flex justify-content-between">  <span>Էլ․ Հասցե </span> <span>{modalInfo.email}</span></div>
+                       <div className="d-flex justify-content-between">  <span>Էլ․ Հասցե </span> <span>{modalInfo.contact?.email}</span></div>
                        <div className="separator-full m-0"></div>
                        <div className="d-flex justify-content-between">  <span>սեռ </span> <span>{modalInfo.gender}</span></div>
                        <div className="separator-full m-0"></div>
-                       <div className="d-flex justify-content-between">  <span>Կարգավիճակ </span> <span>{modalInfo.is_active}</span></div>
+                       <div className="d-flex justify-content-between">  <span>Կարգավիճակ </span> <span>{modalInfo.isActive}</span></div>
                        <div className="separator-full m-0"></div>
-                       <div className="d-flex justify-content-between">  <span>Ընդունվել է </span> <span>{modalInfo.joining_date}</span></div>
+                       <div className="d-flex justify-content-between">  <span>Ընդունվել է </span> <span>{modalInfo.joiningDate}</span></div>
                        <div className="separator-full m-0"></div>
-                       <div className="d-flex justify-content-between">  <span>Լիցենզավորման համար </span> <span>{modalInfo.license_number}</span></div>
+                       <div className="d-flex justify-content-between">  <span>Լիցենզավորման համար </span> <span>{modalInfo.licenseNumber}</span></div>
                        <div className="separator-full m-0"></div>
-                       <div className="d-flex justify-content-between">  <span>Հեռախոս </span> <span>{modalInfo.mobile}</span></div>
+                       <div className="d-flex justify-content-between">  <span>Հեռախոս </span> <span>{modalInfo.contact?.phone}</span></div>
                        <div className="separator-full m-0"></div>
                        <div className="d-flex justify-content-between">  <span>Որակավորում </span> <span>{modalInfo.qualification}</span></div>
                        <div className="separator-full m-0"></div>
-                       <div className="d-flex justify-content-between">  <span>Լրացուցիչ կոնտակտ </span> <span>{modalInfo.emergency_contact_name}</span></div>
+                       <div className="d-flex justify-content-between">  <span>Լրացուցիչ կոնտակտ </span> <span>{modalInfo.emergencyContactName}</span></div>
                        <div className="separator-full m-0"></div>
-                       <div className="d-flex justify-content-between">  <span>Լրացուցիչ կոնտակտի հեռախոս </span> <span>{modalInfo.emergency_contact_number}</span></div>                    
+                       <div className="d-flex justify-content-between">  <span>Լրացուցիչ կոնտակտի հեռախոս </span> <span>{modalInfo.emergencyContactPhone}</span></div>                    
                   </div>
                 </div>
               </div>

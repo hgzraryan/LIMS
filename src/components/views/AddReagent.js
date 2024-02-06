@@ -18,8 +18,7 @@ import {
   producer_validation,
 } from "../../utils/inputValidations";
 import Multiselect from "multiselect-react-dropdown";
-
-const REGISTER_URL = "/registerReagent";
+import { REGISTER_REAGENT } from "../../utils/constants";
 function AddReagent({ handleToggleCreateModal, getReagents }) {
   const [errMsg, setErrMsg] = useState("");
   const [unitType, setUnitType] = useState("");
@@ -58,7 +57,7 @@ function AddReagent({ handleToggleCreateModal, getReagents }) {
     const formData = JSON.stringify(newReagent);
 
     try {
-      await axiosPrivate.post(REGISTER_URL, formData, {
+      await axiosPrivate.post(REGISTER_REAGENT, formData, {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
       });

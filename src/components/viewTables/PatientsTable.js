@@ -166,33 +166,33 @@ function PatientsTable({
           />
         ),
       },
-      {
-        Header: (event) => (
-          <>
-            <div className="columnHeader">Ախտորոշումներ</div>
-          </>
-        ),
-        Cell: ({ row }) => (
-          <div className="d-flex">
-            <div className="pe-2">{row.values.researchList.length}</div>
-            <BiSolidInfoCircle
-              cursor={"pointer"}
-              size={"1.5rem"}
-              onClick={() => handleOpenModal(row.values)}
-            />
-          </div>
-        ),
-        accessor: "researchList",
-        width: 200,
-        Filter: ({ column: { id } }) => <></>,
-      },
+      // {
+      //   Header: (event) => (
+      //     <>
+      //       <div className="columnHeader">Ախտորոշումներ</div>
+      //     </>
+      //   ),
+      //   Cell: ({ row }) => (
+      //     <div className="d-flex">
+      //       <div className="pe-2">{row.original.researchList.length}</div>
+      //       <BiSolidInfoCircle
+      //         cursor={"pointer"}
+      //         size={"1.5rem"}
+      //         onClick={() => handleOpenModal(row.original)}
+      //       />
+      //     </div>
+      //   ),
+      //   accessor: "researchList",
+      //   width: 200,
+      //   Filter: ({ column: { id } }) => <></>,
+      // },
       {
         Header: (event) => (
           <>
             <div className="columnHeader">Արժեք (դրամ)</div>
           </>
         ),
-        Cell: ({ row }) => <div>{row.values.totalPrice}</div>,
+        Cell: ({ row }) => <div>{row.original.totalPrice}</div>,
         accessor: "totalPrice",
         width: 200,
         Filter: ({ column: { id } }) => <></>,
@@ -207,7 +207,7 @@ function PatientsTable({
         Cell: ({ row }) => (
           <div className="d-flex align-items-center">
             <div className="d-flex">
-              <ComponentToPrintWrapper user={row.values} />
+              <ComponentToPrintWrapper user={row.original} />
 
               {/*
                         <a className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover" data-bs-toggle="tooltip" data-placement="top" title="" data-bs-original-title="Archive" href="#"><span className="icon"><span className="feather-icon"><FeatherIcon icon="archive" /></span></span></a>
