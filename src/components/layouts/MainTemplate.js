@@ -13,12 +13,9 @@ import { checkOrganisationCount } from "../../redux/features/organisation/organi
 import { checkReagentsCount } from "../../redux/features/reagents/reagentsCountSlice";
 import { checkDiagnosticsCount } from "../../redux/features/diagnostics/diagnosticsCountSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { useGetResearchList } from "../../hooks/useGetResearchList";
 import { checkResearchListCount } from "../../redux/features/researches/researchListCountSlice";
 import { checkPatients, selectPatients } from "../../redux/features/patients/patientsSlice";
-import { useGetPatients } from "../../hooks/useGetPatients";
-import { DOCTORS_ROUTE, DOCTORS_URL, GET_RESEARCHES, PATIENTS_URL } from "../../utils/constants";
-import { useGetDoctors } from "../../hooks/useGetDoctors";
+import {  DOCTORS_URL, GET_RESEARCHES, PATIENTS_URL } from "../../utils/constants";
 import { useGetFullData } from "../../hooks/useGetFullData";
 import { reserchesList } from "../../redux/features/researches/researchesSlice";
 import { checkDoctors } from "../../redux/features/doctor/doctorsSlice";
