@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useMemo, useState } from "react";
 import ComponentToConfirm from "../ComponentToConfirm";
 import {
@@ -74,8 +75,12 @@ function DiagnosticsTable({
   const [selectedItemId1, setSelectedItemId1] = useState(null);
   const [isOpen, setIsopen] = useState(false);
   const [editRow, setEditRow] = useState(false);
-//  console.log(resData)
+  console.log(diagnostics)
   const handleOpenStatusModal = (user) => {
+    console.log('**********');
+    console.log('user',user);
+    console.log('**********',);
+    
     setSelectedItem1((prev) => user);
   };
   const handleCloseStatusModal = () => {
@@ -122,7 +127,7 @@ function DiagnosticsTable({
         width: 300,
         Cell: ({ row }) => (
           <div className="d-flex">
-            <div className="pe-2">{row.original.researchList.length}</div>
+            {/* <div className="pe-2">{row.original.statusBoard.length}</div> */}
             <BiSolidInfoCircle
               cursor={"pointer"}
               size={"1.5rem"}
@@ -212,7 +217,7 @@ function DiagnosticsTable({
   } = useTable(
     {
       columns,
-      data: ResearchData,
+      data: diagnostics,
       defaultColumn,
     },
     useFilters,
@@ -287,7 +292,7 @@ function DiagnosticsTable({
           </tr>
         ))}
       </thead>
-      {ResearchData?.length && (
+      {diagnostics?.length && (
         <tbody {...getTableBodyProps()}>
           {rows.map((row) => {
             prepareRow(row);

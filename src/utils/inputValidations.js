@@ -243,11 +243,46 @@ export const email_validation = {
     },
   },
 };
+export const contactEmail_validation = {
+  name: "contactEmail",
+  label: "Էլ․ հասցե",
+  type: "email",
+  id: "contactEmail",
+  placeholder: "Էլ․ հասցե",
+  validation: {
+    required: {
+      value: true,
+      message: "required",
+    },
+    pattern: {
+      value:
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+      message: "not valid",
+    },
+  },
+};
 export const mobile_validation = {
   name: "mobile",
   label: "Հեռախոս",
   type: "text",
   id: "mobile",
+  placeholder: "Հեռախոս",
+  validation: {
+    required: {
+      value: true,
+      message: "required",
+    },
+    maxLength: {
+      value: 15,
+      message: "15 numbers max",
+    },
+  },
+};
+export const contactMobile_validation = {
+  name: "contactMobile",
+  label: "Հեռախոս",
+  type: "text",
+  id: "contactMobile",
   placeholder: "Հեռախոս",
   validation: {
     required: {
@@ -266,6 +301,23 @@ export const name_validation = {
   type: "text",
   id: "name",
   placeholder: "Անվանում",
+  validation: {
+    required: {
+      value: true,
+      message: "required",
+    },
+    maxLength: {
+      value: 30,
+      message: "30 characters max",
+    },
+  },
+};
+export const contactName_validation = {
+  name: "contactName",
+  label: "ԱՆուն",
+  type: "text",
+  id: "contactName",
+  placeholder: "ԱՆուն",
   validation: {
     required: {
       value: true,
@@ -365,6 +417,91 @@ export const qualification_validation = {
   type: "text",
   id: "qualification",
   placeholder: "Որակավորում",
+  validation: {
+    required: {
+      value: true,
+      message: "required",
+    },
+    maxLength: {
+      value: 30,
+      message: "30 characters max",
+    },
+  },
+};
+export const model_validation = {
+  name: "model",
+  label: "Սարքի Մոդել",
+  type: "text",
+  id: "model",
+  placeholder: "Սարքի Մոդել",
+  validation: {
+    required: {
+      value: true,
+      message: "required",
+    },
+    maxLength: {
+      value: 30,
+      message: "30 characters max",
+    },
+  },
+};
+export const equipmentType_validation = {
+  name: "equipmentType",
+  label: "Սարքի Տեսակ",
+  type: "text",
+  id: "equipmentType",
+  placeholder: "Սարքի Տեսակ",
+  validation: {
+    required: {
+      value: true,
+      message: "required",
+    },
+    maxLength: {
+      value: 30,
+      message: "30 characters max",
+    },
+  },
+};
+export const manufacturer_validation = {
+  name: "manufacturer",
+  label: "Արտադրող",
+  type: "text",
+  id: "manufacturer",
+  placeholder: "Արտադրող",
+  validation: {
+    required: {
+      value: true,
+      message: "required",
+    },
+    maxLength: {
+      value: 30,
+      message: "50 characters max",
+    },
+  },
+};
+export const serialNumber_validation = {
+  name: "serialNumber",
+  label: "Սերիական համար",
+  type: "text",
+  id: "serialNumber",
+  placeholder: "Սերիական համար",
+  validation: {
+    required: {
+      value: true,
+      message: "required",
+    },
+    maxLength: {
+      value: 50,
+      message: "50 characters max",
+    },
+  },
+};
+export const location_validation = {
+  name: "locationValid",
+  label: "Տեղակայումը",
+  type: "text",
+  id: "locationValid",
+  placeholder: "Տեղակայումը",
   validation: {
     required: {
       value: true,

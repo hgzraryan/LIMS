@@ -4,22 +4,117 @@ import FeatherIcon from "feather-icons-react";
 import { Editor } from "@tinymce/tinymce-react";
 import { useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
-import { Form, FormProvider} from "react-hook-form";
+import { Form, FormProvider, useForm } from "react-hook-form";
 import { Input } from "../Input";
-import { name_validation, desc_validation, email_validation, mobile_validation } from "../../utils/inputValidations";
+import {
+  name_validation,
+  desc_validation,
+  email_validation,
+  mobile_validation,
+  midName_validation,
+  country_validation,
+  state_validation,
+  city_validation,
+  street_validation,
+  zipCode_validation,
+  contactName_validation,
+  contactMobile_validation,
+  contactEmail_validation,
+} from "../../utils/inputValidations";
 import useSubmitForm from "../../hooks/useSubmitForm";
 import { REGISTER_ORGANIZATIONS } from "../../utils/constants";
+import PhoneInput from "react-phone-number-input";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import { toast } from "react-toastify";
 function AddOrganization({ handleToggleCreateModal, getOrganizations }) {
   const [errMsg, setErrMsg] = useState("");
-
   const editorRef = useRef(null);
-  const { onSubmit, methods } = useSubmitForm(
-    REGISTER_ORGANIZATIONS,
-    editorRef,
-    getOrganizations,
-    setErrMsg,
-    handleToggleCreateModal
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [contactPhoneNumber, setContactPhoneNumber] = useState("");
+  const axiosPrivate = useAxiosPrivate();
+  const notify = (text) =>
+    toast.success(text, {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  const methods = useForm({
+    mode: "onChange",
+  });
+
+  const handlePhoneNumberChange = (value) => {
+    setPhoneNumber(value);
+  };
+  const handleContactPhoneNumberChange = (value) => {
+    setContactPhoneNumber(value);
+  };
+  const onSubmit = methods.handleSubmit(
+    async ({
+      name,
+      email,
+      country,
+      state,
+      street,
+      city,
+      zipCode,
+      contactName,
+      contactEmail,
+      description,
+    }) => {
+      //console.log(data)
+      const newOrganization = {
+        name: name,
+        description: description,
+        //phone: phoneNumber,
+        //email: email,
+        address: {
+          street: street,
+          city: city,
+          state: state,
+          country: country,
+          zipCode: zipCode,
+        },
+        contactPerson: {
+          name: contactName,
+          email: contactEmail,
+          phone: contactPhoneNumber,
+        },
+      };
+
+      console.log(newOrganization);
+      try {
+        await axiosPrivate.post(REGISTER_ORGANIZATIONS, newOrganization, {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+        });
+
+        handleToggleCreateModal(false);
+        getOrganizations();
+        notify(`${newOrganization.name} Պատվիրատուն ավելացված է`);
+      } catch (err) {
+        if (!err?.response) {
+          setErrMsg("No Server Response");
+        } else if (err.response?.status === 409) {
+          setErrMsg("Username Taken");
+        } else {
+          setErrMsg(" Failed");
+        }
+      }
+    }
   );
+  // const { onSubmit, methods } = useSubmitForm(
+  //   REGISTER_ORGANIZATIONS,
+  //   editorRef,
+  //   getOrganizations,
+  //   setErrMsg,
+  //   handleToggleCreateModal,
+  //   additionalData
+  // );
 
   return (
     <Modal
@@ -80,8 +175,81 @@ function AddOrganization({ handleToggleCreateModal, getOrganizations }) {
                               <Input {...email_validation} />
                             </div>
                             <div className="col-sm-6">
-                              <Input {...mobile_validation} />
+                              <label
+                                className="form-label"
+                                htmlFor="phoneNumber"
+                              >
+                                Հեռախոս
+                              </label>
+                              <PhoneInput
+                                placeholder="Հեռախոս"
+                                value={phoneNumber}
+                                onChange={handlePhoneNumberChange}
+                                displayInitialValueAsLocalNumber
+                                initialValueFormat="national"
+                                autoComplete="off"
+                                defaultCountry="AM"
+                              />
                             </div>
+                          </div>
+                          <div className="row gx-3">
+                            <div className="col-sm-6">
+                              <Input {...country_validation} />
+                            </div>
+                            <div className="col-sm-6">
+                              <Input {...state_validation} />
+                            </div>
+                          </div>
+                          <div className="row gx-3">
+                            <div className="col-sm-6">
+                              <Input {...city_validation} />
+                            </div>
+                            <div className="col-sm-6">
+                              <Input {...street_validation} />
+                            </div>
+                          </div>
+                          <div className="row gx-3">
+                            <div className="col-sm-6">
+                              <Input {...zipCode_validation} />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="separator-full"></div>
+                    <div className="card">
+                      <div className="card-header">
+                        <a href="#">Պատասխնատու անձի տվյալներ</a>
+                      </div>
+                      <div className="card-body">
+                        <div className="modal-body">
+                          <div className="row gx-3">
+                            <div className="col-sm-6">
+                              <Input {...contactName_validation} />
+                            </div>
+                            <div className="col-sm-6">
+                              <label
+                                className="form-label"
+                                htmlFor="contactPhoneNumber"
+                              >
+                                Հեռախոս
+                              </label>
+                              <PhoneInput
+                                placeholder="Հեռախոս"
+                                value={contactPhoneNumber}
+                                onChange={handleContactPhoneNumberChange}
+                                displayInitialValueAsLocalNumber
+                                initialValueFormat="national"
+                                autoComplete="off"
+                                defaultCountry="AM"
+                              />
+                            </div>
+                          </div>
+                          <div className="row gx-3">
+                            <div className="col-sm-6">
+                              <Input {...contactEmail_validation} />
+                            </div>
+                            <div className="col-sm-6"></div>
                           </div>
                         </div>
                       </div>

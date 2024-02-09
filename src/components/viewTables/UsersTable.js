@@ -40,6 +40,8 @@ function UsersTable({
         return "badge badge-soft-danger my-1  me-2";
       case "Approver":
         return "badge badge-soft-light my-1  me-2";
+      case "Sampler":
+        return "badge badge-soft-yellow my-1  me-2";
 
       default:
         break;

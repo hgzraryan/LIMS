@@ -24,13 +24,20 @@ import { REGISTER_RESEARCHLISTS } from "../../utils/constants";
 
 function AddResearchList({ handleToggleCreateModal, getResearches,researchState }) {
     const [errMsg, setErrMsg] = useState("");
+    const [currency, setCurrency] = useState("AMD");
+    const [amount, setAmount] = useState("");
     const [externalType, setExternalType] = useState(false);
     const multiselectRef = useRef("");
     const researchTypeRef = useRef("");
     const additionalData = useRef({});
     const editorRef = useRef(null);
     const axiosPrivate = useAxiosPrivate();
-
+    const handleCurrencyChange = (e) => {
+      setCurrency(prev=>e.target.value)
+ }
+ const handleAmountChange = (e) => {
+  setAmount(prev=>e.target.value)
+ }
     // const { onSubmit, methods } = useSubmitForm(
     //   REGISTER_URL,
     //   editorRef,
@@ -61,14 +68,10 @@ function AddResearchList({ handleToggleCreateModal, getResearches,researchState 
         category:data.category,
         referenceRange:data.referenceRange,
         units:data.researchUnit,
-        researchesPrice:data.price,
-        currencyCode:data.currency,
+        researchesPrice:amount,
+        currency:currency,
         class:additionalData.researchType,
-      };
-      console.log('**********');
-      console.log('newResearchList',newResearchList);
-      console.log('**********',);
-      
+      };      
       try {
         await axiosPrivate.post(REGISTER_RESEARCHLISTS, newResearchList, {
           headers: { "Content-Type": "application/json"  },
@@ -89,25 +92,6 @@ function AddResearchList({ handleToggleCreateModal, getResearches,researchState 
         }
       }
     });
-    const onResearchSelect = (data) => {
-      let researchesArr = [];
-      let researchesPrice = [];
-      for (let research of data) {
-        researchesArr.push(Object.values(research)[0]);
-        researchesPrice.push(Object.values(research)[3]);
-      }
-      researchesPrice = researchesPrice.reduce((acc, el) => (acc += el), 0);
-      additionalData.researchesList = researchesArr
-      additionalData.researchesPrice = ''
-    };
-    const onResearchDelete = (data) => {
-      let researchesArr = [];
-      for (let research of data) {
-        researchesArr.push(Object.values(research)[0]);
-      }
-      additionalData.researchesPrice = ''
-      additionalData.researchList = researchesArr 
-    };
     const onResearchTypeSelect = (data) => {
       additionalData.researchType=data[0].researchType
       if(data[0].researchType=== "Արտաքին" ){
@@ -186,39 +170,38 @@ function AddResearchList({ handleToggleCreateModal, getResearches,researchState 
                                 <Input {...researchUnit_validation} />
                               </div>
                               <div className="col-sm-6">
-                                <Input {...price_validation} />
+                              <label htmlFor="price"className="mb-2">Արժեք</label>
+                              <div className="form-control d-flex ">
+                                <select
+                                  id="currency"
+                                  value={currency}
+                                  onChange={handleCurrencyChange}
+                                  style={{ border: "none", outline: "none" }}
+                                >
+                                  <option value="AMD">AMD</option>
+                                  <option value="USD">USD</option>
+                                  <option value="EUR">EUR</option>
+                                  <option value="GBP">GBP</option>
+                                  <option value="RU">RU</option>
+                                </select>
+                                <input
+                                  type="number"
+                                  id="amount"
+                                  value={amount}
+                                  onChange={handleAmountChange}
+                                  placeholder="Enter amount"
+                                  style={{
+                                    border: "none",
+                                    outline: "none",
+                                    flex: 1,
+                                  }}
+                                />
                               </div>
+                            </div>
                             </div>
                             
                             <div className="row gx-3">
-                              {/* <div className="col-sm-6">
-                              <label
-                                    className="form-label"
-                                    htmlFor="research"
-                                  >
-                                    Հետազոտություններ
-                                  </label>
-                              <Multiselect
-                                      options={researchState} // Options to display in the dropdown
-                                      displayValue="research" // Property name to display in the dropdown options
-                                      onSelect={onResearchSelect} // Function will trigger on select event
-                                      onRemove={onResearchDelete} // Function will trigger on remove event
-                                      closeOnSelect={true}
-                                      id="input_tags_3"
-                                      className="form-control"
-                                      ref={multiselectRef}
-                                      hidePlaceholder={true}
-                                      placeholder="Հետազոտություններ"
-                                      groupBy="category_name"
-                                      style={{
-                                        height: "10rem",
-                                        overflow: "hidden",
-                                      }}
-                                    />
-                              </div> */}
-                              <div className="col-sm-6">
-                                    <Input {...referenceRange_validation} />
-                                  </div>
+                             
                               <div className="col-sm-6">
                             <label
                                   className="form-label"
@@ -244,12 +227,14 @@ function AddResearchList({ handleToggleCreateModal, getResearches,researchState 
                                       overflow: "hidden",
                                     }}
                                   />
+                                  
                             </div>
+                            <div className="col-sm-6">
+                                    <Input {...referenceRange_validation} />
+                                  </div>
                             </div>
                             <div className="row gx-3">
-                                    <div className="col-sm-6">
-                                    <Input {...currency_validation} />
-                                  </div>
+                                    
                             {externalType && (
                               
                                                               <div className="col-sm-6">

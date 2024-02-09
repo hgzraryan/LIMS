@@ -11,6 +11,7 @@ import reagentsCountReducer from './features/reagents/reagentsCountSlice'
 import diagnosticsCountReducer from './features/diagnostics/diagnosticsCountSlice'
 import researchListCountReducer from './features/researches/researchListCountSlice'
 import patientsReducer from './features/patients/patientsSlice'
+import doctorsReducer from './features/doctor/doctorsSlice'
 export default configureStore({
     reducer:{
         agentsCount:agentsCountReducer,
@@ -25,5 +26,6 @@ export default configureStore({
         discountValue:discountValueReducer,
         researchListCount:researchListCountReducer,
         patients:patientsReducer,
+        doctors:doctorsReducer,
     }
 })

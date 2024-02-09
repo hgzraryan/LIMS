@@ -22,7 +22,8 @@ import { REGISTER_REAGENT } from "../../utils/constants";
 function AddReagent({ handleToggleCreateModal, getReagents }) {
   const [errMsg, setErrMsg] = useState("");
   const [unitType, setUnitType] = useState("");
-  const additionalData={}
+  const [currency, setCurrency] = useState("AMD");
+  const [amount, setAmount] = useState("");
 
   const methods = useForm({
     mode: "onChange",
@@ -32,9 +33,12 @@ function AddReagent({ handleToggleCreateModal, getReagents }) {
   const editorRef = useRef(null);
   const currencyRef = useRef(null);
 
- const onCurrencySelect = (data) => {
-    additionalData.currency=data[0].currency
-  };
+ const handleCurrencyChange = (e) => {
+      setCurrency(prev=>e.target.value)
+ }
+ const handleAmountChange = (e) => {
+  setAmount(prev=>e.target.value)
+ }
   const notify = (text) =>
     toast.success(text, {
       position: "top-right",
@@ -50,7 +54,8 @@ function AddReagent({ handleToggleCreateModal, getReagents }) {
   const onSubmit = methods.handleSubmit(async (data) => {
     const newReagent = {
       ...data,
-      ...additionalData,
+      currency:currency,
+      price:amount,
       unitType: unitType,
       additional: editorRef.current.getContent({ format: "text" }),
     };
@@ -126,7 +131,33 @@ function AddReagent({ handleToggleCreateModal, getReagents }) {
                               <Input {...name_validation} />
                             </div>
                             <div className="col-sm-6">
-                              <Input {...price_validation} />
+                              <label htmlFor="price"className="mb-2">Արժեք</label>
+                              <div className="form-control d-flex ">
+                                <select
+                                  id="currency"
+                                  value={currency}
+                                  onChange={handleCurrencyChange}
+                                  style={{ border: "none", outline: "none" }}
+                                >
+                                  <option value="AMD">AMD</option>
+                                  <option value="USD">USD</option>
+                                  <option value="EUR">EUR</option>
+                                  <option value="GBP">GBP</option>
+                                  <option value="RU">RU</option>
+                                </select>
+                                <input
+                                  type="number"
+                                  id="amount"
+                                  value={amount}
+                                  onChange={handleAmountChange}
+                                  placeholder="Enter amount"
+                                  style={{
+                                    border: "none",
+                                    outline: "none",
+                                    flex: 1,
+                                  }}
+                                />
+                              </div>
                             </div>
                           </div>
                           <div className="row gx-3">
@@ -155,31 +186,32 @@ function AddReagent({ handleToggleCreateModal, getReagents }) {
                             <div className="col-sm-6">
                               <Input {...usage_validation} />
                             </div>
-                            <div className="col-sm-6">
-                            <label
-                                  className="form-label"
-                                  htmlFor="research"
-                                >
-                                  Արժույթ
-                                </label>
-                            <Multiselect
-                                    options={[{currency:'AMD'},{currency:'USD'},{currency:'RU'}]} // Options to display in the dropdown
-                                    displayValue="currency" // Property name to display in the dropdown options
-                                    onSelect={onCurrencySelect} // Function will trigger on select event
-                                  //  onRemove={onResearchDelete} // Function will trigger on remove event
-                                    closeOnSelect={true}
-                                    singleSelect
-                                    id="input_tags_4"
-                                    className="form-control"
-                                    ref={currencyRef}
-                                    hidePlaceholder={true}
-                                    placeholder="Արժույթ"
-                                    style={{
-                                      height: "10rem",
-                                      overflow: "hidden",
-                                    }}
-                                  />
-                            </div>
+                            {/* <div className="col-sm-6">
+                              <label className="form-label" htmlFor="research">
+                                Արժույթ
+                              </label>
+                              <Multiselect
+                                options={[
+                                  { currency: "AMD" },
+                                  { currency: "USD" },
+                                  { currency: "RU" },
+                                ]} // Options to display in the dropdown
+                                displayValue="currency" // Property name to display in the dropdown options
+                                onSelect={onCurrencySelect} // Function will trigger on select event
+                                //  onRemove={onResearchDelete} // Function will trigger on remove event
+                                closeOnSelect={true}
+                                singleSelect
+                                id="input_tags_4"
+                                className="form-control"
+                                ref={currencyRef}
+                                hidePlaceholder={true}
+                                placeholder="Արժույթ"
+                                style={{
+                                  height: "10rem",
+                                  overflow: "hidden",
+                                }}
+                              />
+                            </div> */}
                           </div>
                           <div className="row gx-3">
                             <div className="col-sm-6">

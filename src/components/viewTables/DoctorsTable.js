@@ -76,7 +76,7 @@ function DoctorsTable({
               e.stopPropagation();
               handlePatientInfo(row.original);
             }}
-            style={{ cursor: 'pointer' }}
+            style={{ cursor: 'pointer' ,textDecoration:'underline'}}
           >
             {row.original.doctorName}
           </div>

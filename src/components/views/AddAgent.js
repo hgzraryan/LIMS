@@ -4,24 +4,80 @@ import FeatherIcon from "feather-icons-react";
 import { Editor } from "@tinymce/tinymce-react";
 import { useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
-import { Form, FormProvider} from "react-hook-form";
+import { Form, FormProvider, useForm} from "react-hook-form";
 import { Input } from "../Input";
 import { name_validation, desc_validation, email_validation, mobile_validation } from "../../utils/inputValidations";
 import useSubmitForm from "../../hooks/useSubmitForm";
+import PhoneInput from "react-phone-number-input";
+import { toast } from "react-toastify";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 const REGISTER_AGENT = "/registerAgent";
 
 function AddAgent({ handleToggleCreateModal, getAgents }) {
   const [errMsg, setErrMsg] = useState("");
+  const axiosPrivate = useAxiosPrivate();
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const methods = useForm({
+    mode: "onChange",
+  });
 
+  const handlePhoneNumberChange = (value) => {
+    setPhoneNumber(value);
+
+  };
   const editorRef = useRef(null);
-  const { onSubmit, methods } = useSubmitForm(
-    REGISTER_AGENT,
-    editorRef,
-    getAgents,
-    setErrMsg,
-    handleToggleCreateModal
-  );
+  // const { onSubmit, methods } = useSubmitForm(
+  //   REGISTER_AGENT,
+  //   editorRef,
+  //   getAgents,
+  //   setErrMsg,
+  //   handleToggleCreateModal,
+  //   additionalData
+  // );
+  const notify = (text) =>
+  toast.success(text, {
+    position: "top-right",
+    autoClose: 3000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+  });
+  const onSubmit = methods.handleSubmit(async (data) => {
+    const newAgent = {
+       name: data.name,
+       contact: {
+        email:data.email,
+        phone:phoneNumber,
+       },
+       role:data.description,
+      additional: editorRef.current.getContent({ format: "text" }),
+    };
 
+   // console.log(newAgent);
+    try {
+      await axiosPrivate.post(REGISTER_AGENT, newAgent, {
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+      });
+
+      handleToggleCreateModal(false);
+      getAgents();
+      notify(
+        `${newAgent.name} գործընկերը ավելացված է`
+      );
+    } catch (err) {
+      if (!err?.response) {
+        setErrMsg("No Server Response");
+      } else if (err.response?.status === 409) {
+        setErrMsg("Username Taken");
+      } else {
+        setErrMsg(" Failed");
+      }
+    }
+  }); 
   return (
     <Modal
       show={() => true}
@@ -81,7 +137,18 @@ function AddAgent({ handleToggleCreateModal, getAgents }) {
                               <Input {...email_validation} />
                             </div>
                             <div className="col-sm-6">
-                              <Input {...mobile_validation} />
+                            <label className="form-label" htmlFor="doctor">
+                                Հեռախոս
+                              </label>
+                              <PhoneInput
+                                placeholder="Enter phone number"
+                                value={phoneNumber}
+                                onChange={handlePhoneNumberChange}
+                                displayInitialValueAsLocalNumber
+                                initialValueFormat="national"
+                                autoComplete="off"
+                                defaultCountry="AM"
+                              />
                             </div>
                           </div>
                         </div>

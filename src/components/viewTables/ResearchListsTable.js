@@ -31,12 +31,29 @@ function ResearchListsTable({
         Header: (event) => (
           <>
             
-            <div className="columnHeader">Հետազոտության տեսակը</div>
+            <div className="columnHeader">Հապավումը</div>
           </>
         ),
-        accessor: "research",
+        accessor: "shortName",
         sortable: true,
-        width:600,
+        width:200,
+        Filter: ({ column: { id } })=>(
+          <ColumnFilter
+            id={id}
+            setData={setResearches}
+          />
+        ),
+      },
+      {
+        Header: (event) => (
+          <>
+            
+            <div className="columnHeader">Անվանումը</div>
+          </>
+        ),
+        accessor: "researchName",
+        sortable: true,
+        width:200,
         Filter: ({ column: { id } })=>(
           <ColumnFilter
             id={id}
@@ -51,7 +68,23 @@ function ResearchListsTable({
             <div className="columnHeader">Դասակարգ</div>
           </>
         ),
-        accessor: "category_name",
+        accessor: "referenceRange",
+        width:300,
+        Filter: ({ column: { id } })=>(
+          <ColumnFilter
+            id={id}
+            setData={setResearches}
+          />
+        ),
+      },
+      {
+        Header: (event) => (
+          <>
+            
+            <div className="columnHeader">Դասակարգ</div>
+          </>
+        ),
+        accessor: "category",
         width:300,
         Filter: ({ column: { id } })=>(
           <ColumnFilter

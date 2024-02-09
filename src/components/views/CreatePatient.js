@@ -8,7 +8,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Form, FormProvider, useForm } from "react-hook-form";
 import { Input } from "../Input";
-import {  toast } from 'react-toastify';
+import { toast } from "react-toastify";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { REGISTER_PATIENT } from "../../utils/constants";
 import {
@@ -24,7 +24,10 @@ import {
   country_validation,
 } from "../../utils/inputValidations";
 import { useCalculateAge } from "../../hooks/useCalculateAge";
-
+import { selectDoctors } from "../../redux/features/doctor/doctorsSlice";
+import { useSelector } from "react-redux";
+import "react-phone-number-input/style.css";
+import PhoneInput from "react-phone-number-input";
 function CreatePatient({
   handleToggleCreateModal,
   getPatients,
@@ -34,7 +37,9 @@ function CreatePatient({
   const [researchesPrice, setResearchesPrice] = useState([]);
   const [startDate, setStartDate] = useState(new Date());
   const [birthday, setBirthday] = useState(new Date());
-  const [gender, setGender] = useState(""); 
+  const [gender, setGender] = useState("");
+  const [doctor, setDoctor] = useState("");
+  const doctors = useSelector(selectDoctors);
 
   const [errMsg, setErrMsg] = useState("");
   const methods = useForm({
@@ -45,108 +50,122 @@ function CreatePatient({
   const multiselectRef = useRef("");
   const editorRef = useRef(null);
   const doctorRef = useRef(null);
-  const {age} = useCalculateAge(birthday)
-  
- 
+  const { age } = useCalculateAge(birthday);
+  const [phoneNumber, setPhoneNumber] = useState("");
+
+  const handlePhoneNumberChange = (value) => {
+    setPhoneNumber(value);
+  };
+
   const getDate = (date) => {
     setStartDate(date);
     handlingDate.current =
       date.toLocaleDateString("en-GB") + " " + date.toLocaleTimeString("en-GB");
-
   };
   const getAge = (date) => {
-    
-    setBirthday(date)
+    setBirthday(date);
   };
-  const notify = (text) => toast.success(text, {
-    position: "top-right",
-    autoClose: 3000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: "light",
+  const notify = (text) =>
+    toast.success(text, {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
     });
-  const onSubmit = methods.handleSubmit(async ({firstName,
-    lastName,
-    midName,
-    email,
-    mobile,
-    street,
-    city,
-    state,
-    country,
-    zipCode}) => {
-      
-    const newPatient = {
-      firstName:firstName,
-      lastName:lastName,
-      midName:midName,
-      age: age,
-      lastHandlingDate: handlingDate.current,
-      //researchList: researchesArray,
-      //additional: editorRef.current.getContent({ format: "text" }),
-      gender:gender,
-      contact:{
-        email: email,
-        phone: mobile,
-        address: {
+    
+  const onSubmit = methods.handleSubmit(
+    async ({
+      firstName,
+      lastName,
+      midName,
+      email,
+      street,
+      city,
+      state,
+      country,
+      zipCode,
+    }) => {
+      const newPatient = {
+        firstName: firstName,
+        lastName: lastName,
+        midName: midName,
+        age: age,
+        lastHandlingDate: handlingDate.current,
+        researchList: researchesArray,
+        additional: editorRef.current.getContent({ format: "text" }),
+        gender: gender,
+        doctors:doctor,
+        contact: {
+          email: email,
+          phone: phoneNumber,
+          address: {
             street: street,
             city: city,
             state: state,
             country: country,
             zipCode: zipCode,
+          },
         },
-      },
-      medicalHistory:'medicalHistory',
-      dateOfBirth:new Date(birthday.getTime() - (birthday.getTimezoneOffset() * 60000))
-      .toISOString()
-      .split('T')[0]
-    };
+        medicalHistory: "medicalHistory",
+        dateOfBirth: new Date(
+          birthday.getTime() - birthday.getTimezoneOffset() * 60000
+        )
+          .toISOString()
+          .split("T")[0],
+      };
 
-    console.log(newPatient)
-    try {
-      await axiosPrivate.post(REGISTER_PATIENT, newPatient, {
-        headers: { "Content-Type": "application/json" },
-        withCredentials: true,
-      });
+      console.log(newPatient);
+      try {
+        await axiosPrivate.post(REGISTER_PATIENT, newPatient, {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+        });
 
-      handleToggleCreateModal(false);
-      getPatients();
-      notify(`${newPatient.firstName} ${newPatient.lastName} հաճախորդը ավելացված է`)
-
-    } catch (err) {
-      if (!err?.response) {
-        setErrMsg("No Server Response");
-      } else if (err.response?.status === 409) {
-        setErrMsg("Username Taken");
-      } else {
-        setErrMsg(" Failed");
+        handleToggleCreateModal(false);
+        getPatients();
+        notify(
+          `${newPatient.firstName} ${newPatient.lastName} հաճախորդը ավելացված է`
+        );
+      } catch (err) {
+        if (!err?.response) {
+          setErrMsg("No Server Response");
+        } else if (err.response?.status === 409) {
+          setErrMsg("Username Taken");
+        } else {
+          setErrMsg(" Failed");
+        }
       }
     }
-  });
+  );
   const onGenderSelect = (event) => {
-    setGender(prev=>event.target.value)
+    setGender((prev) => event.target.value);
   };
-  const onDoctorSelect = (data)=>{
-    doctorRef.current=data[0].doctor
-  }
+  const onDoctorSelect = (data) => {
+    console.log('**********');
+    console.log('data',data);
+    console.log('**********',);
+    
+    setDoctor(prev=> data[0].key);
+  };
   const onResearchSelect = (data) => {
     let researchesArr = [];
-    let researchesPrice = [];
+    //let researchesPrice = [];
     for (let research of data) {
-      researchesArr.push(Object.values(research)[0]);
-      researchesPrice.push(Object.values(research)[3]);
+      researchesArr.push(research?.researchListId.toString());
+      // researchesPrice.push(research?.researchListPrice);
     }
-    researchesPrice = researchesPrice.reduce((acc, el) => (acc += el), 0);
+    //researchesPrice = researchesPrice.reduce((acc, el) => (acc += el), 0);
     setResearchesArray((prev) => (prev = researchesArr));
-    setResearchesPrice((prev) => (prev = researchesPrice));
+    // setResearchesPrice((prev) => (prev = researchesPrice));
   };
   const onResearchDelete = (data) => {
     let researchesArr = [];
     for (let research of data) {
-      researchesArr.push(Object.values(research)[0]);
+      researchesArr.push(research?.researchListId.toString());
     }
     setResearchesArray((prev) => (prev = researchesArr));
   };
@@ -233,43 +252,63 @@ function CreatePatient({
                               <Input {...email_validation} />
                             </div>
                             <div className="col-sm-6">
-                              <Input {...mobile_validation} />
+                              <label className="form-label" htmlFor="doctor">
+                                Հեռախոս
+                              </label>
+                              <PhoneInput
+                                placeholder="Enter phone number"
+                                value={phoneNumber}
+                                onChange={handlePhoneNumberChange}
+                                displayInitialValueAsLocalNumber
+                                initialValueFormat="national"
+                                autoComplete="off"
+                                defaultCountry="AM"
+                              />
                             </div>
                           </div>
                           <div className="row gx-3">
-                          <div className="col-sm-6">
-                            <div className="mb-2">
-                              <label className="form-check-label" htmlFor="male">
-                                Սեռ
-                              </label>
-                            </div>
-                            <div className="d-flex  align-items-center">
-                              <div className="form-check form-check-inline">
-                                <input
-                                  className="form-check-input"
-                                  type="radio"
-                                  id="male"
-                                  value="Male"
-                                  checked={gender === "Male"}
-                                  onChange={onGenderSelect} 
-                                />
-                              <label className="form-check-label" htmlFor="male">
-                                Արական
-                              </label>
-                            </div>
-                            <div className="form-check form-check-inline">
-                              <input
-                                className="form-check-input"
-                                type="radio"
-                                id="female"
-                                value="Female"
-                                checked={gender === "Female"} 
-                                onChange={onGenderSelect} 
-                              />
-                              <label className="form-check-label" htmlFor="female">
-                                Իգական
-                              </label>
+                            <div className="col-sm-6">
+                              <div className="mb-2">
+                                <label
+                                  className="form-check-label"
+                                  htmlFor="male"
+                                >
+                                  Սեռ
+                                </label>
                               </div>
+                              <div className="d-flex  align-items-center">
+                                <div className="form-check form-check-inline">
+                                  <input
+                                    className="form-check-input"
+                                    type="radio"
+                                    id="male"
+                                    value="Male"
+                                    checked={gender === "Male"}
+                                    onChange={onGenderSelect}
+                                  />
+                                  <label
+                                    className="form-check-label"
+                                    htmlFor="male"
+                                  >
+                                    Արական
+                                  </label>
+                                </div>
+                                <div className="form-check form-check-inline">
+                                  <input
+                                    className="form-check-input"
+                                    type="radio"
+                                    id="female"
+                                    value="Female"
+                                    checked={gender === "Female"}
+                                    onChange={onGenderSelect}
+                                  />
+                                  <label
+                                    className="form-check-label"
+                                    htmlFor="female"
+                                  >
+                                    Իգական
+                                  </label>
+                                </div>
                               </div>
                             </div>
                             <div className="col-sm-6">
@@ -277,16 +316,15 @@ function CreatePatient({
                                 Բժիշկներ
                               </label>
                               <Multiselect
-                                options={[
-                                  { doctor: "Համլետ Պետրոսյան" },
-                                  { doctor: "Կիմա Խաչատրյան" },
-                                  { doctor: "Վլադիմիր Մարգարյան" },
-                                ]} // Options to display in the dropdown
-                                displayValue="doctor" // Property name to display in the dropdown options
+                                options={doctors.map((doctor) => ({
+                                  key: doctor.doctorId,
+                                  value: `${doctor.doctorName} `,
+                                }))}
                                 onSelect={onDoctorSelect} // Function will trigger on select event
                                 //  onRemove={onResearchDelete} // Function will trigger on remove event
                                 closeOnSelect={true}
                                 singleSelect
+                                displayValue="value"
                                 id="input_tags_4"
                                 className="form-control"
                                 ref={multiselectRef}
@@ -380,10 +418,10 @@ function CreatePatient({
                               <div className="col-sm-12">
                                 <div className="form-group">
                                   <Multiselect
-                                    options={researchState} // Options to display in the dropdown
-                                    displayValue={researchState[0] ? "research" : "researchName"} // Property name to display in the dropdown options
-                                    onSelect={onResearchSelect} // Function will trigger on select event
-                                    onRemove={onResearchDelete} // Function will trigger on remove event
+                                    options={researchState}
+                                    displayValue="researchName"
+                                    onSelect={onResearchSelect}
+                                    onRemove={onResearchDelete}
                                     closeOnSelect={true}
                                     id="input_tags_3"
                                     className="form-control"

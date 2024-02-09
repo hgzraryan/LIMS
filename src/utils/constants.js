@@ -35,3 +35,7 @@ export const REGISTER_USER = "/registerUser";
 export const REGISTER_REAGENT = "/registerReagent";
 export const REGISTER_EQUIPMENT = "/registerEquipment";
 export const REGISTER_RESEARCHLISTS = "/registerResearchLists";
+
+export const GET_RESEARCHES = "/researchLists";
+export const PATIENTS_URL = "/patients";
+export const DOCTORS_URL = "/doctors";

@@ -18,6 +18,7 @@ import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import {  toast } from 'react-toastify';
 import ReactDatePicker from "react-datepicker";
 import { REGISTER_USER } from "../../utils/constants";
+import PhoneInput from "react-phone-number-input";
 
 function CreateUser({ setIsOpen,getUsers }) {
   const axiosPrivate = useAxiosPrivate();
@@ -30,7 +31,11 @@ function CreateUser({ setIsOpen,getUsers }) {
   const imageMimeType = /image\/(png|jpg|jpeg)/i;
   const fileReader = new FileReader();
   const formData = new FormData();
+  const [phoneNumber, setPhoneNumber] = useState("");
 
+  const handlePhoneNumberChange = (value) => {
+    setPhoneNumber(value);
+  };
   const methods = useForm({
     mode: "onChange",
   });
@@ -171,10 +176,10 @@ function CreateUser({ setIsOpen,getUsers }) {
   let roleState = {
     options: [
       { name: "Admin", id: 5150 },
-      { name: "Approver", id: 6010 },
+      { name: "Approver", id: 3345 },
       { name: "Editor", id: 1984 },
       { name: "User", id: 2001 },
-      { name: "Sampling", id: 1212 },
+      { name: "Sampler", id: 1212 },
     ],
   };
 
@@ -301,7 +306,18 @@ function CreateUser({ setIsOpen,getUsers }) {
                               <Input {...email_validation} />
                             </div>
                             <div className="col-sm-6">
-                              <Input {...mobile_validation} />
+                            <label className="form-label" htmlFor="doctor">
+                                Հեռախոս
+                              </label>
+                              <PhoneInput
+                                placeholder="Enter phone number"
+                                value={phoneNumber}
+                                onChange={handlePhoneNumberChange}
+                                displayInitialValueAsLocalNumber
+                                initialValueFormat="national"
+                                autoComplete="off"
+                                defaultCountry="AM"
+                              />
                             </div>
                           </div>
                           <div className="row gx-3">

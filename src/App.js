@@ -62,9 +62,9 @@ import { lazy, Suspense } from "react";
 const ROLES = {
   User: 2001,
   Editor: 1984,
-  Approver: 6010,
+  Approver: 3345,
   Admin: 5150,
-  Sampling: 1212,
+  Sampler: 1212,
 };
 
 function App() {
@@ -81,7 +81,7 @@ function App() {
 
         {/* we want to protect these routes */}
         <Route element={<PersistLogin />}>
-          <Route element={<RequireAuth allowedRoles={[ROLES.Sampling]} />}>
+          <Route element={<RequireAuth allowedRoles={[ROLES.Sampler]} />}>
             <Route  path={ADD_SAMPLE_ROUTE} element={<AddSample />} />
               
           </Route>

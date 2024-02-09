@@ -17,6 +17,7 @@ import ReactToPrint from "react-to-print";
 import { ColumnFilter } from "../ColumnFilter";
 import "../../dist/css/data-table.css";
 import {  useNavigate } from 'react-router-dom';
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
 function PatientsTable({
   selectedItem,
@@ -26,8 +27,32 @@ function PatientsTable({
   patients,
   setPatients,
 }) {
+  const axiosPrivate = useAxiosPrivate()
+
   const navigate = useNavigate();
 
+  const handlePatientsDetail = async (patientId) => {
+
+  console.log('**********');
+  console.log('patientId',patientId);
+  console.log('**********',);
+  
+    try {
+      const response = await axiosPrivate.get(`/patients/${patientId}`, );
+      console.log(response.data); 
+      navigate(`/patients/${patientId}`)
+      
+    } catch (err) {
+      console.log(err)
+      // if (!err?.response) {
+      //   setErrMsg("No Server Response");
+      // } else if (err.response?.status === 409) {
+      //   setErrMsg("Username Taken");
+      // } else {
+      //   setErrMsg(" Failed");
+      // }
+    }
+  };
   const ComponentToPrintWrapper = ({ user }) => {
     // 1.
     let componentRef = useRef(null); // 2.
@@ -87,8 +112,8 @@ function PatientsTable({
         ),
         Cell: ({ row }) => (
           <div
-            onClick={() => navigate(`/patients/${row.id}`)}
-            style={{ cursor: 'pointer' }}
+            onClick={()=>handlePatientsDetail(row.original.patientId)}
+            style={{ cursor: 'pointer', textDecoration:'underline' }}
           >
             {row.original.firstName}
           </div>

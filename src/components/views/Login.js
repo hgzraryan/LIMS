@@ -52,10 +52,8 @@ const Login = () => {
             const roles = decodedJWT.UserInfo.roles;
             const isActive = decodedJWT.UserInfo.isActive;
 
-
             console.log('roles',roles);
 
-            
             setAuth({ user, pwd, roles, isActive, accessToken });
             resetUser();
             setPwd('');  

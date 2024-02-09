@@ -4,22 +4,117 @@ import FeatherIcon from "feather-icons-react";
 import { Editor } from "@tinymce/tinymce-react";
 import { useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
-import { Form, FormProvider } from "react-hook-form";
+import { Form, FormProvider, useForm } from "react-hook-form";
 import { Input } from "../Input";
-import { name_validation, desc_validation } from "../../utils/inputValidations";
-import useSubmitForm from "../../hooks/useSubmitForm";
+import {
+  name_validation,
+  equipmentType_validation,
+  manufacturer_validation,
+  model_validation,
+  serialNumber_validation,
+  location_validation,
+} from "../../utils/inputValidations";
 import { REGISTER_EQUIPMENT } from "../../utils/constants";
+import { toast } from "react-toastify";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import Multiselect from "multiselect-react-dropdown";
+import DatePicker from "react-datepicker";
+const status = [
+  { status: "Աշխատում է" },
+  { status: "Վերանորոգվում է" },
+  { status: "Չի աշխատում" },
+];
 function AddEquipment({ handleToggleCreateModal, getEquipments }) {
   const [errMsg, setErrMsg] = useState("");
-
+  const [equipmentStatus, setEquipmentStatus] = useState("");
+  const [purchaseDate, setPurchaseDate] = useState("");
+  const [warrantyExpiryDate, setWarrantyExpiryDate] = useState("");
   const editorRef = useRef(null);
-  const { onSubmit, methods } = useSubmitForm(
-    REGISTER_EQUIPMENT,
-    editorRef,
-    getEquipments,
-    setErrMsg,
-    handleToggleCreateModal
+  const axiosPrivate = useAxiosPrivate();
+  const getPurchaseDate = (date) => {
+    setPurchaseDate(date);
+  };
+  const getWarrantyExpiryDate = (date) => {
+    setWarrantyExpiryDate(date);
+  };
+  const notify = (text) =>
+    toast.success(text, {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  const methods = useForm({
+    mode: "onChange",
+  });
+  const onStatusChange = (data) => {
+    switch (data[0].status) {
+      case "Աշխատում է":
+        setEquipmentStatus("Operational");
+        break;
+      case "Վերանորոգվում է":
+        setEquipmentStatus("Under Maintenance");
+        break;
+      case "Չի աշխատում":
+        setEquipmentStatus("Out of Service");
+        break;
+      default:
+        break;
+    }
+  };
+  const onSubmit = methods.handleSubmit(
+    async ({
+      name,
+      equipmentType,
+      manufacturer,
+      model,
+      serialNumber,
+      locationValid,
+    }) => {
+      const newEquipment = {
+        equipmentName: name,
+        equipmentType: equipmentType,
+        manufacturer: manufacturer,
+        model: model,
+        serialNumber: serialNumber,
+        purchaseDate: purchaseDate,
+        warrantyExpiryDate: warrantyExpiryDate,
+        location: locationValid,
+        status: equipmentStatus,
+      };
+
+      //console.log(newEquipment);
+      try {
+        await axiosPrivate.post(REGISTER_EQUIPMENT, newEquipment, {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+        });
+
+        handleToggleCreateModal(false);
+        getEquipments();
+        notify(`${newEquipment.name} Սարքավորումը ավելացված է`);
+      } catch (err) {
+        if (!err?.response) {
+          setErrMsg("No Server Response");
+        } else if (err.response?.status === 409) {
+          setErrMsg("Username Taken");
+        } else {
+          setErrMsg(" Failed");
+        }
+      }
+    }
   );
+  // const { onSubmit, methods } = useSubmitForm(
+  //   REGISTER_EQUIPMENT,
+  //   editorRef,
+  //   getEquipments,
+  //   setErrMsg,
+  //   handleToggleCreateModal
+  // );
   return (
     <Modal
       show={() => true}
@@ -71,8 +166,100 @@ function AddEquipment({ handleToggleCreateModal, getEquipments }) {
                               <Input {...name_validation} />
                             </div>
                             <div className="col-sm-6">
-                              <Input {...desc_validation} />
+                              <Input {...equipmentType_validation} />
                             </div>
+                          </div>
+                          <div className="row gx-3">
+                            <div className="col-sm-6">
+                              <Input {...manufacturer_validation} />
+                            </div>
+                            <div className="col-sm-6">
+                              <Input {...model_validation} />
+                            </div>
+                          </div>
+                          <div className="row gx-3">
+                            <div className="col-sm-6">
+                              <Input {...serialNumber_validation} />
+                            </div>
+                            <div className="col-sm-6">
+                              <Input {...location_validation} />
+                            </div>
+                          </div>
+
+                          <div className="row gx-3">
+                            <div className="col-sm-6">
+                              <div className="form-group">
+                                <label
+                                  className="form-label"
+                                  htmlFor="handlingDate"
+                                >
+                                  Գնման ամսաթիվ
+                                </label>
+                                <div>
+                                  <DatePicker
+                                    showYearDropdown
+                                    yearDropdownItemNumber={100}
+                                    scrollableYearDropdown
+                                    selected={purchaseDate}
+                                    onChange={(date) => getPurchaseDate(date)}
+                                    dateFormat={"yyyy-MM-dd"}
+                                    isClearable
+                                    placeholderText="Select date"
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                            <div className="col-sm-6">
+                              <div className="form-group">
+                                <label
+                                  className="form-label"
+                                  htmlFor="handlingDate"
+                                >
+                                  Երաշխիքի ավարտի ամսաթիվ
+                                </label>
+                                <div>
+                                  <DatePicker
+                                    showYearDropdown
+                                    yearDropdownItemNumber={100}
+                                    scrollableYearDropdown
+                                    selected={warrantyExpiryDate}
+                                    onChange={(date) =>
+                                      getWarrantyExpiryDate(date)
+                                    }
+                                    dateFormat={"yyyy-MM-dd"}
+                                    isClearable
+                                    placeholderText="Select date"
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="row gx-3">
+                            <div className="col-sm-6">
+                              <label
+                                className="form-label"
+                                htmlFor="internalDiagnosticsStatus"
+                              >
+                                Սարքավորման Կարգավիճակը
+                              </label>
+                              <Multiselect
+                                options={status}
+                                displayValue="status"
+                                onSelect={onStatusChange}
+                                closeOnSelect={true}
+                                singleSelect
+                                id="input_tags_4"
+                                className="form-control"
+                                placeholder="Ընտրեք Կարգավիճակը"
+                                selectedValues={[{ status: "Աշխատում է" }]}
+                                //hidePlaceholder={true}
+                                style={{
+                                  height: "10rem",
+                                  overflow: "hidden",
+                                }}
+                              />
+                            </div>
+                            <div className="col-sm-6"></div>
                           </div>
                         </div>
                       </div>

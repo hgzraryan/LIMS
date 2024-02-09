@@ -4,76 +4,198 @@ import FeatherIcon from "feather-icons-react";
 import { Editor } from "@tinymce/tinymce-react";
 import { useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
-import { Form, FormProvider } from "react-hook-form";
+import { Form, FormProvider, useForm } from "react-hook-form";
 import { Input } from "../Input";
 import {
   name_validation,
-  class_validation,
 } from "../../utils/inputValidations";
 import useSubmitForm from "../../hooks/useSubmitForm";
 import Multiselect from "multiselect-react-dropdown";
 import { REGISTER_DIAGNOSTICS } from "../../utils/constants";
-
-function AddDiagnostic({ handleToggleCreateModal, getDiagnostics,researchesState,patients }) {
+import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
+import { selectDoctors } from "../../redux/features/doctor/doctorsSlice";
+const diagnosticClassState = [
+  { class: "Արտաքին" },
+  { class: "Ներքին" },
+  { class: "Այլ" },
+];
+const diagnosticStatus = [
+  { status: "Ընդունված" },
+  { status: "Հետաձգված" },
+  { status: "Ընթացքում" },
+  { status: "այլ" },
+];
+const partnerState = [
+  { partner: "Diagen+" }, 
+  { partner: "Dialab" }
+];
+function AddDiagnostic({
+  handleToggleCreateModal,
+  getDiagnostics,
+  researchesState,
+  patients,
+}) {
   const [errMsg, setErrMsg] = useState("");
   const multiselectRef = useRef("");
   const editorRef = useRef(null);
-  const patientRef = useRef('');
-  const additionalData = useRef('');
-  const diagnosticTypeRef = useRef("");
-  const partnerSelectRef = useRef("");
+  const patientRef = useRef("");
+  const additionalData = useRef("");
+  const diagnosticClassRef = useRef("");
   const [externalType, setExternalType] = useState(false);
+  const [researchesIds, setResearchesIds] = useState([]);
+  const [partnerName, setPartnerName] = useState("");
+  const [diagnosticsType, setDiagnosticsType] = useState("Internal");
+  const [intDiagnosticsStatus, setIntDiagnosticsStatus] = useState("");
+  const [extDiagnosticsStatus, setExtDiagnosticsStatus] = useState("");
+  const [doctor, setDoctor] = useState("");
+  const doctors = useSelector(selectDoctors);
 
-
-
+  const methods = useForm({
+    mode: "onChange",
+  });
   const onResearchSelect = (data) => {
     let researchesArr = [];
-    let researchesPrice = [];
+    //let researchesPrice = [];
     for (let research of data) {
-      researchesArr.push(Object.values(research)[0]);
-      researchesPrice.push(Object.values(research)[3]);
+      researchesArr.push(research?.researchListId.toString());
+      // researchesPrice.push(research?.researchListPrice);
     }
-    researchesPrice = researchesPrice.reduce((acc, el) => (acc += el), 0);
-    additionalData.researchesList = researchesArr
-    additionalData.researchesPrice = ''
-  }; 
-  const onDiagnosticTypeSelect = (data) => {
-    additionalData.diagnosticType=data[0].diagnosticType
-    if(data[0].diagnosticType=== "Արտաքին" ){
-      setExternalType(true)
-    }else{
-      setExternalType(false)
-    }
-  };
-  const onPartnerSelect = (data) => {
-    additionalData.partnerName =  data[0].partner
+    //researchesPrice = researchesPrice.reduce((acc, el) => (acc += el), 0);
+    setResearchesIds((prev) => (prev = researchesArr));
+    // setResearchesPrice((prev) => (prev = researchesPrice));
   };
   const onResearchDelete = (data) => {
     let researchesArr = [];
     for (let research of data) {
-      researchesArr.push(Object.values(research)[0]);
+      researchesArr.push(research?.researchListId.toString());
     }
-    additionalData.researchesPrice = ''
-    additionalData.researchList = researchesArr 
-   };
-  const onPatientSelect = (data)=>{
-    patientRef.current=data[0].doctor
-    console.log(patientRef.current)
-  }
-  const { onSubmit, methods } = useSubmitForm(
-    REGISTER_DIAGNOSTICS,
-    editorRef,
-    getDiagnostics,
-    setErrMsg,
-    handleToggleCreateModal,
-    additionalData
-  );
-  console.log(patients)
+    setResearchesIds((prev) => (prev = researchesArr));
+  };
+  const onDoctorSelect = (data) => {
+    setDoctor((prev) => data[0].key);
+  };
+  const onDiagnosticClassSelect = (data) => {
+    switch (data[0].class) {
+      case "Արտաքին":
+        setDiagnosticsType("External");
+        setExternalType(true);
+        break;
+      case "Ներքին":
+        setDiagnosticsType("Internal");
+        setExternalType(false);
+        break;
+      case "Այլ":
+        setDiagnosticsType("Other");
+        setExternalType(false);
+        break;
+      default:
+        break;
+    }
+  };
+  const onInternalDiagnosticStatusSelect = (data) => {
+    switch (data[0].status) {
+      case "Ընդունված":
+        setIntDiagnosticsStatus("Approval");
+        break;
+      case "Հետաձգված":
+        setIntDiagnosticsStatus("Delayed");
+        break;
+      case "Ընթացքում":
+        setIntDiagnosticsStatus("Generated");
+        break;
+      case "այլ":
+        setIntDiagnosticsStatus("Other");
+        break;
+      default:
+        break;
+    }
+  };
+  const onExternalDiagnosticStatusSelect = (data) => {
+    switch (data[0].status) {
+      case "Ընդունված":
+        setExtDiagnosticsStatus("Approval");
+        break;
+      case "Հետաձգված":
+        setExtDiagnosticsStatus("Delayed");
+        break;
+      case "Ընթացքում":
+        setExtDiagnosticsStatus("Generated");
+        break;
+      case "այլ":
+        setExtDiagnosticsStatus("Other");
+        break;
+      default:
+        break;
+    }
+  };
+  const onPartnerSelect = (data) => {
+    setPartnerName(data[0].partner);
+  };
+  const onPatientSelect = (data) => {
+    patientRef.current = data[0].key; //get patientID
+    console.log(patientRef.current);
+  };
+  const notify = (text) =>
+    toast.success(text, {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+
+  const onSubmit = methods.handleSubmit(async (data) => {
+    const newPatient = {
+      diagnosticsName: data.name,
+      class: diagnosticsType,
+      internalStatus: intDiagnosticsStatus,
+      externalStatus: extDiagnosticsStatus,
+      researchIds: researchesIds,
+      patientId: patientRef.current,
+      doctors: doctor,
+      //partner:partner,
+      additional: editorRef.current.getContent({ format: "text" }),
+    };
+
+    console.log(newPatient);
+    // try {
+    //   await axiosPrivate.post(REGISTER_PATIENT, newPatient, {
+    //     headers: { "Content-Type": "application/json" },
+    //     withCredentials: true,
+    //   });
+
+    //   handleToggleCreateModal(false);
+    //   getDiagnostics();
+    //   notify(
+    //     `${newPatient.firstName} ${newPatient.lastName} հաճախորդը ավելացված է`
+    //   );
+    // } catch (err) {
+    //   if (!err?.response) {
+    //     setErrMsg("No Server Response");
+    //   } else if (err.response?.status === 409) {
+    //     setErrMsg("Username Taken");
+    //   } else {
+    //     setErrMsg(" Failed");
+    //   }
+    // }
+  });
+  // const { onSubmit, methods } = useSubmitForm(
+  //   REGISTER_DIAGNOSTICS,
+  //   editorRef,
+  //   getDiagnostics,
+  //   setErrMsg,
+  //   handleToggleCreateModal,
+  //   additionalData
+  // );
   return (
     <Modal
-    show={() => true}
-    size="xl"
-    onHide={() => handleToggleCreateModal(false)}
+      show={() => true}
+      size="xl"
+      onHide={() => handleToggleCreateModal(false)}
     >
       <Modal.Header closeButton>
         <Modal.Title style={{ width: "100%", textAlign: "center" }}>
@@ -120,103 +242,142 @@ function AddDiagnostic({ handleToggleCreateModal, getDiagnostics,researchesState
                               <Input {...name_validation} />
                             </div>
                             <div className="col-sm-6">
-                              <Input {...class_validation} />
+                              <label
+                                className="form-label"
+                                htmlFor="diagnosticsClass"
+                              >
+                                Ախտորոշման տեսակ
+                              </label>
+                              <Multiselect
+                                options={diagnosticClassState} // Options to display in the dropdown
+                                displayValue="class" // Property name to display in the dropdown options
+                                onSelect={onDiagnosticClassSelect} // Function will trigger on select event
+                                //  onRemove={onResearchDelete} // Function will trigger on remove event
+                                closeOnSelect={true}
+                                singleSelect
+                                id="input_tags_3"
+                                className="form-control"
+                                ref={diagnosticClassRef}
+                                placeholder="Ախտորոշման տեսակ"
+                                //hidePlaceholder={true}
+                                selectedValues={[{ class: "Ներքին" }]}
+                                style={{
+                                  height: "10rem",
+                                  overflow: "hidden",
+                                }}
+                              />
                             </div>
                           </div>
                           <div className="row gx-3">
-                            
-                            <label
-                                  className="form-label"
-                                  htmlFor="research"
-                                >
-                                  Հետազոտություններ
-                                </label>
-                            <Multiselect
-                                    options={researchesState} // Options to display in the dropdown
-                                    displayValue="research" // Property name to display in the dropdown options
-                                    onSelect={onResearchSelect} // Function will trigger on select event
-                                    onRemove={onResearchDelete} // Function will trigger on remove event
-                                    closeOnSelect={true}
-                                    id="input_tags_3"
-                                    className="form-control"
-                                    ref={multiselectRef}
-                                    hidePlaceholder={true}
-                                    placeholder="Հետազոտություններ"
-                                    groupBy="category_name"
-                                    style={{
-                                      height: "10rem",
-                                      overflow: "hidden",
-                                    }}
-                                  />
-                            
+                            <div className="col-sm-6">
+                              <label
+                                className="form-label"
+                                htmlFor="internalDiagnosticsStatus"
+                              >
+                                Ներքին Ախտորոշման Կարգավիճակ
+                              </label>
+                              <Multiselect
+                                options={diagnosticStatus} // Options to display in the dropdown
+                                displayValue="status" // Property name to display in the dropdown options
+                                onSelect={onInternalDiagnosticStatusSelect} // Function will trigger on select event
+                                //  onRemove={onResearchDelete} // Function will trigger on remove event
+                                closeOnSelect={true}
+                                singleSelect
+                                id="input_tags_4"
+                                className="form-control"
+                                placeholder="Ընտրեք Կարգավիճակը"
+                                //hidePlaceholder={true}
+                                style={{
+                                  height: "10rem",
+                                  overflow: "hidden",
+                                }}
+                              />
+                            </div>
+                            <div className="col-sm-6">
+                              <label className="form-label" htmlFor="research">
+                                Հետազոտություններ
+                              </label>
+                              <Multiselect
+                                options={researchesState} // Options to display in the dropdown
+                                displayValue="researchName" // Property name to display in the dropdown options
+                                onSelect={onResearchSelect} // Function will trigger on select event
+                                onRemove={onResearchDelete} // Function will trigger on remove event
+                                closeOnSelect={true}
+                                id="input_tags_3"
+                                className="form-control"
+                                ref={multiselectRef}
+                                hidePlaceholder={true}
+                                placeholder="Հետազոտություններ"
+                                groupBy="category_name"
+                                style={{
+                                  height: "10rem",
+                                  overflow: "hidden",
+                                }}
+                              />
+                            </div>
                           </div>
-                          <div className="row gx-3">
-                            
-                            <label
-                                  className="form-label"
-                                  htmlFor="diagnostic"
-                                >
-                                  Ախտորոշման տեսակ
-                                </label>
-                                <Multiselect
-                                    options={[{diagnosticType:'Ներքին'},{diagnosticType:'Արտաքին'}]} // Options to display in the dropdown
-                                    displayValue="diagnosticType" // Property name to display in the dropdown options
-                                    onSelect={onDiagnosticTypeSelect} // Function will trigger on select event
-                                  //  onRemove={onResearchDelete} // Function will trigger on remove event
-                                    closeOnSelect={true}
-                                    singleSelect
-                                    id="input_tags_4"
-                                    className="form-control"
-                                    ref={diagnosticTypeRef}
-                                    hidePlaceholder={true}
-                                    placeholder="Արժույթ"
-                                    selectedValues={[{diagnosticType:'Ներքին'}]}
-                                    style={{
-                                      height: "10rem",
-                                      overflow: "hidden",
-                                    }}
-                                  />
-                           
-                          </div>
-                          {externalType && (                              
-                              <div className="row gx-3">
-                                    <label
-                                  className="form-label"
-                                  htmlFor="partner"
-                                >
+                          <div className="row gx-3"></div>
+                          <div className="row gx-3"></div>
+                          {externalType && (
+                            <div className="row gx-3">
+                              {console.log("asd")}
+                              <div className="col-sm-6">
+                                <label className="form-label" htmlFor="partner">
                                   Գործընկեր
                                 </label>
-                            <Multiselect
-                                    options={[{partner:'Diagen+'},{partner:'Dialab'}]} // Options to display in the dropdown
-                                    displayValue="partner" // Property name to display in the dropdown options
-                                    onSelect={onPartnerSelect} // Function will trigger on select event
-                                  //  onRemove={onResearchDelete} // Function will trigger on remove event
-                                    closeOnSelect={true}
-                                    singleSelect
-                                    id="input_tags_4"
-                                    className="form-control"
-                                    ref={partnerSelectRef}
-                                    hidePlaceholder={true}
-                                    placeholder="Գործընկեր"
-                                    style={{
-                                      height: "10rem",
-                                      overflow: "hidden",
-                                    }}
-                                  />
+                                <Multiselect
+                                  options={partnerState}
+                                  displayValue="partner"
+                                  onSelect={onPartnerSelect}
+                                  closeOnSelect={true}
+                                  singleSelect
+                                  id="input_tags_4"
+                                  className="form-control"
+                                  hidePlaceholder={true}
+                                  placeholder="Գործընկեր"
+                                  style={{
+                                    height: "10rem",
+                                    overflow: "hidden",
+                                  }}
+                                />
+                              </div>
+                              <div className="col-sm-6">
+                                <label
+                                  className="form-label"
+                                  htmlFor="externalDiagnosticsStatus"
+                                >
+                                  Արտաքին Ախտորոշման Կարգավիճակ
+                                </label>
+                                <Multiselect
+                                  options={diagnosticStatus}
+                                  displayValue="status"
+                                  onSelect={onExternalDiagnosticStatusSelect}
+                                  closeOnSelect={true}
+                                  singleSelect
+                                  id="input_tags_5"
+                                  className="form-control"
+                                  placeholder="Ընտրեք Կարգավիճակը"
+                                  style={{
+                                    height: "10rem",
+                                    overflow: "hidden",
+                                  }}
+                                />
+                              </div>
                             </div>
-                                )
-                            }
+                          )}
                           <div className="row gx-3">
+                            <div className="col-sm-6">
                               <label className="form-label" htmlFor="patient">
                                 Հիվանդ
                               </label>
                               <Multiselect
-                                options={patients} // Options to display in the dropdown
-                                displayValue="firstName" // Property name to display in the dropdown options
-                                onSelect={onPatientSelect} // Function will trigger on select event
-                                //  onRemove={onResearchDelete} // Function will trigger on remove event
-                                closeOnSelect={true}
-                                
+                                options={patients.map((patient) => ({
+                                  key: patient.patientId,
+                                  value: `${patient.firstName} ${patient.lastName}`,
+                                }))}
+                                singleSelect
+                                onSelect={onPatientSelect}
+                                displayValue="value"
                                 id="input_tags_4"
                                 className="form-control"
                                 ref={multiselectRef}
@@ -227,10 +388,33 @@ function AddDiagnostic({ handleToggleCreateModal, getDiagnostics,researchesState
                                   overflow: "hidden",
                                 }}
                               />
-                          </div>
-                         
-                          
+                            </div>
 
+                            <div className="col-sm-6">
+                              <label className="form-label" htmlFor="doctor">
+                                Բժիշկներ
+                              </label>
+                              <Multiselect
+                                options={doctors.map((doctor) => ({
+                                  key: doctor.doctorId,
+                                  value: `${doctor.doctorName} `,
+                                }))}
+                                onSelect={onDoctorSelect}
+                                closeOnSelect={true}
+                                singleSelect
+                                displayValue="value"
+                                id="input_tags_4"
+                                className="form-control"
+                                ref={multiselectRef}
+                                hidePlaceholder={true}
+                                placeholder="Ընտրել Բժշկին"
+                                style={{
+                                  height: "10rem",
+                                  overflow: "hidden",
+                                }}
+                              />
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>

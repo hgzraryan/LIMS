@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import useGetData from "../../hooks/useGetData";
 import ComponentToConfirm from "../ComponentToConfirm";
@@ -16,6 +16,7 @@ import FeatherIcon from "feather-icons-react/build/FeatherIcon";
 import { ColumnFilter } from "../ColumnFilter";
 import { BiSolidInfoCircle } from "react-icons/bi";
 import { Modal } from "react-bootstrap";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 const customData = [
   {
     date: "15.06.2021",
@@ -85,11 +86,12 @@ const customData = [
     ],
   },
 ];
-function PatientDetails() {
+function PatientDetails(data) {
+  const axiosPrivate = useAxiosPrivate();  
   const { id } = useParams();
   const [isOpen, setIsOpen] = useState(false);
   const [research, setResearch] = useState([]);
-  const [patientDetails, setPatientDetails] = useState([]);
+  const [patientDetails, setPatientDetails] = useState({});
   const [currentPage, setCurrentPage] = useState(0);
   const [usersPerPage, setUsersPerPage] = useState(
     Math.round((window.innerHeight / 100) * 1.5)
@@ -99,16 +101,29 @@ function PatientDetails() {
   const handleOpenModal = (data) => {
     setIsOpen(true);
     setResearch((prev) => data.researches);
-    console.log("**********");
-    console.log("", data);
-    console.log("**********");
   };
-  // const {
-  //   data: patientDetail
-  // } = useGetData(`/patients+${id}`,currentPage,usersPerPage);
+  useEffect(()=>{
+    const getData = async () => {
+      try {
+        const response = await axiosPrivate.get(`/patients/${id}`);
+                  
+          console.log('**********');
+          console.log('response',response);
+          console.log('**********',);
+          
+          setPatientDetails((prevUsers) => response.data.jsonString);
+             // setCurrentPage((prev) => prev = 1);
+          
+      } catch (err) {
+        console.error(err);
+        //navigate("/login", { state: { from: location }, replace: true });
+      }
+    };
+    getData()
+  },[])
 
   console.log("**********");
-  console.log("patientDetail", customData.length);
+  console.log("patientDetail",     patientDetails);
   console.log("**********");
 
   const columns = useMemo(
@@ -273,32 +288,35 @@ function PatientDetails() {
           </Modal.Body>
         </Modal>
       )}
+      {Object.keys(patientDetails).length && 
+              
       <div className="d-flex justify-content-between align-items-center ms-4 me-4">
-        <h4>{patientDetails.name || "Կիրակոսյան Մերուժան Վարդազարի"}</h4>
+        <h4>{patientDetails.lastName + " " + patientDetails.firstName + " " + patientDetails.midName  || "Կիրակոսյան Մերուժան Վարդազարի"}</h4>
         <span>
-          Հեռ․ {patientDetails.name || "022 565848" + ","}
+          Հեռ․ {patientDetails?.contact?.phone || "011111111,"}
           <span className="ms-3">
-            Էլ․ Հասցե {patientDetails.email || "Meruj107@mal.ru"}
+            Էլ․ Հասցե {patientDetails?.contact?.email || "aaa107@mal.ru"}
           </span>
         </span>
       </div>
+      }
       <table
         className="table nowrap w-100 mb-5 dataTable no-footer"
         {...getTableProps()}
-      >
+        >
         <thead>
           {headerGroups.map((headerGroup) => (
             <tr
-              {...headerGroup.getHeaderGroupProps({ style: { width: "100%" } })}
+            {...headerGroup.getHeaderGroupProps({ style: { width: "100%" } })}
             >
               {headerGroup.headers.map((column) => (
                 <th
-                  {...column.getHeaderProps(
-                    column.getSortByToggleProps({
-                      style: column.style, // Apply custom style to the column header
-                    })
+                {...column.getHeaderProps(
+                  column.getSortByToggleProps({
+                    style: column.style, // Apply custom style to the column header
+                  })
                   )}
-                >
+                  >
                   <div>
                     {column.id !== "selection" && (
                       <>
@@ -313,19 +331,19 @@ function PatientDetails() {
                             justifyContent: "space-between",
                             alignItems: "center",
                           }}
-                        >
+                          >
                           <div>{column.render("Header")}</div>
 
                           <div style={{ paddingTop: "20px" }}>
                             {column.isSorted ? (
                               column.isSortedDesc ? (
                                 <span className="sorting_asc"></span>
-                              ) : (
-                                <span className="sorting_desc"></span>
-                              )
-                            ) : (
-                              <span className="sorting"></span>
-                            )}
+                                ) : (
+                                  <span className="sorting_desc"></span>
+                                  )
+                                  ) : (
+                                    <span className="sorting"></span>
+                                    )}
                           </div>
                         </div>
                       </>
@@ -334,9 +352,9 @@ function PatientDetails() {
                   <div
                     {...column.getResizerProps()}
                     // className={`resizer ${
-                    //   column.isResizing ? "isResizing" : ""
-                    // }`}
-                  />
+                      //   column.isResizing ? "isResizing" : ""
+                      // }`}
+                      />
                 </th>
               ))}
             </tr>
@@ -351,9 +369,9 @@ function PatientDetails() {
                   {row.cells.map((cell) => {
                     return (
                       <td
-                        {...cell.getCellProps({
-                          style: cell.column.style, // Apply custom style to the column cells
-                        })}
+                      {...cell.getCellProps({
+                        style: cell.column.style, // Apply custom style to the column cells
+                      })}
                       >
                         {cell.render("Cell")}
                       </td>

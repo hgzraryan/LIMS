@@ -29,6 +29,7 @@ import DatePicker from "react-datepicker";
 import { useCalculateAge } from "../../hooks/useCalculateAge";
 import { toast } from "react-toastify";
 import { REGISTER_DOCTORS } from "../../utils/constants";
+import PhoneInput from "react-phone-number-input";
 function AddDoctor({ handleToggleCreateModal, getDoctors }) {
   const axiosPrivate = useAxiosPrivate();
   const multiselectRef = useRef("");
@@ -43,7 +44,12 @@ function AddDoctor({ handleToggleCreateModal, getDoctors }) {
   const formData = new FormData();
   const editorRef = useRef(null);
   const { age } = useCalculateAge(birthday);
+  const [phoneNumber, setPhoneNumber] = useState("");
+  
+  const handlePhoneNumberChange = (value) => {
+    setPhoneNumber(value);
 
+  };
   const onGenderSelect = (event) => {
     setGender(prev=>event.target.value)
   };
@@ -142,7 +148,7 @@ function AddDoctor({ handleToggleCreateModal, getDoctors }) {
         doctorName: fullName,
         contact: {
           email: email,
-          phone: mobile,
+          phone: phoneNumber,
           address: {
             street: street,
             city: city,
@@ -319,8 +325,18 @@ function AddDoctor({ handleToggleCreateModal, getDoctors }) {
                               <Input {...email_validation} />
                             </div>
                             <div className="col-sm-6">
-                              <Input {...mobile_validation} />
-                            </div>
+                            <label className="form-label" htmlFor="doctor">
+                                Հեռախոս
+                              </label>
+                              <PhoneInput
+                                placeholder="Enter phone number"
+                                value={phoneNumber}
+                                onChange={handlePhoneNumberChange}
+                                displayInitialValueAsLocalNumber
+                                initialValueFormat="national"
+                                autoComplete="off"
+                                defaultCountry="AM"
+                              />                            </div>
                           </div>
                           <div className="row gx-3">
                           <div className="col-sm-6">
