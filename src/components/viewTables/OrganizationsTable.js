@@ -239,8 +239,8 @@ function OrganizationsTable({
             handleDeleteItem={handleDeleteItem}
             selectedItemId={selectedItemId}
             confirmUserRef={confirmRef}
-            keyName={selectedItem.username}
-            delId={selectedItem.name}
+            keyName={selectedItem.name}
+            delId={selectedItem.organizationId}
           />
         </tbody>
       )}{" "}

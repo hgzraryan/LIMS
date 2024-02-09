@@ -256,7 +256,7 @@ function ResearchListsTable({
             selectedItemId={selectedItemId}
             confirmUserRef={confirmRef}
             keyName={selectedItem.researchName}
-            delId={selectedItem._id}
+            delId={selectedItem.researchListId}
           />
             </tbody>
           )}{" "}

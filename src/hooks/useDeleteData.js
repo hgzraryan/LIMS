@@ -20,7 +20,7 @@ const useDeleteData = (url,itemRef,selectedItem,setSelectedItemId,items,setItems
     }
   };
   const handleDeleteItem = async (delid) => {
-      if (selectedItem[name].trim() === itemRef.current?.trim()) {
+    if (selectedItem[name]?.trim() === itemRef.current?.trim()) {
       try {
         const response = await axiosPrivate.delete(url, {
           data: { id: delid },

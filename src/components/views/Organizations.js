@@ -45,7 +45,7 @@ const Organizations = () => {
   };
 
   const { handleDeleteItem } = useDeleteData(
-    "/organzations",
+    "/organizations",
     confirmOrganizationRef,
     selectedItem,
     setSelectedItemId,
@@ -119,7 +119,7 @@ const Organizations = () => {
                   {isOpen && (
                     <AddOrganization
                       handleToggleCreateModal={handleToggleCreateModal}
-                      getDiagnoses={() => getOrganizations()}
+                      getOrganizations={() => getOrganizations()}
                     />
                   )}
                 </div>

@@ -15,7 +15,7 @@ function Doctors() {
   const [selectedItem, setSelectedItem] = useState("");
   const [selectedItemId, setSelectedItemId] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
-  const confirmAgentsRef = useRef("");
+  const confirmDoctorsRef = useRef("");
   const doctorCount = useSelector(selectDoctorCount)
   const [currentPage, setCurrentPage] = useState(0);  
   const [usersPerPage, setUsersPerPage] = useState(Math.round((window.innerHeight / 100) * 1.5));
@@ -39,22 +39,22 @@ function Doctors() {
     setIsOpen((prev) => value);
   };
 
-  //   console.log(doctors)
-  //     const { handleDeleteItem } = useDeleteData(
-  //       "/agents",
-  //       confirmAgentsRef,
-  //       selectedItem,
-  //       setSelectedItemId,
-  //       doctors,
-  //       setDoctors,
-  //       "name"
-  //     );
+
   //-------------------------PAGINATION---------------------------//
   const handlePageClick = ({ selected: selectedPage }) => {
     setCurrentPage(selectedPage);
     //updateUsersCount();
   };
   //--------------------------------------------------------------//
+  const { handleDeleteItem } = useDeleteData(
+    "/doctors",
+    confirmDoctorsRef,
+    selectedItem,
+    setSelectedItemId,
+    doctors,
+    setDoctors,
+    "doctorName" 
+  );
   //-------------------------
 
   const refreshPage = () => {
@@ -153,15 +153,15 @@ function Doctors() {
                     style={{ height: "80vh", overflow: "auto" }}
                   >
                     <DoctorsTable
-                      confirmRef={confirmAgentsRef}
+                      confirmRef={confirmDoctorsRef}
                       selectedItem={selectedItem}
                       selectedItemId={selectedItemId}
-                      //handleDeleteItem={handleDeleteItem}
+                      handleDeleteItem={handleDeleteItem}
                       handleOpenModal={handleOpenModal}
                       handleCloseModal={handleCloseModal}
                       doctors={doctors}
                       setDoctors={setDoctors}
-                      //getDoctors={getDoctors}
+                      getDoctors={getDoctors}
                     />
                     <ReactPaginate
                                            previousLabel = {"Հետ"}    

@@ -246,7 +246,7 @@ function AgentsTable({
             selectedItemId={selectedItemId}
             confirmUserRef={confirmRef}
             keyName={selectedItem.name}
-            delId={selectedItem._id}
+            delId={selectedItem.agentId}
           />
             </tbody>
           )}{" "}

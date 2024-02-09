@@ -34,7 +34,7 @@ function EquipmentsTable({
             <div className="columnHeader">Սարքի անվանումը</div>
           </>
         ),
-        accessor: "name",
+        accessor: "equipmentName",
         sortable: true,
         width:500,
         Filter: ({ column: { id } })=>(
@@ -208,8 +208,8 @@ function EquipmentsTable({
             handleDeleteItem={handleDeleteItem}
             selectedItemId={selectedItemId}
             confirmUserRef={confirmRef}
-            keyName={selectedItem.name}
-            delId={selectedItem._id}
+            keyName={selectedItem.equipmentName}
+            delId={selectedItem.equipmentId}
           />
             </tbody>
           )}{" "}

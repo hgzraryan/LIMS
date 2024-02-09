@@ -45,13 +45,13 @@ const Equipments = () => {
   };
 
   const { handleDeleteItem } = useDeleteData(
-    "/equipments",
+    "/equipmentList",
     confirmEquipmentsRef,
     selectedItem,
     setSelectedItemId,
     equipments,
     setEquipments,
-    "name"
+    "equipmentName"
   );
    //-------------------------PAGINATION---------------------------//
    const handlePageClick = ({ selected: selectedPage }) => {

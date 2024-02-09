@@ -11,6 +11,7 @@ import ResearchListsTable from "../viewTables/ResearchListsTable";
 import AddResearchList from "./AddResearchList";
 import { useSelector } from "react-redux";
 import { selectResearchListCount } from "../../redux/features/researches/researchListCountSlice";
+import AddCategory from "./AddCategory";
 const RESEARCHES_URL = "/researchLists";
 
 const ResearchLists = () => {
@@ -18,10 +19,14 @@ const ResearchLists = () => {
   const handleToggleCreateModal = (value) => {
     setIsOpen((prev) => value);
   };
+  const handleToggleCategoryCreateModal = (value) => {
+    setCategoryModalisOpen((prev) => value);
+  };
   const researchListCount = useSelector(selectResearchListCount)
   const [selectedItem, setSelectedItem] = useState("");
   const [selectedItemId, setSelectedItemId] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [categoryModalisOpen, setCategoryModalisOpen] = useState(false);
   const confirmResearchRef = useRef("");
   
   const [currentPage, setCurrentPage] = useState(0);  
@@ -43,13 +48,13 @@ const ResearchLists = () => {
 
   /*------------------------------------------------*/
   const { handleDeleteItem } = useDeleteData(
-    "/researches",
+    "/researchLists",
     confirmResearchRef,
     selectedItem,
     setSelectedItemId,
     researchList,
     setResearches,
-    "research" 
+    "researchName" 
   );
    //-------------------------PAGINATION---------------------------//
   
@@ -107,11 +112,23 @@ const ResearchLists = () => {
                     <Dropdown.Item onClick={() => setIsOpen(true)}>
                         Հետազոտություն
                       </Dropdown.Item>
+                    <Dropdown.Item onClick={() => setCategoryModalisOpen(true)}>
+                        Դասակարգ
+                      </Dropdown.Item>
                     </Dropdown.Menu>
                   </Dropdown>
+                  
                   {isOpen && (
                     <AddResearchList
                     handleToggleCreateModal={handleToggleCreateModal}
+                    getResearches={() => getResearches()}
+                    researchState={researchList}
+
+                    />
+                  )}
+                  {categoryModalisOpen && (
+                    <AddCategory
+                    handleToggleCategoryCreateModal={handleToggleCategoryCreateModal}
                     getResearches={() => getResearches()}
                     researchState={researchList}
 

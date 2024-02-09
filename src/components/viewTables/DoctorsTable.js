@@ -361,8 +361,8 @@ function DoctorsTable({
               handleDeleteItem={handleDeleteItem}
               selectedItemId={selectedItemId}
               confirmUserRef={confirmRef}
-              keyName={selectedItem.product_name}
-              delId={selectedItem._id}
+              keyName={selectedItem.doctorName}
+              delId={selectedItem.doctorId}
             />
           </tbody>
         )}{" "}

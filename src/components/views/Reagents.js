@@ -42,13 +42,13 @@ const Reagents = () => {
   };
 
   const { handleDeleteItem } = useDeleteData(
-    "/reagents",
+    "/reagentList",
     confirmReagentRef,
     selectedItem,
     setSelectedItemId,
     reagents,
     setReagents,
-    'product_name'
+    'name'
   );
    //-------------------------PAGINATION---------------------------//
    const handlePageClick = ({ selected: selectedPage }) => {

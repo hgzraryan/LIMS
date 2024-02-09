@@ -336,7 +336,7 @@ function UsersTable({
               selectedItemId={selectedItemId}
               confirmUserRef={confirmRef}
               keyName={selectedItem.username}
-              delId={selectedItem._id}
+              delId={selectedItem.userId}
             />
           </tbody>
         )}{" "}
