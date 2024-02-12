@@ -14,28 +14,34 @@ function ResearchViewBoard({
   const [columns, setColumns] = useState([]);
 
   useEffect(() => {
-    setColumns(selectedItem?.researchList);
+    setColumns(selectedItem);
   }, [selectedItem]);
 
-  // useEffect(() => {
-  //   let isMounted = true;
-  //   const updateData = async () => {
-  //     try {
-  //       const response = await axiosPrivate.post("./updateStatusBoard", {
-  //         researches: researches,
-  //       });
+  let isMounted = true;
+  console.log('**********');
+    console.log('researches',columns);
+    console.log('**********',);
+  useEffect(() => {
+    console.log('**********');
+    console.log('researches',columns);
+    console.log('**********',);
+    const updateData = async () => {
+      try {
+        const response = await axiosPrivate.post("./updateStatusBoard", {
+          columns: columns,
+        });
 
-  //       isMounted && setResearches((prevUsers) => response.data.jsonString);
-  //     } catch (err) {
-  //       console.error(err);
-  //       // navigate("/login", { state: { from: location }, replace: true });
-  //     }
-  //   };
-  //   updateData();
-  //   return () => {
-  //     isMounted = false;
-  //   };
-  // }, [researches]);
+        isMounted && setColumns((prevUsers) => response.data.jsonString);
+      } catch (err) {
+        console.error(err);
+        // navigate("/login", { state: { from: location }, replace: true });
+      }
+    };
+    updateData();
+    return () => {
+      isMounted = false;
+    };
+  }, [columns]);
 
   const onDragEnd = (result) => {
     if (!result.destination) {
@@ -98,7 +104,7 @@ function ResearchViewBoard({
           <Modal.Header closeButton>
             <Modal.Title
               style={{
-                width: "100%",
+                width: "120%",
                 textAlign: "center",
               }}
             >
