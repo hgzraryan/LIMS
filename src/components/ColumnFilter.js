@@ -62,6 +62,7 @@ export const ColumnFilter = ( {setData,id,placeholder='search',url} ) => {
             onClick={(e) => e.stopPropagation()}
             onChange={(e) => handleSearchInputChange(id, e.target.value)}
             placeholder={`Search ${id}`}
+            style={{width:'100%'}}
           />
     </>
     );

@@ -119,6 +119,7 @@ function CreatePatient({
       };
 
       console.log(newPatient);
+
       try {
         await axiosPrivate.post(REGISTER_PATIENT, newPatient, {
           headers: { "Content-Type": "application/json" },

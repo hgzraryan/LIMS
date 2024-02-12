@@ -13,12 +13,14 @@ import { Checkbox } from "../Checkbox";
 import FeatherIcon from "feather-icons-react/build/FeatherIcon";
 import { ColumnFilter } from "../ColumnFilter";
 import { BiSolidInfoCircle } from "react-icons/bi";
+import { MdViewKanban } from "react-icons/md";
 import ResearchViewBoard from "../StatusBoard/ResearchViewBoard";
 import { v4 as uuidv4 } from "uuid";
 import { data } from "../StatusBoard/data";
 import { data1 } from "../StatusBoard/data";
 import { Modal } from "react-bootstrap";
 import EditModal from "../views/EditModal";
+import diagnoseSvg from "../../../src/dist/img/diagnose.svg";
 const ResearchData = [
   {
     researchId: "23001",
@@ -75,12 +77,13 @@ function DiagnosticsTable({
   const [selectedItemId1, setSelectedItemId1] = useState(null);
   const [isOpen, setIsopen] = useState(false);
   const [editRow, setEditRow] = useState(false);
+  const [modalInfo, setModalInfo] = useState("");
+  const handleOpenInfoModal = (user) => {
+    
+    setModalInfo((prev) => user);
+  };
   console.log(diagnostics)
   const handleOpenStatusModal = (user) => {
-    console.log('**********');
-    console.log('user',user);
-    console.log('**********',);
-    
     setSelectedItem1((prev) => user);
   };
   const handleCloseStatusModal = () => {
@@ -104,9 +107,9 @@ function DiagnosticsTable({
     () => [
       {
         Header: "Ախտորոշման ID",
-        accessor: "_id",
+        accessor: "diagnosticstId",
         sortable: true,
-        width: 300,
+        width: 200,
         Filter: ({ column: { id } }) => (
           <ColumnFilter id={id} setData={setDiagnostics} />
         ),
@@ -115,7 +118,7 @@ function DiagnosticsTable({
         Header: "Հաճախորդի ID",
         accessor: "patientId",
         sortable: true,
-        width: 300,
+        width: 200,
         Filter: ({ column: { id } }) => (
           <ColumnFilter id={id} setData={setDiagnostics} />
         ),
@@ -123,33 +126,57 @@ function DiagnosticsTable({
       {
         Header: "Հետազոտություններ",
         accessor: "researchList",
-        sortable: true,
-        width: 300,
+        disableSortBy: true,
+        width: 200,
         Cell: ({ row }) => (
-          <div className="d-flex">
+          <div className="d-flex justify-content-center align-items-center">
             {/* <div className="pe-2">{row.original.statusBoard.length}</div> */}
-            <BiSolidInfoCircle
+            <MdViewKanban
               cursor={"pointer"}
               size={"1.5rem"}
               onClick={() => handleOpenStatusModal(row.original)}
             />
           </div>
         ),
+        Filter: ({ column: { id } }) => <></>,
+      },
+      {
+        Header: "Գրանցման ամսաթիվ",
+        accessor: "diagnosisDate",
+        width: 300,
         Filter: ({ column: { id } }) => (
           <ColumnFilter id={id} setData={setDiagnostics} />
         ),
       },
       {
-        Header: "Նկարագիր",
-        accessor: "description",
-        width: 400,
-        Filter: ({ column: { id } }) => <></>,
+        Header: "Տեսակ",
+        accessor: "class",
+        width: 200,
+        Filter: ({ column: { id } }) => (
+          <ColumnFilter id={id} setData={setDiagnostics} />
+        ),
+      },
+      {
+        Header: "Կարգավիճակ",
+        accessor: "internalStatus",
+        width: 200,
+        Filter: ({ column: { id } }) => (
+          <ColumnFilter id={id} setData={setDiagnostics} />
+        ),
       },
       {
         Header: "Գործողություններ",
         accessor: "actions",
         Cell: ({ row }) => (
           <div className="d-flex align-items-center">
+            <div className="d-flex">
+              <BiSolidInfoCircle
+              cursor={"pointer"}
+              size={"1.5rem"}
+              onClick={() => handleOpenInfoModal(row.original)}
+              />
+            
+              </div>
             <div className="d-flex">
               <a
                 className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover"
@@ -197,7 +224,8 @@ function DiagnosticsTable({
                 </span>
               </a>
             </div>
-          </div>
+            
+            </div>
         ),
         disableSortBy: true,
         width: 200,
@@ -241,7 +269,70 @@ function DiagnosticsTable({
  
   return (
     <>
-
+ {
+      modalInfo && (
+        <Modal
+      show={() => true}
+      size="md"
+      onHide={() => setModalInfo(false)}
+    >
+      <Modal.Header closeButton>
+        <Modal.Title style={{ width: "100%", textAlign: "center" }}>
+        {modalInfo.name}
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>        
+          <div className="contact-body contact-detail-body">
+            <div data-simplebar className="nicescroll-bar">
+              <div className="d-flex flex-xxl-nowrap flex-wrap">
+                <div className="contact-info w-100">
+                  <div className="d-flex justify-content-center align-items-center">
+                
+                  <img
+                          width={"150px"}
+                          height={"200px"}
+                          style={{
+                            borderRadius: "5px",
+                          }}
+                          src={diagnoseSvg}
+                          className="avatar_upload_preview"
+                          alt="preview"
+                        />
+                  </div>
+                  <div className="w-100">
+                       <div className="d-flex justify-content-between">  <span>ID</span> <span>{modalInfo.diagnosticstId}</span></div>
+                       <div className="separator-full m-0"></div>                  
+                       <div className="d-flex justify-content-between">  <span>Ախտորոշման անվանում </span> <span>{modalInfo.diagnosticsName}</span></div>
+                       <div className="separator-full m-0"></div>
+                       <div className="d-flex justify-content-between">  <span>Բժիշկ </span> <span>{modalInfo.doctors[0]}</span></div>
+                       <div className="separator-full m-0"></div>
+                       <div className="d-flex justify-content-between">  <span>Գրանցվել է </span> <span>{modalInfo.createdAt}</span></div>
+                       <div className="separator-full m-0"></div>
+                       <div className="d-flex justify-content-between">  <span>Հաճախորդի ID </span> <span>{modalInfo.patientId}</span></div>
+                       <div className="separator-full m-0"></div>
+                       <div className="d-flex justify-content-between">  <span>ներքին հետ․ կարգավիճակ </span> <span>{modalInfo.internalStatus}</span></div>
+                       <div className="separator-full m-0"></div>
+                       <div className="d-flex justify-content-between">  <span>Արտաքին հետ․ կարգավիճակ </span> <span>{modalInfo.externalStatus}</span></div>
+                       <div className="separator-full m-0"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        
+                  <div className="modal-footer ">                   
+                    <button
+                      type="button"
+                      className="btn btn-secondary"
+                      onClick={() => setModalInfo(false)}
+                    >
+                      Փակել
+                    </button>
+                  </div>
+      </Modal.Body>
+    </Modal>
+      )
+    }
     <table
       className="table nowrap w-100 mb-5 dataTable no-footer"
       {...getTableProps()}

@@ -26,7 +26,7 @@ const status = [
 ];
 function AddEquipment({ handleToggleCreateModal, getEquipments }) {
   const [errMsg, setErrMsg] = useState("");
-  const [equipmentStatus, setEquipmentStatus] = useState("");
+  const [equipmentStatus, setEquipmentStatus] = useState("Operational");
   const [purchaseDate, setPurchaseDate] = useState("");
   const [warrantyExpiryDate, setWarrantyExpiryDate] = useState("");
   const editorRef = useRef(null);

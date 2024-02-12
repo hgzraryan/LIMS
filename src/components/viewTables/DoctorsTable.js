@@ -38,7 +38,7 @@ function DoctorsTable({
     }),
     []
   );
-  const handlePatientInfo =(data)=>{
+  const handleDoctorInfoInfo =(data)=>{
     setOpenModal(true)
     setModalInfo(data)
   }
@@ -74,7 +74,7 @@ function DoctorsTable({
           <div
             onClick={(e) => {
               e.stopPropagation();
-              handlePatientInfo(row.original);
+              handleDoctorInfoInfo(row.original);
             }}
             style={{ cursor: 'pointer' ,textDecoration:'underline'}}
           >

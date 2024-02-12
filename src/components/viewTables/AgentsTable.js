@@ -37,7 +37,7 @@ function AgentsTable({
         ),
         accessor: "name",
         sortable: true,
-        width: 400,
+        width: 300,
         Filter: ({ column: { id } })=>(
           <ColumnFilter
             id={id}
@@ -52,7 +52,12 @@ function AgentsTable({
           </>
         ),
         accessor: "email",
-        width: 300,
+        width: 200,
+        Cell: ({ row }) => (
+          <div className="d-flex align-items-center">
+            {row.original?.contact?.email}
+          </div>
+        ),
         Filter: ({ column: { id } })=>(
           <ColumnFilter
             id={id}
@@ -67,7 +72,12 @@ function AgentsTable({
           </>
         ),
         accessor: "mobile",
-        width: 300,
+        width: 200,
+        Cell: ({ row }) => (
+          <div className="d-flex align-items-center">
+            {row.original?.contact?.phone}
+          </div>
+        ),
         Filter: ({ column: { id } })=>(
           <ColumnFilter
             id={id}
@@ -82,10 +92,26 @@ function AgentsTable({
             <div  className="columnHeader">Նկարագիր</div>
           </>
         ),
-        accessor: "description",
+        accessor: "role",
         style: {
            // Custom style for the 'description' column
         },
+        width: 300,
+        Filter: ({ column: { id } })=>(
+          <ColumnFilter
+            id={id}
+            setData={setAgents}
+          />
+        ),
+      },
+      {
+        Header: (event) => (
+          <>
+           
+            <div  className="columnHeader">Գրանցված է</div>
+          </>
+        ),
+        accessor: "createdAt",
         width: 300,
         Filter: ({ column: { id } })=>(
           <ColumnFilter

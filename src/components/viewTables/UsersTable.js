@@ -88,11 +88,11 @@ function UsersTable({
       },
       {
         Header: "ID",
-        accessor: "_id",
+        accessor: "userId",
         disableSortBy: true,
         filterable: false,
         show: false,
-        width: 300,
+        width: 100,
         Filter: ({ column: { id } })=>(
           <ColumnFilter
             id={id}
@@ -174,6 +174,17 @@ function UsersTable({
           )),
         width: 190,
         Filter: ({ column: { id } }) => <></>,
+      },
+      {
+        Header: "Պաշտոն",
+        accessor: "position",
+        width: 190,
+        Filter: ({ column: { id } })=>(
+          <ColumnFilter
+            id={id}
+            setData={setUsers}
+          />
+        ),
       },
       {
         Header: "Կարգավիճակ",

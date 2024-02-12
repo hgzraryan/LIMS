@@ -37,6 +37,19 @@ function OrganizationsTable({
       {
         Header: (event) => (
           <>
+            <div className="columnHeader">ID</div>
+          </>
+        ),
+        accessor: "organizationId",
+        sortable: true,
+        width: 80,
+        Filter: ({ column: { id } }) => (
+          <ColumnFilter id={id} setData={setOrganizations} />
+        ),
+      },
+      {
+        Header: (event) => (
+          <>
             <div className="columnHeader">Անվանում</div>
           </>
         ),
@@ -54,7 +67,12 @@ function OrganizationsTable({
           </>
         ),
         accessor: "email",
-        width: 300,
+        width: 200,
+        Cell: ({ row }) => (
+          <div className="d-flex align-items-center">
+            {row.original?.contactPerson?.email}
+          </div>
+        ),
         Filter: ({ column: { id } })=>(
           <ColumnFilter
             id={id}
@@ -69,7 +87,12 @@ function OrganizationsTable({
           </>
         ),
         accessor: "mobile",
-        width: 300,
+        width: 200,
+        Cell: ({ row }) => (
+          <div className="d-flex align-items-center">
+            {row.original?.contactPerson?.phone}
+          </div>
+        ),
         Filter: ({ column: { id } })=>(
           <ColumnFilter
             id={id}
@@ -80,12 +103,25 @@ function OrganizationsTable({
       {
         Header: (event) => (
           <>
+            <div className="columnHeader">Գրանցված է</div>
+          </>
+        ),
+
+        accessor: "createdAt",
+        width: 200,
+        Filter: ({ column: { id } }) => (
+          <ColumnFilter id={id} setData={setOrganizations} />
+        ),
+      },
+      {
+        Header: (event) => (
+          <>
             <div className="columnHeader">Նկարագիր</div>
           </>
         ),
 
         accessor: "description",
-        width: 300,
+        width: 200,
         Filter: ({ column: { id } }) => (
           <ColumnFilter id={id} setData={setOrganizations} />
         ),

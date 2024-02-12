@@ -1,11 +1,15 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import ComponentToConfirm from "../ComponentToConfirm";
 import { useBlockLayout, useFilters, useResizeColumns, useRowSelect, useSortBy, useTable } from "react-table";
 import { Checkbox } from "../Checkbox";
 import FeatherIcon from "feather-icons-react/build/FeatherIcon";
 import { ColumnFilter } from "../ColumnFilter";
+import { BiSolidInfoCircle } from "react-icons/bi";
+import equipmentSvg from "../../../src/dist/img/equipmentSvg.svg";
 
+import { Modal } from "react-bootstrap";
+import { MdImportantDevices } from "react-icons/md";
 function EquipmentsTable({
   confirmRef,
   selectedItem,
@@ -17,6 +21,10 @@ function EquipmentsTable({
   setEquipments,
   getEquipments,
 }) {
+  const [modalInfo, setModalInfo] = useState("");
+  const handleOpenInfoModal = (user) => {    
+    setModalInfo((prev) => user);
+  };
   const defaultColumn = useMemo(
     () => ({
       minWidth: 20,
@@ -31,12 +39,80 @@ function EquipmentsTable({
         Header: (event) => (
           <>
             
+            <div className="columnHeader">ID</div>
+          </>
+        ),
+        accessor: "equipmentId",
+        sortable: true,
+        width:100,
+        Filter: ({ column: { id } })=>(
+          <ColumnFilter
+            id={id}
+            setData={setEquipments}
+          />
+        ),
+      },
+      {
+        Header: (event) => (
+          <>
+            
             <div className="columnHeader">Սարքի անվանումը</div>
           </>
         ),
         accessor: "equipmentName",
         sortable: true,
-        width:500,
+        width:200,
+        Filter: ({ column: { id } })=>(
+          <ColumnFilter
+            id={id}
+            setData={setEquipments}
+          />
+        ),
+      },
+      {
+        Header: (event) => (
+          <>
+            
+            <div className="columnHeader">Սարքի տեսակը</div>
+          </>
+        ),
+        accessor: "equipmentType",
+        sortable: true,
+        width:200,
+        Filter: ({ column: { id } })=>(
+          <ColumnFilter
+            id={id}
+            setData={setEquipments}
+          />
+        ),
+      },
+      {
+        Header: (event) => (
+          <>
+            
+            <div className="columnHeader">Սարքի մոդելը</div>
+          </>
+        ),
+        accessor: "model",
+        sortable: true,
+        width:200,
+        Filter: ({ column: { id } })=>(
+          <ColumnFilter
+            id={id}
+            setData={setEquipments}
+          />
+        ),
+      },
+      {
+        Header: (event) => (
+          <>
+            
+            <div className="columnHeader">Արտադրող</div>
+          </>
+        ),
+        accessor: "manufacturer",
+        sortable: true,
+        width:200,
         Filter: ({ column: { id } })=>(
           <ColumnFilter
             id={id}
@@ -48,12 +124,29 @@ function EquipmentsTable({
         Header: (event) => (
           <>
            
-            <div className="columnHeader">Նկարագիր</div>
+            <div className="columnHeader">Գնման ամսաթիվ</div>
           </>
         ),
-        accessor: "description",
+        accessor: "purchaseDate",
         sortable: true,
-        width:500,
+        width:200,
+        Filter: ({ column: { id } })=>(
+          <ColumnFilter
+            id={id}
+            setData={setEquipments}
+          />
+        ),
+      },
+      {
+        Header: (event) => (
+          <>
+           
+            <div className="columnHeader">Կարգավիճակ</div>
+          </>
+        ),
+        accessor: "status",
+        sortable: true,
+        width:200,
         Filter: ({ column: { id } })=>(
           <ColumnFilter
             id={id}
@@ -70,6 +163,13 @@ function EquipmentsTable({
         accessor: "actions",
         Cell: ({ row }) => (
           <div className="d-flex align-items-center">
+             <div className="d-flex">
+              <BiSolidInfoCircle
+              cursor={"pointer"}
+              size={"1.5rem"}
+              onClick={() => handleOpenInfoModal(row.original)}
+            />
+            </div>
             <div className="d-flex">
               <a
                 className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover"
@@ -103,7 +203,7 @@ function EquipmentsTable({
           </div>
         ),
         disableSortBy: true,
-        width:500,
+        width:200,
         Filter: ({ column: { id } })=>(
           <></>
         ),
@@ -143,6 +243,79 @@ function EquipmentsTable({
   );
   // console.log(selectedFlatRows);
   return (
+    <>
+    {
+      modalInfo && (
+        <Modal
+      show={() => true}
+      size="md"
+      onHide={() => setModalInfo(false)}
+    >
+      <Modal.Header closeButton>
+        <Modal.Title style={{ width: "100%", textAlign: "center" }}>
+        {modalInfo.name}
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>        
+          <div className="contact-body contact-detail-body">
+            <div data-simplebar className="nicescroll-bar">
+              <div className="d-flex flex-xxl-nowrap flex-wrap">
+                <div className="contact-info w-100">
+                  <div className="d-flex justify-content-center align-items-center">
+                    
+                  <img
+                          width={"150px"}
+                          height={"200px"}
+                          style={{
+                            borderRadius: "5px",
+                          }}
+                          src={equipmentSvg}
+                          className="avatar_upload_preview"
+                          alt="preview"
+                        />
+                  </div>
+                  <div className="w-100">
+                       <div className="d-flex justify-content-between">  <span> ID </span> <span>{modalInfo.equipmentId}</span></div>
+                       <div className="separator-full m-0"></div>
+                       <div className="d-flex justify-content-between">  <span> Անվանում </span> <span>{modalInfo.equipmentName}</span></div>
+                       <div className="separator-full m-0"></div>
+                       <div className="d-flex justify-content-between">  <span> Տեսակ </span> <span>{modalInfo.equipmentType}</span></div>
+                       <div className="separator-full m-0"></div>
+                       <div className="d-flex justify-content-between">  <span>Տեղակայություն </span> <span>{modalInfo.location}</span></div>
+                       <div className="separator-full m-0"></div>
+                       <div className="d-flex justify-content-between">  <span>Արտադրող</span> <span>{modalInfo.manufacturer}</span></div>
+                       <div className="separator-full m-0"></div>
+                       <div className="d-flex justify-content-between">  <span>Մոդել</span> <span>{modalInfo.model}</span></div>
+                       <div className="separator-full m-0"></div>
+                       <div className="d-flex justify-content-between">  <span>Կարգավիճակ</span> <span>{modalInfo.status}</span></div>
+                       <div className="separator-full m-0"></div>
+                       <div className="d-flex justify-content-between">  <span>Սերիական համար</span> <span>{modalInfo.serialNumber}</span></div>
+                       <div className="separator-full m-0"></div>
+                       <div className="d-flex justify-content-between">  <span>Գրանցման ամսաթիվ </span> <span>{modalInfo.createdAt}</span></div>
+                       <div className="separator-full m-0"></div>                  
+                       <div className="d-flex justify-content-between">  <span>Ձեռք բերման ամսաթիվ </span> <span>{modalInfo.purchaseDate}</span></div>
+                       <div className="separator-full m-0"></div>                  
+                       <div className="d-flex justify-content-between">  <span>Երաշխիքի ավարտ </span> <span>{modalInfo.warrantyExpiryDate}</span></div>
+                       <div className="separator-full m-0"></div>                  
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        
+                  <div className="modal-footer ">                   
+                    <button
+                      type="button"
+                      className="btn btn-secondary"
+                      onClick={() => setModalInfo(false)}
+                    >
+                      Փակել
+                    </button>
+                  </div>
+      </Modal.Body>
+    </Modal>
+      )
+    }
     <table  className="table nowrap w-100 mb-5 dataTable no-footer" {...getTableProps()} >
       <thead>
         {headerGroups.map((headerGroup) => (
@@ -214,6 +387,8 @@ function EquipmentsTable({
             </tbody>
           )}{" "}
     </table>
+    
+    </>
   );
 }
 

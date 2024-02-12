@@ -170,7 +170,7 @@ function AddOrganization({ handleToggleCreateModal, getOrganizations }) {
                               <Input {...desc_validation} />
                             </div>
                           </div>
-                          <div className="row gx-3">
+                          {/* <div className="row gx-3">
                             <div className="col-sm-6">
                               <Input {...email_validation} />
                             </div>
@@ -191,7 +191,7 @@ function AddOrganization({ handleToggleCreateModal, getOrganizations }) {
                                 defaultCountry="AM"
                               />
                             </div>
-                          </div>
+                          </div> */}
                           <div className="row gx-3">
                             <div className="col-sm-6">
                               <Input {...country_validation} />

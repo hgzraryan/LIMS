@@ -76,7 +76,7 @@ const ResearchLists = () => {
     <div>
       <div className="contactapp-wrap">
         <div className="contactapp-content">
-          <div className="contactapp-detail-wrap">
+          <div className="contactapp-detail-wrap w-100">
             <header className="contact-header">
               <div className="d-flex align-items-center">
                 <div className="dropdown">

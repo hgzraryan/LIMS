@@ -1,11 +1,15 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import ComponentToConfirm from "../ComponentToConfirm";
 import { useBlockLayout, useFilters, useResizeColumns, useRowSelect, useSortBy, useTable } from "react-table";
 import { Checkbox } from "../Checkbox";
 import FeatherIcon from "feather-icons-react/build/FeatherIcon";
 import { ColumnFilter } from "../ColumnFilter";
+import { BiSolidInfoCircle } from "react-icons/bi";
+import researchSvg from "../../../src/dist/img/research.svg";
 
+import { Modal } from "react-bootstrap";
+import { MdImportantDevices } from "react-icons/md";
 function ResearchListsTable({
   confirmRef,
   selectedItem,
@@ -17,6 +21,10 @@ function ResearchListsTable({
   setResearches,
   getResearches,
 }) {
+  const [modalInfo, setModalInfo] = useState("");
+  const handleOpenInfoModal = (user) => {    
+    setModalInfo((prev) => user);
+  };
   const defaultColumn = useMemo(
     () => ({
       minWidth: 20,
@@ -27,6 +35,19 @@ function ResearchListsTable({
   );
   const columns = useMemo(
     () => [
+      {
+        Header: (event) => (
+          <>            
+            <div className="columnHeader">ID</div>
+          </>
+        ),
+        accessor: "researchListId",
+        sortable: true,
+        width:100,
+        Filter: ({ column: { id } })=>(
+          <></>
+        ),
+      },
       {
         Header: (event) => (
           <>
@@ -63,13 +84,12 @@ function ResearchListsTable({
       },
       {
         Header: (event) => (
-          <>
-            
-            <div className="columnHeader">Դասակարգ</div>
+          <>            
+            <div className="columnHeader">Նորմա</div>
           </>
         ),
         accessor: "referenceRange",
-        width:300,
+        width:200,
         Filter: ({ column: { id } })=>(
           <ColumnFilter
             id={id}
@@ -85,7 +105,39 @@ function ResearchListsTable({
           </>
         ),
         accessor: "category",
-        width:300,
+        width:200,
+        Filter: ({ column: { id } })=>(
+          <ColumnFilter
+            id={id}
+            setData={setResearches}
+          />
+        ),
+      },
+      {
+        Header: (event) => (
+          <>
+            
+            <div className="columnHeader">Չափման միավոր</div>
+          </>
+        ),
+        accessor: "units",
+        width:200,
+        Filter: ({ column: { id } })=>(
+          <ColumnFilter
+            id={id}
+            setData={setResearches}
+          />
+        ),
+      },
+      {
+        Header: (event) => (
+          <>
+            
+            <div className="columnHeader">Արժույթ</div>
+          </>
+        ),
+        accessor: "currencyCode",
+        width:100,
         Filter: ({ column: { id } })=>(
           <ColumnFilter
             id={id}
@@ -101,7 +153,7 @@ function ResearchListsTable({
           </>
         ),
         accessor: "researchesPrice",
-        width:300,
+        width:100,
         Filter: ({ column: { id } })=>(
           <ColumnFilter
             id={id}
@@ -118,6 +170,13 @@ function ResearchListsTable({
         accessor: "actions",
         Cell: ({ row }) => (
           <div className="d-flex align-items-center">
+            <div className="d-flex">
+              <BiSolidInfoCircle
+              cursor={"pointer"}
+              size={"1.5rem"}
+              onClick={() => handleOpenInfoModal(row.original)}
+            />
+            </div>
             <div className="d-flex">
               <a
                 className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover"
@@ -190,6 +249,75 @@ function ResearchListsTable({
     }
   );
   return (
+    <>
+     {
+      modalInfo && (
+        <Modal
+      show={() => true}
+      size="md"
+      onHide={() => setModalInfo(false)}
+    >
+      <Modal.Header closeButton>
+        <Modal.Title style={{ width: "100%", textAlign: "center" }}>
+        {modalInfo.name}
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>        
+          <div className="contact-body contact-detail-body">
+            <div data-simplebar className="nicescroll-bar">
+              <div className="d-flex flex-xxl-nowrap flex-wrap">
+                <div className="contact-info w-100">
+                  <div className="d-flex justify-content-center align-items-center">
+                    
+                  <img
+                          width={"150px"}
+                          height={"200px"}
+                          style={{
+                            borderRadius: "5px",
+                          }}
+                          src={researchSvg}
+                          className="avatar_upload_preview"
+                          alt="preview"
+                        />
+                  </div>
+                  <div className="w-100">
+                       <div className="d-flex justify-content-between">  <span> ID </span> <span>{modalInfo.researchListId}</span></div>
+                       <div className="separator-full m-0"></div>
+                       <div className="d-flex justify-content-between">  <span> Հապավում </span> <span>{modalInfo.shortName}</span></div>
+                       <div className="separator-full m-0"></div>
+                       <div className="d-flex justify-content-between">  <span>Անվանում</span> <span>{modalInfo.researchName}</span></div>
+                       <div className="separator-full m-0"></div>
+                       <div className="d-flex justify-content-between">  <span>Նորմա </span> <span>{modalInfo.referenceRange}</span></div>
+                       <div className="separator-full m-0"></div>
+                       <div className="d-flex justify-content-between">  <span>Դասակարգ</span> <span>{modalInfo.category}</span></div>
+                       <div className="separator-full m-0"></div>
+                       <div className="d-flex justify-content-between">  <span>Չափման միավոր</span> <span>{modalInfo.units}</span></div>
+                       <div className="separator-full m-0"></div>
+                       <div className="d-flex justify-content-between">  <span>Արժույթ</span> <span>{modalInfo.currencyCode}</span></div>
+                       <div className="separator-full m-0"></div>
+                       <div className="d-flex justify-content-between">  <span>Արժեք </span> <span>{modalInfo.researchesPrice}</span></div>
+                       <div className="separator-full m-0"></div>                  
+                       <div className="d-flex justify-content-between">  <span>Գրանցված է </span> <span>{modalInfo.createdAt}</span></div>
+                       <div className="separator-full m-0"></div>                     
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        
+                  <div className="modal-footer ">                   
+                    <button
+                      type="button"
+                      className="btn btn-secondary"
+                      onClick={() => setModalInfo(false)}
+                    >
+                      Փակել
+                    </button>
+                  </div>
+      </Modal.Body>
+    </Modal>
+      )
+    }
     <table  className="table nowrap w-100 mb-5 dataTable no-footer" {...getTableProps()} >
      <thead>
         {headerGroups.map((headerGroup) => (
@@ -228,9 +356,9 @@ function ResearchListsTable({
               </div>
               <div
               {...column.getResizerProps()}
-                className={`resizer ${
-                  column.isResizing ? "isResizing" : ""
-                }`}
+              className={`resizer ${
+                column.isResizing ? "isResizing" : ""
+              }`}
               />
             </th>
             ))}
@@ -257,10 +385,11 @@ function ResearchListsTable({
             confirmUserRef={confirmRef}
             keyName={selectedItem.researchName}
             delId={selectedItem.researchListId}
-          />
+            />
             </tbody>
           )}{" "}
     </table>
+          </>
   );
 }
 

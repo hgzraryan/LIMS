@@ -15,6 +15,7 @@ import { REGISTER_DIAGNOSTICS } from "../../utils/constants";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { selectDoctors } from "../../redux/features/doctor/doctorsSlice";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 const diagnosticClassState = [
   { class: "Արտաքին" },
   { class: "Ներքին" },
@@ -36,6 +37,7 @@ function AddDiagnostic({
   researchesState,
   patients,
 }) {
+  const axiosPrivate = useAxiosPrivate();
   const [errMsg, setErrMsg] = useState("");
   const multiselectRef = useRef("");
   const editorRef = useRef(null);
@@ -149,7 +151,7 @@ function AddDiagnostic({
     });
 
   const onSubmit = methods.handleSubmit(async (data) => {
-    const newPatient = {
+    const newDiagnose = {
       diagnosticsName: data.name,
       class: diagnosticsType,
       internalStatus: intDiagnosticsStatus,
@@ -161,27 +163,27 @@ function AddDiagnostic({
       additional: editorRef.current.getContent({ format: "text" }),
     };
 
-    console.log(newPatient);
-    // try {
-    //   await axiosPrivate.post(REGISTER_PATIENT, newPatient, {
-    //     headers: { "Content-Type": "application/json" },
-    //     withCredentials: true,
-    //   });
+    console.log(newDiagnose);
+    try {
+      await axiosPrivate.post(REGISTER_DIAGNOSTICS, newDiagnose, {
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+      });
 
-    //   handleToggleCreateModal(false);
-    //   getDiagnostics();
-    //   notify(
-    //     `${newPatient.firstName} ${newPatient.lastName} հաճախորդը ավելացված է`
-    //   );
-    // } catch (err) {
-    //   if (!err?.response) {
-    //     setErrMsg("No Server Response");
-    //   } else if (err.response?.status === 409) {
-    //     setErrMsg("Username Taken");
-    //   } else {
-    //     setErrMsg(" Failed");
-    //   }
-    // }
+      handleToggleCreateModal(false);
+      getDiagnostics();
+      notify(
+        `${newDiagnose.diagnosticsName} Ախտորոշումը ավելացված է`
+      );
+    } catch (err) {
+      if (!err?.response) {
+        setErrMsg("No Server Response");
+      } else if (err.response?.status === 409) {
+        setErrMsg("Username Taken");
+      } else {
+        setErrMsg(" Failed");
+      }
+    }
   });
   // const { onSubmit, methods } = useSubmitForm(
   //   REGISTER_DIAGNOSTICS,

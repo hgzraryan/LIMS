@@ -314,10 +314,10 @@ export const name_validation = {
 };
 export const contactName_validation = {
   name: "contactName",
-  label: "ԱՆուն",
+  label: "Անուն",
   type: "text",
   id: "contactName",
-  placeholder: "ԱՆուն",
+  placeholder: "Անուն",
   validation: {
     required: {
       value: true,
