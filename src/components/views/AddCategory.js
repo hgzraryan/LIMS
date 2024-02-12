@@ -18,7 +18,7 @@ function AddCategory({handleToggleCategoryCreateModal}) {
       >
         <Modal.Header closeButton>
           <Modal.Title style={{ width: "100%", textAlign: "center" }}>
-            Ավելացնել նոր Հետազոտություն
+            Ավելացնել նոր Դասակարգ
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -35,7 +35,7 @@ function AddCategory({handleToggleCategoryCreateModal}) {
                     >
                       <div className="card">
                         <div className="card-header">
-                          <a href="#">Հետազոտության տվյալներ</a>
+                          <a href="#">Դասակարգ տվյալներ</a>
                           <button
                             className="btn btn-xs btn-icon btn-rounded btn-light"
                             data-bs-toggle="tooltip"

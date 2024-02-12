@@ -48,8 +48,8 @@ function AddDiagnostic({
   const [researchesIds, setResearchesIds] = useState([]);
   const [partnerName, setPartnerName] = useState("");
   const [diagnosticsType, setDiagnosticsType] = useState("Internal");
-  const [intDiagnosticsStatus, setIntDiagnosticsStatus] = useState("");
-  const [extDiagnosticsStatus, setExtDiagnosticsStatus] = useState("");
+  const [intDiagnosticsStatus, setIntDiagnosticsStatus] = useState(null);
+  const [extDiagnosticsStatus, setExtDiagnosticsStatus] = useState(null);
   const [doctor, setDoctor] = useState("");
   const doctors = useSelector(selectDoctors);
 
