@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import ComponentToConfirm from "../ComponentToConfirm";
 import {
   useBlockLayout,
@@ -21,6 +21,12 @@ import { data1 } from "../StatusBoard/data";
 import { Modal } from "react-bootstrap";
 import EditModal from "../views/EditModal";
 import diagnoseSvg from "../../../src/dist/img/diagnose.svg";
+import ReactToPrint from "react-to-print";
+import { ResultToPrintComponent } from "../ResultToPrintComponent";
+import ComponentToPrintResultWrapper from "../ComponentToPrintResultWrapper";
+import { useGetFullData } from "../../hooks/useGetFullData";
+import { PATIENTS_URL } from "../../utils/constants";
+import { checkPatients } from "../../redux/features/patients/patientsSlice";
 const ResearchData = [
   {
     researchId: "23001",
@@ -71,6 +77,7 @@ function DiagnosticsTable({
   handleOpenModal,
   selectedItemId,
   selectedItem,
+  patients
 }) {
   const [resData,setResData]=useState(ResearchData)
   const [selectedItem1, setSelectedItem1] = useState("");
@@ -78,11 +85,12 @@ function DiagnosticsTable({
   const [isOpen, setIsopen] = useState(false);
   const [editRow, setEditRow] = useState(false);
   const [modalInfo, setModalInfo] = useState("");
+
+ 
   const handleOpenInfoModal = (user) => {
     
     setModalInfo((prev) => user);
   };
-  console.log(diagnostics)
   const handleOpenStatusModal = (user) => {
     setSelectedItem1((prev) => user);
   };
@@ -106,10 +114,10 @@ function DiagnosticsTable({
   const columns = useMemo(
     () => [
       {
-        Header: "Ախտորոշման ID",
+        Header: "ID",
         accessor: "diagnosticstId",
         sortable: true,
-        width: 200,
+        width: 100,
         Filter: ({ column: { id } }) => (
           <ColumnFilter id={id} setData={setDiagnostics} />
         ),
@@ -209,22 +217,8 @@ function DiagnosticsTable({
                 </span>
               </a>
               }
-              <a
-                className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover"
-                data-bs-toggle="tooltip"
-                onClick={() => console.log('send report')}
-                data-placement="top"
-                title="Send"
-                href="#"
-              >
-                <span className="icon">
-                  <span className="feather-icon">
-                    <FeatherIcon icon="send" />
-                  </span>
-                </span>
-              </a>
+              <ComponentToPrintResultWrapper data={row.original} patients={patients}/>
             </div>
-            
             </div>
         ),
         disableSortBy: true,
@@ -419,8 +413,8 @@ function DiagnosticsTable({
             handleDeleteItem={handleDeleteItem}
             selectedItemId={selectedItemId}
             confirmUserRef={confirmRef}
-            keyName={selectedItem.patientId}
-            delId={selectedItem._id}
+            keyName={selectedItem.diagnosticsName}
+            delId={selectedItem.diagnosticstId}
           />
         </tbody>
       )}{" "}

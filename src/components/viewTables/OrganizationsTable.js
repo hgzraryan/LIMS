@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import ComponentToConfirm from "../ComponentToConfirm";
 import {
   useBlockLayout,
@@ -12,7 +12,10 @@ import {
 import { Checkbox } from "../Checkbox";
 import FeatherIcon from "feather-icons-react/build/FeatherIcon";
 import { ColumnFilter } from "../ColumnFilter";
-
+import { BiSolidInfoCircle } from "react-icons/bi";
+import { Modal } from "react-bootstrap";
+import infoModalImg from "../../../src/dist/svg/organizationsSvg.svg";
+ 
 function OrganizationsTable({
   confirmRef,
   selectedItem,
@@ -24,6 +27,14 @@ function OrganizationsTable({
   setOrganizations,
   getOrganizations,
 }) {
+  const [modalInfo, setModalInfo] = useState("");
+  const handleOpenInfoModal = (data) => {
+    console.log('**********');
+    console.log('data',data);
+    console.log('**********',);
+    
+    setModalInfo((prev) => data);
+  };
   const defaultColumn = useMemo(
     () => ({
       minWidth: 20,
@@ -106,7 +117,7 @@ function OrganizationsTable({
             <div className="columnHeader">Գրանցված է</div>
           </>
         ),
-
+ 
         accessor: "createdAt",
         width: 200,
         Filter: ({ column: { id } }) => (
@@ -119,7 +130,7 @@ function OrganizationsTable({
             <div className="columnHeader">Նկարագիր</div>
           </>
         ),
-
+ 
         accessor: "description",
         width: 200,
         Filter: ({ column: { id } }) => (
@@ -131,6 +142,13 @@ function OrganizationsTable({
         accessor: "actions",
         Cell: ({ row }) => (
           <div className="d-flex align-items-center">
+            <div className="d-flex">
+              <BiSolidInfoCircle
+              cursor={"pointer"}
+              size={"1.5rem"}
+              onClick={() => handleOpenInfoModal(row.original)}
+            />
+            </div>
             <div className="d-flex">
               <a
                 className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover"
@@ -170,7 +188,7 @@ function OrganizationsTable({
     ],
     []
   );
-
+ 
   const {
     getTableProps,
     getTableBodyProps,
@@ -205,6 +223,77 @@ function OrganizationsTable({
   );
   // console.log(selectedFlatRows);
   return (
+    <>
+    {
+      modalInfo && (
+        <Modal
+      show={() => true}
+      size="md"
+      onHide={() => setModalInfo(false)}
+    >
+      <Modal.Header closeButton>
+        <Modal.Title style={{ width: "100%", textAlign: "center" }}>
+        {modalInfo.name}
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>        
+          <div className="contact-body contact-detail-body">
+            <div data-simplebar className="nicescroll-bar">
+              <div className="d-flex flex-xxl-nowrap flex-wrap">
+                <div className="contact-info w-100">
+                  <div className="d-flex justify-content-center align-items-center">
+                    
+                    <img
+                          width={"150px"}
+                          height={"200px"}
+                          style={{
+                            borderRadius: "5px",
+                          }}
+                          src={infoModalImg}
+                          className="infoImg"
+                          alt="infoImg"
+                        />
+                  </div>
+                  <div className="w-100">
+                       <div className="d-flex justify-content-between">  <span>ID </span> <span>{modalInfo.organizationId}</span></div>
+                       <div className="separator-full m-0"></div>
+                       <div className="d-flex justify-content-between">  <span>Անվանում </span> <span>{modalInfo.name}</span></div>
+                       <div className="separator-full m-0"></div>
+                       <div className="d-flex justify-content-between">  <span>Գրանցվել է </span> <span>{modalInfo.createdAt}</span></div>
+                       <div className="separator-full m-0"></div>
+                       <div className="d-flex justify-content-between">  <span>Հասցե </span> <span>{modalInfo.address?.city}, {modalInfo.address?.street}</span></div>
+                       <div className="separator-full m-0"></div>
+                       <div className="d-flex justify-content-between">  <span>Էլ․ Հասցե </span> <span>{modalInfo.contact?.email}</span></div>
+                       <div className="separator-full m-0"></div>
+                       <div className="d-flex justify-content-between">  <span>Հեռախոս </span> <span>{modalInfo.contact?.phone}</span></div>
+                       <div className="separator-full m-0"></div> 
+                       <div className="d-flex justify-content-between">  <span>Նկարագրություն </span> <span>{modalInfo.description}</span></div>
+                       <div className="separator-full m-0"></div> 
+                       <div className="d-flex justify-content-between">  <span>Պատասխանատու անձ</span> <span>{modalInfo.contactPerson?.name}</span></div>
+                       <div className="separator-full m-0"></div> 
+                       <div className="d-flex justify-content-between">  <span>Հեռախոս </span> <span>{modalInfo.contactPerson?.phone}</span></div>
+                       <div className="separator-full m-0"></div>                  
+                       <div className="d-flex justify-content-between">  <span>Էլ․ Հասցե </span> <span>{modalInfo.contactPerson?.email}</span></div>
+                       <div className="separator-full m-0"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        
+                  <div className="modal-footer ">                   
+                    <button
+                      type="button"
+                      className="btn btn-secondary"
+                      onClick={() => setModalInfo(false)}
+                    >
+                      Փակել
+                    </button>
+                  </div>
+      </Modal.Body>
+    </Modal>
+      )
+    }
     <table
       className="table nowrap w-100 mb-5 dataTable no-footer"
       {...getTableProps()}
@@ -220,7 +309,7 @@ function OrganizationsTable({
                       <div>
                         {column.canFilter ? column.render("Filter") : null}
                       </div>
-
+ 
                       <div
                         style={{
                           marginTop: "2px",
@@ -230,7 +319,7 @@ function OrganizationsTable({
                         }}
                       >
                         <div>{column.render("Header")}</div>
-
+ 
                         <div style={{ paddingTop: "20px" }}>
                           {column.isSorted ? (
                             column.isSortedDesc ? (
@@ -281,7 +370,8 @@ function OrganizationsTable({
         </tbody>
       )}{" "}
     </table>
+    </>
   );
 }
-
+ 
 export default OrganizationsTable;

@@ -23,8 +23,10 @@ import {LOGIN_ROUTE,
   EQUIPMENTS_ROUTE,
   DIAGNOSTICS_ROUTE,
   RESEARCH_LISTS_ROUTE,
-  MISSING_ROUTE} from '../src/utils/constants' 
+  MISSING_ROUTE,
+  DOCTORS_ID_ROUTE} from '../src/utils/constants' 
 import { lazy, Suspense } from "react";
+import DoctorDetails from "./components/views/DoctorDetails";
 
  const Register = lazy(()=>  import("./components/Register"));
  const Login = lazy(()=>  import("./components//views/Login"));
@@ -93,6 +95,8 @@ function App() {
 
             <Route index path="/" element={<Home />} />
             <Route path={DOCTORS_ROUTE} element={<Doctors />} />
+            <Route path={DOCTORS_ID_ROUTE} element={<DoctorDetails/>} />
+
             <Route  path={SAMPLES_ROUTE} element={<Samples />} />
             <Route path={AGENTS_ROUTE} element={<Agents />} />
             <Route path={ORGANIZATIONS_ROUTE} element={<Organizations />} />

@@ -108,7 +108,7 @@ function PatientsTable({
         ),
         accessor: "patientId",
         sortable: true,
-        width: 200,
+        width: 100,
         Filter: ({ column: { id } })=>(
           <ColumnFilter
             id={id}

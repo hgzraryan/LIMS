@@ -14,6 +14,8 @@ import { ColumnFilter } from "../ColumnFilter";
 import DefaultProfileImage from "../../../src/dist/img/Missing.svg";
 import { Modal } from "react-bootstrap";
 import MissingAvatar from "../../dist/img/Missing.svg";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import { useNavigate } from "react-router-dom";
 
 function DoctorsTable({
   confirmRef,
@@ -26,6 +28,8 @@ function DoctorsTable({
   setDoctors,
   // getDoctors
 }) {
+  const axiosPrivate = useAxiosPrivate()  
+  const navigate = useNavigate();
   const [openModal,setOpenModal]=useState(false)
   const [modalInfo,setModalInfo]=useState({})
   const [imageUrl, setImageUrl] = useState(MissingAvatar);
@@ -38,9 +42,29 @@ function DoctorsTable({
     }),
     []
   );
-  const handleDoctorInfoInfo =(data)=>{
-    setOpenModal(true)
-    setModalInfo(data)
+  const handleDoctorInfo = async ({doctorId})=>{
+  //   setOpenModal(true)
+  //   setModalInfo(data)
+    
+  // console.log('**********');
+  // console.log('patientId',patientId);
+  // console.log('**********',);
+  
+  navigate(`/doctors/${doctorId}`)
+    // try {
+    //   const response = await axiosPrivate.get(`/patients/${doctorId}`, );
+    //   console.log(response.data); 
+      
+    // } catch (err) {
+    //   console.log(err)
+    //   // if (!err?.response) {
+    //   //   setErrMsg("No Server Response");
+    //   // } else if (err.response?.status === 409) {
+    //   //   setErrMsg("Username Taken");
+    //   // } else {
+    //   //   setErrMsg(" Failed");
+    //   // }
+    // }
   }
   const columns = useMemo(
     () => [
@@ -74,7 +98,7 @@ function DoctorsTable({
           <div
             onClick={(e) => {
               e.stopPropagation();
-              handleDoctorInfoInfo(row.original);
+              handleDoctorInfo(row.original);
             }}
             style={{ cursor: 'pointer' ,textDecoration:'underline'}}
           >

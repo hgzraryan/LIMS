@@ -59,7 +59,7 @@ const Diagnostics = () => {
     setSelectedItemId,
     diagnostics,
     setDiagnostics,
-    "name"
+    "diagnosticsName"
   );
    //-------------------------PAGINATION---------------------------//
    const handlePageClick = ({ selected: selectedPage }) => {
@@ -185,6 +185,7 @@ const Diagnostics = () => {
                         setDiagnostics={setDiagnostics}
                         handleCloseModal={handleCloseModal}
                         handleOpenModal={handleOpenModal}
+                        patients={patients}
                       />
                          <ReactPaginate
                           previousLabel = {"Previous"}    

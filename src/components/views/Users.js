@@ -18,6 +18,7 @@ import useAxiosPrivate from "../../hooks/useAxiosPrivate"
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import CreateUserRole from "./CreateUserRole";
 
 const USERS_URL = "/users";
 
@@ -27,6 +28,7 @@ const Users = () => {
 
   const confirmUserRef = useRef("");
   const [isOpen, setIsOpen] = useState(false);
+  const [isOpenRole, setIsOpenRole] = useState(false);
   const [selectedItem, setSelectedItem] = useState("");
   const [selectedItemId, setSelectedItemId] = useState(null);
   const useersCount = useSelector(selectUsersCount)
@@ -127,6 +129,9 @@ const Users = () => {
                       <Dropdown.Item onClick={() => setIsOpen(true)}>
                         Աշխատակից
                       </Dropdown.Item>
+                      <Dropdown.Item onClick={() => setIsOpenRole(true)}>
+                        Դեր
+                      </Dropdown.Item>
                     </Dropdown.Menu>
                   </Dropdown>
 
@@ -137,6 +142,12 @@ const Users = () => {
                       updateUsersCount={updateUsersCount}
                     />
                   )}
+                   {isOpenRole && (
+                    <CreateUserRole
+                    setIsOpenRole={setIsOpenRole}
+                      getUsers={() => getUsers()}
+                      updateUsersCount={updateUsersCount}
+                    />)}
                   {/*
 										<a className="dropdown-item" href="#">Type2</a>
 										<a className="dropdown-item" href="#">Type3</a>

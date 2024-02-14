@@ -12,6 +12,7 @@ export const HOME_ROUTE = 'dashboard'
 export const DASHBOARD_ROUTE = 'dashboard'
 export const USERS_ROUTE = 'users'
 export const DOCTORS_ROUTE = 'doctors'
+export const DOCTORS_ID_ROUTE = 'doctors/:id'
 export const SAMPLES_ROUTE = 'samples'
 export const AGENTS_ROUTE = 'agents'
 export const ORGANIZATIONS_ROUTE = 'organizations'
@@ -35,6 +36,7 @@ export const REGISTER_USER = "/registerUser";
 export const REGISTER_REAGENT = "/registerReagent";
 export const REGISTER_EQUIPMENT = "/registerEquipment";
 export const REGISTER_RESEARCHLISTS = "/registerResearchLists";
+export const REGISTER_ROLE = "/registerRole";
 
 export const GET_RESEARCHES = "/researchLists";
 export const PATIENTS_URL = "/patients";
