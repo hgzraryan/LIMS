@@ -207,6 +207,7 @@ switch (data[0].type) {
       { name: "Editor", id: 1984 },
       { name: "User", id: 2001 },
       { name: "Sampler", id: 1212 },
+      { name: "Doctor", id: 9578 },  
     ],
   };
 
