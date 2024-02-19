@@ -42,8 +42,15 @@ export const REGISTER_ROLE = "/registerRole";
 export const REGISTER_REFDOCTOR = "/registerRefDoctor";
 export const REGISTER_CLINIC = "/registerClinic";
 
-export const GET_RESEARCHES = "/researchLists";
+export const RESEARCHLISTS_URL = "/researchLists";
 export const PATIENTS_URL = "/patients";
 export const DOCTORS_URL = "/doctors";
 export const REFDOCTORS_URL = "/refDoctors";
 export const CLINICS_URL = "/clinics";
+export const SAMPLES_URL = "/samples";
+export const USERS_URL = "/users";
+export const DIAGNOSTICS_URL = "/diagnostics";
+export const AGENTS_URL = "/agents";
+export const ORGANIZATIONS_URL = "/organizations";
+export const REAGENTS_URL = "/reagentList";
+export const EQUIPMENTS_URL = "/equipmentList";

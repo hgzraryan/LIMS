@@ -15,7 +15,7 @@ import { checkDiagnosticsCount } from "../../redux/features/diagnostics/diagnost
 import { useDispatch, useSelector } from "react-redux";
 import { checkResearchListCount } from "../../redux/features/researches/researchListCountSlice";
 import { checkPatients, selectPatients } from "../../redux/features/patients/patientsSlice";
-import {  DOCTORS_URL, GET_RESEARCHES, PATIENTS_URL } from "../../utils/constants";
+import {  DOCTORS_URL, RESEARCHLISTS_URL, PATIENTS_URL } from "../../utils/constants";
 import { useGetFullData } from "../../hooks/useGetFullData";
 import { reserchesList } from "../../redux/features/researches/researchesSlice";
 import { checkDoctors } from "../../redux/features/doctor/doctorsSlice";
@@ -34,7 +34,7 @@ const MainTemplate = () => {
     const dispatch = useDispatch()
     const patientsCount = useSelector(selectPatientsCount)
     const usersCount = useSelector(selectUsersCount)
-    const [researchState] = useGetFullData(GET_RESEARCHES,reserchesList)
+    const [researchState] = useGetFullData(RESEARCHLISTS_URL,reserchesList)
     const [patientsState] = useGetFullData(PATIENTS_URL,checkPatients)
     const [doctorsState] = useGetFullData(DOCTORS_URL,checkDoctors)
     //-------------------

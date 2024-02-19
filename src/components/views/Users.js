@@ -14,10 +14,7 @@ import UsersTable from "../viewTables/UsersTable";
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { useSelector } from "react-redux";
 import AddUserRole from "./AddUserRole";
-
-const USERS_URL = "/users";
-
-
+import { USERS_URL } from "../../utils/constants";
 
 const Users = () => {
 
@@ -41,7 +38,7 @@ const Users = () => {
   //-------------------
   
   const { handleDeleteItem,updateUsersCount } = useDeleteData(
-    "/users",
+    USERS_URL,
     confirmUserRef,
     selectedItem,
     setSelectedItemId,
@@ -65,13 +62,7 @@ const Users = () => {
   };
   const handleCloseModal = () => {
     setSelectedItemId(null);
-  };
-  // const [showCreateNew, setIsActive] = useState(false);
-  // const CreateNew = (event) => {
-  //   setIsActive((current) => !current);
-  // };
-
-	
+  };	
 	//-------------------------
    
   return (

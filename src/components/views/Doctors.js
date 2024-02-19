@@ -9,7 +9,7 @@ import AddDoctor from "./AddDoctor";
 import ReactPaginate from "react-paginate";
 import { useSelector } from "react-redux";
 import { selectDoctorCount } from "../../redux/features/doctor/doctorCountSlice";
-const DOCTORS_URL = "/doctors";
+import { DOCTORS_URL } from "../../utils/constants";
 
 function Doctors() {
   const [selectedItem, setSelectedItem] = useState("");
@@ -47,7 +47,7 @@ function Doctors() {
   };
   //--------------------------------------------------------------//
   const { handleDeleteItem } = useDeleteData(
-    "/doctors",
+    DOCTORS_URL,
     confirmDoctorsRef,
     selectedItem,
     setSelectedItemId,

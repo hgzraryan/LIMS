@@ -14,12 +14,9 @@ import AddDiagnostic from "./AddDiagnostic";
 import { selectDiagnosticsCount} from "../../redux/features/diagnostics/diagnosticsCountSlice";
 import { selectResearches } from "../../redux/features/researches/researchesSlice";
 import { selectPatients } from "../../redux/features/patients/patientsSlice";
-const Diagnostics_URL = "/diagnostics";
-//const PATIENTS_URL = "/patients";
-//const GET_RESEARCHES = "/researchLists";
+import { DIAGNOSTICS_URL } from "../../utils/constants";
 
 const Diagnostics = () => {
-  //const [researchesState] = useGetResearchList(GET_RESEARCHES)
   const researchesState= useSelector(selectResearches)
   const [selectedItem, setSelectedItem] = useState("");
   const [selectedItemId, setSelectedItemId] = useState(null);
@@ -35,7 +32,7 @@ const Diagnostics = () => {
     data: diagnostics,
     setData: setDiagnostics,
     getData: getDiagnostics,
-  } = useGetData(Diagnostics_URL,currentPage,usersPerPage);
+  } = useGetData(DIAGNOSTICS_URL,currentPage,usersPerPage);
 
   const handleOpenModal = (user) => {
     setSelectedItemId(true);
@@ -53,7 +50,7 @@ const Diagnostics = () => {
   // } = useGetData(PATIENTS_URL);
 
   const { handleDeleteItem } = useDeleteData(
-    Diagnostics_URL,
+    DIAGNOSTICS_URL,
     confirmDiagnosticRef,
     selectedItem,
     setSelectedItemId,

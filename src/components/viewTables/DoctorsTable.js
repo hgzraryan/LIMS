@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { Suspense, useMemo, useState } from "react";
 import ComponentToConfirm from "../ComponentToConfirm";
 import {
   useBlockLayout,
@@ -16,6 +16,7 @@ import { Modal } from "react-bootstrap";
 import MissingAvatar from "../../dist/img/Missing.svg";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { useNavigate } from "react-router-dom";
+import LoadingSpinner from "../LoadingSpinner";
 
 function DoctorsTable({
   confirmRef,
@@ -43,28 +44,7 @@ function DoctorsTable({
     []
   );
   const handleDoctorInfo = async ({doctorId})=>{
-  //   setOpenModal(true)
-  //   setModalInfo(data)
-    
-  // console.log('**********');
-  // console.log('patientId',patientId);
-  // console.log('**********',);
-  
   navigate(`/doctors/${doctorId}`)
-    // try {
-    //   const response = await axiosPrivate.get(`/patients/${doctorId}`, );
-    //   console.log(response.data); 
-      
-    // } catch (err) {
-    //   console.log(err)
-    //   // if (!err?.response) {
-    //   //   setErrMsg("No Server Response");
-    //   // } else if (err.response?.status === 409) {
-    //   //   setErrMsg("Username Taken");
-    //   // } else {
-    //   //   setErrMsg(" Failed");
-    //   // }
-    // }
   }
   const columns = useMemo(
     () => [
@@ -258,151 +238,122 @@ function DoctorsTable({
 
   return (
     <>
-    {
-      openModal && (
+      {openModal && (
         <Modal
-      show={() => true}
-      size="xs"
-      onHide={() => setOpenModal(false)}
-    >
-      <Modal.Header closeButton>
-        <Modal.Title style={{ width: "100%", textAlign: "center" }}>
-        {modalInfo.name}
-        </Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        
-          <div className="contact-body contact-detail-body">
-            <div data-simplebar className="nicescroll-bar">
-              <div className="d-flex flex-xxl-nowrap flex-wrap">
-                <div className="contact-info w-100">
-                  <div className="d-flex justify-content-center align-items-center">
-                    
-                    <img
-                          width={"200px"}
-                          height={"300px"}
-                          style={{
-                            borderRadius: "5px",
-                          }}
-                          src={imageUrl}
-                          className="avatar_upload_preview"
-                          alt="preview"
-                        />
-                  </div>
-                  <div className="w-100">
-                       <div className="d-flex justify-content-between">  <span>Անուն Ազգանուն Հայրանուն </span> <span>{modalInfo.doctorName}</span></div>
-                       <div className="separator-full m-0"></div>
-                       <div className="d-flex justify-content-between">  <span>Մասնագիտություն </span> <span>{modalInfo.specialty}</span></div>
-                       <div className="separator-full m-0"></div>
-                       <div className="d-flex justify-content-between">  <span>Ծննդյան ամսաթիվ </span> <span>{modalInfo.dateOfBirth}</span></div>
-                       <div className="separator-full m-0"></div>
-                       <div className="d-flex justify-content-between">  <span>Հասցե </span> <span>{modalInfo.contact?.address?.city}</span></div>
-                       <div className="separator-full m-0"></div>
-                       <div className="d-flex justify-content-between">  <span>Էլ․ Հասցե </span> <span>{modalInfo.contact?.email}</span></div>
-                       <div className="separator-full m-0"></div>
-                       <div className="d-flex justify-content-between">  <span>սեռ </span> <span>{modalInfo.gender}</span></div>
-                       <div className="separator-full m-0"></div>
-                       <div className="d-flex justify-content-between">  <span>Կարգավիճակ </span> <span>{modalInfo.isActive}</span></div>
-                       <div className="separator-full m-0"></div>
-                       <div className="d-flex justify-content-between">  <span>Ընդունվել է </span> <span>{modalInfo.joiningDate}</span></div>
-                       <div className="separator-full m-0"></div>
-                       <div className="d-flex justify-content-between">  <span>Լիցենզավորման համար </span> <span>{modalInfo.licenseNumber}</span></div>
-                       <div className="separator-full m-0"></div>
-                       <div className="d-flex justify-content-between">  <span>Հեռախոս </span> <span>{modalInfo.contact?.phone}</span></div>
-                       <div className="separator-full m-0"></div>
-                       <div className="d-flex justify-content-between">  <span>Որակավորում </span> <span>{modalInfo.qualification}</span></div>
-                       <div className="separator-full m-0"></div>
-                       <div className="d-flex justify-content-between">  <span>Լրացուցիչ կոնտակտ </span> <span>{modalInfo.emergencyContactName}</span></div>
-                       <div className="separator-full m-0"></div>
-                       <div className="d-flex justify-content-between">  <span>Լրացուցիչ կոնտակտի հեռախոս </span> <span>{modalInfo.emergencyContactPhone}</span></div>                    
+          show={() => true}
+          size="xs"
+          onHide={() => setOpenModal(false)}
+        >
+          <Modal.Header closeButton>
+            <Modal.Title style={{ width: "100%", textAlign: "center" }}>
+              {modalInfo.name}
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <div className="contact-body contact-detail-body">
+              <div data-simplebar className="nicescroll-bar">
+                <div className="d-flex flex-xxl-nowrap flex-wrap">
+                  <div className="contact-info w-100">
+                    <div className="d-flex justify-content-center align-items-center">
+                      <img
+                        width={"200px"}
+                        height={"300px"}
+                        style={{
+                          borderRadius: "5px",
+                        }}
+                        src={imageUrl}
+                        className="avatar_upload_preview"
+                        alt="preview"
+                      />
+                    </div>
+                    <div className="w-100">
+                      {/* Render additional information here */}
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        
-      </Modal.Body>
-    </Modal>
-      )
-    }
-      <table
-        className="table nowrap w-100 mb-5 dataTable no-footer"
-        {...getTableProps()}
-      >
-        <thead>
-          {headerGroups.map((headerGroup) => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps(column.getSortByToggleProps())}>
-                  <div>
-                    {column.id !== "selection" && (
-                      <>
-                        <div>
-                          {column.canFilter ? column.render("Filter") : null}
-                        </div>
-
-                        <div
-                          style={{
-                            marginTop: "2px",
-                            display: "flex",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                          }}
-                        >
-                          <div>{column.render("Header")}</div>
-
-                          <div style={{ paddingTop: "20px" }}>
-                            {column.isSorted ? (
-                              column.isSortedDesc ? (
-                                <span className="sorting_asc"></span>
-                              ) : (
-                                <span className="sorting_desc"></span>
-                              )
-                            ) : (
-                              <span className="sorting"></span>
-                            )}
+          </Modal.Body>
+        </Modal>
+      )}
+        <table
+          className="table nowrap w-100 mb-5 dataTable no-footer"
+          {...getTableProps()}
+        >
+          <thead>
+            {headerGroups.map((headerGroup) => (
+              <tr {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map((column) => (
+                  <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                    <div>
+                      {column.id !== "selection" && (
+                        <>
+                          <div>
+                            {column.canFilter ? column.render("Filter") : null}
                           </div>
-                        </div>
-                      </>
-                    )}
-                  </div>
-                  <div
-                    {...column.getResizerProps()}
-                    className={`resizer ${
-                      column.isResizing ? "isResizing" : ""
-                    }`}
-                  />
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        {doctors?.length && (
-          <tbody {...getTableBodyProps()}>
-            {rows.map((row) => {
-              prepareRow(row);
-              return (
-                <tr {...row.getRowProps()}>
-                  {row.cells.map((cell) => {
-                    return (
-                      <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
-                    );
-                  })}
-                </tr>
-              );
-            })}
-            <ComponentToConfirm
-              handleCloseModal={handleCloseModal}
-              handleOpenModal={handleOpenModal}
-              handleDeleteItem={handleDeleteItem}
-              selectedItemId={selectedItemId}
-              confirmUserRef={confirmRef}
-              keyName={selectedItem.doctorName}
-              delId={selectedItem.doctorId}
-            />
-          </tbody>
-        )}{" "}
-      </table>
+
+                          <div
+                            style={{
+                              marginTop: "2px",
+                              display: "flex",
+                              justifyContent: "space-between",
+                              alignItems: "center",
+                            }}
+                          >
+                            <div>{column.render("Header")}</div>
+
+                            <div style={{ paddingTop: "20px" }}>
+                              {column.isSorted ? (
+                                column.isSortedDesc ? (
+                                  <span className="sorting_asc"></span>
+                                ) : (
+                                  <span className="sorting_desc"></span>
+                                )
+                              ) : (
+                                <span className="sorting"></span>
+                              )}
+                            </div>
+                          </div>
+                        </>
+                      )}
+                    </div>
+                    <div
+                      {...column.getResizerProps()}
+                      className={`resizer ${
+                        column.isResizing ? "isResizing" : ""
+                      }`}
+                    />
+                  </th>
+                ))}
+              </tr>
+            ))}
+          </thead>
+          {doctors?.length && (
+            <tbody {...getTableBodyProps()}>
+              {rows.map((row) => {
+                prepareRow(row);
+                return (
+                  <tr {...row.getRowProps()}>
+                    {row.cells.map((cell) => {
+                      return (
+                        <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                      );
+                    })}
+                  </tr>
+                );
+              })}
+              <ComponentToConfirm
+                handleCloseModal={handleCloseModal}
+                handleOpenModal={handleOpenModal}
+                handleDeleteItem={handleDeleteItem}
+                selectedItemId={selectedItemId}
+                confirmUserRef={confirmRef}
+                keyName={selectedItem.doctorName}
+                delId={selectedItem.doctorId}
+              />
+            </tbody>
+          )}{" "}
+        </table>
     </>
   );
 }

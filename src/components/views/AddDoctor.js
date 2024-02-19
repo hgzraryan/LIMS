@@ -146,8 +146,6 @@ function AddDoctor({ handleToggleCreateModal, getDoctors }) {
       qualification,
       licenseNumber,
       emergencyContactName,
-      emergencyContactNumber,
-      doctorState,
     }) => {
       const newDoctor = {
         doctorName: fullName,
@@ -174,7 +172,7 @@ function AddDoctor({ handleToggleCreateModal, getDoctors }) {
         emergencyContactName: emergencyContactName,
         emergencyContactNumber: emergencyContactNumber,
         profilePictureUrl: "profilePictureUrl",
-        isActive: isActive,
+        isActive: 0,
       };
      console.log()
       formData.append("text", JSON.stringify(newDoctor));

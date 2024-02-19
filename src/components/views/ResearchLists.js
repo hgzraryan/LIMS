@@ -12,7 +12,7 @@ import AddResearchList from "./AddResearchList";
 import { useSelector } from "react-redux";
 import { selectResearchListCount } from "../../redux/features/researches/researchListCountSlice";
 import AddCategory from "./AddCategory";
-const RESEARCHES_URL = "/researchLists";
+import { RESEARCHLISTS_URL } from "../../utils/constants";
 
 const ResearchLists = () => {
   /*------------------ Create user Component --------------------*/
@@ -37,7 +37,7 @@ const ResearchLists = () => {
     data: researchList,
     setData: setResearches,
     getData: getResearches,
-  } = useGetData(RESEARCHES_URL,currentPage,usersPerPage);
+  } = useGetData(RESEARCHLISTS_URL,currentPage,usersPerPage);
   const handleOpenModal = (user) => {
     setSelectedItemId(true);
     setSelectedItem((prev) => user);
@@ -48,7 +48,7 @@ const ResearchLists = () => {
 
   /*------------------------------------------------*/
   const { handleDeleteItem } = useDeleteData(
-    "/researchLists",
+    RESEARCHLISTS_URL,
     confirmResearchRef,
     selectedItem,
     setSelectedItemId,

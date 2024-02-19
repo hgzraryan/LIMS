@@ -20,6 +20,16 @@ import ReactDatePicker from "react-datepicker";
 import { REGISTER_USER } from "../../utils/constants";
 import PhoneInput from "react-phone-number-input";
 
+const roleState = {
+  options: [
+    { name: "Admin", id: 5150 },
+    { name: "Approver", id: 3345 },
+    { name: "Editor", id: 1984 },
+    { name: "User", id: 2001 },
+    { name: "Sampler", id: 1212 },
+    { name: "Doctor", id: 9578 },  
+  ],
+};
 function CreateUser({ setIsOpen,getUsers }) {
   const axiosPrivate = useAxiosPrivate();
   const typeMultiselectRef = useRef("");
@@ -106,30 +116,26 @@ switch (data[0].type) {
         .split("T")[0],
     };
     formData.append("text", JSON.stringify(newUser));
-    formData.append("image", image);    
-    console.log('**********');
-    console.log('newUser',newUser);
-    console.log('**********',);
-    
-    // try {
-    //   await axiosPrivate.post(REGISTER_USER, newUser, {
-    //     headers: { "Content-Type": "application/json"  },
-    //     withCredentials: true,
-    //   });
+    formData.append("image", image);      
+    try {
+      await axiosPrivate.post(REGISTER_USER, newUser, {
+        headers: { "Content-Type": "application/json"  },
+        withCredentials: true,
+      });
       
-    //   handleToggleCreateModal(false);
-    //   getUsers();
-    //   notify(`${newUser.firstname} ${newUser.lastname} աշխատակիցը ավելացված է`)
+      handleToggleCreateModal(false);
+      getUsers();
+      notify(`${newUser.firstname} ${newUser.lastname} աշխատակիցը ավելացված է`)
 
-    // } catch (err) {
-    //   if (!err?.response) {
-    //     setErrMsg("No Server Response");
-    //   } else if (err.response?.status === 409) {
-    //     setErrMsg("Username Taken");
-    //   } else {
-    //     setErrMsg(" Failed");
-    //   }
-    // }
+    } catch (err) {
+      if (!err?.response) {
+        setErrMsg("No Server Response");
+      } else if (err.response?.status === 409) {
+        setErrMsg("Username Taken");
+      } else {
+        setErrMsg(" Failed");
+      }
+    }
   });
   const onRoleSelect = (data) => {
     let rolesArr = {};
@@ -199,16 +205,6 @@ switch (data[0].type) {
     if (event.stopPropagation) {
       event.stopPropagation();
     }
-  };
-  let roleState = {
-    options: [
-      { name: "Admin", id: 5150 },
-      { name: "Approver", id: 3345 },
-      { name: "Editor", id: 1984 },
-      { name: "User", id: 2001 },
-      { name: "Sampler", id: 1212 },
-      { name: "Doctor", id: 9578 },  
-    ],
   };
 
   return (

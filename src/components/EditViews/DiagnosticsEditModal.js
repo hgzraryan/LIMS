@@ -1,12 +1,16 @@
 import React from 'react'
 import { Modal } from 'react-bootstrap'
 
-function EditModal({handleCloseEditModal,rowData}) {
+function DiagnosticsEditModal({handleCloseEditModal,rowData}) {
+  const handleDisableDiagnose = (data) => {
+ 
+    handleCloseEditModal(false);
+  };
     console.log(rowData)
   return (
     <Modal
     show={() => true}
-    size="xl"
+    size="xs"
     onHide={() =>handleCloseEditModal(false)}
     >
       <Modal.Header closeButton>
@@ -15,7 +19,10 @@ function EditModal({handleCloseEditModal,rowData}) {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <p>{rowData.researchId}</p>
+        {console.log(rowData)}
+        <p>Ախտորոշման նույնականացման համար։{rowData.diagnosticsId}</p>
+        <p>Ախտորոշման ամսաթիվ։{rowData.diagnosisDate}</p>
+        <p>Ախտորոշման տեսակը։{rowData.internalStatus}</p>
       <div className="separator-full"></div>
 
 <div className="modal-footer align-items-center">
@@ -24,15 +31,15 @@ function EditModal({handleCloseEditModal,rowData}) {
     className="btn btn-secondary"
     onClick={() => handleCloseEditModal(false)}
   >
-    Չեղարկել
+    Փակել
   </button>
   <button
     type="button"
-   // onClick={}
+    onClick={() => handleDisableDiagnose(true)}
     className="btn btn-primary"
     data-bs-dismiss="modal"
   >
-    Ավելացնել
+    Չեղարկել ախտորոշումը
   </button>
 </div>
       </Modal.Body>
@@ -40,4 +47,4 @@ function EditModal({handleCloseEditModal,rowData}) {
   )
 }
 
-export default EditModal
+export default DiagnosticsEditModal

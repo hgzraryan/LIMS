@@ -13,8 +13,7 @@ import EquipmentsTable from "../viewTables/EquipmentsTable";
 import { useSelector } from "react-redux";
 import { selectEquipmentCount } from "../../redux/features/equipment/equipmentCountSlice";
 import { selectOrganisationCount } from "../../redux/features/organisation/organisationCountSlice";
-
-const EQUIPMENTS_URL = "/equipmentList";
+import { EQUIPMENTS_URL } from "../../utils/constants";
 
 const Equipments = () => {
   const [selectedItem, setSelectedItem] = useState("");
@@ -45,7 +44,7 @@ const Equipments = () => {
   };
 
   const { handleDeleteItem } = useDeleteData(
-    "/equipmentList",
+    EQUIPMENTS_URL,
     confirmEquipmentsRef,
     selectedItem,
     setSelectedItemId,

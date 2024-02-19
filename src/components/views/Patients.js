@@ -12,13 +12,11 @@ import ReactPaginate from "react-paginate";
 import { useSelector } from "react-redux";
 import { selectPatientsCount } from "../../redux/features/patients/patientsCountSlice";
 import { selectResearches } from "../../redux/features/researches/researchesSlice";
-//const GET_RESEARCHES = "/researchLists";
-const PATIENTS_URL = "/patients";
+import { PATIENTS_URL } from "../../utils/constants";
 
 const Patients = () => {
   const patientsCount = useSelector(selectPatientsCount)
   const researchState= useSelector(selectResearches)
-  // const [researchState] = useGetResearchList(GET_RESEARCHES)
 
   const [isOpen, setIsOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState("");

@@ -13,8 +13,7 @@ import OrganizationsTable from "../viewTables/OrganizationsTable";
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { useSelector } from "react-redux";
 import { selectOrganisationCount } from "../../redux/features/organisation/organisationCountSlice";
-
-const ORGANIZATIONS_URL = "/organizations";
+import { ORGANIZATIONS_URL } from "../../utils/constants";
 
 const Organizations = () => {
   const [selectedItem, setSelectedItem] = useState("");
@@ -45,7 +44,7 @@ const Organizations = () => {
   };
 
   const { handleDeleteItem } = useDeleteData(
-    "/organizations",
+    ORGANIZATIONS_URL,
     confirmOrganizationRef,
     selectedItem,
     setSelectedItemId,

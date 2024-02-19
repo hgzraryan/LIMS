@@ -12,8 +12,7 @@ import AddAgent from "./AddAgent";
 import AgentsTable from "../viewTables/AgentsTable";
 import { useSelector } from "react-redux";
 import { selectAgentsCount } from "../../redux/features/agents/agentsCountSlice";
-
-const AGENTS_URL = "/agents";
+import { AGENTS_URL } from "../../utils/constants";
 
 const Agents = () => {
   const [selectedItem, setSelectedItem] = useState("");
@@ -45,7 +44,7 @@ const Agents = () => {
  
 
   const { handleDeleteItem } = useDeleteData(
-    "/agents",
+    AGENTS_URL,
     confirmAgentsRef,
     selectedItem,
     setSelectedItemId,

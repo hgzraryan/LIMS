@@ -19,7 +19,7 @@ import { v4 as uuidv4 } from "uuid";
 import { data } from "../StatusBoard/data";
 import { data1 } from "../StatusBoard/data";
 import { Modal } from "react-bootstrap";
-import EditModal from "../views/EditModal";
+import DiagnosticsEditModal from "../EditViews/DiagnosticsEditModal";
 import diagnoseSvg from "../../../src/dist/img/diagnose.svg";
 import ReactToPrint from "react-to-print";
 import { ResultToPrintComponent } from "../ResultToPrintComponent";
@@ -85,8 +85,9 @@ function DiagnosticsTable({
   const [isOpen, setIsopen] = useState(false);
   const [editRow, setEditRow] = useState(false);
   const [modalInfo, setModalInfo] = useState("");
+  const [disable, setDisable] = useState(false);
 
- 
+
   const handleOpenInfoModal = (user) => {
     
     setModalInfo((prev) => user);
@@ -98,7 +99,7 @@ function DiagnosticsTable({
     setSelectedItem1("");
   };
   const handleOpenEditModal = (value) =>{
-    setEditRow(prev => value)
+    setEditRow(prev => value,)
   }
   const handleCloseEditModal = () =>{
     setEditRow(false)
@@ -115,7 +116,7 @@ function DiagnosticsTable({
     () => [
       {
         Header: "ID",
-        accessor: "diagnosticstId",
+        accessor: "diagnosticsId",
         sortable: true,
         width: 60,
         Filter: ({ column: { id } }) => (
@@ -185,6 +186,8 @@ function DiagnosticsTable({
               />
             
               </div>
+              {
+                !disable ?(
             <div className="d-flex">
               <a
                 className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover"
@@ -219,6 +222,16 @@ function DiagnosticsTable({
               }
               <ComponentToPrintResultWrapper data={row.original} patients={patients}/>
             </div>
+            ):(
+              <div className="d-flex">
+              <BiSolidInfoCircle
+              cursor={"pointer"}
+              size={"1.5rem"}
+              onClick={() => handleOpenInfoModal(row.original)}
+              />
+            
+              </div>
+            ) }
             </div>
         ),
         disableSortBy: true,
@@ -298,9 +311,9 @@ function DiagnosticsTable({
                        <div className="separator-full m-0"></div>                  
                        <div className="d-flex justify-content-between">  <span>Ախտորոշման Տեսակը </span> <span>{modalInfo.class}</span></div>
                        <div className="separator-full m-0"></div>
-                       <div className="d-flex justify-content-between">  <span>Բժիշկ </span> <span>{modalInfo.patientId}</span></div>
+                       <div className="d-flex justify-content-between">  <span>Բժիշկ </span> <span>{modalInfo.doctors[0]}</span></div>
                        <div className="separator-full m-0"></div>
-                       <div className="d-flex justify-content-between">  <span>Հաճախորդի ID </span> <span>{modalInfo.doctors[0]}</span></div>
+                       <div className="d-flex justify-content-between">  <span>Հաճախորդի ID </span> <span>{modalInfo.patientId}</span></div>
                        <div className="separator-full m-0"></div>
                        <div className="d-flex justify-content-between">  <span>Գրանցվել է </span> <span>{modalInfo.createdAt}</span></div>
                        <div className="separator-full m-0"></div>
@@ -395,8 +408,7 @@ function DiagnosticsTable({
           })}
           {
   editRow && 
-  <EditModal
-
+  <DiagnosticsEditModal
   handleCloseEditModal={handleCloseEditModal}
   rowData={editRow.values}
   />

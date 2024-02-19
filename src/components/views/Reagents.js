@@ -12,7 +12,8 @@ import useDeleteData from "../../hooks/useDeleteData";
 import ReagentsTable from "../viewTables/ReagentsTable";
 import { useSelector } from "react-redux";
 import { selectReagentsCount } from "../../redux/features/reagents/reagentsCountSlice";
-const REAGENTS_URL = "/reagentList"
+import { REAGENTS_URL } from "../../utils/constants";
+
 const Reagents = () => {
   const [selectedItem, setSelectedItem] = useState("");
   const [selectedItemId, setSelectedItemId] = useState(null);
@@ -42,7 +43,7 @@ const Reagents = () => {
   };
 
   const { handleDeleteItem } = useDeleteData(
-    "/reagentList",
+    REAGENTS_URL,
     confirmReagentRef,
     selectedItem,
     setSelectedItemId,

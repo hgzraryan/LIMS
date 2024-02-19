@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useEffect, Suspense } from "react";
 import { useParams } from "react-router-dom";
 import useGetData from "../../hooks/useGetData";
 import ComponentToConfirm from "../ComponentToConfirm";
@@ -15,6 +15,7 @@ import asd from "../../dist/img/doctorSamplePhoto.jpg";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import mobileSvg from "../../dist/svg/mobileSvg.svg"
 import emailSvg from "../../dist/svg/emailSvg.svg"
+import LoadingSpinner from "../LoadingSpinner";
 const customData = [
   {
     date: "15.06.2021",
@@ -88,8 +89,9 @@ function DoctorDetails() {
   const { id } = useParams();
   const [isOpen, setIsOpen] = useState(false);
   const [research, setResearch] = useState([]);
-  const [patientDetails, setPatientDetails] = useState({});
+  const [doctorDetails, setDoctorDetails] = useState({});
   const [currentPage, setCurrentPage] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
   const [usersPerPage, setUsersPerPage] = useState(
     Math.round((window.innerHeight / 100) * 1.5)
   );
@@ -102,13 +104,9 @@ function DoctorDetails() {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await axiosPrivate.get(`/doctors/1`);
-
-        console.log("**********");
-        console.log("response", response);
-        console.log("**********");
-
-        setPatientDetails((prevUsers) => response.data.jsonString);
+        const response = await axiosPrivate.get(`/doctors/${id}`);
+        setIsLoading(false);
+        setDoctorDetails((prevUsers) => response.data);
         // setCurrentPage((prev) => prev = 1);
       } catch (err) {
         console.error(err);
@@ -120,6 +118,10 @@ function DoctorDetails() {
 
   return (
     <>
+    <Suspense fallback={<LoadingSpinner />}>
+      {isLoading ? (
+        <LoadingSpinner />
+      ) : (
       <div
         className="d-flex justify-content-between align-items-center"
         style={{ backgroundColor: "#dae4ed",  }}
@@ -146,19 +148,19 @@ function DoctorDetails() {
             </div>
             <div className="ms-4">
               <p style={{ fontSize: "2.5rem", color: "#4eafcb" }}>
-                Անահիտ Սիմոնյան Կարենի
+                {doctorDetails.doctorName}
               </p>
               <p style={{ fontSize: "1.5rem" }}>
-                Բժշկական Գիտությունների թեկնածու
+              {doctorDetails.qualification}
               </p>
-              <p style={{ fontSize: "1.5rem" }}>Մաշկաբան</p>
+              <p style={{ fontSize: "1.5rem" }}>{doctorDetails.specialty}</p>
               <div className="d-flex">
                 <img src={mobileSvg} width='25px' height="25px" alt="mobile" className="me-2"/>
-                <p style={{ fontSize: "1.2rem" }}>+37495887788</p>
+                <p style={{ fontSize: "1.2rem" }}>{doctorDetails.contact?.phone}</p>
               </div>
               <div className="d-flex">
               <img src={emailSvg} width='25px' height="25px" alt="email" className="me-2"/>
-                <p style={{ fontSize: "1.2rem" }}>anahit.simonyan@example.com</p>
+                <p style={{ fontSize: "1.2rem" }}>{doctorDetails.contact?.email}</p>
               </div>
             </div>
           </div>
@@ -189,35 +191,37 @@ function DoctorDetails() {
                 <p>Լրացուցիչ կոնտակտի հեռախոս:</p>
               </div>
               <div className="ms-3">
-                <p>1</p>
+                <p>{doctorDetails.doctorId}</p>
                 <div className="separator-full m-0"></div>                  
 
-                <p>789988</p>
+                <p>{doctorDetails.licenseNumber}</p>
                 <div className="separator-full m-0"></div>                  
 
-                <p>2024-01-24</p>
+                <p>{doctorDetails.createdAt}</p>
                 <div className="separator-full m-0"></div>                  
 
-                <p>1975-05-26</p>
+                <p>{doctorDetails.dateOfBirth}</p>
                 <div className="separator-full m-0"></div>                  
 
-                <p>Իգական</p>
+                <p>{doctorDetails.gender}</p>
                 <div className="separator-full m-0"></div>                  
 
-                <p>Երևան, Բաբայան 15/2-1, 4875</p>
+                <p>{doctorDetails.contact?.address?.city}, {doctorDetails.contact?.address?.street}, {doctorDetails.contact?.address?.zipCode}</p>
                 <div className="separator-full m-0"></div>                  
 
-                <p>Նարեկ Կարապետյան</p>
+                <p>{doctorDetails.emergencyContactName}</p>
                 <div className="separator-full m-0"></div>                  
 
-                <p>+37495887788</p>
+                <p>{doctorDetails.emergencyContactNumber}</p>
               </div>
               
               
             </div>
           </div>
         </section>
-      </div>
+      </div>      
+    )}
+    </Suspense>
     </>
   );
 }

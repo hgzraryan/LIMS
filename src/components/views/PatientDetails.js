@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useEffect, Suspense } from "react";
 import { useParams } from "react-router-dom";
 import useGetData from "../../hooks/useGetData";
 import ComponentToConfirm from "../ComponentToConfirm";
@@ -20,7 +20,7 @@ import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import MissingAvatar from "../../dist/img/Missing.svg";
 import mobileSvg from "../../dist/svg/mobileSvg.svg";
 import emailSvg from "../../dist/svg/emailSvg.svg";
-
+import LoadingSpinner from "../LoadingSpinner";
 const customData = [
   {
     date: "15.06.2021",
@@ -95,6 +95,7 @@ function PatientDetails(data) {
   const [isOpen, setIsOpen] = useState(false);
   const [research, setResearch] = useState([]);
   const [patientDetails, setPatientDetails] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(0);
   const [usersPerPage, setUsersPerPage] = useState(
     Math.round((window.innerHeight / 100) * 1.5)
@@ -109,11 +110,7 @@ function PatientDetails(data) {
     const getData = async () => {
       try {
         const response = await axiosPrivate.get(`/patients/${id}`);
-
-        console.log("**********");
-        console.log("response", response);
-        console.log("**********");
-
+        setIsLoading(false);
         setPatientDetails((prevUsers) => response.data.jsonString);
         // setCurrentPage((prev) => prev = 1);
       } catch (err) {
@@ -123,10 +120,21 @@ function PatientDetails(data) {
     };
     getData();
   }, []);
-
-  console.log("**********");
-  console.log("patientDetail", patientDetails);
-  console.log("**********");
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const response = await axiosPrivate.get(`/diagnostics/${id}`);
+        console.log(response)
+        // setIsLoading(false);
+        // setPatientDetails((prevUsers) => response.data.jsonString);
+        // setCurrentPage((prev) => prev = 1);
+      } catch (err) {
+        console.error(err);
+        //navigate("/login", { state: { from: location }, replace: true });
+      }
+    };
+    getData();
+  }, []);
 
   const columns = useMemo(
     () => [
@@ -234,6 +242,10 @@ function PatientDetails(data) {
   );
   return (
     <>
+    <Suspense fallback={<LoadingSpinner />}>
+      {isLoading ? (
+        <LoadingSpinner />
+      ) : (
       <div
         className="d-flex justify-content-center align-items-stretch"
         style={{ backgroundColor: "#dae4ed", height: "100vh" }}
@@ -434,7 +446,9 @@ function PatientDetails(data) {
             )}{" "}
           </table>
         </div>
-      </div>
+      </div>  
+    )}
+    </Suspense>
     </>
   );
 }
