@@ -45,9 +45,14 @@ function AddDoctor({ handleToggleCreateModal, getDoctors }) {
   const editorRef = useRef(null);
   const { age } = useCalculateAge(birthday);
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [emergencyContactNumber, setEmergencyContactNumber] = useState("");
   
   const handlePhoneNumberChange = (value) => {
     setPhoneNumber(value);
+
+  };
+  const handlEmergencyContactNumberChange = (value) => {
+    setEmergencyContactNumber(value);
 
   };
   const onGenderSelect = (event) => {
@@ -171,7 +176,7 @@ function AddDoctor({ handleToggleCreateModal, getDoctors }) {
         profilePictureUrl: "profilePictureUrl",
         isActive: isActive,
       };
-     
+     console.log()
       formData.append("text", JSON.stringify(newDoctor));
       formData.append("image", image);
       try {
@@ -329,14 +334,15 @@ function AddDoctor({ handleToggleCreateModal, getDoctors }) {
                                 Հեռախոս
                               </label>
                               <PhoneInput
-                                placeholder="Enter phone number"
+                                placeholder="Հեռախոս"
                                 value={phoneNumber}
                                 onChange={handlePhoneNumberChange}
                                 displayInitialValueAsLocalNumber
                                 initialValueFormat="national"
                                 autoComplete="off"
                                 defaultCountry="AM"
-                              />                            </div>
+                              />    
+                            </div>
                           </div>
                           <div className="row gx-3">
                           <div className="col-sm-6">
@@ -463,7 +469,18 @@ function AddDoctor({ handleToggleCreateModal, getDoctors }) {
                               <Input {...emergencyContactName_validation} />
                             </div>
                             <div className="col-sm-6">
-                              <Input {...emergencyContactNumber_validation} />
+                            <label className="form-label" htmlFor="doctor">
+                              Լրացուցիչ կոնտակտի հեռախոս
+                              </label>
+                              <PhoneInput
+                                placeholder="Լրացուցիչ կոնտակտի հեռախոս"
+                                value={emergencyContactNumber}
+                                onChange={handlEmergencyContactNumberChange}
+                                displayInitialValueAsLocalNumber
+                                initialValueFormat="national"
+                                autoComplete="off"
+                                defaultCountry="AM"
+                              />    
                             </div>
                           </div>
                         </div>

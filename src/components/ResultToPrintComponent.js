@@ -62,7 +62,7 @@ const data = [
   ];
 export const ResultToPrintComponent = forwardRef(({ value,patient }, ref) => {
    
-console.log(patient[0])  
+//console.log(patient[0])  
   
     const columns = React.useMemo(
         () => [

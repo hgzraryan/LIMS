@@ -10,16 +10,18 @@ import {
   name_validation,
   desc_validation,
   email_validation,
-  mobile_validation,
-  midName_validation,
   country_validation,
   state_validation,
   city_validation,
   street_validation,
   zipCode_validation,
   contactName_validation,
-  contactMobile_validation,
   contactEmail_validation,
+  director_validation,
+  bank_validation,
+  bankAccount_validation,
+  tin_validation,
+  type_validation,
 } from "../../utils/inputValidations";
 import useSubmitForm from "../../hooks/useSubmitForm";
 import { REGISTER_ORGANIZATIONS } from "../../utils/constants";
@@ -65,25 +67,37 @@ function AddOrganization({ handleToggleCreateModal, getOrganizations }) {
       contactName,
       contactEmail,
       description,
+      director,
+      bankName,
+      bankAccNumber,
+      tin,
+      type
     }) => {
       //console.log(data)
       const newOrganization = {
         name: name,
-        description: description,
-        //phone: phoneNumber,
-        //email: email,
-        address: {
-          street: street,
-          city: city,
-          state: state,
-          country: country,
-          zipCode: zipCode,
+        type:type,        
+        director:director,
+        bankName:bankName,
+        bankAccNumber:bankAccNumber,
+        tin:tin,
+        contact:{
+          phone: phoneNumber,
+          email: email,
+          address: {
+            street: street,
+            city: city,
+            state: state,
+            country: country,
+            zipCode: zipCode,
+          },
         },
         contactPerson: {
           name: contactName,
           email: contactEmail,
           phone: contactPhoneNumber,
         },
+        description: description,
       };
 
       console.log(newOrganization);
@@ -124,7 +138,7 @@ function AddOrganization({ handleToggleCreateModal, getOrganizations }) {
     >
       <Modal.Header closeButton>
         <Modal.Title style={{ width: "100%", textAlign: "center" }}>
-          Ավելացնել նոր Պատվիրատու
+          Ավելացնել նոր պատվիրատու
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
@@ -167,7 +181,7 @@ function AddOrganization({ handleToggleCreateModal, getOrganizations }) {
                               <Input {...name_validation} />
                             </div>
                             <div className="col-sm-6">
-                              <Input {...desc_validation} />
+                            <Input {...director_validation} />
                             </div>
                           </div>
                           <div className="row gx-3">
@@ -211,6 +225,26 @@ function AddOrganization({ handleToggleCreateModal, getOrganizations }) {
                           <div className="row gx-3">
                             <div className="col-sm-6">
                               <Input {...zipCode_validation} />
+                            </div>
+                          
+                            <div className="col-sm-6">
+                            <Input {...type_validation} />
+                            </div>
+                          </div>
+                          <div className="row gx-3">
+                            <div className="col-sm-6">
+                              <Input {...bank_validation} />
+                            </div>
+                            <div className="col-sm-6">
+                              <Input {...bankAccount_validation} />
+                            </div>
+                          </div>
+                          <div className="row gx-3">
+                            <div className="col-sm-6">
+                              <Input {...tin_validation} />
+                            </div>
+                            <div className="col-sm-6">
+                            <Input {...desc_validation} />
                             </div>
                           </div>
                         </div>
@@ -286,7 +320,7 @@ function AddOrganization({ handleToggleCreateModal, getOrganizations }) {
                                   onInit={(evt, editor) =>
                                     (editorRef.current = editor)
                                   }
-                                  initialValue="<p>This is the initial content of the editor.</p>"
+                                  //initialValue="<p>This is the initial content of the editor.</p>"
                                   init={{
                                     height: 200,
                                     menubar: false,

@@ -92,11 +92,13 @@ function UsersTable({
         disableSortBy: true,
         filterable: false,
         show: false,
-        width: 100,
+        width: 60,
         Filter: ({ column: { id } })=>(
           <ColumnFilter
             id={id}
             setData={setUsers}
+            placeholder={'ID'}
+
           />
         ),
       },

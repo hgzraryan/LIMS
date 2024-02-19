@@ -29,9 +29,6 @@ function OrganizationsTable({
 }) {
   const [modalInfo, setModalInfo] = useState("");
   const handleOpenInfoModal = (data) => {
-    console.log('**********');
-    console.log('data',data);
-    console.log('**********',);
     
     setModalInfo((prev) => data);
   };
@@ -53,9 +50,9 @@ function OrganizationsTable({
         ),
         accessor: "organizationId",
         sortable: true,
-        width: 80,
+        width: 60,
         Filter: ({ column: { id } }) => (
-          <ColumnFilter id={id} setData={setOrganizations} />
+          <ColumnFilter id={id} setData={setOrganizations} placeholder={'ID'}/>
         ),
       },
       {
@@ -263,9 +260,11 @@ function OrganizationsTable({
                        <div className="separator-full m-0"></div>
                        <div className="d-flex justify-content-between">  <span>Հասցե </span> <span>{modalInfo.address?.city}, {modalInfo.address?.street}</span></div>
                        <div className="separator-full m-0"></div>
-                       <div className="d-flex justify-content-between">  <span>Էլ․ Հասցե </span> <span>{modalInfo.contact?.email}</span></div>
+                       <div className="d-flex justify-content-between">  <span>Փոստային համար </span> <span>{modalInfo.address?.zipCode}</span></div>
                        <div className="separator-full m-0"></div>
-                       <div className="d-flex justify-content-between">  <span>Հեռախոս </span> <span>{modalInfo.contact?.phone}</span></div>
+                       <div className="d-flex justify-content-between">  <span>Էլ․ Հասցե </span> <span>{modalInfo?.email}</span></div>
+                       <div className="separator-full m-0"></div>
+                       <div className="d-flex justify-content-between">  <span>Հեռախոս </span> <span>{modalInfo?.phone}</span></div>
                        <div className="separator-full m-0"></div> 
                        <div className="d-flex justify-content-between">  <span>Նկարագրություն </span> <span>{modalInfo.description}</span></div>
                        <div className="separator-full m-0"></div> 

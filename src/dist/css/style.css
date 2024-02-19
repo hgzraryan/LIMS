@@ -71275,7 +71275,7 @@ code {
 
 /*Buttons*/
 .btn, div.hopscotch-bubble .hopscotch-bubble-container .hopscotch-actions .hopscotch-nav-button {
-  text-transform: capitalize;
+  /* text-transform: capitalize; */
   outline: none;
   font-size: 1rem;
   padding: .375rem  1rem;
@@ -75377,7 +75377,7 @@ div.mce-menu .mce-menu-item-sep, .mce-menu-item-sep:hover {
   font-weight: 500;
   color: #262a2e;
   font-size: 0.875rem;
-  text-transform: capitalize;
+  /* text-transform: capitalize; */
 }
 .table thead th .form-check,
 .table tfoot th .form-check {
@@ -75385,7 +75385,7 @@ div.mce-menu .mce-menu-item-sep, .mce-menu-item-sep:hover {
 }
 .table td, .table th {
   vertical-align: middle;
-  padding: .75rem 1.25rem;
+  padding: .75rem .4rem;
 }
 .table td a.table-link-text:hover, .table th a.table-link-text:hover {
   text-decoration: underline;

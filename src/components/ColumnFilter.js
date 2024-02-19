@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import useDebounce from "../hooks/useDebounce";
 import useGetData from "../hooks/useGetData";
-export const ColumnFilter = ( {setData,id,placeholder='search',url} ) => {  
+export const ColumnFilter = ( {setData,id,placeholder,url} ) => {  
   const [searchTerms, setSearchTerms] = useState({});
 
   const debouncedSearch = useDebounce(searchTerms,1000)
@@ -61,7 +61,7 @@ export const ColumnFilter = ( {setData,id,placeholder='search',url} ) => {
      <input
             onClick={(e) => e.stopPropagation()}
             onChange={(e) => handleSearchInputChange(id, e.target.value)}
-            placeholder={`Search ${id}`}
+            placeholder={placeholder ? `${placeholder}`:`${id}`}
             style={{width:'100%'}}
           />
     </>

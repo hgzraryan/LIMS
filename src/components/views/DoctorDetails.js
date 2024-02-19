@@ -102,7 +102,7 @@ function DoctorDetails() {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await axiosPrivate.get(`/patients/5`);
+        const response = await axiosPrivate.get(`/doctors/1`);
 
         console.log("**********");
         console.log("response", response);

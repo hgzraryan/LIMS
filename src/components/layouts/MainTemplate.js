@@ -595,7 +595,7 @@ const MainTemplate = () => {
                             </svg>
                           </span>
                         </span>
-                        <span className="nav-link-text">Պատվիրումներ</span>
+                        <span className="nav-link-text">Պատվիրատուներ</span>
                       </Link>
                     </li>
                     <li className="nav-item">
@@ -1394,6 +1394,50 @@ const MainTemplate = () => {
                               >
                                 <span className="nav-link-text">
                                   Հետ․ տեսակներ
+                                </span>
+                              </Link>
+                            </li>
+                            <li className="nav-item">
+                              <Link
+                                className={
+                                  sisActive1 === "clinics" ||
+                                  location.pathname ===
+                                    "/settings/clinics"
+                                    ? "nav-link active"
+                                    : "nav-link"
+                                }
+                                to="./settings/clinics"
+                                onClick={() =>
+                                  handleSubmenuClick(
+                                    "settings",
+                                    "clinics"
+                                  )
+                                }
+                              >
+                                <span className="nav-link-text">
+                                  Բուժ․ հաստատություններ
+                                </span>
+                              </Link>
+                            </li>
+                            <li className="nav-item">
+                              <Link
+                                className={
+                                  sisActive1 === "refDoctors" ||
+                                  location.pathname ===
+                                    "/settings/refDoctors"
+                                    ? "nav-link active"
+                                    : "nav-link"
+                                }
+                                to="./settings/refDoctors"
+                                onClick={() =>
+                                  handleSubmenuClick(
+                                    "settings",
+                                    "refDoctors"
+                                  )
+                                }
+                              >
+                                <span className="nav-link-text">
+                                  Ուղղորդող բժիշկներ
                                 </span>
                               </Link>
                             </li>

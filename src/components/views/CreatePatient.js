@@ -22,6 +22,10 @@ import {
   city_validation,
   state_validation,
   country_validation,
+  passport_validation,
+  fullName_validation,
+  workplace_validation,
+  contactEmail_validation,
 } from "../../utils/inputValidations";
 import { useCalculateAge } from "../../hooks/useCalculateAge";
 import { selectDoctors } from "../../redux/features/doctor/doctorsSlice";
@@ -38,8 +42,10 @@ function CreatePatient({
   const [startDate, setStartDate] = useState(new Date());
   const [birthday, setBirthday] = useState(new Date());
   const [gender, setGender] = useState("");
-  const [doctor, setDoctor] = useState("");
+  const [doctor, setDoctor] = useState("Առանց բժիշկ");
+  const [extraDoctor, setExtraDoctor] = useState(false);
   const doctors = useSelector(selectDoctors);
+
 
   const [errMsg, setErrMsg] = useState("");
   const methods = useForm({
@@ -52,9 +58,13 @@ function CreatePatient({
   const doctorRef = useRef(null);
   const { age } = useCalculateAge(birthday);
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [extraDoctorPhoneNumber, setExtraDoctorPhoneNumber] = useState("");
 
   const handlePhoneNumberChange = (value) => {
     setPhoneNumber(value);
+  };
+  const handleExtraDoctorPhoneNumberChange = (value) => {
+    setExtraDoctorPhoneNumber(value);
   };
 
   const getDate = (date) => {
@@ -82,7 +92,11 @@ function CreatePatient({
       firstName,
       lastName,
       midName,
+      passport,
+      fullName,
+      workPlace,
       email,
+      contactEmail,
       street,
       city,
       state,
@@ -94,7 +108,7 @@ function CreatePatient({
         lastName: lastName,
         midName: midName,
         age: age,
-        lastHandlingDate: handlingDate.current,
+        //lastHandlingDate: handlingDate.current,
         researchList: researchesArray,
         additional: editorRef.current.getContent({ format: "text" }),
         gender: gender,
@@ -102,6 +116,7 @@ function CreatePatient({
         contact: {
           email: email,
           phone: phoneNumber,
+          passport:passport,
           address: {
             street: street,
             city: city,
@@ -110,6 +125,10 @@ function CreatePatient({
             zipCode: zipCode,
           },
         },
+        // extraDoctorName:fullName||null,
+        // workPlace:workPlace||null,
+        // extraDoctorPhone:extraDoctorPhoneNumber||null,
+        // extraDoctorEmail:contactEmail||null,
         medicalHistory: "medicalHistory",
         dateOfBirth: new Date(
           birthday.getTime() - birthday.getTimezoneOffset() * 60000
@@ -146,11 +165,12 @@ function CreatePatient({
     setGender((prev) => event.target.value);
   };
   const onDoctorSelect = (data) => {
-    console.log('**********');
-    console.log('data',data);
-    console.log('**********',);
-    
-    setDoctor(prev=> data[0].key);
+    if(data[0].doctorName==="Այլ բժիշկ"){
+      setExtraDoctor(true)
+    }else{
+      setExtraDoctor(false)
+    }
+    setDoctor(prev=> data[0].doctorName);
   };
   const onResearchSelect = (data) => {
     let researchesArr = [];
@@ -178,7 +198,7 @@ function CreatePatient({
     >
       <Modal.Header closeButton>
         <Modal.Title style={{ width: "100%", textAlign: "center" }}>
-          Ավելացնել նոր Հիվանդի
+          Ավելացնել նոր hիվանդ
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
@@ -257,7 +277,7 @@ function CreatePatient({
                                 Հեռախոս
                               </label>
                               <PhoneInput
-                                placeholder="Enter phone number"
+                                placeholder="Հեռախոս"
                                 value={phoneNumber}
                                 onChange={handlePhoneNumberChange}
                                 displayInitialValueAsLocalNumber
@@ -268,6 +288,28 @@ function CreatePatient({
                             </div>
                           </div>
                           <div className="row gx-3">
+                            <div className="col-sm-6">
+                              <div className="form-group">
+                                <label
+                                  className="form-label"
+                                  htmlFor="handlingDate"
+                                >
+                                  Ծննդյան ամսաթիվ
+                                </label>
+                                <div>
+                                  <DatePicker
+                                    showYearDropdown
+                                    yearDropdownItemNumber={100}
+                                    scrollableYearDropdown
+                                    selected={birthday}
+                                    onChange={(date) => getAge(date)}
+                                    dateFormat={"yyyy-MM-dd"}
+                                    isClearable
+                                    placeholderText="Select date"
+                                  />
+                                </div>
+                              </div>
+                            </div>
                             <div className="col-sm-6">
                               <div className="mb-2">
                                 <label
@@ -312,56 +354,7 @@ function CreatePatient({
                                 </div>
                               </div>
                             </div>
-                            <div className="col-sm-6">
-                              <label className="form-label" htmlFor="doctor">
-                                Բժիշկներ
-                              </label>
-                              <Multiselect
-                                options={doctors.map((doctor) => ({
-                                  key: doctor.doctorId,
-                                  value: `${doctor.doctorName} `,
-                                }))}
-                                onSelect={onDoctorSelect} // Function will trigger on select event
-                                //  onRemove={onResearchDelete} // Function will trigger on remove event
-                                closeOnSelect={true}
-                                singleSelect
-                                displayValue="value"
-                                id="input_tags_4"
-                                className="form-control"
-                                ref={multiselectRef}
-                                hidePlaceholder={true}
-                                placeholder="Ընտրել Բժշկին"
-                                style={{
-                                  height: "10rem",
-                                  overflow: "hidden",
-                                }}
-                              />
-                            </div>
-                          </div>
-                          <div className="row gx-3">
-                            <div className="col-sm-6">
-                              <div className="form-group">
-                                <label
-                                  className="form-label"
-                                  htmlFor="handlingDate"
-                                >
-                                  Ծննդյան ամսաթիվ
-                                </label>
-                                <div>
-                                  <DatePicker
-                                    showYearDropdown
-                                    yearDropdownItemNumber={100}
-                                    scrollableYearDropdown
-                                    selected={birthday}
-                                    onChange={(date) => getAge(date)}
-                                    dateFormat={"yyyy-MM-dd"}
-                                    isClearable
-                                    placeholderText="Select date"
-                                  />
-                                </div>
-                              </div>
-                            </div>
-                            <div className="col-sm-6">
+                            {/* <div className="col-sm-6">
                               <div className="form-group">
                                 <label
                                   className="form-label"
@@ -382,11 +375,80 @@ function CreatePatient({
                                   />
                                 </div>
                               </div>
+                            </div> */}
+                          </div>
+                          <div className="row gx-3">
+                            <div className="col-sm-6">
+                            <Input {...passport_validation} />
+
+                            </div>
+                            <div className="col-sm-6">
+                              <label className="form-label" htmlFor="doctor">
+                                Բժիշկներ
+                              </label>
+                              <Multiselect
+                                options={[...[{doctorName:"Առանց բժիշկ"},{doctorName:"Այլ բժիշկ"}],...doctors]}
+                                onSelect={onDoctorSelect} // Function will trigger on select event
+                                //  onRemove={onResearchDelete} // Function will trigger on remove event
+                                closeOnSelect={true}
+                                singleSelect
+                                displayValue="doctorName"
+                                id="input_tags_4"
+                                className="form-control"
+                                ref={multiselectRef}
+                                hidePlaceholder={true}
+                                placeholder="Ընտրել բժշկին"
+                                selectedValues={[{doctorName:"Առանց բժիշկ"}]}
+                                style={{
+                                  height: "10rem",
+                                  overflow: "hidden",
+                                }}
+                                
+                              />
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
+                    <div className="separator-full"></div>
+                    { extraDoctor &&
+                      <div className="card">
+                      <div className="card-header">
+                        Բժշկի տվյալներ
+                      </div>
+                      <div className="card-body">
+                        <div className="modal-body">
+                        <div className="row gx-3">
+                            <div className="col-sm-6">
+                              <Input {...fullName_validation} />
+                            </div>
+                            <div className="col-sm-6">
+                            <Input {...workplace_validation} />
+                            </div>
+                          </div>
+                          <div className="row gx-3">
+                            <div className="col-sm-6">
+                              <Input {...contactEmail_validation} />
+                            </div>
+                            <div className="col-sm-6">
+                              <label className="form-label" htmlFor="doctor">
+                                Հեռախոս
+                              </label>
+                              <PhoneInput
+                                placeholder="Հեռախոս"
+                                value={extraDoctorPhoneNumber}
+                                onChange={handleExtraDoctorPhoneNumberChange}
+                                displayInitialValueAsLocalNumber
+                                initialValueFormat="national"
+                                autoComplete="off"
+                                defaultCountry="AM"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    }
                     <div className="separator-full"></div>
                     <div className="card">
                       <div className="card-header">
@@ -473,7 +535,7 @@ function CreatePatient({
                                   onInit={(evt, editor) =>
                                     (editorRef.current = editor)
                                   }
-                                  initialValue="<p>This is the initial content of the editor.</p>"
+                                  //initialValue="<p>This is the initial content of the editor.</p>"
                                   init={{
                                     height: 200,
                                     menubar: false,

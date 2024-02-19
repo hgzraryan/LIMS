@@ -4,7 +4,7 @@ import { Checkbox } from "../Checkbox";
 import FeatherIcon from "feather-icons-react/build/FeatherIcon";
 import { ColumnFilter } from "../ColumnFilter";
 
-function Samples() {
+function SamplesTable() {
   // const [currentPage, setCurrentPage] = useState(0);  
   // const [usersPerPage, setUsersPerPage] = useState(Math.round((window.innerHeight / 100) * 1.5));
   // const pageCount = Math.ceil(patientsCount/usersPerPage)
@@ -14,7 +14,22 @@ function Samples() {
   //     setData: setPatients,
   //     getData: getPatients,  
   //   } = useGetData(PATIENTS_URL,currentPage,usersPerPage);
-  const [samples,setSamples]=useState([{name:'asd',email:"dsa",mobile:123}])
+  const [samples,setSamples]=useState([
+    {
+      sampleId:101000,
+      bgkCode:303014,
+      localCode:303014,
+      labService:"Բջջագենետիկայի լաբորատորիա",
+      category:"Քաղցկեղի մոլեկուլային հետազոտություն",
+      name:'Սուր Միելոբլաստային Լեյկոզի և ՄԴՍ Միելոդիսպլազիայի  (FISH) 1 վերակառուցում',
+      price:35000,
+      purchasePrice:35000,
+      serveDate:'3-4 աշխ. օր',
+      biomass:'Ոսկրածուծ/  արյուն ',
+      vial:' Heparin',
+      sampleTime:'Երկ-Ուրբ 08։30-17։00 Շաբաթ 09։30-13։00',
+      prepare:"Ոսկրածուծի ախտաբան. / արյան ընդհ. Վերլուծության պատասխան պահանջվում է"
+    }])
 console.log(samples)
   const defaultColumn = React.useMemo(
     () => ({
@@ -30,12 +45,30 @@ console.log(samples)
         Header: (event) => (
           <>
             
-            <div  className="columnHeader">Անուն</div>
+            <div  className="columnHeader">ID</div>
+          </>
+        ),
+        accessor: "sampleId",
+        sortable: true,
+        width: 60,
+        Filter: ({ column: { id } })=>(
+          <ColumnFilter
+            id={id}
+          setData={setSamples}
+          placeholder={'ID'}
+          />
+        ),
+      },
+      {
+        Header: (event) => (
+          <>
+            
+            <div  className="columnHeader">Անվանում</div>
           </>
         ),
         accessor: "name",
         sortable: true,
-        width: 400,
+        width: 200,
         Filter: ({ column: { id } })=>(
           <ColumnFilter
             id={id}
@@ -46,11 +79,11 @@ console.log(samples)
       {
         Header: (event) => (
           <>
-            <div>Էլ․ հասցե</div>
+            <div>Ոլորտ</div>
           </>
         ),
-        accessor: "email",
-        width: 300,
+        accessor: "category",
+        width: 200,
         Filter: ({ column: { id } })=>(
           <ColumnFilter
             id={id}
@@ -61,11 +94,11 @@ console.log(samples)
       {
         Header: (event) => (
           <>
-            <div>Հեռախոս</div>
+            <div>Լաբ․/Ծառայություն</div>
           </>
         ),
-        accessor: "mobile",
-        width: 300,
+        accessor: "labService",
+        width: 200,
         Filter: ({ column: { id } })=>(
           <ColumnFilter
             id={id}
@@ -77,14 +110,33 @@ console.log(samples)
         Header: (event) => (
           <>
            
-            <div  className="columnHeader">Նկարագիր</div>
+            <div  className="columnHeader">Մատուցման Ժամկետ</div>
           </>
         ),
-        accessor: "description",
+        accessor: "serveDate",
         style: {
            // Custom style for the 'description' column
         },
-        width: 300,
+        width: 200,
+        Filter: ({ column: { id } })=>(
+          <ColumnFilter
+            id={id}
+            setData={setSamples}
+          />
+        ),
+      },
+      {
+        Header: (event) => (
+          <>
+           
+            <div  className="columnHeader">Կենսանյութ</div>
+          </>
+        ),
+        accessor: "biomass",
+        style: {
+           // Custom style for the 'description' column
+        },
+        width: 200,
         Filter: ({ column: { id } })=>(
           <ColumnFilter
             id={id}
@@ -99,7 +151,7 @@ console.log(samples)
           </>
         ),
         accessor: "actions",
-        width: 300,
+        width: 200,
         Cell: ({ row }) => (
           <div className="d-flex align-items-center">
             <div className="d-flex">
@@ -162,11 +214,12 @@ console.log(samples)
     (hooks) => {
       hooks.visibleColumns.push((columns) => [
         {
+          
           id: "selection",
           Header: ({ getToggleAllRowsSelectedProps }) => (
             <Checkbox {...getToggleAllRowsSelectedProps()} />
           ),
-          Cell: ({ row }) => <Checkbox {...row.getToggleRowSelectedProps()} />,
+          Cell: ({ row }) => <Checkbox {...row.getToggleRowSelectedProps()}  />,
         },
         ...columns,
       ]);
@@ -224,14 +277,14 @@ console.log(samples)
       ))}
     </thead>
     {samples?.length && (
-      <tbody {...getTableBodyProps()}>
+      <tbody {...getTableBodyProps()} style={{fontSize:'14px'}}>
         {rows.map((row) => {
           prepareRow(row);
           return (
-            <tr {...row.getRowProps()}>
+            <tr {...row.getRowProps()} >
               {row.cells.map((cell) => {
                 return (
-                  <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                  <td {...cell.getCellProps()} >{cell.render("Cell")}</td>
                 );
               })}
             </tr>
@@ -243,4 +296,4 @@ console.log(samples)
   );
 }
 
-export default Samples
+export default SamplesTable

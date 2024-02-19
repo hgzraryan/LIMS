@@ -1,7 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable no-lone-blocks */
 import React, { useState, useRef } from "react";
-import InfiniteScroll from "react-infinite-scroll-component";
 import FeatherIcon from "feather-icons-react";
 import LoadingSpinner from "../LoadingSpinner";
 import ReactPaginate from "react-paginate";
@@ -10,15 +9,11 @@ import CreateUser from "../views/CreateUser";
 import { Dropdown } from "react-bootstrap";
 import useGetData from "../../hooks/useGetData";
 import useDeleteData from "../../hooks/useDeleteData";
-import useUpdateCount from "../../hooks/useUpdateCount";
-import { checkUsersCount, selectUsersCount } from "../../redux/features/users/usersCountSlice";
+import {  selectUsersCount } from "../../redux/features/users/usersCountSlice";
 import UsersTable from "../viewTables/UsersTable";
 import { Helmet, HelmetProvider } from 'react-helmet-async';
-import useAxiosPrivate from "../../hooks/useAxiosPrivate"
-import { useDispatch } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import CreateUserRole from "./CreateUserRole";
+import AddUserRole from "./AddUserRole";
 
 const USERS_URL = "/users";
 
@@ -44,16 +39,6 @@ const Users = () => {
     getData: getUsers,
   } = useGetData(USERS_URL,currentPage,usersPerPage);
   //-------------------
-  // const updateUsersCount = async () => {
-  //   try {
-  //     const response = await axiosPrivate.get("/allCount");
-  //     console.log(response)
-  //     dispatch(checkUsersCount(response.data.usersCount));
-  //   } catch (err) {
-  //     console.error(err);
-  //     navigate("/login", { state: { from: location }, replace: true });
-  //   }
-  // };
   
   const { handleDeleteItem,updateUsersCount } = useDeleteData(
     "/users",
@@ -143,7 +128,7 @@ const Users = () => {
                     />
                   )}
                    {isOpenRole && (
-                    <CreateUserRole
+                    <AddUserRole
                     setIsOpenRole={setIsOpenRole}
                       getUsers={() => getUsers()}
                       updateUsersCount={updateUsersCount}

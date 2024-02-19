@@ -88,7 +88,7 @@ function AddReagent({ handleToggleCreateModal, getReagents }) {
     >
       <Modal.Header closeButton>
         <Modal.Title style={{ width: "100%", textAlign: "center" }}>
-          Ավելացնել նոր Ռեագենտ
+          Ավելացնել նոր ռեագենտ
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
@@ -150,7 +150,7 @@ function AddReagent({ handleToggleCreateModal, getReagents }) {
                                   id="amount"
                                   value={amount}
                                   onChange={handleAmountChange}
-                                  placeholder="Enter amount"
+                                  placeholder="Արժեք"
                                   style={{
                                     border: "none",
                                     outline: "none",
@@ -165,16 +165,16 @@ function AddReagent({ handleToggleCreateModal, getReagents }) {
                               <Input {...unit_validation} />
                             </div>
                             <div className="col-sm-6">
-                              <label className="form-label">Չափման Տեսակ</label>
+                              <label className="form-label">Չափման տեսակ</label>
                               <Multiselect
                                 options={[
                                   { name: "Տուփ", id: 1 },
                                   { name: "Հատ", id: 2 },
-                                ]} // Options to display in the dropdown
-                                displayValue="name" // Property name to display in the dropdown options
+                                ]} 
+                                displayValue="name" 
                                 onSelect={(data) =>
                                   setUnitType(data[0]["name"])
-                                } // Function will trigger on select event
+                                } 
                                 closeOnSelect={true}
                                 singleSelect={true}
                                 ref={multiselectRef}
@@ -186,32 +186,6 @@ function AddReagent({ handleToggleCreateModal, getReagents }) {
                             <div className="col-sm-6">
                               <Input {...usage_validation} />
                             </div>
-                            {/* <div className="col-sm-6">
-                              <label className="form-label" htmlFor="research">
-                                Արժույթ
-                              </label>
-                              <Multiselect
-                                options={[
-                                  { currency: "AMD" },
-                                  { currency: "USD" },
-                                  { currency: "RU" },
-                                ]} // Options to display in the dropdown
-                                displayValue="currency" // Property name to display in the dropdown options
-                                onSelect={onCurrencySelect} // Function will trigger on select event
-                                //  onRemove={onResearchDelete} // Function will trigger on remove event
-                                closeOnSelect={true}
-                                singleSelect
-                                id="input_tags_4"
-                                className="form-control"
-                                ref={currencyRef}
-                                hidePlaceholder={true}
-                                placeholder="Արժույթ"
-                                style={{
-                                  height: "10rem",
-                                  overflow: "hidden",
-                                }}
-                              />
-                            </div> */}
                           </div>
                           <div className="row gx-3">
                             <div className="col-sm-6">
@@ -256,7 +230,7 @@ function AddReagent({ handleToggleCreateModal, getReagents }) {
                                   onInit={(evt, editor) =>
                                     (editorRef.current = editor)
                                   }
-                                  initialValue="<p>This is the initial content of the editor.</p>"
+                                  //initialValue="<p>This is the initial content of the editor.</p>"
                                   init={{
                                     height: 200,
                                     menubar: false,

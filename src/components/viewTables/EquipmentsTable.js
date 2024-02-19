@@ -44,11 +44,12 @@ function EquipmentsTable({
         ),
         accessor: "equipmentId",
         sortable: true,
-        width:100,
+        width:60,
         Filter: ({ column: { id } })=>(
           <ColumnFilter
             id={id}
             setData={setEquipments}
+            placeholder={'ID'}
           />
         ),
       },

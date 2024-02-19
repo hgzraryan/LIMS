@@ -6,7 +6,7 @@ import { useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import { Form, FormProvider, useForm} from "react-hook-form";
 import { Input } from "../Input";
-import { name_validation, desc_validation, email_validation, mobile_validation } from "../../utils/inputValidations";
+import { name_validation, desc_validation, email_validation,  address_validation, director_validation, tin_validation, bank_validation, bankAccount_validation, zipCode_validation, street_validation, city_validation, state_validation, country_validation } from "../../utils/inputValidations";
 import useSubmitForm from "../../hooks/useSubmitForm";
 import PhoneInput from "react-phone-number-input";
 import { toast } from "react-toastify";
@@ -45,14 +45,31 @@ function AddAgent({ handleToggleCreateModal, getAgents }) {
     progress: undefined,
     theme: "light",
   });
-  const onSubmit = methods.handleSubmit(async (data) => {
+  const onSubmit = methods.handleSubmit(async ({
+    name,director,bankName,bankAccNumber,tin,email,address,description,country,
+    state,
+    street,
+    city,
+    zipCode,
+  }) => {
     const newAgent = {
-       name: data.name,
+       name: name,
+       director:director,
+       bankName:bankName,
+       bankAccNumber:bankAccNumber,
+       tin:tin,
        contact: {
-        email:data.email,
-        phone:phoneNumber,
+         email:email,
+         phone:phoneNumber,
+        address: {
+          street: street,
+          city: city,
+          state: state,
+          country: country,
+          zipCode: zipCode,
+        },
        },
-       role:data.description,
+       role:description,
       additional: editorRef.current.getContent({ format: "text" }),
     };
 
@@ -71,9 +88,7 @@ function AddAgent({ handleToggleCreateModal, getAgents }) {
     } catch (err) {
       if (!err?.response) {
         setErrMsg("No Server Response");
-      } else if (err.response?.status === 409) {
-        setErrMsg("Username Taken");
-      } else {
+      }  else {
         setErrMsg(" Failed");
       }
     }
@@ -86,7 +101,7 @@ function AddAgent({ handleToggleCreateModal, getAgents }) {
     >
       <Modal.Header closeButton>
         <Modal.Title style={{ width: "100%", textAlign: "center" }}>
-          Ավելացնել նոր Գործակալ
+          Ավելացնել նոր գործընկեր
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
@@ -103,7 +118,7 @@ function AddAgent({ handleToggleCreateModal, getAgents }) {
                   >
                     <div className="card">
                       <div className="card-header">
-                        <a href="#">Գործակալի տվյալներ</a>
+                        <a href="#">Գործընկերոջ տվյալներ</a>
                         <button
                           className="btn btn-xs btn-icon btn-rounded btn-light"
                           data-bs-toggle="tooltip"
@@ -129,7 +144,7 @@ function AddAgent({ handleToggleCreateModal, getAgents }) {
                               <Input {...name_validation} />
                             </div>
                             <div className="col-sm-6">
-                              <Input {...desc_validation} />
+                              <Input {...director_validation} />
                             </div>
                           </div>
                           <div className="row gx-3">
@@ -141,7 +156,7 @@ function AddAgent({ handleToggleCreateModal, getAgents }) {
                                 Հեռախոս
                               </label>
                               <PhoneInput
-                                placeholder="Enter phone number"
+                                placeholder="Հեռախոս"
                                 value={phoneNumber}
                                 onChange={handlePhoneNumberChange}
                                 displayInitialValueAsLocalNumber
@@ -149,6 +164,48 @@ function AddAgent({ handleToggleCreateModal, getAgents }) {
                                 autoComplete="off"
                                 defaultCountry="AM"
                               />
+                            </div>
+                          </div>
+                          <div className="row gx-3">
+                            <div className="col-sm-6">
+                              <Input {...country_validation} />
+                            </div>
+                            <div className="col-sm-6">
+                              <Input {...state_validation} />
+                            </div>
+                          </div>
+                          <div className="row gx-3">
+                            <div className="col-sm-6">
+                              <Input {...city_validation} />
+                            </div>
+                            <div className="col-sm-6">
+                              <Input {...street_validation} />
+                            </div>
+                          </div>
+                          <div className="row gx-3">
+                            <div className="col-sm-6">
+                              <Input {...zipCode_validation} />
+                            </div>
+                          
+                            <div className="col-sm-6">
+                            <Input {...desc_validation} />
+                            </div>
+                          </div>
+                          <div className="row gx-3">
+                            
+                            
+                          </div>
+                          <div className="row gx-3">
+                            <div className="col-sm-6">
+                              <Input {...bank_validation} />
+                            </div>
+                            <div className="col-sm-6">
+                              <Input {...bankAccount_validation} />
+                            </div>
+                          </div>
+                          <div className="row gx-3">
+                            <div className="col-sm-6">
+                              <Input {...tin_validation} />
                             </div>
                           </div>
                         </div>
@@ -187,7 +244,7 @@ function AddAgent({ handleToggleCreateModal, getAgents }) {
                                   onInit={(evt, editor) =>
                                     (editorRef.current = editor)
                                   }
-                                  initialValue="<p>This is the initial content of the editor.</p>"
+                                  //initialValue=""
                                   init={{
                                     height: 200,
                                     menubar: false,

@@ -101,7 +101,7 @@ const Patients = () => {
 
                     <Dropdown.Menu>
                       <Dropdown.Item onClick={() => setIsOpen(true)}>
-                        Հիվանդի
+                        Հիվանդ
                       </Dropdown.Item>
                     </Dropdown.Menu>
                   </Dropdown>

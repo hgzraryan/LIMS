@@ -24,7 +24,9 @@ import {LOGIN_ROUTE,
   DIAGNOSTICS_ROUTE,
   RESEARCH_LISTS_ROUTE,
   MISSING_ROUTE,
-  DOCTORS_ID_ROUTE} from '../src/utils/constants' 
+  DOCTORS_ID_ROUTE,
+REFDOCTORS_ROUTE,
+CLINICS_ROUTE} from '../src/utils/constants' 
 import { lazy, Suspense } from "react";
 import DoctorDetails from "./components/views/DoctorDetails";
 
@@ -54,6 +56,8 @@ import DoctorDetails from "./components/views/DoctorDetails";
  const ResearchLists = lazy(()=>  import("./components/views/ResearchLists"));
  const Diagnostics = lazy(()=>  import("./components/views/Diagnostics"));
  const Doctors = lazy(()=>  import("./components/views/Doctors"));
+ const RefDoctors = lazy(()=>  import("./components/views/RefDoctors"));
+ const Clinics = lazy(()=>  import("./components/views/Clinics"));
  const PatientDetails = lazy(()=>  import("./components/views/PatientDetails"));
  const AddSample = lazy(()=>  import("./components/views/AddSample"));
  const Samples = lazy(()=>  import("./components/viewTables/SamplesTable"));
@@ -67,6 +71,7 @@ const ROLES = {
   Approver: 3345,
   Admin: 5150,
   Sampler: 1212,
+  Doctor:9578,
 };
 
 function App() {
@@ -85,7 +90,7 @@ function App() {
         <Route element={<PersistLogin />}>
           <Route element={<RequireAuth allowedRoles={[ROLES.Sampler]} />}>
             <Route  path={ADD_SAMPLE_ROUTE} element={<AddSample />} />
-              
+
           </Route>
           <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
               
@@ -119,6 +124,8 @@ function App() {
                 element={<ResearchLists />}
               />
               <Route path={DIAGNOSTICS_ROUTE} element={<Diagnostics />} />
+              <Route path={REFDOCTORS_ROUTE} element={<RefDoctors />} />
+              <Route path={CLINICS_ROUTE} element={<Clinics />} />
             </Route>
 
             <Route element={<RequireAuth allowedRoles={[ROLES.Editor]} />}>

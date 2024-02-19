@@ -101,7 +101,7 @@ function Doctors() {
                   {isOpen && (
                     <AddDoctor
                       handleToggleCreateModal={handleToggleCreateModal}
-                      //getDoctors={() => getDoctors()}
+                      getDoctors={() => getDoctors()}
                     />
                   )}
                 </div>

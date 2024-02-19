@@ -10,7 +10,7 @@ function ComponentToPrintResultWrapper({data,patients}) {
      const {statusBoard}=data
      const {patientId}=data
      patientRef.current = patients.filter((el)=>el.patientId===patientId)
-     console.log(data)
+    // console.log(data)
     let componentRef = useRef(null); 
     return (
         <div style={{ display: "flex" }}>

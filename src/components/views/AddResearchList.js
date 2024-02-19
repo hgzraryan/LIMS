@@ -111,7 +111,7 @@ function AddResearchList({ handleToggleCreateModal, getResearches,researchState 
       >
         <Modal.Header closeButton>
           <Modal.Title style={{ width: "100%", textAlign: "center" }}>
-            Ավելացնել նոր Հետազոտություն
+            Ավելացնել նոր հետազոտություն
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -237,18 +237,18 @@ function AddResearchList({ handleToggleCreateModal, getResearches,researchState 
                                     
                             {externalType && (
                               
-                                                              <div className="col-sm-6">
+                              <div className="col-sm-6">
                                <label
                                   className="form-label"
                                   htmlFor="research"
                                 >
                                   Գործընկեր
                                 </label>
-                            <Multiselect
-                                    options={[{partner:'Diagen+'},{partner:'Dialab'}]} // Options to display in the dropdown
-                                    displayValue="partner" // Property name to display in the dropdown options
-                                    onSelect={onPartnerSelect} // Function will trigger on select event
-                                    //  onRemove={onResearchDelete} // Function will trigger on remove event
+                                <Multiselect
+                                    options={[{partner:'Diagen+'},{partner:'Dialab'}]} 
+                                    displayValue="partner" 
+                                    onSelect={onPartnerSelect} 
+                                    //  onRemove={onResearchDelete} 
                                     closeOnSelect={true}
                                     singleSelect
                                     id="input_tags_4"
@@ -261,12 +261,9 @@ function AddResearchList({ handleToggleCreateModal, getResearches,researchState 
                                       overflow: "hidden",
                                     }}
                                     />
-                                                              </div>
-                                  )
-                                }
-
-                             
-                                </div>
+                              </div>
+                            )}                             
+                           </div>
                           </div>
                           </div>
                           </div>
@@ -302,7 +299,7 @@ function AddResearchList({ handleToggleCreateModal, getResearches,researchState 
                                     onInit={(evt, editor) =>
                                       (editorRef.current = editor)
                                     }
-                                    initialValue="<p>This is the initial content of the editor.</p>"
+                                    //initialValue="<p>This is the initial content of the editor.</p>"
                                     init={{
                                       height: 200,
                                       menubar: false,

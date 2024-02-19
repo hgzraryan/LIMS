@@ -22,10 +22,12 @@ import PhoneInput from "react-phone-number-input";
 
 function CreateUser({ setIsOpen,getUsers }) {
   const axiosPrivate = useAxiosPrivate();
+  const typeMultiselectRef = useRef("");
   const multiselectRef = useRef("");
   const intupAvatarRef = useRef(null);
   const [imageUrl, setImageUrl] = useState(MissingAvatar);
-  const [roles, setRoles] = useState([]);
+  const [roles, setRoles] = useState({'User':2001});
+  const [userType, setUserType] = useState('local');
   const [image, setImage] = useState("");
   const [birthday, setBirthday] = useState(new Date());
   const imageMimeType = /image\/(png|jpg|jpeg)/i;
@@ -35,6 +37,22 @@ function CreateUser({ setIsOpen,getUsers }) {
 
   const handlePhoneNumberChange = (value) => {
     setPhoneNumber(value);
+  };
+  const onUserTypeSelect = (data) => {
+switch (data[0].type) {
+  case "Տեղում":
+    setUserType("local");
+    break;
+  case "Շրջիկ":
+    setUserType("mobile");
+    break;
+  case "Հեռավար":
+    setUserType("remote");
+    break;
+  default:
+    break;
+}
+    
   };
   const methods = useForm({
     mode: "onChange",
@@ -75,34 +93,43 @@ function CreateUser({ setIsOpen,getUsers }) {
       firstname:firstName,
       lastname:lastName,
       position:position,
-      birthday:birthday,
       email:email,
-      mobile:mobile,
+      mobile:phoneNumber,
       username:user,
       password:password,
       roles: roles,
+      type:userType,
+      birthday:new Date(
+        birthday.getTime() - birthday.getTimezoneOffset() * 60000
+      )
+        .toISOString()
+        .split("T")[0],
     };
     formData.append("text", JSON.stringify(newUser));
-    formData.append("image", image);
-    try {
-      await axiosPrivate.post(REGISTER_USER, newUser, {
-        headers: { "Content-Type": "application/json"  },
-        withCredentials: true,
-      });
+    formData.append("image", image);    
+    console.log('**********');
+    console.log('newUser',newUser);
+    console.log('**********',);
+    
+    // try {
+    //   await axiosPrivate.post(REGISTER_USER, newUser, {
+    //     headers: { "Content-Type": "application/json"  },
+    //     withCredentials: true,
+    //   });
       
-      handleToggleCreateModal(false);
-      getUsers();
-      notify(`${newUser.firstname} ${newUser.lastname} աշխատակիցը ավելացված է`)
+    //   handleToggleCreateModal(false);
+    //   getUsers();
+    //   notify(`${newUser.firstname} ${newUser.lastname} աշխատակիցը ավելացված է`)
 
-    } catch (err) {
-      if (!err?.response) {
-        setErrMsg("No Server Response");
-      } else if (err.response?.status === 409) {
-        setErrMsg("Username Taken");
-      } else {
-        setErrMsg(" Failed");
-      }
-    }
+    // } catch (err) {
+    //   if (!err?.response) {
+    //     setErrMsg("No Server Response");
+    //   } else if (err.response?.status === 409) {
+    //     setErrMsg("Username Taken");
+    //   } else {
+    //     setErrMsg(" Failed");
+    //   }
+    // }
   });
   const onRoleSelect = (data) => {
     let rolesArr = {};
@@ -310,7 +337,7 @@ function CreateUser({ setIsOpen,getUsers }) {
                                 Հեռախոս
                               </label>
                               <PhoneInput
-                                placeholder="Enter phone number"
+                                placeholder="Հեռախոս"
                                 value={phoneNumber}
                                 onChange={handlePhoneNumberChange}
                                 displayInitialValueAsLocalNumber
@@ -326,6 +353,31 @@ function CreateUser({ setIsOpen,getUsers }) {
                             </div>
                             <div className="col-sm-6">
                               <Input {...password_validation} />
+                            </div>
+                          </div>
+                          <div className="row gx-3">
+                          <div className="col-sm-6">
+                              <label className="form-label" htmlFor="doctor">
+                                Աշխատանքի տեսակը
+                              </label>
+                              <Multiselect
+                                options={[...[{type:"Տեղում"},{type:"Շրջիկ"},{type:"Հեռավար"}]]}
+                                onSelect={onUserTypeSelect} 
+                                closeOnSelect={true}
+                                singleSelect
+                                displayValue="type"
+                                id="input_tags_5"
+                                className="form-control"
+                                ref={typeMultiselectRef}
+                                hidePlaceholder={true}
+                                placeholder="Ընտրել աշխատանքի տեսակը"
+                                selectedValues={[{type:"Տեղում"}]}
+                                style={{
+                                  height: "10rem",
+                                  overflow: "hidden",
+                                }}
+                                
+                              />
                             </div>
                           </div>
                         </div>
@@ -448,7 +500,7 @@ function CreateUser({ setIsOpen,getUsers }) {
                           >
                             <span aria-hidden="true">×</span>
                           </button>
-                          <h6 className="text-uppercase fw-bold mb-3">
+                          <h6 className="fw-bold mb-3">
                             Ավելացնել դերեր
                           </h6>
                           <form>
@@ -467,6 +519,8 @@ function CreateUser({ setIsOpen,getUsers }) {
                                     ref={multiselectRef}
                                     hidePlaceholder={true}
                                     placeholder="Ընտրել դերը"
+                                    selectedValues={[{ name: "User", id: 2001 }]}
+
                                   />
                                   {/* <select id="input_tags_3" className="form-control" multiple="multiple">
                                                                                   <option selected="selected">Collaborator</option>

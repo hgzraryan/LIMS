@@ -85,6 +85,18 @@ function DoctorsTable({
       {
         Header: (event) => (
           <>
+            <div className="columnHeader">ID</div>
+          </>
+        ),
+        accessor: "doctorId",
+        width: 60,
+        Filter: ({ column: { id } }) => (
+          <ColumnFilter id={id} setData={setDoctors} placeholder={'ID'}/>
+        ),
+      },
+      {
+        Header: (event) => (
+          <>
             <div className="columnHeader">Անուն</div>
           </>
         ),

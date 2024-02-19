@@ -117,9 +117,9 @@ function DiagnosticsTable({
         Header: "ID",
         accessor: "diagnosticstId",
         sortable: true,
-        width: 100,
+        width: 60,
         Filter: ({ column: { id } }) => (
-          <ColumnFilter id={id} setData={setDiagnostics} />
+          <ColumnFilter id={id} setData={setDiagnostics} placeholder={'ID'}/>
         ),
       },
       {
@@ -294,11 +294,13 @@ function DiagnosticsTable({
                         />
                   </div>
                   <div className="w-100">
-                       <div className="d-flex justify-content-between">  <span>ID</span> <span>{modalInfo.diagnosticstId}</span></div>
+                       <div className="d-flex justify-content-between">  <span>ID</span> <span>{modalInfo.diagnosticsId}</span></div>
                        <div className="separator-full m-0"></div>                  
-                       <div className="d-flex justify-content-between">  <span>Ախտորոշման անվանում </span> <span>{modalInfo.diagnosticsName}</span></div>
+                       <div className="d-flex justify-content-between">  <span>Ախտորոշման Տեսակը </span> <span>{modalInfo.class}</span></div>
                        <div className="separator-full m-0"></div>
-                       <div className="d-flex justify-content-between">  <span>Բժիշկ </span> <span>{modalInfo.doctors[0]}</span></div>
+                       <div className="d-flex justify-content-between">  <span>Բժիշկ </span> <span>{modalInfo.patientId}</span></div>
+                       <div className="separator-full m-0"></div>
+                       <div className="d-flex justify-content-between">  <span>Հաճախորդի ID </span> <span>{modalInfo.doctors[0]}</span></div>
                        <div className="separator-full m-0"></div>
                        <div className="d-flex justify-content-between">  <span>Գրանցվել է </span> <span>{modalInfo.createdAt}</span></div>
                        <div className="separator-full m-0"></div>

@@ -4,6 +4,7 @@ import { Modal } from "react-bootstrap";
 import BoardComponent from "./BoardComponent";
 import { v4 as uuidv4 } from "uuid";
 import { axiosPrivate } from "../../api/axios";
+import "./Styles/customStyle.scss";
 
 function ResearchViewBoard({
   selectedItem,
@@ -16,32 +17,19 @@ function ResearchViewBoard({
   useEffect(() => {
     setColumns(selectedItem);
   }, [selectedItem]);
+  const updateData = async (data) => {
+    
+    try {
+      const response = await axiosPrivate.post("./updateStatusBoard", JSON.stringify({
+        statusBoard: data?.statusBoard,
+        diagnosticsId:selectedItem?.diagnosticsId
+      }));
+    } catch (err) {
+      console.error(err);
+      // navigate("/login", { state: { from: location }, replace: true });
+    }
+  };
 
-  let isMounted = true;
-  console.log('**********');
-    console.log('researches',columns);
-    console.log('**********',);
-  useEffect(() => {
-    console.log('**********');
-    console.log('researches',columns);
-    console.log('**********',);
-    const updateData = async () => {
-      try {
-        const response = await axiosPrivate.post("./updateStatusBoard", {
-          columns: columns,
-        });
-
-        isMounted && setColumns((prevUsers) => response.data.jsonString);
-      } catch (err) {
-        console.error(err);
-        // navigate("/login", { state: { from: location }, replace: true });
-      }
-    };
-    updateData();
-    return () => {
-      isMounted = false;
-    };
-  }, [columns]);
 
   const onDragEnd = (result) => {
     if (!result.destination) {
@@ -50,13 +38,13 @@ function ResearchViewBoard({
     if (result.type === "CARD") {
       const { source, destination, draggableId } = result;
 
-      const sourceColumn = columns.statusBoard.filter(
+      const sourceColumn = columns.statusBoard?.filter(
         (ele) => ele.id === source.droppableId)[0];
 
-        const destColumn = columns.statusBoard.filter(
+        const destColumn = columns.statusBoard?.filter(
           (ele) => ele.id === destination.droppableId
         )[0];
-        const reorderedColumn = columns.statusBoard.filter(
+        const reorderedColumn = columns.statusBoard?.filter(
           (ele) => ele.id === source.droppableId
         )[0];
 
@@ -65,14 +53,17 @@ function ResearchViewBoard({
         const copiedResearches = [...reorderedColumn.researches];
         const [removed] = copiedResearches.splice(source.index, 1);
         copiedResearches.splice(destination.index, 0, removed);
-        let updatedColumn = columns.statusBoard.map((el) => {
+        let updatedColumn = columns.statusBoard?.map((el) => {
           if (el.id === sourceColumn.id) {
             el.researches = copiedResearches;
           }
           return el;
         });
         const updatedColumns = {statusBoard:updatedColumn}
+        
+        
         setColumns((state) => updatedColumns);
+        updateData(updatedColumns)
         
       } else {
         // If the item was moved to a different column  
@@ -84,7 +75,7 @@ function ResearchViewBoard({
         
         destItems.splice(destination.index, 0, removed);
 
-        const asd = columns.statusBoard.map((el) => {
+        const newColumns = columns.statusBoard?.map((el) => {
           if (el.id === sourceColumn.id) {
              el.researches = sourceItems;
           } else if (el.id === destColumn.id) {
@@ -92,19 +83,19 @@ function ResearchViewBoard({
           }
           return el
         });
-        const updatedColumns = {statusBoard:asd}
+        const updatedColumns = {statusBoard:newColumns}
         setColumns(updatedColumns)
+        updateData(updatedColumns)
+
       }
     }
   };
   return (
-    <>
-      {columns && (
-        <Modal show={selectedItem} size="xl" onHide={handleCloseStatusModal}>
+    <>      
+        <Modal show={selectedItem}  onHide={handleCloseStatusModal} dialogClassName="custom-modal ">
           <Modal.Header closeButton>
             <Modal.Title
               style={{
-                width: "120%",
                 textAlign: "center",
               }}
             >
@@ -114,13 +105,13 @@ function ResearchViewBoard({
           <Modal.Body>
             {selectedItem && (
               <div className="statusBoardContainer">
-                <div className="statusBoardHeader">Header</div>
+                <div className="statusBoardHeader"></div>
 
                 <div className="statusBoardBody">
                   <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
                     <div className="boardOuter">
                       <BoardComponent
-                        columns={columns.statusBoard}
+                        columns={columns?.statusBoard}
                         selectedItem={selectedItem}
                       />
                     </div>
@@ -130,9 +121,8 @@ function ResearchViewBoard({
             )}
           </Modal.Body>
         </Modal>
-      )}
+      
     </>
   );
 }
-
 export default ResearchViewBoard;

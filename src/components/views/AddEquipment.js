@@ -20,7 +20,7 @@ import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import Multiselect from "multiselect-react-dropdown";
 import DatePicker from "react-datepicker";
 const status = [
-  { status: "Աշխատում է" },
+  { status: "Սարքին" },
   { status: "Վերանորոգվում է" },
   { status: "Չի աշխատում" },
 ];
@@ -123,7 +123,7 @@ function AddEquipment({ handleToggleCreateModal, getEquipments }) {
     >
       <Modal.Header closeButton>
         <Modal.Title style={{ width: "100%", textAlign: "center" }}>
-          Ավելացնել նոր Սարքավորում
+          Ավելացնել նոր սարքավորում
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
@@ -204,7 +204,7 @@ function AddEquipment({ handleToggleCreateModal, getEquipments }) {
                                     onChange={(date) => getPurchaseDate(date)}
                                     dateFormat={"yyyy-MM-dd"}
                                     isClearable
-                                    placeholderText="Select date"
+                                    placeholderText="Ընտրեք ամսաթիվը"
                                   />
                                 </div>
                               </div>
@@ -228,7 +228,7 @@ function AddEquipment({ handleToggleCreateModal, getEquipments }) {
                                     }
                                     dateFormat={"yyyy-MM-dd"}
                                     isClearable
-                                    placeholderText="Select date"
+                                    placeholderText="Ընտրեք ամսաթիվը"
                                   />
                                 </div>
                               </div>
@@ -240,7 +240,7 @@ function AddEquipment({ handleToggleCreateModal, getEquipments }) {
                                 className="form-label"
                                 htmlFor="internalDiagnosticsStatus"
                               >
-                                Սարքավորման Կարգավիճակը
+                                Սարքավորման կարգավիճակը
                               </label>
                               <Multiselect
                                 options={status}
@@ -250,8 +250,8 @@ function AddEquipment({ handleToggleCreateModal, getEquipments }) {
                                 singleSelect
                                 id="input_tags_4"
                                 className="form-control"
-                                placeholder="Ընտրեք Կարգավիճակը"
-                                selectedValues={[{ status: "Աշխատում է" }]}
+                                placeholder="Ընտրեք կարգավիճակը"
+                                selectedValues={[{ status: "Սարքին" }]}
                                 //hidePlaceholder={true}
                                 style={{
                                   height: "10rem",
@@ -296,7 +296,7 @@ function AddEquipment({ handleToggleCreateModal, getEquipments }) {
                                   onInit={(evt, editor) =>
                                     (editorRef.current = editor)
                                   }
-                                  initialValue="<p>This is the initial content of the editor.</p>"
+                                  //initialValue="<p>This is the initial content of the editor.</p>"
                                   init={{
                                     height: 200,
                                     menubar: false,

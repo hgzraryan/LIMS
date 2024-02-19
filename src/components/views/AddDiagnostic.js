@@ -201,7 +201,7 @@ function AddDiagnostic({
     >
       <Modal.Header closeButton>
         <Modal.Title style={{ width: "100%", textAlign: "center" }}>
-          Ավելացնել նոր Ախտորոշում
+          Ավելացնել նոր ախտորոշում
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
@@ -276,7 +276,7 @@ function AddDiagnostic({
                                 className="form-label"
                                 htmlFor="internalDiagnosticsStatus"
                               >
-                                Ներքին Ախտորոշման Կարգավիճակ
+                                Ներքին ախտորոշման կարգավիճակ
                               </label>
                               <Multiselect
                                 options={diagnosticStatus} // Options to display in the dropdown
@@ -287,7 +287,7 @@ function AddDiagnostic({
                                 singleSelect
                                 id="input_tags_4"
                                 className="form-control"
-                                placeholder="Ընտրեք Կարգավիճակը"
+                                placeholder="Ընտրեք կարգավիճակը"
                                 //hidePlaceholder={true}
                                 style={{
                                   height: "10rem",
@@ -348,7 +348,7 @@ function AddDiagnostic({
                                   className="form-label"
                                   htmlFor="externalDiagnosticsStatus"
                                 >
-                                  Արտաքին Ախտորոշման Կարգավիճակ
+                                  Արտաքին ախտորոշման կարգավիճակ
                                 </label>
                                 <Multiselect
                                   options={diagnosticStatus}
@@ -358,7 +358,7 @@ function AddDiagnostic({
                                   singleSelect
                                   id="input_tags_5"
                                   className="form-control"
-                                  placeholder="Ընտրեք Կարգավիճակը"
+                                  placeholder="Ընտրեք կարգավիճակը"
                                   style={{
                                     height: "10rem",
                                     overflow: "hidden",
@@ -384,7 +384,7 @@ function AddDiagnostic({
                                 className="form-control"
                                 ref={multiselectRef}
                                 hidePlaceholder={true}
-                                placeholder="Ընտրել Հիվանդին"
+                                placeholder="Ընտրել հիվանդին"
                                 style={{
                                   height: "10rem",
                                   overflow: "hidden",
@@ -409,7 +409,7 @@ function AddDiagnostic({
                                 className="form-control"
                                 ref={multiselectRef}
                                 hidePlaceholder={true}
-                                placeholder="Ընտրել Բժշկին"
+                                placeholder="Ընտրել բժշկին"
                                 style={{
                                   height: "10rem",
                                   overflow: "hidden",
@@ -452,7 +452,7 @@ function AddDiagnostic({
                                   onInit={(evt, editor) =>
                                     (editorRef.current = editor)
                                   }
-                                  initialValue="<p>This is the initial content of the editor.</p>"
+                                  //initialValue="<p>This is the initial content of the editor.</p>"
                                   init={{
                                     height: 200,
                                     menubar: false,

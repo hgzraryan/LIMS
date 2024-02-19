@@ -32,6 +32,24 @@ function AgentsTable({
         Header: (event) => (
           <>
             
+            <div  className="columnHeader">ID</div>
+          </>
+        ),
+        accessor: "agentId",
+        sortable: true,
+        width: 60,
+        Filter: ({ column: { id } })=>(
+          <ColumnFilter
+            id={id}
+            setData={setAgents}
+            placeholder={'ID'}
+          />
+        ),
+      },
+      {
+        Header: (event) => (
+          <>
+            
             <div  className="columnHeader">Անուն</div>
           </>
         ),

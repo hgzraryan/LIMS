@@ -66,7 +66,7 @@ function CreateUserRole({setIsOpenRole,getUsers}) {
       >
         <Modal.Header closeButton>
           <Modal.Title style={{ width: "100%", textAlign: "center" }}>
-            Ավելացնել նոր Դեր
+            Ավելացնել նոր դեր
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>

@@ -93,6 +93,19 @@ export const password_validation = {
     },
   },
 };
+export const passport_validation = {
+  name: "passport",
+  label: "Անձնագիր/ID",
+  type: "text",
+  id: "passport",
+  placeholder: "Անձնագիր/ID",
+  validation: {
+    required: {
+      value: true,
+      message: "required",
+    },
+  },
+};
 export const position_validation = {
   name: "position",
   label: "Պաշտոն",
@@ -107,6 +120,71 @@ export const position_validation = {
     maxLength: {
       value: 30,
       message: "30 characters max",
+    },
+  },
+};
+export const tin_validation = {
+  name: "tin",
+  label: "ՀՎՀՀ",
+  type: "number",
+  id: "tin",
+  placeholder: "ՀՎՀՀ",
+  validation: {
+    required: {
+      value: true,
+      message: "required",
+    },
+  },
+};
+export const bank_validation = {
+  name: "bank",
+  label: "Բանկ",
+  type: "text",
+  id: "bank",
+  placeholder: "Բանկ",
+  validation: {
+    required: {
+      value: true,
+      message: "required",
+    },
+  },
+};
+export const bankAccount_validation = {
+  name: "bankAccount",
+  label: "Հ/Հ",
+  type: "number",
+  id: "bankAccount",
+  placeholder: "Հ/Հ",
+  validation: {
+    required: {
+      value: true,
+      message: "required",
+    },
+  },
+};
+export const director_validation = {
+  name: "director",
+  label: "Տնօրեն",
+  type: "text",
+  id: "director",
+  placeholder: "Տնօրեն",
+  validation: {
+    required: {
+      value: true,
+      message: "required",
+    },
+  },
+};
+export const workplace_validation = {
+  name: "workplace",
+  label: "Աշխատավայր",
+  type: "text",
+  id: "workplace",
+  placeholder: "Աշխատավայր",
+  validation: {
+    required: {
+      value: true,
+      message: "required",
     },
   },
 };
@@ -331,10 +409,10 @@ export const contactName_validation = {
 };
 export const fullName_validation = {
   name: "fullName",
-  label: "Անուն Ազգանուն",
+  label: "Անուն ազգանուն",
   type: "text",
   id: "fullName",
-  placeholder: "Անուն Ազգանուն",
+  placeholder: "Անուն ազգանուն",
   validation: {
     required: {
       value: true,
@@ -430,10 +508,10 @@ export const qualification_validation = {
 };
 export const model_validation = {
   name: "model",
-  label: "Սարքի Մոդել",
+  label: "Սարքի մոդել",
   type: "text",
   id: "model",
-  placeholder: "Սարքի Մոդել",
+  placeholder: "Սարքի մոդել",
   validation: {
     required: {
       value: true,
@@ -447,10 +525,27 @@ export const model_validation = {
 };
 export const equipmentType_validation = {
   name: "equipmentType",
-  label: "Սարքի Տեսակ",
+  label: "Սարքի տեսակ",
   type: "text",
   id: "equipmentType",
-  placeholder: "Սարքի Տեսակ",
+  placeholder: "Սարքի տեսակ",
+  validation: {
+    required: {
+      value: true,
+      message: "required",
+    },
+    maxLength: {
+      value: 30,
+      message: "30 characters max",
+    },
+  },
+};
+export const type_validation = {
+  name: "type",
+  label: "Տեսակ",
+  type: "text",
+  id: "type",
+  placeholder: "Տեսակ",
   validation: {
     required: {
       value: true,

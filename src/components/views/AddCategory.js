@@ -18,7 +18,7 @@ function AddCategory({handleToggleCategoryCreateModal}) {
       >
         <Modal.Header closeButton>
           <Modal.Title style={{ width: "100%", textAlign: "center" }}>
-            Ավելացնել նոր Դասակարգ
+            Ավելացնել նոր դասակարգ
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>

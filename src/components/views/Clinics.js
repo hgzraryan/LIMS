@@ -1,71 +1,53 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState, useRef} from "react";
-import InfiniteScroll from "react-infinite-scroll-component";
-import FeatherIcon from "feather-icons-react";
-import LoadingSpinner from "../LoadingSpinner";
-import ReactPaginate from "react-paginate";
-import Loading from "../Loading";
+import FeatherIcon from 'feather-icons-react/build/FeatherIcon';
+import React, { useRef, useState } from 'react'
+import ReactPaginate from 'react-paginate';
+import { useSelector } from 'react-redux';
+import ClinicsTable from '../viewTables/ClinicsTable';
 import { Dropdown } from "react-bootstrap";
-import useDeleteData from "../../hooks/useDeleteData";
-import useGetData from "../../hooks/useGetData";
-import AddAgent from "./AddAgent";
-import AgentsTable from "../viewTables/AgentsTable";
-import { useSelector } from "react-redux";
-import { selectAgentsCount } from "../../redux/features/agents/agentsCountSlice";
+import AddClinic from './AddClinic';
+import { CLINICS_ROUTE } from '../../utils/constants';
 
-const AGENTS_URL = "/agents";
+const clinicsData = [
+    {
+        clinicId:1,
+        name:"AMC",
+        address:"Երևան, Դանիել Վարուժանի փ 28ա",
+        email:'info@astghikmc.com',
+        phone:" (011) 667788",
 
-const Agents = () => {
-  const [selectedItem, setSelectedItem] = useState("");
-  const [selectedItemId, setSelectedItemId] = useState(null);
-  const [isOpen, setIsOpen] = useState(false);
-  const confirmAgentsRef = useRef("");
-  const agentsCount = useSelector(selectAgentsCount)
-  const [currentPage, setCurrentPage] = useState(0);  
-  const [usersPerPage, setUsersPerPage] = useState(Math.round((window.innerHeight / 100) * 1.5));
-  const pageCount = Math.ceil(agentsCount/usersPerPage)
-  
-  const {
-    data: agents,
-    setData: setAgents,
-    getData: getAgents,
-  } = useGetData(AGENTS_URL,currentPage,usersPerPage);
-
-  const handleOpenModal = (user) => {
-    setSelectedItemId(true);
-    setSelectedItem((prev) => user);
-  };
-  const handleCloseModal = () => {
-    setSelectedItemId(null);
-  };
-  /*------------------------------------------------*/
-  const handleToggleCreateModal = (value) => {
-    setIsOpen((prev) => value);
-  };
- 
-
-  const { handleDeleteItem } = useDeleteData(
-    "/agents",
-    confirmAgentsRef,
-    selectedItem,
-    setSelectedItemId,
-    agents,
-    setAgents,
-    "name" 
-  );
-   //-------------------------PAGINATION---------------------------//
-   const handlePageClick = ({ selected: selectedPage }) => {
-     setCurrentPage(selectedPage);
-     //updateUsersCount(); 
-    }
-   //--------------------------------------------------------------//
-  //-------------------------
-  const refreshPage = () => {
-    let paglink = document.querySelectorAll(".page-item");
-    paglink[0].firstChild.click();
-  };
-  //-------------------
-
+}]
+function Clinics() {
+    const [clinics, setClinics] = useState(clinicsData);
+    const [selectedItem, setSelectedItem] = useState("");
+    const [selectedItemId, setSelectedItemId] = useState(null);
+    const [isOpen, setIsOpen] = useState(false);
+    const confirmClinicRef = useRef("");
+    const [currentPage, setCurrentPage] = useState(0);  
+    const [usersPerPage, setUsersPerPage] = useState(Math.round((window.innerHeight / 100) * 1.5));
+    // const clinicsCount = useSelector(selectClinics)
+    // const pageCount = Math.ceil(clinicsCount/usersPerPage)
+    
+    // const {
+    //   data: clinics,
+    //   setData: setClinics,
+    //   getData: getClinics,
+    // } = useGetData(CLINICS_ROUTE,currentPage,usersPerPage);
+    const handleToggleCreateModal = (value) => {
+      setIsOpen((prev) => value);
+    };
+    const handleOpenModal = (user) => {
+        setSelectedItemId(true);
+        setSelectedItem((prev) => user);
+      };
+      const handlePageClick = ({ selected: selectedPage }) => {
+        setCurrentPage(selectedPage);
+        //updateUsersCount(); 
+       }
+       const refreshPage = () => {
+        let paglink = document.querySelectorAll(".page-item");
+        paglink[0].firstChild.click();
+      };
   return (
     <div>
       <div className="contactapp-wrap">
@@ -82,7 +64,7 @@ const Agents = () => {
                     aria-haspopup="true"
                     aria-expanded="false"
                   >
-                    <h1>Գործընկերներ</h1>
+                    <h1>Բուժ. հաստատություններ</h1>
                   </a>
                 </div>
                 <div className="dropdown ms-3">
@@ -97,15 +79,15 @@ const Agents = () => {
 
                     <Dropdown.Menu>
                       <Dropdown.Item onClick={() => setIsOpen(true)}>
-                      Գործընկեր
+                      Բուժ․ հաստատություն
                       </Dropdown.Item>
                     </Dropdown.Menu>
                   </Dropdown>
 
                   {isOpen && (
-                    <AddAgent
+                    <AddClinic
                       handleToggleCreateModal={handleToggleCreateModal}
-                      getAgents={() => getAgents()}
+                      //getClinics={() => getClinics()}
                     />
                   )}
                 </div>
@@ -156,21 +138,21 @@ const Agents = () => {
                     id="scrollableDiv"
                     style={{ height: "80vh", overflow: "auto" }}
                   >
-                      <AgentsTable
-                        confirmRef={confirmAgentsRef}
+                      <ClinicsTable
+                        confirmRef={confirmClinicRef}
                         selectedItem={selectedItem}
                         selectedItemId={selectedItemId}
-                        handleDeleteItem={handleDeleteItem}
+                        //handleDeleteItem={handleDeleteItem}
                         handleOpenModal={handleOpenModal}
-                        handleCloseModal={handleCloseModal}
-                        agents={agents}
-                        setAgents={setAgents}
-                        getAgents={getAgents}
+                        //handleCloseModal={handleCloseModal}
+                        clinics={clinics}
+                        setClinics={setClinics}
+                        //getClinics={getClinics}
                       />
                       <ReactPaginate
                         previousLabel = {"Հետ"}    
                         nextLabel = {"Առաջ"}
-                        pageCount = {pageCount}
+                        pageCount = {1}
                         onPageChange = {handlePageClick}
                         initialPage = {0}
                         containerClassName={"pagination"}
@@ -190,7 +172,7 @@ const Agents = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Agents;
+export default Clinics
