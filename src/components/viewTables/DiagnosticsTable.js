@@ -183,11 +183,8 @@ function DiagnosticsTable({
               cursor={"pointer"}
               size={"1.5rem"}
               onClick={() => handleOpenInfoModal(row.original)}
-              />
-            
-              </div>
-              {
-                !disable ?(
+              />            
+              </div>             
             <div className="d-flex">
               <a
                 className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover"
@@ -221,17 +218,7 @@ function DiagnosticsTable({
               </a>
               }
               <ComponentToPrintResultWrapper data={row.original} patients={patients}/>
-            </div>
-            ):(
-              <div className="d-flex">
-              <BiSolidInfoCircle
-              cursor={"pointer"}
-              size={"1.5rem"}
-              onClick={() => handleOpenInfoModal(row.original)}
-              />
-            
-              </div>
-            ) }
+            </div>           
             </div>
         ),
         disableSortBy: true,
