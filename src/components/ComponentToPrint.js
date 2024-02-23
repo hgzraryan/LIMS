@@ -124,7 +124,7 @@ const { inputRef } = Barcode({
               <li>Տրման ամսաթիվ: {value.date}</li>
             </ul>
           </div>
-          <Barcode value="298875855" width={1} />;
+          <Barcode value={value.diagnosticsId} width={1} />;
         </section>
         <section className="container "></section>
         <section className="container">

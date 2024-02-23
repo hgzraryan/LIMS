@@ -15,10 +15,11 @@ import { checkDiagnosticsCount } from "../../redux/features/diagnostics/diagnost
 import { useDispatch, useSelector } from "react-redux";
 import { checkResearchListCount } from "../../redux/features/researches/researchListCountSlice";
 import { checkPatients, selectPatients } from "../../redux/features/patients/patientsSlice";
-import {  DOCTORS_URL, RESEARCHLISTS_URL, PATIENTS_URL } from "../../utils/constants";
+import {  DOCTORS_URL, RESEARCHLISTS_URL, PATIENTS_URL, REFDOCTORS_URL } from "../../utils/constants";
 import { useGetFullData } from "../../hooks/useGetFullData";
 import { reserchesList } from "../../redux/features/researches/researchesSlice";
 import { checkDoctors } from "../../redux/features/doctor/doctorsSlice";
+import { checkRefDoctors } from "../../redux/features/refDoctors/refDoctorsSlice";
 
 
 
@@ -27,7 +28,7 @@ const MainTemplate = () => {
     const location = useLocation();
     const logout = useLogout();
     const axiosPrivate = useAxiosPrivate();
-    
+    const [userData,setUserData]=useState(JSON.parse(localStorage.getItem('userData'))||false)
 
 
     //-------------------
@@ -37,8 +38,9 @@ const MainTemplate = () => {
     const [researchState] = useGetFullData(RESEARCHLISTS_URL,reserchesList)
     const [patientsState] = useGetFullData(PATIENTS_URL,checkPatients)
     const [doctorsState] = useGetFullData(DOCTORS_URL,checkDoctors)
+    const [refDoctorsState] = useGetFullData(REFDOCTORS_URL,checkRefDoctors)
     //-------------------
-
+    
     //-------------------
     const [isActive, setIsActive] = useState(false);
 	const menuClick = event => {
@@ -314,22 +316,16 @@ const MainTemplate = () => {
                             </div>
                             <div className="media-body">
                               <div className="fs-7">{}</div>
-                              <a
-                                href="/login"
-                                className="d-block fs-8 link-secondary"
-                                onClick={signOut}
-                              >
-                                <u>Դուրս գալ</u>
-                              </a>
+                              <p style={{color:'black'}}>{userData?.firstname+" "}{userData?.lastname}</p>
                             </div>
                           </div>
                         </div>
                         {/*
                                             <div className="dropdown-divider"></div>
-                                                <a className="dropdown-item" href="profile.html">Profile</a>
+                                            <a className="dropdown-item" href="profile.html">Profile</a>
                                                 <a className="dropdown-item" href="/privacy-policy">
-                                                    <span className="me-2">Offers</span>
-                                                    <span className="badge badge-sm badge-soft-pink">2</span>
+                                                <span className="me-2">Offers</span>
+                                                <span className="badge badge-sm badge-soft-pink">2</span>
                                                 </a>
                                                 <div className="dropdown-divider"></div>
                                                 <h6 className="dropdown-header">Manage Account</h6>
@@ -338,11 +334,18 @@ const MainTemplate = () => {
                                                 <a className="dropdown-item" href="/privacy-policy"><span className="dropdown-icon feather-icon"><i data-feather="settings"></i></span><span>Settings</span></a>
                                                 <div className="dropdown-divider"></div>
                                                 <a className="dropdown-item" href="/privacy-policy"><span className="dropdown-icon feather-icon"><i data-feather="tag"></i></span><span>Raise a ticket</span></a>
-                                      <div className="dropdown-divider"></div>
-											*/}
-                        <a className="dropdown-item" href="/">
+                                                <div className="dropdown-divider"></div>
+                                              */}
+                        <a className="dropdown-item" href="/support">
                           Օգնություն և սպասարկում
                         </a>
+                         <a
+                           href="/login"
+                           className="d-block fs-8 link-secondary"
+                           onClick={signOut}
+                         >
+                         <u>Դուրս գալ</u>
+                         </a>
                       </div>
                     </div>
                   </li>
@@ -492,7 +495,7 @@ const MainTemplate = () => {
                             </svg>
                           </span>
                         </span>
-                        <span className="nav-link-text">Հիվանդներ</span>
+                        <span className="nav-link-text">Այցելուներ</span>
                       </Link>
                     </li>
                     <li className="nav-item">
@@ -1400,17 +1403,17 @@ const MainTemplate = () => {
                             <li className="nav-item">
                               <Link
                                 className={
-                                  sisActive1 === "clinics" ||
+                                  sisActive1 === "medInstitutions" ||
                                   location.pathname ===
-                                    "/settings/clinics"
+                                    "/settings/medInstitutions"
                                     ? "nav-link active"
                                     : "nav-link"
                                 }
-                                to="./settings/clinics"
+                                to="./settings/medInstitutions"
                                 onClick={() =>
                                   handleSubmenuClick(
                                     "settings",
-                                    "clinics"
+                                    "medInstitutions"
                                   )
                                 }
                               >

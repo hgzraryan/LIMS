@@ -49,7 +49,8 @@ const Reagents = () => {
     setSelectedItemId,
     reagents,
     setReagents,
-    'name'
+    'name',
+    getReagents
   );
    //-------------------------PAGINATION---------------------------//
    const handlePageClick = ({ selected: selectedPage }) => {

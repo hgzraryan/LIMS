@@ -8,11 +8,10 @@ import { Form, FormProvider, useForm } from "react-hook-form";
 import { Input } from "../Input";
 import { toast } from "react-toastify";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import ErrorSvg from "../../dist/svg/error.svg";
 import {
   name_validation,
-  price_validation,
   unit_validation,
-  currency_validation,
   desc_validation,
   usage_validation,
   producer_validation,
@@ -23,7 +22,6 @@ function AddReagent({ handleToggleCreateModal, getReagents }) {
   const [errMsg, setErrMsg] = useState("");
   const [unitType, setUnitType] = useState("");
   const [currency, setCurrency] = useState("AMD");
-  const [amount, setAmount] = useState("");
 
   const methods = useForm({
     mode: "onChange",
@@ -31,13 +29,9 @@ function AddReagent({ handleToggleCreateModal, getReagents }) {
   const multiselectRef = useRef("");
   const axiosPrivate = useAxiosPrivate();
   const editorRef = useRef(null);
-  const currencyRef = useRef(null);
 
  const handleCurrencyChange = (e) => {
-      setCurrency(prev=>e.target.value)
- }
- const handleAmountChange = (e) => {
-  setAmount(prev=>e.target.value)
+      setCurrency(e.target.value)
  }
   const notify = (text) =>
     toast.success(text, {
@@ -51,16 +45,20 @@ function AddReagent({ handleToggleCreateModal, getReagents }) {
       theme: "light",
     });
 
-  const onSubmit = methods.handleSubmit(async (data) => {
+  const onSubmit = methods.handleSubmit(async ({name,amount,producer,unit,usage,description}) => {
     const newReagent = {
-      ...data,
-      currency:currency,
+      name:name,
       price:amount,
+      producer:producer,
+      unit:unit,
+      currency:currency,
       unitType: unitType,
+      usage:usage,
+      description:description,
       additional: editorRef.current.getContent({ format: "text" }),
     };
     const formData = JSON.stringify(newReagent);
-
+//console.log(newReagent)
     try {
       await axiosPrivate.post(REGISTER_REAGENT, formData, {
         headers: { "Content-Type": "application/json" },
@@ -131,7 +129,18 @@ function AddReagent({ handleToggleCreateModal, getReagents }) {
                               <Input {...name_validation} />
                             </div>
                             <div className="col-sm-6">
+                            <div className="d-flex justify-content-between me-2">
                               <label htmlFor="price"className="mb-2">Արժեք</label>
+                              {console.log(methods.formState.errors)}
+                              {methods.formState.errors.amount && (
+                                  <span className="error text-red">
+                                    <span>
+                                      <img src={ErrorSvg} alt="errorSvg" />
+                                    </span>{" "}
+                                    required
+                                  </span>
+                                )}
+                                </div>
                               <div className="form-control d-flex ">
                                 <select
                                   id="currency"
@@ -144,19 +153,20 @@ function AddReagent({ handleToggleCreateModal, getReagents }) {
                                   <option value="EUR">EUR</option>
                                   <option value="GBP">GBP</option>
                                   <option value="RU">RU</option>
-                                </select>
+                                </select>                                
                                 <input
-                                  type="number"
+                                  type="text"
                                   id="amount"
-                                  value={amount}
-                                  onChange={handleAmountChange}
                                   placeholder="Արժեք"
                                   style={{
                                     border: "none",
                                     outline: "none",
                                     flex: 1,
                                   }}
-                                />
+                                  {...methods.register("amount", {
+                                    required: true,
+                                  })}
+                                  />
                               </div>
                             </div>
                           </div>
@@ -186,13 +196,13 @@ function AddReagent({ handleToggleCreateModal, getReagents }) {
                             <div className="col-sm-6">
                               <Input {...usage_validation} />
                             </div>
+                            <div className="col-sm-6">
+                              <Input {...producer_validation} />
+                            </div>
                           </div>
                           <div className="row gx-3">
                             <div className="col-sm-6">
                               <Input {...desc_validation} />
-                            </div>
-                            <div className="col-sm-6">
-                              <Input {...producer_validation} />
                             </div>
                           </div>
                         </div>
@@ -220,7 +230,7 @@ function AddReagent({ handleToggleCreateModal, getReagents }) {
                           </span>
                         </button>
                       </div>
-                      <div className="card-body">
+                      <div className="card-body" style={{zIndex:'0'}}>
                         <div className="modal-body">
                           <form>
                             <div className="row gx-12">

@@ -50,7 +50,8 @@ const Agents = () => {
     setSelectedItemId,
     agents,
     setAgents,
-    "name" 
+    "name",
+    getAgents 
   );
    //-------------------------PAGINATION---------------------------//
    const handlePageClick = ({ selected: selectedPage }) => {

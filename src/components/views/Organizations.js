@@ -50,7 +50,8 @@ const Organizations = () => {
     setSelectedItemId,
     organizations,
     setOrganizations,
-    "name"
+    "name",
+    getOrganizations
   );
   //-------------------------
 

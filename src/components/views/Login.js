@@ -9,9 +9,10 @@ import { Helmet, HelmetProvider } from 'react-helmet-async';
 
 
 import axios from '../../api/axios';
+import useLogout from '../../hooks/useLogout';
 const LOGIN_URL = '/auth';
-
 const Login = () => {
+    const logout=useLogout();
     const { setAuth, persist, setPersist } = useAuth();
 
     const navigate = useNavigate();
@@ -26,6 +27,7 @@ const Login = () => {
     const [errMsg, setErrMsg] = useState('');
     const [check, toggleCheck] = useToggle('persist', true);
     const [passwordType, setPasswordType] = useState("password");
+    const [userData, setUserData] = useState({});
 
 
     useEffect(() => {
@@ -47,17 +49,24 @@ const Login = () => {
                     withCredentials: true
                 }
             );
+
             const accessToken = response?.data?.accessToken;
             const decodedJWT = jwt(accessToken);
             const roles = decodedJWT.UserInfo.roles;
             const isActive = decodedJWT.UserInfo.isActive;
+            setUserData(prev => response.data.authUserData);
+
 
             console.log('roles',roles);
 
             setAuth({ user, pwd, roles, isActive, accessToken });
             resetUser();
             setPwd('');  
-            
+            if (response?.data?.authUserData?.isactive === 0) {
+                console.log("asd")
+                logout();
+                navigate('/login');
+                          }
             if (roles.includes(1212)) {
                 navigate('/addsample');
               } else{
@@ -117,6 +126,10 @@ const Login = () => {
     useEffect(() => {
         localStorage.setItem("persist", persist);
     }, [persist])
+
+    useEffect(() => {
+        localStorage.setItem("userData", JSON.stringify(userData));
+    }, [userData])
 
 
     const togglePassword =()=>{

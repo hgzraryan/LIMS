@@ -136,11 +136,11 @@ export const tin_validation = {
     },
   },
 };
-export const bank_validation = {
-  name: "bank",
+export const bankName_validation = {
+  name: "bankName",
   label: "Բանկ",
   type: "text",
-  id: "bank",
+  id: "bankName",
   placeholder: "Բանկ",
   validation: {
     required: {
@@ -149,11 +149,11 @@ export const bank_validation = {
     },
   },
 };
-export const bankAccount_validation = {
-  name: "bankAccount",
+export const bankAccNumber_validation = {
+  name: "bankAccNumber",
   label: "Հ/Հ",
   type: "number",
-  id: "bankAccount",
+  id: "bankAccNumber",
   placeholder: "Հ/Հ",
   validation: {
     required: {
@@ -175,11 +175,11 @@ export const director_validation = {
     },
   },
 };
-export const workplace_validation = {
-  name: "workplace",
+export const medInstitution_validation = {
+  name: "medInstitution",
   label: "Աշխատավայր",
   type: "text",
-  id: "workplace",
+  id: "medInstitution",
   placeholder: "Աշխատավայր",
   validation: {
     required: {
@@ -737,7 +737,7 @@ export const state_validation = {
   placeholder: "Մարզ",
   validation: {
     required: {
-      value: false,
+      value: true,
       message: "required",
     },
     maxLength: {
@@ -754,7 +754,7 @@ export const city_validation = {
   placeholder: "Քաղաք/Գյուղ",
   validation: {
     required: {
-      value: false,
+      value: true,
       message: "required",
     },
     maxLength: {
@@ -771,7 +771,7 @@ export const country_validation = {
   placeholder: "Երկիր",
   validation: {
     required: {
-      value: false,
+      value: true,
       message: "required",
     },
     maxLength: {
@@ -788,7 +788,7 @@ export const street_validation = {
   placeholder: "Փողոց",
   validation: {
     required: {
-      value: false,
+      value: true,
       message: "required",
     },
     maxLength: {

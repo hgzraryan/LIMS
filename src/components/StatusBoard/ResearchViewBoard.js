@@ -2,7 +2,6 @@ import React, { useEffect, useMemo, useState } from "react";
 import { DragDropContext } from "react-beautiful-dnd";
 import { Modal } from "react-bootstrap";
 import BoardComponent from "./BoardComponent";
-import { v4 as uuidv4 } from "uuid";
 import { axiosPrivate } from "../../api/axios";
 import "./Styles/customStyle.scss";
 

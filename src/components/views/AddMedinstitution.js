@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react'
-import { REGISTER_CLINIC } from '../../utils/constants';
+import { REGISTER_MEDINSTITUTION } from '../../utils/constants';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import { Modal } from "react-bootstrap";
 import FeatherIcon from "feather-icons-react";
@@ -8,10 +8,11 @@ import "react-datepicker/dist/react-datepicker.css";
 import { Form, FormProvider, useForm} from "react-hook-form";
 import { toast } from 'react-toastify';
 import { Input } from '../Input';
-import PhoneInput from 'react-phone-number-input';
-import { city_validation, country_validation, desc_validation, director_validation, email_validation, name_validation, state_validation, street_validation, tin_validation, zipCode_validation } from '../../utils/inputValidations';
-function AddClinic({ handleToggleCreateModal, 
-  // getClinics 
+import ErrorSvg from "../../dist/svg/error.svg";
+import { city_validation, country_validation, email_validation, name_validation, state_validation, street_validation, zipCode_validation } from '../../utils/inputValidations';
+import CustomPhoneComponent from '../CustomPhoneComponent';
+function AddMedinstitution({ handleToggleCreateModal, 
+  // getMedinstitutions 
 }) {
     const [errMsg, setErrMsg] = useState("");
     const axiosPrivate = useAxiosPrivate();
@@ -45,16 +46,14 @@ function AddClinic({ handleToggleCreateModal,
       theme: "light",
     });
     const onSubmit = methods.handleSubmit(async ({
-      name,director,tin,email,description,country,
+      name,email,country,
       state,
       street,
       city,
       zipCode,
     }) => {
-      const newClinic = {
-         name: name,
-         director:director,
-         tin:tin,
+      const newMedInstitution = {
+         institutionName: name,
          contact: {
            email:email,
            phone:phoneNumber,
@@ -66,13 +65,12 @@ function AddClinic({ handleToggleCreateModal,
             zipCode: zipCode,
           },
          },
-         role:description,
         additional: editorRef.current.getContent({ format: "text" }),
       };
   
-     // console.log(newClinic);
+     // console.log(newMedInstitution);
       try {
-        await axiosPrivate.post(REGISTER_CLINIC, newClinic, {
+        await axiosPrivate.post(REGISTER_MEDINSTITUTION, newMedInstitution, {
           headers: { "Content-Type": "application/json" },
           withCredentials: true,
         });
@@ -80,7 +78,7 @@ function AddClinic({ handleToggleCreateModal,
         handleToggleCreateModal(false);
         // getAgents();
         notify(
-          `${newClinic.name} բուժ․ հաստատությունը ավելացված է`
+          `${newMedInstitution.name} բուժ․ հաստատությունը ավելացված է`
         );
       } catch (err) {
         if (!err?.response) {
@@ -141,55 +139,40 @@ function AddClinic({ handleToggleCreateModal,
                                 <Input {...name_validation} />
                               </div>
                               <div className="col-sm-6">
-                                <Input {...director_validation} />
-                              </div>
-                            </div>
-                            <div className="row gx-3">
-                              <div className="col-sm-6">
                                 <Input {...email_validation} />
                               </div>
-                              <div className="col-sm-6">
-                              <label className="form-label" htmlFor="doctor">
-                                  Հեռախոս
-                                </label>
-                                <PhoneInput
-                                  placeholder="Հեռախոս"
-                                  value={phoneNumber}
-                                  onChange={handlePhoneNumberChange}
-                                  displayInitialValueAsLocalNumber
-                                  initialValueFormat="national"
-                                  autoComplete="off"
-                                  defaultCountry="AM"
-                                />
-                              </div>
                             </div>
                             <div className="row gx-3">
-                              <div className="col-sm-6">
+                            <div className="col-sm-6">
                                 <Input {...country_validation} />
                               </div>
                               <div className="col-sm-6">
-                                <Input {...state_validation} />
+                              <div className="d-flex justify-content-between me-2">
+                              <label className="form-label" htmlFor="phoneNumber">
+                                Հեռախոս
+                              </label>
+                              {methods.formState.errors.phone && (
+                                    <span className="error text-red"><span><img src={ErrorSvg} alt="errorSvg"/></span> required</span>
+                                    )}
+                                    </div>
+                                    <CustomPhoneComponent name="phone"  control={methods.control} />
+
                               </div>
                             </div>
-                            <div className="row gx-3">
+                            <div className="row gx-3">                              
+                              <div className="col-sm-6">
+                                <Input {...state_validation} />
+                              </div>
                               <div className="col-sm-6">
                                 <Input {...city_validation} />
                               </div>
+                            </div>
+                            <div className="row gx-3">                             
                               <div className="col-sm-6">
                                 <Input {...street_validation} />
                               </div>
-                            </div>
-                            <div className="row gx-3">
                               <div className="col-sm-6">
                                 <Input {...zipCode_validation} />
-                              </div>
-                              <div className="col-sm-6">
-                                <Input {...tin_validation} />
-                              </div>
-                            </div>
-                            <div className="row gx-3">
-                              <div className="col-sm-6">
-                              <Input {...desc_validation} />
                               </div>
                             </div>
                           </div>
@@ -217,7 +200,7 @@ function AddClinic({ handleToggleCreateModal,
                             </span>
                           </button>
                         </div>
-                        <div className="card-body">
+                        <div className="card-body" style={{zIndex:'0'}}>
                           <div className="modal-body">
                             <form>
                               <div className="row gx-12">
@@ -245,7 +228,7 @@ function AddClinic({ handleToggleCreateModal,
                                       content_style:
                                         "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
                                     }}
-                                    />
+                                  />
                                 </div>
                               </div>
                             </form>
@@ -253,7 +236,7 @@ function AddClinic({ handleToggleCreateModal,
                         </div>
                       </div>
                       <div className="separator-full"></div>
-  
+
                       <div className="modal-footer align-items-center">
                         <button
                           type="button"
@@ -283,4 +266,4 @@ function AddClinic({ handleToggleCreateModal,
   
 }
 
-export default AddClinic
+export default AddMedinstitution

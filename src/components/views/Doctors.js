@@ -53,7 +53,8 @@ function Doctors() {
     setSelectedItemId,
     doctors,
     setDoctors,
-    "doctorName" 
+    "doctorName",
+    getDoctors 
   );
   //-------------------------
 

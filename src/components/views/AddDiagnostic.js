@@ -41,7 +41,8 @@ function AddDiagnostic({
   const [errMsg, setErrMsg] = useState("");
   const multiselectRef = useRef("");
   const editorRef = useRef(null);
-  const patientRef = useRef("");
+  const [patientId, setPatientId] = useState(null);
+  const [organization, setOrganization] = useState(null);
   const additionalData = useRef("");
   const diagnosticClassRef = useRef("");
   const [externalType, setExternalType] = useState(false);
@@ -134,9 +135,17 @@ function AddDiagnostic({
   const onPartnerSelect = (data) => {
     setPartnerName(data[0].partner);
   };
+  const onOrganizationSelect = (data) => {
+    
+    data[0].partner==="Առանց Պատվիրատու"
+    ?setOrganization(false)
+    :setOrganization(data)
+    
+  };
   const onPatientSelect = (data) => {
-    patientRef.current = data[0].key; //get patientID
-    console.log(patientRef.current);
+    data==="Առանց այցեկու"
+    ?setPatientId(false)
+    :setPatientId(prev=>data[0].key); 
   };
   const notify = (text) =>
     toast.success(text, {
@@ -157,7 +166,7 @@ function AddDiagnostic({
       internalStatus: intDiagnosticsStatus,
       externalStatus: extDiagnosticsStatus,
       researchIds: researchesIds,
-      patientId: patientRef.current,
+      patientId: patientId,
       doctors: doctor,
       //partner:partner,
       additional: editorRef.current.getContent({ format: "text" }),
@@ -271,6 +280,9 @@ function AddDiagnostic({
                             </div>
                           </div>
                           <div className="row gx-3">
+                          {!externalType ? (
+
+                          
                             <div className="col-sm-6">
                               <label
                                 className="form-label"
@@ -294,56 +306,8 @@ function AddDiagnostic({
                                   overflow: "hidden",
                                 }}
                               />
-                            </div>
-                            <div className="col-sm-6">
-                              <label className="form-label" htmlFor="research">
-                                Հետազոտություններ
-                              </label>
-                              <Multiselect
-                                options={researchesState} // Options to display in the dropdown
-                                displayValue="researchName" // Property name to display in the dropdown options
-                                onSelect={onResearchSelect} // Function will trigger on select event
-                                onRemove={onResearchDelete} // Function will trigger on remove event
-                                closeOnSelect={true}
-                                id="input_tags_3"
-                                className="form-control"
-                                ref={multiselectRef}
-                                hidePlaceholder={true}
-                                placeholder="Հետազոտություններ"
-                                groupBy="category_name"
-                                style={{
-                                  height: "10rem",
-                                  overflow: "hidden",
-                                }}
-                              />
-                            </div>
-                          </div>
-                          <div className="row gx-3"></div>
-                          <div className="row gx-3"></div>
-                          {externalType && (
-                            <div className="row gx-3">
-                              {console.log("asd")}
-                              <div className="col-sm-6">
-                                <label className="form-label" htmlFor="partner">
-                                  Գործընկեր
-                                </label>
-                                <Multiselect
-                                  options={partnerState}
-                                  displayValue="partner"
-                                  onSelect={onPartnerSelect}
-                                  closeOnSelect={true}
-                                  singleSelect
-                                  id="input_tags_4"
-                                  className="form-control"
-                                  hidePlaceholder={true}
-                                  placeholder="Գործընկեր"
-                                  style={{
-                                    height: "10rem",
-                                    overflow: "hidden",
-                                  }}
-                                />
-                              </div>
-                              <div className="col-sm-6">
+                            </div>) :
+                            ( <div className="col-sm-6">
                                 <label
                                   className="form-label"
                                   htmlFor="externalDiagnosticsStatus"
@@ -365,33 +329,7 @@ function AddDiagnostic({
                                   }}
                                 />
                               </div>
-                            </div>
-                          )}
-                          <div className="row gx-3">
-                            <div className="col-sm-6">
-                              <label className="form-label" htmlFor="patient">
-                                Հիվանդ
-                              </label>
-                              <Multiselect
-                                options={patients.map((patient) => ({
-                                  key: patient.patientId,
-                                  value: `${patient.firstName} ${patient.lastName}`,
-                                }))}
-                                singleSelect
-                                onSelect={onPatientSelect}
-                                displayValue="value"
-                                id="input_tags_4"
-                                className="form-control"
-                                ref={multiselectRef}
-                                hidePlaceholder={true}
-                                placeholder="Ընտրել հիվանդին"
-                                style={{
-                                  height: "10rem",
-                                  overflow: "hidden",
-                                }}
-                              />
-                            </div>
-
+                            )}
                             <div className="col-sm-6">
                               <label className="form-label" htmlFor="doctor">
                                 Բժիշկներ
@@ -416,7 +354,109 @@ function AddDiagnostic({
                                 }}
                               />
                             </div>
+                          </div>                          
+                          <div className="row gx-3">
+                            <div className="col-sm-6">
+                              <label className="form-label" htmlFor="patient">
+                                Այցելու
+                              </label>
+                              <Multiselect
+                                options={[{value:"Առանց այցելու"},...patients.map((patient) => ({
+                                  key: patient.patientId,
+                                  value: `${patient.firstName} ${patient.lastName}`,
+                                }))]}
+                                singleSelect
+                                onSelect={onPatientSelect}
+                                displayValue="value"
+                                id="input_tags_4"
+                                className="form-control"
+                                ref={multiselectRef}
+                                hidePlaceholder={true}
+                                placeholder="Ընտրել այցելուին"
+                                disable={!!organization}
+                                style={{
+                                  height: "10rem",
+                                  overflow: "hidden",
+                                }}
+                              />
+                            </div>
+                            <div className="col-sm-6">
+                                <label className="form-label" htmlFor="partner">
+                                  Պատվիրատու
+                                </label>
+                                <Multiselect
+                                  options={[{partner:"Առանց Պատվիրատու"},...partnerState]}
+                                  displayValue="partner"
+                                  onSelect={onOrganizationSelect}
+                                  closeOnSelect={true}
+                                  singleSelect
+                                  id="input_tags_4"
+                                  className="form-control"
+                                  hidePlaceholder={true}
+                                  disable={!!patientId}
+                                  placeholder="Պատվիրատու"
+                                  style={{
+                                    height: "10rem",
+                                    overflow: "hidden",
+                                  }}
+                                />
+                              </div>
                           </div>
+                            <div className="row gx-3">
+                          {externalType && (
+                              <div className="col-sm-6">
+                                <label className="form-label" htmlFor="partner">
+                                  Գործընկեր
+                                </label>
+                                <Multiselect
+                                  options={partnerState}
+                                  displayValue="partner"
+                                  onSelect={onPartnerSelect}
+                                  closeOnSelect={true}
+                                  singleSelect
+                                  id="input_tags_4"
+                                  className="form-control"
+                                  hidePlaceholder={true}
+                                  placeholder="Գործընկեր"
+                                  style={{
+                                    height: "10rem",
+                                    overflow: "hidden",
+                                  }}
+                                />
+                              </div>
+                              
+                              )}
+                             
+                            </div>
+                            <label
+                                  className="form-label"
+                                  htmlFor="input_tags_3"
+                                >
+                                  Ընտրել հետազոտություն
+                                </label>
+                                <div className="row gx-3">
+                                  <div className="col-sm-12">
+                                    <div className="form-group">
+                                      <Multiselect
+                                        options={researchesState}
+                                        displayValue="researchName"
+                                        onSelect={onResearchSelect}
+                                        onRemove={onResearchDelete}
+                                        closeOnSelect={true}
+                                        id="input_tags_3"
+                                        className="form-control"
+                                        ref={multiselectRef}
+                                        hidePlaceholder={true}
+                                        placeholder="Հետազոտություններ"
+                                        groupBy="category"
+                                        style={{
+                                          height: "10rem",
+                                          overflow: "hidden",
+                                        }}
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
                         </div>
                       </div>
                     </div>
@@ -442,7 +482,7 @@ function AddDiagnostic({
                           </span>
                         </button>
                       </div>
-                      <div className="card-body">
+                      <div className="card-body"style={{zIndex:'0'}}>
                         <div className="modal-body">
                           <form>
                             <div className="row gx-12">

@@ -1,12 +1,13 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { Modal } from "react-bootstrap";
 import Multiselect from "multiselect-react-dropdown";
 import FeatherIcon from "feather-icons-react";
+import ErrorSvg from "../../dist/svg/error.svg";
 import { Editor } from "@tinymce/tinymce-react";
 import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { Form, FormProvider, useForm } from "react-hook-form";
+import { Form, FormProvider, useForm, useController } from "react-hook-form";
 import { Input } from "../Input";
 import { toast } from "react-toastify";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
@@ -16,38 +17,40 @@ import {
   lastName_validation,
   midName_validation,
   email_validation,
-  mobile_validation,
   zipCode_validation,
   street_validation,
   city_validation,
   state_validation,
   country_validation,
   passport_validation,
-  fullName_validation,
-  workplace_validation,
-  contactEmail_validation,
 } from "../../utils/inputValidations";
 import { useCalculateAge } from "../../hooks/useCalculateAge";
 import { selectDoctors } from "../../redux/features/doctor/doctorsSlice";
 import { useSelector } from "react-redux";
 import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
+import { selectRefDoctors } from "../../redux/features/refDoctors/refDoctorsSlice";
+import CustomPhoneComponent from "../CustomPhoneComponent";
+import CustomDateComponent from "../CustomDateComponent";
+
 function CreatePatient({
   handleToggleCreateModal,
   getPatients,
   researchState,
 }) {
   const [researchesArray, setResearchesArray] = useState([]);
-  const [researchesPrice, setResearchesPrice] = useState([]);
+  const [addDiagnostic, setAddDiagnostic] = useState(false);
   const [startDate, setStartDate] = useState(new Date());
   const [birthday, setBirthday] = useState(new Date());
   const [gender, setGender] = useState("");
   const [doctor, setDoctor] = useState("Առանց բժիշկ");
+  const [refDoctor, setRefDoctor] = useState("Առանց բժիշկ");
   const [extraDoctor, setExtraDoctor] = useState(false);
   const doctors = useSelector(selectDoctors);
-
-
+  const refDoctors = useSelector(selectRefDoctors);
   const [errMsg, setErrMsg] = useState("");
+  const { trigger } = useForm();
+
   const methods = useForm({
     mode: "onChange",
   });
@@ -57,16 +60,14 @@ function CreatePatient({
   const editorRef = useRef(null);
   const doctorRef = useRef(null);
   const { age } = useCalculateAge(birthday);
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [extraDoctorPhoneNumber, setExtraDoctorPhoneNumber] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState(false);
 
-  const handlePhoneNumberChange = (value) => {
-    setPhoneNumber(value);
-  };
-  const handleExtraDoctorPhoneNumberChange = (value) => {
-    setExtraDoctorPhoneNumber(value);
-  };
-
+  const updatedDoctors = doctors.map((el) => {
+    return { ...el, category: "local" };
+  });
+  const updatedRefDoctors = refDoctors.map((el) => {
+    return { ...el, category: "ref" };
+  });
   const getDate = (date) => {
     setStartDate(date);
     handlingDate.current =
@@ -86,23 +87,25 @@ function CreatePatient({
       progress: undefined,
       theme: "light",
     });
-    
+
   const onSubmit = methods.handleSubmit(
     async ({
       firstName,
       lastName,
       midName,
       passport,
-      fullName,
-      workPlace,
       email,
-      contactEmail,
       street,
       city,
       state,
       country,
       zipCode,
+      gender,
+      phone,
+      dateOfBirth
     }) => {
+      setBirthday(dateOfBirth)
+      console.log(dateOfBirth)
       const newPatient = {
         firstName: firstName,
         lastName: lastName,
@@ -112,11 +115,12 @@ function CreatePatient({
         researchList: researchesArray,
         additional: editorRef.current.getContent({ format: "text" }),
         gender: gender,
-        doctors:doctor,
+        doctors: doctor,
+        refDoctor: refDoctor,
         contact: {
           email: email,
-          phone: phoneNumber,
-          passport:passport,
+          phone: phone,
+          passport: passport,
           address: {
             street: street,
             city: city,
@@ -125,13 +129,9 @@ function CreatePatient({
             zipCode: zipCode,
           },
         },
-        // extraDoctorName:fullName||null,
-        // workPlace:workPlace||null,
-        // extraDoctorPhone:extraDoctorPhoneNumber||null,
-        // extraDoctorEmail:contactEmail||null,
         medicalHistory: "medicalHistory",
         dateOfBirth: new Date(
-          birthday.getTime() - birthday.getTimezoneOffset() * 60000
+          dateOfBirth.getTime() - dateOfBirth.getTimezoneOffset() * 60000
         )
           .toISOString()
           .split("T")[0],
@@ -139,38 +139,42 @@ function CreatePatient({
 
       console.log(newPatient);
 
-      try {
-        await axiosPrivate.post(REGISTER_PATIENT, newPatient, {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
-        });
+      // try {
+      //   await axiosPrivate.post(REGISTER_PATIENT, newPatient, {
+      //     headers: { "Content-Type": "application/json" },
+      //     withCredentials: true,
+      //   });
 
-        handleToggleCreateModal(false);
-        getPatients();
-        notify(
-          `${newPatient.firstName} ${newPatient.lastName} հաճախորդը ավելացված է`
-        );
-      } catch (err) {
-        if (!err?.response) {
-          setErrMsg("No Server Response");
-        } else if (err.response?.status === 409) {
-          setErrMsg("Username Taken");
-        } else {
-          setErrMsg(" Failed");
-        }
-      }
+      //   handleToggleCreateModal(false);
+      //   getPatients();
+      //   notify(
+      //     `${newPatient.firstName} ${newPatient.lastName} հաճախորդը ավելացված է`
+      //   );
+      // } catch (err) {
+      //   if (!err?.response) {
+      //     setErrMsg("No Server Response");
+      //   } else if (err.response?.status === 409) {
+      //     setErrMsg("Username Taken");
+      //   } else {
+      //     setErrMsg(" Failed");
+      //   }
+      // }
     }
   );
-  const onGenderSelect = (event) => {
-    setGender((prev) => event.target.value);
+  const onGenderSelect = (value) => {
+    setGender(value);
+    trigger("gender");
   };
   const onDoctorSelect = (data) => {
-    if(data[0].doctorName==="Այլ բժիշկ"){
-      setExtraDoctor(true)
-    }else{
-      setExtraDoctor(false)
+    if (data[0].doctorName === "Այլ բժիշկ") {
+      setExtraDoctor(true);
+    } else {
+      setExtraDoctor(false);
     }
-    setDoctor(prev=> data[0].doctorName);
+    setDoctor((prev) => data[0].doctorName);
+  };
+  const onRefDoctorSelect = (data) => {
+    setRefDoctor((prev) => data[0].doctorName);
   };
   const onResearchSelect = (data) => {
     let researchesArr = [];
@@ -198,7 +202,7 @@ function CreatePatient({
     >
       <Modal.Header closeButton>
         <Modal.Title style={{ width: "100%", textAlign: "center" }}>
-          Ավելացնել նոր hիվանդ
+          Ավելացնել նոր այցելու
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
@@ -208,7 +212,7 @@ function CreatePatient({
               <div className="d-flex flex-xxl-nowrap flex-wrap">
                 <div className="contact-info w-100">
                   <Form
-                    onSubmit={(e) => e.preventDefault()}
+                    onSubmit={onSubmit}
                     noValidate
                     autoComplete="off"
                     className="container"
@@ -273,51 +277,44 @@ function CreatePatient({
                               <Input {...email_validation} />
                             </div>
                             <div className="col-sm-6">
-                              <label className="form-label" htmlFor="doctor">
-                                Հեռախոս
-                              </label>
-                              <PhoneInput
-                                placeholder="Հեռախոս"
-                                value={phoneNumber}
-                                onChange={handlePhoneNumberChange}
-                                displayInitialValueAsLocalNumber
-                                initialValueFormat="national"
-                                autoComplete="off"
-                                defaultCountry="AM"
-                              />
+                              <div className="d-flex justify-content-between me-2">
+                                <label className="form-label" htmlFor="doctor">
+                                  Հեռախոս
+                                </label>
+                                {console.log(methods?.formState.errors)}
+                                {methods?.formState.errors.phone && (
+                                  <span className="error text-red">
+                                    <span>
+                                      <img src={ErrorSvg} alt="errorSvg" />
+                                    </span>
+                                    required
+                                  </span>
+                                )}
+                              </div>
+                              <CustomPhoneComponent name="phone"  control={methods.control} />
                             </div>
                           </div>
                           <div className="row gx-3">
                             <div className="col-sm-6">
-                              <div className="form-group">
-                                <label
-                                  className="form-label"
-                                  htmlFor="handlingDate"
-                                >
-                                  Ծննդյան ամսաթիվ
-                                </label>
-                                <div>
-                                  <DatePicker
-                                    showYearDropdown
-                                    yearDropdownItemNumber={100}
-                                    scrollableYearDropdown
-                                    selected={birthday}
-                                    onChange={(date) => getAge(date)}
-                                    dateFormat={"yyyy-MM-dd"}
-                                    isClearable
-                                    placeholderText="Select date"
-                                  />
-                                </div>
-                              </div>
+                              <Input {...passport_validation} />
                             </div>
+
                             <div className="col-sm-6">
-                              <div className="mb-2">
+                              <div className="d-flex justify-content-between me-2">
                                 <label
                                   className="form-check-label"
-                                  htmlFor="male"
+                                  htmlFor="gender"
                                 >
                                   Սեռ
                                 </label>
+                                {methods.formState.errors.gender && (
+                                  <span className="error text-red">
+                                    <span>
+                                      <img src={ErrorSvg} alt="errorSvg" />
+                                    </span>{" "}
+                                    required
+                                  </span>
+                                )}
                               </div>
                               <div className="d-flex  align-items-center">
                                 <div className="form-check form-check-inline">
@@ -326,8 +323,10 @@ function CreatePatient({
                                     type="radio"
                                     id="male"
                                     value="Male"
-                                    checked={gender === "Male"}
-                                    onChange={onGenderSelect}
+                                    onChange={() => onGenderSelect("Male")}
+                                    {...methods.register("gender", {
+                                      required: true,
+                                    })}
                                   />
                                   <label
                                     className="form-check-label"
@@ -342,8 +341,10 @@ function CreatePatient({
                                     type="radio"
                                     id="female"
                                     value="Female"
-                                    checked={gender === "Female"}
-                                    onChange={onGenderSelect}
+                                    onChange={() => onGenderSelect("Female")}
+                                    {...methods.register("gender", {
+                                      required: true,
+                                    })}
                                   />
                                   <label
                                     className="form-check-label"
@@ -379,131 +380,175 @@ function CreatePatient({
                           </div>
                           <div className="row gx-3">
                             <div className="col-sm-6">
-                            <Input {...passport_validation} />
+                              <div className="form-group">
+                                <div className="d-flex justify-content-between me-2">
+                                  <label
+                                    className="form-label"
+                                    htmlFor="birthday"
+                                  >
+                                    Ծննդյան ամսաթիվ
+                                  </label>
+                                  {console.log(methods.formState.errors)}
+                                  {methods.formState.errors.dateOfBirth && (
+                                    <span className="error text-red">
+                                      <span>
+                                        <img src={ErrorSvg} alt="errorSvg" />
+                                      </span>{" "}
+                                      required
+                                    </span>
+                                  )}
+                                </div>
+                                <div >
+                                  <CustomDateComponent name="dateOfBirth" control={methods.control}/>
+                              
+                                </div>
+                              </div>
+                            </div>
+                            <div className="col-sm-6">
+                              <label>Ավելացնել ախտորոշում</label>
+                              <div>
+                                <input
+                                  type="checkbox"
+                                  name="selectDiagnostic"
+                                  checked={addDiagnostic}
+                                  onChange={(e) =>
+                                    setAddDiagnostic(e.target.checked)
+                                  }
+                                  style={{ transform: "scale(1.5)" }}
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="separator-full"></div>
 
-                            </div>
-                            <div className="col-sm-6">
-                              <label className="form-label" htmlFor="doctor">
-                                Բժիշկներ
-                              </label>
-                              <Multiselect
-                                options={[...[{doctorName:"Առանց բժիշկ"},{doctorName:"Այլ բժիշկ"}],...doctors]}
-                                onSelect={onDoctorSelect} // Function will trigger on select event
-                                //  onRemove={onResearchDelete} // Function will trigger on remove event
-                                closeOnSelect={true}
-                                singleSelect
-                                displayValue="doctorName"
-                                id="input_tags_4"
-                                className="form-control"
-                                ref={multiselectRef}
-                                hidePlaceholder={true}
-                                placeholder="Ընտրել բժշկին"
-                                selectedValues={[{doctorName:"Առանց բժիշկ"}]}
-                                style={{
-                                  height: "10rem",
-                                  overflow: "hidden",
-                                }}
-                                
-                              />
-                            </div>
+                    {addDiagnostic && (
+                      <>
+                        <div className="separator-full"></div>
+                        <div className="card">
+                          <div className="card-header">
+                            <a href="#">Ախտորոշումներ</a>
+                            <button
+                              className="btn btn-xs btn-icon btn-rounded btn-light"
+                              data-bs-toggle="tooltip"
+                              data-bs-placement="top"
+                              title=""
+                              data-bs-original-title="Add Tags"
+                            >
+                              <span
+                                className="icon"
+                                data-bs-toggle="modal"
+                                data-bs-target="#tagsInput"
+                              >
+                                <span className="feather-icon">
+                                  <FeatherIcon icon="edit-2" />
+                                </span>
+                              </span>
+                            </button>
                           </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="separator-full"></div>
-                    { extraDoctor &&
-                      <div className="card">
-                      <div className="card-header">
-                        Բժշկի տվյալներ
-                      </div>
-                      <div className="card-body">
-                        <div className="modal-body">
-                        <div className="row gx-3">
-                            <div className="col-sm-6">
-                              <Input {...fullName_validation} />
-                            </div>
-                            <div className="col-sm-6">
-                            <Input {...workplace_validation} />
-                            </div>
-                          </div>
-                          <div className="row gx-3">
-                            <div className="col-sm-6">
-                              <Input {...contactEmail_validation} />
-                            </div>
-                            <div className="col-sm-6">
-                              <label className="form-label" htmlFor="doctor">
-                                Հեռախոս
-                              </label>
-                              <PhoneInput
-                                placeholder="Հեռախոս"
-                                value={extraDoctorPhoneNumber}
-                                onChange={handleExtraDoctorPhoneNumberChange}
-                                displayInitialValueAsLocalNumber
-                                initialValueFormat="national"
-                                autoComplete="off"
-                                defaultCountry="AM"
-                              />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    }
-                    <div className="separator-full"></div>
-                    <div className="card">
-                      <div className="card-header">
-                        <a href="#">Հետազոտություններ</a>
-                        <button
-                          className="btn btn-xs btn-icon btn-rounded btn-light"
-                          data-bs-toggle="tooltip"
-                          data-bs-placement="top"
-                          title=""
-                          data-bs-original-title="Add Tags"
-                        >
-                          <span
-                            className="icon"
-                            data-bs-toggle="modal"
-                            data-bs-target="#tagsInput"
-                          >
-                            <span className="feather-icon">
-                              <FeatherIcon icon="edit-2" />
-                            </span>
-                          </span>
-                        </button>
-                      </div>
-                      <div className="card-body">
-                        <div className="modal-body">
-                          <h6 className="text-uppercase fw-bold mb-3">
-                            Ընտրել
-                          </h6>
-                          <form>
-                            <div className="row gx-3">
-                              <div className="col-sm-12">
-                                <div className="form-group">
+                          <div className="card-body">
+                            <div className="modal-body">
+                              <div className="row gx-3">
+                                <div className="col-sm-6">
+                                  <label
+                                    className="form-label"
+                                    htmlFor="doctor"
+                                  >
+                                    Բժիշկներ
+                                  </label>
                                   <Multiselect
-                                    options={researchState}
-                                    displayValue="researchName"
-                                    onSelect={onResearchSelect}
-                                    onRemove={onResearchDelete}
+                                    options={[
+                                      ...[
+                                        { doctorName: "Առանց բժիշկ" },
+                                        { doctorName: "Այլ բժիշկ" },
+                                      ],
+                                      ...doctors,
+                                    ]}
+                                    onSelect={onDoctorSelect} // Function will trigger on select event
+                                    //  onRemove={onResearchDelete} // Function will trigger on remove event
                                     closeOnSelect={true}
-                                    id="input_tags_3"
+                                    singleSelect
+                                    displayValue="doctorName"
+                                    id="input_tags_4"
                                     className="form-control"
                                     ref={multiselectRef}
                                     hidePlaceholder={true}
-                                    placeholder="Հետազոտություններ"
-                                    groupBy="category"
+                                    placeholder="Ընտրել բժշկին"
+                                    selectedValues={[
+                                      { doctorName: "Առանց բժիշկ" },
+                                    ]}
                                     style={{
                                       height: "10rem",
                                       overflow: "hidden",
                                     }}
                                   />
                                 </div>
+                                {extraDoctor && (
+                                  <div className="col-sm-6">
+                                    <label
+                                      className="form-label"
+                                      htmlFor="doctor"
+                                    >
+                                      Ուղղորդող բժիշկներ
+                                    </label>
+                                    <Multiselect
+                                      options={refDoctors}
+                                      onSelect={onRefDoctorSelect} // Function will trigger on select event
+                                      //  onRemove={onResearchDelete} // Function will trigger on remove event
+                                      closeOnSelect={true}
+                                      singleSelect
+                                      displayValue="doctorName"
+                                      id="input_tags_4"
+                                      className="form-control"
+                                      ref={multiselectRef}
+                                      hidePlaceholder={true}
+                                      placeholder="Ընտրել բժշկին"
+                                      style={{
+                                        height: "10rem",
+                                        overflow: "hidden",
+                                      }}
+                                    />
+                                  </div>
+                                )}
+                              </div>
+                              <div className="row gx-3 mt-2">
+                                <label
+                                  className="form-label"
+                                  htmlFor="input_tags_3"
+                                >
+                                  Ընտրել
+                                </label>
+                                <div className="row gx-3">
+                                  <div className="col-sm-12">
+                                    <div className="form-group">
+                                      <Multiselect
+                                        options={researchState}
+                                        displayValue="researchName"
+                                        onSelect={onResearchSelect}
+                                        onRemove={onResearchDelete}
+                                        closeOnSelect={true}
+                                        id="input_tags_3"
+                                        className="form-control"
+                                        ref={multiselectRef}
+                                        hidePlaceholder={true}
+                                        placeholder="Հետազոտություններ"
+                                        groupBy="category"
+                                        style={{
+                                          height: "10rem",
+                                          overflow: "hidden",
+                                        }}
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
                               </div>
                             </div>
-                          </form>
+                          </div>
                         </div>
-                      </div>
-                    </div>
+                      </>
+                    )}
                     <div className="card">
                       <div className="card-header">
                         <a href="#">Հավելյալ տվյալներ</a>
@@ -525,7 +570,7 @@ function CreatePatient({
                           </span>
                         </button>
                       </div>
-                      <div className="card-body">
+                      <div className="card-body" style={{zIndex:'0'}}>
                         <div className="modal-body">
                           <form>
                             <div className="row gx-12">

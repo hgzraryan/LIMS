@@ -18,7 +18,9 @@ import { REGISTER_EQUIPMENT } from "../../utils/constants";
 import { toast } from "react-toastify";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import Multiselect from "multiselect-react-dropdown";
-import DatePicker from "react-datepicker";
+import CustomDateComponent from "../CustomDateComponent";
+import ErrorSvg from "../../dist/svg/error.svg";
+
 const status = [
   { status: "Սարքին" },
   { status: "Վերանորոգվում է" },
@@ -74,6 +76,8 @@ function AddEquipment({ handleToggleCreateModal, getEquipments }) {
       model,
       serialNumber,
       locationValid,
+      purchaseDate,
+      warrantyExpiryDate
     }) => {
       const newEquipment = {
         equipmentName: name,
@@ -81,8 +85,16 @@ function AddEquipment({ handleToggleCreateModal, getEquipments }) {
         manufacturer: manufacturer,
         model: model,
         serialNumber: serialNumber,
-        purchaseDate: purchaseDate,
-        warrantyExpiryDate: warrantyExpiryDate,
+        purchaseDate: new Date(
+          purchaseDate.getTime() - purchaseDate.getTimezoneOffset() * 60000
+        )
+          .toISOString()
+          .split("T")[0],
+        warrantyExpiryDate: new Date(
+          warrantyExpiryDate.getTime() - warrantyExpiryDate.getTimezoneOffset() * 60000
+        )
+          .toISOString()
+          .split("T")[0],
         location: locationValid,
         status: equipmentStatus,
       };
@@ -189,47 +201,38 @@ function AddEquipment({ handleToggleCreateModal, getEquipments }) {
                           <div className="row gx-3">
                             <div className="col-sm-6">
                               <div className="form-group">
+                                <div className="d-flex justify-content-between me-2">
                                 <label
                                   className="form-label"
-                                  htmlFor="handlingDate"
-                                >
+                                  htmlFor="purchaseDate"
+                                  >
                                   Գնման ամսաթիվ
                                 </label>
-                                <div>
-                                  <DatePicker
-                                    showYearDropdown
-                                    yearDropdownItemNumber={100}
-                                    scrollableYearDropdown
-                                    selected={purchaseDate}
-                                    onChange={(date) => getPurchaseDate(date)}
-                                    dateFormat={"yyyy-MM-dd"}
-                                    isClearable
-                                    placeholderText="Ընտրեք ամսաթիվը"
-                                  />
+                                  {methods.formState.errors.purchaseDate && (
+                                    <span className="error text-red"><span><img src={ErrorSvg} alt="errorSvg"/></span> required</span>
+                                    )}
+                                    </div>
+                                <div></div>
+                                <div>                                  
+                                  <CustomDateComponent name="purchaseDate" control={methods.control}/>
                                 </div>
                               </div>
                             </div>
                             <div className="col-sm-6">
                               <div className="form-group">
+                                <div className="d-flex justify-content-between me-2">
                                 <label
                                   className="form-label"
-                                  htmlFor="handlingDate"
-                                >
+                                  htmlFor="warrantyExpiryDate"
+                                  >
                                   Երաշխիքի ավարտի ամսաթիվ
                                 </label>
+                                  {methods.formState.errors.warrantyExpiryDate && (
+                                    <span className="error text-red"><span><img src={ErrorSvg} alt="errorSvg"/></span> required</span>
+                                    )}
+                                    </div>
                                 <div>
-                                  <DatePicker
-                                    showYearDropdown
-                                    yearDropdownItemNumber={100}
-                                    scrollableYearDropdown
-                                    selected={warrantyExpiryDate}
-                                    onChange={(date) =>
-                                      getWarrantyExpiryDate(date)
-                                    }
-                                    dateFormat={"yyyy-MM-dd"}
-                                    isClearable
-                                    placeholderText="Ընտրեք ամսաթիվը"
-                                  />
+                                  <CustomDateComponent name="warrantyExpiryDate" control={methods.control}/>
                                 </div>
                               </div>
                             </div>
@@ -286,7 +289,7 @@ function AddEquipment({ handleToggleCreateModal, getEquipments }) {
                           </span>
                         </button>
                       </div>
-                      <div className="card-body">
+                      <div className="card-body" style={{zIndex:'0'}}>
                         <div className="modal-body">
                           <form>
                             <div className="row gx-12">

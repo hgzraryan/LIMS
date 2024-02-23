@@ -3,38 +3,45 @@ import FeatherIcon from 'feather-icons-react/build/FeatherIcon';
 import React, { useRef, useState } from 'react'
 import ReactPaginate from 'react-paginate';
 import { useSelector } from 'react-redux';
-import ClinicsTable from '../viewTables/ClinicsTable';
+import MedInstitutionsTable from '../viewTables/MedInstitutionsTable';
 import { Dropdown } from "react-bootstrap";
-import AddClinic from './AddClinic';
-import { CLINICS_ROUTE } from '../../utils/constants';
+import AddMedinstitution from './AddMedinstitution';
+import { MEDINSTITUTIONS_URL } from '../../utils/constants';
+import useDeleteData from '../../hooks/useDeleteData';
+import useGetData from '../../hooks/useGetData';
 
-const clinicsData = [
-    {
-        clinicId:1,
-        name:"AMC",
-        address:"Երևան, Դանիել Վարուժանի փ 28ա",
-        email:'info@astghikmc.com',
-        phone:" (011) 667788",
 
-}]
-function Clinics() {
-    const [clinics, setClinics] = useState(clinicsData);
+function MedInstitutions() {
     const [selectedItem, setSelectedItem] = useState("");
     const [selectedItemId, setSelectedItemId] = useState(null);
     const [isOpen, setIsOpen] = useState(false);
-    const confirmClinicRef = useRef("");
+    const confirmgetMedInstitutionsRef = useRef("");
     const [currentPage, setCurrentPage] = useState(0);  
     const [usersPerPage, setUsersPerPage] = useState(Math.round((window.innerHeight / 100) * 1.5));
-    // const clinicsCount = useSelector(selectClinics)
-    // const pageCount = Math.ceil(clinicsCount/usersPerPage)
+    // const medInstitutionsCount = useSelector(selectMedinstitutions)
+    // const pageCount = Math.ceil(medInstitutionsCount/usersPerPage)
     
-    // const {
-    //   data: clinics,
-    //   setData: setClinics,
-    //   getData: getClinics,
-    // } = useGetData(CLINICS_ROUTE,currentPage,usersPerPage);
+    const {
+      data: medInstitutions,
+      setData: setMedInstitutions,
+      getData: getMedInstitutions,
+    } = useGetData(MEDINSTITUTIONS_URL,currentPage,usersPerPage);
     const handleToggleCreateModal = (value) => {
       setIsOpen((prev) => value);
+    };
+  
+    const { handleDeleteItem } = useDeleteData(
+      MEDINSTITUTIONS_URL,
+      confirmgetMedInstitutionsRef,
+      selectedItem,
+      setSelectedItemId,
+      medInstitutions,
+      setMedInstitutions,
+      'institutionName',
+      getMedInstitutions
+    );
+    const handleCloseModal = () => {
+      setSelectedItemId(null);
     };
     const handleOpenModal = (user) => {
         setSelectedItemId(true);
@@ -85,9 +92,9 @@ function Clinics() {
                   </Dropdown>
 
                   {isOpen && (
-                    <AddClinic
+                    <AddMedinstitution
                       handleToggleCreateModal={handleToggleCreateModal}
-                      //getClinics={() => getClinics()}
+                      //getMedInstitutions={() => getMedInstitutions()}
                     />
                   )}
                 </div>
@@ -138,16 +145,16 @@ function Clinics() {
                     id="scrollableDiv"
                     style={{ height: "80vh", overflow: "auto" }}
                   >
-                      <ClinicsTable
-                        confirmRef={confirmClinicRef}
+                      <MedInstitutionsTable
+                        confirmRef={confirmgetMedInstitutionsRef}
                         selectedItem={selectedItem}
                         selectedItemId={selectedItemId}
-                        //handleDeleteItem={handleDeleteItem}
+                        handleDeleteItem={handleDeleteItem}
                         handleOpenModal={handleOpenModal}
-                        //handleCloseModal={handleCloseModal}
-                        clinics={clinics}
-                        setClinics={setClinics}
-                        //getClinics={getClinics}
+                        handleCloseModal={handleCloseModal}
+                        medInstitutions={medInstitutions}
+                        setMedInstitutions={setMedInstitutions}
+                        //getMedInstitutions={getMedInstitutions}
                       />
                       <ReactPaginate
                         previousLabel = {"Հետ"}    
@@ -175,4 +182,4 @@ function Clinics() {
   )
 }
 
-export default Clinics
+export default MedInstitutions

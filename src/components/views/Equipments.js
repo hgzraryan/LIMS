@@ -50,7 +50,8 @@ const Equipments = () => {
     setSelectedItemId,
     equipments,
     setEquipments,
-    "equipmentName"
+    "equipmentName",
+    getEquipments
   );
    //-------------------------PAGINATION---------------------------//
    const handlePageClick = ({ selected: selectedPage }) => {

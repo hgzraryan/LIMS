@@ -76,7 +76,7 @@ const Patients = () => {
                     aria-haspopup="true"
                     aria-expanded="false"
                   >
-                    <h1>Հիվանդներ</h1>
+                    <h1>Այցելուներ</h1>
                   </a>
                   {/*
 					<div className={showUserMenu ? 'dropdown-menu show' : 'dropdown-menu'} >
@@ -99,7 +99,7 @@ const Patients = () => {
 
                     <Dropdown.Menu>
                       <Dropdown.Item onClick={() => setIsOpen(true)}>
-                        Հիվանդ
+                        Այցելու
                       </Dropdown.Item>
                     </Dropdown.Menu>
                   </Dropdown>
@@ -283,19 +283,19 @@ const Patients = () => {
                     getPatients={getPatients}
                     />
                       <ReactPaginate
-                                            previousLabel = {"Հետ"}    
-                                            nextLabel = {"Առաջ"}
-                                            pageCount = {pageCount}
-                                            onPageChange = {handlePageClick}
-                                            initialPage = {0}
-                                            containerClassName={"pagination"}
-                                            pageLinkClassName = {"page-link"}
-                                            pageClassName = {"page-item"}
-                                            previousLinkClassName={"page-link"}
-                                            nextLinkClassName={"page-link"}
-                                            disabledLinkClassName={"disabled"}
-                                            //activeLinkClassName={"active"}
-                                            activeClassName={"active"}
+                        previousLabel = {"Հետ"}    
+                        nextLabel = {"Առաջ"}
+                        pageCount = {pageCount}
+                        onPageChange = {handlePageClick}
+                        initialPage = {0}
+                        containerClassName={"pagination"}
+                        pageLinkClassName = {"page-link"}
+                        pageClassName = {"page-item"}
+                        previousLinkClassName={"page-link"}
+                        nextLinkClassName={"page-link"}
+                        disabledLinkClassName={"disabled"}
+                        //activeLinkClassName={"active"}
+                        activeClassName={"active"}
 											/>
                   </div>
                 </div>

@@ -1,7 +1,7 @@
 export const data = {
   statusBoard: [
     {
-      researches: [],
+      researches: [{ id: "f7ed8d67-6b9d-4af5-8053-4f427e01f201",name: "Հետազոտություն1" }],
       color: "#6B7782",
       id: "10a5ee08-097f-49a6-bf33-e96a0e1b3d7p",
       position: 0,
@@ -15,7 +15,7 @@ export const data = {
       title: "Ընդունված",
     },
     {
-      researches: [{ id: "f7ed8d67-6b9d-4af5-8053-4f427e01f201",name: "Հետազոտություն1" }],
+      researches: [],
       color: "#FF7600",
       id: "5b797cac-64d4-4bd4-88b5-1fbdc547fae7",
       position: 2,
@@ -29,7 +29,7 @@ export const data = {
       title: "Հաստատում",
     },
     {
-      researches: [{ id: "f7ed8d67-6b9d-4af5-8053-4f427e01f204",name: "Հետազոտություն11" }],
+      researches: [],
       color: "#000",
       id: "5b797cac-64d4-4bd4-88b5-1fbdc547fac4",
       position: 3,

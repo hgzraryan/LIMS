@@ -1,20 +1,8 @@
-import Button from "react-bootstrap/Button";
-import React, { useState, forwardRef, useRef, useEffect } from "react";
-import Table from "react-bootstrap/Container";
+
+import React, {  forwardRef } from "react";
 import { useTable } from "react-table";
 import Barcode from "react-barcode";
 import mainLogo from "../dist/img/main-logo.jpg";
-import {
-  BiSolidHome,
-  BiSolidPhoneCall,
-  BiGlobe,
-  BiMailSend,
-  HiMiniCalendarDays
-} from "react-icons/bi";
-import { useSelector } from "react-redux";
-import { selectResearches } from "../redux/features/researches/researchesSlice";
-import useAxiosPrivate from "../hooks/useAxiosPrivate";
-import { useNavigate } from "react-router-dom";
 const data = [
     {
       shortName: "WBC",
@@ -62,7 +50,7 @@ const data = [
   ];
 export const ResultToPrintComponent = forwardRef(({ value,patient }, ref) => {
    
-//console.log(patient[0])  
+
   
     const columns = React.useMemo(
         () => [

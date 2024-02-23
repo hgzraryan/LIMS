@@ -4,6 +4,8 @@ import { Editor } from "@tinymce/tinymce-react";
 import FeatherIcon from "feather-icons-react/build/FeatherIcon";
 import MissingAvatar from "../../dist/img/Missing.svg";
 import { Input } from "../Input";
+import ErrorSvg from "../../dist/svg/error.svg";
+
 import {
   address_validation,
   email_validation,
@@ -30,6 +32,8 @@ import { useCalculateAge } from "../../hooks/useCalculateAge";
 import { toast } from "react-toastify";
 import { REGISTER_DOCTORS } from "../../utils/constants";
 import PhoneInput from "react-phone-number-input";
+import CustomPhoneComponent from "../CustomPhoneComponent";
+import CustomDateComponent from "../CustomDateComponent";
 function AddDoctor({ handleToggleCreateModal, getDoctors }) {
   const axiosPrivate = useAxiosPrivate();
   const multiselectRef = useRef("");
@@ -44,17 +48,7 @@ function AddDoctor({ handleToggleCreateModal, getDoctors }) {
   const formData = new FormData();
   const editorRef = useRef(null);
   const { age } = useCalculateAge(birthday);
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [emergencyContactNumber, setEmergencyContactNumber] = useState("");
   
-  const handlePhoneNumberChange = (value) => {
-    setPhoneNumber(value);
-
-  };
-  const handlEmergencyContactNumberChange = (value) => {
-    setEmergencyContactNumber(value);
-
-  };
   const onGenderSelect = (event) => {
     setGender(prev=>event.target.value)
   };
@@ -136,7 +130,6 @@ function AddDoctor({ handleToggleCreateModal, getDoctors }) {
     async ({
       fullName,
       email,
-      mobile,
       street,
       city,
       state,
@@ -146,12 +139,16 @@ function AddDoctor({ handleToggleCreateModal, getDoctors }) {
       qualification,
       licenseNumber,
       emergencyContactName,
+      emergencyContactNumber,
+      gender,
+      phone,
+      dateOfBirth,
     }) => {
       const newDoctor = {
         doctorName: fullName,
         contact: {
           email: email,
-          phone: phoneNumber,
+          phone: phone,
           address: {
             street: street,
             city: city,
@@ -165,16 +162,16 @@ function AddDoctor({ handleToggleCreateModal, getDoctors }) {
         licenseNumber: licenseNumber,
         gender: gender,
         dateOfBirth: new Date(
-          birthday.getTime() - birthday.getTimezoneOffset() * 60000
+          dateOfBirth.getTime() - dateOfBirth.getTimezoneOffset() * 60000
         )
           .toISOString()
           .split("T")[0],
         emergencyContactName: emergencyContactName,
         emergencyContactNumber: emergencyContactNumber,
         profilePictureUrl: "profilePictureUrl",
-        isActive: 0,
+        isActive: 1,
       };
-     console.log()
+    // console.log(newDoctor)
       formData.append("text", JSON.stringify(newDoctor));
       formData.append("image", image);
       try {
@@ -328,54 +325,72 @@ function AddDoctor({ handleToggleCreateModal, getDoctors }) {
                               <Input {...email_validation} />
                             </div>
                             <div className="col-sm-6">
-                            <label className="form-label" htmlFor="doctor">
+                            <div className="d-flex justify-content-between me-2">
+                              <label className="form-label" htmlFor="phoneNumber">
                                 Հեռախոս
                               </label>
-                              <PhoneInput
-                                placeholder="Հեռախոս"
-                                value={phoneNumber}
-                                onChange={handlePhoneNumberChange}
-                                displayInitialValueAsLocalNumber
-                                initialValueFormat="national"
-                                autoComplete="off"
-                                defaultCountry="AM"
-                              />    
+                              {methods.formState.errors.phone && (
+                                    <span className="error text-red"><span><img src={ErrorSvg} alt="errorSvg"/></span> required</span>
+                                    )}
+                                    </div>
+                                    <CustomPhoneComponent name="phone"  control={methods.control} />  
                             </div>
                           </div>
                           <div className="row gx-3">
                           <div className="col-sm-6">
-                            <div className="mb-2">
-                              <label className="form-check-label" htmlFor="male">
-                                Սեռ
-                              </label>
-                            </div>
-                            <div className="d-flex  align-items-center">
-                              <div className="form-check form-check-inline">
-                                <input
-                                  className="form-check-input"
-                                  type="radio"
-                                  id="male"
-                                  value="Արական"
-                                  checked={gender === "Արական"}
-                                  onChange={onGenderSelect} 
-                                />
-                              <label className="form-check-label" htmlFor="male">
-                                Արական
-                              </label>
-                            </div>
-                            <div className="form-check form-check-inline">
-                              <input
-                                className="form-check-input"
-                                type="radio"
-                                id="female"
-                                value="Իգական"
-                                checked={gender === "Իգական"} 
-                                onChange={onGenderSelect} 
-                              />
-                              <label className="form-check-label" htmlFor="female">
-                                Իգական
-                              </label>
+                              <div className="d-flex justify-content-between me-2">
+                                <label
+                                  className="form-check-label"
+                                  htmlFor="gender"
+                                >
+                                  Սեռ
+                                </label>
+                                {methods.formState.errors.gender && (
+                                  <span className="error text-red">
+                                    <span>
+                                      <img src={ErrorSvg} alt="errorSvg" />
+                                    </span>{" "}
+                                    required
+                                  </span>
+                                )}
                               </div>
+                              <div className="d-flex  align-items-center">
+                                <div className="form-check form-check-inline">
+                                  <input
+                                    className="form-check-input"
+                                    type="radio"
+                                    id="male"
+                                    value="Male"
+                                    onChange={() => onGenderSelect("Male")}
+                                    {...methods.register("gender", {
+                                      required: true,
+                                    })}
+                                  />
+                                  <label
+                                    className="form-check-label"
+                                    htmlFor="male"
+                                  >
+                                    Արական
+                                  </label>
+                                </div>
+                                <div className="form-check form-check-inline">
+                                  <input
+                                    className="form-check-input"
+                                    type="radio"
+                                    id="female"
+                                    value="Female"
+                                    onChange={() => onGenderSelect("Female")}
+                                    {...methods.register("gender", {
+                                      required: true,
+                                    })}
+                                  />
+                                  <label
+                                    className="form-check-label"
+                                    htmlFor="female"
+                                  >
+                                    Իգական
+                                  </label>
+                                </div>
                               </div>
                             </div>
                             <div className="col-sm-6">
@@ -440,23 +455,19 @@ function AddDoctor({ handleToggleCreateModal, getDoctors }) {
                             </div> */}
                             <div className="col-sm-6">
                               <div className="form-group">
+                                <div className="d-flex justify-content-between me-2">
                                 <label
                                   className="form-label"
-                                  htmlFor="handlingDate"
-                                >
+                                  htmlFor="purchaseDate"
+                                  >
                                   Ծննդյան ամսաթիվ
                                 </label>
+                                  {methods.formState.errors.dateOfBirth && (
+                                    <span className="error text-red"><span><img src={ErrorSvg} alt="errorSvg"/></span> required</span>
+                                    )}
+                                    </div>
                                 <div>
-                                  <DatePicker
-                                    showYearDropdown
-                                    yearDropdownItemNumber={100}
-                                    scrollableYearDropdown
-                                    selected={birthday}
-                                    onChange={(date) => getAge(date)}
-                                    dateFormat={"yyyy-MM-dd"}
-                                    isClearable
-                                    placeholderText="Select date"
-                                  />
+                                <CustomDateComponent name="dateOfBirth" control={methods.control}/>
                                 </div>
                               </div>
                             </div>
@@ -467,18 +478,16 @@ function AddDoctor({ handleToggleCreateModal, getDoctors }) {
                               <Input {...emergencyContactName_validation} />
                             </div>
                             <div className="col-sm-6">
-                            <label className="form-label" htmlFor="doctor">
+                              <div className="d-flex justify-content-between me-2">
+                              <label className="form-label" htmlFor="phoneNumber">
                               Լրացուցիչ կոնտակտի հեռախոս
                               </label>
-                              <PhoneInput
-                                placeholder="Լրացուցիչ կոնտակտի հեռախոս"
-                                value={emergencyContactNumber}
-                                onChange={handlEmergencyContactNumberChange}
-                                displayInitialValueAsLocalNumber
-                                initialValueFormat="national"
-                                autoComplete="off"
-                                defaultCountry="AM"
-                              />    
+                              {methods.formState.errors.emergencyContactNumber && (
+                                    <span className="error text-red"><span><img src={ErrorSvg} alt="errorSvg"/></span> required</span>
+                                    )}
+                                    </div>
+                               <CustomPhoneComponent name="emergencyContactNumber"  control={methods.control} />
+   
                             </div>
                           </div>
                         </div>

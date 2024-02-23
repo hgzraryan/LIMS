@@ -18,21 +18,22 @@ import {
   contactName_validation,
   contactEmail_validation,
   director_validation,
-  bank_validation,
-  bankAccount_validation,
+  bankName_validation,
+  bankAccNumber_validation,
   tin_validation,
   type_validation,
 } from "../../utils/inputValidations";
 import useSubmitForm from "../../hooks/useSubmitForm";
 import { REGISTER_ORGANIZATIONS } from "../../utils/constants";
-import PhoneInput from "react-phone-number-input";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { toast } from "react-toastify";
+import ErrorSvg from "../../dist/svg/error.svg";
+import CustomPhoneComponent from "../CustomPhoneComponent";
+
 function AddOrganization({ handleToggleCreateModal, getOrganizations }) {
   const [errMsg, setErrMsg] = useState("");
   const editorRef = useRef(null);
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [contactPhoneNumber, setContactPhoneNumber] = useState("");
+  
   const axiosPrivate = useAxiosPrivate();
   const notify = (text) =>
     toast.success(text, {
@@ -49,12 +50,6 @@ function AddOrganization({ handleToggleCreateModal, getOrganizations }) {
     mode: "onChange",
   });
 
-  const handlePhoneNumberChange = (value) => {
-    setPhoneNumber(value);
-  };
-  const handleContactPhoneNumberChange = (value) => {
-    setContactPhoneNumber(value);
-  };
   const onSubmit = methods.handleSubmit(
     async ({
       name,
@@ -70,8 +65,10 @@ function AddOrganization({ handleToggleCreateModal, getOrganizations }) {
       director,
       bankName,
       bankAccNumber,
+      phone,
       tin,
-      type
+      contactPhoneNumber,
+      type,
     }) => {
       //console.log(data)
       const newOrganization = {
@@ -82,7 +79,7 @@ function AddOrganization({ handleToggleCreateModal, getOrganizations }) {
         bankAccNumber:bankAccNumber,
         tin:tin,
         contact:{
-          phone: phoneNumber,
+          phone: phone,
           email: email,
           address: {
             street: street,
@@ -100,7 +97,7 @@ function AddOrganization({ handleToggleCreateModal, getOrganizations }) {
         description: description,
       };
 
-      console.log(newOrganization);
+      //console.log(newOrganization);
       try {
         await axiosPrivate.post(REGISTER_ORGANIZATIONS, newOrganization, {
           headers: { "Content-Type": "application/json" },
@@ -189,21 +186,16 @@ function AddOrganization({ handleToggleCreateModal, getOrganizations }) {
                               <Input {...email_validation} />
                             </div>
                             <div className="col-sm-6">
-                              <label
-                                className="form-label"
-                                htmlFor="phoneNumber"
-                              >
+                            <div className="d-flex justify-content-between me-2">
+                              <label className="form-label" htmlFor="phoneNumber">
                                 Հեռախոս
                               </label>
-                              <PhoneInput
-                                placeholder="Հեռախոս"
-                                value={phoneNumber}
-                                onChange={handlePhoneNumberChange}
-                                displayInitialValueAsLocalNumber
-                                initialValueFormat="national"
-                                autoComplete="off"
-                                defaultCountry="AM"
-                              />
+                              {methods.formState.errors.phone && (
+                                    <span className="error text-red"><span><img src={ErrorSvg} alt="errorSvg"/></span> required</span>
+                                    )}
+                                    </div>
+                                    <CustomPhoneComponent name="phone"  control={methods.control} />  
+
                             </div>
                           </div>
                           <div className="row gx-3">
@@ -233,10 +225,10 @@ function AddOrganization({ handleToggleCreateModal, getOrganizations }) {
                           </div>
                           <div className="row gx-3">
                             <div className="col-sm-6">
-                              <Input {...bank_validation} />
+                              <Input {...bankName_validation} />
                             </div>
                             <div className="col-sm-6">
-                              <Input {...bankAccount_validation} />
+                              <Input {...bankAccNumber_validation} />
                             </div>
                           </div>
                           <div className="row gx-3">
@@ -262,21 +254,17 @@ function AddOrganization({ handleToggleCreateModal, getOrganizations }) {
                               <Input {...contactName_validation} />
                             </div>
                             <div className="col-sm-6">
-                              <label
-                                className="form-label"
-                                htmlFor="contactPhoneNumber"
-                              >
+                            <div className="d-flex justify-content-between me-2">
+                              <label className="form-label" htmlFor="contactPhoneNumber">
                                 Հեռախոս
                               </label>
-                              <PhoneInput
-                                placeholder="Հեռախոս"
-                                value={contactPhoneNumber}
-                                onChange={handleContactPhoneNumberChange}
-                                displayInitialValueAsLocalNumber
-                                initialValueFormat="national"
-                                autoComplete="off"
-                                defaultCountry="AM"
-                              />
+                              {methods.formState.errors.contactPhoneNumber && (
+                                    <span className="error text-red"><span><img src={ErrorSvg} alt="errorSvg"/></span> required</span>
+                                    )}
+                                    </div>
+                             
+                                    <CustomPhoneComponent name="contactPhoneNumber"  control={methods.control} />  
+
                             </div>
                           </div>
                           <div className="row gx-3">
@@ -310,7 +298,7 @@ function AddOrganization({ handleToggleCreateModal, getOrganizations }) {
                           </span>
                         </button>
                       </div>
-                      <div className="card-body">
+                      <div className="card-body" style={{zIndex:'0'}}>
                         <div className="modal-body">
                           <form>
                             <div className="row gx-12">

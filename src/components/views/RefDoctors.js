@@ -7,6 +7,8 @@ import { Dropdown } from "react-bootstrap";
 import RefDoctorsTable from '../viewTables/RefDoctorsTable';
 import AddRefDoctor from './AddRefDoctor';
 import { REFDOCTORS_URL } from '../../utils/constants';
+import useGetData from '../../hooks/useGetData';
+import useDeleteData from '../../hooks/useDeleteData';
 const refDoctorsData = [
   {
       refDoctorId:9578,
@@ -17,24 +19,40 @@ const refDoctorsData = [
 
 }]
 function RefDoctors() {
-  const [refDoctors, setRefDoctors] = useState(refDoctorsData);
+  //const [refDoctors, setRefDoctors] = useState(refDoctorsData);
     const [selectedItem, setSelectedItem] = useState("");
     const [selectedItemId, setSelectedItemId] = useState(null);
     const [isOpen, setIsOpen] = useState(false);
-    const confirmAgentsRef = useRef("");
+    const confirmRefDoctorsRef = useRef("");
     const [currentPage, setCurrentPage] = useState(0);  
     const [usersPerPage, setUsersPerPage] = useState(Math.round((window.innerHeight / 100) * 1.5));
     // const clinicsCount = useSelector(selectClinics)
     // const pageCount = Math.ceil(clinicsCount/usersPerPage)
     
-    // const {
-    //   data: refDoctors,
-    //   setData: setRefDoctors,
-    //   getData: getRefDoctors,
-    // } = useGetData(REFDOCTORS_URL,currentPage,usersPerPage);
+    const {
+      data: refDoctors,
+      setData: setRefDoctors,
+      getData: getRefDoctors,
+    } = useGetData(REFDOCTORS_URL,currentPage,usersPerPage)
+    ;
+    const handleCloseModal = () => {
+      setSelectedItemId(null);
+    };
+    /*------------------ Create user Component --------------------*/
     const handleToggleCreateModal = (value) => {
       setIsOpen((prev) => value);
     };
+  
+    const { handleDeleteItem } = useDeleteData(
+      REFDOCTORS_URL,
+      confirmRefDoctorsRef,
+      selectedItem,
+      setSelectedItemId,
+      refDoctors,
+      setRefDoctors,
+      'doctorName',
+      getRefDoctors
+    );
     const handleOpenModal = (user) => {
         setSelectedItemId(true);
         setSelectedItem((prev) => user);
@@ -86,7 +104,7 @@ function RefDoctors() {
                   {isOpen && (
                     <AddRefDoctor
                       handleToggleCreateModal={handleToggleCreateModal}
-                      //getRefDoctors={() => getRefDoctors()}
+                      getRefDoctors={() => getRefDoctors()}
                     />
                   )}
                 </div>
@@ -138,15 +156,15 @@ function RefDoctors() {
                     style={{ height: "80vh", overflow: "auto" }}
                   >
                       <RefDoctorsTable
-                        confirmRef={confirmAgentsRef}
+                        confirmRef={confirmRefDoctorsRef}
                         selectedItem={selectedItem}
                         selectedItemId={selectedItemId}
-                        //handleDeleteItem={handleDeleteItem}
+                        handleDeleteItem={handleDeleteItem}
                         handleOpenModal={handleOpenModal}
-                        //handleCloseModal={handleCloseModal}
+                        handleCloseModal={handleCloseModal}
                         refDoctors={refDoctors}
                         setRefDoctors={setRefDoctors}
-                        //getClinics={getClinics}
+                        getRefDoctors={getRefDoctors}
                       />
                       <ReactPaginate
                         previousLabel = {"Հետ"}    

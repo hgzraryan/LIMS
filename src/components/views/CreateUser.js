@@ -13,12 +13,22 @@ import {
   password_validation,
   user_validation,
   position_validation,
+  country_validation,
+  city_validation,
+  state_validation,
+  street_validation,
+  zipCode_validation,
+  additional_validation,
+  emergencyContactName_validation,
 } from "../../utils/inputValidations";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import {  toast } from 'react-toastify';
 import ReactDatePicker from "react-datepicker";
 import { REGISTER_USER } from "../../utils/constants";
 import PhoneInput from "react-phone-number-input";
+import ErrorSvg from "../../dist/svg/error.svg";
+import CustomPhoneComponent from "../CustomPhoneComponent";
+import CustomDateComponent from "../CustomDateComponent";
 
 const roleState = {
   options: [
@@ -44,7 +54,16 @@ function CreateUser({ setIsOpen,getUsers }) {
   const fileReader = new FileReader();
   const formData = new FormData();
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [emergencyContactNumber, setEmergencyContactNumber] = useState("");
+  const [gender, setGender] = useState(""); 
 
+  const onGenderSelect = (event) => {
+    setGender(prev=>event.target.value)
+  };
+  const handlEmergencyContactNumberChange = (value) => {
+    setEmergencyContactNumber(value);
+
+  };
   const handlePhoneNumberChange = (value) => {
     setPhoneNumber(value);
   };
@@ -95,28 +114,50 @@ switch (data[0].type) {
     lastName,
     position,
     email,
-    mobile,
     user,
-    password,}) => {
+    password,
+    phone,
+    street,
+    city,
+    state,
+    country,
+    zipCode,
+    gender,
+    emergencyContactNumber,
+    emergencyContactName,
+    dateOfBirth}) => {
    
     const newUser = {
       firstname:firstName,
       lastname:lastName,
       position:position,
-      email:email,
-      mobile:phoneNumber,
+      contact: {
+      email: email,
+      phone: phone,
+      address: {
+        street: street,
+        city: city,
+        state: state,
+        country: country,
+        zipCode: zipCode,
+        },
+      },
+      gender: gender,
       username:user,
       password:password,
       roles: roles,
       type:userType,
+      emergencyContactName:emergencyContactName,
+      emergencyContactNumber:emergencyContactNumber,
       birthday:new Date(
-        birthday.getTime() - birthday.getTimezoneOffset() * 60000
+        dateOfBirth.getTime() - dateOfBirth.getTimezoneOffset() * 60000
       )
         .toISOString()
         .split("T")[0],
     };
     formData.append("text", JSON.stringify(newUser));
     formData.append("image", image);      
+    console.log(newUser)
     try {
       await axiosPrivate.post(REGISTER_USER, newUser, {
         headers: { "Content-Type": "application/json"  },
@@ -304,23 +345,19 @@ switch (data[0].type) {
                             </div>
                             <div className="col-sm-6">
                               <div className="form-group">
+                              <div className="d-flex justify-content-between me-2">
                                 <label
                                   className="form-label"
-                                  htmlFor="handlingDate"
-                                >
+                                  htmlFor="purchaseDate"
+                                  >
                                   Ծննդյան ամսաթիվ
                                 </label>
-                                <div>
-                                  <ReactDatePicker
-                                    showYearDropdown
-                                    yearDropdownItemNumber={100}
-                                    scrollableYearDropdown
-                                    selected={birthday}
-                                    onChange={(date) => getAge(date)}
-                                    dateFormat={"yyyy-MM-dd"}
-                                    isClearable
-                                    placeholderText="Select date"
-                                  />
+                                  {methods.formState.errors.dateOfBirth && (
+                                    <span className="error text-red"><span><img src={ErrorSvg} alt="errorSvg"/></span> required</span>
+                                    )}
+                                    </div>
+                                <div>                                  
+                                   <CustomDateComponent name="dateOfBirth" control={methods.control}/>
                                 </div>
                               </div>
                             </div>
@@ -330,18 +367,99 @@ switch (data[0].type) {
                               <Input {...email_validation} />
                             </div>
                             <div className="col-sm-6">
-                            <label className="form-label" htmlFor="doctor">
+                            <div className="d-flex justify-content-between me-2">
+                              <label className="form-label" htmlFor="phoneNumber">
                                 Հեռախոս
                               </label>
-                              <PhoneInput
-                                placeholder="Հեռախոս"
-                                value={phoneNumber}
-                                onChange={handlePhoneNumberChange}
-                                displayInitialValueAsLocalNumber
-                                initialValueFormat="national"
-                                autoComplete="off"
-                                defaultCountry="AM"
-                              />
+                              {methods.formState.errors.phone && (
+                                    <span className="error text-red"><span><img src={ErrorSvg} alt="errorSvg"/></span> required</span>
+                                    )}
+                                    </div>
+                              
+                              <CustomPhoneComponent name="phone"  control={methods.control} />  
+
+                            </div>
+                          </div>
+                          <div className="row gx-3">
+                            <div className="col-sm-6">
+                              <Input {...country_validation} />
+                            </div>
+                            <div className="col-sm-6">
+                              <Input {...state_validation} />
+                            </div>
+                          </div>
+                          <div className="row gx-3">
+                            <div className="col-sm-6">
+                              <Input {...city_validation} />
+                            </div>
+                            <div className="col-sm-6">
+                              <Input {...street_validation} />
+                            </div>
+                          </div>
+                          <div className="row gx-3">
+                            <div className="col-sm-6">
+                              <Input {...zipCode_validation} />
+                            </div>
+                            <div className="col-sm-6">
+                              <Input {...additional_validation} />
+                            </div>
+                            </div>
+                          <div className="row gx-3">
+                          <div className="col-sm-6">
+                              <div className="d-flex justify-content-between me-2">
+                                <label
+                                  className="form-check-label"
+                                  htmlFor="gender"
+                                >
+                                  Սեռ
+                                </label>
+                                {methods.formState.errors.gender && (
+                                  <span className="error text-red">
+                                    <span>
+                                      <img src={ErrorSvg} alt="errorSvg" />
+                                    </span>{" "}
+                                    required
+                                  </span>
+                                )}
+                              </div>
+                              <div className="d-flex  align-items-center">
+                                <div className="form-check form-check-inline">
+                                  <input
+                                    className="form-check-input"
+                                    type="radio"
+                                    id="male"
+                                    value="Male"
+                                    onChange={() => onGenderSelect("Male")}
+                                    {...methods.register("gender", {
+                                      required: true,
+                                    })}
+                                  />
+                                  <label
+                                    className="form-check-label"
+                                    htmlFor="male"
+                                  >
+                                    Արական
+                                  </label>
+                                </div>
+                                <div className="form-check form-check-inline">
+                                  <input
+                                    className="form-check-input"
+                                    type="radio"
+                                    id="female"
+                                    value="Female"
+                                    onChange={() => onGenderSelect("Female")}
+                                    {...methods.register("gender", {
+                                      required: true,
+                                    })}
+                                  />
+                                  <label
+                                    className="form-check-label"
+                                    htmlFor="female"
+                                  >
+                                    Իգական
+                                  </label>
+                                </div>
+                              </div>
                             </div>
                           </div>
                           <div className="row gx-3">
@@ -375,6 +493,22 @@ switch (data[0].type) {
                                 }}
                                 
                               />
+                            </div>
+                          </div>
+                          <div className="row gx-3">
+                            <div className="col-sm-6">
+                              <Input {...emergencyContactName_validation} />
+                            </div>
+                            <div className="col-sm-6">
+                              <div className="d-flex justify-content-between me-2">
+                              <label className="form-label" htmlFor="phoneNumber">
+                              Լրացուցիչ կոնտակտի հեռախոս
+                              </label>
+                              {methods.formState.errors.emergencyContactNumber && (
+                                    <span className="error text-red"><span><img src={ErrorSvg} alt="errorSvg"/></span> required</span>
+                                    )}
+                                    </div>                              
+                              <CustomPhoneComponent name="emergencyContactNumber"  control={methods.control} />     
                             </div>
                           </div>
                         </div>

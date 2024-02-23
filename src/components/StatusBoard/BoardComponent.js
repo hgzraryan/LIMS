@@ -16,6 +16,7 @@ function BoardComponent({ selectedItem, columns }) {
           }}
         >
           {columns?.map((column, index) => (
+            <>
             <ColumnComponent
               key={column.id}
               columnIndex={index}
@@ -25,7 +26,8 @@ function BoardComponent({ selectedItem, columns }) {
               columnItems={column.researches}
               selectedItem={selectedItem}
               // myActivitiesList={data}
-            />
+              />
+              </>
           ))}
           {provided.placeholder}
         </div>

@@ -6,25 +6,22 @@ import { useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import { Form, FormProvider, useForm} from "react-hook-form";
 import { Input } from "../Input";
-import { name_validation, desc_validation, email_validation,  address_validation, director_validation, tin_validation, bank_validation, bankAccount_validation, zipCode_validation, street_validation, city_validation, state_validation, country_validation } from "../../utils/inputValidations";
+import { name_validation, desc_validation, email_validation, director_validation, tin_validation, zipCode_validation, street_validation, city_validation, state_validation, country_validation, bankAccNumber_validation, bankName_validation } from "../../utils/inputValidations";
 import useSubmitForm from "../../hooks/useSubmitForm";
-import PhoneInput from "react-phone-number-input";
 import { toast } from "react-toastify";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import ErrorSvg from "../../dist/svg/error.svg";
+import CustomPhoneComponent from "../CustomPhoneComponent";
+
 const REGISTER_AGENT = "/registerAgent";
 
 function AddAgent({ handleToggleCreateModal, getAgents }) {
   const [errMsg, setErrMsg] = useState("");
   const axiosPrivate = useAxiosPrivate();
-  const [phoneNumber, setPhoneNumber] = useState("");
   const methods = useForm({
     mode: "onChange",
   });
 
-  const handlePhoneNumberChange = (value) => {
-    setPhoneNumber(value);
-
-  };
   const editorRef = useRef(null);
   // const { onSubmit, methods } = useSubmitForm(
   //   REGISTER_AGENT,
@@ -51,6 +48,7 @@ function AddAgent({ handleToggleCreateModal, getAgents }) {
     street,
     city,
     zipCode,
+    phone
   }) => {
     const newAgent = {
        name: name,
@@ -60,7 +58,7 @@ function AddAgent({ handleToggleCreateModal, getAgents }) {
        tin:tin,
        contact: {
          email:email,
-         phone:phoneNumber,
+         phone:phone,
         address: {
           street: street,
           city: city,
@@ -73,7 +71,7 @@ function AddAgent({ handleToggleCreateModal, getAgents }) {
       additional: editorRef.current.getContent({ format: "text" }),
     };
 
-   // console.log(newAgent);
+    //console.log(newAgent);
     try {
       await axiosPrivate.post(REGISTER_AGENT, newAgent, {
         headers: { "Content-Type": "application/json" },
@@ -152,18 +150,16 @@ function AddAgent({ handleToggleCreateModal, getAgents }) {
                               <Input {...email_validation} />
                             </div>
                             <div className="col-sm-6">
-                            <label className="form-label" htmlFor="doctor">
+                            <div className="d-flex justify-content-between me-2">
+                              <label className="form-label" htmlFor="doctor">
                                 Հեռախոս
                               </label>
-                              <PhoneInput
-                                placeholder="Հեռախոս"
-                                value={phoneNumber}
-                                onChange={handlePhoneNumberChange}
-                                displayInitialValueAsLocalNumber
-                                initialValueFormat="national"
-                                autoComplete="off"
-                                defaultCountry="AM"
-                              />
+                              {methods.formState.errors.phone && (
+                                    <span className="error text-red"><span><img src={ErrorSvg} alt="errorSvg"/></span> required</span>
+                                    )}
+                                    </div>
+                                    <CustomPhoneComponent name="phone"  control={methods.control} />
+
                             </div>
                           </div>
                           <div className="row gx-3">
@@ -197,10 +193,10 @@ function AddAgent({ handleToggleCreateModal, getAgents }) {
                           </div>
                           <div className="row gx-3">
                             <div className="col-sm-6">
-                              <Input {...bank_validation} />
+                              <Input {...bankName_validation} />
                             </div>
                             <div className="col-sm-6">
-                              <Input {...bankAccount_validation} />
+                              <Input {...bankAccNumber_validation} />
                             </div>
                           </div>
                           <div className="row gx-3">
@@ -233,7 +229,7 @@ function AddAgent({ handleToggleCreateModal, getAgents }) {
                           </span>
                         </button>
                       </div>
-                      <div className="card-body">
+                      <div className="card-body"style={{zIndex:'0'}}>
                         <div className="modal-body">
                           <form>
                             <div className="row gx-12">

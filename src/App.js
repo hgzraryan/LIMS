@@ -26,9 +26,11 @@ import {LOGIN_ROUTE,
   MISSING_ROUTE,
   DOCTORS_ID_ROUTE,
 REFDOCTORS_ROUTE,
-CLINICS_ROUTE} from '../src/utils/constants' 
+MEDINSTITUTIONS_ROUTE,
+SUPPORT_URL} from '../src/utils/constants' 
 import { lazy, Suspense } from "react";
 import DoctorDetails from "./components/views/DoctorDetails";
+import Support from "./components/views/Support";
 
  const Register = lazy(()=>  import("./components/Register"));
  const Login = lazy(()=>  import("./components//views/Login"));
@@ -57,7 +59,7 @@ import DoctorDetails from "./components/views/DoctorDetails";
  const Diagnostics = lazy(()=>  import("./components/views/Diagnostics"));
  const Doctors = lazy(()=>  import("./components/views/Doctors"));
  const RefDoctors = lazy(()=>  import("./components/views/RefDoctors"));
- const Clinics = lazy(()=>  import("./components/views/Clinics"));
+ const MedInstitutions = lazy(()=>  import("./components/views/MedInstitutions"));
  const PatientDetails = lazy(()=>  import("./components/views/PatientDetails"));
  const AddSample = lazy(()=>  import("./components/views/AddSample"));
  const Samples = lazy(()=>  import("./components/viewTables/SamplesTable"));
@@ -97,6 +99,7 @@ function App() {
           </Route>
           <Route path="/" element={<MainTemplate />}>
             <Route index path={HOME_ROUTE} element={<Home />} />
+            <Route index path={SUPPORT_URL} element={<Support />} />
 
             <Route index path="/" element={<Home />} />
             <Route path={DOCTORS_ROUTE} element={<Doctors />} />
@@ -125,7 +128,7 @@ function App() {
               />
               <Route path={DIAGNOSTICS_ROUTE} element={<Diagnostics />} />
               <Route path={REFDOCTORS_ROUTE} element={<RefDoctors />} />
-              <Route path={CLINICS_ROUTE} element={<Clinics />} />
+              <Route path={MEDINSTITUTIONS_ROUTE} element={<MedInstitutions />} />
             </Route>
 
             <Route element={<RequireAuth allowedRoles={[ROLES.Editor]} />}>

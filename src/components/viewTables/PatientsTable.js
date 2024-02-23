@@ -36,12 +36,7 @@ function PatientsTable({
     
     setModalInfo((prev) => user);
   };
-  const handlePatientsDetail = async (patientId) => {
-
-  console.log('**********');
-  console.log('patientId',patientId);
-  console.log('**********',);
-  
+  const handlePatientsDetail = async (patientId) => {  
     try {
       const response = await axiosPrivate.get(`/patients/${patientId}`, );
       console.log(response.data); 
@@ -58,36 +53,7 @@ function PatientsTable({
       // }
     }
   };
-  const ComponentToPrintWrapper = ({ user }) => {
-    // 1.
-    let componentRef = useRef(null); // 2.
-    return (
-      <div style={{ display: "flex" }}>
-        <ReactToPrint
-          trigger={() => (
-            <a
-              className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover"
-              data-bs-toggle="tooltip"
-              data-placement="top"
-              title=""
-              data-bs-original-title="Archive"
-              href="#"
-            >
-              <span className="icon">
-                <span className="feather-icon">
-                  <FeatherIcon icon="printer" />
-                </span>
-              </span>
-            </a>
-          )}
-          content={() => componentRef.current}
-        />
-        <div style={{ display: "none" }}>
-          <ComponentToPrint ref={componentRef} value={user} />
-        </div>
-      </div>
-    );
-  };
+ 
   const defaultColumn = React.useMemo(
     () => ({
       minWidth: 20,
@@ -132,6 +98,7 @@ function PatientsTable({
           <ColumnFilter
             id={id}
             setData={setPatients}
+            placeholder={'Անուն'}
           />
         ),
         Cell: ({ row }) => (
@@ -157,6 +124,7 @@ function PatientsTable({
           <ColumnFilter
             id={id}
             setData={setPatients}
+            placeholder={'Ազգանուն'}
           />
         ),        
       },
@@ -174,6 +142,7 @@ function PatientsTable({
           <ColumnFilter
             id={id}
             setData={setPatients}
+            placeholder={'Հայրանուն'}
           />
         ),
       },
@@ -191,6 +160,7 @@ function PatientsTable({
           <ColumnFilter
             id={id}
             setData={setPatients}
+            placeholder={'Էլ․ հասցե'}
           />
         ),
         Cell: ({ row }) => <div>{row.original?.contact?.email}</div>,
@@ -212,6 +182,7 @@ function PatientsTable({
           <ColumnFilter
             id={id}
             setData={setPatients}
+            placeholder={'Տարիք'}
           />
         ),
       },
@@ -262,17 +233,7 @@ function PatientsTable({
               size={"1.5rem"}
               onClick={() => handleOpenInfoModal(row.original)}
             />
-            </div>
-            <div className="d-flex">
-              <ComponentToPrintWrapper user={row.original} />
-             
-              {/*
-                        <a className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover" data-bs-toggle="tooltip" data-placement="top" title="" data-bs-original-title="Archive" href="#"><span className="icon"><span className="feather-icon"><FeatherIcon icon="archive" /></span></span></a>
-                        <a className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover" data-bs-toggle="tooltip" data-placement="top" title="" data-bs-original-title="Edit" href="edit-contact.html"><span className="icon"><span className="feather-icon"><FeatherIcon icon="edit" /></span></span></a>
-                        <a className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover del-button" data-bs-toggle="tooltip" data-placement="top" title="" data-bs-original-title="Delete" href="#"><span className="icon"><span className="feather-icon"><FeatherIcon icon="trash" /></span></span></a>
-                      */}
-            </div>
-            
+            </div>            
             <div className="dropdown">
               <button
                 className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover dropdown-toggle no-caret"

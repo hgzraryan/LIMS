@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from "react";
-import ComponentToConfirm from "../ComponentToConfirm";
+import { ColumnFilter } from "../ColumnFilter";
+import FeatherIcon from "feather-icons-react/build/FeatherIcon";
 import {
   useBlockLayout,
   useFilters,
@@ -9,26 +10,27 @@ import {
   useTable,
 } from "react-table";
 import { Checkbox } from "../Checkbox";
-import FeatherIcon from "feather-icons-react/build/FeatherIcon";
-import { ColumnFilter } from "../ColumnFilter";
+import { BiSolidInfoCircle } from "react-icons/bi";
 import { Modal } from "react-bootstrap";
 import DefaultProfileImage from "../../../src/dist/img/Missing.svg";
-import { BiSolidInfoCircle } from "react-icons/bi";
-function RefDoctorsTable({
+import ComponentToConfirm from "../ComponentToConfirm";
+
+function MedInstitutionsTable({
   confirmRef,
   selectedItem,
   selectedItemId,
   handleDeleteItem,
   handleOpenModal,
   handleCloseModal,
-  refDoctors,
-  setRefDoctors,
-  //getRefDoctors
+  medInstitutions,
+  setMedInstitutions,
+  //getMedinstitutions //"//comment":{
 }) {
   const [modalInfo, setModalInfo] = useState("");
   const handleOpenInfoModal = (user) => {
     setModalInfo((prev) => user);
   };
+
   const defaultColumn = React.useMemo(
     () => ({
       minWidth: 20,
@@ -37,6 +39,7 @@ function RefDoctorsTable({
     }),
     []
   );
+
   const columns = useMemo(
     () => [
       {
@@ -45,37 +48,42 @@ function RefDoctorsTable({
             <div className="columnHeader">ID</div>
           </>
         ),
-        accessor: "refDoctorsId",
+        accessor: "medInstitutionId",
         sortable: true,
         width: 80,
         Filter: ({ column: { id } }) => (
-          <ColumnFilter id={id} setData={setRefDoctors} placeholder={"ID"} />
+          <ColumnFilter id={id} setData={setMedInstitutions} placeholder={"ID"} />
         ),
       },
       {
         Header: (event) => (
           <>
-            <div className="columnHeader">Անուն ազգանուն</div>
+            <div className="columnHeader">Անվանում</div>
           </>
         ),
-        accessor: "doctorName",
+        accessor: "medInstitutionName",
         sortable: true,
-        width: 500,
+        width: 400,
         Filter: ({ column: { id } }) => (
-          <ColumnFilter id={id} setData={setRefDoctors} />
+          <ColumnFilter id={id} setData={setMedInstitutions} />
         ),
       },
+
       {
         Header: (event) => (
           <>
-            <div className="columnHeader">Աշխատավայր</div>
+            <div>Հասցե</div>
           </>
         ),
-        accessor: "medInstitution",
-        sortable: true,
-        width: 250,
+        accessor: "address",
+        width: 300,
+        // Cell: ({ row }) => (
+        //   <div className="d-flex align-items-center">
+        //     {row.original?.contact?.email}
+        //   </div>
+        // ),
         Filter: ({ column: { id } }) => (
-          <ColumnFilter id={id} setData={setRefDoctors} />
+          <ColumnFilter id={id} setData={setMedInstitutions} />
         ),
       },
       {
@@ -86,13 +94,13 @@ function RefDoctorsTable({
         ),
         accessor: "email",
         width: 300,
-        Cell: ({ row }) => (
-          <div className="d-flex align-items-center">
-            {row.original?.contact?.email}
-          </div>
-        ),
+        // Cell: ({ row }) => (
+        //   <div className="d-flex align-items-center">
+        //     {row.original?.contact?.phone}
+        //   </div>
+        // ),
         Filter: ({ column: { id } }) => (
-          <ColumnFilter id={id} setData={setRefDoctors} />
+          <ColumnFilter id={id} setData={setMedInstitutions} />
         ),
       },
       {
@@ -102,14 +110,14 @@ function RefDoctorsTable({
           </>
         ),
         accessor: "phone",
-        width: 300,
-        Cell: ({ row }) => (
-          <div className="d-flex align-items-center">
-            {row.original?.contact?.phone}
-          </div>
-        ),
+        width: 230,
+        // Cell: ({ row }) => (
+        //   <div className="d-flex align-items-center">
+        //     {row.original?.contact?.phone}
+        //   </div>
+        // ),
         Filter: ({ column: { id } }) => (
-          <ColumnFilter id={id} setData={setRefDoctors} />
+          <ColumnFilter id={id} setData={setMedInstitutions} />
         ),
       },
       {
@@ -119,7 +127,7 @@ function RefDoctorsTable({
           </>
         ),
         accessor: "actions",
-        width: 300,
+        width: 250,
         Cell: ({ row }) => (
           <div className="d-flex align-items-center">
             <div className="d-flex">
@@ -179,7 +187,7 @@ function RefDoctorsTable({
   } = useTable(
     {
       columns,
-      data: refDoctors,
+      data: medInstitutions,
       defaultColumn,
     },
     useFilters,
@@ -200,7 +208,7 @@ function RefDoctorsTable({
       ]);
     }
   );
-  // console.log(selectedFlatRows);
+  console.log(selectedFlatRows);
   return (
     <>
       {modalInfo && (
@@ -356,7 +364,7 @@ function RefDoctorsTable({
             </tr>
           ))}
         </thead>
-        {refDoctors?.length && (
+        {medInstitutions?.length && (
           <tbody {...getTableBodyProps()}>
             {rows.map((row) => {
               prepareRow(row);
@@ -377,19 +385,20 @@ function RefDoctorsTable({
               );
             })}
             <ComponentToConfirm
-                handleCloseModal={handleCloseModal}
-                handleOpenModal={handleOpenModal}
-                handleDeleteItem={handleDeleteItem}
-                selectedItemId={selectedItemId}
-                confirmUserRef={confirmRef}
-                keyName={selectedItem.doctorName}
-                delId={selectedItem.refDoctorsId}
-              />
+              handleCloseModal={handleCloseModal}
+              handleOpenModal={handleOpenModal}
+              handleDeleteItem={handleDeleteItem}
+              selectedItemId={selectedItemId}
+              confirmUserRef={confirmRef}
+              keyName={selectedItem.institutionName}
+              delId={selectedItem.medInstitutionsId}
+            />
           </tbody>
         )}
+        
       </table>
     </>
   );
 }
 
-export default RefDoctorsTable;
+export default MedInstitutionsTable;

@@ -289,7 +289,7 @@ function AddResearchList({ handleToggleCreateModal, getResearches,researchState 
                             </span>
                           </button>
                         </div>
-                        <div className="card-body">
+                        <div className="card-body" style={{zIndex:'0'}}>
                           <div className="modal-body">
                             <form>
                               <div className="row gx-12">

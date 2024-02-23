@@ -10,30 +10,23 @@ function ComponentToPrintResultWrapper({data,patients}) {
      const {statusBoard}=data
      const {patientId}=data
      patientRef.current = patients.filter((el)=>el.patientId===patientId)
-    // console.log(data)
+
     let componentRef = useRef(null); 
     return (
         <div style={{ display: "flex" }}>
             <ReactToPrint
                 trigger={() => (
-                    <a
-                        className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover"
-                        data-bs-toggle="tooltip"
-                        data-placement="top"
-                        title=""
-                        data-bs-original-title="Archive"
-                        href="#"
-                        onClick={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                        }}        
-                    >
-                        <span className="icon">
-                            <span className="feather-icon">
-                                <FeatherIcon icon="send"  />
-                            </span>
-                        </span>
-                    </a>
+                    <button
+                    type="button"
+                    className="btn btn-secondary"
+                    onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                    }}  
+                  >
+                    Տպել
+                  </button>
+                    
                 )}
                 content={() => componentRef.current}
             />

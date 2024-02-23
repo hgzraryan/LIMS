@@ -54,7 +54,8 @@ const ResearchLists = () => {
     setSelectedItemId,
     researchList,
     setResearches,
-    "researchName" 
+    "researchName",
+    getResearches 
   );
    //-------------------------PAGINATION---------------------------//
   

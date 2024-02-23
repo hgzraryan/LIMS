@@ -30,7 +30,6 @@ function SamplesTable() {
       sampleTime:'Երկ-Ուրբ 08։30-17։00 Շաբաթ 09։30-13։00',
       prepare:"Ոսկրածուծի ախտաբան. / արյան ընդհ. Վերլուծության պատասխան պահանջվում է"
     }])
-console.log(samples)
   const defaultColumn = React.useMemo(
     () => ({
       minWidth: 20,

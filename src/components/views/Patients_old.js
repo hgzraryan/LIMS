@@ -460,7 +460,7 @@ const generateData = (start, length = 1) =>
 							<div className="d-flex align-items-center">
 								<div className="dropdown">
 									<a className="contactapp-title link-dark" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-										<h1>Հիվանդներ</h1>
+										<h1>Այցելուներ</h1>
 									</a>
 									{/*
 									<div className={showUserMenu ? 'dropdown-menu show' : 'dropdown-menu'} >
@@ -479,13 +479,13 @@ const generateData = (start, length = 1) =>
 
 										
 										<a className="dropdown-item" href="#" onClick={() => setIsOpen(true)}>
-                                             <span className="feather-icon dropdown-icon"></span><span>Հիվանդի</span>
+                                             <span className="feather-icon dropdown-icon"></span><span>Այցելուի</span>
                                         </a>
 										
 										<Modal show={isOpen} size='xl' onHide={() => setIsOpen(false)}>
 										   <Modal.Header closeButton>
 											 <Modal.Title style={{ width: '100%', textAlign: 'center' }}>
-											   Ավելացնել նոր Հիվանդի
+											   Ավելացնել նոր այցելու
 											 </Modal.Title>
 										   </Modal.Header>
 										   <Modal.Body>

@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { checkUsersCount } from "../redux/features/users/usersCountSlice";
 
-const useDeleteData = (url,itemRef,selectedItem,setSelectedItemId,items,setItems,name) => {
+const useDeleteData = (url,itemRef,selectedItem,setSelectedItemId,items,setItems,name,getData) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
@@ -27,8 +27,9 @@ const useDeleteData = (url,itemRef,selectedItem,setSelectedItemId,items,setItems
         });
         setSelectedItemId(null); // Close the modal after deletion
         Swal.fire(`${response.data[name]} has been deleted`);
-        const updatedItems = items.filter((data) => data._id !== delid);
-        setItems(updatedItems);
+        // const updatedItems = items.filter((data) => data._id !== delid);
+        // setItems(updatedItems);
+        getData()
         updateUsersCount()
       } catch (err) {
         Swal.fire({
