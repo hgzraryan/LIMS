@@ -17,7 +17,7 @@ export const firstName_validation = {
   validation: {
     required: {
       value: true,
-      message: "required",
+      message: "պարտադիր",
     },
     maxLength: {
       value: 30,
@@ -34,7 +34,7 @@ export const lastName_validation = {
   validation: {
     required: {
       value: true,
-      message: "required",
+      message: "պարտադիր",
     },
     maxLength: {
       value: 30,
@@ -51,7 +51,7 @@ export const midName_validation = {
   validation: {
     required: {
       value: true,
-      message: "required",
+      message: "պարտադիր",
     },
     maxLength: {
       value: 30,
@@ -68,7 +68,7 @@ export const user_validation = {
   validation: {
     required: {
       value: true,
-      message: "required",
+      message: "պարտադիր",
     },
     maxLength: {
       value: 30,
@@ -85,7 +85,7 @@ export const password_validation = {
   validation: {
     required: {
       value: true,
-      message: "required",
+      message: "պարտադիր",
     },
     minLength: {
       value: 6,
@@ -102,7 +102,7 @@ export const passport_validation = {
   validation: {
     required: {
       value: true,
-      message: "required",
+      message: "պարտադիր",
     },
   },
 };
@@ -115,7 +115,7 @@ export const position_validation = {
   validation: {
     required: {
       value: true,
-      message: "required",
+      message: "պարտադիր",
     },
     maxLength: {
       value: 30,
@@ -132,7 +132,7 @@ export const tin_validation = {
   validation: {
     required: {
       value: true,
-      message: "required",
+      message: "պարտադիր",
     },
   },
 };
@@ -145,7 +145,7 @@ export const bankName_validation = {
   validation: {
     required: {
       value: true,
-      message: "required",
+      message: "պարտադիր",
     },
   },
 };
@@ -158,7 +158,7 @@ export const bankAccNumber_validation = {
   validation: {
     required: {
       value: true,
-      message: "required",
+      message: "պարտադիր",
     },
   },
 };
@@ -171,7 +171,7 @@ export const director_validation = {
   validation: {
     required: {
       value: true,
-      message: "required",
+      message: "պարտադիր",
     },
   },
 };
@@ -184,7 +184,7 @@ export const medInstitution_validation = {
   validation: {
     required: {
       value: true,
-      message: "required",
+      message: "պարտադիր",
     },
   },
 };
@@ -197,7 +197,7 @@ export const shortName_validation = {
   validation: {
     required: {
       value: true,
-      message: "required",
+      message: "պարտադիր",
     },
     maxLength: {
       value: 30,
@@ -214,7 +214,7 @@ export const category_validation = {
   validation: {
     required: {
       value: true,
-      message: "required",
+      message: "պարտադիր",
     },
     maxLength: {
       value: 30,
@@ -231,7 +231,7 @@ export const researchUnit_validation = {
   validation: {
     required: {
       value: true,
-      message: "required",
+      message: "պարտադիր",
     },
     maxLength: {
       value: 30,
@@ -248,7 +248,7 @@ export const referenceRange_validation = {
   validation: {
     required: {
       value: true,
-      message: "required",
+      message: "պարտադիր",
     },
     maxLength: {
       value: 30,
@@ -265,7 +265,7 @@ export const birthday_validation = {
   validation: {
     required: {
       value: true,
-      message: "required",
+      message: "պարտադիր",
     },
     maxLength: {
       value: 10,
@@ -282,7 +282,7 @@ export const age_validation = {
   validation: {
     required: {
       value: true,
-      message: "required",
+      message: "պարտադիր",
     },
     maxLength: {
       value: 3,
@@ -299,7 +299,7 @@ export const address_validation = {
   validation: {
     required: {
       value: true,
-      message: "required",
+      message: "պարտադիր",
     },
   },
 };
@@ -312,7 +312,7 @@ export const email_validation = {
   validation: {
     required: {
       value: true,
-      message: "required",
+      message: "պարտադիր",
     },
     pattern: {
       value:
@@ -330,7 +330,7 @@ export const contactEmail_validation = {
   validation: {
     required: {
       value: true,
-      message: "required",
+      message: "պարտադիր",
     },
     pattern: {
       value:
@@ -348,7 +348,7 @@ export const mobile_validation = {
   validation: {
     required: {
       value: true,
-      message: "required",
+      message: "պարտադիր",
     },
     maxLength: {
       value: 15,
@@ -365,7 +365,7 @@ export const contactMobile_validation = {
   validation: {
     required: {
       value: true,
-      message: "required",
+      message: "պարտադիր",
     },
     maxLength: {
       value: 15,
@@ -382,7 +382,7 @@ export const name_validation = {
   validation: {
     required: {
       value: true,
-      message: "required",
+      message: "պարտադիր",
     },
     maxLength: {
       value: 30,
@@ -399,7 +399,7 @@ export const contactName_validation = {
   validation: {
     required: {
       value: true,
-      message: "required",
+      message: "պարտադիր",
     },
     maxLength: {
       value: 30,
@@ -416,7 +416,7 @@ export const fullName_validation = {
   validation: {
     required: {
       value: true,
-      message: "required",
+      message: "պարտադիր",
     },
     maxLength: {
       value: 30,
@@ -447,7 +447,7 @@ export const doctorState_validation = {
   validation: {
     required: {
       value: true,
-      message: "required",
+      message: "պարտադիր",
     },
     maxLength: {
       value: 30,
@@ -464,7 +464,7 @@ export const specialty_validation = {
   validation: {
     required: {
       value: true,
-      message: "required",
+      message: "պարտադիր",
     },
     maxLength: {
       value: 30,
@@ -481,7 +481,7 @@ export const licenseNumber_validation = {
   validation: {
     required: {
       value: true,
-      message: "required",
+      message: "պարտադիր",
     },
     maxLength: {
       value: 30,
@@ -498,7 +498,7 @@ export const qualification_validation = {
   validation: {
     required: {
       value: true,
-      message: "required",
+      message: "պարտադիր",
     },
     maxLength: {
       value: 30,
@@ -515,7 +515,7 @@ export const model_validation = {
   validation: {
     required: {
       value: true,
-      message: "required",
+      message: "պարտադիր",
     },
     maxLength: {
       value: 30,
@@ -532,7 +532,7 @@ export const equipmentType_validation = {
   validation: {
     required: {
       value: true,
-      message: "required",
+      message: "պարտադիր",
     },
     maxLength: {
       value: 30,
@@ -549,7 +549,7 @@ export const type_validation = {
   validation: {
     required: {
       value: true,
-      message: "required",
+      message: "պարտադիր",
     },
     maxLength: {
       value: 30,
@@ -566,7 +566,7 @@ export const manufacturer_validation = {
   validation: {
     required: {
       value: true,
-      message: "required",
+      message: "պարտադիր",
     },
     maxLength: {
       value: 30,
@@ -583,7 +583,7 @@ export const serialNumber_validation = {
   validation: {
     required: {
       value: true,
-      message: "required",
+      message: "պարտադիր",
     },
     maxLength: {
       value: 50,
@@ -600,7 +600,7 @@ export const location_validation = {
   validation: {
     required: {
       value: true,
-      message: "required",
+      message: "պարտադիր",
     },
     maxLength: {
       value: 30,
@@ -617,7 +617,7 @@ export const price_validation = {
   validation: {
     required: {
       value: true,
-      message: "required",
+      message: "պարտադիր",
     },
     maxLength: {
       value: 10,
@@ -634,7 +634,7 @@ export const unit_validation = {
   validation: {
     required: {
       value: true,
-      message: "required",
+      message: "պարտադիր",
     },
     maxLength: {
       value: 30,
@@ -652,7 +652,7 @@ export const currency_validation = {
   validation: {
     required: {
       value: true,
-      message: "required",
+      message: "պարտադիր",
     },
     maxLength: {
       value: 30,
@@ -669,7 +669,7 @@ export const usage_validation = {
   validation: {
     required: {
       value: true,
-      message: "required",
+      message: "պարտադիր",
     },
     maxLength: {
       value: 30,
@@ -686,7 +686,7 @@ export const producer_validation = {
   validation: {
     required: {
       value: true,
-      message: "required",
+      message: "պարտադիր",
     },
     maxLength: {
       value: 30,
@@ -704,7 +704,7 @@ export const desc_validation = {
   validation: {
     required: {
       value: true,
-      message: "required",
+      message: "պարտադիր",
     },
     maxLength: {
       value: 200,
@@ -721,7 +721,7 @@ export const class_validation = {
   validation: {
     required: {
       value: true,
-      message: "required",
+      message: "պարտադիր",
     },
     maxLength: {
       value: 200,
@@ -738,7 +738,7 @@ export const state_validation = {
   validation: {
     required: {
       value: true,
-      message: "required",
+      message: "պարտադիր",
     },
     maxLength: {
       value: 200,
@@ -755,7 +755,7 @@ export const city_validation = {
   validation: {
     required: {
       value: true,
-      message: "required",
+      message: "պարտադիր",
     },
     maxLength: {
       value: 200,
@@ -772,7 +772,7 @@ export const country_validation = {
   validation: {
     required: {
       value: true,
-      message: "required",
+      message: "պարտադիր",
     },
     maxLength: {
       value: 200,
@@ -789,7 +789,7 @@ export const street_validation = {
   validation: {
     required: {
       value: true,
-      message: "required",
+      message: "պարտադիր",
     },
     maxLength: {
       value: 200,
@@ -806,7 +806,7 @@ export const zipCode_validation = {
   validation: {
     required: {
       value: false,
-      message: "required",
+      message: "պարտադիր",
     },
     maxLength: {
       value: 200,
@@ -823,7 +823,7 @@ export const emergencyContactName_validation = {
   validation: {
     required: {
       value: true,
-      message: "required",
+      message: "պարտադիր",
     },
     maxLength: {
       value: 200,
@@ -841,7 +841,7 @@ export const emergencyContactNumber_validation = {
   validation: {
     required: {
       value: true,
-      message: "required",
+      message: "պարտադիր",
     },
     maxLength: {
       value: 200,

@@ -10,6 +10,8 @@ import equipmentSvg from "../../../src/dist/img/equipmentSvg.svg";
 
 import { Modal } from "react-bootstrap";
 import { MdImportantDevices } from "react-icons/md";
+import "../../dist/css/data-table.css";
+
 function EquipmentsTable({
   confirmRef,
   selectedItem,
@@ -67,6 +69,8 @@ function EquipmentsTable({
           <ColumnFilter
             id={id}
             setData={setEquipments}
+            placeholder={'Սարքի անվանումը'}
+
           />
         ),
       },
@@ -84,6 +88,8 @@ function EquipmentsTable({
           <ColumnFilter
             id={id}
             setData={setEquipments}
+            placeholder={'Սարքի տեսակը'}
+
           />
         ),
       },
@@ -101,7 +107,10 @@ function EquipmentsTable({
           <ColumnFilter
             id={id}
             setData={setEquipments}
+            placeholder={'Սարքի մոդելը'}
+
           />
+          
         ),
       },
       {
@@ -118,6 +127,8 @@ function EquipmentsTable({
           <ColumnFilter
             id={id}
             setData={setEquipments}
+            placeholder={'Արտադրող'}
+
           />
         ),
       },
@@ -135,6 +146,8 @@ function EquipmentsTable({
           <ColumnFilter
             id={id}
             setData={setEquipments}
+            placeholder={'Գնման ամսաթիվ'}
+
           />
         ),
       },
@@ -152,6 +165,8 @@ function EquipmentsTable({
           <ColumnFilter
             id={id}
             setData={setEquipments}
+            placeholder={'Կարգավիճակ'}
+
           />
         ),
       },

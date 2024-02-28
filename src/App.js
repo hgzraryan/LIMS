@@ -27,10 +27,16 @@ import {LOGIN_ROUTE,
   DOCTORS_ID_ROUTE,
 REFDOCTORS_ROUTE,
 MEDINSTITUTIONS_ROUTE,
-SUPPORT_URL} from '../src/utils/constants' 
+SUPPORT_URL,
+DIAGNOSTICS_ID_ROUTE,
+DOCTORSVISITS_ROUTE,
+DOCTORSVISITS_ID_ROUTE} from '../src/utils/constants' 
 import { lazy, Suspense } from "react";
 import DoctorDetails from "./components/views/DoctorDetails";
 import Support from "./components/views/Support";
+import DiagnosticsDetails from "./components/views/DiagnosticsDetails";
+import DoctorsVisits from "./components/views/DoctorsVisits";
+import DoctorsVisitsDetails from "./components/views/DoctorsVisitsDetails";
 
  const Register = lazy(()=>  import("./components/Register"));
  const Login = lazy(()=>  import("./components//views/Login"));
@@ -105,6 +111,9 @@ function App() {
             <Route path={DOCTORS_ROUTE} element={<Doctors />} />
             <Route path={DOCTORS_ID_ROUTE} element={<DoctorDetails/>} />
 
+            <Route path={DOCTORSVISITS_ROUTE} element={<DoctorsVisits />} />
+            <Route path={DOCTORSVISITS_ID_ROUTE} element={<DoctorsVisitsDetails/>} />
+
             <Route  path={SAMPLES_ROUTE} element={<Samples />} />
             <Route path={AGENTS_ROUTE} element={<Agents />} />
             <Route path={ORGANIZATIONS_ROUTE} element={<Organizations />} />
@@ -127,6 +136,7 @@ function App() {
                 element={<ResearchLists />}
               />
               <Route path={DIAGNOSTICS_ROUTE} element={<Diagnostics />} />
+              <Route path={DIAGNOSTICS_ID_ROUTE} element={<DiagnosticsDetails/>} />
               <Route path={REFDOCTORS_ROUTE} element={<RefDoctors />} />
               <Route path={MEDINSTITUTIONS_ROUTE} element={<MedInstitutions />} />
             </Route>

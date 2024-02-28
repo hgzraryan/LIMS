@@ -22,24 +22,24 @@ function ActivityModal({overlayIsOpen,setOverlayIsOpen,selectedItem}) {
         setOverlayIsOpen(false);
     };
     const handleNewResearch = async()=>{
-      selectedItem?.statusBoard[1]?.researches?.push({id: '3', name: 'Հետազոտություն1235'})
+      selectedItem?.statusBoard[1]?.researches?.push({id: Math.random(), name: `Հետազոտություն ${Math.floor(Math.random())}`})
       console.log('**********');
       console.log('selectedItem',selectedItem?.statusBoard[1]?.researches);
       console.log('**********',);
-      
-      // try {
-      //   const response = await axiosPrivate.post("./updateStatusBoard", JSON.stringify({
-      //     statusBoard: selectedItem?.statusBoard,
-      //     diagnosticsId:selectedItem?.diagnosticsId
-      //   }));
-      // } catch (err) {
-      //   console.log(err)
-      //   // if (!err?.response) {
-      //   //   setErrMsg("No Server Response");
-      //   // }  else {
-      //   //   setErrMsg(" Failed");
-      //   // }
-      // }
+      handleCloseModal()
+      try {
+        const response = await axiosPrivate.post("./updateStatusBoard", JSON.stringify({
+          statusBoard: selectedItem?.statusBoard,
+          diagnosticsId:selectedItem?.diagnosticsId
+        }));
+      } catch (err) {
+        console.log(err)
+        // if (!err?.response) {
+        //   setErrMsg("No Server Response");
+        // }  else {
+        //   setErrMsg(" Failed");
+        // }
+      }
         setOpenModal(false)
     }
     const onResearchSelect = (data) => {

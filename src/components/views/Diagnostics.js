@@ -183,6 +183,7 @@ const Diagnostics = () => {
                         handleCloseModal={handleCloseModal}
                         handleOpenModal={handleOpenModal}
                         patients={patients}
+                        getDiagnostics={getDiagnostics}
                       />
                          <ReactPaginate
                           previousLabel = {"Previous"}    

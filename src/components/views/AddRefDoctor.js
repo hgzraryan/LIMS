@@ -81,7 +81,7 @@ function AddRefDoctor({ handleToggleCreateModal, getRefDoctors }) {
 
         handleToggleCreateModal(false);
         getRefDoctors();
-        notify(`${newRefDoctor.fullName} ուղղորդող բժիշկը ավելացված է`);
+        notify(`${newRefDoctor.doctorName} ուղղորդող բժիշկը ավելացված է`);
       } catch (err) {
         if (!err?.response) {
           setErrMsg("No Server Response");
@@ -152,7 +152,7 @@ function AddRefDoctor({ handleToggleCreateModal, getRefDoctors }) {
                                 Հեռախոս
                               </label>
                               {methods.formState.errors.phone && (
-                                    <span className="error text-red"><span><img src={ErrorSvg} alt="errorSvg"/></span> required</span>
+                                    <span className="error text-red"><span><img src={ErrorSvg} alt="errorSvg"/></span> պարտադիր</span>
                                     )}
                                     </div>                              
                               <CustomPhoneComponent name="phone"  control={methods.control} />  

@@ -3,6 +3,7 @@ import { useBlockLayout, useFilters, useResizeColumns, useRowSelect, useSortBy, 
 import { Checkbox } from "../Checkbox";
 import FeatherIcon from "feather-icons-react/build/FeatherIcon";
 import { ColumnFilter } from "../ColumnFilter";
+import "../../dist/css/data-table.css";
 
 function SamplesTable() {
   // const [currentPage, setCurrentPage] = useState(0);  

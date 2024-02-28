@@ -1,8 +1,9 @@
 
 import React, {  forwardRef } from "react";
 import { useTable } from "react-table";
-import Barcode from "react-barcode";
+// import Barcode from "react-barcode";
 import mainLogo from "../dist/img/main-logo.jpg";
+import BarcodeComp from "./BarcodeComp";
 const data = [
     {
       shortName: "WBC",
@@ -339,7 +340,7 @@ return (
           </div>
         </section>
         <section className="containerr d-flex justify-content-between mb-2">
-          <Barcode value="298875855" width={1} height={30} />
+          <BarcodeComp data="298875855"/>
         </section>
         <section>
           <div>

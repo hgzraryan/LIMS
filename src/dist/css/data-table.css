@@ -30,3 +30,29 @@ padding: 10px !important;
     background: rgb(4, 204, 204);
   }
   
+ .resultTable{
+   thead,
+   tbody,
+   tfoot,
+   tr,
+   td,
+   th {
+     padding: 10px;
+     border-color: inherit;
+     border-style: solid;
+     border-width: 0;
+    }
+  }
+  .diagTable{
+    thead,
+    tbody,
+    tfoot,
+    tr,
+    td,
+    th
+    {    
+      border-color: inherit;
+      border-style: none !important;
+      border-width: 0;
+    }
+  }

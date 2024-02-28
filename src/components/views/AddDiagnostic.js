@@ -172,7 +172,7 @@ function AddDiagnostic({
       additional: editorRef.current.getContent({ format: "text" }),
     };
 
-    console.log(newDiagnose);
+    //console.log(newDiagnose);
     try {
       await axiosPrivate.post(REGISTER_DIAGNOSTICS, newDiagnose, {
         headers: { "Content-Type": "application/json" },

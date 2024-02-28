@@ -14,6 +14,8 @@ import { ColumnFilter } from "../ColumnFilter";
 import { Modal } from "react-bootstrap";
 import DefaultProfileImage from "../../../src/dist/img/Missing.svg";
 import { BiSolidInfoCircle } from "react-icons/bi";
+import "../../dist/css/data-table.css";
+
 function RefDoctorsTable({
   confirmRef,
   selectedItem,
@@ -49,7 +51,10 @@ function RefDoctorsTable({
         sortable: true,
         width: 80,
         Filter: ({ column: { id } }) => (
-          <ColumnFilter id={id} setData={setRefDoctors} placeholder={"ID"} />
+          <ColumnFilter 
+          id={id} 
+          setData={setRefDoctors} 
+          placeholder={"ID"} />
         ),
       },
       {
@@ -62,7 +67,10 @@ function RefDoctorsTable({
         sortable: true,
         width: 500,
         Filter: ({ column: { id } }) => (
-          <ColumnFilter id={id} setData={setRefDoctors} />
+          <ColumnFilter 
+          id={id} 
+          setData={setRefDoctors}
+          placeholder={"Անուն ազգանուն"} />
         ),
       },
       {
@@ -75,7 +83,10 @@ function RefDoctorsTable({
         sortable: true,
         width: 250,
         Filter: ({ column: { id } }) => (
-          <ColumnFilter id={id} setData={setRefDoctors} />
+          <ColumnFilter 
+          id={id} 
+          setData={setRefDoctors} 
+          placeholder={"Աշխատավայր"}/>
         ),
       },
       {
@@ -92,7 +103,10 @@ function RefDoctorsTable({
           </div>
         ),
         Filter: ({ column: { id } }) => (
-          <ColumnFilter id={id} setData={setRefDoctors} />
+          <ColumnFilter 
+          id={id} 
+          setData={setRefDoctors} 
+          placeholder={"Էլ․ հասցե"}/>
         ),
       },
       {
@@ -109,7 +123,10 @@ function RefDoctorsTable({
           </div>
         ),
         Filter: ({ column: { id } }) => (
-          <ColumnFilter id={id} setData={setRefDoctors} />
+          <ColumnFilter 
+          id={id}
+          setData={setRefDoctors} 
+          placeholder={"Հեռախոս"}/>
         ),
       },
       {

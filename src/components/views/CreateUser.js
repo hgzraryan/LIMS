@@ -157,7 +157,7 @@ switch (data[0].type) {
     };
     formData.append("text", JSON.stringify(newUser));
     formData.append("image", image);      
-    console.log(newUser)
+    //console.log(newUser)
     try {
       await axiosPrivate.post(REGISTER_USER, newUser, {
         headers: { "Content-Type": "application/json"  },
@@ -353,7 +353,7 @@ switch (data[0].type) {
                                   Ծննդյան ամսաթիվ
                                 </label>
                                   {methods.formState.errors.dateOfBirth && (
-                                    <span className="error text-red"><span><img src={ErrorSvg} alt="errorSvg"/></span> required</span>
+                                    <span className="error text-red"><span><img src={ErrorSvg} alt="errorSvg"/></span> պարտադիր</span>
                                     )}
                                     </div>
                                 <div>                                  
@@ -372,7 +372,7 @@ switch (data[0].type) {
                                 Հեռախոս
                               </label>
                               {methods.formState.errors.phone && (
-                                    <span className="error text-red"><span><img src={ErrorSvg} alt="errorSvg"/></span> required</span>
+                                    <span className="error text-red"><span><img src={ErrorSvg} alt="errorSvg"/></span> պարտադիր</span>
                                     )}
                                     </div>
                               
@@ -418,7 +418,7 @@ switch (data[0].type) {
                                     <span>
                                       <img src={ErrorSvg} alt="errorSvg" />
                                     </span>{" "}
-                                    required
+                                    պարտադիր
                                   </span>
                                 )}
                               </div>
@@ -505,7 +505,7 @@ switch (data[0].type) {
                               Լրացուցիչ կոնտակտի հեռախոս
                               </label>
                               {methods.formState.errors.emergencyContactNumber && (
-                                    <span className="error text-red"><span><img src={ErrorSvg} alt="errorSvg"/></span> required</span>
+                                    <span className="error text-red"><span><img src={ErrorSvg} alt="errorSvg"/></span> պարտադիր</span>
                                     )}
                                     </div>                              
                               <CustomPhoneComponent name="emergencyContactNumber"  control={methods.control} />     

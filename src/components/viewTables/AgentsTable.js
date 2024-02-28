@@ -5,6 +5,7 @@ import { useBlockLayout, useFilters, useResizeColumns, useRowSelect, useSortBy, 
 import { Checkbox } from "../Checkbox";
 import FeatherIcon from "feather-icons-react/build/FeatherIcon";
 import { ColumnFilter } from "../ColumnFilter";
+import "../../dist/css/data-table.css";
 
 
 function AgentsTable({
@@ -50,7 +51,7 @@ function AgentsTable({
         Header: (event) => (
           <>
             
-            <div  className="columnHeader">Անուն</div>
+            <div  className="columnHeader">Անվանում</div>
           </>
         ),
         accessor: "name",
@@ -60,6 +61,7 @@ function AgentsTable({
           <ColumnFilter
             id={id}
             setData={setAgents}
+            placeholder = "Անվանում"
           />
         ),
       },
@@ -80,6 +82,8 @@ function AgentsTable({
           <ColumnFilter
             id={id}
             setData={setAgents}
+            placeholder = "հասցե"
+
           />
         ),
       },
@@ -100,6 +104,7 @@ function AgentsTable({
           <ColumnFilter
             id={id}
             setData={setAgents}
+            placeholder = "Հեռախոս"
           />
         ),
       },
@@ -119,6 +124,7 @@ function AgentsTable({
           <ColumnFilter
             id={id}
             setData={setAgents}
+            placeholder = "Նկարագիր"
           />
         ),
       },
@@ -135,6 +141,7 @@ function AgentsTable({
           <ColumnFilter
             id={id}
             setData={setAgents}
+            placeholder = "Գրանցված է"
           />
         ),
       },

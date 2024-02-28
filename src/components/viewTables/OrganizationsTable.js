@@ -15,7 +15,8 @@ import { ColumnFilter } from "../ColumnFilter";
 import { BiSolidInfoCircle } from "react-icons/bi";
 import { Modal } from "react-bootstrap";
 import infoModalImg from "../../../src/dist/svg/organizationsSvg.svg";
- 
+import "../../dist/css/data-table.css";
+
 function OrganizationsTable({
   confirmRef,
   selectedItem,
@@ -65,7 +66,10 @@ function OrganizationsTable({
         sortable: true,
         width: 400,
         Filter: ({ column: { id } }) => (
-          <ColumnFilter id={id} setData={setOrganizations} />
+          <ColumnFilter 
+          id={id} 
+          setData={setOrganizations} 
+          placeholder = "Անվանում"/>
         ),
       },
       {
@@ -85,6 +89,7 @@ function OrganizationsTable({
           <ColumnFilter
             id={id}
             setData={setOrganizations}
+            placeholder = "Էլ․ հասցե"
           />
         ),
       },
@@ -105,6 +110,7 @@ function OrganizationsTable({
           <ColumnFilter
             id={id}
             setData={setOrganizations}
+            placeholder = "Հեռախոս"
           />
         ),
       },
@@ -118,7 +124,11 @@ function OrganizationsTable({
         accessor: "createdAt",
         width: 200,
         Filter: ({ column: { id } }) => (
-          <ColumnFilter id={id} setData={setOrganizations} />
+          <ColumnFilter 
+          id={id} 
+          setData={setOrganizations}
+          placeholder = "Գրանցված է"
+          />
         ),
       },
       {
@@ -131,7 +141,11 @@ function OrganizationsTable({
         accessor: "description",
         width: 200,
         Filter: ({ column: { id } }) => (
-          <ColumnFilter id={id} setData={setOrganizations} />
+          <ColumnFilter 
+          id={id} 
+          setData={setOrganizations}
+          placeholder = "Նկարագիր"
+          />
         ),
       },
       {

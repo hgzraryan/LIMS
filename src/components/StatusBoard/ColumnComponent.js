@@ -22,8 +22,6 @@ function ColumnComponent({
   // const [, setOverlayNameActivity] = useState('');
   const handleOpenOverlayActivity =()=>{
     setNewResearchModal(true)
-    
-
   }
   
   return (

@@ -40,8 +40,8 @@ function CreatePatient({
 }) {
   const [researchesArray, setResearchesArray] = useState([]);
   const [addDiagnostic, setAddDiagnostic] = useState(false);
+  const [addDoctorsVisit, setAddDoctorsVisit] = useState(false);
   const [startDate, setStartDate] = useState(new Date());
-  const [birthday, setBirthday] = useState(new Date());
   const [gender, setGender] = useState("");
   const [doctor, setDoctor] = useState("Առանց բժիշկ");
   const [refDoctor, setRefDoctor] = useState("Առանց բժիշկ");
@@ -58,24 +58,13 @@ function CreatePatient({
   const handlingDate = useRef("");
   const multiselectRef = useRef("");
   const editorRef = useRef(null);
-  const doctorRef = useRef(null);
-  const { age } = useCalculateAge(birthday);
-  const [phoneNumber, setPhoneNumber] = useState(false);
 
-  const updatedDoctors = doctors.map((el) => {
-    return { ...el, category: "local" };
-  });
-  const updatedRefDoctors = refDoctors.map((el) => {
-    return { ...el, category: "ref" };
-  });
   const getDate = (date) => {
     setStartDate(date);
     handlingDate.current =
       date.toLocaleDateString("en-GB") + " " + date.toLocaleTimeString("en-GB");
   };
-  const getAge = (date) => {
-    setBirthday(date);
-  };
+
   const notify = (text) =>
     toast.success(text, {
       position: "top-right",
@@ -87,7 +76,27 @@ function CreatePatient({
       progress: undefined,
       theme: "light",
     });
-
+    const calculateAge =(dateOfBirth) => {
+      // Convert the birthdate string to a Date object
+      const birthdateObj = new Date(dateOfBirth);
+    
+      // Get the current date
+      const currentDate = new Date();
+    
+      // Calculate the difference in years
+      let age = currentDate.getFullYear() - birthdateObj.getFullYear();
+    
+      // Check if the birthday hasn't occurred yet this year
+      if (
+        currentDate.getMonth() < birthdateObj.getMonth() ||
+        (currentDate.getMonth() === birthdateObj.getMonth() &&
+          currentDate.getDate() < birthdateObj.getDate())
+      ) {
+        age--;
+      }
+    
+      return age;
+    }
   const onSubmit = methods.handleSubmit(
     async ({
       firstName,
@@ -104,13 +113,11 @@ function CreatePatient({
       phone,
       dateOfBirth
     }) => {
-      setBirthday(dateOfBirth)
-      console.log(dateOfBirth)
       const newPatient = {
         firstName: firstName,
         lastName: lastName,
         midName: midName,
-        age: age,
+        age: calculateAge(dateOfBirth),
         //lastHandlingDate: handlingDate.current,
         researchList: researchesArray,
         additional: editorRef.current.getContent({ format: "text" }),
@@ -137,28 +144,28 @@ function CreatePatient({
           .split("T")[0],
       };
 
-      console.log(newPatient);
+      //console.log(newPatient);
 
-      // try {
-      //   await axiosPrivate.post(REGISTER_PATIENT, newPatient, {
-      //     headers: { "Content-Type": "application/json" },
-      //     withCredentials: true,
-      //   });
+      try {
+        await axiosPrivate.post(REGISTER_PATIENT, newPatient, {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+        });
 
-      //   handleToggleCreateModal(false);
-      //   getPatients();
-      //   notify(
-      //     `${newPatient.firstName} ${newPatient.lastName} հաճախորդը ավելացված է`
-      //   );
-      // } catch (err) {
-      //   if (!err?.response) {
-      //     setErrMsg("No Server Response");
-      //   } else if (err.response?.status === 409) {
-      //     setErrMsg("Username Taken");
-      //   } else {
-      //     setErrMsg(" Failed");
-      //   }
-      // }
+        handleToggleCreateModal(false);
+        getPatients();
+        notify(
+          `${newPatient.firstName} ${newPatient.lastName} հաճախորդը ավելացված է`
+        );
+      } catch (err) {
+        if (!err?.response) {
+          setErrMsg("No Server Response");
+        } else if (err.response?.status === 409) {
+          setErrMsg("Username Taken");
+        } else {
+          setErrMsg(" Failed");
+        }
+      }
     }
   );
   const onGenderSelect = (value) => {
@@ -281,13 +288,12 @@ function CreatePatient({
                                 <label className="form-label" htmlFor="doctor">
                                   Հեռախոս
                                 </label>
-                                {console.log(methods?.formState.errors)}
                                 {methods?.formState.errors.phone && (
                                   <span className="error text-red">
                                     <span>
                                       <img src={ErrorSvg} alt="errorSvg" />
                                     </span>
-                                    required
+                                    պարտադիր
                                   </span>
                                 )}
                               </div>
@@ -312,7 +318,7 @@ function CreatePatient({
                                     <span>
                                       <img src={ErrorSvg} alt="errorSvg" />
                                     </span>{" "}
-                                    required
+                                    պարտադիր
                                   </span>
                                 )}
                               </div>
@@ -388,13 +394,12 @@ function CreatePatient({
                                   >
                                     Ծննդյան ամսաթիվ
                                   </label>
-                                  {console.log(methods.formState.errors)}
                                   {methods.formState.errors.dateOfBirth && (
                                     <span className="error text-red">
                                       <span>
                                         <img src={ErrorSvg} alt="errorSvg" />
                                       </span>{" "}
-                                      required
+                                      պարտադիր
                                     </span>
                                   )}
                                 </div>
@@ -404,6 +409,7 @@ function CreatePatient({
                                 </div>
                               </div>
                             </div>
+                            <div className="col-sm-6 d-flex">
                             <div className="col-sm-6">
                               <label>Ավելացնել ախտորոշում</label>
                               <div>
@@ -418,7 +424,23 @@ function CreatePatient({
                                 />
                               </div>
                             </div>
+                            <div className="col-sm-6">
+                              <label>Բժշկի այց</label>
+                              <div>
+                                <input
+                                  type="checkbox"
+                                  name="selectDoctorsVisit"
+                                  checked={addDoctorsVisit}
+                                  onChange={(e) =>
+                                    setAddDoctorsVisit(e.target.checked)
+                                  }
+                                  style={{ transform: "scale(1.5)" }}
+                                />
+                              </div>
+                            </div>
+                            </div>
                           </div>
+                         
                         </div>
                       </div>
                     </div>
@@ -426,7 +448,6 @@ function CreatePatient({
 
                     {addDiagnostic && (
                       <>
-                        <div className="separator-full"></div>
                         <div className="card">
                           <div className="card-header">
                             <a href="#">Ախտորոշումներ</a>
@@ -462,7 +483,7 @@ function CreatePatient({
                                     options={[
                                       ...[
                                         { doctorName: "Առանց բժիշկ" },
-                                        { doctorName: "Այլ բժիշկ" },
+                                        { doctorName: "Ուղղորդող բժիշկ" },
                                       ],
                                       ...doctors,
                                     ]}
@@ -546,7 +567,71 @@ function CreatePatient({
                               </div>
                             </div>
                           </div>
-                        </div>
+                        </div>                        
+                        <div className="separator-full"></div>
+                      </>
+                    )}
+                    {addDoctorsVisit && (
+                      <>
+                        <div className="card">
+                          <div className="card-header">
+                            <a href="#">Բժշկի այց</a>
+                            <button
+                              className="btn btn-xs btn-icon btn-rounded btn-light"
+                              data-bs-toggle="tooltip"
+                              data-bs-placement="top"
+                              title=""
+                              data-bs-original-title="Add Tags"
+                            >
+                              <span
+                                className="icon"
+                                data-bs-toggle="modal"
+                                data-bs-target="#tagsInput"
+                              >
+                                <span className="feather-icon">
+                                  <FeatherIcon icon="edit-2" />
+                                </span>
+                              </span>
+                            </button>
+                          </div>
+                          <div className="card-body">
+                            <div className="modal-body">
+                              <div className="row gx-3">
+                                <div className="col-sm-6">
+                                  <label
+                                    className="form-label"
+                                    htmlFor="doctor"
+                                  >
+                                    Բժիշկներ
+                                  </label>
+                                  <Multiselect
+                                    options={doctors}
+                                    onSelect={onDoctorSelect} // Function will trigger on select event
+                                    //  onRemove={onResearchDelete} // Function will trigger on remove event
+                                    closeOnSelect={true}
+                                    singleSelect
+                                    displayValue="doctorName"
+                                    id="input_tags_4"
+                                    className="form-control"
+                                    ref={multiselectRef}
+                                    hidePlaceholder={true}
+                                    placeholder="Ընտրել բժշկին"
+                                    selectedValues={[
+                                      { doctorName: "Առանց բժիշկ" },
+                                    ]}
+                                    style={{
+                                      height: "10rem",
+                                      overflow: "hidden",
+                                    }}
+                                  />
+                                </div>
+                                
+                              </div>
+                             
+                            </div>
+                          </div>
+                        </div>                        
+                        <div className="separator-full"></div>
                       </>
                     )}
                     <div className="card">

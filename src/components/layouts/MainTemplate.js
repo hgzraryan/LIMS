@@ -1,9 +1,8 @@
-import { useHistory, useNavigate, Link, Outlet, useLocation, NavLink } from "react-router-dom";
+import {  useNavigate, Link, Outlet, useLocation } from "react-router-dom";
 import useLogout from "../../hooks/useLogout";
 import React, { Suspense, useState, useEffect } from "react";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import LoadingSpinner from "../LoadingSpinner";
-import { prefix } from "@fortawesome/free-solid-svg-icons";
 import { checkUsersCount, selectUsersCount } from "../../redux/features/users/usersCountSlice";
 import { checkPatientsCount, selectPatientsCount } from "../../redux/features/patients/patientsCountSlice";
 import { checkAgentsCount } from "../../redux/features/agents/agentsCountSlice";
@@ -52,29 +51,14 @@ const MainTemplate = () => {
 		msetIsActive(current => !current);
 	};
 	
-	const [sisActive, ssetIsActive] = useState(false);
-	const smenuClick = event => {
-		ssetIsActive(current => !current);
-	};
     //---------------------------------------------//
 	const [misActive1, msetIsActive1] = useState(false);
-	const mmenuClick1 = event => {
-		msetIsActive1(current => !current);
-	};
-	
 	const [sisActive1, ssetIsActive1] = useState(false);
-	const smenuClick1 = event => {
-		ssetIsActive1(current => !current);
-	};
+
     const handleSubmenuClick = (menu,subMenu) => {
         ssetIsActive1(subMenu)
         msetIsActive1(menu)
     }
-        
-    const [dropDownMenu1, dropDownMenu1IsActive] = useState(true);
-	const dropDownMenu1Click = event => {
-		dropDownMenu1IsActive(current => !current);
-	};
 	
 	const [dropDownMenu2, dropDownMenu2IsActive] = useState(false);
 	const dropDownMenu2Click = event => {
@@ -316,7 +300,10 @@ const MainTemplate = () => {
                             </div>
                             <div className="media-body">
                               <div className="fs-7">{}</div>
-                              <p style={{color:'black'}}>{userData?.firstname+" "}{userData?.lastname}</p>
+                              <p style={{ color: "black" }}>
+                                {userData?.firstname + " "}
+                                {userData?.lastname}
+                              </p>
                             </div>
                           </div>
                         </div>
@@ -339,13 +326,13 @@ const MainTemplate = () => {
                         <a className="dropdown-item" href="/support">
                           Օգնություն և սպասարկում
                         </a>
-                         <a
-                           href="/login"
-                           className="d-block fs-8 link-secondary"
-                           onClick={signOut}
-                         >
-                         <u>Դուրս գալ</u>
-                         </a>
+                        <a
+                          href="/login"
+                          className="d-block fs-8 link-secondary"
+                          onClick={signOut}
+                        >
+                          <u>Դուրս գալ</u>
+                        </a>
                       </div>
                     </div>
                   </li>
@@ -511,37 +498,86 @@ const MainTemplate = () => {
                       >
                         <span className="nav-icon-wrap">
                           <span className="svg-icon">
-                          <svg 
+                            <svg
                               fill="#000000"
                               width="23"
                               height="23"
                               viewBox="0 0 512 512"
                               id="Layer_1"
-                              version="1.1">
-<g>
-	<g>
-		<g>
-
-
-
-			<rect x="210.464" y="46.307" transform="matrix(-0.8935 -0.449 0.449 -0.8935 417.2299 376.1477)" width="85.498" height="184.595"/>
-		<rect x="83.863" y="313.827" width="134.1" height="34.2"/>
-		<path d="M405.663,277.327c0-60.6-31.9-113.9-79.7-143.8l-18.7,36.9c34.6,23,57.6,62.2,57.6,106.9c0,70.7-57.5,128.2-128.2,128.2
+                              version="1.1"
+                            >
+                              <g>
+                                <g>
+                                  <g>
+                                    <rect
+                                      x="210.464"
+                                      y="46.307"
+                                      transform="matrix(-0.8935 -0.449 0.449 -0.8935 417.2299 376.1477)"
+                                      width="85.498"
+                                      height="184.595"
+                                    />
+                                    <rect
+                                      x="83.863"
+                                      y="313.827"
+                                      width="134.1"
+                                      height="34.2"
+                                    />
+                                    <path
+                                      d="M405.663,277.327c0-60.6-31.9-113.9-79.7-143.8l-18.7,36.9c34.6,23,57.6,62.2,57.6,106.9c0,70.7-57.5,128.2-128.2,128.2
 			c-34.6,0-65.7-13.6-88.6-35.7h-53.2c16.3,24.9,39.2,45.5,66.1,58.7h-38.1v61h225.8v-61h-35.7
-			C367.563,400.927,405.663,343.427,405.663,277.327z"/>
-		
-			<rect x="277.843" y="7.844" transform="matrix(-0.8935 -0.449 0.449 -0.8935 555.6599 173.8512)" width="41.199" height="26.399"/>
-		
-			<rect x="216.894" y="240.196" transform="matrix(0.449 -0.8935 0.8935 0.449 -106.2222 341.1332)" width="13.2" height="32.999"/>
-		
-			<rect x="158.474" y="225.818" transform="matrix(-0.8935 -0.4491 0.4491 -0.8935 225.362 525.2878)" width="33.001" height="20.2"/>
-	</g>
-</g>
-</g>
-</svg>
+			C367.563,400.927,405.663,343.427,405.663,277.327z"
+                                    />
+
+                                    <rect
+                                      x="277.843"
+                                      y="7.844"
+                                      transform="matrix(-0.8935 -0.449 0.449 -0.8935 555.6599 173.8512)"
+                                      width="41.199"
+                                      height="26.399"
+                                    />
+
+                                    <rect
+                                      x="216.894"
+                                      y="240.196"
+                                      transform="matrix(0.449 -0.8935 0.8935 0.449 -106.2222 341.1332)"
+                                      width="13.2"
+                                      height="32.999"
+                                    />
+
+                                    <rect
+                                      x="158.474"
+                                      y="225.818"
+                                      transform="matrix(-0.8935 -0.4491 0.4491 -0.8935 225.362 525.2878)"
+                                      width="33.001"
+                                      height="20.2"
+                                    />
+                                  </g>
+                                </g>
+                              </g>
+                            </svg>
                           </span>
                         </span>
                         <span className="nav-link-text">Ախտորոշումներ</span>
+                      </Link>
+                      <Link
+                        className={
+                          misActive1 === "doctorsVisits" ||
+                          location.pathname === "/doctorsVisits"
+                            ? "nav-link active"
+                            : "nav-link"
+                        }
+                        to="./doctorsVisits"
+                        onClick={() => handleSubmenuClick("doctorsVisits", "")}
+                      >
+                        <span className="nav-icon-wrap">
+                          <span className="svg-icon">
+                          <svg fill="#000000" width="800px" height="800px" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="46.3" cy="36.3" r="16"/>
+                            <path d="M66.6,51.1A11.39,11.39,0,0,0,55.2,62.5c0,7.7,8.1,15,10.6,16.9a1.09,1.09,0,0,0,1.5,0c2.5-2,10.6-9.2,10.6-16.9A11.25,11.25,0,0,0,66.6,51.1Zm0,16a4.7,4.7,0,1,1,4.7-4.7A4.76,4.76,0,0,1,66.6,67.1Z"/>
+                          <path d="M50.4,79.7h1.4c5.2-.5,2.4-3.7,2.4-3.7h0c-3.2-4.6-5-9.1-5-13.5a13.74,13.74,0,0,1,.6-4.2c.2-2-.6-2.5-1-2.7h-.2a18.48,18.48,0,0,0-2.4-.1,24.26,24.26,0,0,0-24,20.9c0,1.2.4,3.5,4.2,3.5H50.2C50.2,79.7,50.3,79.7,50.4,79.7Z"/></svg>
+                          </span>
+                        </span>
+                        <span className="nav-link-text">Բժշկի այցելություններ</span>
                       </Link>
                     </li>
                     <li className="nav-item">
@@ -663,10 +699,9 @@ const MainTemplate = () => {
                         }
                         to="./samples"
                         onClick={() => handleSubmenuClick("samples", "")}
-
                       >
                         <span className="nav-icon-wrap">
-                        <span className="svg-icon">
+                          <span className="svg-icon">
                             <svg
                               fill="#000000"
                               width="23"
@@ -1426,17 +1461,13 @@ const MainTemplate = () => {
                               <Link
                                 className={
                                   sisActive1 === "refDoctors" ||
-                                  location.pathname ===
-                                    "/settings/refDoctors"
+                                  location.pathname === "/settings/refDoctors"
                                     ? "nav-link active"
                                     : "nav-link"
                                 }
                                 to="./settings/refDoctors"
                                 onClick={() =>
-                                  handleSubmenuClick(
-                                    "settings",
-                                    "refDoctors"
-                                  )
+                                  handleSubmenuClick("settings", "refDoctors")
                                 }
                               >
                                 <span className="nav-link-text">

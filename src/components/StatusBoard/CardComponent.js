@@ -11,11 +11,7 @@ export const CardComponent = ({ item, index, key,selectedItem }) => {
   //const [activityId, setActivityId] = useState("");
   const [activity, setActivity] = useState("");
 
-  const handleActivity = (obj) => {
-    console.log('**********');
-    console.log('obj',obj);
-    console.log('**********',);
-    
+  const handleActivity = (obj) => {    
     setOverlayIsOpen(true);
     //setActivityId(obj.id);
     setActivity(obj);

@@ -11,7 +11,7 @@ import {
   useSortBy,
   useTable,
 } from "react-table";
-import asd from "../../dist/img/doctorSamplePhoto.jpg";
+import doctorSamplePhoto from "../../dist/img/doctorSamplePhoto.jpg";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import mobileSvg from "../../dist/svg/mobileSvg.svg"
 import emailSvg from "../../dist/svg/emailSvg.svg"
@@ -137,7 +137,7 @@ function DoctorDetails() {
           <div className="d-flex m-5">
             <div>
               <img
-                src={asd}
+                src={doctorSamplePhoto}
                 alt="doctorPhoto"
                 style={{
                   borderRadius: "0 20px 0 20px",
@@ -189,6 +189,11 @@ function DoctorDetails() {
                 <div className="separator-full m-0"></div>                  
 
                 <p>Լրացուցիչ կոնտակտի հեռախոս:</p>
+                <div className="separator-full m-0"></div>                  
+
+                <p>Ծածկանուն:</p>
+                <div className="separator-full m-0"></div>                  
+
               </div>
               <div className="ms-3">
                 <p>{doctorDetails.doctorId}</p>
@@ -213,6 +218,9 @@ function DoctorDetails() {
                 <div className="separator-full m-0"></div>                  
 
                 <p>{doctorDetails.emergencyContactNumber}</p>
+                <div className="separator-full m-0"></div>                  
+
+                <p>{doctorDetails?.username}</p>
               </div>
               
               

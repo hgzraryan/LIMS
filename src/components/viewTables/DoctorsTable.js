@@ -17,6 +17,7 @@ import MissingAvatar from "../../dist/img/Missing.svg";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { useNavigate } from "react-router-dom";
 import LoadingSpinner from "../LoadingSpinner";
+import "../../dist/css/data-table.css";
 
 function DoctorsTable({
   confirmRef,
@@ -71,20 +72,26 @@ function DoctorsTable({
         accessor: "doctorId",
         width: 60,
         Filter: ({ column: { id } }) => (
-          <ColumnFilter id={id} setData={setDoctors} placeholder={'ID'}/>
+          <ColumnFilter 
+          id={id} 
+          setData={setDoctors} 
+          placeholder={'ID'}/>
         ),
       },
       {
         Header: (event) => (
           <>
-            <div className="columnHeader">Անուն</div>
+            <div className="columnHeader">Անուն հայրանուն ազգանուն</div>
           </>
         ),
         accessor: "doctorName",
         sortable: true,
         width: 300,
         Filter: ({ column: { id } }) => (
-          <ColumnFilter id={id} setData={setDoctors} />
+          <ColumnFilter 
+          id={id} 
+          setData={setDoctors}
+          placeholder = "Անուն հայրանուն ազգանուն" />
         ),
         Cell: ({ row }) => (
           <div
@@ -107,7 +114,10 @@ function DoctorsTable({
         accessor: "specialty",
         width: 300,
         Filter: ({ column: { id } }) => (
-          <ColumnFilter id={id} setData={setDoctors} />
+          <ColumnFilter 
+          id={id} 
+          setData={setDoctors}
+          placeholder = "Մասնագիտություն" />
         ),
       },
       {
@@ -119,7 +129,10 @@ function DoctorsTable({
         accessor: "qualification",
         width: 300,
         Filter: ({ column: { id } }) => (
-          <ColumnFilter id={id} setData={setDoctors} />
+          <ColumnFilter 
+          id={id} 
+          setData={setDoctors}
+          placeholder = "Որակավորում" />
         ),
       },
       {
@@ -131,7 +144,10 @@ function DoctorsTable({
         accessor: "mobile",
         width: 200,
         Filter: ({ column: { id } }) => (
-          <ColumnFilter id={id} setData={setDoctors} />
+          <ColumnFilter 
+          id={id} 
+          setData={setDoctors}
+          placeholder = "Հեռախոս" />
         ),
         Cell: ({ row }) => (
           <div>
@@ -151,7 +167,10 @@ function DoctorsTable({
         },
         width: 200,
         Filter: ({ column: { id } }) => (
-          <ColumnFilter id={id} setData={setDoctors} />
+          <ColumnFilter 
+          id={id} 
+          setData={setDoctors}
+          placeholder = "Կարգավիճակ" />
         ),
       },
       {

@@ -209,7 +209,7 @@ function AddEquipment({ handleToggleCreateModal, getEquipments }) {
                                   Գնման ամսաթիվ
                                 </label>
                                   {methods.formState.errors.purchaseDate && (
-                                    <span className="error text-red"><span><img src={ErrorSvg} alt="errorSvg"/></span> required</span>
+                                    <span className="error text-red"><span><img src={ErrorSvg} alt="errorSvg"/></span> պարտադիր</span>
                                     )}
                                     </div>
                                 <div></div>
@@ -228,7 +228,7 @@ function AddEquipment({ handleToggleCreateModal, getEquipments }) {
                                   Երաշխիքի ավարտի ամսաթիվ
                                 </label>
                                   {methods.formState.errors.warrantyExpiryDate && (
-                                    <span className="error text-red"><span><img src={ErrorSvg} alt="errorSvg"/></span> required</span>
+                                    <span className="error text-red"><span><img src={ErrorSvg} alt="errorSvg"/></span> պարտադիր</span>
                                     )}
                                     </div>
                                 <div>

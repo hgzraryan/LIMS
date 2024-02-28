@@ -15,6 +15,8 @@ import { ColumnFilter } from "../ColumnFilter";
 import { BiSolidInfoCircle } from "react-icons/bi";
 import { Modal } from "react-bootstrap";
 import reagentSvg from "../../../src/dist/img/reagent.svg";
+import "../../dist/css/data-table.css";
+
 
 function ReagentsTable({
   confirmRef,
@@ -67,7 +69,11 @@ function ReagentsTable({
         sortable: true,
         width: 200,
         Filter: ({ column: { id } }) => (
-          <ColumnFilter id={id} setData={setReagents} />
+          <ColumnFilter 
+          id={id} 
+          setData={setReagents}
+          placeholder={'Անվանում'}
+          />
         ),
       },
       {
@@ -79,7 +85,11 @@ function ReagentsTable({
         accessor: "price",
         width: 200,
         Filter: ({ column: { id } }) => (
-          <ColumnFilter id={id} setData={setReagents} />
+          <ColumnFilter 
+          id={id} 
+          setData={setReagents} 
+          placeholder={'Արժեք'}
+          />
         ),
       },
       // {
@@ -105,7 +115,11 @@ function ReagentsTable({
         sortable: true,
         width: 200,
         Filter: ({ column: { id } }) => (
-          <ColumnFilter id={id} setData={setReagents} />
+          <ColumnFilter 
+          id={id} 
+          setData={setReagents}
+          placeholder={'Չափման տեսակ'}
+          />
         ),
       },
       // {
@@ -130,7 +144,11 @@ function ReagentsTable({
         accessor: "currency",
         width: 200,
         Filter: ({ column: { id } }) => (
-          <ColumnFilter id={id} setData={setReagents} />
+          <ColumnFilter 
+          id={id} 
+          setData={setReagents}
+          placeholder={'Արժույթ'}
+          />
         ),
       },
       {
@@ -142,7 +160,11 @@ function ReagentsTable({
         accessor: "description",
         width: 200,
         Filter: ({ column: { id } }) => (
-          <ColumnFilter id={id} setData={setReagents} />
+          <ColumnFilter 
+          id={id} 
+          setData={setReagents}
+          placeholder={'Նկարագիր'}
+          />
         ),
       },
       {
@@ -154,7 +176,11 @@ function ReagentsTable({
         accessor: "producer",
         width: 200,
         Filter: ({ column: { id } }) => (
-          <ColumnFilter id={id} setData={setReagents} />
+          <ColumnFilter 
+          id={id} 
+          setData={setReagents}
+          placeholder={'Թողարկող'}
+          />
         ),
       },
       {

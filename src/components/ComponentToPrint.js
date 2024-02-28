@@ -2,7 +2,7 @@ import Button from "react-bootstrap/Button";
 import React, { useState, forwardRef, useRef } from "react";
 import Table from "react-bootstrap/Container";
 import { useTable } from "react-table";
-import Barcode from "react-barcode";
+// import Barcode from "react-barcode";
 import mainLogo from "../dist/img/main-logo.jpg";
 import {
   BiSolidHome,
@@ -13,7 +13,21 @@ import {
 import { HiMiniCalendarDays } from "react-icons/hi2";
 import { connect, useSelector } from "react-redux";
 import { selectResearches } from "../redux/features/researches/researchesSlice";
-
+import BarcodeComp from "./BarcodeComp";
+const data = [
+  {
+  researchName: "Լեյկոցիտների ընդհանուր քանակ",
+  price:14000,
+  },
+  {
+    researchName: "Էրիթրոցիտների ընդհանուր քանակ",
+    price:8000,
+  },
+  {
+    researchName: "Էրիթրոցիտի միջին ծավալը փորձանմուշի  ընդհանուր ծավալում",
+    price:25000,
+  }
+]
 export const ComponentToPrint = forwardRef(({ value }, ref) => {
   const researchState = useSelector(selectResearches);
 
@@ -34,8 +48,8 @@ export const ComponentToPrint = forwardRef(({ value }, ref) => {
       //   accessor: "research",
       // },
       {
-        Header: "Նյութեր",
-        accessor: "testSubstance",
+        Header: "Հետազոտություն",
+        accessor: "researchName",
       },
       {
         Header: "Արժեք",
@@ -64,67 +78,84 @@ const { inputRef } = Barcode({
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({
       columns,
-      data: currentResearches || [],
+      data: data || [],
     });
   return (
-    <div className="wrapper m-1" ref={ref}>
+    <div className="wrapper m-4" ref={ref}>
       <header className="header">
-        <div className="container d-flex justify-content-between mt-0 ">
-          <div className="header__logo d-flex">
-            <img className="m-0" width={"136px"} height={"136px"} src={mainLogo} alt="Logo" />
-          </div>
-          <div className="header__info mt-1">
-            <div>
-              <ul>
-                <li>
-                  <BiSolidHome /> Ք․Վանաձոր, Բաբայան 5/8,4548
-                </li>
-                <li>
-                  <BiSolidPhoneCall /> +374 99 942-200, +374 32 242-200
-                </li>
-                <li>
-                  <HiMiniCalendarDays /> Երկ. - Ուրբ. 08:00-18:00, Շաբ․ 08:00-13:00
-                </li>
-                <li>
-                  <BiGlobe /> www.evalab.am
-                </li>
-                <li>
-                  <BiMailSend /> info@evaLab.am
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </header>
-      <hr
-        style={{
-          background: "black",
-          color: "black",
-          borderColor: "black",
-          height: "2px",
-          margin: "5px 20px",
-        }}
-      />
+                <div className="" style={{ display: 'flex', justifyContent: "space-between" }}>
+                    <div className="header__infoL " style={{ flex: '1' }}>
+                        <h3 style={{ fontWeight: "bold", color: "#01903e" }}>ԵՎԱ ԼԱԲ</h3>
+                        <h6>www.evalab.am</h6>
+                    </div>
+                    <div className="header__logo" style={{ flex: '1', display: 'flex', justifyContent: "center", alignItems: 'center' }}>
+                        <img
+                            width={"136px"}
+                            height={"136px"}
+                            src={mainLogo}
+                            alt="Logo"
+                            style={{ margin: 0 }}
+                        />
+                    </div>
+                    <div className="header__infoR"
+                        style={{ flex: '1', display: 'flex', justifyContent: "center",  flexWrap: 'wrap' }}>
+                        <div style={{ maxWidth: "300px", fontSize: "14px" }}>
+                            <div className="info-element" style={{ display: 'flex', justifyContent: 'end' }}>
+                                <p>Ք․Վանաձոր, Բաբայան 5/8,4548</p>
+                            </div>
+                            <div className="info-element" style={{ display: 'flex', justifyContent: 'end' }}>
+                                <p>+374 99 942-200, +374 32 242-200</p>
+                            </div>
+                            <div className="info-element" style={{ display: 'flex', justifyContent: 'end' }}>
+                                <p>Երկ. - Ուրբ. 08:00-18:00</p>
+                            </div>
+                            <div className="info-element" style={{ display: 'flex', justifyContent: 'end' }}>
+                                <p>Շաբ․ 08:00-13:00</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <div
+               className="result title"
+               style={{
+                display:'flex',
+                justifyContent:'center',
+                alignItems:'center',
+                 background: "#01903e",
+                 color: "white",
+                 borderRadius: "5px",
+                 margin: "10px 0",
+                 height:'10px'
+               }}
+             >
+             </div>
       <main>
         <section className="container">
           <div className="Requisites d-flex flex-column justify-content-center align-items-center">
-            <p>Եվալաբ</p>
-            <p>ՀՎՀՀ 12457888</p>
-            <p>h/h 220090120845000 ACBA բանկ</p>
+            <p style={{fontSize:'18px' }}>ՀՎՀՀ 12457888</p>
+            <p style={{fontSize:'18px' }}>h/h 220090120845000 ACBA բանկ</p>
           </div>
         </section>
         <section className="container d-flex justify-content-between mb-2">
+        <BarcodeComp data={value.diagnosticsId}  /> 
+
           <div className=" mb-3r">
             <ul>
-              <li>
-                Անուն Ազգանուն: {value.firstName} {value.lastName}
+              <li style={{fontWeight:'bold'}}>
+               Անուն Ազգանուն: Տիգրանյան Դավիթ
+              </li>
+              <li style={{fontWeight:'bold'}}>Տարիք: 39</li>
+              <li style={{fontWeight:'bold'}}>Հեռախոս: 085 59-65-87</li>
+              <li style={{fontWeight:'bold'}}>Տրման ամսաթիվ: 24․02․2024</li>
+              {/* <li>
+                Անուն Ազգանուն: `${value.firstName} ${value.lastName} `
               </li>
               <li>Տարիք: {value.age}</li>
               <li>Հեռախոս: {value.mobile}</li>
-              <li>Տրման ամսաթիվ: {value.date}</li>
+              <li>Տրման ամսաթիվ: {value.date}</li> */}
             </ul>
           </div>
-          <Barcode value={value.diagnosticsId} width={1} />;
         </section>
         <section className="container "></section>
         <section className="container">
@@ -147,7 +178,9 @@ const { inputRef } = Barcode({
                   </tr>
                 ))}
               </thead>
-              <tbody {...getTableBodyProps()}>
+              {data?.length && (
+           
+                <tbody {...getTableBodyProps()}>
                 {rows.map((row, i) => {
                   prepareRow(row);
                   return (
@@ -155,8 +188,8 @@ const { inputRef } = Barcode({
                       {row.cells.map((cell) => {
                         return (
                           <td
-                            {...cell.getCellProps()}
-                            style={{ border: "1px solid black" }}
+                          {...cell.getCellProps()}
+                          style={{ border: "1px solid black" }}
                           >
                             {cell.render("Cell")}
                           </td>
@@ -166,12 +199,14 @@ const { inputRef } = Barcode({
                   );
                 })}
               </tbody>
+                )}
             </table>
           </div>
         </section>
         <section className="container">
           <div className="total d-flex flex-column align-items-end">
-            <p>Ընդհանուր արժեք {value.totalPrice}10000 դր․</p>
+            <p style={{marginRight:'6px'}}>Զեղչ 0</p>
+            <p>Ընդհանուր արժեք {value.totalPrice}47000 դր․</p>
           </div>
         </section>
       </main>

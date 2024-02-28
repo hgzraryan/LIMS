@@ -18,6 +18,7 @@ import { axiosPrivate } from "../../api/axios";
 import useGetData from "../../hooks/useGetData";
 import useDebounce from "../../hooks/useDebounce";
 import DefaultProfileImage from "../../../src/dist/img/Missing.svg";
+import "../../dist/css/data-table.css";
 
 function UsersTable({
   confirmRef,
@@ -115,6 +116,8 @@ function UsersTable({
           <ColumnFilter
             id={id}
             setData={setUsers}
+            placeholder={'Ծածկանուն'}
+
           />
         ),
       },
@@ -130,6 +133,8 @@ function UsersTable({
           <ColumnFilter
             id={id}
             setData={setUsers}
+            placeholder={'Անուն'}
+
           />
         ),
       },
@@ -146,6 +151,8 @@ function UsersTable({
           <ColumnFilter
             id={id}
             setData={setUsers}
+            placeholder={'Ազգանուն'}
+
           />
         ),
       },
@@ -161,6 +168,8 @@ function UsersTable({
           <ColumnFilter
             id={id}
             setData={setUsers}
+            placeholder={'Էլ․ հասցե'}
+
           />
         ),
       },
@@ -185,6 +194,8 @@ function UsersTable({
           <ColumnFilter
             id={id}
             setData={setUsers}
+            placeholder={'Պաշտոն'}
+
           />
         ),
       },
@@ -277,7 +288,7 @@ function UsersTable({
     }
   );
   return (
-    <div>
+    <>
       <table
         {...getTableProps()}
         className="table nowrap w-100 mb-5 dataTable no-footer"
@@ -318,11 +329,11 @@ function UsersTable({
                           )}
                       </div>
                       <div
-                      {...column.getResizerProps()}
-                        className={`resizer ${
-                          column.isResizing ? "isResizing" : ""
-                        }`}
-                      />
+                       {...column.getResizerProps()}
+                       className={`resizer ${
+                         column.isResizing ? "isResizing" : ""
+                       }`}
+                       />
                     </th>
               ))}
             </tr>
@@ -354,7 +365,7 @@ function UsersTable({
           </tbody>
         )}{" "}
       </table>
-    </div>
+    </>
   );
 }
 

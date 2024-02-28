@@ -33,7 +33,6 @@ const Equipments = () => {
   const handleOpenModal = (data) => {
     setSelectedItemId(true);
     setSelectedItem((prev) => data);
-    console.log(data);
   };
   const handleCloseModal = () => {
     setSelectedItemId(null);

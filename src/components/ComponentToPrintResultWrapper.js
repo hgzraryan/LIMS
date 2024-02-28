@@ -6,7 +6,9 @@ import { ResultToPrintComponent } from './ResultToPrintComponent';
 
 function ComponentToPrintResultWrapper({data,patients}) {
     let patientRef = useRef(null); 
-
+const handlePrint = () =>{
+    console.log("printed")
+}
      const {statusBoard}=data
      const {patientId}=data
      patientRef.current = patients.filter((el)=>el.patientId===patientId)
@@ -18,16 +20,13 @@ function ComponentToPrintResultWrapper({data,patients}) {
                 trigger={() => (
                     <button
                     type="button"
-                    className="btn btn-secondary"
-                    onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                    }}  
-                  >
+                    className="btn btn-secondary" 
+                    >
                     Տպել
                   </button>
                     
                 )}
+                onAfterPrint={handlePrint}
                 content={() => componentRef.current}
             />
             

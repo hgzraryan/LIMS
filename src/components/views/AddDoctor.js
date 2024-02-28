@@ -7,13 +7,10 @@ import { Input } from "../Input";
 import ErrorSvg from "../../dist/svg/error.svg";
 
 import {
-  address_validation,
   email_validation,
-  emergencyContactNumber_validation,
   emergencyContactName_validation,
   fullName_validation,
   licenseNumber_validation,
-  mobile_validation,
   specialty_validation,
   qualification_validation,
   state_validation,
@@ -22,16 +19,16 @@ import {
   street_validation,
   zipCode_validation,
   additional_validation,
+  user_validation,
+  password_validation,
 } from "../../utils/inputValidations";
 import { Form, Modal } from "react-bootstrap";
 import { FormProvider, useForm } from "react-hook-form";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import Multiselect from "multiselect-react-dropdown";
-import DatePicker from "react-datepicker";
 import { useCalculateAge } from "../../hooks/useCalculateAge";
 import { toast } from "react-toastify";
 import { REGISTER_DOCTORS } from "../../utils/constants";
-import PhoneInput from "react-phone-number-input";
 import CustomPhoneComponent from "../CustomPhoneComponent";
 import CustomDateComponent from "../CustomDateComponent";
 function AddDoctor({ handleToggleCreateModal, getDoctors }) {
@@ -39,6 +36,7 @@ function AddDoctor({ handleToggleCreateModal, getDoctors }) {
   const multiselectRef = useRef("");
   const [birthday, setBirthday] = useState(new Date());
   const [gender, setGender] = useState(""); 
+  const [merried, setMerried] = useState(""); 
   const [isActive, setIsActive] = useState(""); 
   const intupAvatarRef = useRef(null);
   const [imageUrl, setImageUrl] = useState(MissingAvatar);
@@ -54,6 +52,9 @@ function AddDoctor({ handleToggleCreateModal, getDoctors }) {
   };
   const onDoctorStateSelect = (event) => {
     setIsActive(prev=>event.target.value)
+  };
+  const onDoctorMerriedSelect = (event) => {
+    setMerried(prev=>event.target.value)
   };
   const getAge = (date) => {
     setBirthday(date);
@@ -143,9 +144,14 @@ function AddDoctor({ handleToggleCreateModal, getDoctors }) {
       gender,
       phone,
       dateOfBirth,
+      user,
+      password,
+      maritalStatus
     }) => {
       const newDoctor = {
-        doctorName: fullName,
+        doctorName: fullName,        
+        username:user,
+        password:password,
         contact: {
           email: email,
           phone: phone,
@@ -161,6 +167,7 @@ function AddDoctor({ handleToggleCreateModal, getDoctors }) {
         qualification: qualification,
         licenseNumber: licenseNumber,
         gender: gender,
+        maritalStatus:maritalStatus,
         dateOfBirth: new Date(
           dateOfBirth.getTime() - dateOfBirth.getTimezoneOffset() * 60000
         )
@@ -171,7 +178,7 @@ function AddDoctor({ handleToggleCreateModal, getDoctors }) {
         profilePictureUrl: "profilePictureUrl",
         isActive: 1,
       };
-    // console.log(newDoctor)
+     //console.log(newDoctor)
       formData.append("text", JSON.stringify(newDoctor));
       formData.append("image", image);
       try {
@@ -183,7 +190,7 @@ function AddDoctor({ handleToggleCreateModal, getDoctors }) {
 
         handleToggleCreateModal(false);
         getDoctors("update");
-        notify(`${newDoctor.fullName}  Բժիշկը ավելացված է`)
+        notify(`${newDoctor.doctorName}  Բժիշկը ավելացված է`)
 
       } catch (err) {
         console.log(err)
@@ -330,7 +337,7 @@ function AddDoctor({ handleToggleCreateModal, getDoctors }) {
                                 Հեռախոս
                               </label>
                               {methods.formState.errors.phone && (
-                                    <span className="error text-red"><span><img src={ErrorSvg} alt="errorSvg"/></span> required</span>
+                                    <span className="error text-red"><span><img src={ErrorSvg} alt="errorSvg"/></span> պարտադիր</span>
                                     )}
                                     </div>
                                     <CustomPhoneComponent name="phone"  control={methods.control} />  
@@ -350,7 +357,7 @@ function AddDoctor({ handleToggleCreateModal, getDoctors }) {
                                     <span>
                                       <img src={ErrorSvg} alt="errorSvg" />
                                     </span>{" "}
-                                    required
+                                    պարտադիր
                                   </span>
                                 )}
                               </div>
@@ -428,6 +435,7 @@ function AddDoctor({ handleToggleCreateModal, getDoctors }) {
                               </div>
                               </div>
                             </div>
+                            
                             {/* <div className="col-sm-6">
                               <label className="form-label" htmlFor="gender">
                                 Կարգավիճակ
@@ -463,12 +471,61 @@ function AddDoctor({ handleToggleCreateModal, getDoctors }) {
                                   Ծննդյան ամսաթիվ
                                 </label>
                                   {methods.formState.errors.dateOfBirth && (
-                                    <span className="error text-red"><span><img src={ErrorSvg} alt="errorSvg"/></span> required</span>
+                                    <span className="error text-red"><span><img src={ErrorSvg} alt="errorSvg"/></span> պարտադիր</span>
                                     )}
                                     </div>
                                 <div>
                                 <CustomDateComponent name="dateOfBirth" control={methods.control}/>
                                 </div>
+                              </div>
+                            </div>
+                            <div className="col-sm-6">
+                            <div className="mb-2">
+                            <div className="d-flex justify-content-between me-2">
+                              <label className="form-check-label" htmlFor="male">
+                              Ընտանեկան կարգավիճակ
+                              </label>
+                              {methods.formState.errors.maritalStatus && (
+                                  <span className="error text-red">
+                                    <span>
+                                      <img src={ErrorSvg} alt="errorSvg" />
+                                    </span>{" "}
+                                    պարտադիր
+                                  </span>
+                                )}
+                                </div>
+                            </div>
+                            <div className="d-flex  align-items-center">
+                              <div className="form-check form-check-inline">
+                                <input
+                                  className="form-check-input"
+                                  type="radio"
+                                  id="married"
+                                  value="married"                                
+                                  onChange={() => onDoctorMerriedSelect("married")}
+                                    {...methods.register("maritalStatus", {
+                                      required: true,
+                                    })}
+                                />
+                              <label className="form-check-label" htmlFor="married">
+                              Ամուսնացած
+                              </label>
+                            </div>
+                            <div className="form-check form-check-inline">
+                              <input
+                                className="form-check-input"
+                                type="radio"
+                                id="single"
+                                value="single"
+                                onChange={() => onDoctorMerriedSelect("single")}
+                                    {...methods.register("maritalStatus", {
+                                      required: true,
+                                    })}
+                              />
+                              <label className="form-check-label" htmlFor="single">
+                              Չամուսնացած
+                              </label>
+                              </div>
                               </div>
                             </div>
                           </div>
@@ -488,6 +545,14 @@ function AddDoctor({ handleToggleCreateModal, getDoctors }) {
                                     </div>
                                <CustomPhoneComponent name="emergencyContactNumber"  control={methods.control} />
    
+                            </div>
+                          </div>
+                          <div className="row gx-3">
+                            <div className="col-sm-6">
+                              <Input {...user_validation} />
+                            </div>
+                            <div className="col-sm-6">
+                              <Input {...password_validation} />
                             </div>
                           </div>
                         </div>

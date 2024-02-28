@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState, useMemo, useEffect, Suspense } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import useGetData from "../../hooks/useGetData";
 import ComponentToConfirm from "../ComponentToConfirm";
 import {
@@ -22,8 +22,10 @@ import mobileSvg from "../../dist/svg/mobileSvg.svg";
 import emailSvg from "../../dist/svg/emailSvg.svg";
 import LoadingSpinner from "../LoadingSpinner";
 const customData = [
-  {
+  {    
+    patientId:46,
     date: "15.06.2021",
+    diagnosticsType:'Արտաքին',
     researches: [
       {
         researchName: "Կրեատինինկինազա",
@@ -42,7 +44,9 @@ const customData = [
     ],
   },
   {
+    patientId:44,
     date: "04.11.2023",
+    diagnosticsType:'Ներքին',
     researches: [
       {
         shortName: "WBC",
@@ -90,7 +94,8 @@ const customData = [
   },
 ];
 function PatientDetails(data) {
-  const axiosPrivate = useAxiosPrivate();
+  const axiosPrivate = useAxiosPrivate()
+  const navigate = useNavigate();
   const { id } = useParams();
   const [isOpen, setIsOpen] = useState(false);
   const [research, setResearch] = useState([]);
@@ -100,6 +105,23 @@ function PatientDetails(data) {
   const [usersPerPage, setUsersPerPage] = useState(
     Math.round((window.innerHeight / 100) * 1.5)
   );
+  const handleDiagnosticssDetails = async (diagnosticsId) => {  
+    // try {
+      //   const response = await axiosPrivate.get(`/diagnostics/${diagnosticsId}`, );
+      //   console.log(response.data); 
+      navigate(`/diagnostics/${diagnosticsId}`)
+      
+    // } catch (err) {
+    //   console.log(err)
+    //   // if (!err?.response) {
+    //   //   setErrMsg("No Server Response");
+    //   // } else if (err.response?.status === 409) {
+    //   //   setErrMsg("Username Taken");
+    //   // } else {
+    //   //   setErrMsg(" Failed");
+    //   // }
+    // }
+  };
   const pageCount = 1;
   //const pageCount = Math.ceil(useersCount/usersPerPage)
   const handleOpenModal = (data) => {
@@ -141,12 +163,42 @@ function PatientDetails(data) {
       {
         Header: (event) => (
           <>
+            <div className="columnHeader">ID</div>
+          </>
+        ),
+        accessor: "patientId",
+        sortable: true,
+        width: 60,
+        Cell: ({ row }) => (
+          <div
+            onClick={()=>handleDiagnosticssDetails(row.original.patientId)}
+            style={{ cursor: 'pointer', textDecoration:'underline' }}
+          >
+            {row.original.patientId}
+          </div>
+        ),
+        Filter: ({ column: { id } }) => <></>,
+      },
+      {
+        Header: (event) => (
+          <>
             <div className="columnHeader">Ամսաթիվ</div>
           </>
         ),
         accessor: "date",
         sortable: true,
-        width: 400,
+        width: 250,
+        Filter: ({ column: { id } }) => <></>,
+      },
+      {
+        Header: (event) => (
+          <>
+            <div className="columnHeader">Տեսակ</div>
+          </>
+        ),
+        accessor: "diagnosticsType",
+        sortable: true,
+        width: 200,
         Filter: ({ column: { id } }) => <></>,
       },
       {
@@ -168,7 +220,7 @@ function PatientDetails(data) {
         style: {
           // Custom style for the 'description' column
         },
-        width: 300,
+        width: 200,
         Filter: ({ column: { id } }) => <></>,
       },
     ],
@@ -235,6 +287,7 @@ function PatientDetails(data) {
             <Checkbox {...getToggleAllRowsSelectedProps()} />
           ),
           Cell: ({ row }) => <Checkbox {...row.getToggleRowSelectedProps()} />,
+          width:60
         },
         ...columns,
       ]);

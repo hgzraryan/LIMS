@@ -7,9 +7,9 @@ import FeatherIcon from "feather-icons-react/build/FeatherIcon";
 import { ColumnFilter } from "../ColumnFilter";
 import { BiSolidInfoCircle } from "react-icons/bi";
 import researchSvg from "../../../src/dist/img/research.svg";
-
+import "../../dist/css/data-table.css";
 import { Modal } from "react-bootstrap";
-import { MdImportantDevices } from "react-icons/md";
+
 function ResearchListsTable({
   confirmRef,
   selectedItem,
@@ -66,6 +66,8 @@ function ResearchListsTable({
           <ColumnFilter
             id={id}
             setData={setResearches}
+            placeholder={'Հապավումը'}
+
           />
         ),
       },
@@ -83,6 +85,8 @@ function ResearchListsTable({
           <ColumnFilter
             id={id}
             setData={setResearches}
+            placeholder={'Անվանումը'}
+
           />
         ),
       },
@@ -98,6 +102,8 @@ function ResearchListsTable({
           <ColumnFilter
             id={id}
             setData={setResearches}
+            placeholder={'Նորմա'}
+
           />
         ),
       },
@@ -114,6 +120,8 @@ function ResearchListsTable({
           <ColumnFilter
             id={id}
             setData={setResearches}
+            placeholder={'Դասակարգ'}
+
           />
         ),
       },
@@ -130,6 +138,8 @@ function ResearchListsTable({
           <ColumnFilter
             id={id}
             setData={setResearches}
+            placeholder={'Չափման միավոր'}
+
           />
         ),
       },
@@ -146,6 +156,8 @@ function ResearchListsTable({
           <ColumnFilter
             id={id}
             setData={setResearches}
+            placeholder={'Արժույթ'}
+
           />
         ),
       },
@@ -162,6 +174,8 @@ function ResearchListsTable({
           <ColumnFilter
             id={id}
             setData={setResearches}
+            placeholder={'Գին'}
+
           />
         ),
       },

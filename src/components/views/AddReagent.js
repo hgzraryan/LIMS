@@ -137,7 +137,7 @@ function AddReagent({ handleToggleCreateModal, getReagents }) {
                                     <span>
                                       <img src={ErrorSvg} alt="errorSvg" />
                                     </span>{" "}
-                                    required
+                                    պարտադիր
                                   </span>
                                 )}
                                 </div>

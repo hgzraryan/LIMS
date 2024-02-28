@@ -187,6 +187,7 @@ body {
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: transparent;
   overflow-x: hidden;
+  
 }
 
 .main-font, .jq-toast-wrap .jq-toast-single, .jq-toast-wrap .jq-toast-single .jq-toast-heading, .infowindow-wrap .infowindow-header, .infowindow-wrap .infowindow-body {
@@ -91034,7 +91035,7 @@ Project:	Jampack
   align-items: center;
   border-radius: 2rem;
   max-width: 200px;
-  box-shadow: 0 0 1rem #0ef;
+  box-shadow: 0 0 1rem #08364d;
   overflow: hidden;
   display: flex;
   padding: 0;
@@ -91043,7 +91044,7 @@ Project:	Jampack
 }
 .section_box-content, .new_box-content{
   position: absolute;
-  color: #ecc694;
+  color: #000;
 }
 .section_box-image, .new_box-image{
   width: 100%;

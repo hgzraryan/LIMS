@@ -63,7 +63,6 @@ const Login = () => {
             resetUser();
             setPwd('');  
             if (response?.data?.authUserData?.isactive === 0) {
-                console.log("asd")
                 logout();
                 navigate('/login');
                           }

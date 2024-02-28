@@ -22,6 +22,11 @@ import ComponentToPrintResultWrapper from "../ComponentToPrintResultWrapper";
 import ResultData from "../ResultData";
 import { ComponentToPrint } from "../ComponentToPrint";
 import ReactToPrint from "react-to-print";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import { useNavigate } from "react-router-dom";
+import  jsPDF  from "jspdf";
+import "../../dist/css/data-table.css";
+
 
 
 function DiagnosticsTable({
@@ -34,7 +39,10 @@ function DiagnosticsTable({
   selectedItemId,
   selectedItem,
   patients,
+  getDiagnostics
 }) {
+  const axiosPrivate = useAxiosPrivate()
+  const navigate = useNavigate();
   const [selectedItem1, setSelectedItem1] = useState("");
   const [selectedItemId1, setSelectedItemId1] = useState(null);
   const [isOpen, setIsopen] = useState(false);
@@ -79,6 +87,10 @@ function DiagnosticsTable({
   const handleOpenResultModal = (user) => {
     setModalResult((prev) => user);
   };
+  const handleSendResult = () => {
+    const resultData = document.getElementById('resultData');
+    console.log(JSON.stringify(resultData))
+  };
   const handleOpenStatusModal = (user) => {
     setSelectedItem1((prev) => user);
   };
@@ -99,6 +111,44 @@ function DiagnosticsTable({
     }),
     []
   );
+  const handleDiagnosticssDetails = async (diagnosticsId) => {  
+    // try {
+      //   const response = await axiosPrivate.get(`/diagnostics/${diagnosticsId}`, );
+      //   console.log(response.data); 
+      navigate(`/diagnostics/${diagnosticsId}`)
+      
+    // } catch (err) {
+    //   console.log(err)
+    //   // if (!err?.response) {
+    //   //   setErrMsg("No Server Response");
+    //   // } else if (err.response?.status === 409) {
+    //   //   setErrMsg("Username Taken");
+    //   // } else {
+    //   //   setErrMsg(" Failed");
+    //   // }
+    // }
+  };
+
+  const sendPDFToBackend = (pdfData) => {
+
+    console.log(pdfData)
+    // axiosPrivate('/endpoint', {
+    //   method: 'POST',
+    //   body: pdfData
+    // })
+    // .then(response => {
+    //   if (response.ok) {
+    //     alert('PDF sent to backend successfully');
+    //   } else {
+    //     alert('Failed to send PDF to backend');
+    //   }
+    // })
+    // .catch(error => {
+    //   console.error('Error sending PDF to backend:', error);
+    //   alert('Failed to send PDF to backend');
+    // });
+  }
+
   const columns = useMemo(
     () => [
       {
@@ -116,7 +166,16 @@ function DiagnosticsTable({
         sortable: true,
         width: 200,
         Filter: ({ column: { id } }) => (
-          <ColumnFilter id={id} setData={setDiagnostics} />
+          <ColumnFilter id={id} setData={setDiagnostics} 
+          placeholder = "Հաճախորդի ID" />
+        ),
+        Cell: ({ row }) => (
+          <div
+            onClick={()=>handleDiagnosticssDetails(row.original.patientId)}
+            style={{ cursor: 'pointer', textDecoration:'underline' }}
+          >
+            {row.original.patientId}
+          </div>
         ),
       },
       {
@@ -141,7 +200,7 @@ function DiagnosticsTable({
         accessor: "diagnosisDate",
         width: 300,
         Filter: ({ column: { id } }) => (
-          <ColumnFilter id={id} setData={setDiagnostics} />
+          <ColumnFilter id={id} setData={setDiagnostics} placeholder = "Գրանցման ամսաթիվ" />
         ),
       },
       {
@@ -149,7 +208,7 @@ function DiagnosticsTable({
         accessor: "class",
         width: 200,
         Filter: ({ column: { id } }) => (
-          <ColumnFilter id={id} setData={setDiagnostics} />
+          <ColumnFilter id={id} setData={setDiagnostics}  placeholder = "Տեսակ"/>
         ),
       },
       {
@@ -157,7 +216,7 @@ function DiagnosticsTable({
         accessor: "internalStatus",
         width: 200,
         Filter: ({ column: { id } }) => (
-          <ColumnFilter id={id} setData={setDiagnostics} />
+          <ColumnFilter id={id} setData={setDiagnostics} placeholder = "Կարգավիճակ"/>
         ),
       },
       {
@@ -180,7 +239,7 @@ function DiagnosticsTable({
                 data-placement="top"
                 title="Edit"
                 href="#"
-                onClick={() => handleOpenEditModal(row)}
+                onClick={() => handleOpenEditModal(row.original)}
               >
                 <span className="icon">
                   <span className="feather-icon">
@@ -356,7 +415,7 @@ function DiagnosticsTable({
         </Modal>
       )}
       {modalResult && (
-        <Modal show={() => true} size="xl" onHide={() => setModalResult(false)}>
+        <Modal show={() => true} size="xl" onHide={() => setModalResult(false)} >
           <Modal.Header closeButton>
             <Modal.Title
               style={{ width: "100%", textAlign: "center" }}
@@ -367,36 +426,19 @@ function DiagnosticsTable({
               <div data-simplebar className="nicescroll-bar">
                 <div className="d-flex flex-xxl-nowrap flex-wrap">
                   <div className="contact-info w-100">
-                    <ResultData modalResult={modalResult} patients={patients} />
+                    <ResultData modalResult={modalResult} patients={patients} setModalResult={setModalResult} />
                   </div>
                 </div>
               </div>
             </div>
             <div className="modal-footer ">
-              <button
-                type="button"
-                className="btn btn-secondary"
-                onClick={() => setModalResult(false)}
-              >
-                Ուղարկել
-              </button>
-              <ComponentToPrintResultWrapper
-                data={modalResult}
-                patients={patients}
-              />
-              <button
-                type="button"
-                className="btn btn-secondary"
-                onClick={() => setModalResult(false)}
-              >
-                Փակել
-              </button>
+             
             </div>
           </Modal.Body>
         </Modal>
       )}
       <table
-        className="table nowrap w-100 mb-5 dataTable no-footer"
+        className="table nowrap w-100 mb-5 dataTable no-footer diagTable"
         {...getTableProps()}
       >
         <thead>
@@ -449,10 +491,13 @@ function DiagnosticsTable({
         </thead>
         {diagnostics?.length && (
           <tbody {...getTableBodyProps()}>
-            {rows.map((row) => {
-              prepareRow(row);
-              return (
-                <tr {...row.getRowProps()}>
+             {rows.map((row) => {
+            prepareRow(row);
+            const rowProps = row.getRowProps();
+            const diagStatus = row.original.diagStatus ==='Cancelled'; 
+           // const diagStatus = row.original.patientId > 'Cancelled'; 
+            return (
+              <tr {...rowProps} style={{ backgroundColor: diagStatus ? "rgb(255, 99, 71, 0.2)" : "inherit", borderStyle:'none !important' }}>
                   {row.cells.map((cell) => {
                     return (
                       <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
@@ -464,7 +509,8 @@ function DiagnosticsTable({
             {editRow && (
               <DiagnosticsEditModal
                 handleCloseEditModal={handleCloseEditModal}
-                rowData={editRow.values}
+                rowData={editRow}
+                getDiagnostics={getDiagnostics}
               />
             )}
             <ResearchViewBoard

@@ -155,7 +155,7 @@ function AddAgent({ handleToggleCreateModal, getAgents }) {
                                 Հեռախոս
                               </label>
                               {methods.formState.errors.phone && (
-                                    <span className="error text-red"><span><img src={ErrorSvg} alt="errorSvg"/></span> required</span>
+                                    <span className="error text-red"><span><img src={ErrorSvg} alt="errorSvg"/></span> պարտադիր</span>
                                     )}
                                     </div>
                                     <CustomPhoneComponent name="phone"  control={methods.control} />

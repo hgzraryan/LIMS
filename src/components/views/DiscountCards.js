@@ -4,7 +4,8 @@ import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useLocation } from "react-router-dom";
 import Multiselect from "multiselect-react-dropdown";
-import emptyCard from "../../dist/img/discount-bg.png";
+//import emptyCard from "../../dist/img/discount-bg.png";
+import emptyCard from "../../dist/img/discount_testImg.png";
 import { Button } from "react-bootstrap";
 import {
   createDiscount,

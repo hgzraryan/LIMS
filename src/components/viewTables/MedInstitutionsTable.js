@@ -14,6 +14,7 @@ import { BiSolidInfoCircle } from "react-icons/bi";
 import { Modal } from "react-bootstrap";
 import DefaultProfileImage from "../../../src/dist/img/Missing.svg";
 import ComponentToConfirm from "../ComponentToConfirm";
+import "../../dist/css/data-table.css";
 
 function MedInstitutionsTable({
   confirmRef,
@@ -52,7 +53,10 @@ function MedInstitutionsTable({
         sortable: true,
         width: 80,
         Filter: ({ column: { id } }) => (
-          <ColumnFilter id={id} setData={setMedInstitutions} placeholder={"ID"} />
+          <ColumnFilter 
+          id={id} 
+          setData={setMedInstitutions} 
+          placeholder={"ID"} />
         ),
       },
       {
@@ -65,7 +69,10 @@ function MedInstitutionsTable({
         sortable: true,
         width: 400,
         Filter: ({ column: { id } }) => (
-          <ColumnFilter id={id} setData={setMedInstitutions} />
+          <ColumnFilter 
+          id={id} 
+          setData={setMedInstitutions}
+          placeholder={"Անվանում"} />
         ),
       },
 
@@ -83,7 +90,10 @@ function MedInstitutionsTable({
         //   </div>
         // ),
         Filter: ({ column: { id } }) => (
-          <ColumnFilter id={id} setData={setMedInstitutions} />
+          <ColumnFilter 
+          id={id} 
+          setData={setMedInstitutions}
+          placeholder={"Հասցե"} />
         ),
       },
       {
@@ -100,7 +110,11 @@ function MedInstitutionsTable({
         //   </div>
         // ),
         Filter: ({ column: { id } }) => (
-          <ColumnFilter id={id} setData={setMedInstitutions} />
+          <ColumnFilter 
+          id={id} 
+          setData={setMedInstitutions} 
+          placeholder={"Էլ․ հասցե"} 
+          />
         ),
       },
       {
@@ -117,7 +131,11 @@ function MedInstitutionsTable({
         //   </div>
         // ),
         Filter: ({ column: { id } }) => (
-          <ColumnFilter id={id} setData={setMedInstitutions} />
+          <ColumnFilter 
+          id={id} 
+          setData={setMedInstitutions}
+          placeholder={"Հեռախոս"} 
+          />
         ),
       },
       {

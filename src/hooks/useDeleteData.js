@@ -12,7 +12,7 @@ const useDeleteData = (url,itemRef,selectedItem,setSelectedItemId,items,setItems
   const updateUsersCount = async () => {
     try {
       const response = await axiosPrivate.get("/allCount");
-      console.log(response)
+      //console.log(response)
       dispatch(checkUsersCount(response.data.usersCount));
     } catch (err) {
       console.error(err);

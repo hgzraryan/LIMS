@@ -23,13 +23,13 @@ const useSubmitForm = (REGISTER_URL,editorRef, getData,setErrMsg,handleToggleCre
         });
 
         const onSubmit = methods.handleSubmit(async (data) => {
-          console.log(additionalData)
+         
             const newData = {
               ...data,
               ...additionalData,
               additional: editorRef.current?.getContent({ format: "text" }),
             };
-            console.log(newData)
+           // console.log(newData)
             try {
               await axiosPrivate.post(REGISTER_URL, newData, {
                 headers: { "Content-Type": "application/json" },
