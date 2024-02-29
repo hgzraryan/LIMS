@@ -22,7 +22,7 @@ function ActivityModal({overlayIsOpen,setOverlayIsOpen,selectedItem}) {
         setOverlayIsOpen(false);
     };
     const handleNewResearch = async()=>{
-      selectedItem?.statusBoard[1]?.researches?.push({id: Math.random(), name: `Հետազոտություն ${Math.floor(Math.random())}`})
+      selectedItem?.statusBoard[1]?.researches?.push({id: Math.random(), name: `Հետազոտություն ${Math.random()}`})
       console.log('**********');
       console.log('selectedItem',selectedItem?.statusBoard[1]?.researches);
       console.log('**********',);
