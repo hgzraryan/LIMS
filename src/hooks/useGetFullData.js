@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { useLocation, useNavigate } from "react-router-dom";
-import { checkPatients } from "../redux/features/patients/patientsSlice";
 import { useDispatch } from "react-redux";
-
-export const useGetFullData = (url,checkState) => {
+import { checkPatients, selectPatients } from "../redux/features/patients/patientsSlice";
+import {  DOCTORS_URL, RESEARCHLISTS_URL, PATIENTS_URL, REFDOCTORS_URL } from "../utils/constants";
+import { reserchesList } from "../redux/features/researches/researchesSlice";
+import { checkDoctors } from "../redux/features/doctor/doctorsSlice";
+import { checkRefDoctors } from "../redux/features/refDoctors/refDoctorsSlice";
+export const useGetFullData = () => {
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
   const location = useLocation();
@@ -14,23 +17,49 @@ export const useGetFullData = (url,checkState) => {
     let isMounted = true;
     const controller = new AbortController();
 
-    const getData = async () => {
-      try {
-        const response = await axiosPrivate.get(url);
+     setTimeout(()=>{
 
-        isMounted && dispatch(checkState(response.data.jsonString));
-        setData((prev) => response.data.jsonString);
-      } catch (err) {
-        console.error(err);
-        navigate("/login", { state: { from: location }, replace: true });
-      }
-    };
-    getData();
+       axiosPrivate.get(PATIENTS_URL)
+       .then((response) => {
+         dispatch(checkPatients(response.data.jsonString));
+        }).then(()=>{
+          axiosPrivate.get(DOCTORS_URL)
+          .then((response) => {
+            dispatch(checkDoctors(response.data.jsonString));
+          }).catch((err) => {
+            console.error(err);
+            navigate("/login", { state: { from: location }, replace: true });
+          });
+        }).then(()=>{
+          axiosPrivate.get(RESEARCHLISTS_URL)
+          .then((response) => {
+            dispatch(reserchesList(response.data.jsonString));
+          }).catch((err) => {
+            console.error(err);
+            navigate("/login", { state: { from: location }, replace: true });
+          });
+        }).then((url)=>{
+          axiosPrivate.get(REFDOCTORS_URL)
+          .then((response) => {
+            dispatch(checkRefDoctors(response.data.jsonString));
+          }).catch((err) => {
+            console.error(err);
+            navigate("/login", { state: { from: location }, replace: true });
+          });
+        })
+        .catch((err) => {
+          console.error(err);
+          navigate("/login", { state: { from: location }, replace: true });
+        });        
+        
+      },1000)
+        
+    
     return () => {
       isMounted = false;
       controller.abort();
     };
-  }, [url]);
+  }, []);
 
   return [data];
 };

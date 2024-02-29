@@ -34,10 +34,11 @@ const MainTemplate = () => {
     const dispatch = useDispatch()
     const patientsCount = useSelector(selectPatientsCount)
     const usersCount = useSelector(selectUsersCount)
-    const [researchState] = useGetFullData(RESEARCHLISTS_URL,reserchesList)
-    const [patientsState] = useGetFullData(PATIENTS_URL,checkPatients)
-    const [doctorsState] = useGetFullData(DOCTORS_URL,checkDoctors)
-    const [refDoctorsState] = useGetFullData(REFDOCTORS_URL,checkRefDoctors)
+
+    //const [researchState] = useGetFullData(RESEARCHLISTS_URL,reserchesList)
+    // const [patientsState] = useGetFullData(PATIENTS_URL,checkPatients)
+    const [doctorsState] = useGetFullData()
+     //const [refDoctorsState] = useGetFullData(REFDOCTORS_URL,checkRefDoctors)
     //-------------------
     
     //-------------------
