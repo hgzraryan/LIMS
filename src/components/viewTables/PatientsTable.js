@@ -40,7 +40,7 @@ function PatientsTable({
   };
   const handlePatientsDetail = async (patientId) => {  
     try {
-      const response = await axiosPrivate.get(`/patients/${patientId}`, );
+     // const response = await axiosPrivate.get(`/patients/${patientId}`, );
       //console.log(response.data); 
       navigate(`/patients/${patientId}`)
       

@@ -106,13 +106,13 @@ function PatientDetails(data) {
     Math.round((window.innerHeight / 100) * 1.5)
   );
   const handleDiagnosticssDetails = async (diagnosticsId) => {  
-    // try {
-      //   const response = await axiosPrivate.get(`/diagnostics/${diagnosticsId}`, );
+     try {
+        //const response = await axiosPrivate.get(`/diagnostics/${id}`, );
       //   console.log(response.data); 
       navigate(`/diagnostics/${diagnosticsId}`)
       
-    // } catch (err) {
-    //   console.log(err)
+     } catch (err) {
+    //    console.log(err)
     //   // if (!err?.response) {
     //   //   setErrMsg("No Server Response");
     //   // } else if (err.response?.status === 409) {
@@ -120,7 +120,7 @@ function PatientDetails(data) {
     //   // } else {
     //   //   setErrMsg(" Failed");
     //   // }
-    // }
+     }
   };
   const pageCount = 1;
   //const pageCount = Math.ceil(useersCount/usersPerPage)
@@ -142,21 +142,21 @@ function PatientDetails(data) {
     };
     getData();
   }, []);
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const response = await axiosPrivate.get(`/diagnostics/${id}`);
-        console.log(response)
-        // setIsLoading(false);
-        // setPatientDetails((prevUsers) => response.data.jsonString);
-        // setCurrentPage((prev) => prev = 1);
-      } catch (err) {
-        console.error(err);
-        //navigate("/login", { state: { from: location }, replace: true });
-      }
-    };
-    getData();
-  }, []);
+  // useEffect(() => {
+  //   const getData = async () => {
+  //     try {
+  //       const response = await axiosPrivate.get(`/diagnostics/${id}`);
+  //       console.log(response)
+  //       // setIsLoading(false);
+  //       // setPatientDetails((prevUsers) => response.data.jsonString);
+  //       // setCurrentPage((prev) => prev = 1);
+  //     } catch (err) {
+  //       console.error(err);
+  //       //navigate("/login", { state: { from: location }, replace: true });
+  //     }
+  //   };
+  //   getData();
+  // }, []);
 
   const columns = useMemo(
     () => [

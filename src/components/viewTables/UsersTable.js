@@ -19,6 +19,7 @@ import useGetData from "../../hooks/useGetData";
 import useDebounce from "../../hooks/useDebounce";
 import DefaultProfileImage from "../../../src/dist/img/Missing.svg";
 import "../../dist/css/data-table.css";
+import { useNavigate } from "react-router-dom";
 
 function UsersTable({
   confirmRef,
@@ -30,7 +31,7 @@ function UsersTable({
   users,
   setUsers,
 }) {
-
+const navigate = useNavigate()
   const setUserTypeStyle = (userType) => {
     switch (userType) {
       case "Admin":
@@ -62,6 +63,23 @@ function UsersTable({
   const handleColumnToggle = (columnId) => {
     toggleHideColumn(columnId);
   };
+  const handleUserPage = async(userId) =>{
+    try {
+     // const response = await axiosPrivate.get(`/patients/${userId}`, );
+      //console.log(response.data); 
+      navigate(`/users/15`)
+      
+    } catch (err) {
+      console.log(err)
+      // if (!err?.response) {
+      //   setErrMsg("No Server Response");
+      // } else if (err.response?.status === 409) {
+      //   setErrMsg("Username Taken");
+      // } else {
+      //   setErrMsg(" Failed");
+      // }
+    }
+  }
   const defaultColumn = useMemo(
     () => ({
       minWidth: 20,
@@ -83,7 +101,7 @@ function UsersTable({
             style={{ width: "50px", height: "50px", borderRadius: "50%" }}
           />
         ),
-        width: 100,
+        width: 65,
         disableSortBy: true,
         Filter: ({ column: { id } }) => <></>,
       },
@@ -120,6 +138,11 @@ function UsersTable({
 
           />
         ),
+        Cell:({row})=>(
+          <div  
+          style={{ cursor: 'pointer', textDecoration:'underline'}}
+        onClick={handleUserPage} >{row.original?.username}</div>
+        )
       },
       {
         Header: (event) => (

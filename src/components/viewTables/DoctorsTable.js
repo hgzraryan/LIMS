@@ -59,7 +59,7 @@ function DoctorsTable({
             style={{ width: "50px", height: "50px", borderRadius: "50%" }}
           />
         ),
-        width: 100,
+        width: 65,
         disableSortBy: true,
         Filter: ({ column: { id } }) => <></>,
       },
@@ -108,7 +108,7 @@ function DoctorsTable({
       {
         Header: (event) => (
           <>
-            <div className="columnHeader">Մասնագիտություն</div>
+            <div className="columnHeader">Մասնագիտացում</div>
           </>
         ),
         accessor: "specialty",
@@ -117,7 +117,7 @@ function DoctorsTable({
           <ColumnFilter 
           id={id} 
           setData={setDoctors}
-          placeholder = "Մասնագիտություն" />
+          placeholder = "Մասնագիտացում" />
         ),
       },
       {

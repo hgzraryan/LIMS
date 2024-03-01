@@ -28,6 +28,7 @@ const MainTemplate = () => {
     const logout = useLogout();
     const axiosPrivate = useAxiosPrivate();
     const [userData,setUserData]=useState('')
+    const [userPage,setUserPage]=useState(false)
     
     useEffect(() => {
       const storedData = JSON.parse(localStorage.getItem('userData'));
@@ -42,10 +43,26 @@ const MainTemplate = () => {
 
     //const [researchState] = useGetFullData(RESEARCHLISTS_URL,reserchesList)
     // const [patientsState] = useGetFullData(PATIENTS_URL,checkPatients)
-    //const [doctorsState] = useGetFullData()
+    const [doctorsState] = useGetFullData()
      //const [refDoctorsState] = useGetFullData(REFDOCTORS_URL,checkRefDoctors)
     //-------------------
-    
+    const handleUserPage = async(userId=2095) =>{
+      try {
+       // const response = await axiosPrivate.get(`/patients/${userId}`, );
+        //console.log(response.data); 
+        navigate(`/users/15`)
+        
+      } catch (err) {
+        console.log(err)
+        // if (!err?.response) {
+        //   setErrMsg("No Server Response");
+        // } else if (err.response?.status === 409) {
+        //   setErrMsg("Username Taken");
+        // } else {
+        //   setErrMsg(" Failed");
+        // }
+      }
+    }
     //-------------------
     const [isActive, setIsActive] = useState(false);
 	const menuClick = event => {
@@ -309,8 +326,11 @@ const MainTemplate = () => {
                             <div className="media-body">
                               <div className="fs-7">{}</div>
                               <p style={{ color: "black" }}>
+                                <a href="#" onClick={handleUserPage}>
+
                                 {userData?.firstname + " "}
                                 {userData?.lastname}
+                                </a>
                               </p>
                             </div>
                           </div>

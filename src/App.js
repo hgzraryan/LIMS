@@ -30,13 +30,15 @@ MEDINSTITUTIONS_ROUTE,
 SUPPORT_URL,
 DIAGNOSTICS_ID_ROUTE,
 DOCTORSVISITS_ROUTE,
-DOCTORSVISITS_ID_ROUTE} from '../src/utils/constants' 
+DOCTORSVISITS_ID_ROUTE,
+USERS_ID_ROUTE} from '../src/utils/constants' 
 import { lazy, Suspense } from "react";
 import DoctorDetails from "./components/views/DoctorDetails";
 import Support from "./components/views/Support";
 import DiagnosticsDetails from "./components/views/DiagnosticsDetails";
 import DoctorsVisits from "./components/views/DoctorsVisits";
 import DoctorsVisitsDetails from "./components/views/DoctorsVisitsDetails";
+import UserDetails from "./components/views/UserDetails";
 
  const Register = lazy(()=>  import("./components/Register"));
  const Login = lazy(()=>  import("./components//views/Login"));
@@ -123,6 +125,7 @@ function App() {
               <Route path={PATIENTS_ID_ROUTE} element={<PatientDetails/>} />
               {/* <Route path="admin/useradd" element={<UserAdd />} /> */}
               <Route path={USERS_ROUTE} element={<Users />} />
+              <Route path={USERS_ID_ROUTE} element={<UserDetails />} />
               <Route path={ADMIN_ROUTE} element={<Admin />} />
               {/* <Route path="settings/prices" element={<Prices />} /> */}
               <Route

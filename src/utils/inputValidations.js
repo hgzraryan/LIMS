@@ -457,10 +457,10 @@ export const doctorState_validation = {
 };
 export const specialty_validation = {
   name: "specialty",
-  label: "Մասնագիտություն",
+  label: "Մասնագիտացում",
   type: "text",
   id: "specialty",
-  placeholder: "Մասնագիտություն",
+  placeholder: "Մասնագիտացում",
   validation: {
     required: {
       value: true,
