@@ -14,31 +14,15 @@ export const useGetFullData = () => {
   const dispatch = useDispatch();
   const [data, setData] = useState([]);
   useEffect(() => {
+    
     let isMounted = true;
     const controller = new AbortController();
 
      setTimeout(()=>{
-
-       axiosPrivate.get(PATIENTS_URL)
-       .then((response) => {
-         dispatch(checkPatients(response.data.jsonString));
-        }).then(()=>{
-          axiosPrivate.get(DOCTORS_URL)
-          .then((response) => {
-            dispatch(checkDoctors(response.data.jsonString));
-          }).catch((err) => {
-            console.error(err);
-            navigate("/login", { state: { from: location }, replace: true });
-          });
-        }).then(()=>{
           axiosPrivate.get(RESEARCHLISTS_URL)
           .then((response) => {
             dispatch(reserchesList(response.data.jsonString));
-          }).catch((err) => {
-            console.error(err);
-            navigate("/login", { state: { from: location }, replace: true });
-          });
-        }).then((url)=>{
+          }).then((url)=>{
           axiosPrivate.get(REFDOCTORS_URL)
           .then((response) => {
             dispatch(checkRefDoctors(response.data.jsonString));

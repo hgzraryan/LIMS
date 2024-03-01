@@ -11,7 +11,7 @@ import { Form, FormProvider, useForm, useController } from "react-hook-form";
 import { Input } from "../Input";
 import { toast } from "react-toastify";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
-import { REGISTER_PATIENT } from "../../utils/constants";
+import { DOCTORS_URL, REGISTER_PATIENT } from "../../utils/constants";
 import {
   firstName_validation,
   lastName_validation,
@@ -46,9 +46,10 @@ function CreatePatient({
   const [doctor, setDoctor] = useState("Առանց բժիշկ");
   const [refDoctor, setRefDoctor] = useState("Առանց բժիշկ");
   const [extraDoctor, setExtraDoctor] = useState(false);
-  const doctors = useSelector(selectDoctors);
   const refDoctors = useSelector(selectRefDoctors);
   const [errMsg, setErrMsg] = useState("");
+  const [doctors,setDoctors] = useState([]);
+
   const { trigger } = useForm();
 
   const methods = useForm({
@@ -59,6 +60,16 @@ function CreatePatient({
   const multiselectRef = useRef("");
   const editorRef = useRef(null);
 
+  useEffect(()=>{
+    setTimeout(() => {
+      
+      axiosPrivate.get(DOCTORS_URL).then((resp)=>{
+        setDoctors(prev=>resp?.data?.jsonString)
+     }).catch((err)=>{
+       console.log(err)
+     })
+    }, 1000);
+ },[])
   const getDate = (date) => {
     setStartDate(date);
     handlingDate.current =

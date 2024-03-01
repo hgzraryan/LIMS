@@ -131,7 +131,7 @@ function DiagnosticsTable({
 
   const sendPDFToBackend = (pdfData) => {
 
-    console.log(pdfData)
+    // console.log(pdfData)
     // axiosPrivate('/endpoint', {
     //   method: 'POST',
     //   body: pdfData
@@ -170,12 +170,32 @@ function DiagnosticsTable({
           placeholder = "Հաճախորդի ID" />
         ),
         Cell: ({ row }) => (
+          
           <div
             onClick={()=>handleDiagnosticssDetails(row.original.patientId)}
             style={{ cursor: 'pointer', textDecoration:'underline' }}
           >
             {row.original.patientId}
           </div>
+        ),
+        Cell: ({ row }) => (
+          <>
+            {row.original.patientId ? (
+              <div
+              onClick={()=>handleDiagnosticssDetails(row.original.patientId)}
+              style={{ cursor: 'pointer', textDecoration:'underline' }}
+            >
+              {row.original.patientId}
+            </div>
+            ) : (
+              <div
+            onClick={()=>handleDiagnosticssDetails(row.original.OrganizationsId)}
+            style={{ cursor: 'pointer', textDecoration:'underline' }}
+          >
+            {row.original.patientId}
+          </div>
+            )}
+          </>
         ),
       },
       {
@@ -213,10 +233,17 @@ function DiagnosticsTable({
       },
       {
         Header: "Կարգավիճակ",
-        accessor: "internalStatus",
+        accessor: "diagStatus",
         width: 200,
         Filter: ({ column: { id } }) => (
           <ColumnFilter id={id} setData={setDiagnostics} placeholder = "Կարգավիճակ"/>
+        ),
+        Cell: ({ row }) => (
+          <div className="d-flex justify-content-center align-items-center">
+            {row.original?.diagStatus === "Active" 
+            ? "Ակտիվ"
+            : "Չեղարկված"  }
+          </div>
         ),
       },
       {
@@ -262,10 +289,6 @@ function DiagnosticsTable({
                   </span>
                 </span>
               </a>
-              
-             
-      
-         
               {!row.original.patientId && (
                 <a
                   className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover del-button"
@@ -515,6 +538,7 @@ function DiagnosticsTable({
             )}
             <ResearchViewBoard
               selectedItem={selectedItem1}
+              setSelectedItem={setSelectedItem1}
               handleCloseStatusModal={handleCloseStatusModal}
               setResearches={setDiagnostics}
               researches={diagnostics}
@@ -530,7 +554,7 @@ function DiagnosticsTable({
               delId={selectedItem.diagnosticstId}
             />
           </tbody>
-        )}{" "}
+        )}
       </table>
     </>
   );

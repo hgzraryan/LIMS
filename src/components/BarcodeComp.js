@@ -1,7 +1,6 @@
 import React from 'react'
-import { useBarcode } from '@createnextapp/react-barcode';
-
-function BarcodeComp({data}) {
+import { useBarcode } from 'next-barcode';
+const BarcodeComp= ({data})=> {
     const { inputRef } = useBarcode({
         value: data,
         options: {

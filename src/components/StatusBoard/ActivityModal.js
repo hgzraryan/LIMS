@@ -9,7 +9,7 @@ import { selectResearches } from '../../redux/features/researches/researchesSlic
 import Multiselect from 'multiselect-react-dropdown'
 import useAxiosPrivate from '../../hooks/useAxiosPrivate'
 
-function ActivityModal({overlayIsOpen,setOverlayIsOpen,selectedItem}) {
+function ActivityModal({overlayIsOpen,setOverlayIsOpen,selectedItem,setSelectedItem}) {
   const axiosPrivate = useAxiosPrivate();
   const researchState= useSelector(selectResearches)
     const [openModal,setOpenModal]=useState(false)
@@ -21,17 +21,26 @@ function ActivityModal({overlayIsOpen,setOverlayIsOpen,selectedItem}) {
     const handleCloseModal = () => {
         setOverlayIsOpen(false);
     };
+    
     const handleNewResearch = async()=>{
-      selectedItem?.statusBoard[1]?.researches?.push({id: Math.random(), name: `Հետազոտություն ${Math.random()}`})
-      console.log('**********');
-      console.log('selectedItem',selectedItem?.statusBoard[1]?.researches);
-      console.log('**********',);
+
+    
+      const updatedSelectedItem = { ...selectedItem };
+  if (
+    updatedSelectedItem?.statusBoard?.length > 1 &&
+    updatedSelectedItem.statusBoard[1]?.researches
+  ) {   
+    updatedSelectedItem.statusBoard[1].researches.push({
+      id: Math.random(),
+      name: `Հետազոտություն ${Math.random()}`
+    });}
       handleCloseModal()
       try {
         const response = await axiosPrivate.post("./updateStatusBoard", JSON.stringify({
           statusBoard: selectedItem?.statusBoard,
           diagnosticsId:selectedItem?.diagnosticsId
         }));
+        setSelectedItem(updatedSelectedItem);
       } catch (err) {
         console.log(err)
         // if (!err?.response) {

@@ -12,6 +12,7 @@ function ColumnComponent({
   columnColor,
   columnItems,
   selectedItem,
+  setSelectedItem
 }) {
   // const intl = useIntl();
   // const { globalState, handleGlobalState } = useContext(globalContext);
@@ -31,6 +32,7 @@ function ColumnComponent({
       overlayIsOpen={newResearchModal}
       setOverlayIsOpen={setNewResearchModal}
       selectedItem={selectedItem}
+      setSelectedItem={setSelectedItem}
     />
     )}
     <Draggable

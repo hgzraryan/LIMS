@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { Modal } from "react-bootstrap";
 import FeatherIcon from "feather-icons-react";
 import { Editor } from "@tinymce/tinymce-react";
@@ -11,7 +11,7 @@ import {
 } from "../../utils/inputValidations";
 import useSubmitForm from "../../hooks/useSubmitForm";
 import Multiselect from "multiselect-react-dropdown";
-import { REGISTER_DIAGNOSTICS } from "../../utils/constants";
+import { PATIENTS_URL, REGISTER_DIAGNOSTICS } from "../../utils/constants";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { selectDoctors } from "../../redux/features/doctor/doctorsSlice";
@@ -35,7 +35,7 @@ function AddDiagnostic({
   handleToggleCreateModal,
   getDiagnostics,
   researchesState,
-  patients,
+  doctors
 }) {
   const axiosPrivate = useAxiosPrivate();
   const [errMsg, setErrMsg] = useState("");
@@ -52,11 +52,19 @@ function AddDiagnostic({
   const [intDiagnosticsStatus, setIntDiagnosticsStatus] = useState(null);
   const [extDiagnosticsStatus, setExtDiagnosticsStatus] = useState(null);
   const [doctor, setDoctor] = useState("");
-  const doctors = useSelector(selectDoctors);
+  const [patients, setPatients] = useState([]);
+ 
 
   const methods = useForm({
     mode: "onChange",
   });
+  useEffect(()=>{
+     axiosPrivate.get(PATIENTS_URL).then((resp)=>{
+      setPatients(prev=>resp?.data?.jsonString)
+    }).catch((err)=>{
+      console.log(err)
+    })
+  },[])
   const onResearchSelect = (data) => {
     let researchesArr = [];
     //let researchesPrice = [];
@@ -166,7 +174,8 @@ function AddDiagnostic({
       internalStatus: intDiagnosticsStatus,
       externalStatus: extDiagnosticsStatus,
       researchIds: researchesIds,
-      patientId: patientId,
+      // clientId: patientId || organizationId,
+      // clientType:clientType,
       doctors: doctor,
       //partner:partner,
       additional: editorRef.current.getContent({ format: "text" }),

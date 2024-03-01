@@ -3,7 +3,8 @@ import useAuth from './useAuth';
 
 const useRefreshToken = () => {
     const { setAuth } = useAuth();
-
+    
+try {
     const refresh = async () => {
         const response = await axios.get('/refresh', {
             withCredentials: true
@@ -20,6 +21,9 @@ const useRefreshToken = () => {
         return response.data.accessToken;
     }
     return refresh;
+} catch (error) {
+    console.log(error)
+}
 };
 
 export default useRefreshToken;

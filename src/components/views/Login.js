@@ -27,7 +27,6 @@ const Login = () => {
     const [errMsg, setErrMsg] = useState('');
     const [check, toggleCheck] = useToggle('persist', true);
     const [passwordType, setPasswordType] = useState("password");
-    const [userData, setUserData] = useState({});
 
 
     useEffect(() => {
@@ -54,9 +53,8 @@ const Login = () => {
             const decodedJWT = jwt(accessToken);
             const roles = decodedJWT.UserInfo.roles;
             const isActive = decodedJWT.UserInfo.isActive;
-            setUserData(prev => response.data.authUserData);
 
-
+            localStorage.setItem("userData", JSON.stringify(response?.data?.authUserData));
             console.log('roles',roles);
 
             setAuth({ user, pwd, roles, isActive, accessToken });
@@ -125,10 +123,6 @@ const Login = () => {
     useEffect(() => {
         localStorage.setItem("persist", persist);
     }, [persist])
-
-    useEffect(() => {
-        localStorage.setItem("userData", JSON.stringify(userData));
-    }, [userData])
 
 
     const togglePassword =()=>{

@@ -57,11 +57,14 @@ const Patients = () => {
   return (
     <HelmetProvider>
     <div>
+      <div>
+
 	 <Helmet>
     <meta charSet="utf-8" />
     <title>Vteam LIMS | Patients</title>
     <link rel="icon" type="image/x-icon" href="dist/img/favicon.ico"></link>
 	</Helmet>
+      </div>
       <div className="contactapp-wrap">
         <div className="contactapp-content">
           <div className="contactapp-detail-wrap w-100">

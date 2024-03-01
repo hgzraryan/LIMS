@@ -1,6 +1,5 @@
-import React, { useRef } from 'react'
+import React, { Suspense, useEffect, useRef, useState } from 'react'
 import { useTable } from 'react-table';
-// import Barcode from "react-barcode";
 import mainLogo from "../dist/img/main-logo.jpg";
 import userIcon from "../dist/pngIcons/user.png";
 import phoneIcon from "../dist/pngIcons/phone.png";
@@ -9,9 +8,11 @@ import genderIcon from "../dist/pngIcons/gender.png";
 import calendarIcon from "../dist/pngIcons/calendar.png";
 import geoIcon from "../dist/pngIcons/geo.png";
 import { jsPDF } from "jspdf";
-import arnamu from '../dist/fonts/arnamu-normal.js'
+import '../dist/fonts/arnamu-normal.js'
 import BarcodeComp from './BarcodeComp.js';
 import ComponentToPrintResultWrapper from './ComponentToPrintResultWrapper.js';
+import useAxiosPrivate from '../hooks/useAxiosPrivate.js';
+import LoadingSpinner from './LoadingSpinner.js';
 
 const data1 = [
     {
@@ -60,16 +61,26 @@ const data1 = [
   
   ];
 function ResultData({modalResult,patients,setModalResult}) { 
+const [patient,setPatient]=useState({})
+const [isLoading, setIsLoading] = useState(true);
+
+  const axiosPrivate = useAxiosPrivate()
     const {patientId}=modalResult
     const {statusBoard}=modalResult
-
+useEffect(()=>{
+setTimeout(()=>{
+axiosPrivate.get(`/patients/${patientId}`).then((resp)=>{
+  setPatient(prev=>resp?.data?.jsonString)
+  setIsLoading(false);
+})
+},500)
+},[])
     let patientRef = useRef(null); 
     const handleSendResult = () => {
       const resultData = document.getElementById('resultData');
       console.log(JSON.stringify(resultData))
     };
-   
-     const patient= patients.filter((el)=>el.patientId===patientId)[0]
+    // const patient= patients.filter((el)=>el.patientId===patientId)[0]
        const columns = React.useMemo(
            () => [
              {
@@ -96,21 +107,7 @@ function ResultData({modalResult,patients,setModalResult}) {
            []
          );
    
-   
-     //-----------------------barcode ------------------
-     /*
-   const [barcode, setBarcode] = useState('lintangwisesa');
-   const handleChange = (event) => {
-       setBarcode(event.target.data ? event.target.data : '');
-   };
-   const { inputRef } = Barcode({
-       data: barcode,
-       options: {
-         background: '#ffffff',
-       }
-   });
-   */
-     //-----------------------barcode ------------------
+
    
      const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
      useTable({
@@ -122,7 +119,7 @@ function ResultData({modalResult,patients,setModalResult}) {
      const generatePDF = () => {
        //const doc = new jsPDF('p', 'pt', 'a4');
        const componentHTML = document.getElementById('resultData');
-       
+
        const doc = new jsPDF({
          orientation: "portrait",
          
@@ -131,8 +128,7 @@ function ResultData({modalResult,patients,setModalResult}) {
          putOnlyUsedFonts:true
         });
         doc.setFont('arnamu','normal')
-     
-     doc.html(componentHTML,{
+        doc.html(componentRef.current,{
       html2canvas: {
             scale: 0.5,
             scrollY:0
@@ -140,7 +136,7 @@ function ResultData({modalResult,patients,setModalResult}) {
         x: 0,
         y: 0,
   
-          callback: function (pdf) {
+          callback: function  (pdf) {
             // Save the PDF
             pdf.save('generated_pdf.pdf');
           },
@@ -149,13 +145,10 @@ function ResultData({modalResult,patients,setModalResult}) {
           
         }
      )
-  
-
-     
-
     };
    return (
-       <>
+    <>
+     
        
           <div
             className="resultTable"
@@ -208,7 +201,7 @@ function ResultData({modalResult,patients,setModalResult}) {
              <div
                className="result title"
                style={{
-                display:'flex',
+                 display:'flex',
                 justifyContent:'center',
                 alignItems:'center',
                  background: "#01903e",
@@ -222,36 +215,40 @@ function ResultData({modalResult,patients,setModalResult}) {
                </p>
              </div>
            </section>
+                 <Suspense fallback={<LoadingSpinner />}>
+           {isLoading ? (
+             <LoadingSpinner />
+           ) : (
+             <>
            <section className="containerr"  >
              <div  style={{display:'flex'}}>
                <div  style={{flex:'1'}}>
                  <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
                    <div  style={{display:'flex'}}>
                      <img src={userIcon} alt='userIcon' width='20px'/>
-   
                      <p  style={{marginLeft:'2px',fontWeight:'bold'}}>{ patient?.lastName + " " + patient?.firstName + " " + patient?.midName}</p>
                    </div>
    
                    <div style={{display:'flex'}}>
                      <p style={{marginLeft:'2px',fontWeight:'bold'}}>{patient?.gender==='Male' ? 'Ար․':'Իգ'}</p>
-                     <p style={{marginLeft:'2px',fontWeight:'bold'}}>{patient.dateOfBirth || '01․08․85'}</p>
-                     <p style={{marginLeft:'2px',fontWeight:'bold'}}>{patient.age || '39տ․'}</p>
+                     <p style={{marginLeft:'2px',fontWeight:'bold'}}>{patient.dateOfBirth }</p>
+                     <p style={{marginLeft:'2px',fontWeight:'bold'}}>{patient.age}</p>
                    </div>
                  </div>
                  <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
                    <div style={{display:'flex'}}>
                    <img src={phoneIcon} alt='phoneIcon' width='20px'/>
 
-                     <p style={{marginLeft:'2px',marginRight:'4px',fontWeight:"bold"}}>{patient?.contact?.phone || '033071007'}</p>
+                     <p style={{marginLeft:'2px',marginRight:'4px',fontWeight:"bold"}}>{patient?.contact?.phone}</p>
                      <img src={geoIcon} alt='geoIcon' width='20px' style={{marginLeft:'20px'}}/>
 
-                     <p style={{marginLeft:'5px'}}> ք. {patient?.contact?.address?.city || 'Վանաձոր'} </p>
+                     <p style={{marginLeft:'5px'}}> ք. {patient?.contact?.address?.city} </p>
                    </div>
    
                    <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
                    <img src={emailIcon} alt='emailIcon' width='20px' style={{marginRight:'10px'}}/>
 
-                     <a href="mailto:someone@example.com">{patient?.contact?.email || 'someone@example.com'}</a>
+                     <a href="mailto:someone@example.com">{patient?.contact?.email}</a>
                    </div>
                  </div>
                </div>
@@ -271,8 +268,7 @@ function ResultData({modalResult,patients,setModalResult}) {
              </div>
            </section>
            <section className="containerr d-flex justify-content-between mb-2">
-          {/* <Barcode value="298875855" width={1} height={30} /> */}
-          <BarcodeComp data = {46}/>
+          <BarcodeComp data = {modalResult?.diagnosticsId}/>
         </section>
            <section>
              <div>
@@ -282,7 +278,7 @@ function ResultData({modalResult,patients,setModalResult}) {
                <div style={{display:'flex',justifyContent:'center',marginTop:'0.5rem',alignItems:'center'}} >
                  <p>
                    
-                   Նմուշառված է՝ {modalResult.diagnosisDate || '22․01․24 10։08'}
+                   Նմուշառված է՝ {modalResult.diagnosisDate}
                    {/* <span className="ps-8"> Արտաքին նմուշ [] </span> */}
                  </p>
                </div>
@@ -340,19 +336,21 @@ function ResultData({modalResult,patients,setModalResult}) {
                </table>
              </div>
            </section>
+           </>
+       )}
+       </Suspense>
          </main>
          <footer style={{ marginTop: "auto" }}>
            <div>
              <p>Լիցենզիա Կ-ԲՕ-145847 տրվ. ԱՆ 24.07.2013թ</p>
            </div>
          </footer>
-     </div>
      <footer style={{display:'flex', justifyContent:'end',gap:'5px'}}>
 
            <button
                 type="button"
                 className="btn btn-secondary"
-                onClick={generatePDF}
+                onClick={()=> generatePDF()}
                 >
                 Ուղարկել
               </button>
@@ -369,7 +367,12 @@ function ResultData({modalResult,patients,setModalResult}) {
               </button>
      
                 </footer>
-     </>
+                
+     </div>
+                
+                
+       
+       </>
    );
 }
 

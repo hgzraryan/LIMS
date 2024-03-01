@@ -3,7 +3,7 @@ import { Droppable } from "react-beautiful-dnd";
 
 import "./Styles/BoardComponent.scss";
 import ColumnComponent from "./ColumnComponent";
-function BoardComponent({ selectedItem, columns }) {
+function BoardComponent({ selectedItem, columns,setSelectedItem }) {
   return (
     <Droppable type="COLUMN" droppableId="Column" direction="horizontal">
       {(provided, snapshot) => (
@@ -25,6 +25,7 @@ function BoardComponent({ selectedItem, columns }) {
               columnColor={column.color}
               columnItems={column.researches}
               selectedItem={selectedItem}
+              setSelectedItem={setSelectedItem}
               // myActivitiesList={data}
               />
               </>

@@ -14,7 +14,8 @@ import AddDiagnostic from "./AddDiagnostic";
 import { selectDiagnosticsCount} from "../../redux/features/diagnostics/diagnosticsCountSlice";
 import { selectResearches } from "../../redux/features/researches/researchesSlice";
 import { selectPatients } from "../../redux/features/patients/patientsSlice";
-import { DIAGNOSTICS_URL } from "../../utils/constants";
+import { DIAGNOSTICS_URL, DOCTORS_URL } from "../../utils/constants";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
 const Diagnostics = () => {
   const researchesState= useSelector(selectResearches)
@@ -25,15 +26,26 @@ const Diagnostics = () => {
   const diagnosticsCount = useSelector(selectDiagnosticsCount)
   const [currentPage, setCurrentPage] = useState(0);  
   const [usersPerPage, setUsersPerPage] = useState(Math.round((window.innerHeight / 100) * 1.5));
+  const [doctors,setDoctors] = useState([]);
   const pageCount = Math.ceil(diagnosticsCount/usersPerPage)
   const patients = useSelector(selectPatients)
-
+  const axiosPrivate =useAxiosPrivate()
   const {
     data: diagnostics,
     setData: setDiagnostics,
     getData: getDiagnostics,
   } = useGetData(DIAGNOSTICS_URL,currentPage,usersPerPage);
 
+  useEffect(()=>{
+    setTimeout(() => {
+      
+      axiosPrivate.get(DOCTORS_URL).then((resp)=>{
+        setDoctors(prev=>resp?.data?.jsonString)
+     }).catch((err)=>{
+       console.log(err)
+     })
+    }, 1000);
+ },[])
   const handleOpenModal = (user) => {
     setSelectedItemId(true);
     setSelectedItem((prev) => user);
@@ -119,7 +131,7 @@ const Diagnostics = () => {
                       handleToggleCreateModal={handleToggleCreateModal}
                       getDiagnostics={() => getDiagnostics()}
                       researchesState={researchesState}
-                      patients={patients}
+                      doctors={doctors}
                     />
                   )}
                 </div>

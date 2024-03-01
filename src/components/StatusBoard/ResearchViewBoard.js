@@ -7,6 +7,7 @@ import "./Styles/customStyle.scss";
 
 function ResearchViewBoard({
   selectedItem,
+  setSelectedItem,
   handleCloseStatusModal,
   setResearches,
   researches,
@@ -112,6 +113,7 @@ function ResearchViewBoard({
                       <BoardComponent
                         columns={columns?.statusBoard}
                         selectedItem={selectedItem}
+                        setSelectedItem={setSelectedItem}
                       />
                     </div>
                   </DragDropContext>
