@@ -67,7 +67,7 @@ const navigate = useNavigate()
     try {
      // const response = await axiosPrivate.get(`/patients/${userId}`, );
       //console.log(response.data); 
-      navigate(`/users/15`)
+      navigate(`/users/${userId}`)
       
     } catch (err) {
       console.log(err)
@@ -141,7 +141,7 @@ const navigate = useNavigate()
         Cell:({row})=>(
           <div  
           style={{ cursor: 'pointer', textDecoration:'underline'}}
-        onClick={handleUserPage} >{row.original?.username}</div>
+        onClick={()=>handleUserPage(row.original?.userId)} >{row.original?.username}</div>
         )
       },
       {

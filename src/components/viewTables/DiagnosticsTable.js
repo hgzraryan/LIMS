@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-comment-textnodes */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useMemo, useRef, useState } from "react";
 import ComponentToConfirm from "../ComponentToConfirm";
@@ -180,21 +181,14 @@ function DiagnosticsTable({
         ),
         Cell: ({ row }) => (
           <>
-            {row.original.patientId ? (
+           
               <div
               onClick={()=>handleDiagnosticssDetails(row.original.patientId)}
               style={{ cursor: 'pointer', textDecoration:'underline' }}
             >
-              {row.original.patientId}
+              {row.original.clientId}
             </div>
-            ) : (
-              <div
-            onClick={()=>handleDiagnosticssDetails(row.original.OrganizationsId)}
-            style={{ cursor: 'pointer', textDecoration:'underline' }}
-          >
-            {row.original.patientId}
-          </div>
-            )}
+           
           </>
         ),
       },
@@ -289,6 +283,8 @@ function DiagnosticsTable({
                   </span>
                 </span>
               </a>
+               {/*
+              //TODO Delete diagnostics option
               {!row.original.patientId && (
                 <a
                   className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover del-button"
@@ -305,7 +301,7 @@ function DiagnosticsTable({
                     </span>
                   </span>
                 </a>
-              )}
+              )} */}
             </div>
 
            

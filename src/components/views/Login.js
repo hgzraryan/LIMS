@@ -67,7 +67,7 @@ const Login = () => {
             if (roles.includes(1212)) {
                 navigate('/addsample');
               } else{
-                  navigate(from, { replace: true });
+                  navigate('/', { replace: true });
               }
         } catch (err) {
             if (!err?.response) {

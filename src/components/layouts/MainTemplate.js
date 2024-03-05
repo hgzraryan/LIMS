@@ -28,8 +28,7 @@ const MainTemplate = () => {
     const logout = useLogout();
     const axiosPrivate = useAxiosPrivate();
     const [userData,setUserData]=useState('')
-    const [userPage,setUserPage]=useState(false)
-    
+    //const {userId} = userData
     useEffect(() => {
       const storedData = JSON.parse(localStorage.getItem('userData'));
       if (storedData) {
@@ -46,11 +45,12 @@ const MainTemplate = () => {
     const [doctorsState] = useGetFullData()
      //const [refDoctorsState] = useGetFullData(REFDOCTORS_URL,checkRefDoctors)
     //-------------------
-    const handleUserPage = async(userId=2095) =>{
+    const handleUserPage = async(userId) =>{
       try {
        // const response = await axiosPrivate.get(`/patients/${userId}`, );
         //console.log(response.data); 
-        navigate(`/users/15`)
+        //navigate(`/users/${userId}`)
+        navigate(`/users/2095`)
         
       } catch (err) {
         console.log(err)
@@ -326,11 +326,11 @@ const MainTemplate = () => {
                             <div className="media-body">
                               <div className="fs-7">{}</div>
                               <p style={{ color: "black" }}>
-                                <a href="#" onClick={handleUserPage}>
+                                <p style={{ textDecoration:'underline', cursor:'pointer'}} onClick={()=>handleUserPage(2095)}>
 
                                 {userData?.firstname + " "}
                                 {userData?.lastname}
-                                </a>
+                                </p>
                               </p>
                             </div>
                           </div>

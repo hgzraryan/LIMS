@@ -100,8 +100,12 @@ function App() {
         <Route element={<PersistLogin />}>
           <Route element={<RequireAuth allowedRoles={[ROLES.Sampler]} />}>
             <Route  path={ADD_SAMPLE_ROUTE} element={<AddSample />} />
-
           </Route>
+
+          <Route element={<RequireAuth allowedRoles={[ROLES.Sampler, ROLES.Admin]} />}>
+            <Route path={USERS_ID_ROUTE} element={<UserDetails />} />
+          </Route>
+
           <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
               
           </Route>
@@ -125,7 +129,6 @@ function App() {
               <Route path={PATIENTS_ID_ROUTE} element={<PatientDetails/>} />
               {/* <Route path="admin/useradd" element={<UserAdd />} /> */}
               <Route path={USERS_ROUTE} element={<Users />} />
-              <Route path={USERS_ID_ROUTE} element={<UserDetails />} />
               <Route path={ADMIN_ROUTE} element={<Admin />} />
               {/* <Route path="settings/prices" element={<Prices />} /> */}
               <Route

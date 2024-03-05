@@ -31,6 +31,11 @@ const partnerState = [
   { partner: "Diagen+" }, 
   { partner: "Dialab" }
 ];
+const organizationState = [
+  { id:52001,organization: "oneClicic" }, 
+  { id:52002,organization: "Astrogen" }
+];
+
 function AddDiagnostic({
   handleToggleCreateModal,
   getDiagnostics,
@@ -42,7 +47,8 @@ function AddDiagnostic({
   const multiselectRef = useRef("");
   const editorRef = useRef(null);
   const [patientId, setPatientId] = useState(null);
-  const [organization, setOrganization] = useState(null);
+  const [organizationId, setOrganizationId] = useState(null);
+  const [clientType, setClientType] = useState(null);
   const additionalData = useRef("");
   const diagnosticClassRef = useRef("");
   const [externalType, setExternalType] = useState(false);
@@ -146,14 +152,23 @@ function AddDiagnostic({
   const onOrganizationSelect = (data) => {
     
     data[0].partner==="Առանց Պատվիրատու"
-    ?setOrganization(false)
-    :setOrganization(data)
-    
+    ? (() => {
+      setOrganizationId(false);
+    })()
+  : (() => {
+      setOrganizationId(data[0].id);
+      setClientType('organization');
+    })();
   };
   const onPatientSelect = (data) => {
     data==="Առանց այցեկու"
-    ?setPatientId(false)
-    :setPatientId(prev=>data[0].key); 
+    ? (() => {
+      setPatientId(false);
+    })()
+  : (() => {
+    setPatientId(data[0].key);
+      setClientType('patient');
+    })();
   };
   const notify = (text) =>
     toast.success(text, {
@@ -174,14 +189,14 @@ function AddDiagnostic({
       internalStatus: intDiagnosticsStatus,
       externalStatus: extDiagnosticsStatus,
       researchIds: researchesIds,
-      // clientId: patientId || organizationId,
-      // clientType:clientType,
+      clientId: patientId || organizationId,
+      clientType:clientType,
       doctors: doctor,
       //partner:partner,
       additional: editorRef.current.getContent({ format: "text" }),
     };
 
-    //console.log(newDiagnose);
+    console.log(newDiagnose);
     try {
       await axiosPrivate.post(REGISTER_DIAGNOSTICS, newDiagnose, {
         headers: { "Content-Type": "application/json" },
@@ -382,7 +397,7 @@ function AddDiagnostic({
                                 ref={multiselectRef}
                                 hidePlaceholder={true}
                                 placeholder="Ընտրել այցելուին"
-                                disable={!!organization}
+                                disable={!!organizationId}
                                 style={{
                                   height: "10rem",
                                   overflow: "hidden",
@@ -394,8 +409,8 @@ function AddDiagnostic({
                                   Պատվիրատու
                                 </label>
                                 <Multiselect
-                                  options={[{partner:"Առանց Պատվիրատու"},...partnerState]}
-                                  displayValue="partner"
+                                  options={[{organization:"Առանց Պատվիրատու"},...organizationState]}
+                                  displayValue="organization"  
                                   onSelect={onOrganizationSelect}
                                   closeOnSelect={true}
                                   singleSelect

@@ -65,11 +65,17 @@ const [patient,setPatient]=useState({})
 const [isLoading, setIsLoading] = useState(true);
 
   const axiosPrivate = useAxiosPrivate()
-    const {patientId}=modalResult
+    //const {clientId}=modalResult
     const {statusBoard}=modalResult
+    //TODO Temporary code
 useEffect(()=>{
 setTimeout(()=>{
-axiosPrivate.get(`/patients/${patientId}`).then((resp)=>{
+  modalResult?.clientId 
+  ?axiosPrivate.get(`/patients/${modalResult.clientId}`).then((resp)=>{
+  setPatient(prev=>resp?.data?.jsonString)
+  setIsLoading(false);
+})
+:axiosPrivate.get(`/patients/${modalResult.patientId}`).then((resp)=>{
   setPatient(prev=>resp?.data?.jsonString)
   setIsLoading(false);
 })

@@ -31,20 +31,20 @@ function UserDetails() {
   const [isLoading, setIsLoading] = useState(false);
 
 
-//   useEffect(() => {
-//     const getData = async () => {
-//       try {
-//         const response = await axiosPrivate.get(`/users/${id}`);
-//         setIsLoading(false);
-//         setUserDetails((prevUsers) => response.data.jsonString);
-//         // setCurrentPage((prev) => prev = 1);
-//       } catch (err) {
-//         console.error(err);
-//         //navigate("/login", { state: { from: location }, replace: true });
-//       }
-//     };
-//     getData();
-//   }, []);
+  // useEffect(() => {
+  //   const getData = async () => {
+  //     try {
+  //       const response = await axiosPrivate.get(`/users/${id}`);
+  //       setIsLoading(false);
+  //      // setUserDetails((prevUsers) => response.data.jsonString);
+  //       // setCurrentPage((prev) => prev = 1);
+  //     } catch (err) {
+  //       console.error(err);
+  //       //navigate("/login", { state: { from: location }, replace: true });
+  //     }
+  //   };
+  //   getData();
+  // }, []);
 
   return (
     <>
