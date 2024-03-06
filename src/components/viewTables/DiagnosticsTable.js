@@ -27,7 +27,8 @@ import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { useNavigate } from "react-router-dom";
 import  jsPDF  from "jspdf";
 import "../../dist/css/data-table.css";
-
+import organizationsSvg from '../../dist/svg/organizationsSvg.svg'
+import patientSvg from '../../dist/svg/patientSvg.svg'
 
 
 function DiagnosticsTable({
@@ -171,21 +172,16 @@ function DiagnosticsTable({
           placeholder = "Հաճախորդի ID" />
         ),
         Cell: ({ row }) => (
-          
-          <div
-            onClick={()=>handleDiagnosticssDetails(row.original.patientId)}
-            style={{ cursor: 'pointer', textDecoration:'underline' }}
-          >
-            {row.original.patientId}
-          </div>
-        ),
-        Cell: ({ row }) => (
           <>
            
               <div
-              onClick={()=>handleDiagnosticssDetails(row.original.patientId)}
+              onClick={()=>handleDiagnosticssDetails(row.original.clientId)}
               style={{ cursor: 'pointer', textDecoration:'underline' }}
             >
+               {row.original.clientType === "organization"
+              ?<img src={organizationsSvg} alt='organizationIcon' width={25} height={25} className="me-2"/>
+              :<img  src={patientSvg} alt='patientIcon' width={25} height={25} className="me-2"/>
+              }
               {row.original.clientId}
             </div>
            
