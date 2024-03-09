@@ -13,7 +13,6 @@ import { checkReagentsCount } from "../../redux/features/reagents/reagentsCountS
 import { checkDiagnosticsCount } from "../../redux/features/diagnostics/diagnosticsCountSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { checkResearchListCount } from "../../redux/features/researches/researchListCountSlice";
-import { checkPatients, selectPatients } from "../../redux/features/patients/patientsSlice";
 import {  DOCTORS_URL, RESEARCHLISTS_URL, PATIENTS_URL, REFDOCTORS_URL } from "../../utils/constants";
 import { useGetFullData } from "../../hooks/useGetFullData";
 import { reserchesList } from "../../redux/features/researches/researchesSlice";

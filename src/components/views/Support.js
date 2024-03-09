@@ -2,8 +2,6 @@ import React from "react";
 import supportImg from "../../../src/dist/img/contactUs.jpg";
 import phoneSvg from "../../dist/svg/phone.svg";
 import messagesSvg from "../../dist/svg/messages.svg";
-import { Button } from "@coreui/coreui";
-import { ButtonBase } from "@mui/material";
 function Support() {
   return (
     <div className="m-0 p-0" style={{ width: "100%", height: "80vh" }}>

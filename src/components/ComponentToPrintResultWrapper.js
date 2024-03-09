@@ -4,14 +4,14 @@ import  { useRef } from 'react'
 import ReactToPrint from 'react-to-print';
 import { ResultToPrintComponent } from './ResultToPrintComponent';
 
-function ComponentToPrintResultWrapper({data,patients}) {
+function ComponentToPrintResultWrapper({data,patient}) {
     let patientRef = useRef(null); 
 const handlePrint = () =>{
     console.log("printed")
 }
      const {statusBoard}=data
      const {patientId}=data
-     patientRef.current = patients.filter((el)=>el.patientId===patientId)
+    //   patientRef.current = [].filter((el)=>el.patientId===patientId)
 
     let componentRef = useRef(null); 
     return (
@@ -31,7 +31,7 @@ const handlePrint = () =>{
             />
             
             <div style={{ display: "none" }}>
-                <ResultToPrintComponent ref={componentRef} value={data} statusBoard={statusBoard[4]} patient={patientRef.current} />
+                <ResultToPrintComponent ref={componentRef} value={data} statusBoard={statusBoard[4]} patient={patient} />
             </div>
         </div>
     )

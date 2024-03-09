@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { checkPatients, selectPatients } from "../redux/features/patients/patientsSlice";
 import {  DOCTORS_URL, RESEARCHLISTS_URL, PATIENTS_URL, REFDOCTORS_URL } from "../utils/constants";
 import { reserchesList } from "../redux/features/researches/researchesSlice";
 import { checkDoctors } from "../redux/features/doctor/doctorsSlice";

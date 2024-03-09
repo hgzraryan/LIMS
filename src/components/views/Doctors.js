@@ -5,7 +5,7 @@ import { Dropdown } from "react-bootstrap";
 import DoctorsTable from "../viewTables/DoctorsTable";
 import useGetData from "../../hooks/useGetData";
 import useDeleteData from "../../hooks/useDeleteData";
-import AddDoctor from "./AddDoctor";
+import AddDoctor from "../addViews/AddDoctor";
 import ReactPaginate from "react-paginate";
 import { useSelector } from "react-redux";
 import { selectDoctorCount } from "../../redux/features/doctor/doctorCountSlice";

@@ -16,6 +16,7 @@ import { BiSolidInfoCircle } from "react-icons/bi";
 import { Modal } from "react-bootstrap";
 import infoModalImg from "../../../src/dist/svg/organizationsSvg.svg";
 import "../../dist/css/data-table.css";
+import { useNavigate } from "react-router-dom";
 
 function OrganizationsTable({
   confirmRef,
@@ -28,11 +29,29 @@ function OrganizationsTable({
   setOrganizations,
   getOrganizations,
 }) {
+  const navigate = useNavigate()
   const [modalInfo, setModalInfo] = useState("");
   const handleOpenInfoModal = (data) => {
     
     setModalInfo((prev) => data);
   };
+  const handleOrganizationsDetail = (organizationId) =>{
+    try {
+      // const response = await axiosPrivate.get(`/patients/${patientId}`, );
+       //console.log(response.data); 
+       navigate(`/organizations/${organizationId}`)
+       
+     } catch (err) {
+       console.log(err)
+       // if (!err?.response) {
+       //   setErrMsg("No Server Response");
+       // } else if (err.response?.status === 409) {
+       //   setErrMsg("Username Taken");
+       // } else {
+       //   setErrMsg(" Failed");
+       // }
+     }
+   };
   const defaultColumn = useMemo(
     () => ({
       minWidth: 20,
@@ -70,6 +89,14 @@ function OrganizationsTable({
           id={id} 
           setData={setOrganizations} 
           placeholder = "Անվանում"/>
+        ),
+        Cell: ({ row }) => (
+          <div
+            onClick={()=>handleOrganizationsDetail(row.original.organizationId)}
+            style={{ cursor: 'pointer', textDecoration:'underline' }}
+          >
+            {row.original.name}
+          </div>
         ),
       },
       {

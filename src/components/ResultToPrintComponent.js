@@ -217,7 +217,7 @@ return (
                       fill="#2e3436"
                     />
                   </svg>
-                  <p className="ms-2"> ք. {value?.contact?.address?.city || 'Վանաձոր'} </p>
+                  <p className="ms-2"> ք. {value?.contact?.address?.city } </p>
                 </div>
 
                 <div className="d-flex justify-content-center align-items-center ">
@@ -293,7 +293,7 @@ return (
                     fill="#000000"
                   />
                 </svg>
-                <p>{value.samplingDate || '22.01.24 10:08'}</p>
+                <p>{value.samplingDate }</p>
               </div>
               <div className="d-flex">
                 <svg
@@ -340,7 +340,7 @@ return (
           </div>
         </section>
         <section className="containerr d-flex justify-content-between mb-2">
-          <BarcodeComp data="298875855"/>
+          <BarcodeComp data={value.diagnosticsId}/>
         </section>
         <section>
           <div>

@@ -1,6 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState, useRef} from "react";
-import InfiniteScroll from "react-infinite-scroll-component";
 import FeatherIcon from "feather-icons-react";
 import LoadingSpinner from "../LoadingSpinner";
 import ReactPaginate from "react-paginate";
@@ -8,7 +7,7 @@ import Loading from "../Loading";
 import { Dropdown } from "react-bootstrap";
 import useDeleteData from "../../hooks/useDeleteData";
 import useGetData from "../../hooks/useGetData";
-import AddAgent from "./AddAgent";
+import AddAgent from "../addViews/AddAgent";
 import AgentsTable from "../viewTables/AgentsTable";
 import { useSelector } from "react-redux";
 import { selectAgentsCount } from "../../redux/features/agents/agentsCountSlice";

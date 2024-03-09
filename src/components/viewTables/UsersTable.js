@@ -1,11 +1,10 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import ComponentToConfirm from "../ComponentToConfirm";
 import {
   useBlockLayout,
   useFilters,
-  useGlobalFilter,
   useResizeColumns,
   useRowSelect,
   useSortBy,
@@ -14,8 +13,6 @@ import {
 import { Checkbox } from "../Checkbox";
 import { ColumnFilter } from "../ColumnFilter";
 import FeatherIcon from "feather-icons-react/build/FeatherIcon";
-import { axiosPrivate } from "../../api/axios";
-import useGetData from "../../hooks/useGetData";
 import useDebounce from "../../hooks/useDebounce";
 import DefaultProfileImage from "../../../src/dist/img/Missing.svg";
 import "../../dist/css/data-table.css";

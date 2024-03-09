@@ -3,7 +3,7 @@ import React, { useState} from "react";
 import FeatherIcon from "feather-icons-react";
 import LoadingSpinner from "../LoadingSpinner";
 import Loading from "../Loading";
-import CreatePatient from "./CreatePatient";
+import CreatePatient from "../addViews/CreatePatient";
 import { Dropdown } from "react-bootstrap";
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import useGetData from "../../hooks/useGetData";

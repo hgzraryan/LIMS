@@ -2,10 +2,9 @@
 import FeatherIcon from 'feather-icons-react/build/FeatherIcon';
 import React, { useRef, useState } from 'react'
 import ReactPaginate from 'react-paginate';
-import { useSelector } from 'react-redux';
 import MedInstitutionsTable from '../viewTables/MedInstitutionsTable';
 import { Dropdown } from "react-bootstrap";
-import AddMedinstitution from './AddMedinstitution';
+import AddMedinstitution from '../addViews/AddMedinstitution';
 import { MEDINSTITUTIONS_URL } from '../../utils/constants';
 import useDeleteData from '../../hooks/useDeleteData';
 import useGetData from '../../hooks/useGetData';

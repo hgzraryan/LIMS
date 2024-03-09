@@ -31,20 +31,19 @@ SUPPORT_URL,
 DIAGNOSTICS_ID_ROUTE,
 DOCTORSVISITS_ROUTE,
 DOCTORSVISITS_ID_ROUTE,
-USERS_ID_ROUTE} from '../src/utils/constants' 
-import { lazy, Suspense } from "react";
-import DoctorDetails from "./components/views/DoctorDetails";
+USERS_ID_ROUTE,
+DOCTORSTAMPLETE_ROUTE,
+ORGANIZATIONS_ID_ROUTE} from '../src/utils/constants' 
+import { lazy, Suspense, useEffect, useState } from "react";
 import Support from "./components/views/Support";
-import DiagnosticsDetails from "./components/views/DiagnosticsDetails";
-import DoctorsVisits from "./components/views/DoctorsVisits";
-import DoctorsVisitsDetails from "./components/views/DoctorsVisitsDetails";
-import UserDetails from "./components/views/UserDetails";
+import DoctorsTemplete from "./components/layouts/DoctorsTemplete";
 
  const Register = lazy(()=>  import("./components/Register"));
  const Login = lazy(()=>  import("./components//views/Login"));
  const PrivacyPolicy = lazy(()=>  import("./components/PrivacyPolicy"));
  const Home = lazy(()=>  import("./components/views/Home"));
  const Users = lazy(()=>  import("./components/views/Users"));
+ const UserDetails = lazy(()=>  import("./components/viewDetails/UserDetails"));
  const Layout = lazy(()=>  import("./components/layouts/Layout"));
  const Editor = lazy(()=>  import("./components/Editor"));
  const Admin = lazy(()=>  import("./components/Admin"));
@@ -59,17 +58,22 @@ import UserDetails from "./components/views/UserDetails";
  const Patients = lazy(()=>  import("./components/views/Patients"));
  const Agents = lazy(()=>  import("./components/views/Agents"));
  const Organizations = lazy(()=>  import("./components/views/Organizations"));
+ const OrganizationDetails = lazy(()=>  import("./components/viewDetails/OrganizationDetails"));
  const Prices = lazy(()=>  import("./components/views/Prices"));
  const DiscountCards = lazy(()=>  import("./components/views/DiscountCards"));
  const Reagents = lazy(()=>  import("./components/views/Reagents"));
  const Equipments = lazy(()=>  import("./components/views/Equipments"));
  const ResearchLists = lazy(()=>  import("./components/views/ResearchLists"));
  const Diagnostics = lazy(()=>  import("./components/views/Diagnostics"));
+ const DiagnosticsDetails = lazy(()=>  import("./components/viewDetails/DiagnosticsDetails"));
+ const DoctorsVisits = lazy(()=>  import("./components/views/DoctorsVisits"));
+ const DoctorsVisitsDetails = lazy(()=>  import("./components/viewDetails/DoctorsVisitsDetails"));
  const Doctors = lazy(()=>  import("./components/views/Doctors"));
+ const DoctorDetails = lazy(()=>  import("./components/viewDetails/DoctorDetails"));
  const RefDoctors = lazy(()=>  import("./components/views/RefDoctors"));
  const MedInstitutions = lazy(()=>  import("./components/views/MedInstitutions"));
- const PatientDetails = lazy(()=>  import("./components/views/PatientDetails"));
- const AddSample = lazy(()=>  import("./components/views/AddSample"));
+ const PatientDetails = lazy(()=>  import("./components/viewDetails/PatientDetails"));
+ const AddSample = lazy(()=>  import("./components/addViews/AddSample"));
  const Samples = lazy(()=>  import("./components/viewTables/SamplesTable"));
  
 
@@ -85,6 +89,18 @@ const ROLES = {
 };
 
 function App() {
+  const [userLoginData,setuserLoginData] = useState('')
+  
+  useEffect(() => {
+    const userLoginData1 = JSON.parse(localStorage.getItem('userData'));
+    if (userLoginData1) {
+      const asd={
+        ...userLoginData1,
+        //Roles:[9578]
+      }
+      setuserLoginData(asd)
+    }
+  }, []);
   return (
       <Suspense fallback={<h1>Loading...</h1>}>
     <Routes>
@@ -109,20 +125,47 @@ function App() {
           <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
               
           </Route>
-          <Route path="/" element={<MainTemplate />}>
+  {userLoginData?.Roles && userLoginData?.Roles.includes(ROLES.Doctor)
+          ?<Route path="/" element={<DoctorsTemplete />}>
+            <Route index path={HOME_ROUTE} element={<Home />} />
+            <Route index path={SUPPORT_URL} element={<Support />} />
+
+            <Route index path="/" element={<DoctorsVisits />} />
+          <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
+            <Route path={DOCTORSTAMPLETE_ROUTE} element={<DoctorsTemplete />} />
+            <Route path={DOCTORSVISITS_ROUTE} element={<DoctorsVisits />} />
+            <Route path={DOCTORSVISITS_ID_ROUTE} element={<DoctorsVisitsDetails/>} />
+            <Route path={DOCTORS_ID_ROUTE} element={<DoctorDetails/>} />
+            <Route  path={SAMPLES_ROUTE} element={<Samples />} />
+          </Route>
+              <Route path={PATIENTS_ID_ROUTE} element={<PatientDetails/>} />
+              <Route
+                path={RESEARCH_LISTS_ROUTE}
+                element={<ResearchLists />}
+              />
+                         <Route path={DIAGNOSTICS_ID_ROUTE} element={<DiagnosticsDetails/>} />
+                         <Route path={MISSING_ROUTE} element={<Missing />} />
+
+
+            {/* catch all */}
+          </Route>
+          :<Route path="/" element={<MainTemplate />}>
             <Route index path={HOME_ROUTE} element={<Home />} />
             <Route index path={SUPPORT_URL} element={<Support />} />
 
             <Route index path="/" element={<Home />} />
-            <Route path={DOCTORS_ROUTE} element={<Doctors />} />
-            <Route path={DOCTORS_ID_ROUTE} element={<DoctorDetails/>} />
-
+          
+            <Route path={DOCTORSTAMPLETE_ROUTE} element={<DoctorsTemplete />} />
             <Route path={DOCTORSVISITS_ROUTE} element={<DoctorsVisits />} />
             <Route path={DOCTORSVISITS_ID_ROUTE} element={<DoctorsVisitsDetails/>} />
-
+            <Route path={DOCTORS_ID_ROUTE} element={<DoctorDetails/>} />
             <Route  path={SAMPLES_ROUTE} element={<Samples />} />
+          
+
+            <Route path={DOCTORS_ROUTE} element={<Doctors />} />
             <Route path={AGENTS_ROUTE} element={<Agents />} />
             <Route path={ORGANIZATIONS_ROUTE} element={<Organizations />} />
+            <Route path={ORGANIZATIONS_ID_ROUTE} element={<OrganizationDetails />} />
 
             <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
               <Route path={PATIENTS_ROUTE} element={<Patients />} />
@@ -161,7 +204,7 @@ function App() {
 
             {/* catch all */}
             <Route path={MISSING_ROUTE} element={<Missing />} />
-          </Route>
+          </Route>}
         </Route>
       </Route>
     </Routes>

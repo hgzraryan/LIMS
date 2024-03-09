@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import FeatherIcon from "feather-icons-react";
 import LoadingSpinner from "../LoadingSpinner";
 import ReactPaginate from "react-paginate";
@@ -8,13 +8,22 @@ import { Dropdown } from "react-bootstrap";
 import useGetData from "../../hooks/useGetData";
 import useDeleteData from "../../hooks/useDeleteData";
 import ResearchListsTable from "../viewTables/ResearchListsTable";
-import AddResearchList from "./AddResearchList";
+import AddResearchList from "../addViews/AddResearchList";
 import { useSelector } from "react-redux";
 import { selectResearchListCount } from "../../redux/features/researches/researchListCountSlice";
-import AddCategory from "./AddCategory";
+import AddCategory from "../addViews/AddCategory";
 import { RESEARCHLISTS_URL } from "../../utils/constants";
 
 const ResearchLists = () => {
+  const [userRole, setUserRole] = useState('');
+
+  useEffect(() => {
+    const storedData = JSON.parse(localStorage.getItem('role'));
+    if (storedData) {
+      console.log(storedData.Role)
+      setUserRole(storedData.Role);
+    }
+  }, []);
   /*------------------ Create user Component --------------------*/
   const handleToggleCreateModal = (value) => {
     setIsOpen((prev) => value);
@@ -100,6 +109,9 @@ const ResearchLists = () => {
 								</div>
 								*/}
                 </div>
+                {
+                      userRole!=='doctor' && 
+
                 <div className="dropdown ms-3">
                   <Dropdown>
                     <Dropdown.Toggle
@@ -136,6 +148,7 @@ const ResearchLists = () => {
                     />
                   )}
                 </div>
+                }
               </div>
               <div className="contact-options-wrap">
                 <a

@@ -1,18 +1,16 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState, useRef } from "react";
-import InfiniteScroll from "react-infinite-scroll-component";
 import FeatherIcon from "feather-icons-react";
 import LoadingSpinner from "../LoadingSpinner";
 import ReactPaginate from "react-paginate";
 import Loading from "../Loading";
-import AddEquipment from "../views/AddEquipment";
+import AddEquipment from "../addViews/AddEquipment";
 import { Dropdown } from "react-bootstrap";
 import useDeleteData from "../../hooks/useDeleteData";
 import useGetData from "../../hooks/useGetData";
 import EquipmentsTable from "../viewTables/EquipmentsTable";
 import { useSelector } from "react-redux";
 import { selectEquipmentCount } from "../../redux/features/equipment/equipmentCountSlice";
-import { selectOrganisationCount } from "../../redux/features/organisation/organisationCountSlice";
 import { EQUIPMENTS_URL } from "../../utils/constants";
 
 const Equipments = () => {

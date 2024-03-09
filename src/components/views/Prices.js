@@ -1,7 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable no-lone-blocks */
 import React, { useState, useRef } from "react";
-import InfiniteScroll from "react-infinite-scroll-component";
 import FeatherIcon from "feather-icons-react";
 import LoadingSpinner from "../LoadingSpinner";
 import ReactPaginate from "react-paginate";
@@ -10,7 +9,7 @@ import { Dropdown } from "react-bootstrap";
 import useGetData from "../../hooks/useGetData";
 import useDeleteData from "../../hooks/useDeleteData";
 import PricesTable from "../viewTables/PricesTable";
-import AddPrice from "./AddPrice";
+import AddPrice from "../addViews/AddPrice";
 import { useGetFullData } from "../../hooks/useGetFullData";
 import { reserchesList } from "../../redux/features/researches/researchesSlice";
 const GET_RESEARCHES = "/researchLists";

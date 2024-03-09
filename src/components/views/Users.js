@@ -5,7 +5,7 @@ import FeatherIcon from "feather-icons-react";
 import LoadingSpinner from "../LoadingSpinner";
 import ReactPaginate from "react-paginate";
 import Loading from "../Loading";
-import CreateUser from "../views/CreateUser";
+import CreateUser from "../addViews/CreateUser";
 import { Dropdown } from "react-bootstrap";
 import useGetData from "../../hooks/useGetData";
 import useDeleteData from "../../hooks/useDeleteData";
@@ -13,7 +13,7 @@ import {  selectUsersCount } from "../../redux/features/users/usersCountSlice";
 import UsersTable from "../viewTables/UsersTable";
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { useSelector } from "react-redux";
-import AddUserRole from "./AddUserRole";
+import AddUserRole from "../addViews/AddUserRole";
 import { USERS_URL } from "../../utils/constants";
 
 const Users = () => {

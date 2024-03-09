@@ -23,9 +23,10 @@ import emailSvg from "../../dist/svg/emailSvg.svg";
 import LoadingSpinner from "../LoadingSpinner";
 const customData = [
   {    
-    patientId:46,
+    diagnosticsId:11,
     date: "15.06.2021",
     diagnosticsType:'Արտաքին',
+    partner:'Diagen',
     researches: [
       {
         researchName: "Կրեատինինկինազա",
@@ -44,7 +45,127 @@ const customData = [
     ],
   },
   {
-    patientId:44,
+    diagnosticsId:862,
+    date: "04.11.2023",
+    diagnosticsType:'Ներքին',
+    researches: [
+      {
+        shortName: "WBC",
+        researchName: "Լեյկոցիտների ընդհանուր քանակ",
+        analysisResult: 8.88,
+        referenceRange: "4.0-10.0",
+        units: "10^9/L",
+      },
+      {
+        shortName: "RBC",
+        researchName: "Էրիթրոցիտների ընդհանուր քանակ",
+        analysisResult: 6.09,
+        referenceRange: ["men 4.0-10.0", "women 4,6-6,2"],
+        units: "10^9/L",
+      },
+      {
+        shortName: "MCV ",
+        researchName: "Էրիթրոցիտի միջին ծավալը փորձանմուշի  ընդհանուր ծավալում",
+        analysisResult: 83.7,
+        referenceRange: "80-100",
+        units: "fl",
+      },
+      {
+        shortName: "WBC",
+        researchName: "Լեյկոցիտների ընդհանուր քանակ",
+        analysisResult: 8.88,
+        referenceRange: "4.0-10.0",
+        units: "10^9/L",
+      },
+      {
+        shortName: "WBC",
+        researchName: "Լեյկոցիտների ընդհանուր քանակ",
+        analysisResult: 8.88,
+        referenceRange: "4.0-10.0",
+        units: "10^9/L",
+      },
+      {
+        shortName: "WBC",
+        researchName: "Լեյկոցիտների ընդհանուր քանակ",
+        analysisResult: 8.88,
+        referenceRange: "4.0-10.0",
+        units: "10^9/L",
+      },
+    ],
+  },
+  {    
+    diagnosticsId:46,
+    date: "15.06.2020",
+    diagnosticsType:'Արտաքին',
+    partner:'Dialab',
+    researches: [
+      {
+        researchName: "Կրեատինինկինազա",
+        analysisResult: 8.88,
+        referenceRange: "4.0-10.0",
+        units: "10^9/L",
+        shortName: "WBC",
+      },
+      {
+        shortName: "RBC",
+        researchName: "Էրիթրոցիտների ընդհանուր քանակ",
+        analysisResult: 6.09,
+        referenceRange: ["men 4.0-10.0", "women 4,6-6,2"],
+        units: "10^9/L",
+      },
+    ],
+  },
+  {
+    diagnosticsId:129,
+    date: "04.11.2023",
+    diagnosticsType:'Ներքին',
+    researches: [
+      {
+        shortName: "WBC",
+        researchName: "Լեյկոցիտների ընդհանուր քանակ",
+        analysisResult: 8.88,
+        referenceRange: "4.0-10.0",
+        units: "10^9/L",
+      },
+      {
+        shortName: "RBC",
+        researchName: "Էրիթրոցիտների ընդհանուր քանակ",
+        analysisResult: 6.09,
+        referenceRange: ["men 4.0-10.0", "women 4,6-6,2"],
+        units: "10^9/L",
+      },
+      {
+        shortName: "MCV ",
+        researchName: "Էրիթրոցիտի միջին ծավալը փորձանմուշի  ընդհանուր ծավալում",
+        analysisResult: 83.7,
+        referenceRange: "80-100",
+        units: "fl",
+      },
+      {
+        shortName: "WBC",
+        researchName: "Լեյկոցիտների ընդհանուր քանակ",
+        analysisResult: 8.88,
+        referenceRange: "4.0-10.0",
+        units: "10^9/L",
+      },
+      {
+        shortName: "WBC",
+        researchName: "Լեյկոցիտների ընդհանուր քանակ",
+        analysisResult: 8.88,
+        referenceRange: "4.0-10.0",
+        units: "10^9/L",
+      },
+      {
+        shortName: "WBC",
+        researchName: "Լեյկոցիտների ընդհանուր քանակ",
+        analysisResult: 8.88,
+        referenceRange: "4.0-10.0",
+        units: "10^9/L",
+      },
+    ],
+  },
+  {
+    diagnosticsId:40,
     date: "04.11.2023",
     diagnosticsType:'Ներքին',
     researches: [
@@ -166,15 +287,15 @@ function PatientDetails(data) {
             <div className="columnHeader">ID</div>
           </>
         ),
-        accessor: "patientId",
+        accessor: "diagnosticsId",
         sortable: true,
         width: 60,
         Cell: ({ row }) => (
           <div
-            onClick={()=>handleDiagnosticssDetails(row.original.patientId)}
+            onClick={()=>handleDiagnosticssDetails(row.original.diagnosticsId)}
             style={{ cursor: 'pointer', textDecoration:'underline' }}
           >
-            {row.original.patientId}
+            {row.original.diagnosticsId}
           </div>
         ),
         Filter: ({ column: { id } }) => <></>,
@@ -204,7 +325,18 @@ function PatientDetails(data) {
       {
         Header: (event) => (
           <>
-            <div className="columnHeader">Ախտորոշումներ</div>
+            <div className="columnHeader">Գործընկեր</div>
+          </>
+        ),
+        accessor: "partner",
+        sortable: true,
+        width: 200,
+        Filter: ({ column: { id } }) => <></>,
+      },
+      {
+        Header: (event) => (
+          <>
+            <div className="columnHeader">Հետազոտություններ</div>
           </>
         ),
         Cell: ({ row }) => (
@@ -317,7 +449,7 @@ function PatientDetails(data) {
             <Modal show={() => true} size="xl" onHide={() => setIsOpen(false)}>
               <Modal.Header closeButton>
                 <Modal.Title style={{ width: "100%", textAlign: "center" }}>
-                  Ախտորոշումներ
+                Հետազոտություններ
                 </Modal.Title>
               </Modal.Header>
               <Modal.Body>
@@ -411,6 +543,10 @@ function PatientDetails(data) {
               </div>
             </div>
           )}
+          <section className="d-flex flex-column">
+
+          <div className="d-flex justify-content-center align-items-center" style={{border:'1px solid #000',borderRadius:'16px'}} ><h3>Ախտորոշումներ</h3></div>
+          <div >
           <table
             className="table nowrap w-100 mb-5 dataTable no-footer"
             {...getTableProps()}
@@ -498,6 +634,8 @@ function PatientDetails(data) {
               </tbody>
             )}{" "}
           </table>
+          </div>
+          </section>
         </div>
       </div>  
     )}

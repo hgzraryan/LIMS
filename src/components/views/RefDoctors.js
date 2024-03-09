@@ -2,10 +2,9 @@
 import FeatherIcon from 'feather-icons-react/build/FeatherIcon';
 import React, { useRef, useState } from 'react'
 import ReactPaginate from 'react-paginate';
-import { useSelector } from 'react-redux';
 import { Dropdown } from "react-bootstrap";
 import RefDoctorsTable from '../viewTables/RefDoctorsTable';
-import AddRefDoctor from './AddRefDoctor';
+import AddRefDoctor from '../addViews/AddRefDoctor';
 import { REFDOCTORS_URL } from '../../utils/constants';
 import useGetData from '../../hooks/useGetData';
 import useDeleteData from '../../hooks/useDeleteData';

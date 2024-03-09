@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import FeatherIcon from 'feather-icons-react/build/FeatherIcon';
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Dropdown } from 'react-bootstrap';
 import ReactPaginate from 'react-paginate';
 import { useSelector } from 'react-redux';
@@ -8,23 +8,76 @@ import { selectDoctorCount } from '../../redux/features/doctor/doctorCountSlice'
 import DoctorsVisitsTable from '../viewTables/DoctorsVisitsTable';
 const CustomData=[
   {
+    doctorsVisitsId:30001,
       patientData:{
-        name:"Անուշ Ռազմիկի Գաբրիելյան",
-        email:"Anka1942@as.tu",
-        phone:"+3748596584",
+        name:"Արման Գևորգի Ստեփանյան",
+        contact:{
+          email:"fdfgfg1942@as.tu",
+          phone:"+37485745896",
+        },
+        age:45,
+        gender:'Ար',
+        patientId:49
         //patient's all data
       },
-      visitDate:"24-02-2024",
-      doctorsName:"Կարինե Սամվելի Մանւկյան",
-      doctorsAppointments:[
+      visitDate:"24-02-2022",
+      doctorName:"Կարինե Սամվելի Մանւկյան",
+      doctorsAppointments:
         {
-          instructions:'Դիետիկ սնունդ',
-          medicine:'Մեզիմ ֆոռտե',
+          instructions:['Մերսում'],
+          medicine:['Դիկլակ գել'],
+          researches:[]
+      },
+    nextVisit:'24-03-2022',
+  },
+  {
+    doctorsVisitsId:30025,
+      patientData:{
+        contact:{
+
+          email:"Anka1942@as.tu",
+          phone:"+3748596584",
+        },
+        name:"Անուշ Ռազմիկի Գաբրիելյան",
+        age:85,
+        patientId:48,
+        gender:'Իգ',
+        //patient's all data
+      },
+      visitDate:"25-02-2024",
+      doctorName:"Կարինե Սամվելի Մանւկյան",
+      doctorsAppointments:
+        {
+          instructions:['Դիետիկ սնունդ'],
+          medicine:['Մեզիմ ֆոռտե'],
           researches:['Արյան ընդհանուր հետազոտություն']
-      }
-    ],
+      },
+    
     nextVisit:'24-03-2024',
-  }
+  },
+  {
+    doctorsVisitsId:30852,
+      patientData:{
+        name:"Կարեն Սերոբի Ստեփանյան",
+        contact:{
+          email:"ASD1942@as.tu",
+          phone:"+3748785263",
+        },
+        age:32,
+        gender:'Ար',
+        patientId:85
+        //patient's all data
+      },
+      visitDate:"01-03-2024",
+      doctorName:"Կարինե Սամվելի Մանւկյան",
+      doctorsAppointments:
+        {
+          instructions:['Քաղցր չուտել','քայլել օրեկան 1կմ'],
+          medicine:['Դիաբետոն'],
+          researches:['Արյան ընդհանուր հետազոտություն','ԲԱԿ հետազոտություն']
+      },
+    nextVisit:'05-03-2024',
+  },
 ]
 function DoctorsVisits() {
     const [doctorsVisits,setDoctorsVisits]= useState(CustomData)
@@ -36,6 +89,15 @@ function DoctorsVisits() {
     const [currentPage, setCurrentPage] = useState(0);  
     const [usersPerPage, setUsersPerPage] = useState(Math.round((window.innerHeight / 100) * 1.5));
     const pageCount = Math.ceil(doctorCount/usersPerPage)
+    const [userRole, setUserRole] = useState('');
+    
+  useEffect(() => {
+    const storedData = JSON.parse(localStorage.getItem('role'));
+    if (storedData) {
+      console.log(storedData.Role)
+      setUserRole(storedData.Role);
+    }
+  }, []);
     const handlePageClick = ({ selected: selectedPage }) => {
        setCurrentPage(selectedPage);
        //updateUsersCount();
@@ -71,6 +133,9 @@ function DoctorsVisits() {
                         <h1>Բժշկի այցելություններ</h1>
                       </a>
                     </div>
+                    {
+                      userRole!=='doctor' && 
+                    
                     <div className="dropdown ms-3">
                       <Dropdown>
                         <Dropdown.Toggle
@@ -95,6 +160,7 @@ function DoctorsVisits() {
                         />
                       )} */}
                     </div>
+}
                   </div>
                   <div className="contact-options-wrap">
                     <div className="dropdown-menu dropdown-menu-end">

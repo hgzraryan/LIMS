@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-no-comment-textnodes */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useMemo, useRef, useState } from "react";
+import React, { useMemo, useState } from "react";
 import ComponentToConfirm from "../ComponentToConfirm";
 import {
   useBlockLayout,
@@ -19,16 +19,13 @@ import ResearchViewBoard from "../StatusBoard/ResearchViewBoard";
 import { Modal } from "react-bootstrap";
 import DiagnosticsEditModal from "../EditViews/DiagnosticsEditModal";
 import diagnoseSvg from "../../../src/dist/img/diagnose.svg";
-import ComponentToPrintResultWrapper from "../ComponentToPrintResultWrapper";
 import ResultData from "../ResultData";
-import { ComponentToPrint } from "../ComponentToPrint";
-import ReactToPrint from "react-to-print";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { useNavigate } from "react-router-dom";
-import  jsPDF  from "jspdf";
 import "../../dist/css/data-table.css";
 import organizationsSvg from '../../dist/svg/organizationsSvg.svg'
 import patientSvg from '../../dist/svg/patientSvg.svg'
+import ResearchesPrint from "../views/ResearchesPrint";
 
 
 function DiagnosticsTable({
@@ -40,7 +37,6 @@ function DiagnosticsTable({
   handleOpenModal,
   selectedItemId,
   selectedItem,
-  patients,
   getDiagnostics
 }) {
   const axiosPrivate = useAxiosPrivate()
@@ -51,50 +47,54 @@ function DiagnosticsTable({
   const [editRow, setEditRow] = useState(false);
   const [modalInfo, setModalInfo] = useState("");
   const [modalResult, setModalResult] = useState("");
+  const [modalPrint, setModalPrint] = useState("");
   const [disable, setDisable] = useState(false);
-  
-  const ComponentToPrintWrapper = ({ diagData }) => {
-    // 1.
-    let componentRef = useRef(null); // 2.
-    return (
-      <div style={{ display: "flex" }}>
-        <ReactToPrint
-          trigger={() => (
-            <a
-              className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover"
-              data-bs-toggle="tooltip"
-              data-placement="top"
-              title=""
-              data-bs-original-title="Archive"
-              href="#"
-            >
-              <span className="icon">
-                <span className="feather-icon">
-                  <FeatherIcon icon="printer" />
-                </span>
-              </span>
-            </a>
-          )}
-          content={() => componentRef.current}
-        />
-        <div style={{ display: "none" }}>
-          <ComponentToPrint ref={componentRef} value={diagData} />
-        </div>
-      </div>
-    );
+  // const ComponentToPrintWrapper = ({ diagData }) => {
+    
+  //   // 1.
+  //   let componentRef = useRef(null); // 2.
+  //   return (
+  //     <div style={{ display: "flex" }}>
+  //       <ReactToPrint
+  //         trigger={() => (
+  //           <a
+  //             className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover"
+  //             data-bs-toggle="tooltip"
+  //             data-placement="top"
+  //             title=""
+  //             data-bs-original-title="Archive"
+  //             href="#"
+  //           >
+  //             <span className="icon">
+  //               <span className="feather-icon">
+  //                 <FeatherIcon icon="printer" />
+  //               </span>
+  //             </span>
+  //           </a>
+  //         )}
+  //         content={() => componentRef.current}
+  //       />
+  //       <div style={{ display: "none" }}>
+  //         <ComponentToPrint ref={componentRef} value={diagData} />
+  //       </div>
+  //     </div>
+  //   );
+  // };
+  const handleOpenInfoModal = (data) => {
+    setModalInfo((prev) => data);
   };
-  const handleOpenInfoModal = (user) => {
-    setModalInfo((prev) => user);
+  const handleOpenResultModal = (data) => {
+    setModalResult((prev) => data);
   };
-  const handleOpenResultModal = (user) => {
-    setModalResult((prev) => user);
+  const handleOpenPrintModal = (data) => {
+    setModalPrint((prev) => data);
   };
   const handleSendResult = () => {
     const resultData = document.getElementById('resultData');
     console.log(JSON.stringify(resultData))
   };
-  const handleOpenStatusModal = (user) => {
-    setSelectedItem1((prev) => user);
+  const handleOpenStatusModal = (data) => {
+    setSelectedItem1((prev) => data);
   };
   const handleCloseStatusModal = () => {
     setSelectedItem1("");
@@ -264,7 +264,21 @@ function DiagnosticsTable({
                   </span>
                 </span>
               </a>
-              <ComponentToPrintWrapper diagData={row.original} />
+              {/* <ComponentToPrintWrapper diagData={row.original} /> */}
+              <a
+                className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover"
+                data-bs-toggle="tooltip"
+                data-placement="top"
+                title="send"
+                href="#"
+                onClick={() => handleOpenPrintModal(row.original)}
+              >
+                <span className="icon">
+                  <span className="feather-icon">
+                    <FeatherIcon icon="printer" />
+                  </span>
+                </span>
+              </a>
               <a
                 className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover"
                 data-bs-toggle="tooltip"
@@ -441,7 +455,30 @@ function DiagnosticsTable({
               <div data-simplebar className="nicescroll-bar">
                 <div className="d-flex flex-xxl-nowrap flex-wrap">
                   <div className="contact-info w-100">
-                    <ResultData modalResult={modalResult} patients={patients} setModalResult={setModalResult} />
+                    <ResultData modalResult={modalResult} setModalResult={setModalResult} />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="modal-footer ">
+             
+            </div>
+          </Modal.Body>
+        </Modal>
+      )}
+      {modalPrint && (
+        <Modal show={() => true} size="xl" onHide={() => setModalPrint(false)} >
+          <Modal.Header closeButton>
+            <Modal.Title
+              style={{ width: "100%", textAlign: "center" }}
+            ></Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <div className="contact-body contact-detail-body">
+              <div data-simplebar className="nicescroll-bar">
+                <div className="d-flex flex-xxl-nowrap flex-wrap">
+                  <div className="contact-info w-100">
+                    <ResearchesPrint modalPrint={modalPrint}  setModalPrint={setModalPrint} />
                   </div>
                 </div>
               </div>

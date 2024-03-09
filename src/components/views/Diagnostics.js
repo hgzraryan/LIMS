@@ -1,6 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState, useRef, useEffect } from "react";
-import InfiniteScroll from "react-infinite-scroll-component";
 import FeatherIcon from "feather-icons-react";
 import Loading from "../Loading";
 import { Dropdown } from "react-bootstrap";
@@ -10,11 +9,10 @@ import DiagnosticsTable from "../viewTables/DiagnosticsTable";
 import ReactPaginate from "react-paginate";
 import { useSelector } from "react-redux";
 
-import AddDiagnostic from "./AddDiagnostic";
+import AddDiagnostic from "../addViews/AddDiagnostic";
 import { selectDiagnosticsCount} from "../../redux/features/diagnostics/diagnosticsCountSlice";
 import { selectResearches } from "../../redux/features/researches/researchesSlice";
-import { selectPatients } from "../../redux/features/patients/patientsSlice";
-import { DIAGNOSTICS_URL, DOCTORS_URL } from "../../utils/constants";
+import { DIAGNOSTICS_URL, DOCTORS_URL, PATIENTS_URL } from "../../utils/constants";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
 const Diagnostics = () => {
@@ -27,14 +25,15 @@ const Diagnostics = () => {
   const [currentPage, setCurrentPage] = useState(0);  
   const [usersPerPage, setUsersPerPage] = useState(Math.round((window.innerHeight / 100) * 1.5));
   const [doctors,setDoctors] = useState([]);
+  const [patients,setPatients] = useState([]);
   const pageCount = Math.ceil(diagnosticsCount/usersPerPage)
-  const patients = useSelector(selectPatients)
   const axiosPrivate =useAxiosPrivate()
   const {
     data: diagnostics,
     setData: setDiagnostics,
     getData: getDiagnostics,
   } = useGetData(DIAGNOSTICS_URL,currentPage,usersPerPage);
+
 
   useEffect(()=>{
     setTimeout(() => {
@@ -194,7 +193,6 @@ const Diagnostics = () => {
                         setDiagnostics={setDiagnostics}
                         handleCloseModal={handleCloseModal}
                         handleOpenModal={handleOpenModal}
-                        patients={patients}
                         getDiagnostics={getDiagnostics}
                       />
                          <ReactPaginate

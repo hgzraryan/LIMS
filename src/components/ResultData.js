@@ -13,7 +13,7 @@ import BarcodeComp from './BarcodeComp.js';
 import ComponentToPrintResultWrapper from './ComponentToPrintResultWrapper.js';
 import useAxiosPrivate from '../hooks/useAxiosPrivate.js';
 import LoadingSpinner from './LoadingSpinner.js';
-
+import organizationsSvg from '../dist/svg/organizationsSvg.svg'
 const data1 = [
     {
       shortName: "WBC",
@@ -58,30 +58,51 @@ const data1 = [
       referenceRange: "4.0-10.0",
       units: "10^9/L",
     },
-  
+    
   ];
-function ResultData({modalResult,patients,setModalResult}) { 
-const [patient,setPatient]=useState({})
-const [isLoading, setIsLoading] = useState(true);
-
-  const axiosPrivate = useAxiosPrivate()
+  function ResultData({modalResult,setModalResult}) { 
+    // const [patient,setPatient]=useState({})
+    const [isLoading, setIsLoading] = useState(true);
+    const [currentClient, setCurrentClient] = useState({}); 
+    const {clientId} = modalResult
+    const {clientType} = modalResult
+    const axiosPrivate = useAxiosPrivate()
     //const {clientId}=modalResult
     const {statusBoard}=modalResult
-    //TODO Temporary code
+
+const getPatientData = async () => {
+    try {
+      const response = await axiosPrivate.get(`/patients/${clientId}`);
+      setIsLoading(false);
+      setCurrentClient((prevUsers) => response.data.jsonString);
+      console.log(response.data.jsonString)
+
+          } catch (err) {
+            console.error(err);
+            //navigate("/login", { state: { from: location }, replace: true });
+          }
+        };
+const getOrganizationData = async () => {
+    try {
+      const response = await axiosPrivate.get(`/organizations`);
+      setIsLoading(false);
+      setCurrentClient((prevUsers) => response.data.jsonString[0]);
+      console.log(response.data.jsonString)
+
+          } catch (err) {
+            console.error(err);
+            //navigate("/login", { state: { from: location }, replace: true });
+          }
+        };
 useEffect(()=>{
-setTimeout(()=>{
-  modalResult?.clientId 
-  ?axiosPrivate.get(`/patients/${modalResult.clientId}`).then((resp)=>{
-  setPatient(prev=>resp?.data?.jsonString)
-  setIsLoading(false);
-})
-:axiosPrivate.get(`/patients/${modalResult.patientId}`).then((resp)=>{
-  setPatient(prev=>resp?.data?.jsonString)
-  setIsLoading(false);
-})
-},500)
+  if(clientType && clientType=== 'patient'){
+    getPatientData()
+  }else if(clientType && clientType=== 'organization'){
+    getOrganizationData()
+  }
 },[])
-    let patientRef = useRef(null); 
+      
+    //let patientRef = useRef(null); 
     const handleSendResult = () => {
       const resultData = document.getElementById('resultData');
       console.log(JSON.stringify(resultData))
@@ -221,7 +242,8 @@ setTimeout(()=>{
                </p>
              </div>
            </section>
-                 <Suspense fallback={<LoadingSpinner />}>
+           {clientType && clientType==='patient'
+             ?<Suspense fallback={<LoadingSpinner />}>
            {isLoading ? (
              <LoadingSpinner />
            ) : (
@@ -232,29 +254,29 @@ setTimeout(()=>{
                  <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
                    <div  style={{display:'flex'}}>
                      <img src={userIcon} alt='userIcon' width='20px'/>
-                     <p  style={{marginLeft:'2px',fontWeight:'bold'}}>{ patient?.lastName + " " + patient?.firstName + " " + patient?.midName}</p>
+                     <p  style={{marginLeft:'2px',fontWeight:'bold'}}>{ currentClient?.lastName + " " + currentClient?.firstName + " " + currentClient?.midName}</p>
                    </div>
    
                    <div style={{display:'flex'}}>
-                     <p style={{marginLeft:'2px',fontWeight:'bold'}}>{patient?.gender==='Male' ? 'Ար․':'Իգ'}</p>
-                     <p style={{marginLeft:'2px',fontWeight:'bold'}}>{patient.dateOfBirth }</p>
-                     <p style={{marginLeft:'2px',fontWeight:'bold'}}>{patient.age}</p>
+                     <p style={{marginLeft:'2px',fontWeight:'bold'}}>{currentClient?.gender==='Male' ? 'Ար․':'Իգ'}</p>
+                     <p style={{marginLeft:'2px',fontWeight:'bold'}}>{currentClient.dateOfBirth }</p>
+                     <p style={{marginLeft:'2px',fontWeight:'bold'}}>{currentClient.age}</p>
                    </div>
                  </div>
                  <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
                    <div style={{display:'flex'}}>
                    <img src={phoneIcon} alt='phoneIcon' width='20px'/>
 
-                     <p style={{marginLeft:'2px',marginRight:'4px',fontWeight:"bold"}}>{patient?.contact?.phone}</p>
+                     <p style={{marginLeft:'2px',marginRight:'4px',fontWeight:"bold"}}>{currentClient?.contact?.phone}</p>
                      <img src={geoIcon} alt='geoIcon' width='20px' style={{marginLeft:'20px'}}/>
 
-                     <p style={{marginLeft:'5px'}}> ք. {patient?.contact?.address?.city} </p>
+                     <p style={{marginLeft:'5px'}}> ք. {currentClient?.contact?.address?.city} </p>
                    </div>
    
                    <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
                    <img src={emailIcon} alt='emailIcon' width='20px' style={{marginRight:'10px'}}/>
 
-                     <a href="mailto:someone@example.com">{patient?.contact?.email}</a>
+                     <a href="mailto:someone@example.com">{currentClient?.contact?.email}</a>
                    </div>
                  </div>
                </div>
@@ -344,7 +366,129 @@ setTimeout(()=>{
            </section>
            </>
        )}
-       </Suspense>
+              </Suspense>
+            :clientType && clientType==='organization' &&
+            <Suspense fallback={<LoadingSpinner />}>
+           {isLoading ? (
+             <LoadingSpinner />
+           ) : (
+             <>
+           <section className="containerr"  >
+             <div  style={{display:'flex'}}>
+               <div  style={{flex:'1'}}>
+                 <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+                   <div  style={{display:'flex'}}>
+                     <img src={organizationsSvg} alt='organizationsSvgIcon' width='20px'/>
+                     <p  style={{marginLeft:'2px',fontWeight:'bold'}}>{ currentClient?.name }</p>
+                   </div>
+   
+                   <div style={{display:'flex'}}>
+                   </div>
+                 </div>
+                 <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+                   <div style={{display:'flex'}}>
+                   <img src={phoneIcon} alt='phoneIcon' width='20px'/>
+
+                     <p style={{marginLeft:'2px',marginRight:'4px',fontWeight:"bold"}}>{currentClient?.phone}</p>
+                     <img src={geoIcon} alt='geoIcon' width='20px' style={{marginLeft:'20px'}}/>
+
+                     <p style={{marginLeft:'5px'}}> ք. {currentClient?.address?.city} </p>
+                   </div>
+   
+                   <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+                   <img src={emailIcon} alt='emailIcon' width='20px' style={{marginRight:'10px'}}/>
+
+                     <a href="mailto:someone@example.com">{currentClient?.email}</a>
+                   </div>
+                 </div>
+               </div>
+   
+               <div style={{marginLeft:'1.5rem'}}>
+                 <div style={{display:'flex'}}>
+                 <img src={calendarIcon} alt='calendarIcon' width='20px' height='20px' style={{marginLeft:'10px', marginRight:'10px'}}/>
+
+                   <p>{modalResult.createdAt || '22.01.24 10:08'}</p>
+                 </div>
+                 <div style={{display:'flex'}}>
+                 <img src={calendarIcon} alt='calendarIcon' width='20px' height='20px' style={{marginLeft:'10px', marginRight:'10px'}}/>
+
+                   <p>{modalResult.diagnosisDate || '22.01.24 15:08'}</p>
+                 </div>
+               </div>
+             </div>
+           </section>
+           <section className="containerr d-flex justify-content-between mb-2">
+          <BarcodeComp data = {modalResult?.diagnosticsId}/>
+        </section>
+           <section>
+             <div>
+               <div style={{display:'flex',justifyContent:'center',marginTop:'0.5rem',alignItems:'center'}} >
+                 <b>{modalResult.title || 'Արյան կլինիկական հետազոտություններ'}</b>
+               </div>
+               <div style={{display:'flex',justifyContent:'center',marginTop:'0.5rem',alignItems:'center'}} >
+                 <p>
+                   
+                   Նմուշառված է՝ {modalResult.diagnosisDate}
+                   {/* <span className="ps-8"> Արտաքին նմուշ [] </span> */}
+                 </p>
+               </div>
+               <div style={{display:'flex',justifyContent:'space-between'}}>
+                 <p> Կենսանյութ՝ {modalResult.biomass || 'Արյուն'}</p>
+                 <p style={{ fontSize: "13px" }}>
+                   Հետազոտությունը կատարվել է {modalResult.device || 'Sysmex XN 550'} ավտոմատ վերլուծիչով
+                 </p>
+               </div>
+             </div>
+           </section>
+           <section className="containerr">
+             <div>
+               <table
+               className='resultTable'
+                 style={{
+                  width:'100%',
+                   border: "1px solid black",
+                   fontSize: "14px",
+                   color: "#000",
+                   marginTop: "10px",
+                   borderCollapse: 'collapse',
+                 }}
+               >
+                 <thead>
+                   {headerGroups.map((headerGroup) => (
+                     <tr {...headerGroup.getHeaderGroupProps()}>
+                       {headerGroup.headers.map((column) => (
+                         <th {...column.getHeaderProps()}>
+                           {column.render("Header")}
+                         </th>
+                       ))}
+                     </tr>
+                   ))}
+                 </thead>
+                 <tbody {...getTableBodyProps()}>
+                   {rows.map((row, i) => {
+                     prepareRow(row);
+                     return (
+                       <tr key={i} {...row.getRowProps()}>
+                         {row.cells.map((cell) => {
+                           return (
+                             <td
+                               {...cell.getCellProps()}
+                               style={{ border: "1px solid black" }}
+                             >
+                               {cell.render("Cell")}
+                             </td>
+                           );
+                         })}
+                       </tr>
+                     );
+                   })}
+                 </tbody>
+               </table>
+             </div>
+           </section>
+           </>
+       )}
+              </Suspense>}
          </main>
          <footer style={{ marginTop: "auto" }}>
            <div>
@@ -362,7 +506,7 @@ setTimeout(()=>{
               </button>
               <ComponentToPrintResultWrapper
                 data={modalResult}
-                patients={patients}
+                patient={currentClient}
                 />
               <button
                 type="button"

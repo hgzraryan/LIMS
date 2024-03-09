@@ -13,8 +13,6 @@ import useSubmitForm from "../../hooks/useSubmitForm";
 import Multiselect from "multiselect-react-dropdown";
 import { PATIENTS_URL, REGISTER_DIAGNOSTICS } from "../../utils/constants";
 import { toast } from "react-toastify";
-import { useSelector } from "react-redux";
-import { selectDoctors } from "../../redux/features/doctor/doctorsSlice";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 const diagnosticClassState = [
   { class: "Արտաքին" },

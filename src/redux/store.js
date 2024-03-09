@@ -1,5 +1,6 @@
 import {configureStore} from '@reduxjs/toolkit'
 import usersCountReducer from './features/users/usersCountSlice'
+import userLoginDataReducer from './features/users/userLoginDataSlice'
 import patiensCountReducer from './features/patients/patientsCountSlice'
 import researchesReducer from './features/researches/researchesSlice'
 import discountValueReducer from './features/discounts/discountValueSlice'
@@ -10,7 +11,6 @@ import organisationCountReducer from './features/organisation/organisationCountS
 import reagentsCountReducer from './features/reagents/reagentsCountSlice'
 import diagnosticsCountReducer from './features/diagnostics/diagnosticsCountSlice'
 import researchListCountReducer from './features/researches/researchListCountSlice'
-import patientsReducer from './features/patients/patientsSlice'
 import doctorsReducer from './features/doctor/doctorsSlice'
 import refDoctorsReducer from './features/refDoctors/refDoctorsSlice'
 export default configureStore({
@@ -22,11 +22,11 @@ export default configureStore({
         patientsCount:patiensCountReducer,
         reagentsCount:reagentsCountReducer,
         usersCount:usersCountReducer,
+        userLoginData:userLoginDataReducer,
         diagnosticsCount:diagnosticsCountReducer,
         researches:researchesReducer,
         discountValue:discountValueReducer,
         researchListCount:researchListCountReducer,
-        patients:patientsReducer,
         doctors:doctorsReducer,
         refDoctors:refDoctorsReducer,
     }

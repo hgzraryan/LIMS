@@ -25,7 +25,6 @@ import {
 import { Form, Modal } from "react-bootstrap";
 import { FormProvider, useForm } from "react-hook-form";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
-import Multiselect from "multiselect-react-dropdown";
 import { useCalculateAge } from "../../hooks/useCalculateAge";
 import { toast } from "react-toastify";
 import { REGISTER_DOCTORS } from "../../utils/constants";

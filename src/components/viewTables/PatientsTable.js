@@ -12,8 +12,6 @@ import { Checkbox } from "../Checkbox";
 import PatientInfo from "../PatientInfo";
 import FeatherIcon from "feather-icons-react/build/FeatherIcon";
 import { BiSolidInfoCircle } from "react-icons/bi";
-import { ComponentToPrint } from "../ComponentToPrint";
-import ReactToPrint from "react-to-print";
 import { ColumnFilter } from "../ColumnFilter";
 import "../../dist/css/data-table.css";
 import {  useNavigate } from 'react-router-dom';

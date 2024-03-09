@@ -1,5 +1,5 @@
 import Button from "react-bootstrap/Button";
-import React, { useState, forwardRef, useRef } from "react";
+import React, { useState, forwardRef, useRef, useEffect } from "react";
 import Table from "react-bootstrap/Container";
 import { useTable } from "react-table";
 // import Barcode from "react-barcode";
@@ -14,6 +14,7 @@ import { HiMiniCalendarDays } from "react-icons/hi2";
 import { connect, useSelector } from "react-redux";
 import { selectResearches } from "../redux/features/researches/researchesSlice";
 import BarcodeComp from "./BarcodeComp";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 const data = [
   {
   researchName: "Լեյկոցիտների ընդհանուր քանակ",
@@ -28,15 +29,15 @@ const data = [
     price:25000,
   }
 ]
-export const ComponentToPrint = forwardRef(({ value }, ref) => {
+export const ComponentToPrint = forwardRef(({ value,currentPatient }, ref) => {
+  const axiosPrivate = useAxiosPrivate()
   const researchState = useSelector(selectResearches);
+  //const {clientId} = value
+ 
 
-  const currentResearches = value?.researchList
-    ?.map(
-      (mapEl) => (mapEl = researchState.filter((el) => el.research === mapEl))
-    )
-    .flat(1);
-
+      console.log('value',value)
+      console.log('ref',ref)
+      console.log('currentPatient',currentPatient)
   const columns = React.useMemo(
     () => [
       {
@@ -131,23 +132,22 @@ const { inputRef } = Barcode({
              >
              </div>
       <main>
-        <section className="container">
+      <section className="container">
           <div className="Requisites d-flex flex-column justify-content-center align-items-center">
             <p style={{fontSize:'18px' }}>ՀՎՀՀ 12457888</p>
             <p style={{fontSize:'18px' }}>h/h 220090120845000 ACBA բանկ</p>
           </div>
         </section>
-        <section className="container d-flex justify-content-between mb-2">
+        <section style={{display:"flex",justifyContent:'space-around',margin:'2rem 0 2rem 0'}} className="containerr ">
         <BarcodeComp data={value.diagnosticsId}  /> 
 
           <div className=" mb-3r">
             <ul>
-              <li style={{fontWeight:'bold'}}>
-               Անուն Ազգանուն: Տիգրանյան Դավիթ
+              <li >Անվանում/Անուն Ազգանուն: <span style={{fontWeight:'bold',fontSize:'1.1rem'}}>{currentPatient?.firstName+" "+ currentPatient?.lastName}</span>
               </li>
-              <li style={{fontWeight:'bold'}}>Տարիք: 39</li>
-              <li style={{fontWeight:'bold'}}>Հեռախոս: 085 59-65-87</li>
-              <li style={{fontWeight:'bold'}}>Տրման ամսաթիվ: 24․02․2024</li>
+              <li >Տարիք: <span style={{fontWeight:'bold',fontSize:'1.1rem'}}>{currentPatient?.age}</span></li>
+              <li >Հեռախոս: <span style={{fontWeight:'bold',fontSize:'1.1rem'}}>{currentPatient?.contact?.phone}</span></li>
+              <li >Տրման ամսաթիվ: <span style={{fontWeight:'bold',fontSize:'1.1rem'}}>{value?.createdAt}</span></li>
               {/* <li>
                 Անուն Ազգանուն: `${value.firstName} ${value.lastName} `
               </li>
@@ -206,7 +206,9 @@ const { inputRef } = Barcode({
         <section className="container">
           <div className="total d-flex flex-column align-items-end">
             <p style={{marginRight:'6px'}}>Զեղչ 0</p>
-            <p>Ընդհանուր արժեք {value.totalPrice}47000 դր․</p>
+            <p>Ընդհանուր արժեք 
+              {/* {value.totalPrice} */}
+              47000 դր․</p>
           </div>
         </section>
       </main>
