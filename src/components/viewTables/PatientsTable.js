@@ -37,21 +37,7 @@ function PatientsTable({
     setModalInfo((prev) => user);
   };
   const handlePatientsDetail = async (patientId) => {  
-    try {
-     // const response = await axiosPrivate.get(`/patients/${patientId}`, );
-      //console.log(response.data); 
       navigate(`/patients/${patientId}`)
-      
-    } catch (err) {
-      console.log(err)
-      // if (!err?.response) {
-      //   setErrMsg("No Server Response");
-      // } else if (err.response?.status === 409) {
-      //   setErrMsg("Username Taken");
-      // } else {
-      //   setErrMsg(" Failed");
-      // }
-    }
   };
  
   const defaultColumn = React.useMemo(

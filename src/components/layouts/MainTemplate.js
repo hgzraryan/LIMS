@@ -45,22 +45,8 @@ const MainTemplate = () => {
      //const [refDoctorsState] = useGetFullData(REFDOCTORS_URL,checkRefDoctors)
     //-------------------
     const handleUserPage = async(userId) =>{
-      try {
-       // const response = await axiosPrivate.get(`/patients/${userId}`, );
-        //console.log(response.data); 
-        //navigate(`/users/${userId}`)
+      
         navigate(`/users/2095`)
-        
-      } catch (err) {
-        console.log(err)
-        // if (!err?.response) {
-        //   setErrMsg("No Server Response");
-        // } else if (err.response?.status === 409) {
-        //   setErrMsg("Username Taken");
-        // } else {
-        //   setErrMsg(" Failed");
-        // }
-      }
     }
     //-------------------
     const [isActive, setIsActive] = useState(false);
@@ -324,13 +310,13 @@ const MainTemplate = () => {
                             </div>
                             <div className="media-body">
                               <div className="fs-7">{}</div>
-                              <p style={{ color: "black" }}>
+                              <div style={{ color: "black" }}>
                                 <p style={{ textDecoration:'underline', cursor:'pointer'}} onClick={()=>handleUserPage(2095)}>
 
                                 {userData?.firstname + " "}
                                 {userData?.lastname}
                                 </p>
-                              </p>
+                              </div>
                             </div>
                           </div>
                         </div>

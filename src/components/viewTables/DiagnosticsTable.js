@@ -114,21 +114,9 @@ function DiagnosticsTable({
     []
   );
   const handleDiagnosticssDetails = async (diagnosticsId) => {  
-    // try {
-      //   const response = await axiosPrivate.get(`/diagnostics/${diagnosticsId}`, );
-      //   console.log(response.data); 
+
       navigate(`/diagnostics/${diagnosticsId}`)
       
-    // } catch (err) {
-    //   console.log(err)
-    //   // if (!err?.response) {
-    //   //   setErrMsg("No Server Response");
-    //   // } else if (err.response?.status === 409) {
-    //   //   setErrMsg("Username Taken");
-    //   // } else {
-    //   //   setErrMsg(" Failed");
-    //   // }
-    // }
   };
 
   const sendPDFToBackend = (pdfData) => {

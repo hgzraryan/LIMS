@@ -61,21 +61,7 @@ const navigate = useNavigate()
     toggleHideColumn(columnId);
   };
   const handleUserPage = async(userId) =>{
-    try {
-     // const response = await axiosPrivate.get(`/patients/${userId}`, );
-      //console.log(response.data); 
       navigate(`/users/${userId}`)
-      
-    } catch (err) {
-      console.log(err)
-      // if (!err?.response) {
-      //   setErrMsg("No Server Response");
-      // } else if (err.response?.status === 409) {
-      //   setErrMsg("Username Taken");
-      // } else {
-      //   setErrMsg(" Failed");
-      // }
-    }
   }
   const defaultColumn = useMemo(
     () => ({

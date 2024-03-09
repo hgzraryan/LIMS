@@ -36,21 +36,7 @@ function OrganizationsTable({
     setModalInfo((prev) => data);
   };
   const handleOrganizationsDetail = (organizationId) =>{
-    try {
-      // const response = await axiosPrivate.get(`/patients/${patientId}`, );
-       //console.log(response.data); 
        navigate(`/organizations/${organizationId}`)
-       
-     } catch (err) {
-       console.log(err)
-       // if (!err?.response) {
-       //   setErrMsg("No Server Response");
-       // } else if (err.response?.status === 409) {
-       //   setErrMsg("Username Taken");
-       // } else {
-       //   setErrMsg(" Failed");
-       // }
-     }
    };
   const defaultColumn = useMemo(
     () => ({
