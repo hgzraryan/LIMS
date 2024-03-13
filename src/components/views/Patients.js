@@ -21,7 +21,7 @@ const Patients = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState("");
   const [currentPage, setCurrentPage] = useState(0);  
-  const [usersPerPage, setUsersPerPage] = useState(Math.round((window.innerHeight / 100) * 1.5));
+  const [usersPerPage, setUsersPerPage] = useState(Math.round((window.innerHeight / 100)));
   const pageCount = Math.ceil(patientsCount/usersPerPage)
   
     const {

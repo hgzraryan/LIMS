@@ -113,10 +113,17 @@ function DiagnosticsTable({
     }),
     []
   );
-  const handleDiagnosticssDetails = async (diagnosticsId) => {  
+  const handleDiagnosticsDetails = async (diagnosticsId) => {  
 
       navigate(`/diagnostics/${diagnosticsId}`)
       
+  };
+  const handleClientDetails = async (rowData) => {  
+   const {clientId}=rowData
+   const {clientType}=rowData
+    clientType === 'patient'
+    ? navigate(`/patients/${clientId}`)
+    :navigate(`/organizations/${clientId}`)
   };
 
   const sendPDFToBackend = (pdfData) => {
@@ -149,6 +156,19 @@ function DiagnosticsTable({
         Filter: ({ column: { id } }) => (
           <ColumnFilter id={id} setData={setDiagnostics} placeholder={"ID"} />
         ),
+        Cell: ({ row }) => (
+          <>
+           
+              <div
+              onClick={()=>handleDiagnosticsDetails(row.original.diagnosticsId)}
+              style={{ cursor: 'pointer', textDecoration:'underline' }}
+            >
+              
+              {row.original.diagnosticsId}
+            </div>
+           
+          </>
+        ),
       },
       {
         Header: "Հաճախորդի ID",
@@ -163,7 +183,7 @@ function DiagnosticsTable({
           <>
            
               <div
-              onClick={()=>handleDiagnosticssDetails(row.original.clientId)}
+              onClick={()=>handleClientDetails(row.original)}
               style={{ cursor: 'pointer', textDecoration:'underline' }}
             >
                {row.original.clientType === "organization"
@@ -253,11 +273,13 @@ function DiagnosticsTable({
                 </span>
               </a>
               {/* <ComponentToPrintWrapper diagData={row.original} /> */}
+              {row.original?.diagStatus === "Active" &&
+              <>
               <a
                 className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover"
                 data-bs-toggle="tooltip"
                 data-placement="top"
-                title="send"
+                title="Print"
                 href="#"
                 onClick={() => handleOpenPrintModal(row.original)}
               >
@@ -281,6 +303,8 @@ function DiagnosticsTable({
                   </span>
                 </span>
               </a>
+              </>
+              }
                {/*
               //TODO Delete diagnostics option
               {!row.original.patientId && (
@@ -391,7 +415,7 @@ function DiagnosticsTable({
                       <div className="d-flex justify-content-between">
                         {" "}
                         <span>Հաճախորդի ID </span>{" "}
-                        <span>{modalInfo.patientId}</span>
+                        <span>{modalInfo.clientId}</span>
                       </div>
                       <div className="separator-full m-0"></div>
                       <div className="d-flex justify-content-between">

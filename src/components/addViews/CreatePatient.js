@@ -184,7 +184,7 @@ function CreatePatient({
     trigger("gender");
   };
   const onDoctorSelect = (data) => {
-    if (data[0].doctorName === "Այլ բժիշկ") {
+    if (data[0].doctorName === "Ուղղորդող բժիշկ") {
       setExtraDoctor(true);
     } else {
       setExtraDoctor(false);

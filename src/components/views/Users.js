@@ -25,7 +25,7 @@ const Users = () => {
   const [selectedItemId, setSelectedItemId] = useState(null);
   const useersCount = useSelector(selectUsersCount)
   const [currentPage, setCurrentPage] = useState(0);  
-  const [usersPerPage, setUsersPerPage] = useState(Math.round((window.innerHeight / 100) * 1.5));
+  const [usersPerPage, setUsersPerPage] = useState(Math.round((window.innerHeight / 100)));
   const pageCount = Math.ceil(useersCount/usersPerPage)
 
   const {

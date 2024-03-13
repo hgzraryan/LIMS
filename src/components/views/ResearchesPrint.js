@@ -137,18 +137,17 @@ function ResearchesPrint({modalPrint,setModalPrint}){
                 </div>
             </header>
             <div
-               className="result title"
-               style={{
-                display:'flex',
-                justifyContent:'center',
-                alignItems:'center',
-                 background: "#01903e",
-                 color: "white",
-                 borderRadius: "5px",
-                 margin: "10px 0",
-                 height:'10px'
-               }}
-             >
+            className="d-flex justify-content-center align-center"
+            style={{
+              background: "#01903e",
+              color: "white",
+              borderRadius: "5px",
+              margin: "10px 0",
+            }}
+          >
+              <p style={{ padding: "5px", fontSize: "20px", fontWeight: "bold" }}>
+              Նմուշառման թերթիկ
+               </p>
              </div>
              {clientType && clientType==='patient'
              ?<main>

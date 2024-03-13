@@ -1,5 +1,5 @@
 import FeatherIcon from 'feather-icons-react/build/FeatherIcon';
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { Input } from '../Input';
 import { desc_validation, name_validation } from '../../utils/inputValidations';
 import { Modal } from "react-bootstrap";
@@ -8,11 +8,31 @@ import { Form, FormProvider, useForm} from "react-hook-form";
 import { toast } from 'react-toastify';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import { REGISTER_ROLE } from '../../utils/constants';
+import Multiselect from 'multiselect-react-dropdown';
 
 function CreateUserRole({setIsOpenRole,getUsers}) {
     const axiosPrivate = useAxiosPrivate();
+    const typeMultiselectRef = useRef("");
+
+    const [userType, setUserType] = useState('local');
 
     const [errMsg, setErrMsg] = useState("");
+    const onUserTypeSelect = (data) => {
+      switch (data[0].type) {
+        case "Տեղում":
+          setUserType("local");
+          break;
+        case "Շրջիկ":
+          setUserType("mobile");
+          break;
+        case "Հեռավար":
+          setUserType("remote");
+          break;
+        default:
+          break;
+      }
+          
+        };
     const methods = useForm({
         mode: "onChange",
       });
@@ -112,6 +132,31 @@ function CreateUserRole({setIsOpenRole,getUsers}) {
                                 <Input {...desc_validation} />
                               </div>
                             </div>
+                            <div className="row gx-3">
+                          <div className="col-sm-6">
+                              <label className="form-label" htmlFor="doctor">
+                              Տեսակը
+                              </label>
+                              <Multiselect
+                                options={[...[{type:"Տեղում"},{type:"Շրջիկ"},{type:"Հեռավար"}]]}
+                                onSelect={onUserTypeSelect} 
+                                closeOnSelect={true}
+                                singleSelect
+                                displayValue="type"
+                                id="input_tags_5"
+                                className="form-control"
+                                ref={typeMultiselectRef}
+                                hidePlaceholder={true}
+                                placeholder="Ընտրել աշխատանքի տեսակը"
+                                selectedValues={[{type:"Տեղում"}]}
+                                style={{
+                                  height: "10rem",
+                                  overflow: "hidden",
+                                }}
+                                
+                              />
+                            </div>
+                          </div>
                             
                           </div>
                         </div>

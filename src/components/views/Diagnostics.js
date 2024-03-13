@@ -23,7 +23,7 @@ const Diagnostics = () => {
   const confirmDiagnosticRef = useRef("");
   const diagnosticsCount = useSelector(selectDiagnosticsCount)
   const [currentPage, setCurrentPage] = useState(0);  
-  const [usersPerPage, setUsersPerPage] = useState(Math.round((window.innerHeight / 100) * 1.5));
+  const [usersPerPage, setUsersPerPage] = useState(Math.round((window.innerHeight / 100)));
   const [doctors,setDoctors] = useState([]);
   const [patients,setPatients] = useState([]);
   const pageCount = Math.ceil(diagnosticsCount/usersPerPage)

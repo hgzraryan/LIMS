@@ -42,7 +42,6 @@ const roleState = {
 };
 function CreateUser({ setIsOpen,getUsers }) {
   const axiosPrivate = useAxiosPrivate();
-  const typeMultiselectRef = useRef("");
   const multiselectRef = useRef("");
   const intupAvatarRef = useRef(null);
   const [imageUrl, setImageUrl] = useState(MissingAvatar);
@@ -56,33 +55,15 @@ function CreateUser({ setIsOpen,getUsers }) {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [emergencyContactNumber, setEmergencyContactNumber] = useState("");
   const [gender, setGender] = useState(""); 
+  const [merried, setMerried] = useState(""); 
 
   const onGenderSelect = (event) => {
     setGender(prev=>event.target.value)
   };
-  const handlEmergencyContactNumberChange = (value) => {
-    setEmergencyContactNumber(value);
+  const onUserMerriedSelect = (event) => {
+    setMerried(prev=>event.target.value)
+  };
 
-  };
-  const handlePhoneNumberChange = (value) => {
-    setPhoneNumber(value);
-  };
-  const onUserTypeSelect = (data) => {
-switch (data[0].type) {
-  case "Տեղում":
-    setUserType("local");
-    break;
-  case "Շրջիկ":
-    setUserType("mobile");
-    break;
-  case "Հեռավար":
-    setUserType("remote");
-    break;
-  default:
-    break;
-}
-    
-  };
   const methods = useForm({
     mode: "onChange",
   });
@@ -123,32 +104,34 @@ switch (data[0].type) {
     country,
     zipCode,
     gender,
-    emergencyContactNumber,
-    emergencyContactName,
+    maritalStatus,
+    // emergencyContactNumber,
+    // emergencyContactName,
     dateOfBirth}) => {
    
     const newUser = {
       firstname:firstName,
       lastname:lastName,
       position:position,
+      email:email,
       contact: {
-      email: email,
-      phone: phone,
-      address: {
-        street: street,
-        city: city,
-        state: state,
-        country: country,
-        zipCode: zipCode,
+        phone: phone,
+        address: {
+          street: street,
+          city: city,
+          state: state,
+          country: country,
+          zipCode: zipCode,
         },
       },
       gender: gender,
+      maritalStatus:maritalStatus,
       username:user,
       password:password,
       roles: roles,
-      type:userType,
-      emergencyContactName:emergencyContactName,
-      emergencyContactNumber:emergencyContactNumber,
+      //type:userType,
+      // emergencyContactName:emergencyContactName,
+      // emergencyContactNumber:emergencyContactNumber,
       birthday:new Date(
         dateOfBirth.getTime() - dateOfBirth.getTimezoneOffset() * 60000
       )
@@ -461,6 +444,55 @@ switch (data[0].type) {
                                 </div>
                               </div>
                             </div>
+                            <div className="col-sm-6">
+                            <div className="mb-2">
+                            <div className="d-flex justify-content-between me-2">
+                              <label className="form-check-label" htmlFor="male">
+                              Ընտանեկան կարգավիճակ
+                              </label>
+                              {methods.formState.errors.maritalStatus && (
+                                  <span className="error text-red">
+                                    <span>
+                                      <img src={ErrorSvg} alt="errorSvg" />
+                                    </span>{" "}
+                                    պարտադիր
+                                  </span>
+                                )}
+                                </div>
+                            </div>
+                            <div className="d-flex  align-items-center">
+                              <div className="form-check form-check-inline">
+                                <input
+                                  className="form-check-input"
+                                  type="radio"
+                                  id="married"
+                                  value="married"                                
+                                  onChange={() => onUserMerriedSelect("married")}
+                                    {...methods.register("maritalStatus", {
+                                      required: true,
+                                    })}
+                                />
+                              <label className="form-check-label" htmlFor="married">
+                              Ամուսնացած
+                              </label>
+                            </div>
+                            <div className="form-check form-check-inline">
+                              <input
+                                className="form-check-input"
+                                type="radio"
+                                id="single"
+                                value="single"
+                                onChange={() => onUserMerriedSelect("single")}
+                                    {...methods.register("maritalStatus", {
+                                      required: true,
+                                    })}
+                              />
+                              <label className="form-check-label" htmlFor="single">
+                              Չամուսնացած
+                              </label>
+                              </div>
+                              </div>
+                            </div>
                           </div>
                           <div className="row gx-3">
                             <div className="col-sm-6">
@@ -470,32 +502,8 @@ switch (data[0].type) {
                               <Input {...password_validation} />
                             </div>
                           </div>
-                          <div className="row gx-3">
-                          <div className="col-sm-6">
-                              <label className="form-label" htmlFor="doctor">
-                                Աշխատանքի տեսակը
-                              </label>
-                              <Multiselect
-                                options={[...[{type:"Տեղում"},{type:"Շրջիկ"},{type:"Հեռավար"}]]}
-                                onSelect={onUserTypeSelect} 
-                                closeOnSelect={true}
-                                singleSelect
-                                displayValue="type"
-                                id="input_tags_5"
-                                className="form-control"
-                                ref={typeMultiselectRef}
-                                hidePlaceholder={true}
-                                placeholder="Ընտրել աշխատանքի տեսակը"
-                                selectedValues={[{type:"Տեղում"}]}
-                                style={{
-                                  height: "10rem",
-                                  overflow: "hidden",
-                                }}
-                                
-                              />
-                            </div>
-                          </div>
-                          <div className="row gx-3">
+                          
+                          {/* <div className="row gx-3">
                             <div className="col-sm-6">
                               <Input {...emergencyContactName_validation} />
                             </div>
@@ -510,7 +518,7 @@ switch (data[0].type) {
                                     </div>                              
                               <CustomPhoneComponent name="emergencyContactNumber"  control={methods.control} />     
                             </div>
-                          </div>
+                          </div> */}
                         </div>
                       </div>
                     </div>
@@ -663,6 +671,7 @@ switch (data[0].type) {
                                 </div>
                               </div>
                             </div>
+                           
                           </form>
                         </div>
                       </div>

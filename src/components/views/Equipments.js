@@ -20,7 +20,7 @@ const Equipments = () => {
   const confirmEquipmentsRef = useRef("");
   const equipmentCount = useSelector(selectEquipmentCount)
   const [currentPage, setCurrentPage] = useState(0);  
-  const [usersPerPage, setUsersPerPage] = useState(Math.round((window.innerHeight / 100) * 1.5));
+  const [usersPerPage, setUsersPerPage] = useState(Math.round((window.innerHeight / 100)));
   const pageCount = Math.ceil(equipmentCount/usersPerPage)
   const {
     data: equipments,

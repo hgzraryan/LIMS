@@ -24,7 +24,7 @@ function RefDoctors() {
     const [isOpen, setIsOpen] = useState(false);
     const confirmRefDoctorsRef = useRef("");
     const [currentPage, setCurrentPage] = useState(0);  
-    const [usersPerPage, setUsersPerPage] = useState(Math.round((window.innerHeight / 100) * 1.5));
+    const [usersPerPage, setUsersPerPage] = useState(Math.round((window.innerHeight / 100)));
     // const clinicsCount = useSelector(selectClinics)
     // const pageCount = Math.ceil(clinicsCount/usersPerPage)
     

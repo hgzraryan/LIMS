@@ -16,7 +16,7 @@ function MedInstitutions() {
     const [isOpen, setIsOpen] = useState(false);
     const confirmgetMedInstitutionsRef = useRef("");
     const [currentPage, setCurrentPage] = useState(0);  
-    const [usersPerPage, setUsersPerPage] = useState(Math.round((window.innerHeight / 100) * 1.5));
+    const [usersPerPage, setUsersPerPage] = useState(Math.round((window.innerHeight / 100)));
     // const medInstitutionsCount = useSelector(selectMedinstitutions)
     // const pageCount = Math.ceil(medInstitutionsCount/usersPerPage)
     

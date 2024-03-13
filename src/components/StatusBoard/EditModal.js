@@ -4,7 +4,8 @@ import React, { useState } from 'react'
 import { Modal } from 'react-bootstrap'
 import { Form, FormProvider, useForm } from 'react-hook-form'
 function EditModal({overlayIsOpen,setOverlayIsOpen,activity}) {
-  const [value, setValue] = useState(activity.name);
+  const {name}=activity;
+  const [value, setValue] = useState(activity?.value);
 
   console.log('selectedItem',activity)
   const methods  = useForm({
@@ -22,7 +23,7 @@ function EditModal({overlayIsOpen,setOverlayIsOpen,activity}) {
 >
  <Modal.Header closeButton>
    <Modal.Title style={{ width: "100%", textAlign: "center" }}>
-     ՀԵՏԱԶՈՏՈՒԹՅԱՆ ԱՆՎԱՆՈՒՄ
+     Հետազոտության արդյունքը
    </Modal.Title>
  </Modal.Header>
  <Modal.Body>
@@ -38,7 +39,7 @@ function EditModal({overlayIsOpen,setOverlayIsOpen,activity}) {
                className="container"
              >
                <div className="card">
-                 <div className="card-header">
+                 {/* <div className="card-header">
                    <a href="#">տվյալներ</a>
                    <button
                      className="btn btn-xs btn-icon btn-rounded btn-light"
@@ -57,16 +58,28 @@ function EditModal({overlayIsOpen,setOverlayIsOpen,activity}) {
                        </span>
                      </span>
                    </button>
-                 </div>
+                 </div> */}
                  <div className="card-body">
                         <div className="modal-body">
                           <div className="row gx-3">
-                                                        
-                         
+                          <div className="col-sm-6">
+                             <div className='d-flex flex-column'>
+
                               <label className="form-label" htmlFor="doctor">
-                                Հետազոտության անվանում
+                                Անվանում
+                              </label>
+                         
+                             <p >{name+":"}</p>
+                             </div>
+                            </div>                     
+                          <div className="col-sm-6">
+                          <div className='d-flex flex-column'>
+                              <label className="form-label" htmlFor="doctor">
+                                Պատասխան
                               </label>
                              <input type='text' value={value} onChange={(e)=>setValue(e.target.value)}/>
+                            </div>                     
+                            </div>                     
                                                        
                           </div>
                         </div>
@@ -82,7 +95,7 @@ function EditModal({overlayIsOpen,setOverlayIsOpen,activity}) {
                    className="btn btn-secondary"
                    onClick={handleCloseModal} 
                    >
-                   Չեղարկել
+                   Փակել
                  </button>
                  <button
                    type="button"

@@ -1,4 +1,4 @@
-import React, { Suspense, useState } from 'react'
+import React, { Suspense, useEffect, useState } from 'react'
 import LoadingSpinner from '../LoadingSpinner';
 import diagnosticsSvg from '../../dist/svg/diagnosticsSvg.svg'
 import {
@@ -9,6 +9,8 @@ import {
     useSortBy,
     useTable,
   } from "react-table";
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
+import { useNavigate, useParams } from 'react-router-dom';
 const customData = [
     {
       date: "15.06.2021",
@@ -123,7 +125,13 @@ const customData = [
       
     ]
 function DiagnosticsDetails() {
-    const [isLoading, setIsLoading] = useState(true);
+  const axiosPrivate = useAxiosPrivate()
+  const navigate = useNavigate();
+  const { id } = useParams();
+  const [isOpen, setIsOpen] = useState(false);
+  const [research, setResearch] = useState([]);
+  const [diagnosticsDetails, setDiagnosticsDetails] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
     const columns1 = React.useMemo(
         () => [
           {
@@ -159,12 +167,28 @@ function DiagnosticsDetails() {
         columns: columns1,
         data: customReseraches,
       });
+      useEffect(() => {
+        const getData = async () => {
+          try {
+            const response = await axiosPrivate.get(`/diagnostics/${id}`);
+            console.log(response)
+            setIsLoading(false);
+            setDiagnosticsDetails((prevUsers) => response.data);
+            // setCurrentPage((prev) => prev = 1);
+          } catch (err) {
+            console.error(err);
+            //navigate("/login", { state: { from: location }, replace: true });
+          }
+        };
+        getData();
+      }, []);
+    
     return (
         <>
-        {/* <Suspense fallback={<LoadingSpinner />}>
+        <Suspense fallback={<LoadingSpinner />}>
           {isLoading ? (
             <LoadingSpinner />
-          ) : ( */}
+          ) : (
           <div
             className="d-flex justify-content-between align-items-center"
             style={{ backgroundColor: "#dae4ed",  }}
@@ -216,17 +240,17 @@ function DiagnosticsDetails() {
                   </div>
                    <div className="ms-3 ">
                     <p>
-                        {/* {diagnosticsDetails.doctorId} */} 46
+                        {/* {diagnosticsDetails.doctorId}  */}46
                         </p>
                     <div className="separator-full m-0"></div>                  
     
                     <p>
-                        {/* {diagnosticsDetails.licenseNumber} */}2024-02-16
+                         {diagnosticsDetails?.createdAt} 
                         </p>
                     <div className="separator-full m-0"></div>                  
     
                     <p>
-                        {/* {diagnosticsDetails.createdAt} */}Ներքին
+                         {diagnosticsDetails.class === "Internal"? 'Ներքին':'Արտաքին'}
                         </p>
                     <div className="separator-full m-0"></div>                  
     
@@ -298,8 +322,8 @@ function DiagnosticsDetails() {
             </section>
            
           </div>      
-        {/* )}
-        </Suspense> */}
+         )}
+        </Suspense> 
         </>
       );
 }

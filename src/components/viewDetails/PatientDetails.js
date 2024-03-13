@@ -23,10 +23,54 @@ import emailSvg from "../../dist/svg/emailSvg.svg";
 import LoadingSpinner from "../LoadingSpinner";
 const customData = [
   {    
-    diagnosticsId:11,
-    date: "15.06.2021",
-    diagnosticsType:'Արտաքին',
-    partner:'Diagen',
+   
+additional: "",
+class:"Internal",
+clientId:4,
+clientType:
+"patient",
+createdAt
+: 
+"2024-03-12T18:21:53.654Z",
+diagStatus
+: 
+"Active",
+diagnosisDate
+: 
+"2024-03-12T18:21:53.644Z",
+diagnosticsId
+: 
+21,
+diagnosticsName
+: 
+"asdas",
+doctors
+: 
+[5],
+externalStatus
+: 
+null,
+generationDate
+: 
+"2024-03-12T18:21:53.644Z",
+internalStatus
+: 
+"Approval",
+researchIds
+: 
+["3"],
+totalPrice
+: 
+10,
+updatedAt
+: 
+"2024-03-12T18:31:09.344Z",
+__v
+: 
+0,
+_id
+: 
+"65f09d4161d66ef0b594445a",
     researches: [
       {
         researchName: "Կրեատինինկինազա",
@@ -220,7 +264,8 @@ function PatientDetails(data) {
   const { id } = useParams();
   const [isOpen, setIsOpen] = useState(false);
   const [research, setResearch] = useState([]);
-  const [patientDetails, setPatientDetails] = useState({});
+  const [patientDetails, setPatientDetails] = useState([]);
+  const [patientDiagnostics, setPatientDiagnostics] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(0);
   const [usersPerPage, setUsersPerPage] = useState(
@@ -246,9 +291,11 @@ function PatientDetails(data) {
   const pageCount = 1;
   //const pageCount = Math.ceil(useersCount/usersPerPage)
   const handleOpenModal = (data) => {
+    console.log('data',data.statusBoard[1]?.researches)
     setIsOpen(true);
-    setResearch((prev) => data.researches);
+    setResearch((prev) => data.statusBoard[4]?.researches);
   };
+
   useEffect(() => {
     const getData = async () => {
       try {
@@ -263,21 +310,21 @@ function PatientDetails(data) {
     };
     getData();
   }, []);
-  // useEffect(() => {
-  //   const getData = async () => {
-  //     try {
-  //       const response = await axiosPrivate.get(`/diagnostics/${id}`);
-  //       console.log(response)
-  //       // setIsLoading(false);
-  //       // setPatientDetails((prevUsers) => response.data.jsonString);
-  //       // setCurrentPage((prev) => prev = 1);
-  //     } catch (err) {
-  //       console.error(err);
-  //       //navigate("/login", { state: { from: location }, replace: true });
-  //     }
-  //   };
-  //   getData();
-  // }, []);
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const response = await axiosPrivate.get(`/getDiagnosticsByCid/${id}/patient`);
+        console.log(response.data)
+         setIsLoading(false);
+         setPatientDiagnostics((prevUsers) => response.data);
+        // setCurrentPage((prev) => prev = 1);
+      } catch (err) {
+        console.error(err);
+        //navigate("/login", { state: { from: location }, replace: true });
+      }
+    };
+    getData();
+  }, []);
 
   const columns = useMemo(
     () => [
@@ -306,7 +353,7 @@ function PatientDetails(data) {
             <div className="columnHeader">Ամսաթիվ</div>
           </>
         ),
-        accessor: "date",
+        accessor: "createdAt",
         sortable: true,
         width: 250,
         Filter: ({ column: { id } }) => <></>,
@@ -317,11 +364,14 @@ function PatientDetails(data) {
             <div className="columnHeader">Տեսակ</div>
           </>
         ),
-        accessor: "diagnosticsType",
+        accessor: "class",
         sortable: true,
         width: 200,
         Filter: ({ column: { id } }) => <></>,
-      },
+      //   Cell: ({ row }) => (
+      //     <p>{row.original.class === "Internal"?'Ներքին': 'Արտաքին'}</p>
+      // ),
+    },
       {
         Header: (event) => (
           <>
@@ -404,7 +454,7 @@ function PatientDetails(data) {
   } = useTable(
     {
       columns,
-      data: customData,
+      data:patientDiagnostics,
     },
     useFilters,
     useBlockLayout,

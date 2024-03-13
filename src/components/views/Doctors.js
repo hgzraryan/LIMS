@@ -18,7 +18,7 @@ function Doctors() {
   const confirmDoctorsRef = useRef("");
   const doctorCount = useSelector(selectDoctorCount)
   const [currentPage, setCurrentPage] = useState(0);  
-  const [usersPerPage, setUsersPerPage] = useState(Math.round((window.innerHeight / 100) * 1.5));
+  const [usersPerPage, setUsersPerPage] = useState(Math.round((window.innerHeight / 100)));
   const pageCount = Math.ceil(doctorCount/usersPerPage)
   
   const {

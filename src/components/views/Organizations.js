@@ -21,7 +21,7 @@ const Organizations = () => {
   const confirmOrganizationRef = useRef("");
   const organisationCount = useSelector(selectOrganisationCount)
   const [currentPage, setCurrentPage] = useState(0);  
-  const [usersPerPage, setUsersPerPage] = useState(Math.round((window.innerHeight / 100) * 1.5));
+  const [usersPerPage, setUsersPerPage] = useState(Math.round((window.innerHeight / 100)));
   const pageCount = Math.ceil(organisationCount/usersPerPage)
   
   const {

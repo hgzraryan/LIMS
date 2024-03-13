@@ -19,7 +19,7 @@ const DoctorsTemplete = () => {
 
   //-------------------
 
-  const [doctorsState] = useGetFullData()
+ // const [doctorsState] = useGetFullData()
    //const [refDoctorsState] = useGetFullData(REFDOCTORS_URL,checkRefDoctors)
   //-------------------
   const handleUserPage = async(userId) =>{

@@ -387,7 +387,7 @@ function AddDiagnostic({
                                   key: patient.patientId,
                                   value: `${patient.firstName} ${patient.lastName}`,
                                 }))]}
-                                singleSelect
+                                
                                 onSelect={onPatientSelect}
                                 displayValue="value"
                                 id="input_tags_4"
@@ -395,6 +395,7 @@ function AddDiagnostic({
                                 ref={multiselectRef}
                                 hidePlaceholder={true}
                                 placeholder="Ընտրել այցելուին"
+                                selectionLimit={1}
                                 disable={!!organizationId}
                                 style={{
                                   height: "10rem",

@@ -248,13 +248,14 @@ function OrganizationDetails() {
       setIsOpen(true);
       setResearch((prev) => data.researches);
     };
+
     useEffect(() => {
       const getData = async () => {
         try {
-          //const response = await axiosPrivate.get(`/organizations/${id}`);
-          const response = await axiosPrivate.get(`/patients/${id}`);
-          setIsLoading(false);
-          setPatientDetails((prevUsers) => response.data.jsonString);
+          const response = await axiosPrivate.get(`/getDiagnosticsByCid/${id}/organization`);
+          console.log(response)
+          // setIsLoading(false);
+          // setPatientDetails((prevUsers) => response.data.jsonString);
           // setCurrentPage((prev) => prev = 1);
         } catch (err) {
           console.error(err);
@@ -263,13 +264,14 @@ function OrganizationDetails() {
       };
       getData();
     }, []);
+
     // useEffect(() => {
     //   const getData = async () => {
     //     try {
-    //       const response = await axiosPrivate.get(`/diagnostics/${id}`);
-    //       console.log(response)
-    //       // setIsLoading(false);
-    //       // setPatientDetails((prevUsers) => response.data.jsonString);
+    //       //const response = await axiosPrivate.get(`/organizations/${id}`);
+    //       const response = await axiosPrivate.get(`/organizations/${id}`);
+    //       setIsLoading(false);
+    //       setPatientDetails((prevUsers) => response.data.jsonString);
     //       // setCurrentPage((prev) => prev = 1);
     //     } catch (err) {
     //       console.error(err);
@@ -427,6 +429,7 @@ function OrganizationDetails() {
     );
     return (
       <>
+      <></>
       <Suspense fallback={<LoadingSpinner />}>
         {isLoading ? (
           <LoadingSpinner />

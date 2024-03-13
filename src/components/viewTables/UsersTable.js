@@ -41,6 +41,8 @@ const navigate = useNavigate()
         return "badge badge-soft-light my-1  me-2";
       case "Sampler":
         return "badge badge-soft-yellow my-1  me-2";
+      case "Doctor":
+        return "badge badge-soft-blue my-1  me-2";
 
       default:
         break;
@@ -195,7 +197,7 @@ const navigate = useNavigate()
       {
         Header: "Պաշտոն",
         accessor: "position",
-        width: 190,
+        width: 170,
         Filter: ({ column: { id } })=>(
           <ColumnFilter
             id={id}

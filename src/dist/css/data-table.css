@@ -56,3 +56,8 @@ padding: 10px !important;
       border-width: 0;
     }
   }
+  
+  tbody>tr:hover{
+      background-color: rgba(0, 76, 136, 0.15)  !important;
+    }
+  

@@ -20,7 +20,7 @@ const Agents = () => {
   const confirmAgentsRef = useRef("");
   const agentsCount = useSelector(selectAgentsCount)
   const [currentPage, setCurrentPage] = useState(0);  
-  const [usersPerPage, setUsersPerPage] = useState(Math.round((window.innerHeight / 100) * 1.5));
+  const [usersPerPage, setUsersPerPage] = useState(Math.round((window.innerHeight / 100)));
   const pageCount = Math.ceil(agentsCount/usersPerPage)
   
   const {

@@ -32,7 +32,7 @@ function ActivityModal({overlayIsOpen,setOverlayIsOpen,selectedItem,setSelectedI
   ) {   
     updatedSelectedItem.statusBoard[1].researches.push({
       id: Math.random(),
-      name: `Հետազոտություն ${Math.random()}`
+      name: `"Էրիթրոցիտի միջին ծավալը փորձանմուշի  ընդհանուր ծավալում." `
     });}
       handleCloseModal()
       try {

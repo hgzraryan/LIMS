@@ -2,8 +2,11 @@
   background-color: white;
   border-radius: 8px;
   box-sizing: border-box;
-  height: auto;
+  height: 100%;
   margin-bottom: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   &:hover {
     cursor: pointer;
   }
@@ -26,7 +29,8 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-height: 48px;
+   // max-height: 48px;
+    height: auto;
   }
   .entity-card-priority {
     border-radius: 4px;
@@ -52,5 +56,23 @@
     overflow: hidden;
     text-overflow: ellipsis;
     height: 36px;
+  }
+  .entity-card-result {
+    color: #6b7782;
+    font-family: var(--Poppins-Regular);
+    font-size: 15px;
+    letter-spacing: 0;
+    line-height: 18px;
+    padding-bottom: 5px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 36px;
+    display: flex;
+    justify-content: flex-end;
+
+    //flex: 0;
   }
 }
