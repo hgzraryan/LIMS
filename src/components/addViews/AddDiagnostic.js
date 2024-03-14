@@ -135,7 +135,6 @@ function AddDiagnostic({
     setDoctor((prev) => data.label);
   };
   const onDiagnosticClassSelect = (data) => {
-    console.log(data);
     switch (data.value) {
       case "External":
         setDiagnosticsType(data.value);
@@ -148,42 +147,6 @@ function AddDiagnostic({
       case "Other":
         setDiagnosticsType(data.value);
         setExternalType(false);
-        break;
-      default:
-        break;
-    }
-  };
-  const onInternalDiagnosticStatusSelect = (data) => {
-    switch (data.value) {
-      case "Ընդունված":
-        setIntDiagnosticsStatus("Approval");
-        break;
-      case "Հետաձգված":
-        setIntDiagnosticsStatus("Delayed");
-        break;
-      case "Ընթացքում":
-        setIntDiagnosticsStatus("Generated");
-        break;
-      case "այլ":
-        setIntDiagnosticsStatus("Other");
-        break;
-      default:
-        break;
-    }
-  };
-  const onExternalDiagnosticStatusSelect = (data) => {
-    switch (data[0].status) {
-      case "Ընդունված":
-        setExtDiagnosticsStatus("Approval");
-        break;
-      case "Հետաձգված":
-        setExtDiagnosticsStatus("Delayed");
-        break;
-      case "Ընթացքում":
-        setExtDiagnosticsStatus("Generated");
-        break;
-      case "այլ":
-        setExtDiagnosticsStatus("Other");
         break;
       default:
         break;
@@ -229,8 +192,8 @@ function AddDiagnostic({
     const newDiagnose = {
       diagnosticsName: data.name,
       class: data.diagnosticsType,
-      internalStatus: data.internalDiagnosticsStatus || null,
-      externalStatus: data.externalDiagnosticsStatus || null,
+      internalStatus: data?.internalDiagnosticsStatus?.value || null,
+      externalStatus: data?.externalDiagnosticsStatus?.value || null,
       researchIds: data?.research.map((el) => el.value),
       clientId: patientId || organizationId,
       clientType: clientType,
@@ -239,7 +202,8 @@ function AddDiagnostic({
       additional: editorRef.current.getContent({ format: "text" }),
     };
 
-    //console.log(newDiagnose);
+    console.log(data);
+    console.log(newDiagnose);
     try {
       await axiosPrivate.post(REGISTER_DIAGNOSTICS, newDiagnose, {
         headers: { "Content-Type": "application/json" },
@@ -398,12 +362,6 @@ function AddDiagnostic({
                                         render={({ field }) => (
                                           <Select
                                             {...field}
-                                            onChange={(val) => {
-                                              field.onChange(val.value);
-                                              onInternalDiagnosticStatusSelect(
-                                                val
-                                              );
-                                            }}
                                             value={diagnosticStatus.find(
                                               (option) =>
                                                 option.value ===
@@ -447,12 +405,6 @@ function AddDiagnostic({
                                         render={({ field }) => (
                                           <Select
                                             {...field}
-                                            onChange={(val) => {
-                                              field.onChange(val.value);
-                                              onExternalDiagnosticStatusSelect(
-                                                val
-                                              );
-                                            }}
                                             value={diagnosticStatus.find(
                                               (option) =>
                                                 option.value ===
@@ -575,7 +527,7 @@ function AddDiagnostic({
                                   <div className="d-flex justify-content-between me-2">
                                     <label
                                       className="form-label"
-                                      htmlFor="partner"
+                                      htmlFor="organizations"
                                     >
                                       Պատվիրատու
                                     </label>
@@ -709,7 +661,7 @@ function AddDiagnostic({
                                           closeMenuOnSelect={false}
                                           components={animatedComponents}
                                           options={researchesState.map((res) => ({
-                                            value: res.agentId,
+                                            value: res.researchListId,
                                             label: `${res?.researchName}`,
                                           }))}
                                           styles={colourStyles}

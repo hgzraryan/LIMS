@@ -358,7 +358,7 @@ function PatientsTable({
                        <div className="separator-full m-0"></div>
                        <div className="d-flex justify-content-between">  <span>Ծննդյան ամսաթիվ </span> <span>{modalInfo.dateOfBirth}</span></div>
                        <div className="separator-full m-0"></div>
-                       <div className="d-flex justify-content-between">  <span>Սեռ </span> <span>{modalInfo.gender}</span></div>
+                       <div className="d-flex justify-content-between">  <span>Սեռ </span> <span>{(modalInfo.gender==='Male')?'Արական':'Իգական'}</span></div>
                        <div className="separator-full m-0"></div>
                        <div className="d-flex justify-content-between">  <span>Գրանցվել է </span> <span>{modalInfo.createdAt}</span></div>
                        <div className="separator-full m-0"></div>

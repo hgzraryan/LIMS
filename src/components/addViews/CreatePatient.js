@@ -5,9 +5,8 @@ import FeatherIcon from "feather-icons-react";
 import ErrorSvg from "../../dist/svg/error.svg";
 import { Editor } from "@tinymce/tinymce-react";
 import { useState } from "react";
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { Form, FormProvider, useForm, useController } from "react-hook-form";
+import { Form, FormProvider, useForm, Controller } from "react-hook-form";
 import { Input } from "../Input";
 import { toast } from "react-toastify";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
@@ -24,14 +23,14 @@ import {
   country_validation,
   passport_validation,
 } from "../../utils/inputValidations";
-import { useCalculateAge } from "../../hooks/useCalculateAge";
-import { selectDoctors } from "../../redux/features/doctor/doctorsSlice";
 import { useSelector } from "react-redux";
 import "react-phone-number-input/style.css";
-import PhoneInput from "react-phone-number-input";
 import { selectRefDoctors } from "../../redux/features/refDoctors/refDoctorsSlice";
 import CustomPhoneComponent from "../CustomPhoneComponent";
 import CustomDateComponent from "../CustomDateComponent";
+import Select from "react-select";
+
+import makeAnimated from "react-select/animated";
 
 function CreatePatient({
   handleToggleCreateModal,
@@ -59,7 +58,33 @@ function CreatePatient({
   const handlingDate = useRef("");
   const multiselectRef = useRef("");
   const editorRef = useRef(null);
+  const animatedComponents = makeAnimated();
+  const colourStyles = {
+    control: (styles, { isFocused, isSelected }) => ({
+      ...styles,
+      backgroundColor: "#fff",
+      borderColor: isFocused ? "#fff" : "#e8e3e3",
+      boxShadow: "#e8e3e3",
+      ":hover": {
+        borderColor: "#fff",
+      },
+    }),
 
+    multiValueLabel: (styles, { data }) => ({
+      ...styles,
+      backgroundColor: "#4eafcb",
+      color: "#000",
+    }),
+    multiValueRemove: (styles, { data }) => ({
+      ...styles,
+      backgroundColor: "#4eafcb",
+      color: "#e8e3e3",
+      ":hover": {
+        backgroundColor: "#4eafcb",
+        color: "#eb3434",
+      },
+    }),
+  };
   useEffect(()=>{
     setTimeout(() => {
       
@@ -122,7 +147,8 @@ function CreatePatient({
       zipCode,
       gender,
       phone,
-      dateOfBirth
+      dateOfBirth,
+      research
     }) => {
       const newPatient = {
         firstName: firstName,
@@ -130,7 +156,7 @@ function CreatePatient({
         midName: midName,
         age: calculateAge(dateOfBirth),
         //lastHandlingDate: handlingDate.current,
-        researchList: researchesArray,
+        researchList: research.map((el) => el.value),
         additional: editorRef.current.getContent({ format: "text" }),
         gender: gender,
         doctors: doctor,
@@ -193,24 +219,6 @@ function CreatePatient({
   };
   const onRefDoctorSelect = (data) => {
     setRefDoctor((prev) => data[0].doctorName);
-  };
-  const onResearchSelect = (data) => {
-    let researchesArr = [];
-    //let researchesPrice = [];
-    for (let research of data) {
-      researchesArr.push(research?.researchListId.toString());
-      // researchesPrice.push(research?.researchListPrice);
-    }
-    //researchesPrice = researchesPrice.reduce((acc, el) => (acc += el), 0);
-    setResearchesArray((prev) => (prev = researchesArr));
-    // setResearchesPrice((prev) => (prev = researchesPrice));
-  };
-  const onResearchDelete = (data) => {
-    let researchesArr = [];
-    for (let research of data) {
-      researchesArr.push(research?.researchListId.toString());
-    }
-    setResearchesArray((prev) => (prev = researchesArr));
   };
   return (
     <Modal
@@ -546,33 +554,46 @@ function CreatePatient({
                                 )}
                               </div>
                               <div className="row gx-3 mt-2">
-                                <label
-                                  className="form-label"
-                                  htmlFor="input_tags_3"
-                                >
-                                  Ընտրել
-                                </label>
-                                <div className="row gx-3">
-                                  <div className="col-sm-12">
-                                    <div className="form-group">
-                                      <Multiselect
-                                        options={researchState}
-                                        displayValue="researchName"
-                                        onSelect={onResearchSelect}
-                                        onRemove={onResearchDelete}
-                                        closeOnSelect={true}
-                                        id="input_tags_3"
-                                        className="form-control"
-                                        ref={multiselectRef}
-                                        hidePlaceholder={true}
-                                        placeholder="Հետազոտություններ"
-                                        groupBy="category"
-                                        style={{
-                                          height: "10rem",
-                                          overflow: "hidden",
-                                        }}
-                                      />
-                                    </div>
+                              <div className="col-sm-12">
+                                  <div className="d-flex justify-content-between me-2">
+                                    <label
+                                      className="form-label"
+                                      htmlFor="research"
+                                      placeholder={"Ընտրել"}
+                                    >
+                                      Ընտրել հետազոտություն
+                                    </label>
+                                    {methods.formState.errors.research && (
+                                      <span className="error text-red">
+                                        <span>
+                                          <img src={ErrorSvg} alt="errorSvg" />
+                                        </span>{" "}
+                                        պարտադիր
+                                      </span>
+                                    )}
+                                  </div>
+                                  <div className="form-control">
+                                    <Controller
+                                      name="research"
+                                      control={methods.control}
+                                      isClearable={true}
+                                      defaultValue={null}
+                                      // rules={{ required: true }}
+                                      render={({ field }) => (
+                                        <Select
+                                          {...field}
+                                          isMulti
+                                          closeMenuOnSelect={false}
+                                          components={animatedComponents}
+                                          options={researchState.map((res) => ({
+                                            value: res.researchListId,
+                                            label: `${res?.researchName}`,
+                                          }))}
+                                          styles={colourStyles}
+                                          placeholder={"Հետազոտություններ"}
+                                        />
+                                      )}
+                                    />
                                   </div>
                                 </div>
                               </div>

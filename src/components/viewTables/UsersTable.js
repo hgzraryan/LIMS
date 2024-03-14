@@ -187,8 +187,14 @@ const navigate = useNavigate()
         filterable: false,
         Cell: ({ value }) =>
           Object.keys(value).map((role) => (
-            <span className={setUserTypeStyle(role)} key={role}>
-              {role}
+            <span className={setUserTypeStyle(role)} key={role}>          
+              {(role === "User" ? "Օգտատեր" :
+                  role === "Doctor" ? "Բժիշկ" :
+                  role === "Editor" ? "Փոփոխող" :
+                  role === "Sampler" ? "Նմուշառող" :
+                  role === "Approver" ? "Հաստատող" :
+                  role === "Admin" ? "Ադմին" :
+                  "Unknown Role")}
             </span>
           )),
         width: 190,
