@@ -539,7 +539,7 @@ function AddDoctor({ handleToggleCreateModal, getDoctors }) {
                               Լրացուցիչ կոնտակտի հեռախոս
                               </label>
                               {methods.formState.errors.emergencyContactNumber && (
-                                    <span className="error text-red"><span><img src={ErrorSvg} alt="errorSvg"/></span> required</span>
+                                    <span className="error text-red"><span><img src={ErrorSvg} alt="errorSvg"/></span> պարտադիր</span>
                                     )}
                                     </div>
                                <CustomPhoneComponent name="emergencyContactNumber"  control={methods.control} />

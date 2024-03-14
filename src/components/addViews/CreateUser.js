@@ -3,7 +3,7 @@ import { Modal } from "react-bootstrap";
 import Multiselect from "multiselect-react-dropdown";
 import FeatherIcon from "feather-icons-react";
 import MissingAvatar from "../../dist/img/Missing.svg";
-import { Form, FormProvider, useForm } from "react-hook-form";
+import { Controller, Form, FormProvider, useForm } from "react-hook-form";
 import { Input } from "../Input";
 import {
   firstName_validation,
@@ -29,34 +29,58 @@ import PhoneInput from "react-phone-number-input";
 import ErrorSvg from "../../dist/svg/error.svg";
 import CustomPhoneComponent from "../CustomPhoneComponent";
 import CustomDateComponent from "../CustomDateComponent";
+import Select, { StylesConfig } from "react-select";
+import makeAnimated from "react-select/animated";
 
-const roleState = {
-  options: [
-    { name: "Admin", id: 5150 },
-    { name: "Approver", id: 3345 },
-    { name: "Editor", id: 1984 },
-    { name: "User", id: 2001 },
-    { name: "Sampler", id: 1212 },
-    { name: "Doctor", id: 9578 },  
-  ],
-};
+const roleState = [
+    { label: "Admin", value: 5150 },
+    { label: "Approver", value: 3345 },
+    { label: "Editor", value: 1984 },
+    { label: "User", value: 2001 },
+    { label: "Sampler", value: 1212 },
+    { label: "Doctor", value: 9578 },  
+  ]
+
 function CreateUser({ setIsOpen,getUsers }) {
   const axiosPrivate = useAxiosPrivate();
-  const multiselectRef = useRef("");
   const intupAvatarRef = useRef(null);
   const [imageUrl, setImageUrl] = useState(MissingAvatar);
-  const [roles, setRoles] = useState({'User':2001});
   const [userType, setUserType] = useState('local');
   const [image, setImage] = useState("");
   const [birthday, setBirthday] = useState(new Date());
   const imageMimeType = /image\/(png|jpg|jpeg)/i;
   const fileReader = new FileReader();
   const formData = new FormData();
-  const [phoneNumber, setPhoneNumber] = useState("");
   const [emergencyContactNumber, setEmergencyContactNumber] = useState("");
   const [gender, setGender] = useState(""); 
   const [merried, setMerried] = useState(""); 
+  const animatedComponents = makeAnimated();
+  const colourStyles = {
+    control: (styles, { isFocused, isSelected }) => ({
+      ...styles,
+      backgroundColor: "#fff",
+      borderColor: isFocused ? "#fff" : "#e8e3e3",
+      boxShadow: "#e8e3e3",
+      ":hover": {
+        borderColor: "#fff",
+      },
+    }),
 
+    multiValueLabel: (styles, { data }) => ({
+      ...styles,
+      backgroundColor: "#0096fb",
+      color: "#fff",
+    }),
+    multiValueRemove: (styles, { data }) => ({
+      ...styles,
+      backgroundColor: "#0096fb",
+      color: "#e8e3e3",
+      ":hover": {
+        backgroundColor: "#0096fb",
+        color: "#eb3434",
+      },
+    }),
+  };
   const onGenderSelect = (event) => {
     setGender(prev=>event.target.value)
   };
@@ -105,6 +129,7 @@ function CreateUser({ setIsOpen,getUsers }) {
     zipCode,
     gender,
     maritalStatus,
+    roles,
     // emergencyContactNumber,
     // emergencyContactName,
     dateOfBirth}) => {
@@ -128,7 +153,7 @@ function CreateUser({ setIsOpen,getUsers }) {
       maritalStatus:maritalStatus,
       username:user,
       password:password,
-      roles: roles,
+      roles: onRoleSelect(roles),
       //type:userType,
       // emergencyContactName:emergencyContactName,
       // emergencyContactNumber:emergencyContactNumber,
@@ -164,16 +189,9 @@ function CreateUser({ setIsOpen,getUsers }) {
   const onRoleSelect = (data) => {
     let rolesArr = {};
     for (let role of data) {
-      rolesArr[role.name]=role.id
+      rolesArr[role.label]=role.value
     }
-    setRoles((prev) => (prev = rolesArr));
-  };
-  const onRoleDelete = (data) => {
-    let rolesArr = {};
-    for (let role of data) {
-      rolesArr[role.name]=role.id
-    }
-    setRoles((prev) => (prev = rolesArr));
+    return rolesArr
   };
   /*----------------ADD USER END---------------------*/
   fileReader.onloadend = () => {
@@ -522,91 +540,6 @@ function CreateUser({ setIsOpen,getUsers }) {
                         </div>
                       </div>
                     </div>
-
-                    {/* <div className="separator-full"></div>
-                    <div className="card">
-                      <div className="card-header">
-                        <a href="#">Հավելյալ տվյալներ</a>
-                        <button
-                          className="btn btn-xs btn-icon btn-rounded btn-light"
-                          data-bs-toggle="tooltip"
-                          data-bs-placement="top"
-                          title=""
-                          data-bs-original-title="Edit"
-                        >
-                          <span
-                            class="icon"
-                            data-bs-toggle="modal"
-                            data-bs-target="#moreContact"
-                          >
-                            <span class="feather-icon">
-                              <FeatherIcon icon="edit-2" />
-                            </span>
-                          </span>
-                        </button>
-                      </div>
-                      <div className="card-body">
-                        <div className="modal-body">
-                          <form>
-                            <div className="row gx-3">
-                              <div className="col-sm-6">
-                                <div className="form-group">
-                                  <label className="form-label">
-                                    Designation
-                                  </label>
-                                  <input
-                                    className="form-control"
-                                    type="text"
-                                    value="Mandaline"
-                                    placeholder="First Name"
-                                    name="name1"
-                                  />
-                                </div>
-                              </div>
-                              <div className="col-sm-6">
-                                <div className="form-group">
-                                  <label className="form-label">Company</label>
-                                  <input
-                                    className="form-control"
-                                    type="text"
-                                    value="Shane"
-                                    placeholder="Last Name"
-                                    name="lastname1"
-                                  />
-                                </div>
-                              </div>
-                            </div>
-                            <div className="row gx-3">
-                              <div className="col-sm-6">
-                                <div className="form-group">
-                                  <label className="form-label">Language</label>
-                                  <input
-                                    className="form-control"
-                                    type="email"
-                                    value="contct@hencework.com"
-                                    placeholder="Email Id"
-                                    name="emailid1"
-                                  />
-                                </div>
-                              </div>
-                              <div className="col-sm-6">
-                                <div className="form-group">
-                                  <label className="form-label">Birthday</label>
-                                  <input
-                                    className="form-control"
-                                    type="text"
-                                    value="10/24/1984"
-                                    placeholder="Phone No"
-                                    name="birthday1"
-                                  />
-                                </div>
-                              </div>
-                            </div>
-                          </form>
-                        </div>
-                      </div>
-                    </div> */}
-
                     <div className="separator-full"></div>
                     <div className="card">
                       <div className="card-header">
@@ -631,47 +564,48 @@ function CreateUser({ setIsOpen,getUsers }) {
                       </div>
                       <div className="card-body">
                         <div className="modal-body">
-                          <button
-                            type="button"
-                            className="btn-close"
-                            data-bs-dismiss="modal"
-                            aria-label="Close"
-                          >
-                            <span aria-hidden="true">×</span>
-                          </button>
-                          <h6 className="fw-bold mb-3">
-                            Ավելացնել դերեր
-                          </h6>
                           <form>
-                            <div className="row gx-3">
-                              <div className="col-sm-12">
-                                <div className="form-group">
-                                  <Multiselect
-                                    options={roleState.options} // Options to display in the dropdown
-                                    displayValue="name" // Property name to display in the dropdown options
-                                    //selectedValues={this.state.selectedValue} // Preselected value to persist in dropdown
-                                    onSelect={onRoleSelect} // Function will trigger on select event
-                                    onRemove={onRoleDelete} // Function will trigger on remove event
-                                    closeOnSelect={true}
-                                    id="input_tags_3"
-                                    className="form-control"
-                                    ref={multiselectRef}
-                                    hidePlaceholder={true}
-                                    placeholder="Ընտրել դերը"
-                                    selectedValues={[{ name: "User", id: 2001 }]}
-
-                                  />
-                                  {/* <select id="input_tags_3" className="form-control" multiple="multiple">
-                                                                                  <option selected="selected">Collaborator</option>
-                                                                                  <option selected="selected">Designer</option>
-                                                                                  <option selected="selected">React Developer</option>
-                                                                                  <option selected="selected">Promotion</option>
-                                                                                  <option selected="selected">Advertisement</option>
-                                                                              </select> */}
+                          <div className="row gx-3">
+                                <div className="col-sm-12">
+                                  <div className="d-flex justify-content-between me-2">
+                                    <label
+                                      className="form-label"
+                                      htmlFor="research"
+                                      placeholder={"Ընտրել"}
+                                    >
+                                    Ավելացնել դերեր
+                                    </label>
+                                    {methods.formState.errors.roles && (
+                                      <span className="error text-red">
+                                        <span>
+                                          <img src={ErrorSvg} alt="errorSvg" />
+                                        </span>{" "}
+                                        պարտադիր
+                                      </span>
+                                    )}
+                                  </div>
+                                  <div className="form-control">
+                                    <Controller
+                                      name="roles"
+                                      control={methods.control}
+                                      isClearable={true}
+                                      defaultValue={null}
+                                      rules={{ required: true }}
+                                      render={({ field }) => (
+                                        <Select
+                                          {...field}
+                                          isMulti
+                                          closeMenuOnSelect={false}
+                                          components={animatedComponents}
+                                          options={roleState}
+                                          styles={colourStyles}
+                                          placeholder={"Ընտրել"}
+                                        />
+                                      )}
+                                    />
+                                  </div>
                                 </div>
                               </div>
-                            </div>
-                           
                           </form>
                         </div>
                       </div>
