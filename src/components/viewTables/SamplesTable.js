@@ -4,6 +4,7 @@ import { Checkbox } from "../Checkbox";
 import FeatherIcon from "feather-icons-react/build/FeatherIcon";
 import { ColumnFilter } from "../ColumnFilter";
 import "../../dist/css/data-table.css";
+import GanttChart from "../GanttChart";
 
 function SamplesTable() {
   // const [currentPage, setCurrentPage] = useState(0);  
@@ -226,73 +227,74 @@ function SamplesTable() {
     }
   );
   return (
-    <table
-    className="table nowrap w-100 mb-5 dataTable no-footer"
-    {...getTableProps()}
-  >
-    <thead>
-      {headerGroups.map((headerGroup) => (
-        <tr {...headerGroup.getHeaderGroupProps()}>
-          {headerGroup.headers.map((column) => (
-            <th {...column.getHeaderProps(column.getSortByToggleProps())}>
-              <div>
-                {column.id !== "selection" && (
-                  <>
-                    <div>
-                      {column.canFilter ? column.render("Filter") : null}
-                    </div>
+  //   <table
+  //   className="table nowrap w-100 mb-5 dataTable no-footer"
+  //   {...getTableProps()}
+  // >
+  //   <thead>
+  //     {headerGroups.map((headerGroup) => (
+  //       <tr {...headerGroup.getHeaderGroupProps()}>
+  //         {headerGroup.headers.map((column) => (
+  //           <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+  //             <div>
+  //               {column.id !== "selection" && (
+  //                 <>
+  //                   <div>
+  //                     {column.canFilter ? column.render("Filter") : null}
+  //                   </div>
 
-                    <div
-                      style={{
-                        marginTop: "2px",
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                      }}
-                    >
-                      <div>{column.render("Header")}</div>
+  //                   <div
+  //                     style={{
+  //                       marginTop: "2px",
+  //                       display: "flex",
+  //                       justifyContent: "space-between",
+  //                       alignItems: "center",
+  //                     }}
+  //                   >
+  //                     <div>{column.render("Header")}</div>
 
-                      <div style={{ paddingTop: "20px" }}>
-                        {column.isSorted ? (
-                          column.isSortedDesc ? (
-                            <span className="sorting_asc"></span>
-                          ) : (
-                            <span className="sorting_desc"></span>
-                          )
-                        ) : (
-                          <span className="sorting"></span>
-                        )}
-                      </div>
-                    </div>
-                  </>
-                )}
-              </div>
-              <div
-                {...column.getResizerProps()}
-                className={`resizer ${column.isResizing ? "isResizing" : ""}`}
-              />
-            </th>
-          ))}
-        </tr>
-      ))}
-    </thead>
-    {samples?.length && (
-      <tbody {...getTableBodyProps()} style={{fontSize:'14px'}}>
-        {rows.map((row) => {
-          prepareRow(row);
-          return (
-            <tr {...row.getRowProps()} >
-              {row.cells.map((cell) => {
-                return (
-                  <td {...cell.getCellProps()} >{cell.render("Cell")}</td>
-                );
-              })}
-            </tr>
-          );
-        })}
-      </tbody>
-    )}{" "}
-  </table>
+  //                     <div style={{ paddingTop: "20px" }}>
+  //                       {column.isSorted ? (
+  //                         column.isSortedDesc ? (
+  //                           <span className="sorting_asc"></span>
+  //                         ) : (
+  //                           <span className="sorting_desc"></span>
+  //                         )
+  //                       ) : (
+  //                         <span className="sorting"></span>
+  //                       )}
+  //                     </div>
+  //                   </div>
+  //                 </>
+  //               )}
+  //             </div>
+  //             <div
+  //               {...column.getResizerProps()}
+  //               className={`resizer ${column.isResizing ? "isResizing" : ""}`}
+  //             />
+  //           </th>
+  //         ))}
+  //       </tr>
+  //     ))}
+  //   </thead>
+  //   {samples?.length && (
+  //     <tbody {...getTableBodyProps()} style={{fontSize:'14px'}}>
+  //       {rows.map((row) => {
+  //         prepareRow(row);
+  //         return (
+  //           <tr {...row.getRowProps()} >
+  //             {row.cells.map((cell) => {
+  //               return (
+  //                 <td {...cell.getCellProps()} >{cell.render("Cell")}</td>
+  //               );
+  //             })}
+  //           </tr>
+  //         );
+  //       })}
+  //     </tbody>
+  //   )}
+  // </table>
+  <GanttChart/>
   );
 }
 

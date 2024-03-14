@@ -228,6 +228,13 @@ function DiagnosticsTable({
         Filter: ({ column: { id } }) => (
           <ColumnFilter id={id} setData={setDiagnostics}  placeholder = "Տեսակ"/>
         ),
+        Cell: ({ row }) => (
+          <div className="d-flex justify-content-center align-items-center">
+            {row.original?.class === 'Internal'?'Ներքին':
+            row.original?.class ==='External'?'Արտաքին':
+            row.original?.class ==='Other'?'Այլ':''}
+          </div>
+        ),
       },
       {
         Header: "Կարգավիճակ",
@@ -404,7 +411,7 @@ function DiagnosticsTable({
                       <div className="d-flex justify-content-between">
                         {" "}
                         <span>Ախտորոշման Տեսակը </span>{" "}
-                        <span>{modalInfo.class}</span>
+                        <span>{modalInfo.class==='Internal'?'Ներքին':'External'?'Արտաքին':'Այլ'}</span>
                       </div>
                       <div className="separator-full m-0"></div>
                       <div className="d-flex justify-content-between">

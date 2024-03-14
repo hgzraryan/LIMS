@@ -33,12 +33,12 @@ import Select, { StylesConfig } from "react-select";
 import makeAnimated from "react-select/animated";
 
 const roleState = [
-    { label: "Admin", value: 5150 },
-    { label: "Approver", value: 3345 },
-    { label: "Editor", value: 1984 },
-    { label: "User", value: 2001 },
-    { label: "Sampler", value: 1212 },
-    { label: "Doctor", value: 9578 },  
+    { label:'Ադմին',name: "Admin", value: 5150 },
+    { label:'Հաստատող',name: "Approver", value: 3345 },
+    { label:'Փոփոխող',name: "Editor", value: 1984 },
+    { label:'Օգտատեր',name: "User", value: 2001 },
+    { label:'Նմուշառող',name: "Sampler", value: 1212 },
+    { label:'Բժիշկ',name: "Doctor", value: 9578 },  
   ]
 
 function CreateUser({ setIsOpen,getUsers }) {
@@ -61,11 +61,15 @@ function CreateUser({ setIsOpen,getUsers }) {
       backgroundColor: "#fff",
       borderColor: isFocused ? "#fff" : "#e8e3e3",
       boxShadow: "#e8e3e3",
+
       ":hover": {
         borderColor: "#fff",
       },
     }),
-
+    option: (styles, { data }) => ({
+      ...styles,
+      zIndex:100,
+    }),
     multiValueLabel: (styles, { data }) => ({
       ...styles,
       backgroundColor: "#0096fb",
@@ -165,31 +169,31 @@ function CreateUser({ setIsOpen,getUsers }) {
     };
     formData.append("text", JSON.stringify(newUser));
     formData.append("image", image);      
-    //console.log(newUser)
-    try {
-      await axiosPrivate.post(REGISTER_USER, newUser, {
-        headers: { "Content-Type": "application/json"  },
-        withCredentials: true,
-      });
+    console.log(newUser)
+    // try {
+    //   await axiosPrivate.post(REGISTER_USER, newUser, {
+    //     headers: { "Content-Type": "application/json"  },
+    //     withCredentials: true,
+    //   });
       
-      handleToggleCreateModal(false);
-      getUsers();
-      notify(`${newUser.firstname} ${newUser.lastname} աշխատակիցը ավելացված է`)
+    //   handleToggleCreateModal(false);
+    //   getUsers();
+    //   notify(`${newUser.firstname} ${newUser.lastname} աշխատակիցը ավելացված է`)
 
-    } catch (err) {
-      if (!err?.response) {
-        setErrMsg("No Server Response");
-      } else if (err.response?.status === 409) {
-        setErrMsg("Username Taken");
-      } else {
-        setErrMsg(" Failed");
-      }
-    }
+    // } catch (err) {
+    //   if (!err?.response) {
+    //     setErrMsg("No Server Response");
+    //   } else if (err.response?.status === 409) {
+    //     setErrMsg("Username Taken");
+    //   } else {
+    //     setErrMsg(" Failed");
+    //   }
+    // }
   });
   const onRoleSelect = (data) => {
     let rolesArr = {};
     for (let role of data) {
-      rolesArr[role.label]=role.value
+      rolesArr[role.name]=role.value
     }
     return rolesArr
   };
@@ -600,6 +604,7 @@ function CreateUser({ setIsOpen,getUsers }) {
                                           options={roleState}
                                           styles={colourStyles}
                                           placeholder={"Ընտրել"}
+                                          menuPlacement="top"
                                         />
                                       )}
                                     />

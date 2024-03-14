@@ -18,6 +18,7 @@
     "@mui/icons-material": "^5.11.16",
     "@mui/material": "^5.14.7",
     "@reduxjs/toolkit": "^1.9.5",
+    "@syncfusion/ej2-react-gantt": "25.1.35",
     "@tinymce/tinymce-react": "^4.3.0",
     "axios": "^0.24.0",
     "bootstrap": "^4.6.2",
