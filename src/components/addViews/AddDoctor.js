@@ -30,6 +30,8 @@ import { toast } from "react-toastify";
 import { REGISTER_DOCTORS } from "../../utils/constants";
 import CustomPhoneComponent from "../CustomPhoneComponent";
 import CustomDateComponent from "../CustomDateComponent";
+import 'react-phone-number-input/style.css'
+
 function AddDoctor({ handleToggleCreateModal, getDoctors }) {
   const axiosPrivate = useAxiosPrivate();
   const multiselectRef = useRef("");

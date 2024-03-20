@@ -31,6 +31,7 @@ import CustomPhoneComponent from "../CustomPhoneComponent";
 import CustomDateComponent from "../CustomDateComponent";
 import Select, { StylesConfig } from "react-select";
 import makeAnimated from "react-select/animated";
+import 'react-phone-number-input/style.css'
 
 const roleState = [
     { label:'Ադմին',name: "Admin", value: 5150 },
@@ -85,6 +86,25 @@ function CreateUser({ setIsOpen,getUsers }) {
       },
     }),
   };
+  
+  useEffect(() => {
+    setTimeout(() => {
+      const getData = async () => {
+        try {
+          const response = await axiosPrivate.get(`/userroles`);
+          console.log(response)
+          // setIsLoading(false);
+          // setOrganizationDiagnostics(((prev) => response.data));
+          // setCurrentPage((prev) => prev = 1);
+        } catch (err) {
+          console.error(err);
+          //navigate("/login", { state: { from: location }, replace: true });
+        }
+      };
+      
+      getData();
+    }, 500);
+  }, []);
   const onGenderSelect = (event) => {
     setGender(prev=>event.target.value)
   };
@@ -170,25 +190,25 @@ function CreateUser({ setIsOpen,getUsers }) {
     formData.append("text", JSON.stringify(newUser));
     formData.append("image", image);      
     console.log(newUser)
-    // try {
-    //   await axiosPrivate.post(REGISTER_USER, newUser, {
-    //     headers: { "Content-Type": "application/json"  },
-    //     withCredentials: true,
-    //   });
+    try {
+      await axiosPrivate.post(REGISTER_USER, newUser, {
+        headers: { "Content-Type": "application/json"  },
+        withCredentials: true,
+      });
       
-    //   handleToggleCreateModal(false);
-    //   getUsers();
-    //   notify(`${newUser.firstname} ${newUser.lastname} աշխատակիցը ավելացված է`)
+      handleToggleCreateModal(false);
+      getUsers();
+      notify(`${newUser.firstname} ${newUser.lastname} աշխատակիցը ավելացված է`)
 
-    // } catch (err) {
-    //   if (!err?.response) {
-    //     setErrMsg("No Server Response");
-    //   } else if (err.response?.status === 409) {
-    //     setErrMsg("Username Taken");
-    //   } else {
-    //     setErrMsg(" Failed");
-    //   }
-    // }
+    } catch (err) {
+      if (!err?.response) {
+        setErrMsg("No Server Response");
+      } else if (err.response?.status === 409) {
+        setErrMsg("Username Taken");
+      } else {
+        setErrMsg(" Failed");
+      }
+    }
   });
   const onRoleSelect = (data) => {
     let rolesArr = {};

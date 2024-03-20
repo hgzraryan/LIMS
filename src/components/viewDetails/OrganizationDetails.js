@@ -219,7 +219,8 @@ function OrganizationDetails() {
     const { id } = useParams();
     const [isOpen, setIsOpen] = useState(false);
     const [research, setResearch] = useState([]);
-    const [patientDetails, setPatientDetails] = useState({});
+    const [organizationDetails, setOrganizationDetails] = useState({});
+    const [organizationDiagnostics, setOrganizationDiagnostics] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(0);
     const [usersPerPage, setUsersPerPage] = useState(
@@ -232,21 +233,22 @@ function OrganizationDetails() {
         navigate(`/diagnostics/${diagnosticsId}`)
         
        } catch (err) {
-      //    console.log(err)
-      //   // if (!err?.response) {
-      //   //   setErrMsg("No Server Response");
-      //   // } else if (err.response?.status === 409) {
-      //   //   setErrMsg("Username Taken");
-      //   // } else {
-      //   //   setErrMsg(" Failed");
-      //   // }
+          console.log(err)
+        // if (!err?.response) {
+        //   setErrMsg("No Server Response");
+        // } else if (err.response?.status === 409) {
+        //   setErrMsg("Username Taken");
+        // } else {
+        //   setErrMsg(" Failed");
+        // }
        }
     };
     const pageCount = 1;
     //const pageCount = Math.ceil(useersCount/usersPerPage)
     const handleOpenModal = (data) => {
+      console.log('data',data.statusBoard[1]?.researches)
       setIsOpen(true);
-      setResearch((prev) => data.researches);
+      setResearch((prev) => data.statusBoard[4]?.researches);
     };
 
     useEffect(() => {
@@ -254,8 +256,8 @@ function OrganizationDetails() {
         try {
           const response = await axiosPrivate.get(`/getDiagnosticsByCid/${id}/organization`);
           console.log(response)
-          // setIsLoading(false);
-          // setPatientDetails((prevUsers) => response.data.jsonString);
+          setIsLoading(false);
+          setOrganizationDiagnostics(((prev) => response.data));
           // setCurrentPage((prev) => prev = 1);
         } catch (err) {
           console.error(err);
@@ -265,21 +267,20 @@ function OrganizationDetails() {
       getData();
     }, []);
 
-    // useEffect(() => {
-    //   const getData = async () => {
-    //     try {
-    //       //const response = await axiosPrivate.get(`/organizations/${id}`);
-    //       const response = await axiosPrivate.get(`/organizations/${id}`);
-    //       setIsLoading(false);
-    //       setPatientDetails((prevUsers) => response.data.jsonString);
-    //       // setCurrentPage((prev) => prev = 1);
-    //     } catch (err) {
-    //       console.error(err);
-    //       //navigate("/login", { state: { from: location }, replace: true });
-    //     }
-    //   };
-    //   getData();
-    // }, []);
+    useEffect(() => {
+      const getData = async () => {
+        try {
+          const response = await axiosPrivate.get(`/organizations/${id}`);
+          setIsLoading(false);
+          setOrganizationDetails((prevUsers) => response.data.jsonString);
+          // setCurrentPage((prev) => prev = 1);
+        } catch (err) {
+          console.error(err);
+          //navigate("/login", { state: { from: location }, replace: true });
+        }
+      };
+      getData();
+    }, []);
   
     const columns = useMemo(
       () => [
@@ -308,7 +309,7 @@ function OrganizationDetails() {
               <div className="columnHeader">Ամսաթիվ</div>
             </>
           ),
-          accessor: "date",
+          accessor: "createdAt",
           sortable: true,
           width: 250,
           Filter: ({ column: { id } }) => <></>,
@@ -406,7 +407,7 @@ function OrganizationDetails() {
     } = useTable(
       {
         columns,
-        data: customData,
+        data: organizationDiagnostics,
       },
       useFilters,
       useBlockLayout,
@@ -508,10 +509,11 @@ function OrganizationDetails() {
                 </Modal.Body>
               </Modal>
             )}
-            {Object.keys(patientDetails).length && (
+            {Object.keys(organizationDetails).length && (
               <div className="d-flex justify-content-between align-items-stretch ms-4 me-4">
                 <div className="d-flex">
                   <div>
+                    {console.log(organizationDetails)}
                     <img
                       src={MissingAvatar}
                       alt="MissingAvatar"
@@ -522,11 +524,7 @@ function OrganizationDetails() {
   
                   <div className="d-flex  flex-column justify-content-center align-content-center ms-5">
                     <p style={{ fontSize: "2.5rem" }}>
-                      {patientDetails.lastName +
-                        " " +
-                        patientDetails.firstName +
-                        " " +
-                        patientDetails.midName || "Կիրակոսյան Մերուժան Վարդազարի"}
+                      {organizationDetails.name ||''}
                     </p>
                     <div className="d-flex mb-1">
                       <img
@@ -536,11 +534,11 @@ function OrganizationDetails() {
                         alt="mobile"
                         className="me-2"
                       />
-                      <p style={{ fontSize: "1.1rem" }}>{patientDetails?.contact?.phone || "011111111,"}</p>
+                      <p style={{ fontSize: "1.1rem" }}>{organizationDetails?.phone || "011111111,"}</p>
                     </div>
                     <div className="d-flex">
                     <img src={emailSvg} width='25px' height="25px" alt="email" className="me-2"/>
-                    <p style={{ fontSize: "1.1rem" }}>{patientDetails?.contact?.email || "aaa107@mal.ru"}</p>
+                    <p style={{ fontSize: "1.1rem" }}>{organizationDetails?.email || "aaa107@mal.ru"}</p>
                     </div>
                   </div>
                 </div>

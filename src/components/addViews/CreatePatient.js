@@ -24,9 +24,9 @@ import {
   passport_validation,
 } from "../../utils/inputValidations";
 import { useSelector } from "react-redux";
-import "react-phone-number-input/style.css";
 import { selectRefDoctors } from "../../redux/features/refDoctors/refDoctorsSlice";
 import CustomPhoneComponent from "../CustomPhoneComponent";
+import "react-phone-number-input/style.css";
 import CustomDateComponent from "../CustomDateComponent";
 import Select from "react-select";
 

@@ -12,6 +12,7 @@ import { toast } from "react-toastify";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import ErrorSvg from "../../dist/svg/error.svg";
 import CustomPhoneComponent from "../CustomPhoneComponent";
+import 'react-phone-number-input/style.css'
 
 const REGISTER_AGENT = "/registerAgent";
 

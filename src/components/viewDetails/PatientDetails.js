@@ -258,7 +258,7 @@ _id
     ],
   },
 ];
-function PatientDetails(data) {
+function PatientDetails() {
   const axiosPrivate = useAxiosPrivate()
   const navigate = useNavigate();
   const { id } = useParams();
@@ -301,7 +301,7 @@ function PatientDetails(data) {
       try {
         const response = await axiosPrivate.get(`/patients/${id}`);
         setIsLoading(false);
-        setPatientDetails((prevUsers) => response.data.jsonString);
+        setPatientDetails((prev) => response.data.jsonString);
         // setCurrentPage((prev) => prev = 1);
       } catch (err) {
         console.error(err);
@@ -316,7 +316,7 @@ function PatientDetails(data) {
         const response = await axiosPrivate.get(`/getDiagnosticsByCid/${id}/patient`);
         console.log(response.data)
          setIsLoading(false);
-         setPatientDiagnostics((prevUsers) => response.data);
+         setPatientDiagnostics((prev) => response.data);
         // setCurrentPage((prev) => prev = 1);
       } catch (err) {
         console.error(err);

@@ -11,6 +11,8 @@ import { Input } from '../Input';
 import ErrorSvg from "../../dist/svg/error.svg";
 import { city_validation, country_validation, email_validation, name_validation, state_validation, street_validation, zipCode_validation } from '../../utils/inputValidations';
 import CustomPhoneComponent from '../CustomPhoneComponent';
+import 'react-phone-number-input/style.css'
+
 function AddMedinstitution({ handleToggleCreateModal, 
   // getMedinstitutions 
 }) {

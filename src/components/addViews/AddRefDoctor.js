@@ -21,6 +21,7 @@ import {
   zipCode_validation,
 } from "../../utils/inputValidations";
 import CustomPhoneComponent from "../CustomPhoneComponent";
+import 'react-phone-number-input/style.css'
 
 function AddRefDoctor({ handleToggleCreateModal, getRefDoctors }) {
   const [errMsg, setErrMsg] = useState("");

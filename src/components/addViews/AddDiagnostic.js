@@ -28,10 +28,10 @@ const diagnosticClassState = [
   { value: "Other", label: "Այլ" },
 ];
 const diagnosticStatus = [
-  { value: "Received", label: "Ընդունված" },
+  { value: "Approval", label: "Ընդունված" },
   { value: "Delayed", label: "Հետաձգված" },
-  { value: "Pending", label: "Ընթացքում" },
-  { value: "Other", label: "այլ" },
+  { value: "Generated", label: "Ստեղծված" },
+  { value: "Other", label: "Այլ" },
 ];
 
 function AddDiagnostic({
@@ -194,11 +194,11 @@ function AddDiagnostic({
       class: data.diagnosticsType,
       internalStatus: data?.internalDiagnosticsStatus?.value || null,
       externalStatus: data?.externalDiagnosticsStatus?.value || null,
-      researchIds: data?.research.map((el) => el.value),
+      researchList: data?.research.map((el) => el.value),
       clientId: patientId || organizationId,
       clientType: clientType,
       doctors: data.doctor,
-      partner: partnerName,
+      partner: partnerName || null,
       additional: editorRef.current.getContent({ format: "text" }),
     };
 
@@ -447,7 +447,7 @@ function AddDiagnostic({
                                         <Select
                                           {...field}
                                           onChange={(val) => {
-                                            field.onChange(val.value);
+                                            field.onChange(val.id);
                                             onDoctorSelect(val);
                                           }}
                                           value={doctors.find(
