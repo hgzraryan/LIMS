@@ -14,13 +14,7 @@ import { checkReagentsCount } from "../../redux/features/reagents/reagentsCountS
 import { checkDiagnosticsCount } from "../../redux/features/diagnostics/diagnosticsCountSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { checkResearchListCount } from "../../redux/features/researches/researchListCountSlice";
-import {  DOCTORS_URL, RESEARCHLISTS_URL, PATIENTS_URL, REFDOCTORS_URL } from "../../utils/constants";
 import { useGetFullData } from "../../hooks/useGetFullData";
-import { reserchesList } from "../../redux/features/researches/researchesSlice";
-import { checkDoctors } from "../../redux/features/doctor/doctorsSlice";
-import { checkRefDoctors } from "../../redux/features/refDoctors/refDoctorsSlice";
-
-
 
 const MainTemplate = () => {
     const navigate = useNavigate();
@@ -40,14 +34,10 @@ const MainTemplate = () => {
     const patientsCount = useSelector(selectPatientsCount)
     const usersCount = useSelector(selectUsersCount)
 
-    //const [researchState] = useGetFullData(RESEARCHLISTS_URL,reserchesList)
-    // const [patientsState] = useGetFullData(PATIENTS_URL,checkPatients)
     const [doctorsState] = useGetFullData()
-     //const [refDoctorsState] = useGetFullData(REFDOCTORS_URL,checkRefDoctors)
     //-------------------
-    const handleUserPage = async(userId) =>{
-      
-        navigate(`/users/2095`)
+    const handleUserPage = async(userId) =>{      
+        navigate(`/users/${userId}`)
     }
     //-------------------
     const [isActive, setIsActive] = useState(false);
@@ -88,15 +78,15 @@ const MainTemplate = () => {
                 });
                 console.log(response)
 
-                isMounted && dispatch(checkAgentsCount(response.data?.agentsCount));
-                isMounted && dispatch(checkDiagnosticsCount(response.data?.diagnosticsCount));
-				isMounted && dispatch(checkDoctorCount(response.data?.doctorCount));
-				isMounted && dispatch(checkEquipmentCount(response.data?.equipmentCount));
-				isMounted && dispatch(checkOrganisationCount(response.data?.organisationCount));
-				isMounted && dispatch(checkPatientsCount(response.data?.patientsCount));
-				isMounted && dispatch(checkReagentsCount(response.data?.reagentsCount));
-				isMounted && dispatch(checkUsersCount(response.data?.usersCount));
-				isMounted && dispatch(checkResearchListCount(response.data?.researchListCount));
+              isMounted && dispatch(checkAgentsCount(response.data?.agentsCount));
+              isMounted && dispatch(checkDiagnosticsCount(response.data?.diagnosticsCount));
+				      isMounted && dispatch(checkDoctorCount(response.data?.doctorCount));
+				      isMounted && dispatch(checkEquipmentCount(response.data?.equipmentCount));
+				      isMounted && dispatch(checkOrganisationCount(response.data?.organisationCount));
+				      isMounted && dispatch(checkPatientsCount(response.data?.patientsCount));
+				      isMounted && dispatch(checkReagentsCount(response.data?.reagentsCount));
+				      isMounted && dispatch(checkUsersCount(response.data?.usersCount));
+				      isMounted && dispatch(checkResearchListCount(response.data?.researchListCount));
             } catch (err) {
                 console.error(err);
                 navigate('/login', { state: { from: location }, replace: true });

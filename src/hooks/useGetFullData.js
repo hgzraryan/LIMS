@@ -12,34 +12,34 @@ export const useGetFullData = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const [data, setData] = useState([]);
-  useEffect(() => {
-    
-    let isMounted = true;
-    const controller = new AbortController();
-
-     setTimeout(()=>{
-          axiosPrivate.get(RESEARCHLISTS_URL)
-          .then((response) => {
-            dispatch(reserchesList(response.data.jsonString));
-          }).then((url)=>{
-          axiosPrivate.get(REFDOCTORS_URL)
-          .then((response) => {
-            dispatch(checkRefDoctors(response.data.jsonString));
-          })
-        })
-        .catch((err) => {
-          console.error(err);
-          navigate("/login", { state: { from: location }, replace: true });
-        });        
         
-      },1000)
-        
-    
-    return () => {
-      isMounted = false;
-      controller.abort();
-    };
-  }, []);
+      useEffect(() => {
+        let isMounted = true;
+        const controller = new AbortController();
+      
+        const fetchData = async () => {
+          try {
+            const researchResponse = await axiosPrivate.get(RESEARCHLISTS_URL);
+            dispatch(reserchesList(researchResponse.data.jsonString));
+      
+            const refDoctorsResponse = await axiosPrivate.get(REFDOCTORS_URL);
+            dispatch(checkRefDoctors(refDoctorsResponse.data.jsonString));
+          } catch (error) {
+            console.error(error);
+            navigate("/login", { state: { from: location }, replace: true });
+          }
+        };
+      
+        const timeoutId = setTimeout(() => {
+          fetchData();
+        }, 1000);
+      
+        return () => {
+          clearTimeout(timeoutId);
+          isMounted = false;
+          controller.abort();
+        };
+      }, []);
 
   return [data];
 };
