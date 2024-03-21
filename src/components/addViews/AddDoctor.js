@@ -23,7 +23,7 @@ import {
   password_validation,
 } from "../../utils/inputValidations";
 import { Form, Modal } from "react-bootstrap";
-import { FormProvider, useForm } from "react-hook-form";
+import { Controller, FormProvider, useForm } from "react-hook-form";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { useCalculateAge } from "../../hooks/useCalculateAge";
 import { toast } from "react-toastify";
@@ -31,6 +31,7 @@ import { REGISTER_DOCTORS } from "../../utils/constants";
 import CustomPhoneComponent from "../CustomPhoneComponent";
 import CustomDateComponent from "../CustomDateComponent";
 import 'react-phone-number-input/style.css'
+import { CountryDropdown, RegionDropdown,CountryRegionData  } from 'react-country-region-selector';
 
 function AddDoctor({ handleToggleCreateModal, getDoctors }) {
   const axiosPrivate = useAxiosPrivate();
@@ -45,9 +46,18 @@ function AddDoctor({ handleToggleCreateModal, getDoctors }) {
   const imageMimeType = /image\/(png|jpg|jpeg)/i;
   const fileReader = new FileReader();
   const formData = new FormData();
-  const editorRef = useRef(null);
-  const { age } = useCalculateAge(birthday);
-  
+
+ const [country, setCountry] = useState('')
+  const [region, setRegion] = useState('')
+
+  const { trigger } = useForm();
+
+ useEffect(() => {
+    if (CountryRegionData[11][0] === "Armenia") {
+      CountryRegionData[11][0] = "Հայաստան"
+      CountryRegionData[11][2] = "Արագածոտն~AG|Արարատ~AR|Արմավիր~AV|Գեղարքունիք~GR|Կոտայք~KT|Լոռի~LO|Շիրակ~SH|Սյունիք~SU|Տավուշ~TV|Վայոց Ձոր~VD|Երևան~ER";
+    }
+  }, []);
   const onGenderSelect = (event) => {
     setGender(prev=>event.target.value)
   };
@@ -305,11 +315,79 @@ function AddDoctor({ handleToggleCreateModal, getDoctors }) {
                             </div>
                           </div>
                           <div className="row gx-3">
-                            <div className="col-sm-6">
-                              <Input {...country_validation} />
+                          <div className="col-sm-6">
+                            <div className="d-flex justify-content-between me-2">
+                              <label className="form-label" htmlFor="country">
+                                Երկիր
+                              </label>
+                              {methods?.formState.errors.country && (
+                                <span className="error text-red">
+                                  <img src={ErrorSvg} alt="errorSvg" />
+                                  Պարտադիր
+                                </span>
+                              )}
+                              </div>
+                              <Controller
+                                name="country"
+                                control={methods.control}
+                                defaultValue=""
+                                rules={{ required: true }}
+                                render={({ field }) => (
+                                  <CountryDropdown
+                                    {...field}
+                                    classes="form-control"
+                                    defaultOptionLabel="Երկիր"
+                                    value={country}
+                                    priorityOptions={['Armenia']}
+                                    onChange={(val) => {
+                                      field.onChange(val);
+                                      setCountry(val);
+                                      trigger("country");
+                                    }}
+                                    style={{
+                                      appearance:'auto'
+                                    }}
+                                  />
+                                )}
+                              />
                             </div>
                             <div className="col-sm-6">
-                              <Input {...state_validation} />
+                            <div className="d-flex justify-content-between me-2">
+                            <label className="form-label" htmlFor="state">
+                                  Մարզ
+                                </label>
+                                {methods?.formState.errors.state && (
+                                  <span className="error text-red">
+                                    <span>
+                                      <img src={ErrorSvg} alt="errorSvg" />
+                                    </span>
+                                    պարտադիր
+                                  </span>
+                                )}
+                                </div>
+                                <Controller
+                                name="state"
+                                control={methods.control}
+                                defaultValue=""
+                                rules={{ required: true }}
+                                render={({ field }) => (
+                                  <RegionDropdown
+                                  blankOptionLabel="Մարզ"
+                                  defaultOptionLabel="Մարզ"
+                                  classes="form-control"
+                                  country={country}
+                                  value={region}
+                                  onChange={(val) => {
+                                    field.onChange(val);
+                                    setRegion(val);
+                                    trigger("state");
+                                  }}
+                                  style={{
+                                    appearance:'auto'
+                                  }}
+                                />                           
+                          )}
+                        />
                             </div>
                           </div>
                           <div className="row gx-3">

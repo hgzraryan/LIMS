@@ -25,10 +25,7 @@ export const useGetFullData = () => {
           axiosPrivate.get(REFDOCTORS_URL)
           .then((response) => {
             dispatch(checkRefDoctors(response.data.jsonString));
-          }).catch((err) => {
-            console.error(err);
-            navigate("/login", { state: { from: location }, replace: true });
-          });
+          })
         })
         .catch((err) => {
           console.error(err);

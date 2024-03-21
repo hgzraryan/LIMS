@@ -69,11 +69,11 @@ const MainTemplate = () => {
         msetIsActive1(menu)
     }
 	
-	const [dropDownMenu2, dropDownMenu2IsActive] = useState(false);
+	const [dropDownMenu2, dropDownMenu2IsActive] = useState(true);
 	const dropDownMenu2Click = event => {
 		dropDownMenu2IsActive(current => !current);
 	};
-	const [doctorsDropDownMenu, setdoctorsDropDownMenu] = useState(false);
+	const [doctorsDropDownMenu, setdoctorsDropDownMenu] = useState(true);
 	const doctorsDropDownMenuClick = event => {
 		setdoctorsDropDownMenu(current => !current);
 	};

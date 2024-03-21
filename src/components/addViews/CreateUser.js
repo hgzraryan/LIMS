@@ -32,6 +32,7 @@ import CustomDateComponent from "../CustomDateComponent";
 import Select, { StylesConfig } from "react-select";
 import makeAnimated from "react-select/animated";
 import 'react-phone-number-input/style.css'
+import { CountryDropdown, RegionDropdown,CountryRegionData  } from 'react-country-region-selector';
 
 const roleState = [
     { label:'Ադմին',name: "Admin", value: 5150 },
@@ -55,6 +56,18 @@ function CreateUser({ setIsOpen,getUsers }) {
   const [emergencyContactNumber, setEmergencyContactNumber] = useState("");
   const [gender, setGender] = useState(""); 
   const [merried, setMerried] = useState(""); 
+  const [country, setCountry] = useState('')
+  const [region, setRegion] = useState('')
+
+
+  const { trigger } = useForm();
+
+ useEffect(() => {
+    if (CountryRegionData[11][0] === "Armenia") {
+      CountryRegionData[11][0] = "Հայաստան"
+      CountryRegionData[11][2] = "Արագածոտն~AG|Արարատ~AR|Արմավիր~AV|Գեղարքունիք~GR|Կոտայք~KT|Լոռի~LO|Շիրակ~SH|Սյունիք~SU|Տավուշ~TV|Վայոց Ձոր~VD|Երևան~ER";
+    }
+  }, []);
   const animatedComponents = makeAnimated();
   const colourStyles = {
     control: (styles, { isFocused, isSelected }) => ({
@@ -406,11 +419,79 @@ function CreateUser({ setIsOpen,getUsers }) {
                             </div>
                           </div>
                           <div className="row gx-3">
-                            <div className="col-sm-6">
-                              <Input {...country_validation} />
+                          <div className="col-sm-6">
+                            <div className="d-flex justify-content-between me-2">
+                              <label className="form-label" htmlFor="country">
+                                Երկիր
+                              </label>
+                              {methods?.formState.errors.country && (
+                                <span className="error text-red">
+                                  <img src={ErrorSvg} alt="errorSvg" />
+                                  Պարտադիր
+                                </span>
+                              )}
+                              </div>
+                              <Controller
+                                name="country"
+                                control={methods.control}
+                                defaultValue=""
+                                rules={{ required: true }}
+                                render={({ field }) => (
+                                  <CountryDropdown
+                                    {...field}
+                                    classes="form-control"
+                                    defaultOptionLabel="Երկիր"
+                                    value={country}
+                                    priorityOptions={['Armenia']}
+                                    onChange={(val) => {
+                                      field.onChange(val);
+                                      setCountry(val);
+                                      trigger("country");
+                                    }}
+                                    style={{
+                                      appearance:'auto'
+                                    }}
+                                  />
+                                )}
+                              />
                             </div>
                             <div className="col-sm-6">
-                              <Input {...state_validation} />
+                            <div className="d-flex justify-content-between me-2">
+                            <label className="form-label" htmlFor="state">
+                                  Մարզ
+                                </label>
+                                {methods?.formState.errors.state && (
+                                  <span className="error text-red">
+                                    <span>
+                                      <img src={ErrorSvg} alt="errorSvg" />
+                                    </span>
+                                    պարտադիր
+                                  </span>
+                                )}
+                                </div>
+                                <Controller
+                                name="state"
+                                control={methods.control}
+                                defaultValue=""
+                                rules={{ required: true }}
+                                render={({ field }) => (
+                                  <RegionDropdown
+                                  blankOptionLabel="Մարզ"
+                                  defaultOptionLabel="Մարզ"
+                                  classes="form-control"
+                                  country={country}
+                                  value={region}
+                                  onChange={(val) => {
+                                    field.onChange(val);
+                                    setRegion(val);
+                                    trigger("state");
+                                  }}
+                                  style={{
+                                    appearance:'auto'
+                                  }}
+                                />                           
+                          )}
+                        />
                             </div>
                           </div>
                           <div className="row gx-3">

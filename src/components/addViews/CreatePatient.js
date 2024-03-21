@@ -31,6 +31,7 @@ import CustomDateComponent from "../CustomDateComponent";
 import Select from "react-select";
 
 import makeAnimated from "react-select/animated";
+import { CountryDropdown, RegionDropdown,CountryRegionData  } from 'react-country-region-selector';
 
 function CreatePatient({
   handleToggleCreateModal,
@@ -48,6 +49,8 @@ function CreatePatient({
   const refDoctors = useSelector(selectRefDoctors);
   const [errMsg, setErrMsg] = useState("");
   const [doctors,setDoctors] = useState([]);
+  const [country, setCountry] = useState('')
+  const [region, setRegion] = useState('')
 
   const { trigger } = useForm();
 
@@ -59,6 +62,13 @@ function CreatePatient({
   const multiselectRef = useRef("");
   const editorRef = useRef(null);
   const animatedComponents = makeAnimated();
+
+  useEffect(() => {
+    if (CountryRegionData[11][0] === "Armenia") {
+      CountryRegionData[11][0] = "Հայաստան"
+      CountryRegionData[11][2] = "Արագածոտն~AG|Արարատ~AR|Արմավիր~AV|Գեղարքունիք~GR|Կոտայք~KT|Լոռի~LO|Շիրակ~SH|Սյունիք~SU|Տավուշ~TV|Վայոց Ձոր~VD|Երևան~ER";
+    }
+  }, []);
   const colourStyles = {
     control: (styles, { isFocused, isSelected }) => ({
       ...styles,
@@ -148,7 +158,7 @@ function CreatePatient({
       gender,
       phone,
       dateOfBirth,
-      research
+      research,
     }) => {
       const newPatient = {
         firstName: firstName,
@@ -181,28 +191,28 @@ function CreatePatient({
           .split("T")[0],
       };
 
-      //console.log(newPatient);
+      console.log(newPatient);
 
-      try {
-        await axiosPrivate.post(REGISTER_PATIENT, newPatient, {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
-        });
+      // try {
+      //   await axiosPrivate.post(REGISTER_PATIENT, newPatient, {
+      //     headers: { "Content-Type": "application/json" },
+      //     withCredentials: true,
+      //   });
 
-        handleToggleCreateModal(false);
-        getPatients();
-        notify(
-          `${newPatient.firstName} ${newPatient.lastName} հաճախորդը ավելացված է`
-        );
-      } catch (err) {
-        if (!err?.response) {
-          setErrMsg("No Server Response");
-        } else if (err.response?.status === 409) {
-          setErrMsg("Username Taken");
-        } else {
-          setErrMsg(" Failed");
-        }
-      }
+      //   handleToggleCreateModal(false);
+      //   getPatients();
+      //   notify(
+      //     `${newPatient.firstName} ${newPatient.lastName} հաճախորդը ավելացված է`
+      //   );
+      // } catch (err) {
+      //   if (!err?.response) {
+      //     setErrMsg("No Server Response");
+      //   } else if (err.response?.status === 409) {
+      //     setErrMsg("Username Taken");
+      //   } else {
+      //     setErrMsg(" Failed");
+      //   }
+      // }
     }
   );
   const onGenderSelect = (value) => {
@@ -275,16 +285,84 @@ function CreatePatient({
                             </div>
                           </div>
                           <div className="row gx-3">
-                            <div className="col-sm-6">
+                          <div className="col-sm-6">
                               <Input {...midName_validation} />
                             </div>
                             <div className="col-sm-6">
-                              <Input {...country_validation} />
+                            <div className="d-flex justify-content-between me-2">
+                              <label className="form-label" htmlFor="country">
+                                Երկիր
+                              </label>
+                              {methods?.formState.errors.country && (
+                                <span className="error text-red">
+                                  <img src={ErrorSvg} alt="errorSvg" />
+                                  Պարտադիր
+                                </span>
+                              )}
+                              </div>
+                              <Controller
+                                name="country"
+                                control={methods.control}
+                                defaultValue=""
+                                rules={{ required: true }}
+                                render={({ field }) => (
+                                  <CountryDropdown
+                                    {...field}
+                                    classes="form-control"
+                                    defaultOptionLabel="Երկիր"
+                                    value={country}
+                                    priorityOptions={['Armenia']}
+                                    onChange={(val) => {
+                                      field.onChange(val);
+                                      setCountry(val);
+                                      trigger("country");
+                                    }}
+                                    style={{
+                                      appearance:'auto'
+                                    }}
+                                  />
+                                )}
+                              />
                             </div>
                           </div>
                           <div className="row gx-3">
                             <div className="col-sm-6">
-                              <Input {...state_validation} />
+                            <div className="d-flex justify-content-between me-2">
+                            <label className="form-label" htmlFor="state">
+                                  Մարզ
+                                </label>
+                                {methods?.formState.errors.state && (
+                                  <span className="error text-red">
+                                    <span>
+                                      <img src={ErrorSvg} alt="errorSvg" />
+                                    </span>
+                                    պարտադիր
+                                  </span>
+                                )}
+                                </div>
+                                <Controller
+                                name="state"
+                                control={methods.control}
+                                defaultValue=""
+                                rules={{ required: true }}
+                                render={({ field }) => (
+                                  <RegionDropdown
+                                  blankOptionLabel="Մարզ"
+                                  defaultOptionLabel="Մարզ"
+                                  classes="form-control"
+                                  country={country}
+                                  value={region}
+                                  onChange={(val) => {
+                                    field.onChange(val);
+                                    setRegion(val);
+                                    trigger("state");
+                                  }}
+                                  style={{
+                                    appearance:'auto'
+                                  }}
+                                />                           
+                          )}
+                        />
                             </div>
                             <div className="col-sm-6">
                               <Input {...city_validation} />
