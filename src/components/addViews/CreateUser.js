@@ -104,7 +104,7 @@ function CreateUser({ setIsOpen,getUsers }) {
     setTimeout(() => {
       const getData = async () => {
         try {
-          const response = await axiosPrivate.get(`/userroles`);
+          const response = await axiosPrivate.get(`/userRoles`);
           console.log(response)
           // setIsLoading(false);
           // setOrganizationDiagnostics(((prev) => response.data));

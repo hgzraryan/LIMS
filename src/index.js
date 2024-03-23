@@ -16,6 +16,10 @@ import './dist/css/style.css';
 
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { registerLicense } from '@syncfusion/ej2-base';
+
+// Set Syncfusion license key
+registerLicense('Ngo9BigBOggjHTQxAR8/V1NBaF5cXmZCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdnWXxcc3VTQmFeU0dxW0Y=');
 
 const root =createRoot(document.getElementById('root'))
 root.render(

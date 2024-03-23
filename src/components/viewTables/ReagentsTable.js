@@ -17,7 +17,22 @@ import { Modal } from "react-bootstrap";
 import reagentSvg from "../../../src/dist/img/reagent.svg";
 import "../../dist/css/data-table.css";
 
-
+const customReagentsData = [
+  {
+    name:"Arginine",
+    price:265000,
+    currency:'AMD',
+    unit:1,
+    unit_type:'Box',
+    vendor:'DDD',
+    usage:'Body build protein',
+    expdate:'2027-06-15',
+    description:'can be used orally and topically',
+    norma_female:'72.4 ± 6.7 μmol/L  ',
+    norma_male:'81.6 ± 7.3 mmol/L',
+    norma_both:'113.7 ± 19.8 μmol/L',
+  }
+]
 function ReagentsTable({
   confirmRef,
   selectedItem,
@@ -92,49 +107,6 @@ function ReagentsTable({
           />
         ),
       },
-      // {
-      //   Header: (event) => (
-      //     <>
-      //       <div className="columnHeader">Չափման միավոր</div>
-      //     </>
-      //   ),
-      //   accessor: "unit",
-      //   sortable: true,
-      //   width: 200,
-      //   Filter: ({ column: { id } }) => (
-      //     <ColumnFilter id={id} setData={setReagents} />
-      //   ),
-      // },
-      {
-        Header: (event) => (
-          <>
-            <div className="columnHeader">Չափման տեսակ</div>
-          </>
-        ),
-        accessor: "unitType",
-        sortable: true,
-        width: 200,
-        Filter: ({ column: { id } }) => (
-          <ColumnFilter 
-          id={id} 
-          setData={setReagents}
-          placeholder={'Չափման տեսակ'}
-          />
-        ),
-      },
-      // {
-      //   Header: (event) => (
-      //     <>
-      //       <div className="columnHeader">Կիրառություն</div>
-      //     </>
-      //   ),
-      //   accessor: "usage",
-      //   sortable: true,
-      //   width: 250,
-      //   Filter: ({ column: { id } }) => (
-      //     <ColumnFilter id={id} setData={setReagents} />
-      //   ),
-      // },
       {
         Header: (event) => (
           <>
@@ -148,6 +120,88 @@ function ReagentsTable({
           id={id} 
           setData={setReagents}
           placeholder={'Արժույթ'}
+          />
+        ),
+      },
+      {
+        Header: (event) => (
+          <>
+            <div className="columnHeader">Չափման միավոր</div>
+          </>
+        ),
+        accessor: "unit",
+        sortable: true,
+        width: 200,
+        Filter: ({ column: { id } }) => (
+          <ColumnFilter id={id} 
+          setData={setReagents}          
+           placeholder={'Չափման միավոր'} />
+        ),
+      },
+      {
+        Header: (event) => (
+          <>
+            <div className="columnHeader">Չափման տեսակ</div>
+          </>
+        ),
+        accessor: "unit_type",
+        sortable: true,
+        width: 200,
+        Filter: ({ column: { id } }) => (
+          <ColumnFilter 
+          id={id} 
+          setData={setReagents}
+          placeholder={'Չափման տեսակ'}
+          />
+        ),
+      },
+      {
+        Header: (event) => (
+          <>
+            <div className="columnHeader">Թողարկող</div>
+          </>
+        ),
+        accessor: "producer",
+        width: 200,
+        Filter: ({ column: { id } }) => (
+          <ColumnFilter 
+          id={id} 
+          setData={setReagents}
+          placeholder={'Թողարկող'}
+          />
+        ),
+      },
+      {
+        Header: (event) => (
+          <>
+            <div className="columnHeader">Կիրառություն</div>
+          </>
+        ),
+        accessor: "usage",
+        sortable: true,
+        width: 250,
+        Filter: ({ column: { id } }) => (
+          <ColumnFilter 
+          id={id} 
+          setData={setReagents}
+          placeholder={'Կիրառություն'}
+           />
+        ),
+      },
+      {
+        Header: (event) => (
+          <>
+            <div className="columnHeader">Ժամկետ</div>
+          </>
+        ),
+        accessor: "expdate",
+        sortable: true,
+        width: 250,
+        Filter: ({ column: { id } }) => (
+          <ColumnFilter 
+          id={id} 
+          setData={setReagents} 
+          placeholder={'Ժամկետ'}
           />
         ),
       },
@@ -170,16 +224,48 @@ function ReagentsTable({
       {
         Header: (event) => (
           <>
-            <div className="columnHeader">Թողարկող</div>
+            <div className="columnHeader">Կին նորմա</div>
           </>
         ),
-        accessor: "producer",
+        accessor: "norma_female",
         width: 200,
         Filter: ({ column: { id } }) => (
           <ColumnFilter 
           id={id} 
           setData={setReagents}
-          placeholder={'Թողարկող'}
+          placeholder={'Կին նորմա'}
+          />
+        ),
+      },
+      {
+        Header: (event) => (
+          <>
+            <div className="columnHeader">Տղ․ նորմա</div>
+          </>
+        ),
+        accessor: "norma_male",
+        width: 200,
+        Filter: ({ column: { id } }) => (
+          <ColumnFilter 
+          id={id} 
+          setData={setReagents}
+          placeholder={'Տղ․ նորմա'}
+          />
+        ),
+      },
+      {
+        Header: (event) => (
+          <>
+            <div className="columnHeader">Նորմա</div>
+          </>
+        ),
+        accessor: "norma_both",
+        width: 200,
+        Filter: ({ column: { id } }) => (
+          <ColumnFilter 
+          id={id} 
+          setData={setReagents}
+          placeholder={'Նորմա'}
           />
         ),
       },
@@ -250,7 +336,8 @@ function ReagentsTable({
   } = useTable(
     {
       columns,
-      data: reagents,
+      // data: reagents,
+      data: customReagentsData,
       defaultColumn,
     },
     useFilters,

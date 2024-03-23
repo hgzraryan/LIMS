@@ -13,76 +13,27 @@ import {
 } from "react-table";
 import doctorSamplePhoto from "../../dist/img/doctorSamplePhoto.jpg";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
-import mobileSvg from "../../dist/svg/mobileSvg.svg"
-import emailSvg from "../../dist/svg/emailSvg.svg"
+import mobileSvg from "../../dist/svg/mobileSvg.svg";
+import emailSvg from "../../dist/svg/emailSvg.svg";
 import LoadingSpinner from "../LoadingSpinner";
-const customData = [
-  {
-    date: "15.06.2021",
-    researches: [
-      {
-        researchName: "Կրեատինինկինազա",
-        analysisResult: 8.88,
-        referenceRange: "4.0-10.0",
-        units: "10^9/L",
-        shortName: "WBC",
-      },
-      {
-        shortName: "RBC",
-        researchName: "Էրիթրոցիտների ընդհանուր քանակ",
-        analysisResult: 6.09,
-        referenceRange: ["men 4.0-10.0", "women 4,6-6,2"],
-        units: "10^9/L",
-      },
-    ],
-  },
-  {
-    date: "04.11.2023",
-    researches: [
-      {
-        shortName: "WBC",
-        researchName: "Լեյկոցիտների ընդհանուր քանակ",
-        analysisResult: 8.88,
-        referenceRange: "4.0-10.0",
-        units: "10^9/L",
-      },
-      {
-        shortName: "RBC",
-        researchName: "Էրիթրոցիտների ընդհանուր քանակ",
-        analysisResult: 6.09,
-        referenceRange: ["men 4.0-10.0", "women 4,6-6,2"],
-        units: "10^9/L",
-      },
-      {
-        shortName: "MCV ",
-        researchName: "Էրիթրոցիտի միջին ծավալը փորձանմուշի  ընդհանուր ծավալում",
-        analysisResult: 83.7,
-        referenceRange: "80-100",
-        units: "fl",
-      },
-      {
-        shortName: "WBC",
-        researchName: "Լեյկոցիտների ընդհանուր քանակ",
-        analysisResult: 8.88,
-        referenceRange: "4.0-10.0",
-        units: "10^9/L",
-      },
-      {
-        shortName: "WBC",
-        researchName: "Լեյկոցիտների ընդհանուր քանակ",
-        analysisResult: 8.88,
-        referenceRange: "4.0-10.0",
-        units: "10^9/L",
-      },
-      {
-        shortName: "WBC",
-        researchName: "Լեյկոցիտների ընդհանուր քանակ",
-        analysisResult: 8.88,
-        referenceRange: "4.0-10.0",
-        units: "10^9/L",
-      },
-    ],
-  },
+import { Button } from "react-bootstrap";
+const customAppointData = [
+  "10:00AM",
+  "10:15AM",
+  "10:30AM",
+  "10:45AM",
+  "11:00AM",
+  "11:15AM",
+  "11:30AM",
+  "11:45AM",
+  "10:00AM",
+  "10:15AM",
+  "10:30AM",
+  "10:45AM",
+  "11:00AM",
+  "11:15AM",
+  "11:30AM",
+  "11:45AM",
 ];
 function DoctorDetails() {
   const axiosPrivate = useAxiosPrivate();
@@ -96,6 +47,13 @@ function DoctorDetails() {
     Math.round((window.innerHeight / 100) * 1.5)
   );
   const pageCount = 1;
+  const [isChecked, setIsChecked] = useState(false);
+  const [selectedOption, setSelectedOption] = useState(null);
+
+  
+  const handleRadioChange = (index) => {
+    setSelectedOption(index);
+  };
   //const pageCount = Math.ceil(useersCount/usersPerPage)
   const handleOpenModal = (data) => {
     setIsOpen(true);
@@ -115,121 +73,290 @@ function DoctorDetails() {
     };
     getData();
   }, []);
-
+ 
+   
+  
   return (
     <>
-    <Suspense fallback={<LoadingSpinner />}>
-      {isLoading ? (
-        <LoadingSpinner />
-      ) : (
-      <div
-        className="d-flex justify-content-between align-items-center"
-        style={{ backgroundColor: "#dae4ed",  }}
-      >
-        <section
-          style={{
-            backgroundColor: "white",
-            margin: "50px",
-            width: "100%",
-            borderRadius:'10px'
-          }}
-        >
-          <div className="d-flex m-5">
-            <div>
-              <img
-                src={doctorSamplePhoto}
-                alt="doctorPhoto"
+      <Suspense fallback={<LoadingSpinner />}>
+        {isLoading ? (
+          <LoadingSpinner />
+        ) : (
+          <>
+            <div
+              className="d-flex justify-content-between align-items-center flex-column"
+              style={{
+                backgroundColor: "#dae4ed",
+                padding: "50px 50px 0 50px",
+              }}
+            >
+              <section
                 style={{
-                  borderRadius: "0 20px 0 20px",
-                  height: "350px",
-                  width: "250px",
+                  backgroundColor: "white",
+                  // margin: "50px 50px 0 50px",
+                  width: "100%",
+                  borderRadius: "10px",
                 }}
-              />
-            </div>
-            <div className="ms-4">
-              <p style={{ fontSize: "2.5rem", color: "#4eafcb" }}>
-                {doctorDetails.doctorName}
-              </p>
-              <p style={{ fontSize: "1.5rem" }}>
-              {doctorDetails.qualification}
-              </p>
-              <p style={{ fontSize: "1.5rem" }}>{doctorDetails.specialty}</p>
-              <div className="d-flex">
-                <img src={mobileSvg} width='25px' height="25px" alt="mobile" className="me-2"/>
-                <p style={{ fontSize: "1.2rem" }}>{doctorDetails.contact?.phone}</p>
-              </div>
-              <div className="d-flex">
-              <img src={emailSvg} width='25px' height="25px" alt="email" className="me-2"/>
-                <p style={{ fontSize: "1.2rem" }}>{doctorDetails.contact?.email}</p>
-              </div>
-            </div>
-          </div>
-          <div className="d-flex m-5 justify-content-around align-items-center">
-            <div className="d-flex" style={{ fontSize: "1.3rem" }}>
-              <div className="d-flex flex-column justify-content-end" >
-                <p>Նույնականացման համար:</p>
-                <div className="separator-full m-0"></div>                  
+              >
+                <div className="d-flex m-5">
+                  <div>
+                    <img
+                      src={doctorSamplePhoto}
+                      alt="doctorPhoto"
+                      style={{
+                        borderRadius: "0 20px 0 20px",
+                        height: "350px",
+                        width: "250px",
+                      }}
+                    />
+                  </div>
+                  <div className="ms-4">
+                    <p style={{ fontSize: "2.5rem", color: "#4eafcb" }}>
+                      {doctorDetails.doctorName}
+                    </p>
+                    <p style={{ fontSize: "1.5rem" }}>
+                      {doctorDetails.qualification}
+                    </p>
+                    <p style={{ fontSize: "1.5rem" }}>
+                      {doctorDetails.specialty}
+                    </p>
+                    <div className="d-flex">
+                      <img
+                        src={mobileSvg}
+                        width="25px"
+                        height="25px"
+                        alt="mobile"
+                        className="me-2"
+                      />
+                      <p style={{ fontSize: "1.2rem" }}>
+                        {doctorDetails.contact?.phone}
+                      </p>
+                    </div>
+                    <div className="d-flex">
+                      <img
+                        src={emailSvg}
+                        width="25px"
+                        height="25px"
+                        alt="email"
+                        className="me-2"
+                      />
+                      <p style={{ fontSize: "1.2rem" }}>
+                        {doctorDetails.contact?.email}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="d-flex m-5 justify-content-around align-items-center">
+                  <div className="d-flex" style={{ fontSize: "1.3rem" }}>
+                    <div className="d-flex flex-column justify-content-end">
+                      <p>Նույնականացման համար:</p>
+                      <div className="separator-full m-0"></div>
 
-                <p>Լիցենզիայի համար:</p>
-                <div className="separator-full m-0"></div>                  
+                      <p>Լիցենզիայի համար:</p>
+                      <div className="separator-full m-0"></div>
 
-                <p>Գրանցման ամսաթիվ:</p>
-                <div className="separator-full m-0"></div>                  
+                      <p>Գրանցման ամսաթիվ:</p>
+                      <div className="separator-full m-0"></div>
 
-                <p>Ծնվել է:</p>
-                <div className="separator-full m-0"></div>                  
+                      <p>Ծնվել է:</p>
+                      <div className="separator-full m-0"></div>
 
-                <p>Սեռ:</p>
-                <div className="separator-full m-0"></div>                  
+                      <p>Սեռ:</p>
+                      <div className="separator-full m-0"></div>
 
-                <p>Հասցե:</p>
-                <div className="separator-full m-0"></div>                  
+                      <p>Հասցե:</p>
+                      <div className="separator-full m-0"></div>
 
-                <p>Լրացուցիչ կոնտակտ:</p>
-                <div className="separator-full m-0"></div>                  
+                      <p>Լրացուցիչ կոնտակտ:</p>
+                      <div className="separator-full m-0"></div>
 
-                <p>Լրացուցիչ կոնտակտի հեռախոս:</p>
-                <div className="separator-full m-0"></div>                  
+                      <p>Լրացուցիչ կոնտակտի հեռախոս:</p>
+                      <div className="separator-full m-0"></div>
 
-                <p>Ծածկանուն:</p>
-                <div className="separator-full m-0"></div>                  
+                      <p>Ծածկանուն:</p>
+                      <div className="separator-full m-0"></div>
+                    </div>
+                    <div className="ms-3">
+                      <p>{doctorDetails.doctorId}</p>
+                      <div className="separator-full m-0"></div>
 
-              </div>
-              <div className="ms-3">
-                <p>{doctorDetails.doctorId}</p>
-                <div className="separator-full m-0"></div>                  
+                      <p>{doctorDetails.licenseNumber}</p>
+                      <div className="separator-full m-0"></div>
 
-                <p>{doctorDetails.licenseNumber}</p>
-                <div className="separator-full m-0"></div>                  
+                      <p>{doctorDetails.createdAt}</p>
+                      <div className="separator-full m-0"></div>
 
-                <p>{doctorDetails.createdAt}</p>
-                <div className="separator-full m-0"></div>                  
+                      <p>{doctorDetails.dateOfBirth}</p>
+                      <div className="separator-full m-0"></div>
 
-                <p>{doctorDetails.dateOfBirth}</p>
-                <div className="separator-full m-0"></div>                  
+                      <p>{doctorDetails.gender}</p>
+                      <div className="separator-full m-0"></div>
 
-                <p>{doctorDetails.gender}</p>
-                <div className="separator-full m-0"></div>                  
+                      <p>
+                        {doctorDetails.contact?.address?.city},{" "}
+                        {doctorDetails.contact?.address?.street},{" "}
+                        {doctorDetails.contact?.address?.zipCode}
+                      </p>
+                      <div className="separator-full m-0"></div>
 
-                <p>{doctorDetails.contact?.address?.city}, {doctorDetails.contact?.address?.street}, {doctorDetails.contact?.address?.zipCode}</p>
-                <div className="separator-full m-0"></div>                  
+                      <p>{doctorDetails.emergencyContactName}</p>
+                      <div className="separator-full m-0"></div>
 
-                <p>{doctorDetails.emergencyContactName}</p>
-                <div className="separator-full m-0"></div>                  
+                      <p>{doctorDetails.emergencyContactNumber}</p>
+                      <div className="separator-full m-0"></div>
 
-                <p>{doctorDetails.emergencyContactNumber}</p>
-                <div className="separator-full m-0"></div>                  
+                      <p>{doctorDetails?.username}</p>
+                    </div>
+                  </div>
+                </div>
+              </section>
 
-                <p>{doctorDetails?.username}</p>
-              </div>
+              <div
+                className="doctor_appointment d-flex justify-content-between "
+                style={{
+                  backgroundColor: "#fff",
+                  width: "100%",
+                  marginTop: "1rem",
+                  borderRadius: "10px",
+                }}
+              >
+                <section
+                  style={{
+                    backgroundColor: "white",
+                    margin: "10px 50px 50px 50px",
+                    width: "100%",
+                    borderRadius: "5px",
+                    boxShadow: " 3px 3px  5px 3px #C5CDD4",
+                    display:'flex'
+                  }}
+                >
+                  <div className="d-flex justify-content-between p-2 flex-column">
+                    <header className="d-flex justify-content-between">
+                      <h3>November 06, 2023</h3>
+                      <Button>Saturday</Button>
+                    </header>
+                    <div className="separator m-0"></div>
+
+                    <main style={{display:'flex',flexWrap:'wrap'}}>
+                      {customAppointData &&
+                        customAppointData.map((el, index) => {
+                          return (
+                            <div key={index}
+                              style={{
+                                width: '80px',
+              height: '25px',
+              padding: '0 .2rem',
+              backgroundColor:selectedOption === index ? '#d7da39' : '#074367',
+              borderRadius: '.3rem',
+              margin: '.5rem',
+              display: 'flex',
+              flexWrap: 'wrap',
+              justifyContent: 'space-around',
+              alignItems: 'center',
+              textDecoration: selectedOption === index ?'line-through':'none'
               
-              
+                              }}
+                            >
+                              <input type="radio"
+                              style={{cursor:'pointer'}}
+              checked={selectedOption === index}
+              onChange={() => handleRadioChange(index)} />
+                              <span
+                                style={{
+                                  color: "#fff" || "#000",
+                                  fontSize: ".8rem",
+                                }}
+                              >
+                                {el}
+                              </span>
+                            </div>
+                          );
+                        })}
+                    </main>
+                    <div className="separator m-0"></div>
+                    <footer className="d-flex justify-content-center">
+                      <div className="d-flex" style={{ marginRight: "30px" }}>
+                        <div
+                          className="square"
+                          style={{
+                            width: "20px",
+                            height: "20px",
+                            backgroundColor: "#074367",
+                            borderRadius: ".3rem",
+                            marginRight: ".3rem",
+                          }}
+                        ></div>
+                        <p>Հասանելի է</p>
+                      </div>
+                      <div className="d-flex">
+                        <div
+                          className="square"
+                          style={{
+                            width: "20px",
+                            height: "20px",
+                            backgroundColor: "#d7da39",
+                            borderRadius: ".3rem",
+                            marginRight: ".3rem",
+                          }}
+                        ></div>
+                        <span>Հասանելի չէ</span>
+                      </div>
+                    </footer>
+                  </div>
+                </section>
+                <section
+                  style={{
+                    backgroundColor: "white",
+                    margin: "10px 50px 50px 50px",
+                    width: "100%",
+                    borderRadius: "5px",
+                    boxShadow: " 3px 3px  5px 3px #C5CDD4",
+                  }}
+                >
+                  <div className="d-flex justify-content-between p-2 flex-column">
+                    <header className="d-flex justify-content-between ">
+                      <h3>November 06, 2023</h3>
+                      <Button>Saturday</Button>
+                    </header>
+                    <div className="separator m-0"></div>
+
+                    <main>asdas</main>
+                    <div className="separator m-0"></div>
+                    <footer className="d-flex justify-content-center">
+                      <div className="d-flex" style={{ marginRight: "30px" }}>
+                        <div
+                          className="square"
+                          style={{
+                            width: "20px",
+                            height: "20px",
+                            backgroundColor: "#074367",
+                            borderRadius: ".3rem",
+                            marginRight: ".3rem",
+                          }}
+                        ></div>
+                        <p>Հասանելի է</p>
+                      </div>
+                      <div className="d-flex">
+                        <div
+                          className="square"
+                          style={{
+                            width: "20px",
+                            height: "20px",
+                            backgroundColor: "#d7da39",
+                            borderRadius: ".3rem",
+                            marginRight: ".3rem",
+                          }}
+                        ></div>
+                        <span>Հասանելի չէ</span>
+                      </div>
+                    </footer>
+                  </div>
+                </section>
+              </div>
             </div>
-          </div>
-        </section>
-      </div>      
-    )}
-    </Suspense>
+          </>
+        )}
+      </Suspense>
     </>
   );
 }

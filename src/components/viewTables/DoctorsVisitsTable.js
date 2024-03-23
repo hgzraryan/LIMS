@@ -29,7 +29,7 @@ function DoctorsVisitsTable({
   const [modalInfo, setModalInfo] = useState("");
   
   const handlePatientsDetail = async (patientId) => {  
-      navigate(`/patients/${patientId}`)
+    //  navigate(`/patients/${patientId}`)
       
   };
   const handleOpenInfoModal = (data) => {

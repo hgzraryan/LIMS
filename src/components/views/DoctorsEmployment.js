@@ -1,10 +1,12 @@
 import React from 'react'
+import GanttChart from '../GanttChart'
 
 function DoctorsEmployment() {
   return (
-    <div>
-      DoctorsEmployment
-    </div>
+    <>
+        <GanttChart/>
+
+    </>
   )
 }
 

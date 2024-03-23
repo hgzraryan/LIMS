@@ -36,8 +36,7 @@ const Diagnostics = () => {
 
 
   useEffect(()=>{
-    setTimeout(() => {
-      
+    setTimeout(() => {      
       axiosPrivate.get(DOCTORS_URL).then((resp)=>{
         setDoctors(prev=>resp?.data?.jsonString)
      }).catch((err)=>{
