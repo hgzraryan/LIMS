@@ -11,33 +11,46 @@ import "../../dist/css/data-table.css";
 import { Modal } from "react-bootstrap";
 const customResearchData = [
   {
-    partner_code:303013,
-local_code:21001,
-laboratory_service:'Բջջագենետիկայի լաբորատորիա',
-Sector:'Քաղցկեղի մոլեկուլային հետազոտություն',	
-service_name:'ALL. Սուր լիմֆոբլաստային լեյկոզի 1 վերակառուցում  (FISH)',
-price:35000,
-purchase_price:35000,
-delivery_time_limit:'3-4 աշխ. օր',
-biomaterial:'Ոսկրածուծ/  արյուն',
-vial:'Heparin',	
-sampling_period:'Երկ-Ուրբ 08։30-17։00 Շաբաթ 09։30-13։00',
-research_prepsub:'Ոսկրածուծի ախտաբան. / արյան ընդհ. Վերլուծության պատասխան պահանջվում է',
+  researchName: 'researchName',
+  localCode:4,
+  partnerCode:124,
+  laboratoryService:'laboratoryService',
+  categoryName:'categoryName',
+  serviceName:'serviceName',
+  shortName: 'shortName',
+  price:15000,
+  purchasePrice:12000,
+  deliveryTimeLimit:'deliveryTimeLimit',
+  biomaterial:'biomaterial',
+  vial:'vial',
+  samplingPeriod:'samplingPeriod',
+  researchPrepSub:'researchPrepSub',
+  category: 'category',
+  additional:'additional',
+  class: 'Internal',
+  
   },
   {
-    partner_code:103027,
-local_code:21002,
-laboratory_service:'Գենոմային բժշկության ծառայություն',
-Sector:'Ժառանգական հիվանդություններ',	
-service_name:'TM2-Sg. Թիրախային 2 մուտացիաների թեստավորում Sanger սեքվենավորմամբ',
-price:490000,
-purchase_price:44000,
-delivery_time_limit:'անհատական',
-biomaterial:'Ամնիոտիկ հեղուկ - 20 մլ',
-vial:'',	
-sampling_period:'Երկ-Ուրբ 09։00-16։00 Շաբաթ 09։30-12։00',
-research_prepsub:'Միայն ԳԽ հետո',
+  researchName: 'researchName',
+  localCode:5,
+  partnerCode:652,
+  laboratoryService:'laboratoryService',
+  categoryName:'categoryName',
+  serviceName:'serviceName',
+  shortName: 'shortName',
+  price:5000,
+  purchasePrice:6000,
+  deliveryTimeLimit:'deliveryTimeLimit',
+  biomaterial:'biomaterial',
+  vial:'vial',
+  samplingPeriod:'samplingPeriod',
+  researchPrepSub:'researchPrepSub',
+  category: 'category',
+  additional:'additional',
+  class: 'Internal',
+  
   },
+  
 ]
 function ResearchListsTable({
   confirmRef,
@@ -70,7 +83,7 @@ function ResearchListsTable({
             <div className="columnHeader">ID</div>
           </>
         ),
-        accessor: "local_code",
+        accessor: "localCode",
         sortable: true,
         width:60,
         Filter: ({ column: { id } })=>(
@@ -88,7 +101,7 @@ function ResearchListsTable({
             <div className="columnHeader">ԲԳԿ ԿՈԴ</div>
           </>
         ),
-        accessor: "partner_code",
+        accessor: "partnerCode",
         disableSortBy: true,
         width:100,
         Filter: ({ column: { id } })=>(
@@ -104,10 +117,10 @@ function ResearchListsTable({
         Header: (event) => (
           <>
             
-            <div className="columnHeader">Լաբ. / Ծառ.</div>
+            <div className="columnHeader">Անվանում</div>
           </>
         ),
-        accessor: "laboratory_service",
+        accessor: "researchName",
         sortable: true,
         width:300,
         Filter: ({ column: { id } })=>(
@@ -121,17 +134,37 @@ function ResearchListsTable({
       },
       {
         Header: (event) => (
-          <>            
-            <div className="columnHeader">Ոլորտ(ներ)ը</div>
+          <>
+            
+            <div className="columnHeader">Լաբ. / Ծառ.</div>
           </>
         ),
-        accessor: "Sector",
+        accessor: "laboratoryService",
+        sortable: true,
         width:300,
         Filter: ({ column: { id } })=>(
           <ColumnFilter
             id={id}
             setData={setResearches}
-            placeholder={'Ոլորտ(ներ)ը'}
+            placeholder={'Լաբ. / Ծառ.'}
+
+          />
+        ),
+      },
+      {
+        Header: (event) => (
+          <>
+            
+            <div className="columnHeader">Դասկարգի անվ․</div>
+          </>
+        ),
+        accessor: "categoryName",
+        width:200,
+        Filter: ({ column: { id } })=>(
+          <ColumnFilter
+            id={id}
+            setData={setResearches}
+            placeholder={'Դասկարգի անվ․'}
 
           />
         ),
@@ -142,13 +175,30 @@ function ResearchListsTable({
             <div className="columnHeader">Ծառ. անվանում</div>
           </>
         ),
-        accessor: "service_name",
+        accessor: "serviceName",
         width:300,
         Filter: ({ column: { id } })=>(
           <ColumnFilter
             id={id}
             setData={setResearches}
             placeholder={'Ծառ. անվանում'}
+
+          />
+        ),
+      },
+      {
+        Header: (event) => (
+          <>            
+            <div className="columnHeader">Հապավում</div>
+          </>
+        ),
+        accessor: "shortName",
+        width:300,
+        Filter: ({ column: { id } })=>(
+          <ColumnFilter
+            id={id}
+            setData={setResearches}
+            placeholder={'Հապավում'}
 
           />
         ),
@@ -178,7 +228,7 @@ function ResearchListsTable({
             <div className="columnHeader">Առքի գին</div>
           </>
         ),
-        accessor: "purchase_price",
+        accessor: "purchasePrice",
         width:80,
         Filter: ({ column: { id } })=>(
           <ColumnFilter
@@ -196,7 +246,7 @@ function ResearchListsTable({
             <div className="columnHeader">Հրապ․ առավել. ժամկետ</div>
           </>
         ),
-        accessor: "delivery_time_limit",
+        accessor: "deliveryTimeLimit",
         width:200,
         Filter: ({ column: { id } })=>(
           <ColumnFilter
@@ -242,7 +292,7 @@ function ResearchListsTable({
 
           />
         ),
-      },
+      }, 
       {
         Header: (event) => (
           <>
@@ -250,7 +300,7 @@ function ResearchListsTable({
             <div className="columnHeader">Նմուշ․ ժամկետը</div>
           </>
         ),
-        accessor: "sampling_period",
+        accessor: "samplingPeriod",
         width:200,
         Filter: ({ column: { id } })=>(
           <ColumnFilter
@@ -268,7 +318,44 @@ function ResearchListsTable({
             <div className="columnHeader">Հետ․ Նախապատրաստում</div>
           </>
         ),
-        accessor: "research_prepsub",
+        accessor: "researchPrepSub",
+        width:200,
+        Filter: ({ column: { id } })=>(
+          <ColumnFilter
+            id={id}
+            setData={setResearches}
+            placeholder={'Հետ․ Նախապատրաստում'}
+
+          />
+        ),
+      },
+      {
+        Header: (event) => (
+          <>
+            
+            <div className="columnHeader">Դասակարգ</div>
+          </>
+        ),
+        accessor: "category",
+        width:100,
+        Filter: ({ column: { id } })=>(
+          <ColumnFilter
+            id={id}
+            setData={setResearches}
+            placeholder={'Դասակարգ'}
+
+          />
+        ),
+      },
+     
+      {
+        Header: (event) => (
+          <>
+            
+            <div className="columnHeader">Հետ․ տեսակ</div>
+          </>
+        ),
+        accessor: "class",
         width:200,
         Filter: ({ column: { id } })=>(
           <ColumnFilter

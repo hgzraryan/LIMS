@@ -207,10 +207,10 @@ export const shortName_validation = {
 };
 export const category_validation = {
   name: "category",
-  label: "Կատեգորիա",
+  label: "Դասակարգ",
   type: "text",
   id: "category",
-  placeholder: "Կատեգորիա",
+  placeholder: "Դասակարգ",
   validation: {
     required: {
       value: true,
@@ -873,6 +873,211 @@ export const emergencyContactNumber_validation = {
   type: "number",
   id: "emergencyContactNumber",
   placeholder: "Լրացուցիչ կոնտակտ հեռախոս",
+  validation: {
+    required: {
+      value: true,
+      message: "պարտադիր",
+    },
+    maxLength: {
+      value: 200,
+      message: "200 characters max",
+    },
+  },
+};
+export const purchasePrice_validation = {
+  name: "purchasePrice",
+  label: "Առքի գին",
+  multiline: true,
+  type: "number",
+  id: "purchasePrice",
+  placeholder: "Առքի գին",
+  validation: {
+    required: {
+      value: true,
+      message: "պարտադիր",
+    },
+    maxLength: {
+      value: 20,
+      message: "20 characters max",
+    },
+  },
+};
+export const deliveryTimeLimit_validation = {
+  name: "deliveryTimeLimit",
+  label: "Առաքման ժամկետ",
+  multiline: true,
+  id: "deliveryTimeLimit",
+  placeholder: "Առաքման ժամկետ",
+  validation: {
+    required: {
+      value: true,
+      message: "պարտադիր",
+    },
+    maxLength: {
+      value: 200,
+      message: "200 characters max",
+    },
+  },
+};
+export const biomaterial_validation = {
+  name: "biomaterial",
+  label: "Կենսանյութ",
+  multiline: true,
+  id: "biomaterial",
+  placeholder: "Կենսանյութ",
+  validation: {
+    required: {
+      value: true,
+      message: "պարտադիր",
+    },
+    maxLength: {
+      value: 200,
+      message: "200 characters max",
+    },
+  },
+};
+export const serviceName_validation = {
+  name: "serviceName",
+  label: "ծառայության անվանում",
+  multiline: true,
+  id: "serviceName",
+  placeholder: "ծառայության անվանում",
+  validation: {
+    required: {
+      value: true,
+      message: "պարտադիր",
+    },
+    maxLength: {
+      value: 200,
+      message: "200 characters max",
+    },
+  },
+};
+export const categoryName_validation = {
+  name: "categoryName",
+  label: "Դասակարգի անվանում",
+  multiline: true,
+  id: "categoryName",
+  placeholder: "Դասակարգի անվանում",
+  validation: {
+    required: {
+      value: true,
+      message: "պարտադիր",
+    },
+    maxLength: {
+      value: 200,
+      message: "200 characters max",
+    },
+  },
+};
+export const vial_validation = {
+  name: "vial",
+  label: "Սրվակ",
+  multiline: true,
+  id: "vial",
+  placeholder: "Սրվակ",
+  validation: {
+    required: {
+      value: true,
+      message: "պարտադիր",
+    },
+    maxLength: {
+      value: 200,
+      message: "200 characters max",
+    },
+  },
+};
+export const laboratoryService_validation = {
+  name: "laboratoryService",
+  label: "Լաբորատոր ծառայություն",
+  multiline: true,
+  id: "laboratoryService",
+  placeholder: "Լաբորատոր ծառայություն",
+  validation: {
+    required: {
+      value: true,
+      message: "պարտադիր",
+    },
+    maxLength: {
+      value: 200,
+      message: "200 characters max",
+    },
+  },
+};
+export const localCode_validation = {
+  name: "localCode",
+  label: "Ներքին կոդ",
+  multiline: true,
+  id: "localCode",
+  placeholder: "Ներքին կոդ",
+  validation: {
+    required: {
+      value: true,
+      message: "պարտադիր",
+    },
+    maxLength: {
+      value: 200,
+      message: "200 characters max",
+    },
+  },
+};
+export const partnerCode_validation = {
+  name: "partnerCode",
+  label: "Գործընկերոջ կոդ",
+  multiline: true,
+  id: "partnerCode",
+  placeholder: "Գործընկերոջ կոդ",
+  validation: {
+    required: {
+      value: true,
+      message: "պարտադիր",
+    },
+    maxLength: {
+      value: 200,
+      message: "200 characters max",
+    },
+  },
+};
+export const samplingPeriod_validation = {
+  name: "samplingPeriod",
+  label: "Նմուշառման ժամկետ",
+  multiline: true,
+  id: "samplingPeriod",
+  placeholder: "Նմուշառման ժամկետ",
+  validation: {
+    required: {
+      value: true,
+      message: "պարտադիր",
+    },
+    maxLength: {
+      value: 200,
+      message: "200 characters max",
+    },
+  },
+};
+export const researchPrepSub_validation = {
+  name: "researchPrepSub",
+  label: "Նախապատրաստում",
+  multiline: true,
+  id: "researchPrepSub",
+  placeholder: "Նախապատրաստում",
+  validation: {
+    required: {
+      value: true,
+      message: "պարտադիր",
+    },
+    maxLength: {
+      value: 200,
+      message: "200 characters max",
+    },
+  },
+};
+export const researchName_validation = {
+  name: "researchName",
+  label: "Անվանում",
+  multiline: true,
+  id: "researchName",
+  placeholder: "Անվանում",
   validation: {
     required: {
       value: true,

@@ -4,34 +4,45 @@ import FeatherIcon from "feather-icons-react";
 import { Editor } from "@tinymce/tinymce-react";
 import { useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
-import { Form, FormProvider, useForm } from "react-hook-form";
+import { Controller, Form, FormProvider, useForm } from "react-hook-form";
 import { Input } from "../Input";
+import Select from "react-select";
+import ErrorSvg from "../../dist/svg/error.svg";
 import {
-  name_validation,
-  class_validation,
   shortName_validation,
   category_validation,
-  researchUnit_validation,
-  price_validation,
-  currency_validation,
-  referenceRange_validation,
+  purchasePrice_validation,
+  deliveryTimeLimit_validation,
+  biomaterial_validation,
+  serviceName_validation,
+  categoryName_validation,
+  vial_validation,
+  laboratoryService_validation,
+  localCode_validation,
+  partnerCode_validation,
+  samplingPeriod_validation,
+  researchPrepSub_validation,
+  researchName_validation,
 } from "../../utils/inputValidations";
 import useSubmitForm from "../../hooks/useSubmitForm";
-import Multiselect from "multiselect-react-dropdown";
 import {  toast } from 'react-toastify';
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { REGISTER_RESEARCHLISTS } from "../../utils/constants";
-
+const researchListClassState = [
+  { value: "External", label: "Արտաքին" },
+  { value: "Internal", label: "Ներքին" },
+  { value: "Other", label: "Այլ" },
+];
 function AddResearchList({ handleToggleCreateModal, getResearches,researchState }) {
     const [errMsg, setErrMsg] = useState("");
     const [currency, setCurrency] = useState("AMD");
     const [amount, setAmount] = useState("");
     const [externalType, setExternalType] = useState(false);
-    const multiselectRef = useRef("");
     const researchTypeRef = useRef("");
     const additionalData = useRef({});
     const editorRef = useRef(null);
     const axiosPrivate = useAxiosPrivate();
+
     const handleCurrencyChange = (e) => {
       setCurrency(prev=>e.target.value)
  }
@@ -59,19 +70,44 @@ function AddResearchList({ handleToggleCreateModal, getResearches,researchState 
     const methods = useForm({
       mode: "onChange",
     });
-    const onSubmit = methods.handleSubmit(async (data
+    const onSubmit = methods.handleSubmit(async ({researchName,
+      localCode,
+      partnerCode,
+      laboratoryService,
+      categoryName,
+      serviceName,
+      shortName,
+      deliveryTimeLimit,
+      biomaterial,
+      vial,
+      samplingPeriod,
+      researchPrepSub,
+      category,
+      researchType,
+      purchasePrice}
       ) => {
      
       const newResearchList = {
-        researchName:data.name,
-        shortName:data.shortName,
-        category:data.category,
-        referenceRange:data.referenceRange,
-        units:data.researchUnit,
-        researchesPrice:amount,
-        currency:currency,
-        class:additionalData.researchType,
-      };      
+        researchName:researchName,
+        localCode:localCode,
+        partnerCode:partnerCode,
+        laboratoryService:laboratoryService,
+        categoryName:categoryName,
+        serviceName:serviceName,
+        shortName:shortName,
+        price:amount,
+        purchasePrice:purchasePrice,
+        deliveryTimeLimit:deliveryTimeLimit,
+        biomaterial:biomaterial,
+        vial:vial,
+        samplingPeriod:samplingPeriod,
+        researchPrepSub:researchPrepSub,
+        category:category,
+        class: researchType?.value,
+        additional: editorRef.current.getContent({ format: "text" }),
+        //currency:currency,
+      }; 
+      //console.log(newResearchList)     
       try {
         await axiosPrivate.post(REGISTER_RESEARCHLISTS, newResearchList, {
           headers: { "Content-Type": "application/json"  },
@@ -92,14 +128,14 @@ function AddResearchList({ handleToggleCreateModal, getResearches,researchState 
         }
       }
     });
-    const onResearchTypeSelect = (data) => {
-      additionalData.researchType=data[0].researchType
-      if(data[0].researchType=== "Արտաքին" ){
-        setExternalType(true)
-      }else{
-        setExternalType(false)
-      }
-    };
+    // const onResearchTypeSelect = (data) => {
+    //   additionalData.researchType=data[0].researchType
+    //   if(data[0].researchType=== "Արտաքին" ){
+    //     setExternalType(true)
+    //   }else{
+    //     setExternalType(false)
+    //   }
+    // };
     const onPartnerSelect = (data) => {
       additionalData.partnerName =  data[0].partner
     };
@@ -151,25 +187,97 @@ function AddResearchList({ handleToggleCreateModal, getResearches,researchState 
                           <div className="modal-body">
                             <div className="row gx-3">
                               <div className="col-sm-6">
-                                <Input {...name_validation} />
+                                <Input {...researchName_validation} />
                               </div>
                               <div className="col-sm-6">
                                 <Input {...shortName_validation} />
                               </div>
                             </div>
                             <div className="row gx-3">
-                              <div className="col-sm-6">
-                                <Input {...class_validation} />
-                              </div>
+                              
                               <div className="col-sm-6">
                                 <Input {...category_validation} />
+                              </div>
+                              <div className="col-sm-6">
+                                <Input {...categoryName_validation} />
                               </div>
                             </div>
                             <div className="row gx-3">
                               <div className="col-sm-6">
-                                <Input {...researchUnit_validation} />
+                                <Input {...deliveryTimeLimit_validation} />
                               </div>
                               <div className="col-sm-6">
+                                <Input {...biomaterial_validation} />
+                              </div>
+                            </div>
+                            <div className="row gx-3">
+                              <div className="col-sm-6">
+                                <Input {...serviceName_validation} />
+                              </div>
+                              <div className="col-sm-6">
+                                <Input {...laboratoryService_validation} />
+                              </div>
+                            </div>
+                            <div className="row gx-3">
+                              <div className="col-sm-6">
+                                <Input {...vial_validation} />
+                              </div>                              
+                              <div className="col-sm-6">
+                                <Input {...samplingPeriod_validation} />
+                              </div>
+                            </div>
+                            <div className="row gx-3">
+                              <div className="col-sm-6">
+                                <Input {...localCode_validation} />
+                              </div>
+                              <div className="col-sm-6">
+                                <Input {...partnerCode_validation} />
+                              </div>
+                            </div>
+                            <div className="row gx-3">
+                            <div className="col-sm-6">
+                                  <div className="d-flex justify-content-between me-2">
+                                    <label
+                                      className="form-label"
+                                      htmlFor="diagnosticsType"
+                                    >
+                                  Հետազոտության տեսակ
+                                    </label>
+                                    {methods.formState.errors
+                                      .researchType && (
+                                      <span className="error text-red">
+                                        <span>
+                                          <img src={ErrorSvg} alt="errorSvg" />
+                                        </span>{" "}
+                                        պարտադիր
+                                      </span>
+                                    )}
+                                  </div>
+                                  <div className="form-control">
+                                    <Controller
+                                      name="researchType"
+                                      control={methods.control}
+                                      defaultValue={null}
+                                      rules={{ required: true }}
+                                      render={({ field }) => (
+                                        <Select
+                                          {...field}
+                                          options={researchListClassState}
+                                          placeholder={"Ընտրել"}
+                                        />
+                                      )}
+                                    />
+                                  </div>
+                                </div>
+                              <div className="col-sm-6">
+                                <Input {...researchPrepSub_validation} />
+                              </div>
+                            </div>
+                            <div className="row gx-3">  
+                            <div className="col-sm-6">
+                                <Input {...purchasePrice_validation} />
+                              </div> 
+                                <div className="col-sm-6">
                               <label htmlFor="price"className="mb-2">Արժեք</label>
                               <div className="form-control d-flex ">
                                 <select
@@ -199,43 +307,9 @@ function AddResearchList({ handleToggleCreateModal, getResearches,researchState 
                               </div>
                             </div>
                             </div>
-                            
-                            <div className="row gx-3">
-                             
-                              <div className="col-sm-6">
-                            <label
-                                  className="form-label"
-                                  htmlFor="research"
-                                >
-                                  Հետազոտության տեսակ
-                                </label>
-                                <Multiselect
-                                    options={[{researchType:'Ներքին'},{researchType:'Արտաքին'}]} // Options to display in the dropdown
-                                    displayValue="researchType" // Property name to display in the dropdown options
-                                    onSelect={onResearchTypeSelect} // Function will trigger on select event
-                                  //  onRemove={onResearchDelete} // Function will trigger on remove event
-                                    closeOnSelect={true}
-                                    singleSelect
-                                    id="input_tags_4"
-                                    className="form-control"
-                                    ref={researchTypeRef}
-                                    hidePlaceholder={true}
-                                    placeholder="Արժույթ"
-                                    selectedValues={[{researchType:'Ներքին'}]}
-                                    style={{
-                                      height: "10rem",
-                                      overflow: "hidden",
-                                    }}
-                                  />
-                                  
-                            </div>
-                            <div className="col-sm-6">
-                                    <Input {...referenceRange_validation} />
-                                  </div>
-                            </div>
                             <div className="row gx-3">
                                     
-                            {externalType && (
+                            {/* {externalType && (
                               
                               <div className="col-sm-6">
                                <label
@@ -262,7 +336,7 @@ function AddResearchList({ handleToggleCreateModal, getResearches,researchState 
                                     }}
                                     />
                               </div>
-                            )}                             
+                            )}                              */}
                            </div>
                           </div>
                           </div>
