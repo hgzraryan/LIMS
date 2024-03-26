@@ -18,7 +18,7 @@ export const CardComponent = ({ item, index, key,selectedItem }) => {
   };
 
   return (
-    <Draggable key={item.id} draggableId={item.id + ""} index={index}>
+    <Draggable key={item?.id} draggableId={item?.id + ""} index={index}>
       {(provided) => (
         <div
           ref={provided.innerRef}

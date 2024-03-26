@@ -201,15 +201,17 @@ function DiagnosticsTable({
         accessor: "researchList",
         disableSortBy: true,
         width: 200,
-        Cell: ({ row }) => (
+        Cell: ({ row }) => (<>
+          {row.original?.diagStatus === "Active" &&
           <div className="d-flex justify-content-center align-items-center">
             {/* <div className="pe-2">{row.original.statusBoard.length}</div> */}
             <MdViewKanban
               cursor={"pointer"}
               size={"1.5rem"}
               onClick={() => handleOpenStatusModal(row.original)}
-            />
-          </div>
+              />
+          </div>}
+              </>
         ),
         Filter: ({ column: { id } }) => <></>,
       },

@@ -15,7 +15,7 @@ import {
   firstName_validation,
   lastName_validation,
   midName_validation,
-  email_validation,
+  patientEmail_validation,
   zipCode_validation,
   street_validation,
   city_validation,
@@ -193,26 +193,26 @@ function CreatePatient({
 
       console.log(newPatient);
 
-      // try {
-      //   await axiosPrivate.post(REGISTER_PATIENT, newPatient, {
-      //     headers: { "Content-Type": "application/json" },
-      //     withCredentials: true,
-      //   });
+      try {
+        await axiosPrivate.post(REGISTER_PATIENT, newPatient, {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+        });
 
-      //   handleToggleCreateModal(false);
-      //   getPatients();
-      //   notify(
-      //     `${newPatient.firstName} ${newPatient.lastName} հաճախորդը ավելացված է`
-      //   );
-      // } catch (err) {
-      //   if (!err?.response) {
-      //     setErrMsg("No Server Response");
-      //   } else if (err.response?.status === 409) {
-      //     setErrMsg("Username Taken");
-      //   } else {
-      //     setErrMsg(" Failed");
-      //   }
-      // }
+        handleToggleCreateModal(false);
+        getPatients();
+        notify(
+          `${newPatient.firstName} ${newPatient.lastName} հաճախորդը ավելացված է`
+        );
+      } catch (err) {
+        if (!err?.response) {
+          setErrMsg("No Server Response");
+        } else if (err.response?.status === 409) {
+          setErrMsg("Username Taken");
+        } else {
+          setErrMsg(" Failed");
+        }
+      }
     }
   );
   const onGenderSelect = (value) => {
@@ -378,7 +378,7 @@ function CreatePatient({
                           </div>
                           <div className="row gx-3">
                             <div className="col-sm-6">
-                              <Input {...email_validation} />
+                              <Input {...patientEmail_validation} />
                             </div>
                             <div className="col-sm-6">
                               <div className="d-flex justify-content-between me-2">

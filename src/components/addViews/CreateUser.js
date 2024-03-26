@@ -167,8 +167,8 @@ function CreateUser({ setIsOpen,getUsers }) {
     gender,
     maritalStatus,
     roles,
-    // emergencyContactNumber,
-    // emergencyContactName,
+    emergencyContactNumber,
+    emergencyContactName,
     dateOfBirth}) => {
    
     const newUser = {
@@ -192,8 +192,8 @@ function CreateUser({ setIsOpen,getUsers }) {
       password:password,
       roles: onRoleSelect(roles),
       //type:userType,
-      // emergencyContactName:emergencyContactName,
-      // emergencyContactNumber:emergencyContactNumber,
+      emergencyContactName:emergencyContactName,
+      emergencyContactNumber:emergencyContactNumber,
       birthday:new Date(
         dateOfBirth.getTime() - dateOfBirth.getTimezoneOffset() * 60000
       )
@@ -202,7 +202,7 @@ function CreateUser({ setIsOpen,getUsers }) {
     };
     formData.append("text", JSON.stringify(newUser));
     formData.append("image", image);      
-    console.log(newUser)
+    // console.log(newUser)
     try {
       await axiosPrivate.post(REGISTER_USER, newUser, {
         headers: { "Content-Type": "application/json"  },
@@ -626,7 +626,7 @@ function CreateUser({ setIsOpen,getUsers }) {
                             </div>
                           </div>
                           
-                          {/* <div className="row gx-3">
+                          <div className="row gx-3">
                             <div className="col-sm-6">
                               <Input {...emergencyContactName_validation} />
                             </div>
@@ -641,7 +641,7 @@ function CreateUser({ setIsOpen,getUsers }) {
                                     </div>                              
                               <CustomPhoneComponent name="emergencyContactNumber"  control={methods.control} />     
                             </div>
-                          </div> */}
+                          </div>
                         </div>
                       </div>
                     </div>

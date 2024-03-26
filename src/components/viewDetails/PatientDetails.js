@@ -368,9 +368,13 @@ function PatientDetails() {
         sortable: true,
         width: 200,
         Filter: ({ column: { id } }) => <></>,
-      //   Cell: ({ row }) => (
-      //     <p>{row.original.class === "Internal"?'Ներքին': 'Արտաքին'}</p>
-      // ),
+        Cell: ({ row }) => (
+          <div className="d-flex justify-content-center align-items-center">
+          {row.original?.class === 'Internal'?'Ներքին':
+          row.original?.class ==='External'?'Արտաքին':
+          row.original?.class ==='Other'?'Այլ':''}
+        </div>
+      ),
     },
       {
         Header: (event) => (

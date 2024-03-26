@@ -321,6 +321,24 @@ export const email_validation = {
     },
   },
 };
+export const patientEmail_validation = {
+  name: "email",
+  label: "Էլ․ հասցե",
+  type: "email",
+  id: "email",
+  placeholder: "Էլ․ հասցե",
+  validation: {
+    required: {
+      value: false,
+      message: "պարտադիր",
+    },
+    pattern: {
+      value:
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+      message: "not valid",
+    },
+  },
+};
 export const contactEmail_validation = {
   name: "contactEmail",
   label: "Էլ․ հասցե",
@@ -704,6 +722,23 @@ export const desc_validation = {
   validation: {
     required: {
       value: true,
+      message: "պարտադիր",
+    },
+    maxLength: {
+      value: 200,
+      message: "200 characters max",
+    },
+  },
+};
+export const orgDesc_validation = {
+  name: "description",
+  label: "Նկարագիր",
+  multiline: true,
+  id: "description",
+  placeholder: "Նկարագիր",
+  validation: {
+    required: {
+      value: false,
       message: "պարտադիր",
     },
     maxLength: {

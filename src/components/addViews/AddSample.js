@@ -51,7 +51,7 @@ function Sample() {
       const response = await axiosPrivate.get(`./diagnosticsSampling/${data}`);
       // setTimeout(() => {
       setData((prev) => response.data);
-      //console.log(response.data);
+      console.log(response.data);
       // }, 500);
     } catch (err) {
       console.error(err);
@@ -365,10 +365,10 @@ function Sample() {
                             <header>
                               <div>
                                 <span style={{ fontWeight: "bold",fontSize:'18px' }}>
-                                  {data.patient.firstName+" "}
+                                  {/* {data.patient.firstName+" "}
                                   {data.patient.midName+" "}
                                   {data.patient.lastName+", "}
-                                  {data.patient.dateOfBirth+", "}
+                                  {data.patient.dateOfBirth+", "} */}
                                 </span>
                               </div>
                             </header>

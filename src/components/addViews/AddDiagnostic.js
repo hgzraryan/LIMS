@@ -21,6 +21,8 @@ import Select from "react-select";
 import ErrorSvg from "../../dist/svg/error.svg";
 import makeAnimated from "react-select/animated";
 import LoadingSpinner from "../LoadingSpinner";
+import { useSelector } from "react-redux";
+import { selectRefDoctors } from "../../redux/features/refDoctors/refDoctorsSlice";
 
 const diagnosticClassState = [
   { value: "External", label: "Արտաքին" },
@@ -57,6 +59,8 @@ function AddDiagnostic({
   const [intDiagnosticsStatus, setIntDiagnosticsStatus] = useState(null);
   const [extDiagnosticsStatus, setExtDiagnosticsStatus] = useState(null);
   const [doctor, setDoctor] = useState("");
+  const [refDoctor, setRefDoctor] = useState("");
+  const refDoctors = useSelector(selectRefDoctors);
   // const [ptient, setPatient] = useState([{label: 'Առանց այցելու',value:""}]);
   const [patients, setPatients] = useState([]);
   const [organizations, setOrganizations] = useState([]);
@@ -133,6 +137,9 @@ function AddDiagnostic({
 
   const onDoctorSelect = (data) => {
     setDoctor((prev) => data.label);
+  };
+  const onRefDoctorSelect = (data) => {
+    setRefDoctor((prev) => data.label);
   };
   const onDiagnosticClassSelect = (data) => {
     switch (data.value) {
@@ -362,11 +369,6 @@ function AddDiagnostic({
                                         render={({ field }) => (
                                           <Select
                                             {...field}
-                                            value={diagnosticStatus.find(
-                                              (option) =>
-                                                option.value ===
-                                                intDiagnosticsStatus
-                                            )}
                                             options={diagnosticStatus}
                                             placeholder={"Ընտրել"}
                                           />
@@ -375,6 +377,7 @@ function AddDiagnostic({
                                     </div>
                                   </div>
                                 ) : (
+                                  <>
                                   <div className="col-sm-6">
                                     <div className="d-flex justify-content-between me-2">
                                       <label
@@ -405,11 +408,6 @@ function AddDiagnostic({
                                         render={({ field }) => (
                                           <Select
                                             {...field}
-                                            value={diagnosticStatus.find(
-                                              (option) =>
-                                                option.value ===
-                                                extDiagnosticsStatus
-                                            )}
                                             placeholder={"Ընտրել"}
                                             options={diagnosticStatus}
                                           />
@@ -417,56 +415,56 @@ function AddDiagnostic({
                                       />
                                     </div>
                                   </div>
-                                )}
-                                <div className="col-sm-6">
-                                  <div className="d-flex justify-content-between me-2">
-                                    <label
-                                      className="form-label"
-                                      htmlFor="doctor"
-                                      placeholder={"Ընտրել"}
-                                    >
-                                      Բժիշկներ
-                                    </label>
-                                    {methods.formState.errors.doctor && (
-                                      <span className="error text-red">
-                                        <span>
-                                          <img src={ErrorSvg} alt="errorSvg" />
-                                        </span>{" "}
-                                        պարտադիր
-                                      </span>
-                                    )}
-                                  </div>
-                                  <div className="form-control">
-                                    <Controller
-                                      name="doctor"
-                                      control={methods.control}
-                                      isClearable={true}
-                                      defaultValue={null}
-                                      rules={{ required: true }}
-                                      render={({ field }) => (
-                                        <Select
-                                          {...field}
-                                          onChange={(val) => {
-                                            field.onChange(val.id);
-                                            onDoctorSelect(val);
-                                          }}
-                                          value={doctors.find(
-                                            (option) => option.value === doctor
+                                    <div className="col-sm-6">
+                                      <div className="d-flex justify-content-between me-2">
+                                        <label
+                                          className="form-label"
+                                          htmlFor="partner"
+                                        >
+                                          Գործընկեր
+                                        </label>
+                                        {methods.formState.errors.partner && (
+                                          <span className="error text-red">
+                                            <span>
+                                              <img
+                                                src={ErrorSvg}
+                                                alt="errorSvg"
+                                              />
+                                            </span>{" "}
+                                            պարտադիր
+                                          </span>
+                                        )}
+                                      </div>
+                                      <div className="form-control">
+                                        <Controller
+                                          name="partner"
+                                          control={methods.control}
+                                          defaultValue={null}
+                                          rules={{ required: true }}
+                                          render={({ field }) => (
+                                            <Select
+                                              {...field}
+                                              onChange={(val) => {
+                                                field.onChange(val.value);
+                                                onPartnerSelect(val);
+                                              }}
+                                              value={agents.find(
+                                                (option) =>
+                                                  option.value === partnerName
+                                              )}
+                                              options={agents.map((agent) => ({
+                                                value: agent.agentId,
+                                                label: `${agent?.agentId}․  ${agent?.name}`,
+                                              }))}
+                                              placeholder={"Ընտրել"}
+                                            />
                                           )}
-                                          options={[
-                                            { value: 0, label: "Առանց բժիշկ" },
-                                            ...doctors.map((item) => ({
-                                              value: item.doctorName,
-                                              label: item.doctorName,
-                                              id: item.doctorId,
-                                            })),
-                                          ]}
-                                          placeholder={"Ընտրել"}
                                         />
-                                      )}
-                                    />
-                                  </div>
-                                </div>
+                                      </div>
+                                    </div>
+                                    </>
+                                )}
+                               
                               </div>
                               <div className="row gx-3">
                                 <div className="col-sm-6">
@@ -492,7 +490,7 @@ function AddDiagnostic({
                                       control={methods.control}
                                       isClearable={true}
                                       defaultValue={null}
-                                      // rules={{ required: true }}
+                                      rules={{ required: true }}
                                       render={({ field }) => (
                                         <Select
                                           {...field}
@@ -500,7 +498,7 @@ function AddDiagnostic({
                                             field.onChange(
                                               val ? val.value : null
                                             ); // Ensure you pass null when no patient is selected
-                                            onPatientSelect(val);
+                                            //onPatientSelect(val);
                                           }}
                                           value={patients.find(
                                             (option) =>
@@ -549,10 +547,10 @@ function AddDiagnostic({
                                       render={({ field }) => (
                                         <Select
                                           {...field}
-                                          isClearable={true}
+                                          // isClearable={true}
                                           onChange={(val) => {
                                             field.onChange(val.value);
-                                            onOrganizationSelect(val);
+                                            //onOrganizationSelect(val);
                                           }}
                                           value={organizations.find(
                                             (option) =>
@@ -577,58 +575,110 @@ function AddDiagnostic({
                                 </div>
                               </div>
                               <div className="row gx-3">
-                                {externalType && (
-                                  <div className="col-sm-6">
-                                    <div className="d-flex justify-content-between me-2">
-                                      <label
-                                        className="form-label"
-                                        htmlFor="partner"
-                                      >
-                                        Գործընկեր
-                                      </label>
-                                      {methods.formState.errors.partner && (
-                                        <span className="error text-red">
-                                          <span>
-                                            <img
-                                              src={ErrorSvg}
-                                              alt="errorSvg"
-                                            />
-                                          </span>{" "}
-                                          պարտադիր
-                                        </span>
-                                      )}
-                                    </div>
-                                    <div className="form-control">
-                                      <Controller
-                                        name="partner"
-                                        control={methods.control}
-                                        defaultValue={null}
-                                        rules={{ required: true }}
-                                        render={({ field }) => (
-                                          <Select
-                                            {...field}
-                                            onChange={(val) => {
-                                              field.onChange(val.value);
-                                              onPartnerSelect(val);
-                                            }}
-                                            value={agents.find(
-                                              (option) =>
-                                                option.value === partnerName
-                                            )}
-                                            options={agents.map((agent) => ({
-                                              value: agent.agentId,
-                                              label: `${agent?.agentId}․  ${agent?.name}`,
-                                            }))}
-                                            placeholder={"Ընտրել"}
-                                          />
-                                        )}
-                                      />
-                                    </div>
+                                <div className="col-sm-6">
+                                  <div className="d-flex justify-content-between me-2">
+                                    <label
+                                      className="form-label"
+                                      htmlFor="doctor"
+                                      placeholder={"Ընտրել"}
+                                    >
+                                      Բժիշկներ
+                                    </label>
+                                    {methods.formState.errors.doctor && (
+                                      <span className="error text-red">
+                                        <span>
+                                          <img src={ErrorSvg} alt="errorSvg" />
+                                        </span>{" "}
+                                        պարտադիր
+                                      </span>
+                                    )}
                                   </div>
-                                )}
+                                  <div className="form-control">
+                                    <Controller
+                                      name="doctor"
+                                      control={methods.control}
+                                      isClearable={true}
+                                      defaultValue={null}
+                                      rules={{ required: false }}
+                                      render={({ field }) => (
+                                        <Select
+                                          {...field}
+                                          onChange={(val) => {
+                                            field.onChange(val.id);
+                                            onDoctorSelect(val);
+                                          }}
+                                          value={doctors.find(
+                                            (option) => option.value === doctor
+                                          )}
+                                          options={[
+                                            { value: 0, label: "Առանց բժիշկ" },
+                                            ...doctors.map((item) => ({
+                                              value: item.doctorName,
+                                              label: item.doctorName,
+                                              id: item.doctorId,
+                                            })),
+                                          ]}
+                                          placeholder={"Ընտրել"}
+                                        />
+                                      )}
+                                    />
+                                  </div>
+                                </div>
+                                 <div className="col-sm-6">
+                                   <div className="d-flex justify-content-between me-2">
+                                    <label
+                                      className="form-label"
+                                      htmlFor="doctor"
+                                      placeholder={"Ընտրել"}
+                                    >
+                                      Ուղղորդող բժիշկներ
+                                    </label>
+                                    {methods.formState.errors.refDoctor && (
+                                      <span className="error text-red">
+                                        <span>
+                                          <img src={ErrorSvg} alt="errorSvg" />
+                                        </span>{" "}
+                                        պարտադիր
+                                      </span>
+                                    )}
+                                  </div>
+                                  <div className="form-control">
+                                    <Controller
+                                      name="refDocto"
+                                      control={methods.control}
+                                      isClearable={true}
+                                      defaultValue={null}
+                                      rules={{ required: false }}
+                                      render={({ field }) => (
+                                   <Select
+                                    {...field}
+                                    onChange={(val) => {
+                                      field.onChange(val.id);
+                                      onRefDoctorSelect(val);
+                                    }}
+                                    value={refDoctors.find(
+                                      (option) => option.value === refDoctor
+                                    )}
+                                    options={[
+                                      { value: 0, label: "Առանց բժիշկ" },
+                                      ...refDoctors.map((item) => ({
+                                        value: item.doctorName,
+                                        label: item.doctorName,
+                                        id: item.doctorId,
+                                      })),
+                                    ]}
+                                    placeholder={"Ընտրել"}
+                                    />
+                                    )}
+                                  />
+                               </div>
+                                </div>
                               </div>
-
                               <div className="row gx-3">
+                                
+                                </div>
+                              <div className="row gx-3">
+                                
                                 <div className="col-sm-12">
                                   <div className="d-flex justify-content-between me-2">
                                     <label

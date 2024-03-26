@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import ComponentToConfirm from "../ComponentToConfirm";
 import {
   useBlockLayout,
@@ -17,6 +17,7 @@ import useDebounce from "../../hooks/useDebounce";
 import DefaultProfileImage from "../../../src/dist/img/Missing.svg";
 import "../../dist/css/data-table.css";
 import { useNavigate } from "react-router-dom";
+import UserDeactivateModal from "../EditViews/UserDeactivateModal";
 
 function UsersTable({
   confirmRef,
@@ -27,8 +28,16 @@ function UsersTable({
   handleCloseModal,
   users,
   setUsers,
+  getUsers
 }) {
 const navigate = useNavigate()
+const [editRow, setEditRow] = useState(false);
+const handleOpenEditModal = (value) => {
+  setEditRow((prev) => value);
+};
+const handleCloseEditModal = () => {
+  setEditRow(false);
+};
   const setUserTypeStyle = (userType) => {
     switch (userType) {
       case "Admin":
@@ -230,7 +239,7 @@ const navigate = useNavigate()
         Cell: ({ row }) => (
           <div className="d-flex align-items-center">
             <div className="d-flex">
-              <a
+            <a
                 className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover"
                 data-bs-toggle="tooltip"
                 data-placement="top"
@@ -246,7 +255,7 @@ const navigate = useNavigate()
               <a
                 className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover del-button"
                 data-bs-toggle="tooltip"
-                onClick={() => handleOpenModal(row.original)}
+                onClick={() => handleOpenEditModal(row.original)}
                 data-placement="top"
                 title=""
                 data-bs-original-title="Delete"
@@ -367,6 +376,13 @@ const navigate = useNavigate()
                 </tr>
               );
             })}
+            {editRow && (
+              <UserDeactivateModal
+                handleCloseEditModal={handleCloseEditModal}
+                rowData={editRow}
+                getUsers={getUsers}
+              />
+            )}
             <ComponentToConfirm
               handleCloseModal={handleCloseModal}
               handleOpenModal={handleOpenModal}

@@ -6,12 +6,11 @@ import { useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import { Controller, Form, FormProvider, useForm } from "react-hook-form";
 import { Input } from "../Input";
+import Select from "react-select";
 import {
   name_validation,
-  desc_validation,
+  orgDesc_validation,
   email_validation,
-  country_validation,
-  state_validation,
   city_validation,
   street_validation,
   zipCode_validation,
@@ -21,17 +20,20 @@ import {
   bankName_validation,
   bankAccNumber_validation,
   tin_validation,
-  type_validation,
 } from "../../utils/inputValidations";
-import useSubmitForm from "../../hooks/useSubmitForm";
-import { REGISTER_ORGANIZATIONS } from "../../utils/constants";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { toast } from "react-toastify";
 import ErrorSvg from "../../dist/svg/error.svg";
 import CustomPhoneComponent from "../CustomPhoneComponent";
 import 'react-phone-number-input/style.css'
 import { CountryDropdown, RegionDropdown,CountryRegionData  } from 'react-country-region-selector';
-
+import { REGISTER_ORGANIZATIONS } from "../../utils/constants";
+const organizationTypes = [
+  { value: "Laboratory", label: "Լաբորատորիա" },
+  { value: "Hospital", label: "Հիվանդանոց" },
+  { value: "Policlinic", label: "Պոլիկլինիկա" },
+  { value: "Other", label: "Այլ" },
+]
 function AddOrganization({ handleToggleCreateModal, getOrganizations }) {
   const [errMsg, setErrMsg] = useState("");
   const editorRef = useRef(null);  
@@ -82,12 +84,12 @@ function AddOrganization({ handleToggleCreateModal, getOrganizations }) {
       phone,
       tin,
       contactPhoneNumber,
-      type,
+      organizationType,
     }) => {
       //console.log(data)
       const newOrganization = {
         name: name,
-        type:type,        
+        type:organizationType?.value,        
         director:director,
         bankName:bankName,
         bankAccNumber:bankAccNumber,
@@ -111,7 +113,7 @@ function AddOrganization({ handleToggleCreateModal, getOrganizations }) {
         description: description,
       };
 
-      //console.log(newOrganization);
+      // console.log(newOrganization);
       try {
         await axiosPrivate.post(REGISTER_ORGANIZATIONS, newOrganization, {
           headers: { "Content-Type": "application/json" },
@@ -302,8 +304,42 @@ function AddOrganization({ handleToggleCreateModal, getOrganizations }) {
                             </div>
                           
                             <div className="col-sm-6">
-                            <Input {...type_validation} />
-                            </div>
+                                    <div className="d-flex justify-content-between me-2">
+                                      <label
+                                        className="form-label"
+                                        htmlFor="organizationType"
+                                      >
+                                        Տեսակը
+                                      </label>
+                                      {methods.formState.errors
+                                        .organizationType && (
+                                        <span className="error text-red">
+                                          <span>
+                                            <img
+                                              src={ErrorSvg}
+                                              alt="errorSvg"
+                                            />
+                                          </span>{" "}
+                                          պարտադիր
+                                        </span>
+                                      )}
+                                    </div>
+                                    <div className="form-control">
+                                      <Controller
+                                        name="organizationType"
+                                        control={methods.control}
+                                        defaultValue={null}
+                                        rules={{ required: true }}
+                                        render={({ field }) => (
+                                          <Select
+                                            {...field}
+                                            options={organizationTypes}
+                                            placeholder={"Ընտրել"}
+                                          />
+                                        )}
+                                      />
+                                    </div>
+                                  </div>
                           </div>
                           <div className="row gx-3">
                             <div className="col-sm-6">
@@ -318,7 +354,7 @@ function AddOrganization({ handleToggleCreateModal, getOrganizations }) {
                               <Input {...tin_validation} />
                             </div>
                             <div className="col-sm-6">
-                            <Input {...desc_validation} />
+                            <Input {...orgDesc_validation} />
                             </div>
                           </div>
                         </div>

@@ -85,24 +85,24 @@ useEffect(() => {
     };
 
     console.log(newAgent);
-    // try {
-    //   await axiosPrivate.post(REGISTER_AGENT, newAgent, {
-    //     headers: { "Content-Type": "application/json" },
-    //     withCredentials: true,
-    //   });
+    try {
+      await axiosPrivate.post(REGISTER_AGENT, newAgent, {
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+      });
 
-    //   handleToggleCreateModal(false);
-    //   getAgents();
-    //   notify(
-    //     `${newAgent.name} գործընկերը ավելացված է`
-    //   );
-    // } catch (err) {
-    //   if (!err?.response) {
-    //     setErrMsg("No Server Response");
-    //   }  else {
-    //     setErrMsg(" Failed");
-    //   }
-    // }
+      handleToggleCreateModal(false);
+      getAgents();
+      notify(
+        `${newAgent.name} գործընկերը ավելացված է`
+      );
+    } catch (err) {
+      if (!err?.response) {
+        setErrMsg("No Server Response");
+      }  else {
+        setErrMsg(" Failed");
+      }
+    }
   }); 
   return (
     <Modal
