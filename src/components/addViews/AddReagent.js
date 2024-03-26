@@ -45,16 +45,20 @@ function AddReagent({ handleToggleCreateModal, getReagents }) {
       theme: "light",
     });
 
-  const onSubmit = methods.handleSubmit(async ({name,amount,producer,unit,usage,description}) => {
+  const onSubmit = methods.handleSubmit(async ({name,amount,producer,unit,usage,description,expdate,normaFemale,normaMale,normaBoth}) => {
     const newReagent = {
       name:name,
       price:amount,
-      producer:producer,
+      vendor:producer,
       unit:unit,
       currency:currency,
       unitType: unitType,
       usage:usage,
       description:description,
+      expdate:expdate,
+      normaFemale:normaFemale,
+      normaMale:normaMale,
+      normaBoth:normaBoth, 
       additional: editorRef.current.getContent({ format: "text" }),
     };
     const formData = JSON.stringify(newReagent);

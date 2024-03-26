@@ -144,7 +144,7 @@ function ReagentsTable({
             <div className="columnHeader">Չափման տեսակ</div>
           </>
         ),
-        accessor: "unit_type",
+        accessor: "unitType",
         sortable: true,
         width: 200,
         Filter: ({ column: { id } }) => (
@@ -161,7 +161,7 @@ function ReagentsTable({
             <div className="columnHeader">Թողարկող</div>
           </>
         ),
-        accessor: "producer",
+        accessor: "vendor",
         width: 200,
         Filter: ({ column: { id } }) => (
           <ColumnFilter 
@@ -227,7 +227,7 @@ function ReagentsTable({
             <div className="columnHeader">Կին նորմա</div>
           </>
         ),
-        accessor: "norma_female",
+        accessor: "normaFemale",
         width: 200,
         Filter: ({ column: { id } }) => (
           <ColumnFilter 
@@ -243,7 +243,7 @@ function ReagentsTable({
             <div className="columnHeader">Տղ․ նորմա</div>
           </>
         ),
-        accessor: "norma_male",
+        accessor: "normaMale",
         width: 200,
         Filter: ({ column: { id } }) => (
           <ColumnFilter 
@@ -259,7 +259,7 @@ function ReagentsTable({
             <div className="columnHeader">Նորմա</div>
           </>
         ),
-        accessor: "norma_both",
+        accessor: "normaBoth",
         width: 200,
         Filter: ({ column: { id } }) => (
           <ColumnFilter 

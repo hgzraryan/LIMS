@@ -26,6 +26,7 @@ import "../../dist/css/data-table.css";
 import organizationsSvg from '../../dist/svg/organizationsSvg.svg'
 import patientSvg from '../../dist/svg/patientSvg.svg'
 import ResearchesPrint from "../views/ResearchesPrint";
+import ProgressBar from "../ProgressBar";
 
 
 function DiagnosticsTable({
@@ -211,6 +212,20 @@ function DiagnosticsTable({
               onClick={() => handleOpenStatusModal(row.original)}
               />
           </div>}
+              </>
+        ),
+        Filter: ({ column: { id } }) => <></>,
+      },
+      {
+        Header: "Վճարում",
+        accessor: "paymentProgress",
+        disableSortBy: true,
+        width: 200,
+        Cell: ({ row }) => (<>
+          
+          <div className="d-flex justify-content-center align-items-center">
+            <ProgressBar progress={row.original.clientId}/>
+          </div>
               </>
         ),
         Filter: ({ column: { id } }) => <></>,
