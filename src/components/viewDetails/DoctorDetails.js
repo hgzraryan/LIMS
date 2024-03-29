@@ -18,22 +18,22 @@ import emailSvg from "../../dist/svg/emailSvg.svg";
 import LoadingSpinner from "../LoadingSpinner";
 import { Button } from "react-bootstrap";
 const customAppointData = [
-  "10:00AM",
-  "10:15AM",
-  "10:30AM",
-  "10:45AM",
-  "11:00AM",
-  "11:15AM",
-  "11:30AM",
-  "11:45AM",
-  "10:00AM",
-  "10:15AM",
-  "10:30AM",
-  "10:45AM",
-  "11:00AM",
-  "11:15AM",
-  "11:30AM",
-  "11:45AM",
+  {time:"10:00AM",available:true},
+  {time:"10:15AM",available:true},
+  {time:"10:30AM",available:true},
+  {time:"10:45AM",available:true},
+  {time:"11:00AM",available:true},
+  {time:"11:15AM",available:true},
+  {time:"11:30AM",available:true},
+  {time:"11:45AM",available:true},
+  {time:"10:00AM",available:true},
+  {time:"10:15AM",available:true},
+  {time:"10:30AM",available:true},
+  {time:"10:45AM",available:true},
+  {time:"11:00AM",available:true},
+  {time:"11:15AM",available:true},
+  {time:"11:30AM",available:true},
+  {time:"11:45AM",available:true},
 ];
 function DoctorDetails() {
   const axiosPrivate = useAxiosPrivate();
@@ -48,11 +48,13 @@ function DoctorDetails() {
   );
   const pageCount = 1;
   const [isChecked, setIsChecked] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedOption, setSelectedOption] = useState(customAppointData);
 
   
   const handleRadioChange = (index) => {
-    setSelectedOption(index);
+    const updatedSchedule = [...customAppointData];
+    updatedSchedule[index].available = !updatedSchedule[index].available;
+    setSelectedOption(updatedSchedule);
   };
   //const pageCount = Math.ceil(useersCount/usersPerPage)
   const handleOpenModal = (data) => {
@@ -238,36 +240,40 @@ function DoctorDetails() {
                     <div className="separator m-0"></div>
 
                     <main style={{display:'flex',flexWrap:'wrap'}}>
-                      {customAppointData &&
-                        customAppointData.map((el, index) => {
+                      {selectedOption &&
+                        selectedOption.map((el, index) => {
                           return (
                             <div key={index}
                               style={{
                                 width: '80px',
               height: '25px',
               padding: '0 .2rem',
-              backgroundColor:selectedOption === index ? '#d7da39' : '#074367',
+              backgroundColor:el?.available === false ? 'rgb(93,60,85)' : 'rgb(10,110,126)',
               borderRadius: '.3rem',
               margin: '.5rem',
               display: 'flex',
               flexWrap: 'wrap',
               justifyContent: 'space-around',
               alignItems: 'center',
-              textDecoration: selectedOption === index ?'line-through':'none'
+              textDecoration: el?.available === false ?'line-through':'none'
               
                               }}
                             >
-                              <input type="radio"
+                              <input 
+                              type="radio"
                               style={{cursor:'pointer'}}
-              checked={selectedOption === index}
-              onChange={() => handleRadioChange(index)} />
+                              id={`slot-${index}`}
+                              name="appointment-slot"
+                              value={el.time}
+                              checked={!el.available}
+                              onChange={() => handleRadioChange(index)} />
                               <span
                                 style={{
                                   color: "#fff" || "#000",
                                   fontSize: ".8rem",
                                 }}
                               >
-                                {el}
+                                {el.time}
                               </span>
                             </div>
                           );
@@ -281,7 +287,7 @@ function DoctorDetails() {
                           style={{
                             width: "20px",
                             height: "20px",
-                            backgroundColor: "#074367",
+                            backgroundColor: "rgb(10,110,126)",
                             borderRadius: ".3rem",
                             marginRight: ".3rem",
                           }}
@@ -294,7 +300,7 @@ function DoctorDetails() {
                           style={{
                             width: "20px",
                             height: "20px",
-                            backgroundColor: "#d7da39",
+                            backgroundColor: "rgb(93,60,85)",
                             borderRadius: ".3rem",
                             marginRight: ".3rem",
                           }}

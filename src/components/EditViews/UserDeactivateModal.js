@@ -24,9 +24,9 @@ function UserDeactivateModal({handleCloseEditModal,rowData,getUsers}) {
       theme: "light",
     });
     const handleUserDetails = async (data) => {  
-      
+      console.log({id:userId,userStatus:isActive})
       try {
-        const response = await axiosPrivate.post("/diagStatusChange",{id:userId,diagStatus:data},{
+        const response = await axiosPrivate.post("/userStatusChange",{id:userId,userStatus:isActive?0:1},{
           headers: { "Content-Type": "application/json" },
           withCredentials: true,
         } );
@@ -81,7 +81,7 @@ function UserDeactivateModal({handleCloseEditModal,rowData,getUsers}) {
 {isActive ===0 && 
   <button
   type="button"
-  onClick={()=>('Active')}
+  onClick={()=>handleUserDetails()}
   className="btn btn-primary"
   data-bs-dismiss="modal"
   >

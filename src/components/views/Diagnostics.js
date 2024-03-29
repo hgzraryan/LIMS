@@ -77,8 +77,9 @@ const Diagnostics = () => {
   //-------------------------
 
   const refreshPage = () => {
-    let paglink = document.querySelectorAll(".page-item");
-    paglink[0].firstChild.click();
+    // let paglink = document.querySelectorAll(".page-item");
+    // paglink[0].firstChild.click();
+    getDiagnostics()
   };
   //-------------------
 
@@ -195,8 +196,8 @@ const Diagnostics = () => {
                         getDiagnostics={getDiagnostics}
                       />
                          <ReactPaginate
-                          previousLabel = {"Previous"}    
-                          nextLabel = {"Next"}
+                          previousLabel = {"Հետ"}    
+                          nextLabel = {"Առաջ"}
                           pageCount = {pageCount}
                           onPageChange = {handlePageClick}
                           initialPage = {0}

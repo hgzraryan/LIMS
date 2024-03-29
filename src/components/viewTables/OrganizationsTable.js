@@ -130,6 +130,30 @@ function OrganizationsTable({
       {
         Header: (event) => (
           <>
+            <div>Տեսակ</div>
+          </>
+        ),
+        accessor: "type",
+        width: 200,
+        Cell: ({ row }) => (
+          <div className="d-flex align-items-center">
+             {row.original?.type === 'Laboratory'?'Լաբորատորիա':
+            row.original?.type ==='Hospital'?'Հիվանդանոց':
+            row.original?.type ==='Polyclinic'?'Պոլիկլինիկա':
+            row.original?.type ==='Other'?'Այլ':''}
+          </div>
+        ),
+        Filter: ({ column: { id } })=>(
+          <ColumnFilter
+            id={id}
+            setData={setOrganizations}
+            placeholder = "Հեռախոս"
+          />
+        ),
+      },
+      {
+        Header: (event) => (
+          <>
             <div className="columnHeader">Գրանցված է</div>
           </>
         ),

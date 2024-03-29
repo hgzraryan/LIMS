@@ -100,24 +100,24 @@ function CreateUser({ setIsOpen,getUsers }) {
     }),
   };
   
-  useEffect(() => {
-    setTimeout(() => {
-      const getData = async () => {
-        try {
-          const response = await axiosPrivate.get(`/userRoles`);
-          console.log(response)
-          // setIsLoading(false);
-          // setOrganizationDiagnostics(((prev) => response.data));
-          // setCurrentPage((prev) => prev = 1);
-        } catch (err) {
-          console.error(err);
-          //navigate("/login", { state: { from: location }, replace: true });
-        }
-      };
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     const getData = async () => {
+  //       try {
+  //         const response = await axiosPrivate.get(`/userRoles`);
+  //         console.log(response)
+  //         // setIsLoading(false);
+  //         // setOrganizationDiagnostics(((prev) => response.data));
+  //         // setCurrentPage((prev) => prev = 1);
+  //       } catch (err) {
+  //         console.error(err);
+  //         //navigate("/login", { state: { from: location }, replace: true });
+  //       }
+  //     };
       
-      getData();
-    }, 500);
-  }, []);
+  //     getData();
+  //   }, 500);
+  // }, []);
   const onGenderSelect = (event) => {
     setGender(prev=>event.target.value)
   };
@@ -185,6 +185,8 @@ function CreateUser({ setIsOpen,getUsers }) {
           country: country,
           zipCode: zipCode,
         },
+        emergencyContactName:emergencyContactName,
+        emergencyContactNumber:emergencyContactNumber,
       },
       gender: gender,
       maritalStatus:maritalStatus,
@@ -192,8 +194,6 @@ function CreateUser({ setIsOpen,getUsers }) {
       password:password,
       roles: onRoleSelect(roles),
       //type:userType,
-      emergencyContactName:emergencyContactName,
-      emergencyContactNumber:emergencyContactNumber,
       birthday:new Date(
         dateOfBirth.getTime() - dateOfBirth.getTimezoneOffset() * 60000
       )
@@ -378,9 +378,9 @@ function CreateUser({ setIsOpen,getUsers }) {
                             </div>
                           </div>
                           <div className="row gx-3">
-                            <div className="col-sm-6">
+                            {/* <div className="col-sm-6">
                               <Input {...position_validation} />
-                            </div>
+                            </div> */}
                             <div className="col-sm-6">
                               <div className="form-group">
                               <div className="d-flex justify-content-between me-2">

@@ -263,7 +263,7 @@ const handleCloseEditModal = () => {
               >
                 <span className="icon">
                   <span className="feather-icon">
-                    <FeatherIcon icon="trash" />
+                    <FeatherIcon icon="power" />
                   </span>
                 </span>
               </a>

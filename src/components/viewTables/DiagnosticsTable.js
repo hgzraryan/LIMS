@@ -153,7 +153,7 @@ function DiagnosticsTable({
         Header: "ID",
         accessor: "diagnosticsId",
         sortable: true,
-        width: 60,
+        width: 70,
         Filter: ({ column: { id } }) => (
           <ColumnFilter id={id} setData={setDiagnostics} placeholder={"ID"} />
         ),
@@ -224,7 +224,7 @@ function DiagnosticsTable({
         Cell: ({ row }) => (<>
           
           <div className="d-flex justify-content-center align-items-center">
-            <ProgressBar progress={row.original.clientId}/>
+            <ProgressBar totalPrice ={row.original?.totalPrice} totalPayed={row.original?.totalPayed}/>
           </div>
               </>
         ),

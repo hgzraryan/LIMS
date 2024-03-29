@@ -365,10 +365,10 @@ function Sample() {
                             <header>
                               <div>
                                 <span style={{ fontWeight: "bold",fontSize:'18px' }}>
-                                  {/* {data.patient.firstName+" "}
-                                  {data.patient.midName+" "}
-                                  {data.patient.lastName+", "}
-                                  {data.patient.dateOfBirth+", "} */}
+                                  {data.client.firstName+" "}
+                                  {data.client.midName+" "}
+                                  {data.client.lastName+", "}
+                                  {data.client.dateOfBirth+", "}
                                 </span>
                               </div>
                             </header>

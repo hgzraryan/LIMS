@@ -1,11 +1,18 @@
-import React, { useState } from 'react'
-function ProgressBar({progress}) {
-    //const [progress,setProgress] = useState(56)
+import React, { useEffect, useState } from 'react'
+function ProgressBar({totalPrice,
+  totalPayed}) {
+    const [progress,setProgress] = useState(0)
+    useEffect(()=>{
+      setProgress(Number(totalPayed/(totalPrice/100)))
+    },[totalPayed])
     const getColor = () =>{
-        if(progress<100){
+     // console.log(progress)
+        if((progress)<60){
             return'rgb(255, 98, 28,.7)'
-        }else if(progress === 100){
+        }else if((progress) === 100){
             return "rgb(126, 224, 152,.7)"
+        }else{
+          return'rgb(255, 98, 28,.7)'
         }
     }
   return (
@@ -16,7 +23,7 @@ function ProgressBar({progress}) {
               width:`${progress}%`,
               backgroundColor:getColor()}}></div>
              <p>
-               {progress}%                
+               {totalPayed}/{totalPrice}               
               </p>
     </div>
   </div>

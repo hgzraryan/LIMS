@@ -83,9 +83,26 @@ function ResearchListsTable({
             <div className="columnHeader">ID</div>
           </>
         ),
-        accessor: "localCode",
+        accessor: "researchListId",
         sortable: true,
         width:60,
+        Filter: ({ column: { id } })=>(
+          <ColumnFilter
+            id={id}
+            setData={setResearches}
+            placeholder={'ID'}
+          />
+        ),
+      },
+      {
+        Header: (event) => (
+          <>            
+            <div className="columnHeader">Ներքին կոդ</div>
+          </>
+        ),
+        accessor: "localCode",
+        sortable: true,
+        width:100,
         Filter: ({ column: { id } })=>(
           <ColumnFilter
             id={id}
@@ -435,8 +452,8 @@ function ResearchListsTable({
   } = useTable(
     {
       columns,
-      // data: researches, 
-      data: customResearchData, 
+       data: researches, 
+      //data: customResearchData, 
       defaultColumn      
     },
     useFilters,useBlockLayout,useResizeColumns,useSortBy,

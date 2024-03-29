@@ -31,7 +31,7 @@ import { REGISTER_ORGANIZATIONS } from "../../utils/constants";
 const organizationTypes = [
   { value: "Laboratory", label: "Լաբորատորիա" },
   { value: "Hospital", label: "Հիվանդանոց" },
-  { value: "Policlinic", label: "Պոլիկլինիկա" },
+  { value: "Polyclinic", label: "Պոլիկլինիկա" },
   { value: "Other", label: "Այլ" },
 ]
 function AddOrganization({ handleToggleCreateModal, getOrganizations }) {

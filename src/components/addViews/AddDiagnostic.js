@@ -202,10 +202,12 @@ function AddDiagnostic({
       internalStatus: data?.internalDiagnosticsStatus?.value || null,
       externalStatus: data?.externalDiagnosticsStatus?.value || null,
       researchList: data?.research.map((el) => el.value),
-      clientId: patientId || organizationId,
-      clientType: clientType,
+      clientId: data.patient || data.organizations,
+      clientType: data.organization?"organization":"patient",
+      orgPatientId:data.organization ? data.patient : null,
       doctors: data.doctor,
       partner: partnerName || null,
+      refDoctor:data.refDoctor?.id || null,
       additional: editorRef.current.getContent({ format: "text" }),
     };
 
@@ -529,7 +531,7 @@ function AddDiagnostic({
                                     >
                                       Պատվիրատու
                                     </label>
-                                    {methods.formState.errors.organizations && (
+                                    {methods.formState.errors.organization && (
                                       <span className="error text-red">
                                         <span>
                                           <img src={ErrorSvg} alt="errorSvg" />
@@ -540,7 +542,7 @@ function AddDiagnostic({
                                   </div>
                                   <div className="form-control">
                                     <Controller
-                                      name="organizations"
+                                      name="organization"
                                       control={methods.control}
                                       defaultValue={null}
                                       // rules={{ required: true }}
@@ -567,7 +569,7 @@ function AddDiagnostic({
                                             })),
                                           ]}
                                           placeholder={"Ընտրել"}
-                                          isDisabled={patientId}
+                                          // isDisabled={patientId}
                                         />
                                       )}
                                     />
@@ -644,7 +646,7 @@ function AddDiagnostic({
                                   </div>
                                   <div className="form-control">
                                     <Controller
-                                      name="refDocto"
+                                      name="refDoctor"
                                       control={methods.control}
                                       isClearable={true}
                                       defaultValue={null}
@@ -652,10 +654,10 @@ function AddDiagnostic({
                                       render={({ field }) => (
                                    <Select
                                     {...field}
-                                    onChange={(val) => {
-                                      field.onChange(val.id);
-                                      onRefDoctorSelect(val);
-                                    }}
+                                    // onChange={(val) => {
+                                    //   field.onChange(val.id);
+                                    //   onRefDoctorSelect(val);
+                                    // }}
                                     value={refDoctors.find(
                                       (option) => option.value === refDoctor
                                     )}
@@ -664,7 +666,7 @@ function AddDiagnostic({
                                       ...refDoctors.map((item) => ({
                                         value: item.doctorName,
                                         label: item.doctorName,
-                                        id: item.doctorId,
+                                        id: item.refDoctorsId,
                                       })),
                                     ]}
                                     placeholder={"Ընտրել"}
