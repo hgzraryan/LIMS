@@ -1,0 +1,73 @@
+ul {
+    list-style-type: none;
+    padding: 0;
+  }
+ .work .experience {
+  float: left;
+}
+ .work .experience small {
+  display: block;
+  opacity: 0.7;
+}
+ .work .experience ul li {
+  position: relative;
+  margin-left: 15px;
+  padding-left: 25px;
+  padding-bottom: 15px;
+}
+ .work .experience ul li:hover::before {
+  animation: circle 1.2s infinite;
+}
+ .work .experience ul li:hover span {
+  color: #27c17e;
+}
+@keyframes circle {
+  from {
+    box-shadow: 0 0 0 0px #27c17e;
+  }
+  to {
+    box-shadow: 0 0 0 6px rgba(255, 255, 255, 0);
+  }
+}
+ .work .experience ul li:first-of-type::before {
+  width: 10px;
+  height: 10px;
+  left: 1px;
+}
+ .work .experience ul li:last-of-type {
+  padding-bottom: 3px;
+}
+ .work .experience ul li:last-of-type::after {
+  border-radius: 1.5px;
+}
+ .work .experience ul li::before,
+ .work .experience ul li::after{
+  content: "";
+  display: block;
+  position: absolute;
+}
+ .work .experience ul li::before{
+  width: 7px;
+  height: 7px;
+  border: 3px solid #fff;
+  background: #27c17e;
+  border-radius: 50%;
+  left: 3px;
+  z-index: 1;
+}
+ .work .experience ul li::after {
+  width: 3px;
+  height: 100%;
+  background: #fff;
+  left: 5px;
+  top: 0;
+}
+ .work .experience ul li span{
+  transition-duration: 0.3s;
+}
+ .work .experience {
+  width: 48%;
+  background: #f1fcfc;
+  padding: 15px;
+  margin: 0 4% 15px 0;
+}

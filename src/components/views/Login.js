@@ -66,6 +66,9 @@ const Login = () => {
                           }
             if (roles.includes(1212)) {
                 navigate('/addsample');
+
+            }else if(roles.includes(9578)){
+                navigate('/doctorsTemplete');
               } else{
                   navigate('/', { replace: true });
               }

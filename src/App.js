@@ -119,6 +119,9 @@ function App() {
           <Route element={<RequireAuth allowedRoles={[ROLES.Sampler]} />}>
             <Route  path={ADD_SAMPLE_ROUTE} element={<AddSample />} />
           </Route>
+          <Route element={<RequireAuth allowedRoles={[ROLES.Doctor]} />}>
+        <Route path={DOCTORSTAMPLETE_ROUTE} element={<DoctorsTemplete />} />
+          </Route>
 
           <Route element={<RequireAuth allowedRoles={[ROLES.Sampler, ROLES.Admin]} />}>
             <Route path={USERS_ID_ROUTE} element={<UserDetails />} />
@@ -134,7 +137,6 @@ function App() {
 
             <Route index path="/" element={<DoctorsVisits />} />
           <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
-            <Route path={DOCTORSTAMPLETE_ROUTE} element={<DoctorsTemplete />} />
             <Route path={DOCTORSVISITS_ROUTE} element={<DoctorsVisits />} />
             <Route path={DOCTORSVISITS_ID_ROUTE} element={<DoctorsVisitsDetails/>} />
             <Route path={DOCTORS_ID_ROUTE} element={<DoctorDetails/>} />
