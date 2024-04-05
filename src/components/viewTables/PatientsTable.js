@@ -18,7 +18,6 @@ import {  useNavigate } from 'react-router-dom';
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { Modal } from "react-bootstrap";
 import DefaultProfileImage from "../../../src/dist/img/Missing.svg";
-import "../../dist/css/data-table.css";
 
 function PatientsTable({
   selectedItem,

@@ -209,19 +209,19 @@ const handleCloseEditModal = () => {
         width: 190,
         Filter: ({ column: { id } }) => <></>,
       },
-      {
-        Header: "Պաշտոն",
-        accessor: "position",
-        width: 170,
-        Filter: ({ column: { id } })=>(
-          <ColumnFilter
-            id={id}
-            setData={setUsers}
-            placeholder={'Պաշտոն'}
+      // {
+      //   Header: "Պաշտոն",
+      //   accessor: "position",
+      //   width: 170,
+      //   Filter: ({ column: { id } })=>(
+      //     <ColumnFilter
+      //       id={id}
+      //       setData={setUsers}
+      //       placeholder={'Պաշտոն'}
 
-          />
-        ),
-      },
+      //     />
+      //   ),
+      // },
       // {
       //   Header: "Կարգավիճակ",
       //   accessor: "isActive",
