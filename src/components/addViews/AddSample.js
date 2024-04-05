@@ -101,7 +101,7 @@ function Sample() {
         </Modal>
       )}
       {modalPrint && (
-        <Modal show={() => true} size="xs" onHide={() => setModalPrint(false)} >
+        <Modal show={() => true} size="sm" onHide={() => setModalPrint(false)} >
           <Modal.Header closeButton>
             <Modal.Title
               style={{ width: "100%", textAlign: "center" }}
