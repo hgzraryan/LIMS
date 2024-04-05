@@ -5,6 +5,7 @@ const BarcodeComp= ({data})=> {
         value: data,
         options: {
           background: '#fff',
+          height:80
         }
       });
     

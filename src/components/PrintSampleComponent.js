@@ -16,7 +16,7 @@ function PrintSampleComponent({modalPrint,setModalPrint}) {
         <div>
             {/* {firstName + " " + lastName} */}
         </div>
-        <div style={{display:'flex',justifyContent:'space-between'}}>
+        <div style={{display:'flex',justifyContent:'space-between', fontSize:'0.8rem'}}>
             <p>{diagnosticsId}</p>
             <p>{dateOfBirth}</p>
         </div>
@@ -26,7 +26,9 @@ function PrintSampleComponent({modalPrint,setModalPrint}) {
 
             {
                 el && 
-                <BarcodeComp data={el.id}  /> 
+                <div>
+                    <BarcodeComp data={el.id}  /> 
+                </div>
             }
             </div>
         </main>

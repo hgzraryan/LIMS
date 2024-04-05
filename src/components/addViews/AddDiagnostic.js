@@ -29,6 +29,10 @@ const diagnosticClassState = [
   { value: "Internal", label: "Ներքին" },
   { value: "Other", label: "Այլ" },
 ];
+const biomassType = [
+  { value: "Internal", label: "Ներքին" },
+  { value: "Delivered", label: "Առաքումով" },
+];
 const diagnosticStatus = [
   { value: "Approval", label: "Ընդունված" },
   { value: "Delayed", label: "Հետաձգված" },
@@ -206,6 +210,7 @@ function AddDiagnostic({
       clientType: data.organization?"organization":"patient",
       orgPatientId:data.organization ? data.patient : null,
       doctors: data.doctor,
+      biomassType:data.biomassType.value,
       partner: partnerName || null,
       refDoctor:data.refDoctor?.id || null,
       additional: editorRef.current.getContent({ format: "text" }),
@@ -213,26 +218,26 @@ function AddDiagnostic({
 
     console.log(data);
     console.log(newDiagnose);
-    try {
-      await axiosPrivate.post(REGISTER_DIAGNOSTICS, newDiagnose, {
-        headers: { "Content-Type": "application/json" },
-        withCredentials: true,
-      });
+    // try {
+    //   await axiosPrivate.post(REGISTER_DIAGNOSTICS, newDiagnose, {
+    //     headers: { "Content-Type": "application/json" },
+    //     withCredentials: true,
+    //   });
 
-      handleToggleCreateModal(false);
-      getDiagnostics();
-      notify(
-        `${newDiagnose.diagnosticsName} Ախտորոշումը ավելացված է`
-      );
-    } catch (err) {
-      if (!err?.response) {
-        setErrMsg("No Server Response");
-      } else if (err.response?.status === 409) {
-        setErrMsg("Username Taken");
-      } else {
-        setErrMsg(" Failed");
-      }
-    }
+    //   handleToggleCreateModal(false);
+    //   getDiagnostics();
+    //   notify(
+    //     `${newDiagnose.diagnosticsName} Ախտորոշումը ավելացված է`
+    //   );
+    // } catch (err) {
+    //   if (!err?.response) {
+    //     setErrMsg("No Server Response");
+    //   } else if (err.response?.status === 409) {
+    //     setErrMsg("Username Taken");
+    //   } else {
+    //     setErrMsg(" Failed");
+    //   }
+    // }
   });
   // const { onSubmit, methods } = useSubmitForm(
   //   REGISTER_DIAGNOSTICS,
@@ -677,7 +682,40 @@ function AddDiagnostic({
                                 </div>
                               </div>
                               <div className="row gx-3">
-                                
+                              <div className="col-sm-6">
+                                  <div className="d-flex justify-content-between me-2">
+                                    <label
+                                      className="form-label"
+                                      htmlFor="biomassType"
+                                    >
+                                      Կենսանյութը
+                                    </label>
+                                    {methods.formState.errors
+                                      .biomassType && (
+                                      <span className="error text-red">
+                                        <span>
+                                          <img src={ErrorSvg} alt="errorSvg" />
+                                        </span>{" "}
+                                        պարտադիր
+                                      </span>
+                                    )}
+                                  </div>
+                                  <div className="form-control">
+                                    <Controller
+                                      name="biomassType"
+                                      control={methods.control}
+                                      defaultValue={null}
+                                      rules={{ required: true }}
+                                      render={({ field }) => (
+                                        <Select
+                                          {...field}
+                                          options={biomassType}
+                                          placeholder={"Ընտրել"}
+                                        />
+                                      )}
+                                    />
+                                  </div>
+                                </div>
                                 </div>
                               <div className="row gx-3">
                                 

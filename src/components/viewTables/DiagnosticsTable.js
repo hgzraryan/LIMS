@@ -461,6 +461,17 @@ function DiagnosticsTable({
                         <span>{modalInfo.externalStatus}</span>
                       </div>
                       <div className="separator-full m-0"></div>
+                      <div className="d-flex justify-content-between">
+                        {" "}
+                        <span>Վճարման տեսակը </span>{" "}
+                        <span>{modalInfo.paymentMethod}</span>
+                      </div>
+                      <div className="separator-full m-0"></div>
+                      <div className="d-flex justify-content-between">
+                        <span>Վճարման ամսաթիվը </span>{" "}
+                        <span>{modalInfo.paymentDate}</span>
+                      </div>
+                      <div className="separator-full m-0"></div>
                     </div>
                   </div>
                 </div>

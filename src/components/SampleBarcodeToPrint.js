@@ -16,20 +16,23 @@ export const SampleBarcodeToPrint = forwardRef(({ modalPrint }, ref) => {
             <div>
                 {/* {firstName + " " + lastName} */}
             </div>
-            <div style={{display:'flex',justifyContent:'space-between'}}>
-                <p>{diagnosticsId}</p>
-                <p>{dateOfBirth}</p>
-            </div>
-            </header> 
-            <main>
-                <div style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
-        
-                {
-                    el && 
+            <div style={{display:'flex',justifyContent:'space-between', fontSize:'0.8rem'}}>
+            <p>{diagnosticsId}</p>
+            <p>{dateOfBirth}</p>
+        </div>
+        </header> 
+        <main>
+            <div style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
+
+            {
+                el && 
+                <div style={{height:'7rem'}}>
+
                     <BarcodeComp data={el.id}  /> 
-                }
                 </div>
-            </main>
+            }
+            </div>
+        </main>
             {/* <footer>
             <PrintSampleWrapper value={modalPrint} currentClient={el}/>
             </footer> */}
