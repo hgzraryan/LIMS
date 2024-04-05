@@ -222,17 +222,17 @@ const handleCloseEditModal = () => {
           />
         ),
       },
-      {
-        Header: "Կարգավիճակ",
-        accessor: "isActive",
-        Cell: ({ value }) => (
-          <span className={setUserActiveState(value)[0]}>
-            {setUserActiveState(value)[1]}
-          </span>
-        ),
-        width: 150,
-        Filter: ({ column: { id } }) => <></>,
-      },
+      // {
+      //   Header: "Կարգավիճակ",
+      //   accessor: "isActive",
+      //   Cell: ({ value }) => (
+      //     <span className={setUserActiveState(value)[0]}>
+      //       {setUserActiveState(value)[1]}
+      //     </span>
+      //   ),
+      //   width: 150,
+      //   Filter: ({ column: { id } }) => <></>,
+      // },
       {
         Header: "Գործողություններ",
         accessor: "actions",
@@ -263,7 +263,7 @@ const handleCloseEditModal = () => {
               >
                 <span className="icon">
                   <span className="feather-icon">
-                    <FeatherIcon icon="power" />
+                    <FeatherIcon icon="power" style={{color: row.original?.isActive ? 'green' : 'red' }} />
                   </span>
                 </span>
               </a>

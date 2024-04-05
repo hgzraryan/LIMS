@@ -8,6 +8,7 @@ import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { useNavigate } from "react-router-dom";
 import useLogout from "../../hooks/useLogout";
 import { BiSolidInfoCircle } from "react-icons/bi";
+import PrintSampleComponent from "../PrintSampleComponent";
 function Sample() {
   const [barcodeScan, setBarcodeScan] = useState("");
   const [data, setData] = useState("");
@@ -16,6 +17,8 @@ function Sample() {
   const navigate = useNavigate();
   const logout = useLogout();
   const barcodeInputRef = useRef(null);
+  const [modalPrint, setModalPrint] = useState("");
+
   const [userData,setUserData]=useState('')
 
   useEffect(() => {
@@ -30,6 +33,13 @@ function Sample() {
   }, []);
   const handleOpenInfoModal = (user) => {
     setModalInfo((prev) => user);
+  };
+  const handleOpenPrintModal = (data,el) => {
+    const sampleData={...data,el}
+    console.log(data)
+    console.log(el)
+
+    setModalPrint((prev) => sampleData);
   };
   const signOut = async () => {
     await logout();
@@ -87,6 +97,27 @@ function Sample() {
                 Փակել
               </button>
             </div>
+          </Modal.Body>
+        </Modal>
+      )}
+      {modalPrint && (
+        <Modal show={() => true} size="xs" onHide={() => setModalPrint(false)} >
+          <Modal.Header closeButton>
+            <Modal.Title
+              style={{ width: "100%", textAlign: "center" }}
+            ></Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <div className="contact-body contact-detail-body">
+              <div data-simplebar className="nicescroll-bar">
+                <div className="d-flex flex-xxl-nowrap flex-wrap">
+                  <div className="contact-info w-100">
+                    <PrintSampleComponent modalPrint={modalPrint}  setModalPrint={setModalPrint} />
+                  </div>
+                </div>
+              </div>
+            </div>
+            
           </Modal.Body>
         </Modal>
       )}
@@ -356,7 +387,7 @@ function Sample() {
                             </Button>
                           </form>
                         </div>
-                        {console.log(data)}
+                        {/* {console.log(data)} */}
                         {data && (
                           <div
                             className="d-flex justify-content-center align-items-center flex-column"
@@ -374,10 +405,11 @@ function Sample() {
                             </header>
                             <main>
                               {data.diagnostics?.statusBoard[1]?.researches.length &&
-                                data.diagnostics?.statusBoard[1]?.researches.map((el) => {
+                                data.diagnostics?.statusBoard[1]?.researches.map((el,id) => {
                                   return (
-                                    <>
+                                    
                                       <div
+                                        key={id}
                                         className="d-flex flex-column m-3"
                                         style={{
                                           border: "2px solid #000",
@@ -424,16 +456,25 @@ function Sample() {
                                               )
                                             }
                                           />
+                                          <div className="d-flex justify-content-end">
+
                                         <Button
                                           style={{ backgroundColor: "#4eafcb" }}
                                           onClick={(e) => {
                                             e.target.disabled = true;
                                           }}
-                                        >
+                                          >
                                           Կատարել
                                         </Button>
+                                        <Button
+                                          style={{ backgroundColor: "gray" }}
+                                          onClick={() => handleOpenPrintModal(data,el)}
+                                          >
+                                          Տպել
+                                        </Button>
+                                          </div>
                                       </div>
-                                    </>
+                                    
                                   );
                                 })}
                             </main>
