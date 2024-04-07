@@ -111,7 +111,8 @@ function DoctorsVisits() {
     };
     const refreshPage = () => {
         let paglink = document.querySelectorAll(".page-item");
-        paglink[0].firstChild.click();
+        paglink[0]?.firstChild.click();
+        // refreshData();
       };
       //-------------------
       return (

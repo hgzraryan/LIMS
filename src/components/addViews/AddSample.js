@@ -29,15 +29,13 @@ function Sample() {
   }, []);
 
   useEffect(() => {
-    barcodeInputRef.current.focus();
+    barcodeInputRef.current?.focus();
   }, []);
   const handleOpenInfoModal = (user) => {
     setModalInfo((prev) => user);
   };
   const handleOpenPrintModal = (data,el) => {
     const sampleData={...data,el}
-    console.log(data)
-    console.log(el)
 
     setModalPrint((prev) => sampleData);
   };
@@ -61,7 +59,6 @@ function Sample() {
       const response = await axiosPrivate.get(`./diagnosticsSampling/${data}`);
       // setTimeout(() => {
       setData((prev) => response.data);
-      console.log(response.data);
       // }, 500);
     } catch (err) {
       console.error(err);
@@ -405,11 +402,11 @@ function Sample() {
                             </header>
                             <main>
                               {data.diagnostics?.statusBoard[1]?.researches.length &&
-                                data.diagnostics?.statusBoard[1]?.researches.map((el,id) => {
+                                data.diagnostics?.statusBoard[1]?.researches.map((el) => {
                                   return (
                                     
                                       <div
-                                        key={id}
+                                        
                                         className="d-flex flex-column m-3"
                                         style={{
                                           border: "2px solid #000",

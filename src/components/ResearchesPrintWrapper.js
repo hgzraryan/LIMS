@@ -3,7 +3,7 @@ import React, { useRef } from 'react'
 import { ComponentToPrint } from './ComponentToPrint';
 import ReactToPrint from 'react-to-print';
 
-function ResearchesPrintWrapper({ value,currentPatient }) {
+function ResearchesPrintWrapper({ value,currentClient }) {
     let componentRef = useRef(null); // 2.
     return (
       <div style={{ display: "flex" }}>
@@ -20,7 +20,7 @@ function ResearchesPrintWrapper({ value,currentPatient }) {
           content={() => componentRef.current}
         />
         <div style={{ display: "none" }}>
-          <ComponentToPrint ref={componentRef} value={value} currentPatient={currentPatient} />
+          <ComponentToPrint ref={componentRef} value={value} currentClient={currentClient} />
         </div>
       </div>
     );

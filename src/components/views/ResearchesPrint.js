@@ -2,7 +2,7 @@ import React, { Suspense, useEffect, useRef, useState } from 'react'
 import LoadingSpinner from '../LoadingSpinner';
 import ResearchesPrintWrapper from '../ResearchesPrintWrapper';
 import BarcodeComp from '../BarcodeComp';
-import mainLogo from "../../dist/img/main-logo.jpg";
+import mainLogo from "../../dist/img/main-logo.png";
 import { useTable } from 'react-table';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 const data = [
@@ -25,7 +25,8 @@ function ResearchesPrint({modalPrint,setModalPrint}){
     const [currentClient, setCurrentClient] = useState({}); 
     const {clientId} = modalPrint
     const {clientType} = modalPrint
-
+    const {statusBoard} = modalPrint
+console.log(modalPrint)
     const componentRef = useRef(); 
     
       const getPatientData = async () => {
@@ -74,7 +75,7 @@ function ResearchesPrint({modalPrint,setModalPrint}){
               // },
               {
                 Header: "Հետազոտություն",
-                accessor: "researchName",
+                accessor: "name",
               },
               {
                 Header: "Արժեք",
@@ -86,7 +87,7 @@ function ResearchesPrint({modalPrint,setModalPrint}){
           const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
             useTable({
               columns,
-              data: data || [],
+              data: statusBoard[1].researches || [],
             });
   return (
     <>
@@ -102,44 +103,53 @@ function ResearchesPrint({modalPrint,setModalPrint}){
       id='resultData'
       ref={componentRef}
   >
-      <header className="header">
-                <div className="" style={{ display: 'flex', justifyContent: "space-between" }}>
-                    <div className="header__infoL " style={{ flex: '1' }}>
-                        <h3 style={{ fontWeight: "bold", color: "#01903e" }}>ԵՎԱ ԼԱԲ</h3>
-                        <h6>www.evalab.am</h6>
-                    </div>
-                    <div className="header__logo" style={{ flex: '1', display: 'flex', justifyContent: "center", alignItems: 'center' }}>
-                        <img
-                            width={"136px"}
-                            height={"136px"}
+  <header className="header" style={{display:'flex', justifyContent:'space-between'}}>
+              <div>
+               <div style={{display:'flex', justifyContent:'center',alignItems:'center'}}>
+                <p style={{fontSize:'2.5rem',color:'#4eafcb', letterSpacing:'5px',fontWeight:'bolder',textTransform:'uppercase'}}>ԷՎԱ</p>
+                <img
+                            width={"40px"}
+                            height={"40px"}
                             src={mainLogo}
                             alt="Logo"
-                            style={{ margin: 0 }}
+                            style={{ marginLeft: '1rem',marginRight:'1rem'}}
                         />
-                    </div>
-                    <div className="header__infoR"
-                        style={{ flex: '1', display: 'flex', justifyContent: "center",  flexWrap: 'wrap' }}>
-                        <div style={{ maxWidth: "300px", fontSize: "14px" }}>
-                            <div className="info-element" style={{ display: 'flex', justifyContent: 'end' }}>
-                                <p>Ք․Վանաձոր, Բաբայան 5/8,4548</p>
-                            </div>
-                            <div className="info-element" style={{ display: 'flex', justifyContent: 'end' }}>
-                                <p>+374 99 942-200, +374 32 242-200</p>
-                            </div>
-                            <div className="info-element" style={{ display: 'flex', justifyContent: 'end' }}>
-                                <p>Երկ. - Ուրբ. 08:00-18:00</p>
-                            </div>
-                            <div className="info-element" style={{ display: 'flex', justifyContent: 'end' }}>
-                                <p>Շաբ․ 08:00-13:00</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <p style={{fontSize:'2.5rem',color:'#4eafcb', letterSpacing:'5px',fontWeight:'bolder',textTransform:'uppercase'}}>ԼԱԲ</p>
+               </div>
+               <div style={{display:'flex', justifyContent:'center',alignItems:'center'}}> <p style={{fontSize:'1.3rem',color:'#4eafcb',textTransform:'uppercase',fontWeight:'bolder'}}>ԱԽտորոշման կենտրոն</p></div>
+              
+               </div>
+               <div>
+               <div>
+               <div style={{display:'flex', justifyContent:'center',alignItems:'center'}}>
+                <p style={{fontSize:'2.5rem',color:'#4eafcb', letterSpacing:'5px',fontWeight:'bolder',textTransform:'uppercase'}}>Eva</p>
+                <img
+                            width={"40px"}
+                            height={"40px"}
+                            src={mainLogo}
+                            alt="Logo"
+                            style={{ marginLeft: '1rem',marginRight:'1rem'}}
+                        />
+                <p style={{fontSize:'2.5rem',color:'#4eafcb', letterSpacing:'5px',fontWeight:'bolder',textTransform:'uppercase'}}>Lab</p>
+               </div>
+               <div style={{display:'flex', justifyContent:'center',alignItems:'center'}}> <p style={{fontSize:'2.3rem',color:'#4eafcb',textTransform:'uppercase',fontWeight:'bolder',marginTop:'-10px'}}>Laboratory</p></div>
+              
+               </div>
+               </div>
+
             </header>
+            <div
+      style={{
+        width: "100%",
+        height: "3px",
+        borderRadius:'.3rem',
+        background: 'linear-gradient(to right, #4eafcb 65%, transparent)',
+      }}
+    ></div>  
             <div
             className="d-flex justify-content-center align-center"
             style={{
-              background: "#01903e",
+              background: "#4eafcb",
               color: "white",
               borderRadius: "5px",
               margin: "10px 0",
@@ -158,8 +168,8 @@ function ResearchesPrint({modalPrint,setModalPrint}){
              <>
         <section className="container">
           <div className="Requisites d-flex flex-column justify-content-center align-items-center">
-            <p style={{fontSize:'18px' }}>ՀՎՀՀ 12457888</p>
-            <p style={{fontSize:'18px' }}>h/h 220090120845000 ACBA բանկ</p>
+            <p style={{fontSize:'18px' }}>000000</p>
+            <p style={{fontSize:'18px' }}>h/h 000000000  բանկ</p>
           </div>
         </section>
         <section style={{display:"flex",justifyContent:'space-around',margin:'2rem 0 2rem 0'}} className="container ">
@@ -196,7 +206,7 @@ function ResearchesPrint({modalPrint,setModalPrint}){
                   </tr>
                 ))}
               </thead>
-              {data?.length && (
+              {statusBoard[1].researches?.length && (
            
                 <tbody {...getTableBodyProps()}>
                 {rows.map((row, i) => {
@@ -224,9 +234,9 @@ function ResearchesPrint({modalPrint,setModalPrint}){
         <section className="container">
           <div className="total d-flex flex-column align-items-end">
             <p style={{marginRight:'6px'}}>Զեղչ 0</p>
-            <p>Ընդհանուր արժեք 
-              {/* {value.totalPrice} */}
-              47000 դր․</p>
+            <p>Ընդհանուր արժեք   
+              {" " +modalPrint.totalPrice}դր
+              </p>
           </div>
         </section>
 
@@ -279,7 +289,7 @@ function ResearchesPrint({modalPrint,setModalPrint}){
                   </tr>
                 ))}
               </thead>
-              {data?.length && (
+              {statusBoard[1].researches?.length && (
            
                 <tbody {...getTableBodyProps()}>
                 {rows.map((row, i) => {
@@ -307,9 +317,9 @@ function ResearchesPrint({modalPrint,setModalPrint}){
         <section className="container">
           <div className="total d-flex flex-column align-items-end">
             <p style={{marginRight:'6px'}}>Զեղչ 0</p>
-            <p>Ընդհանուր արժեք 
-               {/* {value.totalPrice}  */}
-              47000 դր․</p>
+            <p>Ընդհանուր արժեք   
+              {" " +modalPrint.totalPrice}դր
+              </p>
           </div>
         </section>
 

@@ -1,6 +1,6 @@
 import React, { Suspense, useEffect, useRef, useState } from 'react'
 import { useTable } from 'react-table';
-import mainLogo from "../dist/img/main-logo.jpg";
+import mainLogo from "../dist/img/main-logo.png";
 import userIcon from "../dist/pngIcons/user.png";
 import phoneIcon from "../dist/pngIcons/phone.png";
 import emailIcon from "../dist/pngIcons/email.png";
@@ -14,52 +14,7 @@ import ComponentToPrintResultWrapper from './ComponentToPrintResultWrapper.js';
 import useAxiosPrivate from '../hooks/useAxiosPrivate.js';
 import LoadingSpinner from './LoadingSpinner.js';
 import organizationsSvg from '../dist/svg/organizationsSvg.svg'
-const data1 = [
-    {
-      shortName: "WBC",
-      researchName: "Լեյկոցիտների ընդհանուր քանակ",
-      analysisResult: 8.88,
-      referenceRange: "4.0-10.0",
-      units: "10^9/L",
-    },
-    {
-      shortName: "RBC",
-      researchName: "Էրիթրոցիտների ընդհանուր քանակ",
-      analysisResult: 6.09,
-     // referenceRange: ["men 4.0-10.0", "women 4,6-6,2"],
-      referenceRange: [ " 4,6-6,2"],
-      units: "10^9/L",
-    },
-    {
-      shortName: "MCV ",
-      researchName: "Էրիթրոցիտի միջին ծավալը փորձանմուշի  ընդհանուր ծավալում",
-      analysisResult: 83.7 ,
-      referenceRange: "80-100",
-      units: "fl",
-    },
-    {
-      shortName: "WBC",
-      researchName: "Լեյկոցիտների ընդհանուր քանակ",
-      analysisResult: 8.88,
-      referenceRange: "4.0-10.0",
-      units: "10^9/L",
-    },
-    {
-      shortName: "WBC",
-      researchName: "Լեյկոցիտների ընդհանուր քանակ",
-      analysisResult: 8.88,
-      referenceRange: "4.0-10.0",
-      units: "10^9/L",
-    },
-    {
-      shortName: "WBC",
-      researchName: "Լեյկոցիտների ընդհանուր քանակ",
-      analysisResult: 8.88,
-      referenceRange: "4.0-10.0",
-      units: "10^9/L",
-    },
-    
-  ];
+
   function ResultData({modalResult,setModalResult}) { 
     // const [patient,setPatient]=useState({})
     const [isLoading, setIsLoading] = useState(true);
@@ -75,7 +30,6 @@ const getPatientData = async () => {
       const response = await axiosPrivate.get(`/patients/${clientId}`);
       setIsLoading(false);
       setCurrentClient((prevUsers) => response.data.jsonString);
-      console.log(response.data.jsonString)
 
           } catch (err) {
             console.error(err);
@@ -87,7 +41,6 @@ const getOrganizationData = async () => {
       const response = await axiosPrivate.get(`/organizations`);
       setIsLoading(false);
       setCurrentClient((prevUsers) => response.data.jsonString[0]);
-      console.log(response.data.jsonString)
 
           } catch (err) {
             console.error(err);
@@ -105,7 +58,6 @@ useEffect(()=>{
     //let patientRef = useRef(null); 
     const handleSendResult = () => {
       const resultData = document.getElementById('resultData');
-      console.log(JSON.stringify(resultData))
     };
     // const patient= patients.filter((el)=>el.patientId===patientId)[0]
        const columns = React.useMemo(
@@ -116,11 +68,11 @@ useEffect(()=>{
              },
              {
                Header: "Անվանում",
-               accessor: "researchName",
+               accessor: "name",
              },
              {
                Header: "Արդյունք",
-               accessor: "analysisResult",
+               accessor: "researchResult",
              },
              {
                Header: "նորմա",
@@ -139,7 +91,7 @@ useEffect(()=>{
      const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
      useTable({
        columns,
-       data: data1,
+       data: statusBoard[4]?.researches,
      });
      const componentRef = useRef(); // Create a ref to the component
 
@@ -189,7 +141,7 @@ useEffect(()=>{
             id='resultData'
             ref={componentRef}
         >
-            <header className="header">
+            {/* <header className="header">
                 <div className="" style={{ display: 'flex', justifyContent: "space-between" }}>
                     <div className="header__infoL " style={{ flex: '1' }}>
                         <h3 style={{ fontWeight: "bold", color: "#01903e" }}>ԵՎԱ ԼԱԲ</h3>
@@ -222,8 +174,51 @@ useEffect(()=>{
                         </div>
                     </div>
                 </div>
+            </header> */}
+             <header className="header" style={{display:'flex', justifyContent:'space-between'}}>
+              <div>
+               <div style={{display:'flex', justifyContent:'center',alignItems:'center'}}>
+                <p style={{fontSize:'2.5rem',color:'#4eafcb', letterSpacing:'5px',fontWeight:'bolder',textTransform:'uppercase'}}>ԷՎԱ</p>
+                <img
+                            width={"40px"}
+                            height={"40px"}
+                            src={mainLogo}
+                            alt="Logo"
+                            style={{ marginLeft: '1rem',marginRight:'1rem'}}
+                        />
+                <p style={{fontSize:'2.5rem',color:'#4eafcb', letterSpacing:'5px',fontWeight:'bolder',textTransform:'uppercase'}}>ԼԱԲ</p>
+               </div>
+               <div style={{display:'flex', justifyContent:'center',alignItems:'center'}}> <p style={{fontSize:'1.3rem',color:'#4eafcb',textTransform:'uppercase',fontWeight:'bolder'}}>ԱԽտորոշման կենտրոն</p></div>
+              
+               </div>
+               <div>
+               <div>
+               <div style={{display:'flex', justifyContent:'center',alignItems:'center'}}>
+                <p style={{fontSize:'2.5rem',color:'#4eafcb', letterSpacing:'5px',fontWeight:'bolder',textTransform:'uppercase'}}>Eva</p>
+                <img
+                            width={"40px"}
+                            height={"40px"}
+                            src={mainLogo}
+                            alt="Logo"
+                            style={{ marginLeft: '1rem',marginRight:'1rem'}}
+                        />
+                <p style={{fontSize:'2.5rem',color:'#4eafcb', letterSpacing:'5px',fontWeight:'bolder',textTransform:'uppercase'}}>Lab</p>
+               </div>
+               <div style={{display:'flex', justifyContent:'center',alignItems:'center'}}> <p style={{fontSize:'2.3rem',color:'#4eafcb',textTransform:'uppercase',fontWeight:'bolder',marginTop:'-10px'}}>Laboratory</p></div>
+              
+               </div>
+               </div>
+
             </header>
-         <main style={{ flex: "1 1 auto" }}>
+            <div
+      style={{
+        width: "100%",
+        height: "3px",
+        borderRadius:'.3rem',
+        background: 'linear-gradient(to right, #4eafcb 65%, transparent)',
+      }}
+    ></div>         
+    <main style={{ flex: "1 1 auto" }}>
            <section>
              <div
                className="result title"
@@ -231,9 +226,9 @@ useEffect(()=>{
                  display:'flex',
                 justifyContent:'center',
                 alignItems:'center',
-                 background: "#01903e",
+                 background: "#4eafcb",
                  color: "white",
-                 borderRadius: "5px",
+                 borderRadius: ".3rem",
                  margin: "10px 0",
                }}
              >
@@ -313,7 +308,7 @@ useEffect(()=>{
                <div style={{display:'flex',justifyContent:'space-between'}}>
                  <p> Կենսանյութ՝ {modalResult.biomass || 'Արյուն'}</p>
                  <p style={{ fontSize: "13px" }}>
-                   Հետազոտությունը կատարվել է {modalResult.device || 'Sysmex XN 550'} ավտոմատ վերլուծիչով
+                   {/* Հետազոտությունը կատարվել է {modalResult?.device } ավտոմատ վերլուծիչով */}
                  </p>
                </div>
              </div>
@@ -491,8 +486,27 @@ useEffect(()=>{
               </Suspense>}
          </main>
          <footer style={{ marginTop: "auto" }}>
-           <div>
-             <p>Լիցենզիա Կ-ԲՕ-145847 տրվ. ԱՆ 24.07.2013թ</p>
+         <div
+      style={{
+        marginTop:'.5rem',
+        marginBottom:'.5rem',
+        width: "100%",
+        height: "3px",
+        borderRadius:'.3rem',
+        background: 'linear-gradient(to right, #4eafcb 65%, transparent)',
+      }}
+    ></div> 
+           <div style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+            <div>
+              <p>ք․ Վանաձոր, Թումանյան 3/25</p>
+              <p>info@evalab.am</p>
+              <p>+374 99 94 22 00 | +374 322 4 22 00</p>
+            </div>
+            <div>
+              <p>Tumanyan 3/25 str. Vanadzor, RA</p>
+              <p> 2001</p>
+              <p>info@evalab.am</p>
+            </div>
            </div>
          </footer>
      <footer style={{display:'flex', justifyContent:'end',gap:'5px'}}>

@@ -9,49 +9,6 @@ import { BiSolidInfoCircle } from "react-icons/bi";
 import researchSvg from "../../../src/dist/img/research.svg";
 import "../../dist/css/data-table.css";
 import { Modal } from "react-bootstrap";
-const customResearchData = [
-  {
-  researchName: 'researchName',
-  localCode:4,
-  partnerCode:124,
-  laboratoryService:'laboratoryService',
-  categoryName:'categoryName',
-  serviceName:'serviceName',
-  shortName: 'shortName',
-  price:15000,
-  purchasePrice:12000,
-  deliveryTimeLimit:'deliveryTimeLimit',
-  biomaterial:'biomaterial',
-  vial:'vial',
-  samplingPeriod:'samplingPeriod',
-  researchPrepSub:'researchPrepSub',
-  category: 'category',
-  additional:'additional',
-  class: 'Internal',
-  
-  },
-  {
-  researchName: 'researchName',
-  localCode:5,
-  partnerCode:652,
-  laboratoryService:'laboratoryService',
-  categoryName:'categoryName',
-  serviceName:'serviceName',
-  shortName: 'shortName',
-  price:5000,
-  purchasePrice:6000,
-  deliveryTimeLimit:'deliveryTimeLimit',
-  biomaterial:'biomaterial',
-  vial:'vial',
-  samplingPeriod:'samplingPeriod',
-  researchPrepSub:'researchPrepSub',
-  category: 'category',
-  additional:'additional',
-  class: 'Internal',
-  
-  },
-  
-]
 function ResearchListsTable({
   confirmRef,
   selectedItem,
@@ -85,7 +42,7 @@ function ResearchListsTable({
         ),
         accessor: "researchListId",
         sortable: true,
-        width:60,
+        width:80,
         Filter: ({ column: { id } })=>(
           <ColumnFilter
             id={id}

@@ -27,6 +27,7 @@ const Agents = () => {
     data: agents,
     setData: setAgents,
     getData: getAgents,
+    refreshData
   } = useGetData(AGENTS_URL,currentPage,usersPerPage);
 
   const handleOpenModal = (user) => {
@@ -61,7 +62,8 @@ const Agents = () => {
   //-------------------------
   const refreshPage = () => {
     let paglink = document.querySelectorAll(".page-item");
-    paglink[0].firstChild.click();
+    paglink[0]?.firstChild.click();
+    refreshData()
   };
   //-------------------
 

@@ -7,11 +7,8 @@ import { ResultToPrintComponent } from './ResultToPrintComponent';
 function ComponentToPrintResultWrapper({data,patient}) {
     let patientRef = useRef(null); 
 const handlePrint = () =>{
-    console.log("printed")
 }
      const {statusBoard}=data
-     const {patientId}=data
-    //   patientRef.current = [].filter((el)=>el.patientId===patientId)
 
     let componentRef = useRef(null); 
     return (

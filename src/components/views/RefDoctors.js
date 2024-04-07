@@ -32,6 +32,7 @@ function RefDoctors() {
       data: refDoctors,
       setData: setRefDoctors,
       getData: getRefDoctors,
+      refreshData
     } = useGetData(REFDOCTORS_URL,currentPage,usersPerPage)
     ;
     const handleCloseModal = () => {
@@ -62,7 +63,8 @@ function RefDoctors() {
        }
        const refreshPage = () => {
         let paglink = document.querySelectorAll(".page-item");
-        paglink[0].firstChild.click();
+        paglink[0]?.firstChild.click();
+        refreshData()
       };
   return (
     <div>

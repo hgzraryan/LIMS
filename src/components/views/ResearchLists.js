@@ -46,6 +46,7 @@ const ResearchLists = () => {
     data: researchList,
     setData: setResearches,
     getData: getResearches,
+    refreshData
   } = useGetData(RESEARCHLISTS_URL,currentPage,usersPerPage);
   const handleOpenModal = (user) => {
     setSelectedItemId(true);
@@ -77,10 +78,9 @@ const ResearchLists = () => {
   //-------------------------
 
   const refreshPage = () => {
-    setResearches([])
-    setTimeout(() => {
-      setResearches(prev=>researchList)
-   }, 0);
+    refreshData()
+    let paglink = document.querySelectorAll(".page-item");
+    paglink[0]?.firstChild.click();
   };
   return (
     <div>

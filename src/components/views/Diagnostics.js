@@ -11,12 +11,10 @@ import { useSelector } from "react-redux";
 
 import AddDiagnostic from "../addViews/AddDiagnostic";
 import { selectDiagnosticsCount} from "../../redux/features/diagnostics/diagnosticsCountSlice";
-import { selectResearches } from "../../redux/features/researches/researchesSlice";
 import { DIAGNOSTICS_URL, DOCTORS_URL, PATIENTS_URL } from "../../utils/constants";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
 const Diagnostics = () => {
-  const researchesState= useSelector(selectResearches)
   const [selectedItem, setSelectedItem] = useState("");
   const [selectedItemId, setSelectedItemId] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -32,6 +30,7 @@ const Diagnostics = () => {
     data: diagnostics,
     setData: setDiagnostics,
     getData: getDiagnostics,
+    refreshData
   } = useGetData(DIAGNOSTICS_URL,currentPage,usersPerPage);
 
 
@@ -77,9 +76,9 @@ const Diagnostics = () => {
   //-------------------------
 
   const refreshPage = () => {
-    // let paglink = document.querySelectorAll(".page-item");
-    // paglink[0].firstChild.click();
-    getDiagnostics()
+    let paglink = document.querySelectorAll(".page-item");
+    paglink[0]?.firstChild.click();
+    refreshData()
   };
   //-------------------
 
@@ -129,7 +128,6 @@ const Diagnostics = () => {
                     <AddDiagnostic
                       handleToggleCreateModal={handleToggleCreateModal}
                       getDiagnostics={() => getDiagnostics()}
-                      researchesState={researchesState}
                       doctors={doctors}
                     />
                   )}

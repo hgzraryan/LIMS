@@ -7,7 +7,6 @@ import "react-datepicker/dist/react-datepicker.css";
 import { Form, FormProvider, useForm, Controller } from "react-hook-form";
 import { Input } from "../Input";
 import { name_validation } from "../../utils/inputValidations";
-import useSubmitForm from "../../hooks/useSubmitForm";
 import {
   AGENTS_URL,
   ORGANIZATIONS_URL,
@@ -43,29 +42,21 @@ const diagnosticStatus = [
 function AddDiagnostic({
   handleToggleCreateModal,
   getDiagnostics,
-  researchesState,
   doctors,
 }) {
   const axiosPrivate = useAxiosPrivate();
   const [errMsg, setErrMsg] = useState("");
-  const multiselectRef = useRef("");
   const editorRef = useRef(null);
-  const [researchId, setResearchId] = useState(null);
   const [patientId, setPatientId] = useState(null);
   const [organizationId, setOrganizationId] = useState(null);
   const [clientType, setClientType] = useState(null);
-  const additionalData = useRef("");
-  const diagnosticClassRef = useRef("");
   const [externalType, setExternalType] = useState(false);
   const [researchesIds, setResearchesIds] = useState([]);
   const [partnerName, setPartnerName] = useState("");
   const [diagnosticsType, setDiagnosticsType] = useState(null);
-  const [intDiagnosticsStatus, setIntDiagnosticsStatus] = useState(null);
-  const [extDiagnosticsStatus, setExtDiagnosticsStatus] = useState(null);
   const [doctor, setDoctor] = useState("");
   const [refDoctor, setRefDoctor] = useState("");
   const refDoctors = useSelector(selectRefDoctors);
-  // const [ptient, setPatient] = useState([{label: 'Առանց այցելու',value:""}]);
   const [patients, setPatients] = useState([]);
   const [organizations, setOrganizations] = useState([]);
   const [agents, setAgents] = useState([]);
@@ -218,26 +209,26 @@ function AddDiagnostic({
 
     console.log(data);
     console.log(newDiagnose);
-    // try {
-    //   await axiosPrivate.post(REGISTER_DIAGNOSTICS, newDiagnose, {
-    //     headers: { "Content-Type": "application/json" },
-    //     withCredentials: true,
-    //   });
+    try {
+      await axiosPrivate.post(REGISTER_DIAGNOSTICS, newDiagnose, {
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+      });
 
-    //   handleToggleCreateModal(false);
-    //   getDiagnostics();
-    //   notify(
-    //     `${newDiagnose.diagnosticsName} Ախտորոշումը ավելացված է`
-    //   );
-    // } catch (err) {
-    //   if (!err?.response) {
-    //     setErrMsg("No Server Response");
-    //   } else if (err.response?.status === 409) {
-    //     setErrMsg("Username Taken");
-    //   } else {
-    //     setErrMsg(" Failed");
-    //   }
-    // }
+      handleToggleCreateModal(false);
+      getDiagnostics();
+      notify(
+        `${newDiagnose.diagnosticsName} Ախտորոշումը ավելացված է`
+      );
+    } catch (err) {
+      if (!err?.response) {
+        setErrMsg("No Server Response");
+      } else if (err.response?.status === 409) {
+        setErrMsg("Username Taken");
+      } else {
+        setErrMsg(" Failed");
+      }
+    }
   });
   // const { onSubmit, methods } = useSubmitForm(
   //   REGISTER_DIAGNOSTICS,
@@ -743,14 +734,14 @@ function AddDiagnostic({
                                       control={methods.control}
                                       isClearable={true}
                                       defaultValue={null}
-                                      // rules={{ required: true }}
+                                      rules={{ required: true }}
                                       render={({ field }) => (
                                         <Select
                                           {...field}
                                           isMulti
                                           closeMenuOnSelect={false}
                                           components={animatedComponents}
-                                          options={researchesState.map((res) => ({
+                                          options={researches.map((res) => ({
                                             value: res.researchListId,
                                             label: `${res?.researchName}`,
                                           }))}

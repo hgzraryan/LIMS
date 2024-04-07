@@ -28,6 +28,7 @@ const Organizations = () => {
     data: organizations,
     setData: setOrganizations,
     getData: getOrganizations,
+    refreshData
   } = useGetData(ORGANIZATIONS_URL,currentPage,usersPerPage);
   
   const handleOpenModal = (user) => {
@@ -56,7 +57,8 @@ const Organizations = () => {
 
   const refreshPage = () => {
     let paglink = document.querySelectorAll(".page-item");
-    paglink[0].firstChild.click();
+    paglink[0]?.firstChild.click();
+    refreshData()
   };
   //-------------------
  //-------------------------PAGINATION---------------------------//

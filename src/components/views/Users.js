@@ -34,6 +34,7 @@ const Users = () => {
     // hasMore,
     // checkData,
     getData: getUsers,
+    refreshData
   } = useGetData(USERS_URL,currentPage,usersPerPage);
   //-------------------
   
@@ -54,7 +55,8 @@ const Users = () => {
 }
   const refreshPage = () => {
     let paglink = document.querySelectorAll(".page-item");
-    paglink[0].firstChild.click();
+    paglink[0]?.firstChild.click();
+    refreshData()
   };
   const handleOpenModal = (user) => {
     setSelectedItemId(true);

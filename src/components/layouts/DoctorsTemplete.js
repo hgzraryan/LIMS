@@ -579,7 +579,7 @@ const DoctorsTemplete = () => {
           {/* /End Nav */}
         </div>
       </nav>
-      <div className="hk-pg-wrapper pb-0" >
+      <div className="hk-pg-wrapper pb-0 " >
         <div className="contactapp-wrap " style={{ height: '100%' }} >
           <div className="contactapp-content p-0" >
             <div className="contactapp-detail-wrap"  >

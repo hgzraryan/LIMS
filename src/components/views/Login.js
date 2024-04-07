@@ -30,7 +30,7 @@ const Login = () => {
 
 
     useEffect(() => {
-        userRef.current.focus();
+        userRef.current?.focus();
     }, [])
 
     useEffect(() => {
@@ -114,7 +114,7 @@ const Login = () => {
 
                 setErrMsg('Login Failed');
             }
-            errRef.current.focus();
+            errRef.current?.focus();
         }
     }
 

@@ -226,7 +226,7 @@ function MedInstitutionsTable({
       ]);
     }
   );
-  console.log(selectedFlatRows);
+ // console.log(selectedFlatRows);
   return (
     <>
       {modalInfo && (

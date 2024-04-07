@@ -27,7 +27,8 @@ const Patients = () => {
     const {
       data: patients,
       setData: setPatients,
-      getData: getPatients,  
+      getData: getPatients,
+      refreshData  
     } = useGetData(PATIENTS_URL,currentPage,usersPerPage);
 
   const handleToggleCreateModal = (value) => {
@@ -50,7 +51,8 @@ const Patients = () => {
 
   const refreshPage = () => {
     let paglink = document.querySelectorAll(".page-item");
-    paglink[0].firstChild.click();
+    paglink[0]?.firstChild.click();
+    refreshData()
   };
   //-------------------
 

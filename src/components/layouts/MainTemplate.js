@@ -76,7 +76,6 @@ const MainTemplate = () => {
                 const response = await axiosPrivate.get('/allCount', {
                     signal: controller.signal
                 });
-                console.log(response)
 
               isMounted && dispatch(checkAgentsCount(response.data?.agentsCount));
               isMounted && dispatch(checkDiagnosticsCount(response.data?.diagnosticsCount));

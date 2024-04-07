@@ -166,6 +166,8 @@ function CreatePatient({
         midName: midName,
         age: calculateAge(dateOfBirth),
         //lastHandlingDate: handlingDate.current,
+        // internalStatus: "Approval",
+        // externalStatus:  null,
         researchList: research.map((el) => el.value),
         additional: editorRef.current.getContent({ format: "text" }),
         gender: gender,
@@ -191,7 +193,7 @@ function CreatePatient({
           .split("T")[0],
       };
 
-      console.log(newPatient);
+      //console.log(newPatient);
 
       try {
         await axiosPrivate.post(REGISTER_PATIENT, newPatient, {

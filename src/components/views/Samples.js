@@ -14,7 +14,8 @@ function Samples() {
   const {
     data: samples,
     setData: setSamples,
-    getData: getSamples,  
+    getData: getSamples, 
+    refreshData 
   } = useGetData(SAMPLES_URL,currentPage,usersPerPage);
   //-------------------------PAGINATION---------------------------//  
   const handlePageClick = ({ selected: selectedPage }) => {
@@ -31,7 +32,8 @@ const handleCloseModal = () => {
   //--------------------------------------------------------------//
   const refreshPage = () => {
     let paglink = document.querySelectorAll(".page-item");
-    paglink[0].firstChild.click();
+    paglink[0]?.firstChild.click();
+    refreshData()
   };
   return (
     <div>

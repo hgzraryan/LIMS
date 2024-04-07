@@ -2,82 +2,35 @@
 import React, {  forwardRef } from "react";
 import { useTable } from "react-table";
 // import Barcode from "react-barcode";
-import mainLogo from "../dist/img/main-logo.jpg";
+import mainLogo from "../dist/img/main-logo.png";
 import BarcodeComp from "./BarcodeComp";
-const data = [
-    {
-      shortName: "WBC",
-      researchName: "Լեյկոցիտների ընդհանուր քանակ",
-      analysisResult: 8.88,
-      referenceRange: "4.0-10.0",
-      units: "10^9/L",
-    },
-    {
-      shortName: "RBC",
-      researchName: "Էրիթրոցիտների ընդհանուր քանակ",
-      analysisResult: 6.09,
-      referenceRange: ["men 4.0-10.0", "women 4,6-6,2"],
-      units: "10^9/L",
-    },
-    {
-      shortName: "MCV ",
-      researchName: "Էրիթրոցիտի միջին ծավալը փորձանմուշի  ընդհանուր ծավալում",
-      analysisResult: 83.7 ,
-      referenceRange: "80-100",
-      units: "fl",
-    },
-    {
-      shortName: "WBC",
-      researchName: "Լեյկոցիտների ընդհանուր քանակ",
-      analysisResult: 8.88,
-      referenceRange: "4.0-10.0",
-      units: "10^9/L",
-    },
-    {
-      shortName: "WBC",
-      researchName: "Լեյկոցիտների ընդհանուր քանակ",
-      analysisResult: 8.88,
-      referenceRange: "4.0-10.0",
-      units: "10^9/L",
-    },
-    {
-      shortName: "WBC",
-      researchName: "Լեյկոցիտների ընդհանուր քանակ",
-      analysisResult: 8.88,
-      referenceRange: "4.0-10.0",
-      units: "10^9/L",
-    },
-  
-  ];
-export const ResultToPrintComponent = forwardRef(({ value,patient }, ref) => {
-   
 
-  
-    const columns = React.useMemo(
-        () => [
-          {
-            Header: "",
-            accessor: "shortName",
-          },
-          {
-            Header: "Անվանում",
-            accessor: "researchName",
-          },
-          {
-            Header: "Արդյունք",
-            accessor: "analysisResult",
-          },
-          {
-            Header: "նորմա",
-            accessor: "referenceRange",
-          },
-          {
-            Header: "չ/մ",
-            accessor: "units",
-          },
-        ],
-        []
-      );
+export const ResultToPrintComponent = forwardRef(({ value,patient,statusBoard }, ref) => {
+   const columns = React.useMemo(
+    () => [
+      {
+        Header: "",
+        accessor: "shortName",
+      },
+      {
+        Header: "Անվանում",
+        accessor: "name",
+      },
+      {
+        Header: "Արդյունք",
+        accessor: "researchResult",
+      },
+      {
+        Header: "նորմա",
+        accessor: "referenceRange",
+      },
+      {
+        Header: "չ/մ",
+        accessor: "units",
+      },
+    ],
+    []
+  );
 
 
   //-----------------------barcode ------------------
@@ -98,7 +51,7 @@ const { inputRef } = Barcode({
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
   useTable({
     columns,
-    data: data,
+    data: statusBoard?.researches,
   });
 return (
     <>
@@ -107,45 +60,55 @@ return (
     style={{ minHeight: "95vh", position: "relative" }}
     ref={ref}
   >
- <header className="header">
-        <div className=" d-flex justify-content-between">
-          <div className="header__infoL flex-1">
-            <h3 style={{ fontWeight: "bold", color: "#01903e" }}>ԵՎԱ ԼԱԲ</h3>
-            <h6>www.evalab.am</h6>
-          </div>
-          <div className="header__logo flex-1 d-flex justify-content-center align-items-center">
-            <img
-              className="m-0"
-              width={"136px"}
-              height={"136px"}
-              src={mainLogo}
-              alt="Logo"
-            />
-          </div>
-          <div className="header__infoR flex-1 d-flex justify-content-end align-content-start flex-wrap">
-            <div style={{ maxWidth: "300px", fontSize: "14px" }}>
-              <div className="d-flex justify-content-end">
-                <p>Ք․Վանաձոր, Բաբայան 5/8,4548</p>
-              </div>
-              <div className="d-flex justify-content-end">
-                <p>+374 99 942-200, +374 32 242-200</p>
-              </div>
-              <div className="d-flex justify-content-end">
-                <p>Երկ. - Ուրբ. 08:00-18:00</p>
-              </div>
-              <div className="d-flex justify-content-end">
-                <p>Շաբ․ 08:00-13:00</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </header>
+  <header className="header" style={{display:'flex', justifyContent:'space-between'}}>
+              <div>
+               <div style={{display:'flex', justifyContent:'center',alignItems:'center'}}>
+                <p style={{fontSize:'2.5rem',color:'#4eafcb', letterSpacing:'5px',fontWeight:'bolder',textTransform:'uppercase'}}>ԷՎԱ</p>
+                <img
+                            width={"40px"}
+                            height={"40px"}
+                            src={mainLogo}
+                            alt="Logo"
+                            style={{ marginLeft: '1rem',marginRight:'1rem'}}
+                        />
+                <p style={{fontSize:'2.5rem',color:'#4eafcb', letterSpacing:'5px',fontWeight:'bolder',textTransform:'uppercase'}}>ԼԱԲ</p>
+               </div>
+               <div style={{display:'flex', justifyContent:'center',alignItems:'center'}}> <p style={{fontSize:'1.3rem',color:'#4eafcb',textTransform:'uppercase',fontWeight:'bolder'}}>ԱԽտորոշման կենտրոն</p></div>
+              
+               </div>
+               <div>
+               <div>
+               <div style={{display:'flex', justifyContent:'center',alignItems:'center'}}>
+                <p style={{fontSize:'2.5rem',color:'#4eafcb', letterSpacing:'5px',fontWeight:'bolder',textTransform:'uppercase'}}>Eva</p>
+                <img
+                            width={"40px"}
+                            height={"40px"}
+                            src={mainLogo}
+                            alt="Logo"
+                            style={{ marginLeft: '1rem',marginRight:'1rem'}}
+                        />
+                <p style={{fontSize:'2.5rem',color:'#4eafcb', letterSpacing:'5px',fontWeight:'bolder',textTransform:'uppercase'}}>Lab</p>
+               </div>
+               <div style={{display:'flex', justifyContent:'center',alignItems:'center'}}> <p style={{fontSize:'2.3rem',color:'#4eafcb',textTransform:'uppercase',fontWeight:'bolder',marginTop:'-10px'}}>Laboratory</p></div>
+              
+               </div>
+               </div>
+
+            </header>
+            <div
+      style={{
+        width: "100%",
+        height: "3px",
+        borderRadius:'.3rem',
+        background: 'linear-gradient(to right, #4eafcb 65%, transparent)',
+      }}
+    ></div>   
       <main style={{ flex: "1 1 auto" }}>
         <section>
           <div
             className="d-flex justify-content-center align-center"
             style={{
-              background: "#01903e",
+              background: "#4eafcb",
               color: "white",
               borderRadius: "5px",
               margin: "10px 0",
@@ -194,18 +157,18 @@ return (
                     </g>
                   </svg>
 
-                  <p className="ms-2 fw-bold">{ patient[0]?.lastName + " " + patient[0]?.firstName + " " + patient[0]?.midName}</p>
+                  <p className="ms-2 fw-bold">{ patient?.lastName + " " + patient?.firstName + " " + patient?.midName}</p>
                 </div>
 
                 <div className="d-flex ">
-                  <p className="ms-2 fw-bold">{patient[0]?.gender==='Male' ? 'Ար․':'Իգ'}</p>
-                  <p className="ms-2 fw-bold">{value.birthDay || '01․08․85'}</p>
-                  <p className="ms-2 fw-bold">{value.age || '39տ․'}</p>
+                  <p className="ms-2 fw-bold">{patient?.gender==='Male' ? 'Ար․':'Իգ'}</p>
+                  <p className="ms-2 fw-bold">{patient?.dateOfBirth }</p>
+                  <p className="ms-2 fw-bold">{patient?.age }</p>
                 </div>
               </div>
               <div className="d-flex justify-content-between align-items-center ">
                 <div className="d-flex ">
-                  <p className="ms-2 me-4 fw-bold">{value.phone || '033071007'}</p>
+                  <p className="ms-2 me-4 fw-bold">{patient?.phone}</p>
                   <svg
                     width="20px"
                     height="20px"
@@ -217,7 +180,7 @@ return (
                       fill="#2e3436"
                     />
                   </svg>
-                  <p className="ms-2"> ք. {value?.contact?.address?.city } </p>
+                  <p className="ms-2"> ք. {patient?.contact?.address?.city } </p>
                 </div>
 
                 <div className="d-flex justify-content-center align-items-center ">
@@ -248,7 +211,7 @@ return (
                       </g>
                     </g>
                   </svg>
-                  <a href="mailto:someone@example.com">{value.contact?.email || 'someone@example.com'}</a>
+                  <a href="mailto:someone@example.com">{patient.contact?.email}</a>
                 </div>
               </div>
             </div>
@@ -293,7 +256,7 @@ return (
                     fill="#000000"
                   />
                 </svg>
-                <p>{value.samplingDate }</p>
+                <p>{value?.createdAt }</p>
               </div>
               <div className="d-flex">
                 <svg
@@ -334,7 +297,7 @@ return (
                     fill="#000000"
                   />
                 </svg>
-                <p>{value.resultDate || '22.01.24 15:08'}</p>
+                <p>{value?.diagnosisDate }</p>
               </div>
             </div>
           </div>
@@ -350,14 +313,14 @@ return (
             <div className="d-flex justify-content-center align-items-center mt-2">
               <p>
                 
-                Նմուշառված է՝ {value.samplingDate || '22․01․24 10։08'}
+                Նմուշառված է՝ {value?.diagnosisDate || '22․01․24 10։08'}
                 {/* <span className="ps-8"> Արտաքին նմուշ [] </span> */}
               </p>
             </div>
             <div className="d-flex justify-content-between">
               <p> Կենսանյութ՝ {value.biomass || 'Արյուն'}</p>
               <p style={{ fontSize: "13px" }}>
-                Հետազոտությունը կատարվել է {value.device || 'Sysmex XN 550'} ավտոմատ վերլուծիչով
+                {/* Հետազոտությունը կատարվել է {value.device || 'Sysmex XN 550'} ավտոմատ վերլուծիչով */}
               </p>
             </div>
           </div>
@@ -408,10 +371,29 @@ return (
         </section>
       </main>
       <footer style={{ marginTop: "auto" }}>
-        <div>
-          <p>Լիցենզիա Կ-ԲՕ-145847 տրվ. ԱՆ 24.07.2013թ</p>
-        </div>
-      </footer>
+         <div
+      style={{
+        marginTop:'.5rem',
+        marginBottom:'.5rem',
+        width: "100%",
+        height: "3px",
+        borderRadius:'.3rem',
+        background: 'linear-gradient(to right, #4eafcb 65%, transparent)',
+      }}
+    ></div> 
+           <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', fontSize:'0.7rem'}}>
+            <div >
+              <p>ք․ Վանաձոր, Թումանյան 3/25</p>
+              <p>info@evalab.am</p>
+              <p>+374 99 94 22 00 | +374 322 4 22 00</p>
+            </div>
+            <div>
+              <p>Tumanyan 3/25 str. Vanadzor, RA</p>
+              <p> 2001</p>
+              <p>info@evalab.am</p>
+            </div>
+           </div>
+         </footer>
   </div>
   
   </>

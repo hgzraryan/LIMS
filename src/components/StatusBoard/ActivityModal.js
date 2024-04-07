@@ -1,57 +1,110 @@
 import FeatherIcon from 'feather-icons-react/build/FeatherIcon'
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Modal } from 'react-bootstrap'
-import { Form, FormProvider, useForm } from 'react-hook-form'
-import { desc_validation, email_validation, mobile_validation, name_validation } from '../../utils/inputValidations'
-import { Input } from '../Input'
-import { useSelector } from 'react-redux'
-import { selectResearches } from '../../redux/features/researches/researchesSlice'
+import { Form, FormProvider, useForm,Controller } from 'react-hook-form'
 import Multiselect from 'multiselect-react-dropdown'
 import useAxiosPrivate from '../../hooks/useAxiosPrivate'
+import { RESEARCHLISTS_URL } from '../../utils/constants'
+import makeAnimated from "react-select/animated";
+import Select from "react-select";
+import ErrorSvg from "../../dist/svg/error.svg";
 
 function ActivityModal({overlayIsOpen,setOverlayIsOpen,selectedItem,setSelectedItem}) {
   const axiosPrivate = useAxiosPrivate();
-  const researchState= useSelector(selectResearches)
     const [openModal,setOpenModal]=useState(false)
     const [researchesArray, setResearchesArray] = useState([]);
+    const [researcheList, setResearcheList] = useState([]);
+    const [selectedResearch, setSelectedResearch] = useState([]);
     const multiselectRef = useRef("");
+    const animatedComponents = makeAnimated();
+    const handleResearchChange = (selectedOption) => {
+      setSelectedResearch(selectedOption);
+      
+    };
+    const colourStyles = {
+      control: (styles, { isFocused, isSelected }) => ({
+        ...styles,
+        backgroundColor: "#fff",
+        borderColor: isFocused ? "#fff" : "#e8e3e3",
+        boxShadow: "#e8e3e3",
+        ":hover": {
+          borderColor: "#fff",
+        },
+      }),
+  
+      multiValueLabel: (styles, { data }) => ({
+        ...styles,
+        backgroundColor: "#4eafcb",
+        color: "#000",
+      }),
+      multiValueRemove: (styles, { data }) => ({
+        ...styles,
+        backgroundColor: "#4eafcb",
+        color: "#e8e3e3",
+        ":hover": {
+          backgroundColor: "#4eafcb",
+          color: "#eb3434",
+        },
+      }),
+    };
     const methods  = useForm({
       mode: "onChange",
     });
+    useEffect(() => {
+      setTimeout(() => {
+        axiosPrivate
+          .get(RESEARCHLISTS_URL)
+          .then((resp) => {
+            setResearcheList(resp?.data?.jsonString);
+            // setIsLoading(false);
+          }).catch((err) => {
+            console.log(err);
+          });
+      }, 500);
+    }, []);
     const handleCloseModal = () => {
         setOverlayIsOpen(false);
     };
     
-    const handleNewResearch = async()=>{
-
-    
+    const handleNewResearch = async () => {
+      console.log('selectedItem', selectedItem);
+  
       const updatedSelectedItem = { ...selectedItem };
-  if (
-    updatedSelectedItem?.statusBoard?.length > 1 &&
-    updatedSelectedItem.statusBoard[1]?.researches
-  ) {   
-    updatedSelectedItem.statusBoard[1].researches.push({
-      id: Math.random(),
-      name: `"Էրիթրոցիտի միջին ծավալը փորձանմուշի  ընդհանուր ծավալում." `
-    });}
-      handleCloseModal()
+  
+      if (
+        updatedSelectedItem?.statusBoard?.length > 1 &&
+        updatedSelectedItem.statusBoard[1]?.researches
+      ) {
+        updatedSelectedItem.statusBoard[1].researches.push({
+          id: selectedResearch?.id || '',
+          name: selectedResearch?.name || '',
+          partnerCode: selectedResearch.partnerCode || '',
+          laboratoryService: selectedResearch.laboratoryService || '',
+          categoryName: selectedResearch.categoryName || '',
+          price: selectedResearch.price || ''
+        });
+      }
+  
+      setSelectedItem(updatedSelectedItem);
+      
       try {
-        const response = await axiosPrivate.post("./updateStatusBoard", JSON.stringify({
-          statusBoard: selectedItem?.statusBoard,
-          diagnosticsId:selectedItem?.diagnosticsId
-        }));
+        const response = await axiosPrivate.post(
+          "./updateStatusBoard",
+          JSON.stringify({
+            statusBoard: updatedSelectedItem?.statusBoard,
+            diagnosticsId: updatedSelectedItem?.diagnosticsId
+          })
+        );
+        console.log(response.data); // Assuming backend responds with data
+        // Optionally, you can update state after successful backend response
         setSelectedItem(updatedSelectedItem);
       } catch (err) {
-        console.log(err)
-        // if (!err?.response) {
-        //   setErrMsg("No Server Response");
-        // }  else {
-        //   setErrMsg(" Failed");
-        // }
+        console.log(err);
+        // Handle errors here
       }
-        setOpenModal(false)
-    }
+    };
     const onResearchSelect = (data) => {
+      console.log('data',data)
       let researchesArr = [];
       //let researchesPrice = [];
       for (let research of data) {
@@ -119,27 +172,49 @@ function ActivityModal({overlayIsOpen,setOverlayIsOpen,selectedItem,setSelectedI
                         <div className="modal-body">
                           <div className="row gx-3">
                                                         
-                         
-                              <label className="form-label" htmlFor="doctor">
-                                Հետազոտություններ
-                              </label>
-                              <Multiselect
-                                    options={researchState}
-                                    displayValue="researchName"
-                                    onSelect={onResearchSelect}
-                                    onRemove={onResearchDelete}
-                                    closeOnSelect={true}
-                                    id="input_tags_3"
-                                    className="form-control"
-                                    ref={multiselectRef}
-                                    hidePlaceholder={true}
-                                    placeholder="Հետազոտություններ"
-                                    groupBy="category"
-                                    style={{
-                                      height: "10rem",
-                                      overflow: "hidden",
-                                    }}
-                                  />
+                          <div className="d-flex justify-content-between me-2">
+                                    <label
+                                      className="form-label"
+                                      htmlFor="research"
+                                      placeholder={"Ընտրել"}
+                                    >
+                                      Ընտրել հետազոտություն
+                                    </label>
+                                    {methods.formState.errors.research && (
+                                      <span className="error text-red">
+                                        <span>
+                                          <img src={ErrorSvg} alt="errorSvg" />
+                                        </span>{" "}
+                                        պարտադիր
+                                      </span>
+                                    )}
+                                  </div>
+                                  <div className="form-control">
+                                    <Controller
+                                      name="research"
+                                      control={methods.control}
+                                      isClearable={true}
+                                      defaultValue={null}
+                                      rules={{ required: true }}
+                                      render={({ field }) => (
+                                        <Select
+                                          {...field}
+                                          value={selectedResearch}
+
+                                          closeMenuOnSelect={false}
+                                          components={animatedComponents}
+                                                    onChange={handleResearchChange}
+
+                                          options={researcheList.map((res) => ({
+                                            value: res.researchListId,
+                                            label: `${res?.researchName}`,
+                                          }))}
+                                          styles={colourStyles}
+                                          placeholder={"Հետազոտություններ"}
+                                        />
+                                      )}
+                                    />
+                                  </div>
                                                        
                           </div>
                         </div>

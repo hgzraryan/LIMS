@@ -20,7 +20,7 @@ const useGetData = (url,currentPage,usersPerPage) => {
               page: currentPage+1,
               onPage: usersPerPage,
             });
-            console.log(response);
+            //console.log(response);
             // if (
             //   response.data.jsonString.length === 0 ||
             //   response.data.jsonString.length < onPageCount
@@ -58,6 +58,29 @@ const useGetData = (url,currentPage,usersPerPage) => {
             //navigate("/login", { state: { from: location }, replace: true });
           }
         };
+        const refreshData = async () => {
+          try {
+            const response = await axiosPrivate.post(url,{
+             
+              page: 1,
+              onPage: usersPerPage,
+            });
+            // console.log(response);
+            // if (
+            //   response.data.jsonString.length === 0 ||
+            //   response.data.jsonString.length < onPageCount
+            // ) {
+            //   setHasMore(false);
+            // }
+            
+              setData((prevUsers) => response.data.jsonString);
+            //setCurrentPage((prev) => prev + 1);
+          } catch (err) {
+            console.error(err);
+            navigate("/login", { state: { from: location }, replace: true });
+          }
+        };
+    
 
       // const checkData = async () => {
       //     try {
@@ -87,6 +110,7 @@ const useGetData = (url,currentPage,usersPerPage) => {
         data,
         setData,
         getData,
+        refreshData
     }
 }
 export default useGetData;
