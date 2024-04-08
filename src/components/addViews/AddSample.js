@@ -347,8 +347,8 @@ function Sample() {
           </div>
         </nav>
         <div className="hk-pg-wrapper">
-          <div className="contactapp-wrap">
-            <div className="contactapp-content">
+          <div className="contactapp-wrap" style={{ margin: '3rem' }} >
+           
               <div className="contactapp-detail-wrap w-100">
                 <header className="contact-header">
                   <div className="d-flex align-items-center justify-content-center w-100">
@@ -402,11 +402,11 @@ function Sample() {
                             </header>
                             <main>
                               {data.diagnostics?.statusBoard[1]?.researches.length &&
-                                data.diagnostics?.statusBoard[1]?.researches.map((el) => {
+                                data.diagnostics?.statusBoard[1]?.researches.map((el,id) => {
                                   return (
                                     
                                       <div
-                                        
+                                      key={id}
                                         className="d-flex flex-column m-3"
                                         style={{
                                           border: "2px solid #000",
@@ -417,30 +417,47 @@ function Sample() {
                                         }}
                                       >
                                           <div className="me-2 d-flex justify-content-between" >
-                                            <span>ID</span>{el.id }
+                                            <span>ID  </span>{el.id }
                                           </div>
                                           <div className="separator m-0"></div>                  
 
-                                          <div className="me-2 d-flex justify-content-between">
-                                          <span>Անվանում</span>{el.name }
+                                          <div style={{gap:'1rem'}} className="me-2 d-flex justify-content-between">
+                                          <span>Անվանում </span>{el.name }
                                           </div>
                                           <div className="separator m-0"></div>                  
 
-                                          <div className="me-2 d-flex justify-content-between">
-                                          <span>Լաբորատորիա / Ծառայություն</span> Քաղցկեղի մոլեկուլային հետազոտություն 
+                                          <div style={{gap:'1rem'}} className="me-2 d-flex justify-content-between">
+                                          <span>Լաբորատորիա / Ծառայություն </span>{el.laboratoryService }
                                           </div>
                                           <div className="separator m-0"></div>                  
 
-                                          <div className="me-2 d-flex justify-content-between">
-                                          <span>Մատուցման հրապար/ առավել ժամկետ</span> 3-4 աշխ. օր 
+                                          <div style={{gap:'1rem'}} className="me-2 d-flex justify-content-between">
+                                          <span>Մատուցման հրապար/ առավել ժամկետ </span> {el.samplingPeriod } 
                                           </div>
                                           <div className="separator m-0"></div>                  
-                                          <div className="me-2 d-flex justify-content-between">
-                                          <span>Սրվակ</span> Heparin</div>
+                                          <div style={{gap:'1rem'}} className="me-2 d-flex justify-content-between">
+                                          <span>Սրվակ</span>
+                                          <div className="d-flex justify-content-center align-items-center gap-1">
+                                          <span>{el.vial.trim()==="Heparin"
+                                          ?<div style={{width:'1rem',height:'1rem',borderRadius:'10px',backgroundColor:'green'}}></div>
+                                          :el.vial.trim()==="EDTA"
+                                          ?<div style={{width:'1rem',height:'1rem',borderRadius:'10px',backgroundColor:'red'}}></div>
+                                          :el.vial.trim()==="Na Citr."
+                                          ?<div style={{width:'1rem',height:'1rem',borderRadius:'10px',backgroundColor:'rgb(0,176,240)'}}></div>
+                                          :el.vial.trim()==="Na Citr"
+                                          ?<div style={{width:'1rem',height:'1rem',borderRadius:'10px',backgroundColor:'rgb(0,176,240)'}}></div>
+                                          :el.vial.trim()==="Հել"
+                                          ?<div style={{width:'1rem',height:'1rem',borderRadius:'10px',backgroundColor:'rgb(255,153,0)'}}></div>
+                                          :el.vial.trim()==="Մատից արյան նմուշառում ֆիլտրի թղթի վրա"
+                                          ?<div style={{width:'1rem',height:'1rem',borderRadius:'10px',backgroundColor:'red'}}></div>
+                                          :el.vial.trim()==="Արյուն - 2 NIPT սրվակներ"
+                                          ?<div style={{width:'1rem',height:'1rem',borderRadius:'10px',backgroundColor:'red'}}></div>
+                                          :''
+                                        }</span>{el.vial }</div> </div>
                                           <div className="separator m-0"></div>                  
 
-                                          <div className="me-2 d-flex justify-content-between">
-                                          <span>Կենսանյութ</span>Ոսկրածուծ/ արյուն 
+                                          <div style={{gap:'1rem'}} className="me-2 d-flex justify-content-between">
+                                          <span>Կենսանյութ</span>{el.biomaterial } 
                                           </div>
                                           <div className="separator m-0"></div>                  
 
@@ -448,9 +465,7 @@ function Sample() {
                                             cursor={"pointer"}
                                             size={"1.5rem"}
                                             onClick={() =>
-                                              handleOpenInfoModal(
-                                                "Ոսկրածուծի ախտաբան. / արյան ընդհ. Վերլուծության պատասխան պահանջվում է"
-                                              )
+                                              handleOpenInfoModal(el.researchPrepSub)
                                             }
                                           />
                                           <div className="d-flex justify-content-end">
@@ -482,7 +497,7 @@ function Sample() {
                   </div>
                 </div>
               </div>
-            </div>
+           
           </div>
         </div>
       </div>

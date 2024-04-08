@@ -8,7 +8,6 @@ export const SampleBarcodeToPrint = forwardRef(({ modalPrint }, ref) => {
         const {diagnosticsId} = modalPrint.diagnostics
         const {el} = modalPrint
         //const {diagnosticsId} = modalPrint.diagnostics
-        console.log(modalPrint)
         return (
         <div ref={ref} style={{margin:'.2rem'}}>
         
@@ -17,8 +16,8 @@ export const SampleBarcodeToPrint = forwardRef(({ modalPrint }, ref) => {
                 {/* {firstName + " " + lastName} */}
             </div>
             <div style={{display:'flex',justifyContent:"space-around", fontSize:'0.8rem'}}>
-            <p>{diagnosticsId}</p>
-            <p>{dateOfBirth}</p>
+            <span>{diagnosticsId}</span>
+            <span>{dateOfBirth}</span>
         </div>
         </header> 
         <main>

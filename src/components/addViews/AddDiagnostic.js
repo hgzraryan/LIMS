@@ -105,19 +105,7 @@ function AddDiagnostic({
         .then((resp) => {
           setPatients(resp?.data?.jsonString);
           setIsLoading(false);
-        })
-        .then((resp) => {
-          axiosPrivate.get(ORGANIZATIONS_URL).then((resp) => {
-            setOrganizations(resp?.data?.jsonString);
-            setIsLoading(false);
-          });
-        })
-        .then((resp) => {
-          axiosPrivate.get(AGENTS_URL).then((resp) => {
-            setAgents(resp?.data?.jsonString);
-            setIsLoading(false);
-          });
-        })
+        })        
         .then((resp) => {
           axiosPrivate.get(RESEARCHLISTS_URL).then((resp) => {
             setResearches(resp?.data?.jsonString);

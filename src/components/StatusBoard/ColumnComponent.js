@@ -77,7 +77,7 @@ function ColumnComponent({
                     ))}
                   </div>
                   
-                  {columnTitle === "Ընդունված" && (
+                  {/* {columnTitle === "Ընդունված" && (
                     <button
                       type="button"
                       onClick={handleOpenOverlayActivity}
@@ -86,7 +86,7 @@ function ColumnComponent({
                     >
                       Ավելացնել Հետազոտություն
                     </button>
-                  )}
+                  )} */}
                   {provided.placeholder}
                 </div>
               )}

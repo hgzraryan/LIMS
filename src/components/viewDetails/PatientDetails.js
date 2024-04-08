@@ -298,10 +298,6 @@ function PatientDetails() {
     setResearch((prev) => data.statusBoard[4]?.researches);
   };
   const handleLinkClick = (linkId) => {
-    //     tab_summery
-    // tab_patients
-    // tab_calendar
-    // tab_timeLine
     setActiveLink(linkId);
     setPageTab(linkId)
   };
@@ -738,28 +734,16 @@ function PatientDetails() {
                         <div className="card-header card-header-action"></div>
 
                         <ul className="list-group list-group-flush">
-                          <li className="list-group-item border-0">
+                        <li className="list-group-item border-0">
                             <span>
-                              <i className="bi bi-calendar-check-fill text-disabled me-2"></i>
-                              <span className="text-muted">Went to:</span>
+                              <i className="bi bi-geo-alt-fill text-disabled me-2"></i>
+                              <span className="text-muted">Նույնականացման համար:</span>
                             </span>
-                            <span className="ms-2">Oh, Canada</span>
-                          </li>
-                          <li className="list-group-item border-0">
-                            <span>
-                              <i className="bi bi-briefcase-fill text-disabled me-2"></i>
-                              <span className="text-muted">Worked at:</span>
+                            <span className="ms-2">
+                            {patientDetails?.patientId}
                             </span>
-                            <span className="ms-2">Companey</span>
                           </li>
-                          <li className="list-group-item border-0">
-                            <span>
-                              <i className="bi bi-house-door-fill text-disabled me-2"></i>
-                              <span className="text-muted">Lives in:</span>
-                            </span>
-                            <span className="ms-2">San Francisco, CA</span>
-                          </li>
-                          <li className="list-group-item border-0">
+                        <li className="list-group-item border-0">
                             <span>
                               <i className="bi bi-geo-alt-fill text-disabled me-2"></i>
                               <span className="text-muted">Հասցե:</span>
@@ -768,102 +752,30 @@ function PatientDetails() {
                               {patientDetails?.contact?.address?.country + ", " + patientDetails?.contact?.address?.city}
                             </span>
                           </li>
-                        </ul>
-                      </div>
-
-                      <div className="card card-border mb-lg-4 mb-3">
-                        <div className="card-header card-header-action">
-                          <h6>
-                            Links
-                            <span className="badge badge-sm badge-light me-1">
-                              5
+                          <li className="list-group-item border-0">
+                            <span>
+                              <i className="bi bi-calendar-check-fill text-disabled me-2"></i>
+                              <span className="text-muted">Սեռ:</span>
                             </span>
-                          </h6>
-                          <div className="card-action-wrap">
-                            <a href="#">View all</a>
-                          </div>
-                        </div>
-                        <ul className="list-group list-group-flush">
-                          <li className="list-group-item border-0">
-                            <div className="media align-items-center">
-                              <div className="media-head me-3">
-                                <div className="avatar avatar-sm avatar-primary avatar-rounded">
-                                  <span className="initial-wrap">G</span>
-                                </div>
-                              </div>
-                              <div className="media-body">
-                                <span className="d-block text-capitalize text-truncate mw-150p">
-                                  Google
-                                </span>
-                                <span className="d-block text-muted fs-7 text-truncate mw-150p">
-                                  google.com
-                                </span>
-                              </div>
-                            </div>
+                            <span className="ms-2">{patientDetails?.gender === 'Male' ? 'Արական' :patientDetails?.gender === 'Female'? 'Իգական':''}</span>
                           </li>
                           <li className="list-group-item border-0">
-                            <div className="media align-items-center">
-                              <div className="media-head me-3">
-                                <div className="avatar avatar-sm avatar-pink avatar-rounded">
-                                  <span className="initial-wrap">AR</span>
-                                </div>
-                              </div>
-                              <div className="media-body">
-                                <span className="d-block text-capitalize text-truncate mw-150p">
-                                  Improve Your Business
-                                </span>
-                                <span className="d-block text-muted fs-7 text-truncate mw-150p">
-                                  yahoo.com
-                                </span>
-                              </div>
-                            </div>
+                            <span>
+                              <i className="bi bi-house-door-fill text-disabled me-2"></i>
+                              <span className="text-muted">Տարիք:</span>
+                            </span>
+                            <span className="ms-2">{patientDetails?.age}</span>
                           </li>
                           <li className="list-group-item border-0">
-                            <div className="media align-items-center">
-                              <div className="media-head me-3">
-                                <div className="avatar avatar-sm avatar-warning avatar-rounded">
-                                  <span className="initial-wrap">PR</span>
-                                </div>
-                              </div>
-                              <div className="media-body">
-                                <span className="d-block text-capitalize text-truncate mw-150p">
-                                  Cast The Cookware
-                                </span>
-                                <span className="d-block text-muted fs-7 text-truncate mw-150p">
-                                  yahoo.com
-                                </span>
-                              </div>
-                            </div>
+                            <span>
+                              <i className="bi bi-briefcase-fill text-disabled me-2"></i>
+                              <span className="text-muted">Ծննդյան ամսաթիվ:</span>
+                            </span>
+                            <span className="ms-2">{patientDetails?.dateOfBirth}</span>
                           </li>
-                          <li className="list-group-item border-0">
-                            <div className="media align-items-center">
-                              <div className="media-head me-3">
-                                <div className="avatar avatar-sm avatar-success avatar-rounded">
-                                  <span className="initial-wrap">PR</span>
-                                </div>
-                              </div>
-                              <div className="media-body">
-                                <span className="d-block text-capitalize text-truncate mw-150p">
-                                  The Universe Thought Sds
-                                </span>
-                                <span className="d-block text-muted fs-7 text-truncate mw-150p">
-                                  facebook.com
-                                </span>
-                              </div>
-                            </div>
-                          </li>
+                         
+                          
                         </ul>
-                      </div>
-                      <div className="card bg-primary text-center">
-                        <div className="twitter-slider-wrap card-body">
-                          <div className="twitter-icon text-center mb-3">
-                            <i className="fab fa-twitter"></i>
-                          </div>
-                          <div
-                            id="tweets_fetch"
-                            className="owl-carousel light-owl-dots owl-theme"
-                          ></div>
-                        </div>
                       </div>
                     </div>
                     <div className="col-lg-8">

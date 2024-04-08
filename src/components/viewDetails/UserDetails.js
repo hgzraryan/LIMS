@@ -150,37 +150,71 @@ function UserDetails() {
                         <div className="card-header card-header-action"></div>
 
                         <ul className="list-group list-group-flush">
-                          <li className="list-group-item border-0">
-                            <span>
-                              <i className="bi bi-calendar-check-fill text-disabled me-2"></i>
-                              <span className="text-muted">Went to:</span>
-                            </span>
-                            <span className="ms-2">Oh, Canada</span>
-                          </li>
-                          <li className="list-group-item border-0">
-                            <span>
-                              <i className="bi bi-briefcase-fill text-disabled me-2"></i>
-                              <span className="text-muted">Worked at:</span>
-                            </span>
-                            <span className="ms-2">Companey</span>
-                          </li>
-                          <li className="list-group-item border-0">
-                            <span>
-                              <i className="bi bi-house-door-fill text-disabled me-2"></i>
-                              <span className="text-muted">Lives in:</span>
-                            </span>
-                            <span className="ms-2">San Francisco, CA</span>
-                          </li>
-                          <li className="list-group-item border-0">
-                            <span>
-                              <i className="bi bi-geo-alt-fill text-disabled me-2"></i>
-                              <span className="text-muted">Հասցե:</span>
-                            </span>
-                            <span className="ms-2">
-                              {userDetails?.contact?.address?.country + ", " + userDetails?.contact?.address?.city}
-                            </span>
-                          </li>
-                        </ul>
+                            <li className="list-group-item border-0">
+                              <span>
+                                <i className="bi bi-geo-alt-fill text-disabled me-2"></i>
+                                <span className="text-muted">Նույնականացման համար:</span>
+                              </span>
+                              <span className="ms-2">
+                                {userDetails?.userId}
+                              </span>
+                            </li>
+                            <li className="list-group-item border-0">
+                              <span>
+                                <i className="bi bi-geo-alt-fill text-disabled me-2"></i>
+                                <span className="text-muted">Հասցե:</span>
+                              </span>
+                              <span className="ms-2">
+                                {userDetails?.contact?.address?.country + ", " + userDetails?.contact?.address?.city}
+                              </span>
+                            </li>
+                            {/* <li className="list-group-item border-0">
+                              <span>
+                                <i className="bi bi-calendar-check-fill text-disabled me-2"></i>
+                                <span className="text-muted">Սեռ:</span>
+                              </span>
+                              <span className="ms-2">{userDetails?.gender === 'Male' ? 'Արական' :userDetails?.gender === 'Female'? 'Իգական':''}</span>
+                            </li> */}
+                            <li className="list-group-item border-0">
+                              <span>
+                                <i className="bi bi-house-door-fill text-disabled me-2"></i>
+                                <span className="text-muted">Գրանցման ամսաթիվ:</span>
+                              </span>
+                              <span className="ms-2">{userDetails?.createdAt}</span>
+                            </li>
+                            <li className="list-group-item border-0">
+                              <span>
+                                <i className="bi bi-briefcase-fill text-disabled me-2"></i>
+                                <span className="text-muted">Ծննդյան ամսաթիվ:</span>
+                              </span>
+                              <span className="ms-2">{userDetails?.birthday}</span>
+                            </li>
+                            <li className="list-group-item border-0">
+                              <span>
+                                <i className="bi bi-briefcase-fill text-disabled me-2"></i>
+                                <span className="text-muted">Ընտանեկան կարգավիճակ:</span>
+                              </span>
+                              <span className="ms-2">{userDetails?.maritalStatus === 'married' ? 'Ամուսնացած' :'Չամուսնացած'}</span>
+                            </li>
+                            <li className="list-group-item border-0">
+                              <span>
+                                <i className="bi bi-briefcase-fill text-disabled me-2"></i>
+                                <span className="text-muted">Դերեր:</span>
+                              </span>
+                              <span className="ms-2">{userDetails?.roles && Object.keys(userDetails?.roles).map((el)=>{
+                                return el+", " 
+                              })}</span>
+                            </li>
+                            <li className="list-group-item border-0">
+                              <span>
+                                <i className="bi bi-briefcase-fill text-disabled me-2"></i>
+                                <span className="text-muted">Ծածկանուն:</span>
+                              </span>
+                              <span className="ms-2">{userDetails?.username}</span>
+                            </li>
+
+
+                          </ul>
                       </div>
 
                       {/* <div className="card card-border mb-lg-4 mb-3">

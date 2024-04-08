@@ -7,7 +7,6 @@ function PrintSampleComponent({modalPrint,setModalPrint}) {
     const {diagnosticsId} = modalPrint.diagnostics
     const {el} = modalPrint
     //const {diagnosticsId} = modalPrint.diagnostics
-    console.log(el)
   return (
     <>
     {modalPrint &&
