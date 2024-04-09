@@ -12,6 +12,7 @@ import EquipmentsTable from "../viewTables/EquipmentsTable";
 import { useSelector } from "react-redux";
 import { selectEquipmentCount } from "../../redux/features/equipment/equipmentCountSlice";
 import { EQUIPMENTS_URL } from "../../utils/constants";
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 
 const Equipments = () => {
   const [selectedItem, setSelectedItem] = useState("");
@@ -65,7 +66,16 @@ const Equipments = () => {
   };
 
   return (
+    <HelmetProvider>
     <div>
+      <div>
+
+     <Helmet>
+    <meta charSet="utf-8" />
+    <title>Vteam LIMS | Equipments</title>
+    <link rel="icon" type="image/x-icon" href="../dist/img/favicon.ico"></link>
+    </Helmet>
+      </div>
       <div className="contactapp-wrap">
         <div className="contactapp-content">
           <div className="contactapp-detail-wrap w-100">
@@ -302,6 +312,7 @@ const Equipments = () => {
         </div>
       </div>
     </div>
+    </HelmetProvider>
   );
 };
 

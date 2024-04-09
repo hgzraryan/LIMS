@@ -8,6 +8,7 @@ import AddMedinstitution from '../addViews/AddMedinstitution';
 import { MEDINSTITUTIONS_URL } from '../../utils/constants';
 import useDeleteData from '../../hooks/useDeleteData';
 import useGetData from '../../hooks/useGetData';
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 
 
 function MedInstitutions() {
@@ -57,7 +58,16 @@ function MedInstitutions() {
         refreshData()
       };
   return (
+    <HelmetProvider>
     <div>
+      <div>
+
+     <Helmet>
+    <meta charSet="utf-8" />
+    <title>Vteam LIMS | Medical Institutions</title>
+    <link rel="icon" type="image/x-icon" href="../dist/img/favicon.ico"></link>
+    </Helmet>
+      </div>
       <div className="contactapp-wrap">
         <div className="contactapp-content">
           <div className="contactapp-detail-wrap w-100">
@@ -180,6 +190,7 @@ function MedInstitutions() {
         </div>
       </div>
     </div>
+    </HelmetProvider>
   )
 }
 

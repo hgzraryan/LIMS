@@ -302,33 +302,52 @@ function PatientDetails() {
     setPageTab(linkId)
   };
   useEffect(() => {
-    const getData = async () => {
-      try {
-        const response = await axiosPrivate.get(`/patients/${id}`);
-        setIsLoading(false);
-        setPatientDetails((prev) => response.data.jsonString);
-        // setCurrentPage((prev) => prev = 1);
-      } catch (err) {
-        console.error(err);
-        //navigate("/login", { state: { from: location }, replace: true });
-      }
-    };
-    getData();
+    setTimeout(() => {
+      axiosPrivate
+        .get(`/patients/${id}`)
+        .then((resp) => {
+          setPatientDetails((prev) => resp?.data?.jsonString);
+          setIsLoading(false);
+        })        
+        .then((resp) => {
+          axiosPrivate.get(`/getDiagnosticsByCid/${id}/patient`).then((resp) => {
+            setPatientDiagnostics((prev) => resp.data);
+            setIsLoading(false);
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }, 500);
   }, []);
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const response = await axiosPrivate.get(`/getDiagnosticsByCid/${id}/patient`);
-        setIsLoading(false);
-        setPatientDiagnostics((prev) => response.data);
-        // setCurrentPage((prev) => prev = 1);
-      } catch (err) {
-        console.error(err);
-        //navigate("/login", { state: { from: location }, replace: true });
-      }
-    };
-    getData();
-  }, []);
+  // useEffect(() => {
+  //   const getData = async () => {
+  //     try {
+  //       const response = await axiosPrivate.get(`/patients/${id}`);
+  //       setIsLoading(false);
+  //       setPatientDiagnostics((prev) => response.data);
+  //       // setCurrentPage((prev) => prev = 1);
+  //     } catch (err) {
+  //       console.error(err);
+  //       //navigate("/login", { state: { from: location }, replace: true });
+  //     }
+  //   };
+  //   getData();
+  // }, []);
+  // useEffect(() => {
+  //   const getData = async () => {
+  //     try {
+  //       const response = await axiosPrivate.get(`/getDiagnosticsByCid/${id}/patient`);
+  //       setIsLoading(false);
+  //       setPatientDiagnostics((prev) => response.data);
+  //       // setCurrentPage((prev) => prev = 1);
+  //     } catch (err) {
+  //       console.error(err);
+  //       //navigate("/login", { state: { from: location }, replace: true });
+  //     }
+  //   };
+  //   getData();
+  // }, []);
 
   const columns = useMemo(
     () => [
@@ -710,6 +729,26 @@ function PatientDetails() {
                       <span className="nav-link-text">Ախտորոշումներ</span>
                     </a>
                   </li>
+                  <li className="nav-item">
+                    <a
+                      data-bs-toggle="tab"
+                      href="#"
+                      className={`nav-link ${
+                        activeLink === "tab_doctorsVisits" ? "active" : ""
+                      }`}
+                      onClick={() => handleLinkClick("tab_doctorsVisits")}
+                    >
+                      <span className="nav-icon-wrap">
+                          <span className="svg-icon">
+                          <svg fill="#000000" width="800px" height="800px" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="46.3" cy="36.3" r="16"/>
+                            <path d="M66.6,51.1A11.39,11.39,0,0,0,55.2,62.5c0,7.7,8.1,15,10.6,16.9a1.09,1.09,0,0,0,1.5,0c2.5-2,10.6-9.2,10.6-16.9A11.25,11.25,0,0,0,66.6,51.1Zm0,16a4.7,4.7,0,1,1,4.7-4.7A4.76,4.76,0,0,1,66.6,67.1Z"/>
+                          <path d="M50.4,79.7h1.4c5.2-.5,2.4-3.7,2.4-3.7h0c-3.2-4.6-5-9.1-5-13.5a13.74,13.74,0,0,1,.6-4.2c.2-2-.6-2.5-1-2.7h-.2a18.48,18.48,0,0,0-2.4-.1,24.26,24.26,0,0,0-24,20.9c0,1.2.4,3.5,4.2,3.5H50.2C50.2,79.7,50.3,79.7,50.4,79.7Z"/></svg>
+                          </span>
+                        </span>
+                      <span className="nav-link-text">Այցելություններ</span>
+                    </a>
+                  </li>
                   {/* <li className="nav-item">
                 <a 
                           className={`nav-link ${activeLink === 'tab_calendar' ? 'active' : ''}`}
@@ -790,7 +829,7 @@ function PatientDetails() {
                           <ol>
                             <li>
                               <p className="card-text mb-5">
-                                Այցելուն ունի ||| կարգի հաշմանդամություն
+                                {/* Այցելուն ունի ||| կարգի հաշմանդամություն */}
                               </p>
                             </li>
                           </ol>
@@ -807,6 +846,109 @@ function PatientDetails() {
                       style={{ border: "1px solid #000", borderRadius: "16px" }}
                     >
                       <h4>Ախտորոշումներ</h4>
+                    </div>
+                    <div>
+                      <table
+                        className="table nowrap w-100 mb-5 dataTable no-footer"
+                        {...getTableProps()}
+                      >
+                        <thead>
+                          {headerGroups.map((headerGroup) => (
+                            <tr
+                              {...headerGroup.getHeaderGroupProps({
+                                style: { width: "100%" },
+                              })}
+                            >
+                              {headerGroup.headers.map((column) => (
+                                <th
+                                  {...column.getHeaderProps(
+                                    column.getSortByToggleProps({
+                                      style: column.style, // Apply custom style to the column header
+                                    })
+                                  )}
+                                >
+                                  <div>
+                                    {column.id !== "selection" && (
+                                      <>
+                                        <div>
+                                          {column.canFilter
+                                            ? column.render("Filter")
+                                            : null}
+                                        </div>
+
+                                        <div
+                                          style={{
+                                            marginTop: "2px",
+                                            display: "flex",
+                                            justifyContent: "space-between",
+                                            alignItems: "center",
+                                          }}
+                                        >
+                                          <div>{column.render("Header")}</div>
+
+                                          <div style={{ paddingTop: "20px" }}>
+                                            {column.isSorted ? (
+                                              column.isSortedDesc ? (
+                                                <span className="sorting_asc"></span>
+                                              ) : (
+                                                <span className="sorting_desc"></span>
+                                              )
+                                            ) : (
+                                              <span className="sorting"></span>
+                                            )}
+                                          </div>
+                                        </div>
+                                      </>
+                                    )}
+                                  </div>
+                                  <div
+                                    {...column.getResizerProps()}
+                                    // className={`resizer ${
+                                    //   column.isResizing ? "isResizing" : ""
+                                    // }`}
+                                  />
+                                </th>
+                              ))}
+                            </tr>
+                          ))}
+                        </thead>
+                        {customData?.length && (
+                          <tbody {...getTableBodyProps()}>
+                            {rows.map((row) => {
+                              prepareRow(row);
+                              return (
+                                <tr
+                                  {...row.getRowProps({
+                                    style: { width: "100%" },
+                                  })}
+                                >
+                                  {row.cells.map((cell) => {
+                                    return (
+                                      <td
+                                        {...cell.getCellProps({
+                                          style: cell.column.style, // Apply custom style to the column cells
+                                        })}
+                                      >
+                                        {cell.render("Cell")}
+                                      </td>
+                                    );
+                                  })}
+                                </tr>
+                              );
+                            })}
+                          </tbody>
+                        )}{" "}
+                      </table>
+                    </div>
+                  </section>
+                )}
+                {pageTab === "tab_doctorsVisits" && (
+                  <section className="d-flex flex-column">
+                    <div
+                      className="d-flex justify-content-center align-items-center"
+                      style={{ border: "1px solid #000", borderRadius: "16px" }}
+                    >
+                      <h4>Բժշկի այցելություններ</h4>
                     </div>
                     <div>
                       <table

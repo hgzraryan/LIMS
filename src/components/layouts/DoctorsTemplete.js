@@ -71,21 +71,13 @@ const DoctorsTemplete = () => {
   const [patients,setPatients] =useState([])
   const [events,setEvents] =useState(customEvents)
   const localizer = momentLocalizer(moment);
-
-  // Function to handle click event on a link
+  const handlePatientsDetails = async (patientId) => {  
+    navigate(`/patients/${patientId}`)
+};
   const handleLinkClick = (linkId) => {
-//     tab_summery
-// tab_patients
-// tab_calendar
-// tab_timeLine
     setActiveLink(linkId); 
     setPageTab(linkId)
   };
-  //-------------------
-
-  // const [doctorsState] = useGetFullData()
-  //const [refDoctorsState] = useGetFullData(REFDOCTORS_URL,checkRefDoctors)
-  //-------------------
   const handleUserPage = async (userId) => {
     try {
       // const response = await axiosPrivate.get(`/patients/${userId}`, );
@@ -239,7 +231,7 @@ const DoctorsTemplete = () => {
         ),
         Cell: ({ row }) => (
           <div
-            // onClick={()=>handlePatientsDetail(row.original.patientId)}
+             onClick={()=>handlePatientsDetails(row.original.patientId)}
             style={{ cursor: 'pointer', textDecoration:'underline' }}
           >
             {row.original.firstName}
@@ -469,6 +461,7 @@ const DoctorsTemplete = () => {
       ]);
     }
   );
+
   return (
     <div className="hk-wrapper" data-layout="vertical">
       <nav className="hk-navbar navbar navbar-expand-xl navbar-light fixed-top">

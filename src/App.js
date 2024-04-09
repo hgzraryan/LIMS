@@ -34,7 +34,8 @@ DOCTORSVISITS_ID_ROUTE,
 USERS_ID_ROUTE,
 DOCTORSTAMPLETE_ROUTE,
 ORGANIZATIONS_ID_ROUTE,
-DOCTORS_EMPLOYMENT_ROUTE} from '../src/utils/constants' 
+DOCTORS_EMPLOYMENT_ROUTE,
+MEDICALSERVICES_ROUTE} from '../src/utils/constants' 
 import { lazy, Suspense, useEffect, useState } from "react";
 import Support from "./components/views/Support";
 import DoctorsTemplete from "./components/layouts/DoctorsTemplete";
@@ -77,6 +78,8 @@ import DoctorsEmployment from "./components/views/DoctorsEmployment";
  const PatientDetails = lazy(()=>  import("./components/viewDetails/PatientDetails"));
  const AddSample = lazy(()=>  import("./components/addViews/AddSample"));
  const Samples = lazy(()=>  import("./components/viewTables/SamplesTable"));
+ const MedicalServices = lazy(()=>  import("./components/views/MedicalServices"));
+ const DoctorsPatients = lazy(()=>  import("./components/views/DoctorsPatients"));
  
 
 //import React, { useState, useEffect } from "react";
@@ -121,6 +124,7 @@ function App() {
           </Route>
           <Route element={<RequireAuth allowedRoles={[ROLES.Doctor]} />}>
         <Route path={DOCTORSTAMPLETE_ROUTE} element={<DoctorsTemplete />} />
+
           </Route>
 
           <Route element={<RequireAuth allowedRoles={[ROLES.Sampler, ROLES.Admin]} />}>
@@ -188,6 +192,10 @@ function App() {
               <Route
                 path={RESEARCH_LISTS_ROUTE}
                 element={<ResearchLists />}
+              />
+              <Route
+                path={MEDICALSERVICES_ROUTE}
+                element={<MedicalServices />}
               />
               <Route path={DIAGNOSTICS_ROUTE} element={<Diagnostics />} />
               <Route path={DIAGNOSTICS_ID_ROUTE} element={<DiagnosticsDetails/>} />

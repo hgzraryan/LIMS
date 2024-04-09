@@ -408,6 +408,23 @@ export const name_validation = {
     },
   },
 };
+export const diagName_validation = {
+  name: "diagName_validation",
+  label: "Ախտորոշման անվանում",
+  type: "text",
+  id: "diagName_validation",
+  placeholder: "Անվանում",
+  validation: {
+    required: {
+      value: false,
+      message: "պարտադիր",
+    },
+    maxLength: {
+      value: 30,
+      message: "30 characters max",
+    },
+  },
+};
 export const contactName_validation = {
   name: "contactName",
   label: "Անուն",
@@ -427,10 +444,10 @@ export const contactName_validation = {
 };
 export const fullName_validation = {
   name: "fullName",
-  label: "Անուն ազգանուն",
+  label: "Անուն ազգանուն հայրանուն",
   type: "text",
   id: "fullName",
-  placeholder: "Անուն ազգանուն",
+  placeholder: "Անուն ազգանուն հայրանուն",
   validation: {
     required: {
       value: true,

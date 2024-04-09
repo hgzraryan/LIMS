@@ -12,6 +12,7 @@ import ReagentsTable from "../viewTables/ReagentsTable";
 import { useSelector } from "react-redux";
 import { selectReagentsCount } from "../../redux/features/reagents/reagentsCountSlice";
 import { REAGENTS_URL } from "../../utils/constants";
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 
 const Reagents = () => {
   const [selectedItem, setSelectedItem] = useState("");
@@ -65,7 +66,16 @@ const Reagents = () => {
   };
 
   return (
+    <HelmetProvider>
     <div>
+      <div>
+
+     <Helmet>
+    <meta charSet="utf-8" />
+    <title>Vteam LIMS | Reagents</title>
+    <link rel="icon" type="image/x-icon" href="../dist/img/favicon.ico"></link>
+    </Helmet>
+      </div>
       <div className="contactapp-wrap">
         <div className="contactapp-content">
           <div className="contactapp-detail-wrap w-100">
@@ -187,6 +197,7 @@ const Reagents = () => {
         </div>
       </div>
     </div>
+    </HelmetProvider>
   );
 };
 

@@ -6,7 +6,7 @@ import { useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import { Form, FormProvider, useForm, Controller } from "react-hook-form";
 import { Input } from "../Input";
-import { name_validation } from "../../utils/inputValidations";
+import { diagName_validation } from "../../utils/inputValidations";
 import {
   AGENTS_URL,
   ORGANIZATIONS_URL,
@@ -278,7 +278,7 @@ function AddDiagnostic({
                             <div className="modal-body">
                               <div className="row gx-3">
                                 <div className="col-sm-6">
-                                  <Input {...name_validation} />
+                                  <Input {...diagName_validation} />
                                 </div>
                                 <div className="col-sm-6">
                                   <div className="d-flex justify-content-between me-2">

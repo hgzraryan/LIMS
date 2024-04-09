@@ -10,6 +10,7 @@ import ReactPaginate from "react-paginate";
 import { useSelector } from "react-redux";
 import { selectDoctorCount } from "../../redux/features/doctor/doctorCountSlice";
 import { DOCTORS_URL } from "../../utils/constants";
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 
 function Doctors() {
   const [selectedItem, setSelectedItem] = useState("");
@@ -66,7 +67,17 @@ function Doctors() {
   };
   //-------------------
   return (
-    <div>
+    <HelmetProvider>
+      <div>
+        <div>
+  
+       <Helmet>
+      <meta charSet="utf-8" />
+      <title>Vteam LIMS | Doctors</title>
+      <link rel="icon" type="image/x-icon" href="../dist/img/favicon.ico"></link>
+      </Helmet>
+        </div>
+      
       <div className="contactapp-wrap">
         <div className="contactapp-content">
           <div className="contactapp-detail-wrap w-100">
@@ -188,7 +199,9 @@ function Doctors() {
           </div>
         </div>
       </div>
-    </div>
+      </div>
+      </HelmetProvider>
+    
   );
 }
 

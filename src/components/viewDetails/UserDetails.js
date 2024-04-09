@@ -21,7 +21,7 @@ import missingAvatar from "../../dist/img/Missing.svg";
 import mobileSvg from "../../dist/svg/mobileSvg.svg";
 import emailSvg from "../../dist/svg/emailSvg.svg";
 import LoadingSpinner from "../LoadingSpinner";
-import userSamplePhoto from "../../dist/img/userSample.jpg";
+import userSamplePhoto from "../../dist/img/Missing.svg";
 import profileBgImg from "../../dist/img/profile-bg.jpg";
 
 function UserDetails() {
@@ -324,7 +324,7 @@ function UserDetails() {
                           <ol>
                             <li>
                               <p className="card-text mb-5">
-                                Երկրորդ հերթափոխ
+                                {/* Երկրորդ հերթափոխ */}
                               </p>
                             </li>
                           </ol>

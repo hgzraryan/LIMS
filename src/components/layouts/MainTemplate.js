@@ -15,6 +15,7 @@ import { checkDiagnosticsCount } from "../../redux/features/diagnostics/diagnost
 import { useDispatch, useSelector } from "react-redux";
 import { checkResearchListCount } from "../../redux/features/researches/researchListCountSlice";
 import { useGetFullData } from "../../hooks/useGetFullData";
+import { checkMedicalServicesCount } from "../../redux/features/medicalServices/medicalServicesSlice";
 
 const MainTemplate = () => {
     const navigate = useNavigate();
@@ -86,6 +87,7 @@ const MainTemplate = () => {
 				      isMounted && dispatch(checkReagentsCount(response.data?.reagentsCount));
 				      isMounted && dispatch(checkUsersCount(response.data?.usersCount));
 				      isMounted && dispatch(checkResearchListCount(response.data?.researchListCount));
+				      isMounted && dispatch(checkMedicalServicesCount(response.data?.medicalServicesCount));
             } catch (err) {
                 console.error(err);
                 navigate('/login', { state: { from: location }, replace: true });
@@ -1547,6 +1549,28 @@ const MainTemplate = () => {
                               >
                                 <span className="nav-link-text">
                                   Հետ․ տեսակներ
+                                </span>
+                              </Link>
+                            </li>
+                            <li className="nav-item">
+                              <Link
+                                className={
+                                  sisActive1 === "medicalServices" ||
+                                  location.pathname ===
+                                    "/settings/medicalServices"
+                                    ? "nav-link active"
+                                    : "nav-link"
+                                }
+                                to="./settings/medicalServices"
+                                onClick={() =>
+                                  handleSubmenuClick(
+                                    "settings",
+                                    "medicalServices"
+                                  )
+                                }
+                              >
+                                <span className="nav-link-text">
+                                  Բուժ․ ծառայություններ
                                 </span>
                               </Link>
                             </li>

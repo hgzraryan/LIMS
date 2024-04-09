@@ -12,6 +12,7 @@ import AgentsTable from "../viewTables/AgentsTable";
 import { useSelector } from "react-redux";
 import { selectAgentsCount } from "../../redux/features/agents/agentsCountSlice";
 import { AGENTS_URL } from "../../utils/constants";
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 
 const Agents = () => {
   const [selectedItem, setSelectedItem] = useState("");
@@ -68,7 +69,16 @@ const Agents = () => {
   //-------------------
 
   return (
+    <HelmetProvider>
     <div>
+      <div>
+
+     <Helmet>
+    <meta charSet="utf-8" />
+    <title>Vteam LIMS | Agents</title>
+    <link rel="icon" type="image/x-icon" href="../dist/img/favicon.ico"></link>
+    </Helmet>
+      </div>
       <div className="contactapp-wrap">
         <div className="contactapp-content">
           <div className="contactapp-detail-wrap w-100">
@@ -190,7 +200,8 @@ const Agents = () => {
           </div>
         </div>
       </div>
-    </div>
+      </div>
+      </HelmetProvider>
   );
 };
 

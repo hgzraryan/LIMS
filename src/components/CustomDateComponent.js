@@ -3,7 +3,7 @@ import { useController } from 'react-hook-form'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-function CustomDateComponent({ control, name })  {
+function CustomDateComponent({ control, name,required='true' })  {
     const {
       field,
       fieldState: { invalid, isTouched, isDirty },
@@ -11,7 +11,7 @@ function CustomDateComponent({ control, name })  {
     } = useController({
       name,
       control,
-      rules: { required: true },
+      rules: { required: required },
     });
   
     const handleDateChange = (date) => {

@@ -115,7 +115,7 @@ function AddResearchList({ handleToggleCreateModal, getResearches,researchState 
         });
         
         handleToggleCreateModal(false);
-       //getUsers();
+        getResearches();
         notify(`${newResearchList.researchName} ավելացված է`)
   
       } catch (err) {

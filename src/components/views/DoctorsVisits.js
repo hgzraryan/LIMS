@@ -6,81 +6,12 @@ import ReactPaginate from 'react-paginate';
 import { useSelector } from 'react-redux';
 import { selectDoctorCount } from '../../redux/features/doctor/doctorCountSlice';
 import DoctorsVisitsTable from '../viewTables/DoctorsVisitsTable';
-const CustomData=[
-  {
-    doctorsVisitsId:30001,
-      patientData:{
-        name:"Արման Գևորգի Ստեփանյան",
-        contact:{
-          email:"fdfgfg1942@as.tu",
-          phone:"+37485745896",
-        },
-        age:45,
-        gender:'Ար',
-        patientId:49
-        //patient's all data
-      },
-      visitDate:"24-02-2022",
-      doctorName:"Կարինե Սամվելի Մանւկյան",
-      doctorsAppointments:
-        {
-          instructions:['Մերսում'],
-          medicine:['Դիկլակ գել'],
-          researches:[]
-      },
-    nextVisit:'24-03-2022',
-  },
-  {
-    doctorsVisitsId:30025,
-      patientData:{
-        contact:{
+import AddDoctorsVisit from '../addViews/AddDoctorsVisit';
+import { DOCTORSVISITS_URL } from '../../utils/constants';
+import useGetData from '../../hooks/useGetData';
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 
-          email:"Anka1942@as.tu",
-          phone:"+3748596584",
-        },
-        name:"Անուշ Ռազմիկի Գաբրիելյան",
-        age:85,
-        patientId:48,
-        gender:'Իգ',
-        //patient's all data
-      },
-      visitDate:"25-02-2024",
-      doctorName:"Կարինե Սամվելի Մանւկյան",
-      doctorsAppointments:
-        {
-          instructions:['Դիետիկ սնունդ'],
-          medicine:['Մեզիմ ֆոռտե'],
-          researches:['Արյան ընդհանուր հետազոտություն']
-      },
-    
-    nextVisit:'24-03-2024',
-  },
-  {
-    doctorsVisitsId:30852,
-      patientData:{
-        name:"Կարեն Սերոբի Ստեփանյան",
-        contact:{
-          email:"ASD1942@as.tu",
-          phone:"+3748785263",
-        },
-        age:32,
-        gender:'Ար',
-        patientId:85
-        //patient's all data
-      },
-      visitDate:"01-03-2024",
-      doctorName:"Կարինե Սամվելի Մանւկյան",
-      doctorsAppointments:
-        {
-          instructions:['Քաղցր չուտել','քայլել օրեկան 1կմ'],
-          medicine:['Դիաբետոն'],
-          researches:['Արյան ընդհանուր հետազոտություն','ԲԱԿ հետազոտություն']
-      },
-    nextVisit:'05-03-2024',
-  },
-]
 function DoctorsVisits() {
-    const [doctorsVisits,setDoctorsVisits]= useState(CustomData)
     const [isOpen, setIsOpen] = useState(false);
     const [selectedItem, setSelectedItem] = useState("");
     const [selectedItemId, setSelectedItemId] = useState(null);
@@ -88,9 +19,17 @@ function DoctorsVisits() {
     const doctorCount = useSelector(selectDoctorCount)
     const [currentPage, setCurrentPage] = useState(0);  
     const [usersPerPage, setUsersPerPage] = useState(Math.round((window.innerHeight / 100)));
-    const pageCount = Math.ceil(doctorCount/usersPerPage)
+    //const pageCount = Math.ceil(doctorCount/usersPerPage)
     const [userRole, setUserRole] = useState('');
-    
+    const handleToggleCreateModal = (value) => {
+      setIsOpen((prev) => value);
+    };
+    const {
+      data: doctorsVisits,
+      setData: setDoctorsVisits,
+      getData: getDoctorsVisits,
+      refreshData  
+    } = useGetData(DOCTORSVISITS_URL,currentPage,usersPerPage);
   useEffect(() => {
     const storedData = JSON.parse(localStorage.getItem('role'));
     if (storedData) {
@@ -112,11 +51,20 @@ function DoctorsVisits() {
     const refreshPage = () => {
         let paglink = document.querySelectorAll(".page-item");
         paglink[0]?.firstChild.click();
-        // refreshData();
+         refreshData();
       };
       //-------------------
       return (
+        <HelmetProvider>
         <div>
+          <div>
+    
+         <Helmet>
+        <meta charSet="utf-8" />
+        <title>Vteam LIMS | Doctors visits</title>
+        <link rel="icon" type="image/x-icon" href="../dist/img/favicon.ico"></link>
+        </Helmet>
+          </div>
           <div className="contactapp-wrap">
             <div className="contactapp-content">
               <div className="contactapp-detail-wrap w-100">
@@ -154,12 +102,12 @@ function DoctorsVisits() {
                         </Dropdown.Menu>
                       </Dropdown>
     
-                      {/* {isOpen && (
-                        <AddVisit
+                       {isOpen && (
+                        <AddDoctorsVisit
                           handleToggleCreateModal={handleToggleCreateModal}
-                          getDoctors={() => getDoctors()}
+                          getDoctorsVisits={getDoctorsVisits}
                         />
-                      )} */}
+                      )} 
                     </div>
 }
                   </div>
@@ -243,6 +191,7 @@ function DoctorsVisits() {
             </div>
           </div>
         </div>
+        </HelmetProvider>
       );
 }
 

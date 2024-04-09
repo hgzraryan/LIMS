@@ -4,6 +4,7 @@ import SamplesTable from '../viewTables/SamplesTable'
 import FeatherIcon from 'feather-icons-react/build/FeatherIcon'
 import { SAMPLES_URL } from '../../utils/constants';
 import useGetData from '../../hooks/useGetData';
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 
 function Samples() {
   const [selectedItem, setSelectedItem] = useState("");
@@ -36,7 +37,17 @@ const handleCloseModal = () => {
     refreshData()
   };
   return (
+    
+    <HelmetProvider>
     <div>
+      <div>
+
+     <Helmet>
+    <meta charSet="utf-8" />
+    <title>Vteam LIMS | Samples</title>
+    <link rel="icon" type="image/x-icon" href="../dist/img/favicon.ico"></link>
+    </Helmet>
+      </div>
     <div className="contactapp-wrap">
       <div className="contactapp-content">
         <div className="contactapp-detail-wrap w-100">
@@ -159,6 +170,7 @@ const handleCloseModal = () => {
       </div>
     </div>
   </div>
+  </HelmetProvider>
   )
 }
 

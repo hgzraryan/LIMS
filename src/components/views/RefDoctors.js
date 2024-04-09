@@ -8,6 +8,8 @@ import AddRefDoctor from '../addViews/AddRefDoctor';
 import { REFDOCTORS_URL } from '../../utils/constants';
 import useGetData from '../../hooks/useGetData';
 import useDeleteData from '../../hooks/useDeleteData';
+import { Helmet, HelmetProvider } from 'react-helmet-async';
+
 const refDoctorsData = [
   {
       refDoctorId:9578,
@@ -67,7 +69,16 @@ function RefDoctors() {
         refreshData()
       };
   return (
+    <HelmetProvider>
     <div>
+      <div>
+
+     <Helmet>
+    <meta charSet="utf-8" />
+    <title>Vteam LIMS | Ref Doctors</title>
+    <link rel="icon" type="image/x-icon" href="../dist/img/favicon.ico"></link>
+    </Helmet>
+      </div>
       <div className="contactapp-wrap">
         <div className="contactapp-content">
           <div className="contactapp-detail-wrap w-100">
@@ -190,6 +201,8 @@ function RefDoctors() {
         </div>
       </div>
     </div>
+    </HelmetProvider>
+
   )
 }
 

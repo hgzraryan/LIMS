@@ -14,6 +14,7 @@ import "../../dist/css/data-table.css";
 import { useNavigate } from 'react-router-dom';
 import { BiSolidInfoCircle } from 'react-icons/bi';
 import { Modal } from 'react-bootstrap';
+import ProgressBar from '../ProgressBar';
 
 function DoctorsVisitsTable({
     selectedItem,
@@ -29,7 +30,7 @@ function DoctorsVisitsTable({
   const [modalInfo, setModalInfo] = useState("");
   
   const handlePatientsDetail = async (patientId) => {  
-    //  navigate(`/patients/${patientId}`)
+     navigate(`/patients/${patientId}`)
       
   };
   const handleOpenInfoModal = (data) => {
@@ -56,7 +57,7 @@ function DoctorsVisitsTable({
                 <div  className="columnHeader">ID</div>
               </>
             ),
-            accessor: "doctorsVisitsId",
+            accessor: "doctorsVisitId",
             sortable: true,
             width: 60,
             Filter: ({ column: { id } })=>(
@@ -71,7 +72,7 @@ function DoctorsVisitsTable({
             Header: (event) => (
               <>
                 
-                <div  className="columnHeader">Անուն ազգանուն</div>
+                <div  className="columnHeader">Այցելու</div>
               </>
             ),
             accessor: "name",
@@ -86,55 +87,27 @@ function DoctorsVisitsTable({
             ),
             Cell: ({ row }) => (
               <div
-                onClick={()=>handlePatientsDetail(row.original?.patientData?.patientId)}
+                onClick={()=>handlePatientsDetail(row.original?.clientId)}
                 style={{ cursor: 'pointer', textDecoration:'underline' }}
               >
-                {row.original?.patientData?.name}
+                {row.original?.clientFirstName+" " +row.original?.clientLastName}
               </div>
             ),
           },
           {
-            Header: (event) => (
-              <>
-                <div>Էլ․ հասցե</div>
-              </>
-            ),
-            accessor: "email",
+            Header: "Վճարում",
+            accessor: "paymentProgress",
+            disableSortBy: true,
             width: 200,
-            Cell: ({ row }) => (
-              <div className="d-flex align-items-center">
-                {row.original?.patientData?.contact?.email}
+            Cell: ({ row }) => (<>
+              
+              <div className="d-flex justify-content-center align-items-center">
+                <ProgressBar totalPrice ={row.original?.totalPrice||0} totalPayed={row.original?.totalPayed||0}/>
               </div>
+                  </>
             ),
-            Filter: ({ column: { id } })=>(
-              <ColumnFilter
-                id={id}
-                setData={setDoctorsVisits}
-                placeholder = "Էլ․ հասցե"
-              />
-            ),
-          },
-          {
-            Header: (event) => (
-              <>
-                <div>Հեռախոս</div>
-              </>
-            ),
-            accessor: "phone",
-            width: 200,            
-            Cell: ({ row }) => (
-              <div className="d-flex align-items-center">
-                {row.original?.patientData?.contact?.phone}
-              </div>
-            ),
-            Filter: ({ column: { id } })=>(
-              <ColumnFilter
-                id={id}
-                setData={setDoctorsVisits}
-                placeholder = "Հեռախոս"
-              />
-            ),
-          },         
+            Filter: ({ column: { id } }) => <></>,
+          },        
           {
             Header: (event) => (
               <>
@@ -189,7 +162,7 @@ function DoctorsVisitsTable({
               <div
                 onClick={(e) => {
                   e.stopPropagation();
-                  handleDoctorInfo(row.original);
+                  handleDoctorInfo(row.original?.doctorId);
                 }}
                 style={{ cursor: 'pointer' ,textDecoration:'underline'}}
               >

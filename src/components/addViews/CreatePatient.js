@@ -516,6 +516,7 @@ function CreatePatient({
                                   type="checkbox"
                                   name="selectDiagnostic"
                                   checked={addDiagnostic}
+                                  disabled={addDoctorsVisit}
                                   onChange={(e) =>
                                     setAddDiagnostic(e.target.checked)
                                   }
@@ -530,6 +531,7 @@ function CreatePatient({
                                   type="checkbox"
                                   name="selectDoctorsVisit"
                                   checked={addDoctorsVisit}
+                                  disabled={addDiagnostic}
                                   onChange={(e) =>
                                     setAddDoctorsVisit(e.target.checked)
                                   }
@@ -737,9 +739,71 @@ function CreatePatient({
                                     }}
                                   />
                                 </div>
-                                
+                                <div className="col-sm-6">
+                              <div className="form-group">
+                                <div className="d-flex justify-content-between me-2">
+                                <label
+                                  className="form-label"
+                                  htmlFor="purchaseDate"
+                                  >
+                                  Այցի ամսաթիվ
+                                </label>
+                                  {methods.formState.errors.visitDate && (
+                                    <span className="error text-red"><span><img src={ErrorSvg} alt="errorSvg"/></span> պարտադիր</span>
+                                    )}
+                                    </div>
+                                <div>
+                                <CustomDateComponent name="visitDate" control={methods.control}/>
+                                </div>
                               </div>
+                            </div>
+
+                              </div>
+                             <div className="row gx-3">
                              
+                            <div className="col-sm-12">
+                                  <div className="d-flex justify-content-between me-2">
+                                    <label
+                                      className="form-label"
+                                      htmlFor="research"
+                                      placeholder={"Ընտրել"}
+                                    >
+                                      Ընտրել ծառայությունը
+                                    </label>
+                                    {methods.formState.errors.medicalServices && (
+                                      <span className="error text-red">
+                                        <span>
+                                          <img src={ErrorSvg} alt="errorSvg" />
+                                        </span>{" "}
+                                        պարտադիր
+                                      </span>
+                                    )}
+                                  </div>
+                                  <div className="form-control">
+                                    <Controller
+                                      name="medicalServices"
+                                      control={methods.control}
+                                      isClearable={true}
+                                      defaultValue={null}
+                                      rules={{ required: true }}
+                                      render={({ field }) => (
+                                        <Select
+                                          {...field}
+                                          isMulti
+                                          closeMenuOnSelect={false}
+                                          components={animatedComponents}
+                                          options={[{serviceName:'asd',medServiceId:12},{serviceName:'asdasd',medServiceId:13}].map((res) => ({
+                                            value: res.medServiceId,
+                                            label: `${res?.serviceName}`,
+                                          }))}
+                                          styles={colourStyles}
+                                          placeholder={"Բժշկական ծառայություններ"}
+                                        />
+                                      )}
+                                    />
+                                  </div>
+                                </div>
+                             </div>
                             </div>
                           </div>
                         </div>                        

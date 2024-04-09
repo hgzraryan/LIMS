@@ -13,6 +13,7 @@ import AddDiagnostic from "../addViews/AddDiagnostic";
 import { selectDiagnosticsCount} from "../../redux/features/diagnostics/diagnosticsCountSlice";
 import { DIAGNOSTICS_URL, DOCTORS_URL, PATIENTS_URL } from "../../utils/constants";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 
 const Diagnostics = () => {
   const [selectedItem, setSelectedItem] = useState("");
@@ -89,7 +90,16 @@ const Diagnostics = () => {
   };
 
   return (
+    <HelmetProvider>
     <div>
+      <div>
+
+     <Helmet>
+    <meta charSet="utf-8" />
+    <title>Vteam LIMS | Diagnostics</title>
+    <link rel="icon" type="image/x-icon" href="../dist/img/favicon.ico"></link>
+    </Helmet>
+      </div>
       <div className="contactapp-wrap">
         <div className="contactapp-content">
           <div className="contactapp-detail-wrap w-100">
@@ -215,7 +225,8 @@ const Diagnostics = () => {
           </div>
         </div>
       </div>
-    </div>
+      </div>
+      </HelmetProvider>
   );
 };
 export default Diagnostics;

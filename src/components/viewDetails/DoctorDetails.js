@@ -258,7 +258,7 @@ function DoctorDetails() {
                           </ul>
                         </div>
                       </div>
-                      <div className="col-lg-8">
+                      {/* <div className="col-lg-8">
                         <div className="card card-border card-profile-feed mb-lg-4 mb-3">
                           <div className="card-header card-header-action">
                             <div className="media align-items-center">
@@ -360,7 +360,7 @@ function DoctorDetails() {
                           </div>
                           <div className="card-footer justify-content-between"></div>
                         </div>
-                      </div>
+                      </div> */}
                     </>
                   )}
                 </div>
