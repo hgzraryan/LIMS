@@ -168,7 +168,7 @@ function CreatePatient({
         //lastHandlingDate: handlingDate.current,
         // internalStatus: "Approval",
         // externalStatus:  null,
-        researchList: research.map((el) => el.value),
+        researchList: research?.map((el) => el.value),
         additional: editorRef.current.getContent({ format: "text" }),
         gender: gender,
         doctors: doctor,

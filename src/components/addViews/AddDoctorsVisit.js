@@ -104,7 +104,7 @@ function AddDoctorsVisit({
         const newDoctorsVisit = {
             clientId:client?.value,
             doctor:doctor,
-            medicalServices:medicalServices.map((el)=>el.value),
+            medicalServices:medicalServices?.map((el)=>el.value),
             visitDate:new Date(
                 visitDate.getTime() - visitDate.getTimezoneOffset() * 60000
               )
