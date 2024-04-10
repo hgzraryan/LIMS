@@ -105,7 +105,19 @@ function AddDiagnostic({
         .then((resp) => {
           setPatients(resp?.data?.jsonString);
           setIsLoading(false);
-        })        
+        })
+        .then((resp) => {
+          axiosPrivate.get(ORGANIZATIONS_URL).then((resp) => {
+            setOrganizations(resp?.data?.jsonString);
+            setIsLoading(false);
+          });
+        })
+        .then((resp) => {
+          axiosPrivate.get(AGENTS_URL).then((resp) => {
+            setAgents(resp?.data?.jsonString);
+            setIsLoading(false);
+          });
+        })
         .then((resp) => {
           axiosPrivate.get(RESEARCHLISTS_URL).then((resp) => {
             setResearches(resp?.data?.jsonString);
@@ -195,8 +207,7 @@ function AddDiagnostic({
       additional: editorRef.current.getContent({ format: "text" }),
     };
 
-    console.log(data);
-    console.log(newDiagnose);
+    //console.log(newDiagnose);
     try {
       await axiosPrivate.post(REGISTER_DIAGNOSTICS, newDiagnose, {
         headers: { "Content-Type": "application/json" },
@@ -646,7 +657,7 @@ function AddDiagnostic({
                                       (option) => option.value === refDoctor
                                     )}
                                     options={[
-                                      { value: 0, label: "Առանց բժիշկ" },
+                                      { value: 0, label: "Առանց ուղղորդող բժիշկ" },
                                       ...refDoctors.map((item) => ({
                                         value: item.doctorName,
                                         label: item.doctorName,

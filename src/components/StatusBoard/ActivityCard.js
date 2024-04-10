@@ -8,7 +8,7 @@ function ActivityCard({ activity, onActivityClick,researchList }) {
   //const [researchList,setResearchList] = useState([])
   const [currentRes,setCurrentRes] = useState([])
 
-  console.log(activity)
+  //console.log(activity)
 //   useEffect(()=>{
     
 //         const filteredRes = researchList?.filter((el)=>{

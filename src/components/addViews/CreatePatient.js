@@ -159,6 +159,11 @@ function CreatePatient({
       phone,
       dateOfBirth,
       research,
+      visitDate,
+      medicalServices,
+      refDoctor,
+      doctor,
+      visitDoctor
     }) => {
       const newPatient = {
         firstName: firstName,
@@ -168,11 +173,12 @@ function CreatePatient({
         //lastHandlingDate: handlingDate.current,
         // internalStatus: "Approval",
         // externalStatus:  null,
-        researchList: research?.map((el) => el.value),
+        researchList:research? research?.map((el) => el.value):null,
         additional: editorRef.current.getContent({ format: "text" }),
         gender: gender,
-        doctors: doctor,
-        refDoctor: refDoctor,
+        doctors: doctor||"Առանց բժիշկ",
+        visitDoctor:visitDoctor?visitDoctor.id:null,
+        refDoctor:refDoctor ? refDoctor?.id:null,
         contact: {
           email: email,
           phone: phone,
@@ -186,14 +192,21 @@ function CreatePatient({
           },
         },
         medicalHistory: "medicalHistory",
-        dateOfBirth: new Date(
+        medicalServices:medicalServices?medicalServices?.map((el) => el.value):null,
+        visitDate:visitDate ? new Date(
+          visitDate.getTime() - visitDate.getTimezoneOffset() * 60000
+        )
+        .toISOString()
+        .split("T")[0] : null,
+        dateOfBirth:dateOfBirth ?new Date(
           dateOfBirth.getTime() - dateOfBirth.getTimezoneOffset() * 60000
         )
           .toISOString()
-          .split("T")[0],
+          .split("T")[0]: null,
       };
 
-      //console.log(newPatient);
+      console.log(newPatient);
+      
 
       try {
         await axiosPrivate.post(REGISTER_PATIENT, newPatient, {
@@ -222,15 +235,16 @@ function CreatePatient({
     trigger("gender");
   };
   const onDoctorSelect = (data) => {
-    if (data[0].doctorName === "Ուղղորդող բժիշկ") {
+    console.log(data)
+    if (data.label === "Ուղղորդող բժիշկ") {
       setExtraDoctor(true);
     } else {
       setExtraDoctor(false);
     }
-    setDoctor((prev) => data[0].doctorName);
+    setDoctor((prev) => data.label);
   };
   const onRefDoctorSelect = (data) => {
-    setRefDoctor((prev) => data[0].doctorName);
+    setRefDoctor((prev) => data.label);
   };
   return (
     <Modal
@@ -573,7 +587,7 @@ function CreatePatient({
                           <div className="card-body">
                             <div className="modal-body">
                               <div className="row gx-3">
-                                <div className="col-sm-6">
+                                {/* <div className="col-sm-6">
                                   <label
                                     className="form-label"
                                     htmlFor="doctor"
@@ -606,33 +620,130 @@ function CreatePatient({
                                       overflow: "hidden",
                                     }}
                                   />
-                                </div>
-                                {extraDoctor && (
-                                  <div className="col-sm-6">
+                                </div> */}
+                                <div className="col-sm-6">
+                                  <div className="d-flex justify-content-between me-2">
                                     <label
                                       className="form-label"
                                       htmlFor="doctor"
+                                      placeholder={"Ընտրել"}
                                     >
-                                      Ուղղորդող բժիշկներ
+                                      Բժիշկներ
                                     </label>
-                                    <Multiselect
-                                      options={refDoctors}
-                                      onSelect={onRefDoctorSelect} // Function will trigger on select event
-                                      //  onRemove={onResearchDelete} // Function will trigger on remove event
-                                      closeOnSelect={true}
-                                      singleSelect
-                                      displayValue="doctorName"
-                                      id="input_tags_4"
-                                      className="form-control"
-                                      ref={multiselectRef}
-                                      hidePlaceholder={true}
-                                      placeholder="Ընտրել բժշկին"
-                                      style={{
-                                        height: "10rem",
-                                        overflow: "hidden",
-                                      }}
+                                    {methods.formState.errors.doctor && (
+                                      <span className="error text-red">
+                                        <span>
+                                          <img src={ErrorSvg} alt="errorSvg" />
+                                        </span>{" "}
+                                        պարտադիր
+                                      </span>
+                                    )}
+                                  </div>
+                                  <div className="form-control">
+                                    <Controller
+                                      name="doctor"
+                                      control={methods.control}
+                                      isClearable={true}
+                                      defaultValue={null}
+                                      rules={{ required: false }}
+                                      render={({ field }) => (
+                                        <Select
+                                          {...field}
+                                          onChange={(val) => {
+                                            field.onChange(val.id);
+                                            onDoctorSelect(val);
+                                          }}
+                                          value={doctors.find(
+                                            (option) => option.label === doctor
+                                          )}
+                                          options={[
+                                            { value: 0, label: "Առանց բժիշկ",id:"Առանց բժիշկ" },
+                                            { value: 0, label: "Ուղղորդող բժիշկ",id:"Ուղղորդող բժիշկ" },
+                                            ...doctors.map((item) => ({
+                                              value: item.doctorName,
+                                              label: item.doctorName,
+                                              id: item.doctorId,
+                                            })),
+                                          ]}
+                                          placeholder={"Ընտրել"}
+                                        />
+                                      )}
                                     />
                                   </div>
+                                </div>
+                                {extraDoctor && (
+                                   <div className="col-sm-6">
+                                   <div className="d-flex justify-content-between me-2">
+                                     <label
+                                       className="form-label"
+                                       htmlFor="refDoctors"
+                                       placeholder={"Ընտրել"}
+                                     >
+                                       Ուղղորդող բժիշկներ
+                                     </label>
+                                     {methods.formState.errors.refDoctor && (
+                                       <span className="error text-red">
+                                         <span>
+                                           <img src={ErrorSvg} alt="errorSvg" />
+                                         </span>{" "}
+                                         պարտադիր
+                                       </span>
+                                     )}
+                                   </div>
+                                   <div className="form-control">
+                                     <Controller
+                                       name="refDoctor"
+                                       control={methods.control}
+                                       isClearable={true}
+                                       defaultValue={null}
+                                       rules={{ required: true }}
+                                       render={({ field }) => (
+                                         <Select
+                                           {...field}
+                                          //  onChange={(val) => {
+                                          //    field.onChange(val.id);
+                                          //    onRefDoctorSelect(val);
+                                          //  }}
+                                          //  value={refDoctors.find(
+                                          //    (option) => option.value === refDoctor
+                                          //  )}
+                                           options={refDoctors.map((item) => ({
+                                               value: item.doctorName,
+                                               label: item.doctorName,
+                                               id: item.refDoctorsId,
+                                             }))
+                                           }
+                                           placeholder={"Ընտրել"}
+                                         />
+                                       )}
+                                     />
+                                   </div>
+                                 </div>
+                                  // <div className="col-sm-6">
+                                  //   <label
+                                  //     className="form-label"
+                                  //     htmlFor="doctor"
+                                  //   >
+                                  //     Ուղղորդող բժիշկներ
+                                  //   </label>
+                                  //   <Multiselect
+                                  //     options={refDoctors}
+                                  //     onSelect={onRefDoctorSelect} // Function will trigger on select event
+                                  //     //  onRemove={onResearchDelete} // Function will trigger on remove event
+                                  //     closeOnSelect={true}
+                                  //     singleSelect
+                                  //     displayValue="doctorName"
+                                  //     id="input_tags_4"
+                                  //     className="form-control"
+                                  //     ref={multiselectRef}
+                                  //     hidePlaceholder={true}
+                                  //     placeholder="Ընտրել բժշկին"
+                                  //     style={{
+                                  //       height: "10rem",
+                                  //       overflow: "hidden",
+                                  //     }}
+                                  //   />
+                                  // </div>
                                 )}
                               </div>
                               <div className="row gx-3 mt-2">
@@ -660,7 +771,7 @@ function CreatePatient({
                                       control={methods.control}
                                       isClearable={true}
                                       defaultValue={null}
-                                      // rules={{ required: true }}
+                                      rules={{ required: true }}
                                       render={({ field }) => (
                                         <Select
                                           {...field}
@@ -711,10 +822,10 @@ function CreatePatient({
                           <div className="card-body">
                             <div className="modal-body">
                               <div className="row gx-3">
-                                <div className="col-sm-6">
+                              {/* <div className="col-sm-6">
                                   <label
                                     className="form-label"
-                                    htmlFor="doctor"
+                                    htmlFor="visitDoctorName"
                                   >
                                     Բժիշկներ
                                   </label>
@@ -730,14 +841,58 @@ function CreatePatient({
                                     ref={multiselectRef}
                                     hidePlaceholder={true}
                                     placeholder="Ընտրել բժշկին"
-                                    selectedValues={[
-                                      { doctorName: "Առանց բժիշկ" },
-                                    ]}
                                     style={{
                                       height: "10rem",
                                       overflow: "hidden",
                                     }}
                                   />
+                                </div> */}
+                                <div className="col-sm-6">
+                                  <div className="d-flex justify-content-between me-2">
+                                    <label
+                                      className="form-label"
+                                      htmlFor="visitDoctor"
+                                      placeholder={"Ընտրել"}
+                                    >
+                                      Բժիշկներ
+                                    </label>
+                                    {methods.formState.errors.visitDoctor && (
+                                      <span className="error text-red">
+                                        <span>
+                                          <img src={ErrorSvg} alt="errorSvg" />
+                                        </span>{" "}
+                                        պարտադիր
+                                      </span>
+                                    )}
+                                  </div>
+                                  <div className="form-control">
+                                    <Controller
+                                      name="visitDoctor"
+                                      control={methods.control}
+                                      isClearable={true}
+                                      defaultValue={null}
+                                      rules={{ required: false }}
+                                      render={({ field }) => (
+                                        <Select
+                                          {...field}
+                                          // onChange={(val) => {
+                                          //   field.onChange(val.id);
+                                          //   onVisitDoctorSelect(val);
+                                          // }}
+                                          // value={doctors.find(
+                                          //   (option) => option.value === doctor
+                                          // )}
+                                          options={doctors.map((item) => ({
+                                              value: item.doctorName,
+                                              label: item.doctorName,
+                                              id: item.doctorId,
+                                            }))
+                                          }
+                                          placeholder={"Ընտրել"}
+                                        />
+                                      )}
+                                    />
+                                  </div>
                                 </div>
                                 <div className="col-sm-6">
                               <div className="form-group">
@@ -765,7 +920,7 @@ function CreatePatient({
                                   <div className="d-flex justify-content-between me-2">
                                     <label
                                       className="form-label"
-                                      htmlFor="research"
+                                      htmlFor="medicalServices"
                                       placeholder={"Ընտրել"}
                                     >
                                       Ընտրել ծառայությունը
