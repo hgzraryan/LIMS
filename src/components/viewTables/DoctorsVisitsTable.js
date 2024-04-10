@@ -37,8 +37,8 @@ function DoctorsVisitsTable({
     
     setModalInfo((prev) => data);
   };
-  const handleDoctorInfo = async ({doctorId})=>{
-    navigate(`/doctors/5`)
+  const handleDoctorInfo = async (doctorId)=>{
+    navigate(`/doctors/${doctorId}`)
     }
     const defaultColumn = React.useMemo(
         () => ({
@@ -162,7 +162,7 @@ function DoctorsVisitsTable({
               <div
                 onClick={(e) => {
                   e.stopPropagation();
-                  handleDoctorInfo(row.original?.doctorId);
+                  handleDoctorInfo(row.original.doctorId);
                 }}
                 style={{ cursor: 'pointer' ,textDecoration:'underline'}}
               >
@@ -386,7 +386,7 @@ function DoctorsVisitsTable({
               </tr>
             ))}
           </thead>
-          {doctorsVisits?.length && (
+          {doctorsVisits?.length>0? (
                 <tbody {...getTableBodyProps()}>
                 {rows.map(row => {
                   prepareRow(row)
@@ -402,7 +402,7 @@ function DoctorsVisitsTable({
                 })}
               
                 </tbody>
-              )}{" "}
+              ):''}
         </table>
         </>
       );

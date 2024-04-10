@@ -1,16 +1,14 @@
 import React, { useEffect, useRef } from "react";
 import { Modal } from "react-bootstrap";
-import Multiselect from "multiselect-react-dropdown";
 import FeatherIcon from "feather-icons-react";
 import ErrorSvg from "../../dist/svg/error.svg";
 import { Editor } from "@tinymce/tinymce-react";
 import { useState } from "react";
-import "react-datepicker/dist/react-datepicker.css";
 import { Form, FormProvider, useForm, Controller } from "react-hook-form";
 import { Input } from "../Input";
 import { toast } from "react-toastify";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
-import { DOCTORS_URL, REGISTER_PATIENT } from "../../utils/constants";
+import { DOCTORS_URL, MEDICALSERVICES_URL, REFDOCTORS_URL, REGISTER_PATIENT } from "../../utils/constants";
 import {
   firstName_validation,
   lastName_validation,
@@ -19,13 +17,10 @@ import {
   zipCode_validation,
   street_validation,
   city_validation,
-  state_validation,
-  country_validation,
   passport_validation,
 } from "../../utils/inputValidations";
-import { useSelector } from "react-redux";
-import { selectRefDoctors } from "../../redux/features/refDoctors/refDoctorsSlice";
-import CustomPhoneComponent from "../CustomPhoneComponent";
+  import CustomPhoneComponent from "../CustomPhoneComponent";
+import "react-datepicker/dist/react-datepicker.css";
 import "react-phone-number-input/style.css";
 import CustomDateComponent from "../CustomDateComponent";
 import Select from "react-select";
@@ -38,7 +33,7 @@ function CreatePatient({
   getPatients,
   researchState,
 }) {
-  const [researchesArray, setResearchesArray] = useState([]);
+  const [medicalServices, setMedicalServices] = useState([]);
   const [addDiagnostic, setAddDiagnostic] = useState(false);
   const [addDoctorsVisit, setAddDoctorsVisit] = useState(false);
   const [startDate, setStartDate] = useState(new Date());
@@ -46,11 +41,11 @@ function CreatePatient({
   const [doctor, setDoctor] = useState("Առանց բժիշկ");
   const [refDoctor, setRefDoctor] = useState("Առանց բժիշկ");
   const [extraDoctor, setExtraDoctor] = useState(false);
-  const refDoctors = useSelector(selectRefDoctors);
   const [errMsg, setErrMsg] = useState("");
   const [doctors,setDoctors] = useState([]);
   const [country, setCountry] = useState('')
   const [region, setRegion] = useState('')
+  const [refDoctors, setRefDoctors] = useState('')
 
   const { trigger } = useForm();
 
@@ -95,16 +90,32 @@ function CreatePatient({
       },
     }),
   };
-  useEffect(()=>{
-    setTimeout(() => {
-      
-      axiosPrivate.get(DOCTORS_URL).then((resp)=>{
-        setDoctors(prev=>resp?.data?.jsonString)
-     }).catch((err)=>{
-       console.log(err)
-     })
-    }, 1000);
- },[])
+ 
+ useEffect(() => {
+  setTimeout(() => {
+    axiosPrivate
+      .get(DOCTORS_URL)
+      .then((resp) => {
+        setDoctors(resp?.data?.jsonString);
+        //setIsLoading(false);
+      })
+      .then((resp) => {
+        axiosPrivate.get(MEDICALSERVICES_URL).then((resp) => {
+          setMedicalServices(resp?.data?.jsonString);
+          //setIsLoading(false);
+        });
+      })
+      .then((resp) => {
+        axiosPrivate.get(REFDOCTORS_URL).then((resp) => {
+          setRefDoctors(resp?.data?.jsonString);
+          //setIsLoading(false);
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, 500);
+}, []);
   const getDate = (date) => {
     setStartDate(date);
     handlingDate.current =
@@ -176,9 +187,9 @@ function CreatePatient({
         researchList:research? research?.map((el) => el.value):null,
         additional: editorRef.current.getContent({ format: "text" }),
         gender: gender,
-        doctors: doctor||"Առանց բժիշկ",
-        visitDoctor:visitDoctor?visitDoctor.id:null,
-        refDoctor:refDoctor ? refDoctor?.id:null,
+        doctors: doctor||null,
+        serviceType:addDoctorsVisit?"visit":addDiagnostic?"diagnostics":null,
+        refDoctor:extraDoctor && refDoctor?refDoctor?.id:null,
         contact: {
           email: email,
           phone: phone,
@@ -192,6 +203,7 @@ function CreatePatient({
           },
         },
         medicalHistory: "medicalHistory",
+        visitDoctor:visitDoctor?visitDoctor.id:null,
         medicalServices:medicalServices?medicalServices?.map((el) => el.value):null,
         visitDate:visitDate ? new Date(
           visitDate.getTime() - visitDate.getTimezoneOffset() * 60000
@@ -205,7 +217,7 @@ function CreatePatient({
           .split("T")[0]: null,
       };
 
-      console.log(newPatient);
+      //console.log(newPatient);
       
 
       try {
@@ -241,10 +253,7 @@ function CreatePatient({
     } else {
       setExtraDoctor(false);
     }
-    setDoctor((prev) => data.label);
-  };
-  const onRefDoctorSelect = (data) => {
-    setRefDoctor((prev) => data.label);
+    setDoctor((prev) => data?.id);
   };
   return (
     <Modal
@@ -657,8 +666,8 @@ function CreatePatient({
                                             (option) => option.label === doctor
                                           )}
                                           options={[
-                                            { value: 0, label: "Առանց բժիշկ",id:"Առանց բժիշկ" },
-                                            { value: 0, label: "Ուղղորդող բժիշկ",id:"Ուղղորդող բժիշկ" },
+                                            { value: "Առանց բժիշկ", label: "Առանց բժիշկ",id:null },
+                                            { value: "Ուղղորդող բժիշկ", label: "Ուղղորդող բժիշկ",id:null },
                                             ...doctors.map((item) => ({
                                               value: item.doctorName,
                                               label: item.doctorName,
@@ -916,11 +925,11 @@ function CreatePatient({
                               </div>
                              <div className="row gx-3">
                              
-                            <div className="col-sm-12">
+                             <div className="col-sm-12">
                                   <div className="d-flex justify-content-between me-2">
                                     <label
                                       className="form-label"
-                                      htmlFor="medicalServices"
+                                      htmlFor="research"
                                       placeholder={"Ընտրել"}
                                     >
                                       Ընտրել ծառայությունը
@@ -947,7 +956,7 @@ function CreatePatient({
                                           isMulti
                                           closeMenuOnSelect={false}
                                           components={animatedComponents}
-                                          options={[{serviceName:'asd',medServiceId:12},{serviceName:'asdasd',medServiceId:13}].map((res) => ({
+                                          options={medicalServices.map((res) => ({
                                             value: res.medServiceId,
                                             label: `${res?.serviceName}`,
                                           }))}
@@ -958,6 +967,7 @@ function CreatePatient({
                                     />
                                   </div>
                                 </div>
+                                
                              </div>
                             </div>
                           </div>

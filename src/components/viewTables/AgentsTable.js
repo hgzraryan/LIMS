@@ -276,7 +276,7 @@ function AgentsTable({
           </tr>
         ))}
       </thead>
-      {agents?.length && (
+      {agents?.length>0 ?  (
             <tbody {...getTableBodyProps()}>
             {rows.map(row => {
               prepareRow(row)
@@ -300,7 +300,7 @@ function AgentsTable({
             delId={selectedItem.agentId}
           />
             </tbody>
-          )}{" "}
+          ):''}
     </table>
   );
 }

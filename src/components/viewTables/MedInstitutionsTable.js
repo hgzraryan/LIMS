@@ -382,7 +382,7 @@ function MedInstitutionsTable({
             </tr>
           ))}
         </thead>
-        {medInstitutions?.length && (
+        {medInstitutions?.length>0? (
           <tbody {...getTableBodyProps()}>
             {rows.map((row) => {
               prepareRow(row);
@@ -412,7 +412,7 @@ function MedInstitutionsTable({
               delId={selectedItem.medInstitutionsId}
             />
           </tbody>
-        )}
+         ):''}
         
       </table>
     </>

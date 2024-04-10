@@ -446,7 +446,7 @@ responseType:'blob'
                               <span className="text-muted">Բժիշկ:</span>
                             </span>
                             <span className="ms-2">
-                              {diagnosticsDetails?.doctors[0]}
+                              {/* {diagnosticsDetails?.doctors && diagnosticsDetails?.doctors[0]} */}
                             </span>
                           </li>
                           <li className="list-group-item border-0">
@@ -642,67 +642,50 @@ responseType:'blob'
                       <div className="card-body">
                         <div className="card">
                           <div className="card-header">
-                            <a
-                              role="button"
-                              data-bs-toggle="collapse"
-                              href="#fm_collapse_3"
-                              aria-expanded="true"
-                            >
+                           
                               <h5 className="mb-0">Վերբեռնված փաստաթղթեր</h5>
-                            </a>
+                            
                           </div>
                           <div id="fm_collapse_3" className="collapse show">
-                            <div className="row gx-3 row-cols-xxl-5 row-cols-xl-4 row-cols-lg-3 row-cols-md-2 row-cols-1 mt-4">
-                              {downloadFiles.length && downloadFiles.map((el)=>
-                              {return (
-                              <div class="col" key={el.fileId}>
-                                <div class="card file-compact-card card-border">
-                                  <div class="card-body d-flex justify-content-between">
-                                    <div class="media fmapp-info-trigger">
-                                      <div class="media-head me-3">
-                                        <div class="avatar avatar-icon avatar-soft-danger avatar-sm">
-                                          <span class="initial-wrap">
-                                            <i class="ri-file-pdf-fill"></i>
-                                          </span>
-                                        </div>
-                                      </div>
-                                      <div class="media-body">
-                                        <div class="file-name">
-                                          <p style={{cursor:'pointer'}}
-                                            onClick={(e)=>handleDownload(el)}
-                                          >
-                                            {el?.fileName}
-                                          </p>
-                                        </div>
-                                        <div class="text-truncate fs-8 mb-2">
-                                          {formatBytes(el.size)} 
-                                        </div>
-                                      </div>
-                                    </div>
-                                    {/* <div class="d-flex">
-           													<span class="file-star marked"><span class="feather-icon"><i data-feather="star"></i></span></span>
-           													<a class="btn btn-xs btn-icon btn-flush-dark btn-rounded flush-soft-hover flex-shrink-0" href="#" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="icon"><span class="feather-icon"><i data-feather="more-horizontal"></i></span></span></a>
-           													<div class="dropdown-menu">
-           														<a class="dropdown-item" href="#"><span class="feather-icon dropdown-icon"><i data-feather="eye"></i></span><span>Preview</span></a>
-           														<a class="dropdown-item" href="#"><span class="feather-icon dropdown-icon"><i data-feather="copy"></i></span><span>Duplicate</span></a>
-           														<a class="dropdown-item" href="#"><span class="feather-icon dropdown-icon"><i data-feather="skip-forward"></i></span><span>Move</span></a>
-           														<a class="dropdown-item" href="#"><span class="feather-icon dropdown-icon"><i data-feather="user-plus"></i></span><span>Invite</span></a>
-           														<a class="dropdown-item" href="#"><span class="feather-icon dropdown-icon"><i data-feather="link-2"></i></span><span>Share Link</span></a>
-           														<div class="dropdown-divider"></div>
-           														<a class="dropdown-item" href="#"><span class="feather-icon dropdown-icon"><i data-feather="info"></i></span><span>View Details</span></a>
-           														<a class="dropdown-item" href="#"><span class="feather-icon dropdown-icon"><i data-feather="download"></i></span><span>Download</span></a>
-           														<a class="dropdown-item" href="#"><span class="feather-icon dropdown-icon"><i data-feather="trash-2"></i></span><span>Delete</span></a>
-           													</div>
-           												</div> */}
-                                  </div>
-                                </div>
-                              </div>)}
-                              )}
-                            </div>
-                          </div>
+  <div className="row gx-3 row-cols-xxl-5 row-cols-xl-4 row-cols-lg-3 row-cols-md-2 row-cols-1 m-1 ">
+    {downloadFiles.length > 0 ? (
+      downloadFiles.map((el) => (
+        <div className="col" key={el.fileId}>
+          <div className="card file-compact-card card-border">
+            <div className="card-body d-flex justify-content-between">
+              <div className="media fmapp-info-trigger">
+                <div className="media-head me-3">
+                  <div className="avatar avatar-icon avatar-soft-danger avatar-sm">
+                    <span className="initial-wrap">
+                      <i className="ri-file-pdf-fill"></i>
+                    </span>
+                  </div>
+                </div>
+                <div className="media-body">
+                  <div className="file-name">
+                    <p
+                      style={{ cursor: "pointer" }}
+                      onClick={(e) => handleDownload(el)}
+                    >
+                      {el?.fileName}
+                    </p>
+                  </div>
+                  <div className="text-truncate fs-8 mb-2">
+                    {formatBytes(el.size)}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      ))
+    ) : (
+      <div className="col d-flex justify-content-center align-items-center w-100"><p>Վերբեռնված փաստաթղթեր չկան</p></div>
+    )}
+  </div>
+</div>
                         </div>
                       </div>
-                      <div className="card-footer justify-content-between"></div>
                     </div>
                   </div>
                 )}

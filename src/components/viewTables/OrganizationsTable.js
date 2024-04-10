@@ -394,7 +394,7 @@ function OrganizationsTable({
           </tr>
         ))}
       </thead>
-      {organizations?.length && (
+      {organizations?.length>0? (
         <tbody {...getTableBodyProps()}>
           {rows.map((row) => {
             prepareRow(row);
@@ -418,7 +418,7 @@ function OrganizationsTable({
             delId={selectedItem.organizationId}
           />
         </tbody>
-      )}{" "}
+       ):''}
     </table>
     </>
   );

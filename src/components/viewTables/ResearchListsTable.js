@@ -545,7 +545,7 @@ function ResearchListsTable({
           </tr>
         ))}
       </thead>
-      {researches?.length && (
+      {researches?.length>0? (
             <tbody {...getTableBodyProps()}>
             {rows.map(row => {
               prepareRow(row)
@@ -567,7 +567,7 @@ function ResearchListsTable({
             delId={selectedItem.researchListId}
             />
             </tbody>
-          )}{" "}
+           ):''}
     </table>
           </>
   );

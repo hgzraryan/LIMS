@@ -373,7 +373,7 @@ function RefDoctorsTable({
             </tr>
           ))}
         </thead>
-        {refDoctors?.length && (
+        {refDoctors?.length>0? (
           <tbody {...getTableBodyProps()}>
             {rows.map((row) => {
               prepareRow(row);
@@ -403,7 +403,7 @@ function RefDoctorsTable({
                 delId={selectedItem.refDoctorsId}
               />
           </tbody>
-        )}
+         ):''}
       </table>
     </>
   );

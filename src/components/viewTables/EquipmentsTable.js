@@ -379,7 +379,7 @@ function EquipmentsTable({
           </tr>
         ))}
       </thead>
-      {equipments?.length && (
+      {equipments?.length>0? (
             <tbody {...getTableBodyProps()}>
             {rows.map(row => {
               prepareRow(row)
@@ -401,7 +401,7 @@ function EquipmentsTable({
             delId={selectedItem.equipmentId}
           />
             </tbody>
-          )}{" "}
+           ):''}
     </table>
     
     </>

@@ -746,7 +746,7 @@ function PatientDetails() {
                           <path d="M50.4,79.7h1.4c5.2-.5,2.4-3.7,2.4-3.7h0c-3.2-4.6-5-9.1-5-13.5a13.74,13.74,0,0,1,.6-4.2c.2-2-.6-2.5-1-2.7h-.2a18.48,18.48,0,0,0-2.4-.1,24.26,24.26,0,0,0-24,20.9c0,1.2.4,3.5,4.2,3.5H50.2C50.2,79.7,50.3,79.7,50.4,79.7Z"/></svg>
                           </span>
                         </span>
-                      <span className="nav-link-text">Այցելություններ</span>
+                      <span className="nav-link-text">Բժշկի այցելություններ</span>
                     </a>
                   </li>
                   {/* <li className="nav-item">
@@ -765,7 +765,7 @@ function PatientDetails() {
 								</li> */}
                 </ul>
               </header>
-              <div className="row mt-7">
+              <div className="row">
                 {pageTab === "tab_summery" && (
                   <>
                     <div className="col-lg-4 mb-lg-0 mb-3">
@@ -841,12 +841,12 @@ function PatientDetails() {
                 )}
                 {pageTab === "tab_diagnostics" && (
                   <section className="d-flex flex-column">
-                    <div
+                    {/* <div
                       className="d-flex justify-content-center align-items-center"
                       style={{ border: "1px solid #000", borderRadius: "16px" }}
                     >
                       <h4>Ախտորոշումներ</h4>
-                    </div>
+                    </div> */}
                     <div>
                       <table
                         className="table nowrap w-100 mb-5 dataTable no-footer"
@@ -944,12 +944,6 @@ function PatientDetails() {
                 )}
                 {pageTab === "tab_doctorsVisits" && (
                   <section className="d-flex flex-column">
-                    <div
-                      className="d-flex justify-content-center align-items-center"
-                      style={{ border: "1px solid #000", borderRadius: "16px" }}
-                    >
-                      <h4>Բժշկի այցելություններ</h4>
-                    </div>
                     <div>
                       <table
                         className="table nowrap w-100 mb-5 dataTable no-footer"

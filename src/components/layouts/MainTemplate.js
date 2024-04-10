@@ -16,6 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { checkResearchListCount } from "../../redux/features/researches/researchListCountSlice";
 import { useGetFullData } from "../../hooks/useGetFullData";
 import { checkMedicalServicesCount } from "../../redux/features/medicalServices/medicalServicesSlice";
+import { checkDoctorsVisitCount } from "../../redux/features/DoctorsVisit/DoctorsVisitSlice";
 
 const MainTemplate = () => {
     const navigate = useNavigate();
@@ -88,6 +89,7 @@ const MainTemplate = () => {
 				      isMounted && dispatch(checkUsersCount(response.data?.usersCount));
 				      isMounted && dispatch(checkResearchListCount(response.data?.researchListCount));
 				      isMounted && dispatch(checkMedicalServicesCount(response.data?.medicalServicesCount));
+				      isMounted && dispatch(checkDoctorsVisitCount(response.data?.doctorsVisitCount));
             } catch (err) {
                 console.error(err);
                 navigate('/login', { state: { from: location }, replace: true });

@@ -481,7 +481,7 @@ function ReagentsTable({
           </tr>
         ))}
       </thead>
-      {reagents?.length && (
+      {reagents?.length>0? (
         <tbody {...getTableBodyProps()}>
           {rows.map((row) => {
             prepareRow(row);
@@ -505,7 +505,7 @@ function ReagentsTable({
             delId={selectedItem.reagentId}
           />
         </tbody>
-      )}{" "}
+       ):''}
     </table>
     </>
 

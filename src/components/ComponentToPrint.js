@@ -17,10 +17,6 @@ export const ComponentToPrint = forwardRef(({ value,currentClient }, ref) => {
         Header: "ID",
         accessor: "id",
       },
-      // {
-      //   Header: "Հետազոտություն",
-      //   accessor: "research",
-      // },
       {
         Header: "Հետազոտություն",
         accessor: "name",
@@ -120,12 +116,21 @@ const { inputRef } = Barcode({
           </div>
         </section>
         <section style={{display:"flex",justifyContent:'space-around',margin:'2rem 0 2rem 0'}} className="containerr ">
-        <BarcodeComp data={value.diagnosticsId}  /> 
-
+        <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                      }}
+                    >
+                      <BarcodeComp data={value.diagnosticsId} />
+                    </div>
           <div className=" mb-3r">
             <ul>
-              <li >Անվանում/Անուն Ազգանուն: <span style={{fontWeight:'bold',fontSize:'1.1rem'}}>{currentClient?.firstName+" "+ currentClient?.lastName}</span>
+              <li >Անուն Ազգանուն: <span style={{fontWeight:'bold',fontSize:'1.1rem'}}>{currentClient?.firstName+" "+ currentClient?.lastName}</span>
               </li>
+              <li >Սեռ: <span style={{fontWeight:'bold',fontSize:'1.1rem'}}>{(currentClient?.gender==='Male')?'Արական':'Իգական'}</span></li>
+              <li >Ծննդյան ամսաթիվ: <span style={{fontWeight:'bold',fontSize:'1.1rem'}}>{currentClient?.dateOfBirth}</span></li>
               <li >Տարիք: <span style={{fontWeight:'bold',fontSize:'1.1rem'}}>{currentClient?.age}</span></li>
               <li >Հեռախոս: <span style={{fontWeight:'bold',fontSize:'1.1rem'}}>{currentClient?.contact?.phone}</span></li>
               <li >Տրման ամսաթիվ: <span style={{fontWeight:'bold',fontSize:'1.1rem'}}>{value?.createdAt}</span></li>

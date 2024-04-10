@@ -11,6 +11,7 @@ import {
   AGENTS_URL,
   ORGANIZATIONS_URL,
   PATIENTS_URL,
+  REFDOCTORS_URL,
   REGISTER_DIAGNOSTICS,
   RESEARCHLISTS_URL,
 } from "../../utils/constants";
@@ -20,8 +21,6 @@ import Select from "react-select";
 import ErrorSvg from "../../dist/svg/error.svg";
 import makeAnimated from "react-select/animated";
 import LoadingSpinner from "../LoadingSpinner";
-import { useSelector } from "react-redux";
-import { selectRefDoctors } from "../../redux/features/refDoctors/refDoctorsSlice";
 
 const diagnosticClassState = [
   { value: "External", label: "Արտաքին" },
@@ -56,12 +55,13 @@ function AddDiagnostic({
   const [diagnosticsType, setDiagnosticsType] = useState(null);
   const [doctor, setDoctor] = useState("");
   const [refDoctor, setRefDoctor] = useState("");
-  const refDoctors = useSelector(selectRefDoctors);
   const [patients, setPatients] = useState([]);
   const [organizations, setOrganizations] = useState([]);
   const [agents, setAgents] = useState([]);
   const [researches, setResearches] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [refDoctors, setRefDoctors] = useState([])
+
 
   //   const handleChange = (selectedOption) => {
   //     setPatients(selectedOption);
@@ -121,6 +121,12 @@ function AddDiagnostic({
         .then((resp) => {
           axiosPrivate.get(RESEARCHLISTS_URL).then((resp) => {
             setResearches(resp?.data?.jsonString);
+            setIsLoading(false);
+          });
+        })
+        .then((resp) => {
+          axiosPrivate.get(REFDOCTORS_URL).then((resp) => {
+            setRefDoctors(resp?.data?.jsonString);
             setIsLoading(false);
           });
         })
@@ -192,7 +198,7 @@ function AddDiagnostic({
 
   const onSubmit = methods.handleSubmit(async (data) => {
     const newDiagnose = {
-      diagnosticsName: data.name,
+      diagnosticsName: data.diagName,
       class: data.diagnosticsType,
       internalStatus: data?.internalDiagnosticsStatus?.value || null,
       externalStatus: data?.externalDiagnosticsStatus?.value || null,
@@ -200,14 +206,14 @@ function AddDiagnostic({
       clientId: data.patient || data.organizations,
       clientType: data.organization?"organization":"patient",
       orgPatientId:data.organization ? data.patient : null,
-      doctors: data.doctor,
+      doctors: data.doctor.id,
       biomassType:data.biomassType.value,
       partner: partnerName || null,
       refDoctor:data.refDoctor?.id || null,
       additional: editorRef.current.getContent({ format: "text" }),
     };
 
-    //console.log(newDiagnose);
+    console.log(newDiagnose);
     try {
       await axiosPrivate.post(REGISTER_DIAGNOSTICS, newDiagnose, {
         headers: { "Content-Type": "application/json" },
@@ -596,19 +602,19 @@ function AddDiagnostic({
                                       control={methods.control}
                                       isClearable={true}
                                       defaultValue={null}
-                                      rules={{ required: false }}
+                                      rules={{ required: true }}
                                       render={({ field }) => (
                                         <Select
                                           {...field}
-                                          onChange={(val) => {
-                                            field.onChange(val.id);
-                                            onDoctorSelect(val);
-                                          }}
-                                          value={doctors.find(
-                                            (option) => option.value === doctor
-                                          )}
+                                          // onChange={(val) => {
+                                          //   field.onChange(val.id);
+                                          //   onDoctorSelect(val);
+                                          // }}
+                                          // value={doctors.find(
+                                          //   (option) => option.value === doctor
+                                          // )}
                                           options={[
-                                            { value: 0, label: "Առանց բժիշկ" },
+                                            { value: 0, label: "Առանց բժիշկ",id:null },
                                             ...doctors.map((item) => ({
                                               value: item.doctorName,
                                               label: item.doctorName,
@@ -653,9 +659,9 @@ function AddDiagnostic({
                                     //   field.onChange(val.id);
                                     //   onRefDoctorSelect(val);
                                     // }}
-                                    value={refDoctors.find(
-                                      (option) => option.value === refDoctor
-                                    )}
+                                    // value={refDoctors?.find(
+                                    //   (option) => option.value === refDoctor
+                                    // )}
                                     options={[
                                       { value: 0, label: "Առանց ուղղորդող բժիշկ" },
                                       ...refDoctors.map((item) => ({

@@ -436,7 +436,7 @@ function PatientsTable({
           </tr>
         ))}
       </thead>
-      {patients?.length && (
+      {patients?.length>0? (
         <tbody {...getTableBodyProps()}>
           {rows.map((row) => {
             prepareRow(row);
@@ -456,7 +456,7 @@ function PatientsTable({
             researchState={researchState}
             />
         </tbody>
-      )}{" "}
+       ):''}
     </table>
       </>
   );

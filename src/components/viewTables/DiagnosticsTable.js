@@ -433,7 +433,7 @@ function DiagnosticsTable({
                       <div className="separator-full m-0"></div>
                       <div className="d-flex justify-content-between">
                         {" "}
-                        <span>Բժիշկ </span> <span>{modalInfo.doctors[0]}</span>
+                        {/* <span>Բժիշկ </span> <span>{modalInfo?.doctors && modalInfo.doctors[0]}</span> */}
                       </div>
                       <div className="separator-full m-0"></div>
                       <div className="d-flex justify-content-between">
@@ -588,7 +588,7 @@ function DiagnosticsTable({
             </tr>
           ))}
         </thead>
-        {diagnostics?.length && (
+        {diagnostics?.length>0 ? (
           <tbody {...getTableBodyProps()}>
              {rows.map((row) => {
             prepareRow(row);
@@ -630,7 +630,7 @@ function DiagnosticsTable({
               delId={selectedItem.diagnosticstId}
             />
           </tbody>
-        )}
+        ) :''}
       </table>
     </>
   );

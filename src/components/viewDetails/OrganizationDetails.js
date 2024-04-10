@@ -272,6 +272,7 @@ function OrganizationDetails() {
         try {
           const response = await axiosPrivate.get(`/organizations/${id}`);
           setIsLoading(false);
+          console.log(response)
           setOrganizationDetails((prevUsers) => response.data.jsonString);
           // setCurrentPage((prev) => prev = 1);
         } catch (err) {
@@ -509,7 +510,7 @@ function OrganizationDetails() {
                 </Modal.Body>
               </Modal>
             )}
-            {Object.keys(organizationDetails).length && (
+            {/* {Object.keys(organizationDetails).length && (
               <div className="d-flex justify-content-between align-items-stretch ms-4 me-4">
                 <div className="d-flex">
                   <div>
@@ -524,7 +525,7 @@ function OrganizationDetails() {
   
                   <div className="d-flex  flex-column justify-content-center align-content-center ms-5">
                     <p style={{ fontSize: "2.5rem" }}>
-                      {organizationDetails.name ||''}
+                      {organizationDetails?.name ||''}
                     </p>
                     <div className="d-flex mb-1">
                       <img
@@ -543,7 +544,7 @@ function OrganizationDetails() {
                   </div>
                 </div>
               </div>
-            )}
+            )} */}
               <section className="d-flex flex-column">
 
 <div className="d-flex justify-content-center align-items-center" style={{border:'1px solid #000',borderRadius:'16px'}} ><h3>Ախտորոշումներ</h3></div>

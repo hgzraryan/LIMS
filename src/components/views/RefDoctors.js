@@ -10,15 +10,6 @@ import useGetData from '../../hooks/useGetData';
 import useDeleteData from '../../hooks/useDeleteData';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 
-const refDoctorsData = [
-  {
-      refDoctorId:9578,
-      fullName:"Կարինե Մարտիրոսյան",
-      workplace:"AMC",
-      email:'info@astghikmc.com',
-      phone:" (011) 667788",
-
-}]
 function RefDoctors() {
   //const [refDoctors, setRefDoctors] = useState(refDoctorsData);
     const [selectedItem, setSelectedItem] = useState("");

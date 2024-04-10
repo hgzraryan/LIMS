@@ -409,10 +409,10 @@ export const name_validation = {
   },
 };
 export const diagName_validation = {
-  name: "diagName_validation",
+  name: "diagName",
   label: "Ախտորոշման անվանում",
   type: "text",
-  id: "diagName_validation",
+  id: "diagName",
   placeholder: "Անվանում",
   validation: {
     required: {

@@ -10,16 +10,17 @@ import AddDoctorsVisit from '../addViews/AddDoctorsVisit';
 import { DOCTORSVISITS_URL } from '../../utils/constants';
 import useGetData from '../../hooks/useGetData';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
+import { selectDoctorsVisitCount } from '../../redux/features/DoctorsVisit/DoctorsVisitSlice';
 
 function DoctorsVisits() {
     const [isOpen, setIsOpen] = useState(false);
     const [selectedItem, setSelectedItem] = useState("");
     const [selectedItemId, setSelectedItemId] = useState(null);
     const confirmDoctorsRef = useRef("");
-    const doctorCount = useSelector(selectDoctorCount)
+    const doctorsVisitCount = useSelector(selectDoctorsVisitCount)
     const [currentPage, setCurrentPage] = useState(0);  
     const [usersPerPage, setUsersPerPage] = useState(Math.round((window.innerHeight / 100)));
-    //const pageCount = Math.ceil(doctorCount/usersPerPage)
+    const pageCount = Math.ceil(doctorsVisitCount/usersPerPage)
     const [userRole, setUserRole] = useState('');
     const handleToggleCreateModal = (value) => {
       setIsOpen((prev) => value);
@@ -105,7 +106,7 @@ function DoctorsVisits() {
                        {isOpen && (
                         <AddDoctorsVisit
                           handleToggleCreateModal={handleToggleCreateModal}
-                          getDoctorsVisits={getDoctorsVisits}
+                          getDoctorsVisits={refreshData}
                         />
                       )} 
                     </div>
@@ -166,12 +167,12 @@ function DoctorsVisits() {
                           handleCloseModal={handleCloseModal}
                           doctorsVisits={doctorsVisits}
                           setDoctorsVisits={setDoctorsVisits}
-                          //getDoctorsVisits={getDoctorsVisits}
+                          // getDoctorsVisits={getDoctorsVisits}
                         />
                         <ReactPaginate
                                                previousLabel = {"Հետ"}    
                                                nextLabel = {"Առաջ"}
-                                                pageCount = {4}
+                                                pageCount = {pageCount}
                                                 onPageChange = {handlePageClick}
                                                 initialPage = {0}
                                                 containerClassName={"pagination"}

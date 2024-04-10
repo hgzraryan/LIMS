@@ -276,7 +276,7 @@ function SamplesTable() {
         </tr>
       ))}
     </thead>
-    {samples?.length && (
+    {samples?.length>0? (
       <tbody {...getTableBodyProps()} style={{fontSize:'14px'}}>
         {rows.map((row) => {
           prepareRow(row);
@@ -291,7 +291,7 @@ function SamplesTable() {
           );
         })}
       </tbody>
-    )}{" "}
+     ):''}
   </table>
   );
 }

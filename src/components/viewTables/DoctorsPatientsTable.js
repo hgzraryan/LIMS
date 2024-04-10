@@ -1,6 +1,6 @@
 import React from 'react'
 
-function DoctorsPatients() {
+function DoctorsPatientsTable() {
   return (
     <div>
       
@@ -8,4 +8,4 @@ function DoctorsPatients() {
   )
 }
 
-export default DoctorsPatients
+export default DoctorsPatientsTable

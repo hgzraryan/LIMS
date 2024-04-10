@@ -7,6 +7,7 @@ import { Helmet, HelmetProvider } from 'react-helmet-async';
 import ReactPaginate from "react-paginate";
 import useGetData from "../../hooks/useGetData";
 import { DOCTORSPATIENTS_URL } from "../../utils/constants";
+import DoctorsPatientsTable from "../viewTables/DoctorsPatientsTable";
 
 function DoctorsPatients() {
     //const patientsCount = useSelector(selectPatientsCount)
@@ -87,7 +88,7 @@ function DoctorsPatients() {
                       */}
                   </div>
                   <div className="dropdown ms-3">
-                    <Dropdown>
+                    {/* <Dropdown>
                       <Dropdown.Toggle
                         variant="success"
                         id="dropdown-basic"
@@ -101,7 +102,7 @@ function DoctorsPatients() {
                           Այցելու
                         </Dropdown.Item>
                       </Dropdown.Menu>
-                    </Dropdown>
+                    </Dropdown> */}
                     {/* {isOpen && (
                       <CreatePatient
                         handleToggleCreateModal={handleToggleCreateModal}
@@ -271,7 +272,7 @@ function DoctorsPatients() {
                       id="scrollableDiv"
                       style={{ height: "80vh", overflow: "auto" }}
                     >                    
-                      {/* <PatientsTable
+                      {/* <DoctorsPatientsTable
                       tableData={patients}
                       handleOpenModal={handleOpenModal}
                       handleCloseModal={handleCloseModal}

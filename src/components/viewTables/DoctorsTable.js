@@ -347,7 +347,7 @@ function DoctorsTable({
               </tr>
             ))}
           </thead>
-          {doctors?.length && (
+          {doctors?.length>0 ? (
             <tbody {...getTableBodyProps()}>
               {rows.map((row) => {
                 prepareRow(row);
@@ -371,7 +371,7 @@ function DoctorsTable({
                 delId={selectedItem.doctorId}
               />
             </tbody>
-          )}{" "}
+          ):''}
         </table>
     </>
   );

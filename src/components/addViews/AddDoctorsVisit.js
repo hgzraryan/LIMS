@@ -1,13 +1,11 @@
-import React, { Suspense, useEffect, useRef, useState } from 'react'
-import { DOCTORSVISITS_URL, DOCTORS_URL, MEDICALSERVICES_URL, PATIENTS_URL, REGISTER_DOCTORSVISITS } from '../../utils/constants';
+import React, { Suspense, useEffect, useState } from 'react'
+import { DOCTORS_URL, MEDICALSERVICES_URL, PATIENTS_URL, REGISTER_DOCTORSVISITS } from '../../utils/constants';
 import { toast } from "react-toastify";
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import { Modal } from "react-bootstrap";
 import FeatherIcon from 'feather-icons-react/build/FeatherIcon';
 import { Controller, Form, FormProvider, useForm} from "react-hook-form";
-import { email_validation, fullName_validation } from '../../utils/inputValidations';
 import { Input } from '../Input';
-import CustomPhoneComponent from '../CustomPhoneComponent';
 import ErrorSvg from "../../dist/svg/error.svg";
 import CustomDateComponent from '../CustomDateComponent';
 import Select from "react-select";

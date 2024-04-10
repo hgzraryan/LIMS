@@ -362,7 +362,7 @@ const handleCloseEditModal = () => {
             </tr>
           ))}
         </thead>
-        {users?.length && (
+        {users?.length>0? (
           <tbody {...getTableBodyProps()}>
             {rows.map((row) => {
               prepareRow(row);
@@ -393,7 +393,7 @@ const handleCloseEditModal = () => {
               delId={selectedItem.userId}
             />
           </tbody>
-        )}{" "}
+         ):''}
       </table>
     </>
   );
