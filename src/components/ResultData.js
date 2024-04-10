@@ -509,6 +509,7 @@ useEffect(()=>{
             </div>
            </div>
          </footer>
+     </div>
      <footer style={{display:'flex', justifyContent:'end',gap:'5px'}}>
 
            <button
@@ -530,9 +531,7 @@ useEffect(()=>{
                 Փակել
               </button>
      
-                </footer>
-                
-     </div>
+      </footer>
                 
                 
        
