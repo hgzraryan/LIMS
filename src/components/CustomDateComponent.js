@@ -28,6 +28,7 @@ function CustomDateComponent({ control, name,required='true' })  {
        isClearable
        required
        placeholderText="Ընտրեք ամսաթիվը" 
+       className='form-control'
        />
     )
 }

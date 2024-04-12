@@ -7,11 +7,11 @@ import FeatherIcon from 'feather-icons-react/build/FeatherIcon';
 import { Controller, Form, FormProvider, useForm} from "react-hook-form";
 import { Input } from '../Input';
 import ErrorSvg from "../../dist/svg/error.svg";
-import CustomDateComponent from '../CustomDateComponent';
 import Select from "react-select";
 import "react-phone-number-input/style.css";
 import LoadingSpinner from '../LoadingSpinner';
 import makeAnimated from "react-select/animated";
+import CustomDateTimeComponent from '../CustomDateTimeComponent';
 
 
 function AddDoctorsVisit({
@@ -103,11 +103,16 @@ function AddDoctorsVisit({
             clientId:client?.value,
             doctor:doctor,
             medicalServices:medicalServices?.map((el)=>el.value),
-            visitDate:new Date(
-                visitDate.getTime() - visitDate.getTimezoneOffset() * 60000
-              )
-                .toISOString()
-                .split("T")[0],
+            visitDate:visitDate ? new Date(
+              visitDate.getTime() - visitDate.getTimezoneOffset() * 60000
+          )
+          .toISOString()
+          .replace('T', ' ')
+          .replace(/\.\d{3}Z/, '') 
+          .split(':')
+          .slice(0, -1)
+          .join(':')  : null,   
+          
         }
     
         console.log('newDoctorsVisit',newDoctorsVisit);
@@ -292,7 +297,7 @@ function AddDoctorsVisit({
                                     )}
                                     </div>
                                 <div>
-                                <CustomDateComponent name="visitDate" control={methods.control}/>
+                                <CustomDateTimeComponent name="visitDate" control={methods.control} required={false}/>
                                 </div>
                               </div>
                             </div>
@@ -341,7 +346,7 @@ function AddDoctorsVisit({
                                       control={methods.control}
                                       isClearable={true}
                                       defaultValue={null}
-                                      rules={{ required: true }}
+                                      rules={{ required: false }}
                                       render={({ field }) => (
                                         <Select
                                           {...field}

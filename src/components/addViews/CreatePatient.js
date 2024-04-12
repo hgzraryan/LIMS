@@ -27,6 +27,7 @@ import Select from "react-select";
 
 import makeAnimated from "react-select/animated";
 import { CountryDropdown, RegionDropdown,CountryRegionData  } from 'react-country-region-selector';
+import CustomDateTimeComponent from "../CustomDateTimeComponent";
 
 function CreatePatient({
   handleToggleCreateModal,
@@ -207,9 +208,13 @@ function CreatePatient({
         medicalServices:medicalServices?medicalServices?.map((el) => el.value):null,
         visitDate:visitDate ? new Date(
           visitDate.getTime() - visitDate.getTimezoneOffset() * 60000
-        )
-        .toISOString()
-        .split("T")[0] : null,
+      )
+      .toISOString()
+      .replace('T', ' ')
+      .replace(/\.\d{3}Z/, '') 
+      .split(':')
+      .slice(0, -1)
+      .join(':')  : null,
         dateOfBirth:dateOfBirth ?new Date(
           dateOfBirth.getTime() - dateOfBirth.getTimezoneOffset() * 60000
         )
@@ -240,7 +245,7 @@ function CreatePatient({
           setErrMsg(" Failed");
         }
       }
-    }
+     }
   );
   const onGenderSelect = (value) => {
     setGender(value);
@@ -880,7 +885,7 @@ function CreatePatient({
                                       control={methods.control}
                                       isClearable={true}
                                       defaultValue={null}
-                                      rules={{ required: false }}
+                                      rules={{ required: true }}
                                       render={({ field }) => (
                                         <Select
                                           {...field}
@@ -917,7 +922,7 @@ function CreatePatient({
                                     )}
                                     </div>
                                 <div>
-                                <CustomDateComponent name="visitDate" control={methods.control}/>
+                                <CustomDateTimeComponent name="visitDate" control={methods.control} required={false}/>
                                 </div>
                               </div>
                             </div>
@@ -949,7 +954,7 @@ function CreatePatient({
                                       control={methods.control}
                                       isClearable={true}
                                       defaultValue={null}
-                                      rules={{ required: true }}
+                                      rules={{ required: false }}
                                       render={({ field }) => (
                                         <Select
                                           {...field}
