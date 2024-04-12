@@ -22,14 +22,14 @@ function CustomPhoneComponent({ control, name })  {
       initialValueFormat="national"
       autoComplete="off"
       defaultCountry="AM"
-      inputComponent={
-        ({ className: inputClassName, ...inputProps }) => (
-          <input
-            {...inputProps}
-            className={`${inputClassName} form-control`} // combining classNames
-          />
-        )
-      }
+      // inputComponent={
+      //   ({ className: inputClassName, ...inputProps }) => (
+      //     <input
+      //       {...inputProps}
+      //       className={`${inputClassName} form-control`} // combining classNames
+      //     />
+      //   )
+      // }
     />
     )
 }
