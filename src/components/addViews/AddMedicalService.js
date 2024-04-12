@@ -20,7 +20,7 @@ import {
     price_validation,
   } from "../../utils/inputValidations";
 import { REGISTER_MEDICALSERVICES } from "../../utils/constants";
-function AddMedicalService({ handleToggleCreateModal, getMedicalServices }) {
+function AddMedicalService({ handleToggleCreateModal, refreshData }) {
     const [errMsg, setErrMsg] = useState("");
     const [currency, setCurrency] = useState("AMD");
     const [amount, setAmount] = useState("");
@@ -83,7 +83,7 @@ function AddMedicalService({ handleToggleCreateModal, getMedicalServices }) {
          });
       
          handleToggleCreateModal(false);
-         getMedicalServices();
+         refreshData();
          notify(`Բուժ․ ծառայությունը ավելացված է`)
   
        } catch (err) {

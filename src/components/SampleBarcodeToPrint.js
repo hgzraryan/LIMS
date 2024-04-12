@@ -1,38 +1,49 @@
-import React from 'react'
-import BarcodeComp from './BarcodeComp'
-import { forwardRef } from 'react';
-
+import React from "react";
+import BarcodeComp from "./BarcodeComp";
+import { forwardRef } from "react";
 
 export const SampleBarcodeToPrint = forwardRef(({ modalPrint }, ref) => {
-        const {firstName,lastName,dateOfBirth} = modalPrint.client
-        const {diagnosticsId} = modalPrint.diagnostics
-        const {el} = modalPrint
-        //const {diagnosticsId} = modalPrint.diagnostics
-        return (
-        <div ref={ref} style={{margin:'.2rem'}}>
-        
-            <header>
-            <div>
-                {/* {firstName + " " + lastName} */}
-            </div>
-            <div style={{display:'flex',justifyContent:"space-around", fontSize:'0.8rem'}}>
-            <span>{diagnosticsId}</span>
-            <span>{dateOfBirth}</span>
-        </div>
-        </header> 
-        <main>
-            <div style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
-
-            {
-                el && 
-                    <BarcodeComp data={el.id}  /> 
-            }
-            </div>
-        </main>
-            {/* <footer>
-            <PrintSampleWrapper value={modalPrint} currentClient={el}/>
-            </footer> */}
-            </div>
-        
-        );
-      });
+  const { firstName, lastName, dateOfBirth } = modalPrint.client;
+  const { diagnosticsId } = modalPrint.diagnostics;
+  const { el } = modalPrint;
+  //const {diagnosticsId} = modalPrint.diagnostics
+  return (
+    <div ref={ref} style={{ margin: ".2rem" }}>
+      <>
+        {modalPrint &&
+          modalPrint.el?.map((el) => {
+            return (
+              <div key={el.id} style={{ pageBreakAfter: "always", }}>
+                <main style={{ border: ".1rem solid gray", margin: ".3rem" }}>
+                  <header>
+                    <div>{/* {firstName + " " + lastName} */}</div>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-around",
+                        fontSize: "0.8rem",
+                      }}
+                    >
+                      <p>{diagnosticsId}</p>
+                      <p>{dateOfBirth}</p>
+                    </div>
+                  </header>
+                  <section>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      {el && <BarcodeComp data={el.id} />}
+                    </div>
+                  </section>
+                </main>
+              </div>
+            );
+          })}
+      </>
+    </div>
+  );
+});

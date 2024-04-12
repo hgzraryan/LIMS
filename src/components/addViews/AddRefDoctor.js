@@ -24,7 +24,7 @@ import CustomPhoneComponent from "../CustomPhoneComponent";
 import 'react-phone-number-input/style.css'
 import { CountryDropdown, RegionDropdown,CountryRegionData  } from 'react-country-region-selector';
 
-function AddRefDoctor({ handleToggleCreateModal, getRefDoctors }) {
+function AddRefDoctor({ handleToggleCreateModal, refreshData }) {
   const [errMsg, setErrMsg] = useState("");
   const axiosPrivate = useAxiosPrivate();
 
@@ -92,7 +92,7 @@ function AddRefDoctor({ handleToggleCreateModal, getRefDoctors }) {
         });
 
         handleToggleCreateModal(false);
-        getRefDoctors();
+        refreshData();
         notify(`${newRefDoctor.doctorName} ուղղորդող բժիշկը ավելացված է`);
       } catch (err) {
         if (!err?.response) {

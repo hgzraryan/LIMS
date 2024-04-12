@@ -31,7 +31,7 @@ import CustomDateTimeComponent from "../CustomDateTimeComponent";
 
 function CreatePatient({
   handleToggleCreateModal,
-  getPatients,
+  refreshData,
   researchState,
 }) {
   const [medicalServices, setMedicalServices] = useState([]);
@@ -232,7 +232,7 @@ function CreatePatient({
         });
 
         handleToggleCreateModal(false);
-        getPatients();
+        refreshData();
         notify(
           `${newPatient.firstName} ${newPatient.lastName} հաճախորդը ավելացված է`
         );

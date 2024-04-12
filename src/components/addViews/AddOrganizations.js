@@ -34,7 +34,7 @@ const organizationTypes = [
   { value: "Polyclinic", label: "Պոլիկլինիկա" },
   { value: "Other", label: "Այլ" },
 ]
-function AddOrganization({ handleToggleCreateModal, getOrganizations }) {
+function AddOrganization({ handleToggleCreateModal, refreshData }) {
   const [errMsg, setErrMsg] = useState("");
   const editorRef = useRef(null);  
   const axiosPrivate = useAxiosPrivate();
@@ -121,7 +121,7 @@ function AddOrganization({ handleToggleCreateModal, getOrganizations }) {
         });
 
         handleToggleCreateModal(false);
-        getOrganizations();
+        refreshData();
         notify(`${newOrganization.name} Պատվիրատուն ավելացված է`);
       } catch (err) {
         if (!err?.response) {

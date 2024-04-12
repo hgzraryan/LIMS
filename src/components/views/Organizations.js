@@ -120,7 +120,7 @@ const Organizations = () => {
                   {isOpen && (
                     <AddOrganization
                       handleToggleCreateModal={handleToggleCreateModal}
-                      getOrganizations={() => getOrganizations()}
+                      refreshData={() => refreshData()}
                     />
                   )}
                 </div>

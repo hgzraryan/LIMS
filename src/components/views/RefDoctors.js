@@ -107,7 +107,7 @@ function RefDoctors() {
                   {isOpen && (
                     <AddRefDoctor
                       handleToggleCreateModal={handleToggleCreateModal}
-                      getRefDoctors={() => getRefDoctors()}
+                      refreshData={() => refreshData()}
                     />
                   )}
                 </div>

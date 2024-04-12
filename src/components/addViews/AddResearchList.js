@@ -33,7 +33,7 @@ const researchListClassState = [
   { value: "Internal", label: "Ներքին" },
   { value: "Other", label: "Այլ" },
 ];
-function AddResearchList({ handleToggleCreateModal, getResearches,researchState }) {
+function AddResearchList({ handleToggleCreateModal, refreshData }) {
     const [errMsg, setErrMsg] = useState("");
     const [currency, setCurrency] = useState("AMD");
     const [amount, setAmount] = useState("");
@@ -115,7 +115,7 @@ function AddResearchList({ handleToggleCreateModal, getResearches,researchState 
         });
         
         handleToggleCreateModal(false);
-        getResearches();
+        refreshData();
         notify(`${newResearchList.researchName} ավելացված է`)
   
       } catch (err) {

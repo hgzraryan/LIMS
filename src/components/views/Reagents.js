@@ -112,7 +112,7 @@ const Reagents = () => {
                   {isOpen && (
                     <AddReagent
                       handleToggleCreateModal={handleToggleCreateModal}
-                      getReagents={() => getReagents()}
+                      refreshData={() => refreshData()}
                     />
                   )}
                 </div>

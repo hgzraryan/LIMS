@@ -133,7 +133,7 @@ function MedicalServices() {
                     {isOpen && (
                       <AddMedicalService
                       handleToggleCreateModal={handleToggleCreateModal}
-                      getMedicalServices={() => getMedicalServices()}  
+                      refreshData={() => refreshData()}  
                       />
                     )}
                     {/* {categoryModalisOpen && (

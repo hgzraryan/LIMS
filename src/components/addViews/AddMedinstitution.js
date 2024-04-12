@@ -14,7 +14,7 @@ import CustomPhoneComponent from '../CustomPhoneComponent';
 import 'react-phone-number-input/style.css'
 
 function AddMedinstitution({ handleToggleCreateModal, 
-  // getMedinstitutions 
+  refreshData 
 }) {
     const [errMsg, setErrMsg] = useState("");
     const axiosPrivate = useAxiosPrivate();
@@ -78,7 +78,7 @@ function AddMedinstitution({ handleToggleCreateModal,
         });
   
         handleToggleCreateModal(false);
-        // getAgents();
+        refreshData();
         notify(
           `${newMedInstitution.name} բուժ․ հաստատությունը ավելացված է`
         );

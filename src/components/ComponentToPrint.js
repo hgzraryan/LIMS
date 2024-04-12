@@ -111,8 +111,8 @@ const { inputRef } = Barcode({
       <main>
       <section className="container">
           <div className="Requisites d-flex flex-column justify-content-center align-items-center">
-            <p style={{fontSize:'18px' }}>ՀՎՀՀ 00000</p>
-            <p style={{fontSize:'18px' }}>h/h 000000000000  բանկ</p>
+          <p style={{ fontSize: "18px" }}>ՀՎՀՀ 06962789</p>
+          <p style={{ fontSize: "18px" }}>h/h 1570084220480100 Ամերիաբանկ ՓԲԸ</p>
           </div>
         </section>
         <section style={{display:"flex",justifyContent:'space-around',margin:'2rem 0 2rem 0'}} className="containerr ">

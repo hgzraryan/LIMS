@@ -137,7 +137,7 @@ const Diagnostics = () => {
                   {isOpen && (
                     <AddDiagnostic
                       handleToggleCreateModal={handleToggleCreateModal}
-                      getDiagnostics={() => getDiagnostics()}
+                      refreshData={() => refreshData()}
                       doctors={doctors}
                     />
                   )}

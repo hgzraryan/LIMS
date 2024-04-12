@@ -16,7 +16,7 @@ import CustomDateTimeComponent from '../CustomDateTimeComponent';
 
 function AddDoctorsVisit({
     handleToggleCreateModal,
-    getDoctorsVisits,
+    refreshData,
     doctorsVisits,
   }) {
     const [doctor,setDoctor] = useState([])
@@ -123,7 +123,7 @@ function AddDoctorsVisit({
           });
     
           handleToggleCreateModal(false);
-          getDoctorsVisits();
+          refreshData();
           notify(
             `Բժշկի այցելությունը ավելացված է`
           );

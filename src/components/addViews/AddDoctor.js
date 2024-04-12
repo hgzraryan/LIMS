@@ -32,7 +32,7 @@ import CustomDateComponent from "../CustomDateComponent";
 import 'react-phone-number-input/style.css'
 import { CountryDropdown, RegionDropdown,CountryRegionData  } from 'react-country-region-selector';
 
-function AddDoctor({ handleToggleCreateModal, getDoctors }) {
+function AddDoctor({ handleToggleCreateModal, refreshData }) {
   const axiosPrivate = useAxiosPrivate();
   const multiselectRef = useRef("");
   const [birthday, setBirthday] = useState(new Date());
@@ -199,7 +199,7 @@ function AddDoctor({ handleToggleCreateModal, getDoctors }) {
         });
 
         handleToggleCreateModal(false);
-        getDoctors("update");
+        refreshData();
         notify(`${newDoctor.doctorName}  Բժիշկը ավելացված է`)
 
       } catch (err) {

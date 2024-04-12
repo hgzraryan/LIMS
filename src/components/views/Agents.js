@@ -116,7 +116,7 @@ const Agents = () => {
                   {isOpen && (
                     <AddAgent
                       handleToggleCreateModal={handleToggleCreateModal}
-                      getAgents={() => getAgents()}
+                      refreshData={() => refreshData()}
                     />
                   )}
                 </div>

@@ -105,7 +105,7 @@ function MedInstitutions() {
                   {isOpen && (
                     <AddMedinstitution
                       handleToggleCreateModal={handleToggleCreateModal}
-                      //getMedInstitutions={() => getMedInstitutions()}
+                      refreshData={() => refreshData()}
                     />
                   )}
                 </div>

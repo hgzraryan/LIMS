@@ -11,18 +11,20 @@ import { BiSolidInfoCircle } from "react-icons/bi";
 import PrintSampleComponent from "../PrintSampleComponent";
 function Sample() {
   const [barcodeScan, setBarcodeScan] = useState("");
-  const [data, setData] = useState("");
+  const [data, setData] = useState('');
   const [modalInfo, setModalInfo] = useState("");
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
   const logout = useLogout();
   const barcodeInputRef = useRef(null);
   const [modalPrint, setModalPrint] = useState("");
+  const [sortedResearches, setsortedResearches] = useState([]);
+  const [noData, setNoData] = useState(true);
 
-  const [userData,setUserData]=useState('')
+  const [userData, setUserData] = useState("");
 
   useEffect(() => {
-    const storedData = JSON.parse(localStorage.getItem('userData'));
+    const storedData = JSON.parse(localStorage.getItem("userData"));
     if (storedData) {
       setUserData(storedData);
     }
@@ -34,8 +36,8 @@ function Sample() {
   const handleOpenInfoModal = (user) => {
     setModalInfo((prev) => user);
   };
-  const handleOpenPrintModal = (data,el) => {
-    const sampleData={...data,el}
+  const handleOpenPrintModal = (data, el) => {
+    const sampleData = { ...data, el };
 
     setModalPrint((prev) => sampleData);
   };
@@ -47,18 +49,49 @@ function Sample() {
   const menuClick = (event) => {
     setIsActive((current) => !current);
   };
-  const handleUserPage = async(userId) =>{
+  const handleUserPage = async (userId) => {
     try {
-      navigate(`/users/2095`)
+      navigate(`/users/2095`);
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
-  }
+  };
+  const sortResearches = (data) => {
+    if(!data.length){
+      setNoData(true)
+    }
+    const sortedResearches = data.reduce(
+      (acc, research) => {
+        const vial = research?.vial?.trim();
+        if (vial === "EDTA") {
+          acc[0].push(research);
+          setNoData(false)
+        } else if (vial === "Հել") {
+          acc[1].push(research);
+          setNoData(false)
+        } else if (vial === "Heparin") {
+          acc[2].push(research);
+          setNoData(false)
+        }else if (vial === "Na Citr." || vial === "Na Citr") {
+          acc[3].push(research);
+          setNoData(false)
+        }else{
+          acc[4].push(research)
+        }
+        return acc;
+      },
+      [[], [], [],[],[]]
+    );
+
+    setsortedResearches(sortedResearches);
+  };
   const handleBarcode = async (data) => {
     try {
       const response = await axiosPrivate.get(`./diagnosticsSampling/${data}`);
       // setTimeout(() => {
       setData((prev) => response.data);
+      console.log(response.data)
+      sortResearches(response?.data.diagnostics?.statusBoard[1]?.researches);
       // }, 500);
     } catch (err) {
       console.error(err);
@@ -98,7 +131,7 @@ function Sample() {
         </Modal>
       )}
       {modalPrint && (
-        <Modal show={() => true} size="sm" onHide={() => setModalPrint(false)} >
+        <Modal show={() => true} size="sm" onHide={() => setModalPrint(false)}>
           <Modal.Header closeButton>
             <Modal.Title
               style={{ width: "100%", textAlign: "center" }}
@@ -109,12 +142,14 @@ function Sample() {
               <div data-simplebar className="nicescroll-bar">
                 <div className="d-flex flex-xxl-nowrap flex-wrap">
                   <div className="contact-info w-100">
-                    <PrintSampleComponent modalPrint={modalPrint}  setModalPrint={setModalPrint} />
+                    <PrintSampleComponent
+                      modalPrint={modalPrint}
+                      setModalPrint={setModalPrint}
+                    />
                   </div>
                 </div>
               </div>
             </div>
-            
           </Modal.Body>
         </Modal>
       )}
@@ -130,14 +165,17 @@ function Sample() {
             {/* Start Nav */}
             <div className="nav-start-wrap">
               {/* Search */}
-            <h2>{userData?.firstname+" "}{userData?.lastname}</h2>
+              <h2>
+                {userData?.firstname + " "}
+                {userData?.lastname}
+              </h2>
               {/* /Search */}
             </div>
             {/* /Start Nav */}
             {/* End Nav */}
             <div className="nav-end-wrap" onClick={menuClick}>
-                <ul className="navbar-nav flex-row">
-                  {/*
+              <ul className="navbar-nav flex-row">
+                {/*
                                 <li className="nav-item">
                                     <a href="email.html" className="btn btn-icon btn-rounded btn-flush-dark flush-soft-hover"><span className="icon"><span className=" position-relative"><span className="feather-icon"><i data-feather="inbox"></i></span><span className="badge badge-sm badge-soft-primary badge-sm badge-pill position-top-end-overflow-1">4</span></span></span></a>
                                 </li>
@@ -266,53 +304,58 @@ function Sample() {
                                     </div>
                                 </li>
                                 */}
-                  <li className="nav-item">
-                    <div className="dropdown ps-2">
-                      <a
-                        className=" dropdown-toggle no-caret"
-                        href="#"
-                        role="button"
-                        data-bs-display="static"
-                        data-bs-toggle="dropdown"
-                        data-dropdown-animation
-                        data-bs-auto-close="outside"
-                        aria-expanded="false"
-                      >
-                        <div className="avatar avatar-rounded avatar-xs">
-                          <img
-                            src="/dist/img/avatar12.jpg"
-                            alt="user"
-                            className="avatar-img"
-                          />
-                        </div>
-                      </a>
-                      <div
-                        className={
-                          isActive
-                            ? "dropdown-menu dropdown-menu-end show showSlow"
-                            : "dropdown-menu dropdown-menu-end showSlow"
-                        }
-                      >
-                        <div className="p-2">
-                          <div className="media">
-                            <div className="media-head me-2">
-                              <div className="avatar avatar-primary avatar-sm avatar-rounded">
-                                <span className="initial-wrap">{}</span>
-                              </div>
-                            </div>
-                            <div className="media-body">
-                              <div className="fs-7">{}</div>
-                              <p style={{ color: "black" }}>
-                                <p style={{ textDecoration:'underline', cursor:'pointer'}} onClick={()=>handleUserPage(2095)}>
-
-                                {userData?.firstname+" "}
-                                {userData?.lastname}
-                                </p>
-                              </p>
+                <li className="nav-item">
+                  <div className="dropdown ps-2">
+                    <a
+                      className=" dropdown-toggle no-caret"
+                      href="#"
+                      role="button"
+                      data-bs-display="static"
+                      data-bs-toggle="dropdown"
+                      data-dropdown-animation
+                      data-bs-auto-close="outside"
+                      aria-expanded="false"
+                    >
+                      <div className="avatar avatar-rounded avatar-xs">
+                        <img
+                          src="/dist/img/avatar12.jpg"
+                          alt="user"
+                          className="avatar-img"
+                        />
+                      </div>
+                    </a>
+                    <div
+                      className={
+                        isActive
+                          ? "dropdown-menu dropdown-menu-end show showSlow"
+                          : "dropdown-menu dropdown-menu-end showSlow"
+                      }
+                    >
+                      <div className="p-2">
+                        <div className="media">
+                          <div className="media-head me-2">
+                            <div className="avatar avatar-primary avatar-sm avatar-rounded">
+                              <span className="initial-wrap">{}</span>
                             </div>
                           </div>
+                          <div className="media-body">
+                            <div className="fs-7">{}</div>
+                            <p style={{ color: "black" }}>
+                              <p
+                                style={{
+                                  textDecoration: "underline",
+                                  cursor: "pointer",
+                                }}
+                                onClick={() => handleUserPage(2095)}
+                              >
+                                {userData?.firstname + " "}
+                                {userData?.lastname}
+                              </p>
+                            </p>
+                          </div>
                         </div>
-                        {/*
+                      </div>
+                      {/*
                                             <div className="dropdown-divider"></div>
                                             <a className="dropdown-item" href="profile.html">Profile</a>
                                                 <a className="dropdown-item" href="/privacy-policy">
@@ -328,176 +371,282 @@ function Sample() {
                                                 <a className="dropdown-item" href="/privacy-policy"><span className="dropdown-icon feather-icon"><i data-feather="tag"></i></span><span>Raise a ticket</span></a>
                                                 <div className="dropdown-divider"></div>
                                               */}
-                        {/* <a className="dropdown-item" href="/support">
+                      {/* <a className="dropdown-item" href="/support">
                           Օգնություն և սպասարկում
                         </a> */}
-                        <a
-                          href="/login"
-                          className="d-block fs-8 link-secondary"
-                          onClick={signOut}
-                        >
-                          <u>Դուրս գալ</u>
-                        </a>
-                      </div>
+                      <a
+                        href="/login"
+                        className="d-block fs-8 link-secondary"
+                        onClick={signOut}
+                      >
+                        <u>Դուրս գալ</u>
+                      </a>
                     </div>
-                  </li>
-                </ul>
-              </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
             {/* /End Nav */}
           </div>
         </nav>
         <div className="hk-pg-wrapper">
-          <div className="contactapp-wrap" style={{ margin: '3rem' }} >
-           
-              <div className="contactapp-detail-wrap w-100">
-                <header className="contact-header">
-                  <div className="d-flex align-items-center justify-content-center w-100">
-                    <h2>Սկանավորիր Բարկոդը</h2>
-                  </div>
-                </header>
-                <div className="contact-body">
-                  <div data-simplebar className="nicescroll-bar">
-                    <div className="contact-list-view d-flex justify-content-center align-items-center">
-                      <div
-                        id="scrollableDiv"
-                        style={{ height: "80vh", width: "100%"}}
-                      >
-                        <div className="d-flex justify-content-center align-items-center flex-column">
-                          <form
-                            id="barcodeForm"
-                            onSubmit={(e) => {
-                              e.preventDefault();
-                              handleBarcode(barcodeScan); // Call handleBarcode function when form is submitted
-                            }}
-                          >
-                            <input
-                              ref={barcodeInputRef}
-                              id="barcode"
-                              type="number"
-                              name="barcode"
-                              value={barcodeScan}
-                              placeholder="Տվյալներ չկան"
-                              onChange={(e) => setBarcodeScan(e.target.value)}
-                            />
-                            <Button type="submit" className="ms-2">
-                              Ստուգել
-                            </Button>
-                          </form>
-                        </div>
-                        {/* {console.log(data)} */}
-                        {data && (
-                          <div
-                            className="d-flex justify-content-center align-items-center flex-column"
-                            style={{ width: "100%" }}
-                          >
-                            <header>
-                              <div>
-                                <span style={{ fontWeight: "bold",fontSize:'18px' }}>
-                                  {data.client.firstName+" "}
-                                  {data.client.midName+" "}
-                                  {data.client.lastName+", "}
-                                  {data.client.dateOfBirth+", "}
-                                </span>
-                              </div>
-                            </header>
-                            <main>
-                              {data.diagnostics?.statusBoard[1]?.researches.length &&
-                                data.diagnostics?.statusBoard[1]?.researches.map((el,id) => {
-                                  return (
-                                    
+          <div className="contactapp-wrap" style={{ margin: "3rem" }}>
+            <div className="contactapp-detail-wrap w-100">
+              <header className="contact-header">
+                <div className="d-flex align-items-center justify-content-center w-100">
+                  <h2>Սկանավորիր Բարկոդը</h2>
+                </div>
+              </header>
+              <div className="contact-body">
+                <div data-simplebar className="nicescroll-bar">
+                  <div className="contact-list-view d-flex justify-content-center align-items-center">
+                    <div
+                      id="scrollableDiv"
+                      style={{ height: "80vh", width: "100%" }}
+                    >
+                      <div className="d-flex justify-content-center align-items-center flex-column">
+                        <form
+                          id="barcodeForm"
+                          onSubmit={(e) => {
+                            e.preventDefault();
+                            handleBarcode(barcodeScan); // Call handleBarcode function when form is submitted
+                          }}
+                        >
+                          <input
+                            ref={barcodeInputRef}
+                            id="barcode"
+                            type="number"
+                            name="barcode"
+                            value={barcodeScan}
+                            placeholder="Տվյալներ չկան"
+                            onChange={(e) => setBarcodeScan(e.target.value)}
+                          />
+                          <Button type="submit" className="ms-2">
+                            Ստուգել
+                          </Button>
+                        </form>
+                      </div>
+                      {data && (
+                        <div
+                          className="d-flex justify-content-center align-items-center flex-column"
+                          style={{ width: "100%" }}
+                        >
+                          <header>
+                            <div>
+                              <span
+                                style={{ fontWeight: "bold", fontSize: "18px" }}
+                              >
+                                {data.client.firstName + " "}
+                                {data.client.midName + " "}
+                                {data.client.lastName + ", "}
+                                {data.client.dateOfBirth + ", "}
+                              </span>
+                            </div>
+                          </header>
+                          <main>
+                            {sortedResearches.length && (
+                              <>
+                              {console.log('sortedResearches',sortedResearches)}
+                                {sortedResearches.map((group, groupId) => {
+                                  if (
+                                    Array.isArray(group) &&
+                                    group.length > 0
+                                  ) {
+                                    return (
                                       <div
-                                      key={id}
+                                        key={groupId}
                                         className="d-flex flex-column m-3"
                                         style={{
-                                          border: "2px solid #000",
+                                          border: "2px solid gray",
                                           borderRadius: "10px",
-                                          padding: "2px",
+                                          padding: ".5rem",
                                           fontSize: "18px",
                                           width:'100%',
+                                          
                                         }}
                                       >
-                                          <div className="me-2 d-flex justify-content-between" >
-                                            <span>ID  </span>{el.id }
-                                          </div>
-                                          <div className="separator m-0"></div>                  
+                                        {group.map((el, index) => (
+                                          <div
+                                            key={index}
+                                            style={{ marginBottom: "1rem" }}
+                                          >
+                                            <div className="me-2 d-flex justify-content-between">
+                                              <span>ID</span>
+                                              {el.id}
+                                            </div>
+                                            <div className="separator m-0"></div>
 
-                                          <div style={{gap:'1rem'}} className="me-2 d-flex justify-content-between">
-                                          <span>Անվանում </span>{el.name }
-                                          </div>
-                                          <div className="separator m-0"></div>                  
+                                            <div
+                                              style={{ gap: "1rem" }}
+                                              className="me-2 d-flex justify-content-between"
+                                            >
+                                              <span>Անվանում</span>
+                                              {el.name}
+                                            </div>
+                                            <div className="separator m-0"></div>
 
-                                          <div style={{gap:'1rem'}} className="me-2 d-flex justify-content-between">
-                                          <span>Լաբորատորիա / Ծառայություն </span>{el.laboratoryService }
-                                          </div>
-                                          <div className="separator m-0"></div>                  
+                                            <div
+                                              style={{ gap: "1rem" }}
+                                              className="me-2 d-flex justify-content-between"
+                                            >
+                                              <span>
+                                                Լաբորատորիա / Ծառայություն
+                                              </span>
+                                              {el.laboratoryService}
+                                            </div>
+                                            <div className="separator m-0"></div>
 
-                                          <div style={{gap:'1rem'}} className="me-2 d-flex justify-content-between">
-                                          <span>Մատուցման հրապար/ առավել ժամկետ </span> {el.samplingPeriod } 
-                                          </div>
-                                          <div className="separator m-0"></div>                  
-                                          <div style={{gap:'1rem'}} className="me-2 d-flex justify-content-between">
-                                          <span>Սրվակ</span>
-                                          <div className="d-flex justify-content-center align-items-center gap-1">
-                                          <span>{el.vial.trim()==="Heparin"
-                                          ?<div style={{width:'1rem',height:'1rem',borderRadius:'10px',backgroundColor:'green'}}></div>
-                                          :el.vial.trim()==="EDTA"
-                                          ?<div style={{width:'1rem',height:'1rem',borderRadius:'10px',backgroundColor:'red'}}></div>
-                                          :el.vial.trim()==="Na Citr."
-                                          ?<div style={{width:'1rem',height:'1rem',borderRadius:'10px',backgroundColor:'rgb(0,176,240)'}}></div>
-                                          :el.vial.trim()==="Na Citr"
-                                          ?<div style={{width:'1rem',height:'1rem',borderRadius:'10px',backgroundColor:'rgb(0,176,240)'}}></div>
-                                          :el.vial.trim()==="Հել"
-                                          ?<div style={{width:'1rem',height:'1rem',borderRadius:'10px',backgroundColor:'rgb(255,153,0)'}}></div>
-                                          :el.vial.trim()==="Մատից արյան նմուշառում ֆիլտրի թղթի վրա"
-                                          ?<div style={{width:'1rem',height:'1rem',borderRadius:'10px',backgroundColor:'red'}}></div>
-                                          :el.vial.trim()==="Արյուն - 2 NIPT սրվակներ"
-                                          ?<div style={{width:'1rem',height:'1rem',borderRadius:'10px',backgroundColor:'red'}}></div>
-                                          :''
-                                        }</span>{el.vial }</div> </div>
-                                          <div className="separator m-0"></div>                  
+                                            <div
+                                              style={{ gap: "1rem" }}
+                                              className="me-2 d-flex justify-content-between"
+                                            >
+                                              <span>
+                                                Մատուցման հրապար/ առավել ժամկետ
+                                              </span>
+                                              {el.samplingPeriod}
+                                            </div>
+                                            <div className="separator m-0"></div>
 
-                                          <div style={{gap:'1rem'}} className="me-2 d-flex justify-content-between">
-                                          <span>Կենսանյութ</span>{el.biomaterial } 
-                                          </div>
-                                          <div className="separator m-0"></div>                  
+                                            <div
+                                              style={{ gap: "1rem" }}
+                                              className="me-2 d-flex justify-content-between"
+                                            >
+                                              <span>Սրվակ</span>
+                                              <div className="d-flex justify-content-center align-items-center gap-1">
+                                                <span>
+                                                  {el.vial?.trim() ===
+                                                  "Heparin" ? (
+                                                    <div
+                                                      style={{
+                                                        width: "1rem",
+                                                        height: "1rem",
+                                                        borderRadius: "10px",
+                                                        backgroundColor:
+                                                          "green",
+                                                      }}
+                                                    ></div>
+                                                  ) : el.vial?.trim() ===
+                                                    "EDTA" ? (
+                                                    <div
+                                                      style={{
+                                                        width: "1rem",
+                                                        height: "1rem",
+                                                        borderRadius: "10px",
+                                                        backgroundColor: "red",
+                                                      }}
+                                                    ></div>
+                                                  ) : el.vial?.trim() ===
+                                                      "Na Citr." ||
+                                                    el.vial?.trim() ===
+                                                      "Na Citr" ? (
+                                                    <div
+                                                      style={{
+                                                        width: "1rem",
+                                                        height: "1rem",
+                                                        borderRadius: "10px",
+                                                        backgroundColor:
+                                                          "rgb(0,176,240)",
+                                                      }}
+                                                    ></div>
+                                                  ) : el.vial?.trim() ===
+                                                    "Հել" ? (
+                                                    <div
+                                                      style={{
+                                                        width: "1rem",
+                                                        height: "1rem",
+                                                        borderRadius: "10px",
+                                                        backgroundColor:
+                                                          "rgb(255,153,0)",
+                                                      }}
+                                                    ></div>
+                                                  ) : el.vial?.trim() ===
+                                                      "Մատից արյան նմուշառում ֆիլտրի թղթի վրա" ||
+                                                    el.vial?.trim() ===
+                                                      "Արյուն - 2 NIPT սրվակներ" ? (
+                                                    <div
+                                                      style={{
+                                                        width: "1rem",
+                                                        height: "1rem",
+                                                        borderRadius: "10px",
+                                                        backgroundColor: "red",
+                                                      }}
+                                                    ></div>
+                                                  ) : (
+                                                    ""
+                                                  )}
+                                                </span>
+                                                {el.vial}
+                                              </div>
+                                            </div>
+                                            <div className="separator m-0"></div>
 
-                                          <BiSolidInfoCircle
-                                            cursor={"pointer"}
-                                            size={"1.5rem"}
+                                            <div
+                                              style={{ gap: "1rem" }}
+                                              className="me-2 d-flex justify-content-between"
+                                            >
+                                              <span>Կենսանյութ</span>
+                                              {el.biomaterial}
+                                            </div>
+                                            <div className="separator m-0"></div>
+
+                                            <BiSolidInfoCircle
+                                              cursor={"pointer"}
+                                              size={"1.5rem"}
+                                              onClick={() =>
+                                                handleOpenInfoModal(
+                                                  el.researchPrepSub
+                                                )
+                                              }
+                                            />
+
+                                            <div
+                                              style={{
+                                                borderBottom:
+                                                  ".15rem solid gray",
+                                                borderRadius: ".8rem",
+                                              }}
+                                            ></div>
+                                          </div>
+                                        ))}
+                                        <div className="d-flex justify-content-end">
+                                          <Button
+                                            style={{
+                                              backgroundColor: "#4eafcb",
+                                            }}
+                                            onClick={(e) => {
+                                              e.target.disabled = true;
+                                            }}
+                                          >
+                                            Կատարել
+                                          </Button>
+                                          <Button
+                                            style={{ backgroundColor: "gray" }}
                                             onClick={() =>
-                                              handleOpenInfoModal(el.researchPrepSub)
+                                              handleOpenPrintModal(data, group)
                                             }
-                                          />
-                                          <div className="d-flex justify-content-end">
-
-                                        <Button
-                                          style={{ backgroundColor: "#4eafcb" }}
-                                          onClick={(e) => {
-                                            e.target.disabled = true;
-                                          }}
                                           >
-                                          Կատարել
-                                        </Button>
-                                        <Button
-                                          style={{ backgroundColor: "gray" }}
-                                          onClick={() => handleOpenPrintModal(data,el)}
-                                          >
-                                          Տպել
-                                        </Button>
-                                          </div>
+                                            Տպել
+                                          </Button>
+                                        </div>
                                       </div>
-                                    
-                                  );
+                                    );
+                                  }
+                                  return null;
                                 })}
-                            </main>
-                          </div>
-                        )}
-                      </div>
+                              </>
+
+                            )}
+                            {noData && (
+                              <div><h3>Այցելուն չունի նմուշառման հետազոտություններ</h3></div>
+                            )}
+                          </main>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
               </div>
-           
+            </div>
           </div>
         </div>
       </div>

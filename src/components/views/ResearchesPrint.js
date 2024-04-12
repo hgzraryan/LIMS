@@ -14,7 +14,6 @@ function ResearchesPrint({ modalPrint, setModalPrint }) {
   const { clientId } = modalPrint;
   const { clientType } = modalPrint;
   const { statusBoard } = modalPrint;
-  console.log(modalPrint);
   const componentRef = useRef();
 
   const getPatientData = async () => {
@@ -266,8 +265,8 @@ function ResearchesPrint({ modalPrint, setModalPrint }) {
                 <>
                   <section className="container">
                     <div className="Requisites d-flex flex-column justify-content-center align-items-center">
-                      <p style={{ fontSize: "18px" }}>000000</p>
-                      <p style={{ fontSize: "18px" }}>h/h 000000000 բանկ</p>
+                      <p style={{ fontSize: "18px" }}>ՀՎՀՀ 06962789</p>
+                      <p style={{ fontSize: "18px" }}>h/h 1570084220480100 Ամերիաբանկ ՓԲԸ</p>
                     </div>
                   </section>
                   <section

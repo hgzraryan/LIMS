@@ -26,7 +26,7 @@ const status = [
   { status: "Վերանորոգվում է" },
   { status: "Չի աշխատում" },
 ];
-function AddEquipment({ handleToggleCreateModal, getEquipments }) {
+function AddEquipment({ handleToggleCreateModal, refreshData }) {
   const [errMsg, setErrMsg] = useState("");
   const [equipmentStatus, setEquipmentStatus] = useState("Operational");
   const [purchaseDate, setPurchaseDate] = useState("");
@@ -107,7 +107,7 @@ function AddEquipment({ handleToggleCreateModal, getEquipments }) {
         });
 
         handleToggleCreateModal(false);
-        getEquipments();
+        refreshData();
         notify(`${newEquipment.name} Սարքավորումը ավելացված է`);
       } catch (err) {
         if (!err?.response) {

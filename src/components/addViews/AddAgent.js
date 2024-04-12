@@ -16,7 +16,7 @@ import { CountryDropdown, RegionDropdown,CountryRegionData  } from 'react-countr
 
 const REGISTER_AGENT = "/registerAgent";
 
-function AddAgent({ handleToggleCreateModal, getAgents }) {
+function AddAgent({ handleToggleCreateModal, refreshData }) {
   const [errMsg, setErrMsg] = useState("");
   const axiosPrivate = useAxiosPrivate();
 
@@ -91,7 +91,7 @@ useEffect(() => {
       });
 
       handleToggleCreateModal(false);
-      getAgents();
+      refreshData();
       notify(
         `${newAgent.name} գործընկերը ավելացված է`
       );

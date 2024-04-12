@@ -40,7 +40,7 @@ const diagnosticStatus = [
 
 function AddDiagnostic({
   handleToggleCreateModal,
-  getDiagnostics,
+  refreshData,
   doctors,
 }) {
   const axiosPrivate = useAxiosPrivate();
@@ -221,7 +221,7 @@ function AddDiagnostic({
       });
 
       handleToggleCreateModal(false);
-      getDiagnostics();
+      refreshData();
       notify(
         `${newDiagnose.diagnosticsName} Ախտորոշումը ավելացված է`
       );

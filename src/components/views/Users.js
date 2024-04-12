@@ -116,7 +116,7 @@ const Users = () => {
                   {isOpen && (
                     <CreateUser
                       setIsOpen={setIsOpen}
-                      getUsers={() => getUsers()}
+                      refreshData={() => refreshData()}
                       updateUsersCount={updateUsersCount}
                     />
                   )}

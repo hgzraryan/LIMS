@@ -18,7 +18,7 @@ import {
 } from "../../utils/inputValidations";
 import Multiselect from "multiselect-react-dropdown";
 import { REGISTER_REAGENT } from "../../utils/constants";
-function AddReagent({ handleToggleCreateModal, getReagents }) {
+function AddReagent({ handleToggleCreateModal, refreshData }) {
   const [errMsg, setErrMsg] = useState("");
   const [unitType, setUnitType] = useState("");
   const [currency, setCurrency] = useState("AMD");
@@ -69,7 +69,7 @@ function AddReagent({ handleToggleCreateModal, getReagents }) {
         withCredentials: true,
       });
       handleToggleCreateModal(false);
-      getReagents();
+      refreshData();
       notify(`${newReagent.name}  ռեագենտը ավելացված է`);
     } catch (err) {
       if (!err?.response) {

@@ -111,7 +111,7 @@ const Patients = () => {
                   {isOpen && (
                     <CreatePatient
                       handleToggleCreateModal={handleToggleCreateModal}
-                      getPatients={()=>getPatients()}
+                      refreshData={()=>refreshData()}
                       researchState={researchState}
                       //errMsg={errMsg}
                     />

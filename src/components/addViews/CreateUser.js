@@ -43,7 +43,7 @@ const roleState = [
     { label:'Բժիշկ',name: "Doctor", value: 9578 },  
   ]
 
-function CreateUser({ setIsOpen,getUsers }) {
+function CreateUser({ setIsOpen,refreshData }) {
   const axiosPrivate = useAxiosPrivate();
   const intupAvatarRef = useRef(null);
   const [imageUrl, setImageUrl] = useState(MissingAvatar);
@@ -210,7 +210,7 @@ function CreateUser({ setIsOpen,getUsers }) {
       });
       
       handleToggleCreateModal(false);
-      getUsers();
+      refreshData();
       notify(`${newUser.firstname} ${newUser.lastname} աշխատակիցը ավելացված է`)
 
     } catch (err) {

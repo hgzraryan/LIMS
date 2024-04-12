@@ -114,7 +114,7 @@ const Equipments = () => {
                   {isOpen && (
                     <AddEquipment
                       handleToggleCreateModal={handleToggleCreateModal}
-                      getEquipments={() => getEquipments()}
+                      refreshData={() => refreshData()}
                     />
                   )}
                 </div>

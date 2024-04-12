@@ -144,8 +144,7 @@ const ResearchLists = () => {
                   {isOpen && (
                     <AddResearchList
                     handleToggleCreateModal={handleToggleCreateModal}
-                    getResearches={() => getResearches()}
-                    researchState={researchList}
+                    refreshData={() => refreshData()}
 
                     />
                   )}

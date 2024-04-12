@@ -106,7 +106,7 @@ function DoctorsVisits() {
                        {isOpen && (
                         <AddDoctorsVisit
                           handleToggleCreateModal={handleToggleCreateModal}
-                          getDoctorsVisits={refreshData}
+                          refreshData={refreshData}
                         />
                       )} 
                     </div>
