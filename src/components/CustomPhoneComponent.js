@@ -2,7 +2,7 @@ import React from 'react'
 import { useController } from 'react-hook-form'
 import PhoneInput from 'react-phone-number-input'
 
-function CustomPhoneComponent({ control, name })  {
+function CustomPhoneComponent({ control, name,required=true })  {
     const {
       field,
       fieldState: { invalid, isTouched, isDirty },
@@ -10,7 +10,7 @@ function CustomPhoneComponent({ control, name })  {
     } = useController({
       name,
       control,
-      rules: { required: true },
+      rules: { required: required },
     })
   
     return (

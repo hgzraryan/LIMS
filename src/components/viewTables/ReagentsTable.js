@@ -67,7 +67,7 @@ function ReagentsTable({
         ),
         accessor: "reagentId",
         sortable: true,
-        width: 60,
+        width: 80,
         Filter: ({ column: { id } }) =>  <ColumnFilter
         id={id}
         setData={setReagents}

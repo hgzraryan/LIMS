@@ -14,7 +14,7 @@ export const SampleBarcodeToPrint = forwardRef(({ modalPrint }, ref) => {
           modalPrint.el?.map((el) => {
             return (
               <div key={el.id} style={{ pageBreakAfter: "always", }}>
-                <main style={{ border: ".1rem solid gray", margin: ".3rem" }}>
+                <main style={{  margin: ".3rem" }}>
                   <header>
                     <div>{/* {firstName + " " + lastName} */}</div>
                     <div

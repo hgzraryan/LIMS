@@ -105,7 +105,7 @@ const handleCloseEditModal = () => {
         disableSortBy: true,
         filterable: false,
         show: false,
-        width: 60,
+        width: 80,
         Filter: ({ column: { id } })=>(
           <ColumnFilter
             id={id}

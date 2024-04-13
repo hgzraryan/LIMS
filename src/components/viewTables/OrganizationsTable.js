@@ -56,7 +56,7 @@ function OrganizationsTable({
         ),
         accessor: "organizationId",
         sortable: true,
-        width: 60,
+        width: 80,
         Filter: ({ column: { id } }) => (
           <ColumnFilter id={id} setData={setOrganizations} placeholder={'ID'}/>
         ),

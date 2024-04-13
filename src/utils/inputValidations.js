@@ -1106,3 +1106,20 @@ export const researchName_validation = {
     },
   },
 };
+export const discount_validation = {
+  name: "discount",
+  label: "Զեղչի չափս",
+  multiline: true,
+  id: "discount",
+  placeholder: "Զեղչի չափս",
+  validation: {
+    required: {
+      value: true,
+      message: "պարտադիր",
+    },
+    maxLength: {
+      value: 200,
+      message: "200 characters max",
+    },
+  },
+};

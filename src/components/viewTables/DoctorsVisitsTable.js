@@ -59,7 +59,7 @@ function DoctorsVisitsTable({
             ),
             accessor: "doctorsVisitId",
             sortable: true,
-            width: 60,
+            width: 80,
             Filter: ({ column: { id } })=>(
               <ColumnFilter
                 id={id}
@@ -294,6 +294,23 @@ function DoctorsVisitsTable({
                        <div className="separator-full m-0"></div>
                        <div className="d-flex justify-content-between">  <span>Հաջորդ այց </span> <span>{modalInfo?.nextVisit}</span></div>
                        <div className="separator-full m-0"></div>
+                      <div className="d-flex justify-content-between">
+                        {" "}
+                        <span>Վճարման կոդ </span>{" "}
+                        <span>{modalInfo?.authcode}</span>
+                      </div>
+                      <div className="separator-full m-0"></div>
+                      <div className="d-flex justify-content-between">
+                        {" "}
+                        <span>Վճարման տեսակը </span>{" "}
+                        <span>{modalInfo.paymentMethod}</span>
+                      </div>
+                      <div className="separator-full m-0"></div>
+                      <div className="d-flex justify-content-between">
+                        <span>Վճարման ամսաթիվը </span>{" "}
+                        <span>{modalInfo.paymentDate}</span>
+                      </div>
+                      <div className="separator-full m-0"></div>
                   </div>
                   <div className="modal-body">
                         <h2 className='d-flex justify-content-center align-items-center'> Բժշկի Նշանակումներ</h2>

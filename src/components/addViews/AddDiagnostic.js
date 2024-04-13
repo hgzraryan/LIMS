@@ -62,6 +62,15 @@ function AddDiagnostic({
   const [isLoading, setIsLoading] = useState(true);
   const [refDoctors, setRefDoctors] = useState([])
 
+  const [researchesPrice, setResearchesPrice] = useState(0);
+const onResearchSelect = (data) => {
+    console.log(data);
+    const calcPrice = data.reduce((acc,el)=>{
+      return acc+=el.price
+    },0)
+    setResearchesPrice(calcPrice)
+
+  };
 
   //   const handleChange = (selectedOption) => {
   //     setPatients(selectedOption);
@@ -743,19 +752,27 @@ function AddDiagnostic({
                                       render={({ field }) => (
                                         <Select
                                           {...field}
+                                          onChange={(val) => {
+                                            field.onChange(val);
+                                            onResearchSelect(val);
+                                          }}
+                                          value={field.value}
                                           isMulti
                                           closeMenuOnSelect={false}
                                           components={animatedComponents}
                                           options={researches.map((res) => ({
                                             value: res.researchListId,
-                                            label: `${res?.researchName}`,
+                                            label: res?.researchName,
+                                            price: res?.price
                                           }))}
                                           styles={colourStyles}
                                           placeholder={"Հետազոտություններ"}
                                         />
                                       )}
                                     />
+                                    
                                   </div>
+                                  {researchesPrice ? <div className="d-flex flex-row-reverse"><h4>Ընդհանուր արժեք։ {researchesPrice}դր․</h4></div>:''}
                                 </div>
                               </div>
                             </div>

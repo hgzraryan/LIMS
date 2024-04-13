@@ -153,7 +153,7 @@ function DiagnosticsTable({
         Header: "ID",
         accessor: "diagnosticsId",
         sortable: true,
-        width: 70,
+        width: 80,
         Filter: ({ column: { id } }) => (
           <ColumnFilter id={id} setData={setDiagnostics} placeholder={"ID"} />
         ),
@@ -459,6 +459,12 @@ function DiagnosticsTable({
                         {" "}
                         <span>Արտաքին հետ․ կարգավիճակ </span>{" "}
                         <span>{modalInfo.externalStatus}</span>
+                      </div>
+                      <div className="separator-full m-0"></div>
+                      <div className="d-flex justify-content-between">
+                        {" "}
+                        <span>Վճարման կոդ </span>{" "}
+                        <span>{modalInfo?.authcode}</span>
                       </div>
                       <div className="separator-full m-0"></div>
                       <div className="d-flex justify-content-between">

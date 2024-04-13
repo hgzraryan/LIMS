@@ -8,7 +8,12 @@ import { Form, FormProvider, useForm, Controller } from "react-hook-form";
 import { Input } from "../Input";
 import { toast } from "react-toastify";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
-import { DOCTORS_URL, MEDICALSERVICES_URL, REFDOCTORS_URL, REGISTER_PATIENT } from "../../utils/constants";
+import {
+  DOCTORS_URL,
+  MEDICALSERVICES_URL,
+  REFDOCTORS_URL,
+  REGISTER_PATIENT,
+} from "../../utils/constants";
 import {
   firstName_validation,
   lastName_validation,
@@ -19,14 +24,18 @@ import {
   city_validation,
   passport_validation,
 } from "../../utils/inputValidations";
-  import CustomPhoneComponent from "../CustomPhoneComponent";
+import CustomPhoneComponent from "../CustomPhoneComponent";
 import "react-datepicker/dist/react-datepicker.css";
 import "react-phone-number-input/style.css";
 import CustomDateComponent from "../CustomDateComponent";
 import Select from "react-select";
 
 import makeAnimated from "react-select/animated";
-import { CountryDropdown, RegionDropdown,CountryRegionData  } from 'react-country-region-selector';
+import {
+  CountryDropdown,
+  RegionDropdown,
+  CountryRegionData,
+} from "react-country-region-selector";
 import CustomDateTimeComponent from "../CustomDateTimeComponent";
 
 function CreatePatient({
@@ -43,10 +52,12 @@ function CreatePatient({
   const [refDoctor, setRefDoctor] = useState("Առանց բժիշկ");
   const [extraDoctor, setExtraDoctor] = useState(false);
   const [errMsg, setErrMsg] = useState("");
-  const [doctors,setDoctors] = useState([]);
-  const [country, setCountry] = useState('')
-  const [region, setRegion] = useState('')
-  const [refDoctors, setRefDoctors] = useState('')
+  const [doctors, setDoctors] = useState([]);
+  const [country, setCountry] = useState("");
+  const [region, setRegion] = useState("");
+  const [refDoctors, setRefDoctors] = useState("");
+  const [additionalPhone, setAdditionalPhone] = useState(false);
+  const [researchesPrice, setResearchesPrice] = useState(0);
 
   const { trigger } = useForm();
 
@@ -61,8 +72,9 @@ function CreatePatient({
 
   useEffect(() => {
     if (CountryRegionData[11][0] === "Armenia") {
-      CountryRegionData[11][0] = "Հայաստան"
-      CountryRegionData[11][2] = "Արագածոտն~AG|Արարատ~AR|Արմավիր~AV|Գեղարքունիք~GR|Կոտայք~KT|Լոռի~LO|Շիրակ~SH|Սյունիք~SU|Տավուշ~TV|Վայոց Ձոր~VD|Երևան~ER";
+      CountryRegionData[11][0] = "Հայաստան";
+      CountryRegionData[11][2] =
+        "Արագածոտն~AG|Արարատ~AR|Արմավիր~AV|Գեղարքունիք~GR|Կոտայք~KT|Լոռի~LO|Շիրակ~SH|Սյունիք~SU|Տավուշ~TV|Վայոց Ձոր~VD|Երևան~ER";
     }
   }, []);
   const colourStyles = {
@@ -91,32 +103,32 @@ function CreatePatient({
       },
     }),
   };
- 
- useEffect(() => {
-  setTimeout(() => {
-    axiosPrivate
-      .get(DOCTORS_URL)
-      .then((resp) => {
-        setDoctors(resp?.data?.jsonString);
-        //setIsLoading(false);
-      })
-      .then((resp) => {
-        axiosPrivate.get(MEDICALSERVICES_URL).then((resp) => {
-          setMedicalServices(resp?.data?.jsonString);
+
+  useEffect(() => {
+    setTimeout(() => {
+      axiosPrivate
+        .get(DOCTORS_URL)
+        .then((resp) => {
+          setDoctors(resp?.data?.jsonString);
           //setIsLoading(false);
+        })
+        .then((resp) => {
+          axiosPrivate.get(MEDICALSERVICES_URL).then((resp) => {
+            setMedicalServices(resp?.data?.jsonString);
+            //setIsLoading(false);
+          });
+        })
+        .then((resp) => {
+          axiosPrivate.get(REFDOCTORS_URL).then((resp) => {
+            setRefDoctors(resp?.data?.jsonString);
+            //setIsLoading(false);
+          });
+        })
+        .catch((err) => {
+          console.log(err);
         });
-      })
-      .then((resp) => {
-        axiosPrivate.get(REFDOCTORS_URL).then((resp) => {
-          setRefDoctors(resp?.data?.jsonString);
-          //setIsLoading(false);
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, 500);
-}, []);
+    }, 500);
+  }, []);
   const getDate = (date) => {
     setStartDate(date);
     handlingDate.current =
@@ -134,27 +146,27 @@ function CreatePatient({
       progress: undefined,
       theme: "light",
     });
-    const calculateAge =(dateOfBirth) => {
-      // Convert the birthdate string to a Date object
-      const birthdateObj = new Date(dateOfBirth);
-    
-      // Get the current date
-      const currentDate = new Date();
-    
-      // Calculate the difference in years
-      let age = currentDate.getFullYear() - birthdateObj.getFullYear();
-    
-      // Check if the birthday hasn't occurred yet this year
-      if (
-        currentDate.getMonth() < birthdateObj.getMonth() ||
-        (currentDate.getMonth() === birthdateObj.getMonth() &&
-          currentDate.getDate() < birthdateObj.getDate())
-      ) {
-        age--;
-      }
-    
-      return age;
+  const calculateAge = (dateOfBirth) => {
+    // Convert the birthdate string to a Date object
+    const birthdateObj = new Date(dateOfBirth);
+
+    // Get the current date
+    const currentDate = new Date();
+
+    // Calculate the difference in years
+    let age = currentDate.getFullYear() - birthdateObj.getFullYear();
+
+    // Check if the birthday hasn't occurred yet this year
+    if (
+      currentDate.getMonth() < birthdateObj.getMonth() ||
+      (currentDate.getMonth() === birthdateObj.getMonth() &&
+        currentDate.getDate() < birthdateObj.getDate())
+    ) {
+      age--;
     }
+
+    return age;
+  };
   const onSubmit = methods.handleSubmit(
     async ({
       firstName,
@@ -175,7 +187,8 @@ function CreatePatient({
       medicalServices,
       refDoctor,
       doctor,
-      visitDoctor
+      visitDoctor,
+      addPhone
     }) => {
       const newPatient = {
         firstName: firstName,
@@ -185,15 +198,20 @@ function CreatePatient({
         //lastHandlingDate: handlingDate.current,
         // internalStatus: "Approval",
         // externalStatus:  null,
-        researchList:research? research?.map((el) => el.value):null,
+        researchList: research ? research?.map((el) => el.value) : null,
         additional: editorRef.current.getContent({ format: "text" }),
         gender: gender,
-        doctors: doctor||null,
-        serviceType:addDoctorsVisit?"visit":addDiagnostic?"diagnostics":null,
-        refDoctor:extraDoctor && refDoctor?refDoctor?.id:null,
+        doctors: doctor || null,
+        serviceType: addDoctorsVisit
+          ? "visit"
+          : addDiagnostic
+          ? "diagnostics"
+          : null,
+        refDoctor: extraDoctor && refDoctor ? refDoctor?.id : null,
         contact: {
           email: email,
           phone: phone,
+          addPhone:addPhone?addPhone:null,
           passport: passport,
           address: {
             street: street,
@@ -204,26 +222,31 @@ function CreatePatient({
           },
         },
         medicalHistory: "medicalHistory",
-        visitDoctor:visitDoctor?visitDoctor.id:null,
-        medicalServices:medicalServices?medicalServices?.map((el) => el.value):null,
-        visitDate:visitDate ? new Date(
-          visitDate.getTime() - visitDate.getTimezoneOffset() * 60000
-      )
-      .toISOString()
-      .replace('T', ' ')
-      .replace(/\.\d{3}Z/, '') 
-      .split(':')
-      .slice(0, -1)
-      .join(':')  : null,
-        dateOfBirth:dateOfBirth ?new Date(
-          dateOfBirth.getTime() - dateOfBirth.getTimezoneOffset() * 60000
-        )
-          .toISOString()
-          .split("T")[0]: null,
+        visitDoctor: visitDoctor ? visitDoctor.id : null,
+        medicalServices: medicalServices
+          ? medicalServices?.map((el) => el.value)
+          : null,
+        visitDate: visitDate
+          ? new Date(
+              visitDate.getTime() - visitDate.getTimezoneOffset() * 60000
+            )
+              .toISOString()
+              .replace("T", " ")
+              .replace(/\.\d{3}Z/, "")
+              .split(":")
+              .slice(0, -1)
+              .join(":")
+          : null,
+        dateOfBirth: dateOfBirth
+          ? new Date(
+              dateOfBirth.getTime() - dateOfBirth.getTimezoneOffset() * 60000
+            )
+              .toISOString()
+              .split("T")[0]
+          : null,
       };
 
-      //console.log(newPatient);
-      
+      console.log(newPatient);
 
       try {
         await axiosPrivate.post(REGISTER_PATIENT, newPatient, {
@@ -245,14 +268,14 @@ function CreatePatient({
           setErrMsg(" Failed");
         }
       }
-     }
+    }
   );
   const onGenderSelect = (value) => {
     setGender(value);
     trigger("gender");
   };
   const onDoctorSelect = (data) => {
-    console.log(data)
+    console.log(data);
     if (data.label === "Ուղղորդող բժիշկ") {
       setExtraDoctor(true);
     } else {
@@ -260,6 +283,19 @@ function CreatePatient({
     }
     setDoctor((prev) => data?.id);
   };
+  const onResearchSelect = (data) => {
+    console.log(data);
+    const calcPrice = data.reduce((acc,el)=>{
+      return acc+=el.price
+    },0)
+    setResearchesPrice(calcPrice)
+
+  };
+  const enableAdditionalPhone = (e, value) => {
+    e.stopPropagation()
+    e.preventDefault()
+    setAdditionalPhone(value)
+  }
   return (
     <Modal
       show={() => true}
@@ -315,20 +351,20 @@ function CreatePatient({
                             </div>
                           </div>
                           <div className="row gx-3">
-                          <div className="col-sm-6">
+                            <div className="col-sm-6">
                               <Input {...midName_validation} />
                             </div>
                             <div className="col-sm-6">
-                            <div className="d-flex justify-content-between me-2">
-                              <label className="form-label" htmlFor="country">
-                                Երկիր
-                              </label>
-                              {methods?.formState.errors.country && (
-                                <span className="error text-red">
-                                  <img src={ErrorSvg} alt="errorSvg" />
-                                  Պարտադիր
-                                </span>
-                              )}
+                              <div className="d-flex justify-content-between me-2">
+                                <label className="form-label" htmlFor="country">
+                                  Երկիր
+                                </label>
+                                {methods?.formState.errors.country && (
+                                  <span className="error text-red">
+                                    <img src={ErrorSvg} alt="errorSvg" />
+                                    Պարտադիր
+                                  </span>
+                                )}
                               </div>
                               <Controller
                                 name="country"
@@ -341,14 +377,14 @@ function CreatePatient({
                                     classes="form-control"
                                     defaultOptionLabel="Երկիր"
                                     value={country}
-                                    priorityOptions={['Armenia']}
+                                    priorityOptions={["Armenia"]}
                                     onChange={(val) => {
                                       field.onChange(val);
                                       setCountry(val);
                                       trigger("country");
                                     }}
                                     style={{
-                                      appearance:'auto'
+                                      appearance: "auto",
                                     }}
                                   />
                                 )}
@@ -357,8 +393,8 @@ function CreatePatient({
                           </div>
                           <div className="row gx-3">
                             <div className="col-sm-6">
-                            <div className="d-flex justify-content-between me-2">
-                            <label className="form-label" htmlFor="state">
+                              <div className="d-flex justify-content-between me-2">
+                                <label className="form-label" htmlFor="state">
                                   Մարզ
                                 </label>
                                 {methods?.formState.errors.state && (
@@ -369,30 +405,30 @@ function CreatePatient({
                                     պարտադիր
                                   </span>
                                 )}
-                                </div>
-                                <Controller
+                              </div>
+                              <Controller
                                 name="state"
                                 control={methods.control}
                                 defaultValue=""
                                 rules={{ required: true }}
                                 render={({ field }) => (
                                   <RegionDropdown
-                                  blankOptionLabel="Մարզ"
-                                  defaultOptionLabel="Մարզ"
-                                  classes="form-control"
-                                  country={country}
-                                  value={region}
-                                  onChange={(val) => {
-                                    field.onChange(val);
-                                    setRegion(val);
-                                    trigger("state");
-                                  }}
-                                  style={{
-                                    appearance:'auto'
-                                  }}
-                                />                           
-                          )}
-                        />
+                                    blankOptionLabel="Մարզ"
+                                    defaultOptionLabel="Մարզ"
+                                    classes="form-control"
+                                    country={country}
+                                    value={region}
+                                    onChange={(val) => {
+                                      field.onChange(val);
+                                      setRegion(val);
+                                      trigger("state");
+                                    }}
+                                    style={{
+                                      appearance: "auto",
+                                    }}
+                                  />
+                                )}
+                              />
                             </div>
                             <div className="col-sm-6">
                               <Input {...city_validation} />
@@ -410,21 +446,83 @@ function CreatePatient({
                             <div className="col-sm-6">
                               <Input {...patientEmail_validation} />
                             </div>
-                            <div className="col-sm-6">
-                              <div className="d-flex justify-content-between me-2">
-                                <label className="form-label" htmlFor="doctor">
-                                  Հեռախոս
-                                </label>
-                                {methods?.formState.errors.phone && (
-                                  <span className="error text-red">
-                                    <span>
-                                      <img src={ErrorSvg} alt="errorSvg" />
+                            <div className="col-sm-6 d-flex">
+                              <div className="col-sm-6">
+                                <div className="d-flex justify-content-between me-2">
+                                  <label
+                                    className="form-label"
+                                    htmlFor="doctor"
+                                  >
+                                    Հեռախոս
+                                  </label>
+                                  {methods?.formState.errors.phone && (
+                                    <span className="error text-red">
+                                      <span>
+                                        <img src={ErrorSvg} alt="errorSvg" />
+                                      </span>
+                                      պարտադիր
                                     </span>
-                                    պարտադիր
-                                  </span>
-                                )}
+                                  )}
+                                </div>
+                                <CustomPhoneComponent
+                                  name="phone"
+                                  control={methods.control}
+                                />
                               </div>
-                              <CustomPhoneComponent name="phone"  control={methods.control} />
+                              {additionalPhone &&
+                              <>
+                              <div className="col-sm-6">
+                                <div className="d-flex justify-content-between me-2">
+                                  <label
+                                    className="form-label"
+                                    htmlFor="addPhone"
+                                  >
+                                    Հեռախոս
+                                  </label>
+                                  {methods?.formState.errors.addPhone && (
+                                    <span className="error text-red">
+                                      <span>
+                                        <img src={ErrorSvg} alt="errorSvg" />
+                                      </span>
+                                      պարտադիր
+                                    </span>
+                                  )}
+                                </div>
+                                <CustomPhoneComponent
+                                  name="addPhone"
+                                  control={methods.control}
+                                  required={false}
+                                  />
+                              </div>
+
+                              </>
+                              }
+                              <div
+                              style={{
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                              }}
+                              >
+                                {!additionalPhone &&
+                                <button
+                                style={{
+                                  width: "25px",
+                                  height: "25px",
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                    marginLeft: ".5rem",
+                                    border: "none",
+                                    borderRadius:"50%",
+                                    fontSize:'1.5rem'
+                                  }}
+                                  onClick={(e)=>enableAdditionalPhone(e,true)}
+                                  >
+                                  +
+                                </button>
+                                  }
+                              </div>
                             </div>
                           </div>
                           <div className="row gx-3">
@@ -530,46 +628,47 @@ function CreatePatient({
                                     </span>
                                   )}
                                 </div>
-                                <div >
-                                  <CustomDateComponent name="dateOfBirth" control={methods.control}/>
-                              
+                                <div>
+                                  <CustomDateComponent
+                                    name="dateOfBirth"
+                                    control={methods.control}
+                                  />
                                 </div>
                               </div>
                             </div>
                             <div className="col-sm-6 d-flex">
-                            <div className="col-sm-6">
-                              <label>Ավելացնել ախտորոշում</label>
-                              <div>
-                                <input
-                                  type="checkbox"
-                                  name="selectDiagnostic"
-                                  checked={addDiagnostic}
-                                  disabled={addDoctorsVisit}
-                                  onChange={(e) =>
-                                    setAddDiagnostic(e.target.checked)
-                                  }
-                                  style={{ transform: "scale(1.5)" }}
-                                />
+                              <div className="col-sm-6">
+                                <label>Ավելացնել ախտորոշում</label>
+                                <div>
+                                  <input
+                                    type="checkbox"
+                                    name="selectDiagnostic"
+                                    checked={addDiagnostic}
+                                    disabled={addDoctorsVisit}
+                                    onChange={(e) =>
+                                      setAddDiagnostic(e.target.checked)
+                                    }
+                                    style={{ transform: "scale(1.5)" }}
+                                  />
+                                </div>
                               </div>
-                            </div>
-                            <div className="col-sm-6">
-                              <label>Բժշկի այց</label>
-                              <div>
-                                <input
-                                  type="checkbox"
-                                  name="selectDoctorsVisit"
-                                  checked={addDoctorsVisit}
-                                  disabled={addDiagnostic}
-                                  onChange={(e) =>
-                                    setAddDoctorsVisit(e.target.checked)
-                                  }
-                                  style={{ transform: "scale(1.5)" }}
-                                />
+                              <div className="col-sm-6">
+                                <label>Բժշկի այց</label>
+                                <div>
+                                  <input
+                                    type="checkbox"
+                                    name="selectDoctorsVisit"
+                                    checked={addDoctorsVisit}
+                                    disabled={addDiagnostic}
+                                    onChange={(e) =>
+                                      setAddDoctorsVisit(e.target.checked)
+                                    }
+                                    style={{ transform: "scale(1.5)" }}
+                                  />
+                                </div>
                               </div>
-                            </div>
                             </div>
                           </div>
-                         
                         </div>
                       </div>
                     </div>
@@ -671,8 +770,16 @@ function CreatePatient({
                                             (option) => option.label === doctor
                                           )}
                                           options={[
-                                            { value: "Առանց բժիշկ", label: "Առանց բժիշկ",id:null },
-                                            { value: "Ուղղորդող բժիշկ", label: "Ուղղորդող բժիշկ",id:null },
+                                            {
+                                              value: "Առանց բժիշկ",
+                                              label: "Առանց բժիշկ",
+                                              id: null,
+                                            },
+                                            {
+                                              value: "Ուղղորդող բժիշկ",
+                                              label: "Ուղղորդող բժիշկ",
+                                              id: null,
+                                            },
                                             ...doctors.map((item) => ({
                                               value: item.doctorName,
                                               label: item.doctorName,
@@ -686,53 +793,55 @@ function CreatePatient({
                                   </div>
                                 </div>
                                 {extraDoctor && (
-                                   <div className="col-sm-6">
-                                   <div className="d-flex justify-content-between me-2">
-                                     <label
-                                       className="form-label"
-                                       htmlFor="refDoctors"
-                                       placeholder={"Ընտրել"}
-                                     >
-                                       Ուղղորդող բժիշկներ
-                                     </label>
-                                     {methods.formState.errors.refDoctor && (
-                                       <span className="error text-red">
-                                         <span>
-                                           <img src={ErrorSvg} alt="errorSvg" />
-                                         </span>{" "}
-                                         պարտադիր
-                                       </span>
-                                     )}
-                                   </div>
-                                   <div className="form-control">
-                                     <Controller
-                                       name="refDoctor"
-                                       control={methods.control}
-                                       isClearable={true}
-                                       defaultValue={null}
-                                       rules={{ required: true }}
-                                       render={({ field }) => (
-                                         <Select
-                                           {...field}
-                                          //  onChange={(val) => {
-                                          //    field.onChange(val.id);
-                                          //    onRefDoctorSelect(val);
-                                          //  }}
-                                          //  value={refDoctors.find(
-                                          //    (option) => option.value === refDoctor
-                                          //  )}
-                                           options={refDoctors.map((item) => ({
-                                               value: item.doctorName,
-                                               label: item.doctorName,
-                                               id: item.refDoctorsId,
-                                             }))
-                                           }
-                                           placeholder={"Ընտրել"}
-                                         />
-                                       )}
-                                     />
-                                   </div>
-                                 </div>
+                                  <div className="col-sm-6">
+                                    <div className="d-flex justify-content-between me-2">
+                                      <label
+                                        className="form-label"
+                                        htmlFor="refDoctors"
+                                        placeholder={"Ընտրել"}
+                                      >
+                                        Ուղղորդող բժիշկներ
+                                      </label>
+                                      {methods.formState.errors.refDoctor && (
+                                        <span className="error text-red">
+                                          <span>
+                                            <img
+                                              src={ErrorSvg}
+                                              alt="errorSvg"
+                                            />
+                                          </span>{" "}
+                                          պարտադիր
+                                        </span>
+                                      )}
+                                    </div>
+                                    <div className="form-control">
+                                      <Controller
+                                        name="refDoctor"
+                                        control={methods.control}
+                                        isClearable={true}
+                                        defaultValue={null}
+                                        rules={{ required: true }}
+                                        render={({ field }) => (
+                                          <Select
+                                            {...field}
+                                            //  onChange={(val) => {
+                                            //    field.onChange(val.id);
+                                            //    onRefDoctorSelect(val);
+                                            //  }}
+                                            //  value={refDoctors.find(
+                                            //    (option) => option.value === refDoctor
+                                            //  )}
+                                            options={refDoctors.map((item) => ({
+                                              value: item.doctorName,
+                                              label: item.doctorName,
+                                              id: item.refDoctorsId,
+                                            }))}
+                                            placeholder={"Ընտրել"}
+                                          />
+                                        )}
+                                      />
+                                    </div>
+                                  </div>
                                   // <div className="col-sm-6">
                                   //   <label
                                   //     className="form-label"
@@ -761,7 +870,7 @@ function CreatePatient({
                                 )}
                               </div>
                               <div className="row gx-3 mt-2">
-                              <div className="col-sm-12">
+                                <div className="col-sm-12">
                                   <div className="d-flex justify-content-between me-2">
                                     <label
                                       className="form-label"
@@ -789,24 +898,33 @@ function CreatePatient({
                                       render={({ field }) => (
                                         <Select
                                           {...field}
+                                          onChange={(val) => {
+                                            field.onChange(val);
+                                            onResearchSelect(val);
+                                          }}
+                                          value={field.value}
                                           isMulti
                                           closeMenuOnSelect={false}
                                           components={animatedComponents}
                                           options={researchState.map((res) => ({
                                             value: res.researchListId,
-                                            label: `${res?.researchName}`,
+                                            label: res?.researchName,
+                                            //label:`${res.researchName} - ${res.price}`,
+                                            price: res?.price
                                           }))}
                                           styles={colourStyles}
                                           placeholder={"Հետազոտություններ"}
                                         />
                                       )}
                                     />
+                                    
                                   </div>
+                                  {researchesPrice ? <div className="d-flex flex-row-reverse"><h4>Ընդհանուր արժեք։ {researchesPrice}դր․</h4></div>:''}
                                 </div>
                               </div>
                             </div>
                           </div>
-                        </div>                        
+                        </div>
                         <div className="separator-full"></div>
                       </>
                     )}
@@ -836,7 +954,7 @@ function CreatePatient({
                           <div className="card-body">
                             <div className="modal-body">
                               <div className="row gx-3">
-                              {/* <div className="col-sm-6">
+                                {/* <div className="col-sm-6">
                                   <label
                                     className="form-label"
                                     htmlFor="visitDoctorName"
@@ -897,11 +1015,10 @@ function CreatePatient({
                                           //   (option) => option.value === doctor
                                           // )}
                                           options={doctors.map((item) => ({
-                                              value: item.doctorName,
-                                              label: item.doctorName,
-                                              id: item.doctorId,
-                                            }))
-                                          }
+                                            value: item.doctorName,
+                                            label: item.doctorName,
+                                            id: item.doctorId,
+                                          }))}
                                           placeholder={"Ընտրել"}
                                         />
                                       )}
@@ -909,28 +1026,38 @@ function CreatePatient({
                                   </div>
                                 </div>
                                 <div className="col-sm-6">
-                              <div className="form-group">
-                                <div className="d-flex justify-content-between me-2">
-                                <label
-                                  className="form-label"
-                                  htmlFor="purchaseDate"
-                                  >
-                                  Այցի ամսաթիվ
-                                </label>
-                                  {methods.formState.errors.visitDate && (
-                                    <span className="error text-red"><span><img src={ErrorSvg} alt="errorSvg"/></span> պարտադիր</span>
-                                    )}
+                                  <div className="form-group">
+                                    <div className="d-flex justify-content-between me-2">
+                                      <label
+                                        className="form-label"
+                                        htmlFor="purchaseDate"
+                                      >
+                                        Այցի ամսաթիվ
+                                      </label>
+                                      {methods.formState.errors.visitDate && (
+                                        <span className="error text-red">
+                                          <span>
+                                            <img
+                                              src={ErrorSvg}
+                                              alt="errorSvg"
+                                            />
+                                          </span>{" "}
+                                          պարտադիր
+                                        </span>
+                                      )}
                                     </div>
-                                <div>
-                                <CustomDateTimeComponent name="visitDate" control={methods.control} required={false}/>
+                                    <div>
+                                      <CustomDateTimeComponent
+                                        name="visitDate"
+                                        control={methods.control}
+                                        required={false}
+                                      />
+                                    </div>
+                                  </div>
                                 </div>
                               </div>
-                            </div>
-
-                              </div>
-                             <div className="row gx-3">
-                             
-                             <div className="col-sm-12">
+                              <div className="row gx-3">
+                                <div className="col-sm-12">
                                   <div className="d-flex justify-content-between me-2">
                                     <label
                                       className="form-label"
@@ -939,7 +1066,8 @@ function CreatePatient({
                                     >
                                       Ընտրել ծառայությունը
                                     </label>
-                                    {methods.formState.errors.medicalServices && (
+                                    {methods.formState.errors
+                                      .medicalServices && (
                                       <span className="error text-red">
                                         <span>
                                           <img src={ErrorSvg} alt="errorSvg" />
@@ -961,22 +1089,25 @@ function CreatePatient({
                                           isMulti
                                           closeMenuOnSelect={false}
                                           components={animatedComponents}
-                                          options={medicalServices.map((res) => ({
-                                            value: res.medServiceId,
-                                            label: `${res?.serviceName}`,
-                                          }))}
+                                          options={medicalServices.map(
+                                            (res) => ({
+                                              value: res.medServiceId,
+                                              label: `${res?.serviceName}`,
+                                            })
+                                          )}
                                           styles={colourStyles}
-                                          placeholder={"Բժշկական ծառայություններ"}
+                                          placeholder={
+                                            "Բժշկական ծառայություններ"
+                                          }
                                         />
                                       )}
                                     />
                                   </div>
                                 </div>
-                                
-                             </div>
+                              </div>
                             </div>
                           </div>
-                        </div>                        
+                        </div>
                         <div className="separator-full"></div>
                       </>
                     )}
@@ -1001,7 +1132,7 @@ function CreatePatient({
                           </span>
                         </button>
                       </div>
-                      <div className="card-body" style={{zIndex:'0'}}>
+                      <div className="card-body" style={{ zIndex: "0" }}>
                         <div className="modal-body">
                           <form>
                             <div className="row gx-12">

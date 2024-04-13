@@ -46,7 +46,7 @@ function EquipmentsTable({
         ),
         accessor: "equipmentId",
         sortable: true,
-        width:60,
+        width:80,
         Filter: ({ column: { id } })=>(
           <ColumnFilter
             id={id}

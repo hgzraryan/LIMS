@@ -70,7 +70,7 @@ function DoctorsTable({
           </>
         ),
         accessor: "doctorId",
-        width: 60,
+        width: 80,
         Filter: ({ column: { id } }) => (
           <ColumnFilter 
           id={id} 
