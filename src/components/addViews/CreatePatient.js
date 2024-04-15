@@ -872,6 +872,7 @@ function CreatePatient({
                               <div className="row gx-3 mt-2">
                                 <div className="col-sm-12">
                                   <div className="d-flex justify-content-between me-2">
+                                  {researchesPrice ? <div className="d-flex flex-row-reverse"><p style={{color:'#262a2e',fontSize:'1.1rem'}}>Ընդհանուր արժեք։ {researchesPrice}դր․</p></div>:''}
                                     <label
                                       className="form-label"
                                       htmlFor="research"
@@ -919,7 +920,6 @@ function CreatePatient({
                                     />
                                     
                                   </div>
-                                  {researchesPrice ? <div className="d-flex flex-row-reverse"><h4>Ընդհանուր արժեք։ {researchesPrice}դր․</h4></div>:''}
                                 </div>
                               </div>
                             </div>

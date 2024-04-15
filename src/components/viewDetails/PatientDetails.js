@@ -607,6 +607,7 @@ function PatientDetails() {
 
                     <ul className="list-inline fs-7 mt-2 mb-0">
                       <li className="list-inline-item d-sm-inline-block d-block mb-sm-0 mb-1 me-3">
+                      <div className="d-flex justify-content-center align-items-center">
                         <img
                           src={mobileSvg}
                           width="15px"
@@ -617,9 +618,27 @@ function PatientDetails() {
                         <span style={{ fontSize: "1.1rem" }}>
                           {patientDetails?.contact?.phone || ""}
                         </span>
+                        </div>
                       </li>
+                      {patientDetails?.contact?.addPhone &&
+                      <li className="list-inline-item d-sm-inline-block d-block mb-sm-0 mb-1 me-3 mt-0">
+                        <div className="d-flex justify-content-center align-items-center">
 
+                        <img
+                          src={mobileSvg}
+                          width="15px"
+                          height="15px"
+                          alt="mobile"
+                          className="me-2"
+                          />
+                        <span style={{ fontSize: "1.1rem" }}>
+                          {patientDetails?.contact?.addPhone || ""}
+                        </span>
+                          </div>
+                      </li>
+}
                       <li className="list-inline-item d-sm-inline-block d-block mb-sm-0 mb-1 me-3">
+                      <div className="d-flex justify-content-center align-items-center">
                         <img
                           src={emailSvg}
                           width="15px"
@@ -630,6 +649,7 @@ function PatientDetails() {
                         <span style={{ fontSize: "1.1rem" }}>
                           {patientDetails?.contact?.email || ""}
                         </span>
+                        </div>
                       </li>
                     </ul>
                   </div>

@@ -726,6 +726,8 @@ const onResearchSelect = (data) => {
                                 
                                 <div className="col-sm-12">
                                   <div className="d-flex justify-content-between me-2">
+                                  {researchesPrice ? <div className="d-flex flex-row-reverse"><p style={{color:'#262a2e',fontSize:'1.1rem'}}>Ընդհանուր արժեք։ {researchesPrice}դր․</p></div>:''}
+
                                     <label
                                       className="form-label"
                                       htmlFor="research"
