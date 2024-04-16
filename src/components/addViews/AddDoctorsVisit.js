@@ -12,7 +12,102 @@ import "react-phone-number-input/style.css";
 import LoadingSpinner from '../LoadingSpinner';
 import makeAnimated from "react-select/animated";
 import CustomDateTimeComponent from '../CustomDateTimeComponent';
+const CustomData=[
+  {
+    doctorsVisitsId:30001,
+      patientData:{
+        name:"Արման Գևորգի Ստեփանյան",
+        contact:{
+          email:"fdfgfg1942@as.tu",
+          phone:"+37485745896",
+        },
+        age:45,
+        gender:'Ար',
+        patientId:49
+        //patient's all data
+      },
+      visitDate:"24-02-2022",
+      doctorName:"Կարինե Սամվելի Մանւկյան",
+      doctorsAppointments:
+        {
+          instructions:['Մերսում'],
+          medicine:['Դիկլակ գել'],
+          researches:[]
+      },
+    nextVisit:'24-03-2022',
+  },
+  {
+    doctorsVisitsId:30025,
+      patientData:{
+        contact:{
 
+          email:"Anka1942@as.tu",
+          phone:"+3748596584",
+        },
+        name:"Անուշ Ռազմիկի Գաբրիելյան",
+        age:85,
+        patientId:48,
+        gender:'Իգ',
+        //patient's all data
+      },
+      visitDate:"25-02-2024",
+      doctorName:"Կարինե Սամվելի Մանւկյան",
+      doctorsAppointments:
+        {
+          instructions:['Դիետիկ սնունդ'],
+          medicine:['Մեզիմ ֆոռտե'],
+          researches:['Արյան ընդհանուր հետազոտություն']
+      },
+    
+    nextVisit:'24-03-2024',
+  },
+  {
+    doctorsVisitsId:30852,
+      patientData:{
+        name:"Կարեն Սերոբի Ստեփանյան",
+        contact:{
+          email:"ASD1942@as.tu",
+          phone:"+3748785263",
+        },
+        age:32,
+        gender:'Ար',
+        patientId:85
+        //patient's all data
+      },
+      visitDate:"01-03-2024",
+      doctorName:"Կարինե Սամվելի Մանւկյան",
+      doctorsAppointments:
+        {
+          instructions:['Քաղցր չուտել','քայլել օրեկան 1կմ'],
+          medicine:['Դիաբետոն'],
+          researches:['Արյան ընդհանուր հետազոտություն','ԲԱԿ հետազոտություն']
+      },
+    nextVisit:'05-03-2024',
+  },
+  {
+    doctorsVisitsId:30857,
+      patientData:{
+        name:"Կարեն Սերոբի Ստեփանյան",
+        contact:{
+          email:"ASD1942@as.tu",
+          phone:"+3748785263",
+        },
+        age:32,
+        gender:'Ար',
+        patientId:85
+        //patient's all data
+      },
+      visitDate:"01-03-2024",
+      doctorName:"Կարինե Սամվելի Մանւկյան",
+      doctorsAppointments:
+        {
+          instructions:['Քաղցր չուտել','քայլել օրեկան 1կմ'],
+          medicine:['Դիաբետոն'],
+          researches:['Արյան ընդհանուր հետազոտություն','ԲԱԿ հետազոտություն']
+      },
+    nextVisit:'05-03-2024',
+  },
+]
 
 function AddDoctorsVisit({
     handleToggleCreateModal,
@@ -23,6 +118,7 @@ function AddDoctorsVisit({
     const [doctors,setDoctors] = useState([])
     const [patients,setPatients] = useState([])
     const [medicalServices,setMedicalServices] = useState([])
+    const [medicalServicePrice,setMedicalServicePrice] = useState(0)
     const [errMsg, setErrMsg] = useState("");
     const axiosPrivate = useAxiosPrivate();
     const [isLoading, setIsLoading] = useState(true);
@@ -135,6 +231,14 @@ function AddDoctorsVisit({
           }
         }
       }); 
+      const onMedServiceSelect = (data) => {
+        console.log(data);
+        const calcPrice = data.reduce((acc,el)=>{
+          return acc+=el.price
+        },0)
+        setMedicalServicePrice(calcPrice)
+    
+      };
       return (
         <Modal
           show={() => true}
@@ -324,6 +428,8 @@ function AddDoctorsVisit({
                                 
                                 <div className="col-sm-12">
                                   <div className="d-flex justify-content-between me-2">
+                                  {medicalServicePrice ? <div className="d-flex flex-row-reverse"><p style={{color:'#262a2e',fontSize:'1.1rem'}}>Ընդհանուր արժեք։ {medicalServicePrice}դր․</p></div>:''}
+
                                     <label
                                       className="form-label"
                                       htmlFor="research"
@@ -341,27 +447,37 @@ function AddDoctorsVisit({
                                     )}
                                   </div>
                                   <div className="form-control">
-                                    <Controller
-                                      name="medicalServices"
-                                      control={methods.control}
-                                      isClearable={true}
-                                      defaultValue={null}
-                                      rules={{ required: false }}
-                                      render={({ field }) => (
+                                  <Controller
+                                    name="medicalServices"
+                                    control={methods.control}
+                                    isClearable={true}
+                                    defaultValue={null}
+                                    rules={{ required: false }}
+                                    render={({ field }) => (
+                                      <div style={{ zIndex: 9999 }}> {/* Set zIndex for the wrapper div */}
                                         <Select
                                           {...field}
                                           isMulti
-                                          closeMenuOnSelect={false}
                                           components={animatedComponents}
+                                          closeMenuOnSelect={false}
                                           options={medicalServices.map((res) => ({
                                             value: res.medServiceId,
                                             label: `${res?.serviceName}`,
+                                            price: res?.price
                                           }))}
-                                          styles={colourStyles}
+                                          // styles={colourStyles}
+                                          menuPortalTarget={document.body} 
+                                          styles={{ ...colourStyles,menuPortal: base => ({ ...base, zIndex: 9999 }) }}
                                           placeholder={"Բժշկական ծառայություններ"}
+                                          onChange={(val) => {
+                                            field.onChange(val);
+                                            onMedServiceSelect(val);
+                                          }}
+                                          value={field.value}
                                         />
-                                      )}
-                                    />
+                                      </div>
+                                    )}
+                                  />
                                   </div>
                                 </div>
                               </div>
