@@ -384,7 +384,7 @@ responseType:'blob'
                         <ul className="list-group list-group-flush">
                           <li className="list-group-item border-0">
                             <span>
-                              <i className="bi bi-geo-alt-fill text-disabled me-2"></i>
+                              <i className="bi bi-credit-card-2-front-fill text-disabled me-2"></i>
                               <span className="text-muted">
                                 Նույնականացման համար:
                               </span>
@@ -395,7 +395,7 @@ responseType:'blob'
                           </li>
                           <li className="list-group-item border-0">
                             <span>
-                              <i className="bi bi-briefcase-fill text-disabled me-2"></i>
+                              <i className="bi bi-activity text-disabled me-2"></i>
                               <span className="text-muted">Կարգավիճակ:</span>
                             </span>
                             <span className="ms-2">
@@ -408,7 +408,7 @@ responseType:'blob'
                           </li>
                           <li className="list-group-item border-0">
                             <span>
-                              <i className="bi bi-geo-alt-fill text-disabled me-2"></i>
+                              <i className="bi bi-ui-checks text-disabled me-2"></i>
                               <span className="text-muted">Տեսակը:</span>
                             </span>
                             <span className="ms-2">
@@ -430,7 +430,7 @@ responseType:'blob'
                           </li>
                           <li className="list-group-item border-0">
                             <span>
-                              <i className="bi bi-house-door-fill text-disabled me-2"></i>
+                              <i className="bi bi-calendar-month-fill text-disabled me-2"></i>
                               <span className="text-muted">
                                 Գրանցման ամսաթիվ:
                               </span>
@@ -442,7 +442,7 @@ responseType:'blob'
 
                           <li className="list-group-item border-0">
                             <span>
-                              <i className="bi bi-briefcase-fill text-disabled me-2"></i>
+                              <i className="bi bi-file-medical-fill text-disabled me-2"></i>
                               <span className="text-muted">Բժիշկ:</span>
                             </span>
                             <span className="ms-2">
@@ -451,7 +451,7 @@ responseType:'blob'
                           </li>
                           <li className="list-group-item border-0">
                             <span>
-                              <i className="bi bi-briefcase-fill text-disabled me-2"></i>
+                              <i className="bi bi-currency-dollar text-disabled me-2"></i>
                               <span className="text-muted">
                                 Ընդհանուր արժեք:
                               </span>
@@ -462,7 +462,7 @@ responseType:'blob'
                           </li>
                           <li className="list-group-item border-0">
                             <span>
-                              <i className="bi bi-briefcase-fill text-disabled me-2"></i>
+                              <i className="bi bi-currency-dollar text-disabled me-2"></i>
                               <span className="text-muted">
                                 Ընդհանուր վճարված:
                               </span>

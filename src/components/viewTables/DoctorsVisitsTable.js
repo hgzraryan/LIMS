@@ -33,6 +33,10 @@ function DoctorsVisitsTable({
      navigate(`/patients/${patientId}`)
       
   };
+  const handleVisitsDetail = async (patientId) => {  
+     navigate(`/doctorsVisits/${patientId}`)
+      
+  };
   const handleOpenInfoModal = (data) => {
     
     setModalInfo((prev) => data);
@@ -40,6 +44,7 @@ function DoctorsVisitsTable({
   const handleDoctorInfo = async (doctorId)=>{
     navigate(`/doctors/${doctorId}`)
     }
+   
     const defaultColumn = React.useMemo(
         () => ({
           minWidth: 20,
@@ -66,6 +71,18 @@ function DoctorsVisitsTable({
                 setData={setDoctorsVisits}
                 placeholder={'ID'}
               />
+            ),
+            Cell: ({ row }) => (
+              <>
+                <div
+                  onClick={() =>
+                    handleVisitsDetail(row.original.doctorsVisitId)
+                  }
+                  style={{ cursor: "pointer", textDecoration: "underline" }}
+                >
+                  {row.original.doctorsVisitId}
+                </div>
+              </>
             ),
           },
           {
@@ -101,7 +118,29 @@ function DoctorsVisitsTable({
             width: 200,
             Cell: ({ row }) => (<>
               
-              <div className="d-flex justify-content-center align-items-center">
+              <div className="d-flex justify-content-center align-items-center flex-column">
+              {row.original?.originalPrice && !(row.original?.originalPrice === row.original?.totalPrice) ? (
+                <div style={{width:'100%',display:'flex',
+                flexDirection:'row-reverse',fontSize:'14px'}}>
+
+                
+                <div
+                  style={{
+                    backgroundColor: "#bb86fc",
+                    borderRadius: "8px",
+                    padding: "0 10px 0 10px",
+                    marginBottom: "-3px",
+                    zIndex: "9999",
+                    color:'white',
+                    textDecoration:'line-through'
+                    
+                  }}
+                >
+                 <p> 1000</p>
+                </div>
+                </div>
+              ):''
+            }
                 <ProgressBar totalPrice ={row.original?.totalPrice||0} totalPayed={row.original?.totalPayed||0}/>
               </div>
                   </>

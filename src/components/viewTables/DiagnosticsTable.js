@@ -23,11 +23,10 @@ import ResultData from "../ResultData";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { useNavigate } from "react-router-dom";
 import "../../dist/css/data-table.css";
-import organizationsSvg from '../../dist/svg/organizationsSvg.svg'
-import patientSvg from '../../dist/svg/patientSvg.svg'
+import organizationsSvg from "../../dist/svg/organizationsSvg.svg";
+import patientSvg from "../../dist/svg/patientSvg.svg";
 import ResearchesPrint from "../views/ResearchesPrint";
 import ProgressBar from "../ProgressBar";
-
 
 function DiagnosticsTable({
   confirmRef,
@@ -38,9 +37,9 @@ function DiagnosticsTable({
   handleOpenModal,
   selectedItemId,
   selectedItem,
-  getDiagnostics
+  getDiagnostics,
 }) {
-  const axiosPrivate = useAxiosPrivate()
+  const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
   const [selectedItem1, setSelectedItem1] = useState("");
   const [selectedItemId1, setSelectedItemId1] = useState(null);
@@ -51,7 +50,7 @@ function DiagnosticsTable({
   const [modalPrint, setModalPrint] = useState("");
   const [disable, setDisable] = useState(false);
   // const ComponentToPrintWrapper = ({ diagData }) => {
-    
+
   //   // 1.
   //   let componentRef = useRef(null); // 2.
   //   return (
@@ -91,8 +90,8 @@ function DiagnosticsTable({
     setModalPrint((prev) => data);
   };
   const handleSendResult = () => {
-    const resultData = document.getElementById('resultData');
-    console.log(JSON.stringify(resultData))
+    const resultData = document.getElementById("resultData");
+    console.log(JSON.stringify(resultData));
   };
   const handleOpenStatusModal = (data) => {
     setSelectedItem1((prev) => data);
@@ -114,21 +113,18 @@ function DiagnosticsTable({
     }),
     []
   );
-  const handleDiagnosticsDetails = async (diagnosticsId) => {  
-
-      navigate(`/diagnostics/${diagnosticsId}`)
-      
+  const handleDiagnosticsDetails = async (diagnosticsId) => {
+    navigate(`/diagnostics/${diagnosticsId}`);
   };
-  const handleClientDetails = async (rowData) => {  
-   const {clientId}=rowData
-   const {clientType}=rowData
-    clientType === 'patient'
-    ? navigate(`/patients/${clientId}`)
-    :navigate(`/organizations/${clientId}`)
+  const handleClientDetails = async (rowData) => {
+    const { clientId } = rowData;
+    const { clientType } = rowData;
+    clientType === "patient"
+      ? navigate(`/patients/${clientId}`)
+      : navigate(`/organizations/${clientId}`);
   };
 
   const sendPDFToBackend = (pdfData) => {
-
     // console.log(pdfData)
     // axiosPrivate('/endpoint', {
     //   method: 'POST',
@@ -145,7 +141,7 @@ function DiagnosticsTable({
     //   console.error('Error sending PDF to backend:', error);
     //   alert('Failed to send PDF to backend');
     // });
-  }
+  };
 
   const columns = useMemo(
     () => [
@@ -159,15 +155,14 @@ function DiagnosticsTable({
         ),
         Cell: ({ row }) => (
           <>
-           
-              <div
-              onClick={()=>handleDiagnosticsDetails(row.original.diagnosticsId)}
-              style={{ cursor: 'pointer', textDecoration:'underline' }}
+            <div
+              onClick={() =>
+                handleDiagnosticsDetails(row.original.diagnosticsId)
+              }
+              style={{ cursor: "pointer", textDecoration: "underline" }}
             >
-              
               {row.original.diagnosticsId}
             </div>
-           
           </>
         ),
       },
@@ -177,23 +172,37 @@ function DiagnosticsTable({
         sortable: true,
         width: 200,
         Filter: ({ column: { id } }) => (
-          <ColumnFilter id={id} setData={setDiagnostics} 
-          placeholder = "Հաճախորդի ID" />
+          <ColumnFilter
+            id={id}
+            setData={setDiagnostics}
+            placeholder="Հաճախորդի ID"
+          />
         ),
         Cell: ({ row }) => (
           <>
-           
-              <div
-              onClick={()=>handleClientDetails(row.original)}
-              style={{ cursor: 'pointer', textDecoration:'underline' }}
+            <div
+              onClick={() => handleClientDetails(row.original)}
+              style={{ cursor: "pointer", textDecoration: "underline" }}
             >
-               {row.original.clientType === "organization"
-              ?<img src={organizationsSvg} alt='organizationIcon' width={25} height={25} className="me-2"/>
-              :<img  src={patientSvg} alt='patientIcon' width={25} height={25} className="me-2"/>
-              }
+              {row.original.clientType === "organization" ? (
+                <img
+                  src={organizationsSvg}
+                  alt="organizationIcon"
+                  width={25}
+                  height={25}
+                  className="me-2"
+                />
+              ) : (
+                <img
+                  src={patientSvg}
+                  alt="patientIcon"
+                  width={25}
+                  height={25}
+                  className="me-2"
+                />
+              )}
               {row.original.clientId}
             </div>
-           
           </>
         ),
       },
@@ -202,17 +211,19 @@ function DiagnosticsTable({
         accessor: "researchList",
         disableSortBy: true,
         width: 200,
-        Cell: ({ row }) => (<>
-          {row.original?.diagStatus === "Active" &&
-          <div className="d-flex justify-content-center align-items-center">
-            {/* <div className="pe-2">{row.original.statusBoard.length}</div> */}
-            <MdViewKanban
-              cursor={"pointer"}
-              size={"1.5rem"}
-              onClick={() => handleOpenStatusModal(row.original)}
-              />
-          </div>}
-              </>
+        Cell: ({ row }) => (
+          <>
+            {row.original?.diagStatus === "Active" && (
+              <div className="d-flex justify-content-center align-items-center">
+                {/* <div className="pe-2">{row.original.statusBoard.length}</div> */}
+                <MdViewKanban
+                  cursor={"pointer"}
+                  size={"1.5rem"}
+                  onClick={() => handleOpenStatusModal(row.original)}
+                />
+              </div>
+            )}
+          </>
         ),
         Filter: ({ column: { id } }) => <></>,
       },
@@ -221,12 +232,35 @@ function DiagnosticsTable({
         accessor: "paymentProgress",
         disableSortBy: true,
         width: 200,
-        Cell: ({ row }) => (<>
-          
-          <div className="d-flex justify-content-center align-items-center">
-            <ProgressBar totalPrice ={row.original?.totalPrice} totalPayed={row.original?.totalPayed}/>
-          </div>
-              </>
+        Cell: ({ row }) => (
+          <>
+            <div className="d-flex justify-content-center align-items-center flex-column">
+              {row.original?.originalPrice && !(row.original?.originalPrice === row.original?.totalPrice) ? (
+                <div style={{width:'100%',display:'flex',
+                flexDirection:'row-reverse',fontSize:'14px'}}>
+
+                
+                <div
+                  style={{
+                    backgroundColor: "#bb86fc",
+                    borderRadius: "8px",
+                    padding: "0 10px 0 10px",
+                    marginBottom: "-3px",
+                    zIndex: "9999",
+                    color:'white',
+                    textDecoration:'line-through'
+                    
+                  }}
+                >
+                 <p> {row.original?.originalPrice}</p>
+                </div>
+                </div>
+              ):''
+              }
+              <ProgressBar totalPrice ={row.original?.totalPrice||0} totalPayed={row.original?.totalPayed||0}/>
+
+            </div>
+          </>
         ),
         Filter: ({ column: { id } }) => <></>,
       },
@@ -235,7 +269,11 @@ function DiagnosticsTable({
         accessor: "diagnosisDate",
         width: 300,
         Filter: ({ column: { id } }) => (
-          <ColumnFilter id={id} setData={setDiagnostics} placeholder = "Գրանցման ամսաթիվ" />
+          <ColumnFilter
+            id={id}
+            setData={setDiagnostics}
+            placeholder="Գրանցման ամսաթիվ"
+          />
         ),
       },
       {
@@ -243,13 +281,17 @@ function DiagnosticsTable({
         accessor: "class",
         width: 200,
         Filter: ({ column: { id } }) => (
-          <ColumnFilter id={id} setData={setDiagnostics}  placeholder = "Տեսակ"/>
+          <ColumnFilter id={id} setData={setDiagnostics} placeholder="Տեսակ" />
         ),
         Cell: ({ row }) => (
           <div className="d-flex justify-content-center align-items-center">
-            {row.original?.class === 'Internal'?'Ներքին':
-            row.original?.class ==='External'?'Արտաքին':
-            row.original?.class ==='Other'?'Այլ':''}
+            {row.original?.class === "Internal"
+              ? "Ներքին"
+              : row.original?.class === "External"
+              ? "Արտաքին"
+              : row.original?.class === "Other"
+              ? "Այլ"
+              : ""}
           </div>
         ),
       },
@@ -258,13 +300,15 @@ function DiagnosticsTable({
         accessor: "diagStatus",
         width: 200,
         Filter: ({ column: { id } }) => (
-          <ColumnFilter id={id} setData={setDiagnostics} placeholder = "Կարգավիճակ"/>
+          <ColumnFilter
+            id={id}
+            setData={setDiagnostics}
+            placeholder="Կարգավիճակ"
+          />
         ),
         Cell: ({ row }) => (
           <div className="d-flex justify-content-center align-items-center">
-            {row.original?.diagStatus === "Active" 
-            ? "Ակտիվ"
-            : "Չեղարկված"  }
+            {row.original?.diagStatus === "Active" ? "Ակտիվ" : "Չեղարկված"}
           </div>
         ),
       },
@@ -280,7 +324,7 @@ function DiagnosticsTable({
                 onClick={() => handleOpenInfoModal(row.original)}
               />
             </div>
-            
+
             <div className="d-flex">
               <a
                 className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover"
@@ -297,39 +341,39 @@ function DiagnosticsTable({
                 </span>
               </a>
               {/* <ComponentToPrintWrapper diagData={row.original} /> */}
-              {row.original?.diagStatus === "Active" &&
-              <>
-              <a
-                className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover"
-                data-bs-toggle="tooltip"
-                data-placement="top"
-                title="Print"
-                href="#"
-                onClick={() => handleOpenPrintModal(row.original)}
-              >
-                <span className="icon">
-                  <span className="feather-icon">
-                    <FeatherIcon icon="printer" />
-                  </span>
-                </span>
-              </a>
-              <a
-                className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover"
-                data-bs-toggle="tooltip"
-                data-placement="top"
-                title="send"
-                href="#"
-                onClick={() => handleOpenResultModal(row.original)}
-              >
-                <span className="icon">
-                  <span className="feather-icon">
-                    <FeatherIcon icon="send" />
-                  </span>
-                </span>
-              </a>
-              </>
-              }
-               {/*
+              {row.original?.diagStatus === "Active" && (
+                <>
+                  <a
+                    className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover"
+                    data-bs-toggle="tooltip"
+                    data-placement="top"
+                    title="Print"
+                    href="#"
+                    onClick={() => handleOpenPrintModal(row.original)}
+                  >
+                    <span className="icon">
+                      <span className="feather-icon">
+                        <FeatherIcon icon="printer" />
+                      </span>
+                    </span>
+                  </a>
+                  <a
+                    className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover"
+                    data-bs-toggle="tooltip"
+                    data-placement="top"
+                    title="send"
+                    href="#"
+                    onClick={() => handleOpenResultModal(row.original)}
+                  >
+                    <span className="icon">
+                      <span className="feather-icon">
+                        <FeatherIcon icon="send" />
+                      </span>
+                    </span>
+                  </a>
+                </>
+              )}
+              {/*
               //TODO Delete diagnostics option
               {!row.original.patientId && (
                 <a
@@ -349,8 +393,6 @@ function DiagnosticsTable({
                 </a>
               )} */}
             </div>
-
-           
           </div>
         ),
         disableSortBy: true,
@@ -428,7 +470,13 @@ function DiagnosticsTable({
                       <div className="d-flex justify-content-between">
                         {" "}
                         <span>Ախտորոշման Տեսակը </span>{" "}
-                        <span>{modalInfo.class==='Internal'?'Ներքին':'External'?'Արտաքին':'Այլ'}</span>
+                        <span>
+                          {modalInfo.class === "Internal"
+                            ? "Ներքին"
+                            : "External"
+                            ? "Արտաքին"
+                            : "Այլ"}
+                        </span>
                       </div>
                       <div className="separator-full m-0"></div>
                       <div className="d-flex justify-content-between">
@@ -447,7 +495,7 @@ function DiagnosticsTable({
                         <span>Գրանցվել է </span>{" "}
                         <span>{modalInfo.createdAt}</span>
                       </div>
-                      
+
                       <div className="separator-full m-0"></div>
                       <div className="d-flex justify-content-between">
                         {" "}
@@ -497,7 +545,7 @@ function DiagnosticsTable({
         </Modal>
       )}
       {modalResult && (
-        <Modal show={() => true} size="xl" onHide={() => setModalResult(false)} >
+        <Modal show={() => true} size="xl" onHide={() => setModalResult(false)}>
           <Modal.Header closeButton>
             <Modal.Title
               style={{ width: "100%", textAlign: "center" }}
@@ -508,19 +556,20 @@ function DiagnosticsTable({
               <div data-simplebar className="nicescroll-bar">
                 <div className="d-flex flex-xxl-nowrap flex-wrap">
                   <div className="contact-info w-100">
-                    <ResultData modalResult={modalResult} setModalResult={setModalResult} />
+                    <ResultData
+                      modalResult={modalResult}
+                      setModalResult={setModalResult}
+                    />
                   </div>
                 </div>
               </div>
             </div>
-            <div className="modal-footer ">
-             
-            </div>
+            <div className="modal-footer "></div>
           </Modal.Body>
         </Modal>
       )}
       {modalPrint && (
-        <Modal show={() => true} size="xl" onHide={() => setModalPrint(false)} >
+        <Modal show={() => true} size="xl" onHide={() => setModalPrint(false)}>
           <Modal.Header closeButton>
             <Modal.Title
               style={{ width: "100%", textAlign: "center" }}
@@ -531,14 +580,15 @@ function DiagnosticsTable({
               <div data-simplebar className="nicescroll-bar">
                 <div className="d-flex flex-xxl-nowrap flex-wrap">
                   <div className="contact-info w-100">
-                    <ResearchesPrint modalPrint={modalPrint}  setModalPrint={setModalPrint} />
+                    <ResearchesPrint
+                      modalPrint={modalPrint}
+                      setModalPrint={setModalPrint}
+                    />
                   </div>
                 </div>
               </div>
             </div>
-            <div className="modal-footer ">
-             
-            </div>
+            <div className="modal-footer "></div>
           </Modal.Body>
         </Modal>
       )}
@@ -594,15 +644,23 @@ function DiagnosticsTable({
             </tr>
           ))}
         </thead>
-        {diagnostics?.length>0 ? (
+        {diagnostics?.length > 0 ? (
           <tbody {...getTableBodyProps()}>
-             {rows.map((row) => {
-            prepareRow(row);
-            const rowProps = row.getRowProps();
-            const diagStatus = row.original.diagStatus ==='Cancelled'; 
-           // const diagStatus = row.original.patientId > 'Cancelled'; 
-            return (
-              <tr {...rowProps} style={{ backgroundColor: diagStatus ? "rgb(255, 99, 71, 0.2)" : "inherit", borderStyle:'none !important' }}>
+            {rows.map((row) => {
+              prepareRow(row);
+              const rowProps = row.getRowProps();
+              const diagStatus = row.original.diagStatus === "Cancelled";
+              // const diagStatus = row.original.patientId > 'Cancelled';
+              return (
+                <tr
+                  {...rowProps}
+                  style={{
+                    backgroundColor: diagStatus
+                      ? "rgb(255, 99, 71, 0.2)"
+                      : "inherit",
+                    borderStyle: "none !important",
+                  }}
+                >
                   {row.cells.map((cell) => {
                     return (
                       <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
@@ -636,7 +694,9 @@ function DiagnosticsTable({
               delId={selectedItem.diagnosticstId}
             />
           </tbody>
-        ) :''}
+        ) : (
+          ""
+        )}
       </table>
     </>
   );

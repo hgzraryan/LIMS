@@ -189,12 +189,17 @@ const { inputRef } = Barcode({
           </div>
         </section>
         <section className="research_container">
-          <div className="total d-flex flex-column align-items-end">
-            <p style={{marginRight:'6px'}}>Զեղչ 0</p>
-            <p>Ընդհանուր արժեք   
-              {" " +value.totalPrice}դր
-              </p>
-          </div>
+        <div className="total d-flex flex-column align-items-end">
+                      {value?.totalPrice < value?.originalPrice ?(
+                          <p style={{ marginRight: "6px" }}>Զեղչ {value?.originalPrice-value?.totalPrice}դր․</p>
+
+                        ):''
+                      }
+                      <p>
+                        Ընդհանուր արժեք
+                        {" " + value?.totalPrice}դր
+                      </p>
+                    </div>
         </section>
       </main>
     </div>

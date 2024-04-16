@@ -1,14 +1,17 @@
 import React, { Suspense, useEffect, useState } from 'react'
 import LoadingSpinner from '../LoadingSpinner';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
-import { useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 function DoctorsVisitsDetails() {
+  const navigate = useNavigate()
+  const location = useLocation();
+
     const axiosPrivate = useAxiosPrivate();
     const { id } = useParams();
     const [isOpen, setIsOpen] = useState(false);
     const [research, setResearch] = useState([]);
-    const [doctorDetails, setDoctorDetails] = useState({});
+    const [doctorsVisitsDetails, setDoctorsVisitsDetails] = useState({});
     const [currentPage, setCurrentPage] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
     const [usersPerPage, setUsersPerPage] = useState(
@@ -20,16 +23,17 @@ function DoctorsVisitsDetails() {
       setIsOpen(true);
       setResearch((prev) => data.researches);
     };
+    
     useEffect(() => {
       const getData = async () => {
         try {
-          const response = await axiosPrivate.get(`/doctors/${id}`);
+          const response = await axiosPrivate.get(`/getVisitsByid/visit/${id}`);
+          setDoctorsVisitsDetails((prevUsers) => response.data);
           setIsLoading(false);
-          setDoctorDetails((prevUsers) => response.data);
           // setCurrentPage((prev) => prev = 1);
         } catch (err) {
           console.error(err);
-          //navigate("/login", { state: { from: location }, replace: true });
+          navigate("/login", { state: { from: location }, replace: true });
         }
       };
       getData();
@@ -66,6 +70,9 @@ function DoctorsVisitsDetails() {
                 
                 <div className="ms-3">
                 DoctorsVisitsDetails
+                </div>
+                <div className="ms-3">
+                {doctorsVisitsDetails.doctorsVisitId}
                 </div>
                 
                 

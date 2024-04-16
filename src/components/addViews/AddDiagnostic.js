@@ -21,6 +21,7 @@ import Select from "react-select";
 import ErrorSvg from "../../dist/svg/error.svg";
 import makeAnimated from "react-select/animated";
 import LoadingSpinner from "../LoadingSpinner";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const diagnosticClassState = [
   { value: "External", label: "Արտաքին" },
@@ -43,6 +44,8 @@ function AddDiagnostic({
   refreshData,
   doctors,
 }) {
+  const navigate = useNavigate()
+  const location = useLocation();
   const axiosPrivate = useAxiosPrivate();
   const [errMsg, setErrMsg] = useState("");
   const editorRef = useRef(null);
@@ -141,6 +144,8 @@ const onResearchSelect = (data) => {
         })
         .catch((err) => {
           console.log(err);
+          navigate("/login", { state: { from: location }, replace: true });
+
         });
     }, 500);
   }, []);
@@ -725,9 +730,8 @@ const onResearchSelect = (data) => {
                               <div className="row gx-3">
                                 
                                 <div className="col-sm-12">
-                                  <div className="d-flex justify-content-between me-2">
-                                  {researchesPrice ? <div className="d-flex flex-row-reverse"><p style={{color:'#262a2e',fontSize:'1.1rem'}}>Ընդհանուր արժեք։ {researchesPrice}դր․</p></div>:''}
-
+                                  <div className="d-flex justify-content-between me-2 mt-3">
+                                  {researchesPrice ? <div className="d-flex flex-row-reverse" ><p style={{color:'#4eafcb',}}>Ընդհանուր արժեք։ <span style={{fontWeight:'bold'}} >{researchesPrice}</span>դր․</p></div>:''}
                                     <label
                                       className="form-label"
                                       htmlFor="research"
@@ -774,7 +778,7 @@ const onResearchSelect = (data) => {
                                     />
                                     
                                   </div>
-                                  {researchesPrice ? <div className="d-flex flex-row-reverse"><h4>Ընդհանուր արժեք։ {researchesPrice}դր․</h4></div>:''}
+                                
                                 </div>
                               </div>
                             </div>

@@ -358,7 +358,7 @@ function AddDoctorsVisit({
                                       control={methods.control}
                                       isClearable={true}
                                       defaultValue={null}
-                                      rules={{ required: false }}
+                                      rules={{ required: true }}
                                       render={({ field }) => (
                                         <Select
                                           {...field}
@@ -401,7 +401,7 @@ function AddDoctorsVisit({
                                     )}
                                     </div>
                                 <div>
-                                <CustomDateTimeComponent name="visitDate" control={methods.control} required={false}/>
+                                <CustomDateTimeComponent name="visitDate" control={methods.control} required={true}/>
                                 </div>
                               </div>
                             </div>
@@ -428,7 +428,8 @@ function AddDoctorsVisit({
                                 
                                 <div className="col-sm-12">
                                   <div className="d-flex justify-content-between me-2">
-                                  {medicalServicePrice ? <div className="d-flex flex-row-reverse"><p style={{color:'#262a2e',fontSize:'1.1rem'}}>Ընդհանուր արժեք։ {medicalServicePrice}դր․</p></div>:''}
+
+                                  {medicalServicePrice ? <div className="d-flex flex-row-reverse" ><p style={{color:'#4eafcb',}}>Ընդհանուր արժեք։ <span style={{fontWeight:'bold'}} >{medicalServicePrice}</span>դր․</p></div>:''}
 
                                     <label
                                       className="form-label"
@@ -452,7 +453,7 @@ function AddDoctorsVisit({
                                     control={methods.control}
                                     isClearable={true}
                                     defaultValue={null}
-                                    rules={{ required: false }}
+                                    rules={{ required: true }}
                                     render={({ field }) => (
                                       <div style={{ zIndex: 9999 }}> {/* Set zIndex for the wrapper div */}
                                         <Select

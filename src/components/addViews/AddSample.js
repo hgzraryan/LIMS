@@ -9,6 +9,10 @@ import { useNavigate } from "react-router-dom";
 import useLogout from "../../hooks/useLogout";
 import { BiSolidInfoCircle } from "react-icons/bi";
 import PrintSampleComponent from "../PrintSampleComponent";
+import heparinVial from '../../dist/img/vial_IMG/heparinVial.png'
+import edtaVial from '../../dist/img/vial_IMG/EDTAVial.png'
+import helVial from '../../dist/img/vial_IMG/helVial.png'
+import citratVial from '../../dist/img/vial_IMG/citratVial.png'
 function Sample() {
   const [barcodeScan, setBarcodeScan] = useState("");
   const [data, setData] = useState('');
@@ -20,6 +24,7 @@ function Sample() {
   const [modalPrint, setModalPrint] = useState("");
   const [sortedResearches, setsortedResearches] = useState([]);
   const [noData, setNoData] = useState(true);
+  const [wrongId, setWrongId] = useState(false);
 
   const [userData, setUserData] = useState("");
 
@@ -57,16 +62,16 @@ function Sample() {
     }
   };
   const sortResearches = (data) => {
-    if(!data.length){
+    if(!data?.length){
       setNoData(true)
     }
-    const sortedResearches = data.reduce(
+    const sortedResearches = data?.reduce(
       (acc, research) => {
         const vial = research?.vial?.trim();
         if (vial === "EDTA") {
           acc[0].push(research);
           setNoData(false)
-        } else if (vial === "Հել") {
+        } else if (vial === "Հել" || vial === "Hel") {
           acc[1].push(research);
           setNoData(false)
         } else if (vial === "Heparin") {
@@ -89,9 +94,10 @@ function Sample() {
     try {
       const response = await axiosPrivate.get(`./diagnosticsSampling/${data}`);
       // setTimeout(() => {
-      setData((prev) => response.data);
-      console.log(response.data)
-      sortResearches(response?.data.diagnostics?.statusBoard[1]?.researches);
+      setData((prev) => response?.data);
+      sortResearches(response?.data?.diagnostics?.statusBoard[1]?.researches);
+      response.status===204?setWrongId(true):setWrongId(false)
+     
       // }, 500);
     } catch (err) {
       console.error(err);
@@ -404,8 +410,9 @@ function Sample() {
                       id="scrollableDiv"
                       style={{ height: "80vh", width: "100%" }}
                     >
-                      <div className="d-flex justify-content-center align-items-center flex-column">
+                      <div className="d-flex justify-content-center align-items-center ">
                         <form
+                        className="d-flex justify-content-center align-items-center "
                           id="barcodeForm"
                           onSubmit={(e) => {
                             e.preventDefault();
@@ -418,15 +425,17 @@ function Sample() {
                             type="number"
                             name="barcode"
                             value={barcodeScan}
-                            placeholder="Տվյալներ չկան"
+                            placeholder="Մուտքագրեք կոդը"
                             onChange={(e) => setBarcodeScan(e.target.value)}
+                            className="form-control"
+                            autoFocus 
                           />
                           <Button type="submit" className="ms-2">
                             Ստուգել
                           </Button>
                         </form>
                       </div>
-                      {data && (
+                      {Object.keys(data).length ? (
                         <div
                           className="d-flex justify-content-center align-items-center flex-column"
                           style={{ width: "100%" }}
@@ -444,7 +453,7 @@ function Sample() {
                             </div>
                           </header>
                           <main>
-                            {sortedResearches.length && (
+                            {sortedResearches?.length && (
                               <>
                               {console.log('sortedResearches',sortedResearches)}
                                 {sortedResearches.map((group, groupId) => {
@@ -516,62 +525,42 @@ function Sample() {
                                                 <span>
                                                   {el.vial?.trim() ===
                                                   "Heparin" ? (
-                                                    <div
-                                                      style={{
-                                                        width: "1rem",
-                                                        height: "1rem",
-                                                        borderRadius: "10px",
-                                                        backgroundColor:
-                                                          "green",
-                                                      }}
-                                                    ></div>
+                                                    <div>
+                                                       <img width={"20px"} height={"20px"} src={heparinVial} alt='vial'/>
+                                                    </div>
                                                   ) : el.vial?.trim() ===
                                                     "EDTA" ? (
-                                                    <div
-                                                      style={{
-                                                        width: "1rem",
-                                                        height: "1rem",
-                                                        borderRadius: "10px",
-                                                        backgroundColor: "red",
-                                                      }}
-                                                    ></div>
+                                                      <div>
+                                                       <img width={"20px"} height={"20px"} src={edtaVial} alt='vial'/>
+                                                    </div>
                                                   ) : el.vial?.trim() ===
                                                       "Na Citr." ||
                                                     el.vial?.trim() ===
                                                       "Na Citr" ? (
-                                                    <div
-                                                      style={{
-                                                        width: "1rem",
-                                                        height: "1rem",
-                                                        borderRadius: "10px",
-                                                        backgroundColor:
-                                                          "rgb(0,176,240)",
-                                                      }}
-                                                    ></div>
+                                                        <div>
+                                                        <img width={"20px"} height={"20px"} src={citratVial} alt='vial'/>
+                                                     </div>
                                                   ) : el.vial?.trim() ===
-                                                    "Հել" ? (
-                                                    <div
-                                                      style={{
-                                                        width: "1rem",
-                                                        height: "1rem",
-                                                        borderRadius: "10px",
-                                                        backgroundColor:
-                                                          "rgb(255,153,0)",
-                                                      }}
-                                                    ></div>
-                                                  ) : el.vial?.trim() ===
-                                                      "Մատից արյան նմուշառում ֆիլտրի թղթի վրա" ||
-                                                    el.vial?.trim() ===
-                                                      "Արյուն - 2 NIPT սրվակներ" ? (
-                                                    <div
-                                                      style={{
-                                                        width: "1rem",
-                                                        height: "1rem",
-                                                        borderRadius: "10px",
-                                                        backgroundColor: "red",
-                                                      }}
-                                                    ></div>
-                                                  ) : (
+                                                    "Հել" || el.vial?.trim() ===
+                                                    "Hel" ? (
+                                                      <div>
+                                                      <img width={"20px"} height={"20px"} src={helVial} alt='vial'/>
+                                                   </div>
+                                                  ) 
+                                                  // : el.vial?.trim() ===
+                                                  //     "Մատից արյան նմուշառում ֆիլտրի թղթի վրա" ||
+                                                  //   el.vial?.trim() ===
+                                                  //     "Արյուն - 2 NIPT սրվակներ" ? (
+                                                  //   <div
+                                                  //     style={{
+                                                  //       width: "1rem",
+                                                  //       height: "1rem",
+                                                  //       borderRadius: "10px",
+                                                  //       backgroundColor: "red",
+                                                  //     }}
+                                                  //   ></div>
+                                                  // ) 
+                                                  : (
                                                     ""
                                                   )}
                                                 </span>
@@ -589,6 +578,12 @@ function Sample() {
                                             </div>
                                             <div className="separator m-0"></div>
 
+                                            <div
+                                              style={{ gap: "1rem" }}
+                                              className="me-2 d-flex justify-content-between"
+                                            >
+                                              <span>
+
                                             <BiSolidInfoCircle
                                               cursor={"pointer"}
                                               size={"1.5rem"}
@@ -597,8 +592,13 @@ function Sample() {
                                                   el.researchPrepSub
                                                 )
                                               }
-                                            />
-
+                                              />
+                                              </span>
+                                              {/* <img width={'30px'} height={'30px'} src={el.vial.trim()==='Heparin'&&heparinVial} alt='vial'/> */}
+                                            </div>
+ <div>
+                                            
+                                          </div>
                                             <div
                                               style={{
                                                 borderBottom:
@@ -609,6 +609,8 @@ function Sample() {
                                           </div>
                                         ))}
                                         <div className="d-flex justify-content-end">
+                                       
+
                                           <Button
                                             style={{
                                               backgroundColor: "#4eafcb",
@@ -624,9 +626,10 @@ function Sample() {
                                             onClick={() =>
                                               handleOpenPrintModal(data, group)
                                             }
-                                          >
+                                            >
                                             Տպել
                                           </Button>
+                                           
                                         </div>
                                       </div>
                                     );
@@ -636,12 +639,20 @@ function Sample() {
                               </>
 
                             )}
+
                             {noData && (
                               <div><h3>Այցելուն չունի նմուշառման հետազոտություններ</h3></div>
                             )}
+                            
                           </main>
                         </div>
-                      )}
+                      )
+                        :<>
+                        {wrongId && (
+                          <div className="d-flex justify-content-center align-items-center" ><h3>Սխալ նույնականացման համար </h3></div>
+                        )}
+                        </>
+                      }
                     </div>
                   </div>
                 </div>

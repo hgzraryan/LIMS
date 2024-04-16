@@ -390,7 +390,11 @@ function ResearchesPrint({ modalPrint, setModalPrint }) {
                   </section>
                   <section className="container">
                     <div className="total d-flex flex-column align-items-end">
-                      <p style={{ marginRight: "6px" }}>Զեղչ 0</p>
+                      {modalPrint.totalPrice < modalPrint.originalPrice ?(
+                          <p style={{ marginRight: "6px" }}>Զեղչ {modalPrint?.originalPrice-modalPrint?.totalPrice}դր․</p>
+
+                        ):''
+                      }
                       <p>
                         Ընդհանուր արժեք
                         {" " + modalPrint.totalPrice}դր

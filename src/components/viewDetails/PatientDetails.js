@@ -22,243 +22,7 @@ import mobileSvg from "../../dist/svg/mobileSvg.svg";
 import emailSvg from "../../dist/svg/emailSvg.svg";
 import LoadingSpinner from "../LoadingSpinner";
 import profileBgImg from "../../dist/img/profile-bg.jpg";
-const customData = [
-  {
 
-    additional: "",
-    class: "Internal",
-    clientId: 4,
-    clientType:
-      "patient",
-    createdAt
-      :
-      "2024-03-12T18:21:53.654Z",
-    diagStatus
-      :
-      "Active",
-    diagnosisDate
-      :
-      "2024-03-12T18:21:53.644Z",
-    diagnosticsId
-      :
-      21,
-    diagnosticsName
-      :
-      "asdas",
-    doctors
-      :
-      [5],
-    externalStatus
-      :
-      null,
-    generationDate
-      :
-      "2024-03-12T18:21:53.644Z",
-    internalStatus
-      :
-      "Approval",
-    researchIds
-      :
-      ["3"],
-    totalPrice
-      :
-      10,
-    updatedAt
-      :
-      "2024-03-12T18:31:09.344Z",
-    __v
-      :
-      0,
-    _id
-      :
-      "65f09d4161d66ef0b594445a",
-    researches: [
-      {
-        researchName: "Կրեատինինկինազա",
-        analysisResult: 8.88,
-        referenceRange: "4.0-10.0",
-        units: "10^9/L",
-        shortName: "WBC",
-      },
-      {
-        shortName: "RBC",
-        researchName: "Էրիթրոցիտների ընդհանուր քանակ",
-        analysisResult: 6.09,
-        referenceRange: ["men 4.0-10.0", "women 4,6-6,2"],
-        units: "10^9/L",
-      },
-    ],
-  },
-  {
-    diagnosticsId: 862,
-    date: "04.11.2023",
-    diagnosticsType: 'Ներքին',
-    researches: [
-      {
-        shortName: "WBC",
-        researchName: "Լեյկոցիտների ընդհանուր քանակ",
-        analysisResult: 8.88,
-        referenceRange: "4.0-10.0",
-        units: "10^9/L",
-      },
-      {
-        shortName: "RBC",
-        researchName: "Էրիթրոցիտների ընդհանուր քանակ",
-        analysisResult: 6.09,
-        referenceRange: ["men 4.0-10.0", "women 4,6-6,2"],
-        units: "10^9/L",
-      },
-      {
-        shortName: "MCV ",
-        researchName: "Էրիթրոցիտի միջին ծավալը փորձանմուշի  ընդհանուր ծավալում",
-        analysisResult: 83.7,
-        referenceRange: "80-100",
-        units: "fl",
-      },
-      {
-        shortName: "WBC",
-        researchName: "Լեյկոցիտների ընդհանուր քանակ",
-        analysisResult: 8.88,
-        referenceRange: "4.0-10.0",
-        units: "10^9/L",
-      },
-      {
-        shortName: "WBC",
-        researchName: "Լեյկոցիտների ընդհանուր քանակ",
-        analysisResult: 8.88,
-        referenceRange: "4.0-10.0",
-        units: "10^9/L",
-      },
-      {
-        shortName: "WBC",
-        researchName: "Լեյկոցիտների ընդհանուր քանակ",
-        analysisResult: 8.88,
-        referenceRange: "4.0-10.0",
-        units: "10^9/L",
-      },
-    ],
-  },
-  {
-    diagnosticsId: 46,
-    date: "15.06.2020",
-    diagnosticsType: 'Արտաքին',
-    partner: 'Dialab',
-    researches: [
-      {
-        researchName: "Կրեատինինկինազա",
-        analysisResult: 8.88,
-        referenceRange: "4.0-10.0",
-        units: "10^9/L",
-        shortName: "WBC",
-      },
-      {
-        shortName: "RBC",
-        researchName: "Էրիթրոցիտների ընդհանուր քանակ",
-        analysisResult: 6.09,
-        referenceRange: ["men 4.0-10.0", "women 4,6-6,2"],
-        units: "10^9/L",
-      },
-    ],
-  },
-  {
-    diagnosticsId: 129,
-    date: "04.11.2023",
-    diagnosticsType: 'Ներքին',
-    researches: [
-      {
-        shortName: "WBC",
-        researchName: "Լեյկոցիտների ընդհանուր քանակ",
-        analysisResult: 8.88,
-        referenceRange: "4.0-10.0",
-        units: "10^9/L",
-      },
-      {
-        shortName: "RBC",
-        researchName: "Էրիթրոցիտների ընդհանուր քանակ",
-        analysisResult: 6.09,
-        referenceRange: ["men 4.0-10.0", "women 4,6-6,2"],
-        units: "10^9/L",
-      },
-      {
-        shortName: "MCV ",
-        researchName: "Էրիթրոցիտի միջին ծավալը փորձանմուշի  ընդհանուր ծավալում",
-        analysisResult: 83.7,
-        referenceRange: "80-100",
-        units: "fl",
-      },
-      {
-        shortName: "WBC",
-        researchName: "Լեյկոցիտների ընդհանուր քանակ",
-        analysisResult: 8.88,
-        referenceRange: "4.0-10.0",
-        units: "10^9/L",
-      },
-      {
-        shortName: "WBC",
-        researchName: "Լեյկոցիտների ընդհանուր քանակ",
-        analysisResult: 8.88,
-        referenceRange: "4.0-10.0",
-        units: "10^9/L",
-      },
-      {
-        shortName: "WBC",
-        researchName: "Լեյկոցիտների ընդհանուր քանակ",
-        analysisResult: 8.88,
-        referenceRange: "4.0-10.0",
-        units: "10^9/L",
-      },
-    ],
-  },
-  {
-    diagnosticsId: 40,
-    date: "04.11.2023",
-    diagnosticsType: 'Ներքին',
-    researches: [
-      {
-        shortName: "WBC",
-        researchName: "Լեյկոցիտների ընդհանուր քանակ",
-        analysisResult: 8.88,
-        referenceRange: "4.0-10.0",
-        units: "10^9/L",
-      },
-      {
-        shortName: "RBC",
-        researchName: "Էրիթրոցիտների ընդհանուր քանակ",
-        analysisResult: 6.09,
-        referenceRange: ["men 4.0-10.0", "women 4,6-6,2"],
-        units: "10^9/L",
-      },
-      {
-        shortName: "MCV ",
-        researchName: "Էրիթրոցիտի միջին ծավալը փորձանմուշի  ընդհանուր ծավալում",
-        analysisResult: 83.7,
-        referenceRange: "80-100",
-        units: "fl",
-      },
-      {
-        shortName: "WBC",
-        researchName: "Լեյկոցիտների ընդհանուր քանակ",
-        analysisResult: 8.88,
-        referenceRange: "4.0-10.0",
-        units: "10^9/L",
-      },
-      {
-        shortName: "WBC",
-        researchName: "Լեյկոցիտների ընդհանուր քանակ",
-        analysisResult: 8.88,
-        referenceRange: "4.0-10.0",
-        units: "10^9/L",
-      },
-      {
-        shortName: "WBC",
-        researchName: "Լեյկոցիտների ընդհանուր քանակ",
-        analysisResult: 8.88,
-        referenceRange: "4.0-10.0",
-        units: "10^9/L",
-      },
-    ],
-  },
-];
 function PatientDetails() {
   const axiosPrivate = useAxiosPrivate()
   const navigate = useNavigate();
@@ -267,6 +31,7 @@ function PatientDetails() {
   const [research, setResearch] = useState([]);
   const [patientDetails, setPatientDetails] = useState([]);
   const [patientDiagnostics, setPatientDiagnostics] = useState([]);
+  const [patientVisits, setPatientVisits] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(0);
   const [activeLink, setActiveLink] = useState('tab_summery'); 
@@ -291,11 +56,21 @@ function PatientDetails() {
       //   // }
     }
   };
+  const handleVisitsDetail = async (patientId) => {  
+    navigate(`/doctorsVisits/${patientId}`)
+     
+ };
   const pageCount = 1;
   //const pageCount = Math.ceil(useersCount/usersPerPage)
-  const handleOpenModal = (data) => {
+  const handleOpenDiagModal = (data) => {
     setIsOpen(true);
     setResearch((prev) => data.statusBoard[4]?.researches);
+    console.log(data)
+  };
+  const handleOpenVisitModal = (data) => {
+    // setIsOpen(true);
+    // setResearch((prev) => data.statusBoard[4]?.researches);
+    console.log(data)
   };
   const handleLinkClick = (linkId) => {
     setActiveLink(linkId);
@@ -315,39 +90,19 @@ function PatientDetails() {
             setIsLoading(false);
           });
         })
+        .then((resp) => {
+           axiosPrivate.get(`/getVisitsByid/patient/${id}`).then((resp) => {
+            let array=[]
+            array.push(resp.data)
+            setPatientVisits((prev) => array);
+            setIsLoading(false);
+          });
+        })
         .catch((err) => {
           console.log(err);
         });
     }, 500);
   }, []);
-  // useEffect(() => {
-  //   const getData = async () => {
-  //     try {
-  //       const response = await axiosPrivate.get(`/patients/${id}`);
-  //       setIsLoading(false);
-  //       setPatientDiagnostics((prev) => response.data);
-  //       // setCurrentPage((prev) => prev = 1);
-  //     } catch (err) {
-  //       console.error(err);
-  //       //navigate("/login", { state: { from: location }, replace: true });
-  //     }
-  //   };
-  //   getData();
-  // }, []);
-  // useEffect(() => {
-  //   const getData = async () => {
-  //     try {
-  //       const response = await axiosPrivate.get(`/getDiagnosticsByCid/${id}/patient`);
-  //       setIsLoading(false);
-  //       setPatientDiagnostics((prev) => response.data);
-  //       // setCurrentPage((prev) => prev = 1);
-  //     } catch (err) {
-  //       console.error(err);
-  //       //navigate("/login", { state: { from: location }, replace: true });
-  //     }
-  //   };
-  //   getData();
-  // }, []);
 
   const columns = useMemo(
     () => [
@@ -421,7 +176,7 @@ function PatientDetails() {
             <BiSolidInfoCircle
               cursor={"pointer"}
               size={"1.5rem"}
-              onClick={() => handleOpenModal(row.original)}
+              onClick={() => handleOpenDiagModal(row.original)}
             />
           </div>
         ),
@@ -457,6 +212,76 @@ function PatientDetails() {
         Header: "չ/մ",
         accessor: "units",
       },
+    ],
+    []
+  );
+  const columns2 = useMemo(
+    () => [
+      {
+        Header: (event) => (
+          <>
+            <div className="columnHeader">ID</div>
+          </>
+        ),
+        accessor: "doctorsVisitId",
+        sortable: true,
+        width: 80,
+        Cell: ({ row }) => (
+          <div
+            onClick={() => handleVisitsDetail(row.original.doctorsVisitId)}
+            style={{ cursor: 'pointer', textDecoration: 'underline' }}
+          >
+            {row.original.doctorsVisitId}
+          </div>
+        ),
+        Filter: ({ column: { id } }) => <></>,
+      },
+      {
+        Header: (event) => (
+          <>
+            <div className="columnHeader">գրանցման ամսաթիվ</div>
+          </>
+        ),
+        accessor: "createdAt",
+        sortable: true,
+        width: 250,
+        Filter: ({ column: { id } }) => <></>,
+      },
+      {
+        Header: (event) => (
+          <>
+            <div className="columnHeader">Այցի ամսաթիվ</div>
+          </>
+        ),
+        accessor: "visitDate",
+        sortable: true,
+        width: 250,
+        Filter: ({ column: { id } }) => <></>,
+        
+      },
+      {
+        Header: (event) => (
+          <>
+            <div className="columnHeader">Բուժ․ ծառայություններ</div>
+          </>
+        ),
+        Cell: ({ row }) => (
+          <div className="d-flex">
+            <BiSolidInfoCircle
+              cursor={"pointer"}
+              size={"1.5rem"}
+              onClick={() => handleOpenVisitModal(row.original)}
+            />
+          </div>
+        ),
+        accessor: "researches",
+        style: {
+          // Custom style for the 'description' column
+        },
+        width: 200,
+        Filter: ({ column: { id } }) => <></>,
+      },
+    
     ],
     []
   );
@@ -501,6 +326,38 @@ function PatientDetails() {
         ...columns,
       ]);
     }
+  );
+  const {
+    getTableProps:getTableProps2,
+    getTableBodyProps:getTableBodyProps2,
+    headerGroups:headerGroups2,
+    rows:rows2,
+    prepareRow:prepareRow2,
+    selectedFlatRows:selectedFlatRows2,
+    toggleHideColumn:toggleHideColumn2,
+  } = useTable(
+    {
+      columns:columns2,
+      data: patientVisits,
+    },
+    useFilters,
+    useBlockLayout,
+    useResizeColumns,
+    useSortBy,
+    useRowSelect,
+    // (hooks) => {
+    //   hooks.visibleColumns.push((columns) => [
+    //     {
+    //       id: "selection",
+    //       Header: ({ getToggleAllRowsSelectedProps }) => (
+    //         <Checkbox {...getToggleAllRowsSelectedProps()} />
+    //       ),
+    //       Cell: ({ row }) => <Checkbox {...row.getToggleRowSelectedProps()} />,
+    //       width: 60
+    //     },
+    //     ...columns2,
+    //   ]);
+    // }
   );
   return (
     <>
@@ -932,7 +789,7 @@ function PatientDetails() {
                             </tr>
                           ))}
                         </thead>
-                        {customData?.length && (
+                        {patientDiagnostics?.length && (
                           <tbody {...getTableBodyProps()}>
                             {rows.map((row) => {
                               prepareRow(row);
@@ -967,10 +824,10 @@ function PatientDetails() {
                     <div>
                       <table
                         className="table nowrap w-100 mb-5 dataTable no-footer"
-                        {...getTableProps()}
+                        {...getTableProps2()}
                       >
                         <thead>
-                          {headerGroups.map((headerGroup) => (
+                          {headerGroups2.map((headerGroup) => (
                             <tr
                               {...headerGroup.getHeaderGroupProps({
                                 style: { width: "100%" },
@@ -1029,10 +886,10 @@ function PatientDetails() {
                             </tr>
                           ))}
                         </thead>
-                        {customData?.length && (
-                          <tbody {...getTableBodyProps()}>
-                            {rows.map((row) => {
-                              prepareRow(row);
+                        {patientVisits?.length && (
+                          <tbody {...getTableBodyProps2()}>
+                            {rows2.map((row) => {
+                              prepareRow2(row);
                               return (
                                 <tr
                                   {...row.getRowProps({

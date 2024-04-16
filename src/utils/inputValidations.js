@@ -955,10 +955,10 @@ export const biomaterial_validation = {
 };
 export const serviceName_validation = {
   name: "serviceName",
-  label: "ծառայության անվանում",
+  label: "Ծառայության անվանում",
   multiline: true,
   id: "serviceName",
-  placeholder: "ծառայության անվանում",
+  placeholder: "Ծառայության անվանում",
   validation: {
     required: {
       value: true,

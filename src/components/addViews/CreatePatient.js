@@ -58,7 +58,16 @@ function CreatePatient({
   const [refDoctors, setRefDoctors] = useState("");
   const [additionalPhone, setAdditionalPhone] = useState(false);
   const [researchesPrice, setResearchesPrice] = useState(0);
+  const [medicalServicePrice,setMedicalServicePrice] = useState(0)
 
+  const onMedServiceSelect = (data) => {
+          console.log(data);
+          const calcPrice = data.reduce((acc,el)=>{
+            return acc+=el.price
+          },0)
+          setMedicalServicePrice(calcPrice)
+      
+        };
   const { trigger } = useForm();
 
   const methods = useForm({
@@ -872,7 +881,7 @@ function CreatePatient({
                               <div className="row gx-3 mt-2">
                                 <div className="col-sm-12">
                                   <div className="d-flex justify-content-between me-2">
-                                  {researchesPrice ? <div className="d-flex flex-row-reverse"><p style={{color:'#262a2e',fontSize:'1.1rem'}}>Ընդհանուր արժեք։ {researchesPrice}դր․</p></div>:''}
+                                  {researchesPrice ? <div className="d-flex flex-row-reverse" ><p style={{color:'#4eafcb',}}>Ընդհանուր արժեք։ <span style={{fontWeight:'bold'}} >{researchesPrice}</span>դր․</p></div>:''}
                                     <label
                                       className="form-label"
                                       htmlFor="research"
@@ -1059,6 +1068,8 @@ function CreatePatient({
                               <div className="row gx-3">
                                 <div className="col-sm-12">
                                   <div className="d-flex justify-content-between me-2">
+                                  {medicalServicePrice ? <div className="d-flex flex-row-reverse" ><p style={{color:'#4eafcb',}}>Ընդհանուր արժեք։ <span style={{fontWeight:'bold'}} >{medicalServicePrice}</span>դր․</p></div>:''}
+
                                     <label
                                       className="form-label"
                                       htmlFor="research"
@@ -1077,31 +1088,37 @@ function CreatePatient({
                                     )}
                                   </div>
                                   <div className="form-control">
-                                    <Controller
-                                      name="medicalServices"
-                                      control={methods.control}
-                                      isClearable={true}
-                                      defaultValue={null}
-                                      rules={{ required: false }}
-                                      render={({ field }) => (
+                                  <Controller
+                                    name="medicalServices"
+                                    control={methods.control}
+                                    isClearable={true}
+                                    defaultValue={null}
+                                    rules={{ required: true }}
+                                    render={({ field }) => (
+                                      <div style={{ zIndex: 9999 }}> {/* Set zIndex for the wrapper div */}
                                         <Select
                                           {...field}
                                           isMulti
-                                          closeMenuOnSelect={false}
                                           components={animatedComponents}
-                                          options={medicalServices.map(
-                                            (res) => ({
-                                              value: res.medServiceId,
-                                              label: `${res?.serviceName}`,
-                                            })
-                                          )}
-                                          styles={colourStyles}
-                                          placeholder={
-                                            "Բժշկական ծառայություններ"
-                                          }
+                                          closeMenuOnSelect={false}
+                                          options={medicalServices.map((res) => ({
+                                            value: res.medServiceId,
+                                            label: `${res?.serviceName}`,
+                                            price: res?.price
+                                          }))}
+                                          // styles={colourStyles}
+                                          menuPortalTarget={document.body} 
+                                          styles={{ ...colourStyles,menuPortal: base => ({ ...base, zIndex: 9999 }) }}
+                                          placeholder={"Բժշկական ծառայություններ"}
+                                          onChange={(val) => {
+                                            field.onChange(val);
+                                            onMedServiceSelect(val);
+                                          }}
+                                          value={field.value}
                                         />
-                                      )}
-                                    />
+                                      </div>
+                                    )}
+                                  />
                                   </div>
                                 </div>
                               </div>
