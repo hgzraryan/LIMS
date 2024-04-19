@@ -1,17 +1,18 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState,useEffect } from 'react'
 import { REGISTER_MEDINSTITUTION } from '../../utils/constants';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import { Modal } from "react-bootstrap";
 import FeatherIcon from "feather-icons-react";
 import { Editor } from "@tinymce/tinymce-react";
 import "react-datepicker/dist/react-datepicker.css";
-import { Form, FormProvider, useForm} from "react-hook-form";
+import { Form, FormProvider, useForm,Controller} from "react-hook-form";
 import { toast } from 'react-toastify';
 import { Input } from '../Input';
 import ErrorSvg from "../../dist/svg/error.svg";
-import { city_validation, country_validation, email_validation, name_validation, state_validation, street_validation, zipCode_validation } from '../../utils/inputValidations';
+import { city_validation,  email_validation, name_validation, street_validation, zipCode_validation } from '../../utils/inputValidations';
 import CustomPhoneComponent from '../CustomPhoneComponent';
 import 'react-phone-number-input/style.css'
+import { CountryDropdown, RegionDropdown,CountryRegionData  } from 'react-country-region-selector';
 
 function AddMedinstitution({ handleToggleCreateModal, 
   refreshData 
@@ -19,6 +20,10 @@ function AddMedinstitution({ handleToggleCreateModal,
     const [errMsg, setErrMsg] = useState("");
     const axiosPrivate = useAxiosPrivate();
     const [phoneNumber, setPhoneNumber] = useState("");
+    const editorRef = useRef(null);
+    const [country, setCountry] = useState('')
+    const [region, setRegion] = useState('')
+   const { trigger } = useForm();
     const methods = useForm({
       mode: "onChange",
     });
@@ -27,7 +32,12 @@ function AddMedinstitution({ handleToggleCreateModal,
       setPhoneNumber(value);
   
     };
-    const editorRef = useRef(null);
+    useEffect(() => {
+      if (CountryRegionData[11][0] === "Armenia") {
+        CountryRegionData[11][0] = "Հայաստան"
+        CountryRegionData[11][2] = "Արագածոտն~AG|Արարատ~AR|Արմավիր~AV|Գեղարքունիք~GR|Կոտայք~KT|Լոռի~LO|Շիրակ~SH|Սյունիք~SU|Տավուշ~TV|Վայոց Ձոր~VD|Երևան~ER";
+      }
+    }, []);
     // const { onSubmit, methods } = useSubmitForm(
     //   REGISTER_AGENT,
     //   editorRef,
@@ -53,12 +63,13 @@ function AddMedinstitution({ handleToggleCreateModal,
       street,
       city,
       zipCode,
+      phone
     }) => {
       const newMedInstitution = {
          institutionName: name,
          contact: {
            email:email,
-           phone:phoneNumber,
+           phone:phone,
           address: {
             street: street,
             city: city,
@@ -80,7 +91,7 @@ function AddMedinstitution({ handleToggleCreateModal,
         handleToggleCreateModal(false);
         refreshData();
         notify(
-          `${newMedInstitution.name} բուժ․ հաստատությունը ավելացված է`
+          `${newMedInstitution.name} բուժհաստատությունը ավելացված է`
         );
       } catch (err) {
         if (!err?.response) {
@@ -98,7 +109,7 @@ function AddMedinstitution({ handleToggleCreateModal,
       >
         <Modal.Header closeButton>
           <Modal.Title style={{ width: "100%", textAlign: "center" }}>
-            Ավելացնել նոր Բուժ․ հաստատություն
+            Ավելացնել նոր բուժհաստատություն
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -115,7 +126,7 @@ function AddMedinstitution({ handleToggleCreateModal,
                     >
                       <div className="card">
                         <div className="card-header">
-                          <a href="#">Բուժ․ հաստատության տվյալներ</a>
+                          <a href="#">Բուժհաստատություն տվյալներ</a>
                           <button
                             className="btn btn-xs btn-icon btn-rounded btn-light"
                             data-bs-toggle="tooltip"
@@ -145,9 +156,82 @@ function AddMedinstitution({ handleToggleCreateModal,
                               </div>
                             </div>
                             <div className="row gx-3">
-                            <div className="col-sm-6">
-                                <Input {...country_validation} />
+                          <div className="col-sm-6">
+                            <div className="d-flex justify-content-between me-2">
+                              <label className="form-label" htmlFor="country">
+                                Երկիր
+                              </label>
+                              {methods?.formState.errors.country && (
+                                <span className="error text-red">
+                                  <img src={ErrorSvg} alt="errorSvg" />
+                                  Պարտադիր
+                                </span>
+                              )}
                               </div>
+                              <Controller
+                                name="country"
+                                control={methods.control}
+                                defaultValue=""
+                                rules={{ required: true }}
+                                render={({ field }) => (
+                                  <CountryDropdown
+                                    {...field}
+                                    classes="form-control"
+                                    defaultOptionLabel="Երկիր"
+                                    value={country}
+                                    priorityOptions={['Armenia']}
+                                    onChange={(val) => {
+                                      field.onChange(val);
+                                      setCountry(val);
+                                      trigger("country");
+                                    }}
+                                    style={{
+                                      appearance:'auto'
+                                    }}
+                                  />
+                                )}
+                              />
+                            </div>
+                            <div className="col-sm-6">
+                            <div className="d-flex justify-content-between me-2">
+                            <label className="form-label" htmlFor="state">
+                                  Մարզ
+                                </label>
+                                {methods?.formState.errors.state && (
+                                  <span className="error text-red">
+                                    <span>
+                                      <img src={ErrorSvg} alt="errorSvg" />
+                                    </span>
+                                    պարտադիր
+                                  </span>
+                                )}
+                                </div>
+                                <Controller
+                                name="state"
+                                control={methods.control}
+                                defaultValue=""
+                                rules={{ required: true }}
+                                render={({ field }) => (
+                                  <RegionDropdown
+                                  blankOptionLabel="Մարզ"
+                                  defaultOptionLabel="Մարզ"
+                                  classes="form-control"
+                                  country={country}
+                                  value={region}
+                                  onChange={(val) => {
+                                    field.onChange(val);
+                                    setRegion(val);
+                                    trigger("state");
+                                  }}
+                                  style={{
+                                    appearance:'auto'
+                                  }}
+                                />                           
+                          )}
+                        />
+                            </div>
+                          </div>
+                            <div className="row gx-3">                              
                               <div className="col-sm-6">
                               <div className="d-flex justify-content-between me-2">
                               <label className="form-label" htmlFor="phoneNumber">
@@ -159,11 +243,6 @@ function AddMedinstitution({ handleToggleCreateModal,
                                     </div>
                                     <CustomPhoneComponent name="phone"  control={methods.control} />
 
-                              </div>
-                            </div>
-                            <div className="row gx-3">                              
-                              <div className="col-sm-6">
-                                <Input {...state_validation} />
                               </div>
                               <div className="col-sm-6">
                                 <Input {...city_validation} />

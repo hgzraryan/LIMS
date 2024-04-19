@@ -176,7 +176,7 @@ const Agents = () => {
                         handleCloseModal={handleCloseModal}
                         agents={agents}
                         setAgents={setAgents}
-                        getAgents={getAgents}
+                        refreshData={refreshData}
                       />
                       <ReactPaginate
                         previousLabel = {"Հետ"}    

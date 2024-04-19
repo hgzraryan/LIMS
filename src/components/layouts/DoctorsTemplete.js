@@ -27,6 +27,7 @@ import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import MyBigCalendar from "../MyBigCalendar";
+import GanttChart from "../GanttChart";
 // import 'react-big-calendar/lib/sass/styles';
 // import 'react-big-calendar/lib/addons/dragAndDrop/styles';
 const customData = [
@@ -601,7 +602,7 @@ const DoctorsTemplete = () => {
               <div className="contact-body contact-detail-body">
                 <div data-simplebar className="nicescroll-bar">
                   <div className="d-flex flex-xxl-nowrap flex-wrap">
-                    <div className="contact-info w-xxl-20 w-100">
+                    <div className="contact-info " style={{maxWidth:'400px'}}>
 
                       {/* <div className="dropdown action-btn">
                   <button aria-expanded="false" data-bs-toggle="dropdown" className="btn btn-light dropdown-toggle " type="button">Action</button>
@@ -1178,6 +1179,12 @@ const DoctorsTemplete = () => {
                             /> */}
                           </div>
                         </div>
+                        }
+                        {
+                          pageTab ==='tab_timeLine' &&
+<div className="tab-pane fade show active">
+                          <GanttChart/>
+</div>
                         }
                       </div>
                     </div>

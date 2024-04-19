@@ -287,7 +287,7 @@ const Equipments = () => {
                         handleCloseModal={handleCloseModal}
                         equipments={equipments}
                         setEquipments={setEquipments}
-                        getEquipments={getEquipments}
+                        refreshData={refreshData}
                         />
                         <ReactPaginate
                         previousLabel = {"Հետ"}    

@@ -180,7 +180,7 @@ const Organizations = () => {
                         handleCloseModal={handleCloseModal}
                         organizations={organizations}
                         setOrganizations={setOrganizations}
-                        getOrganizations={getOrganizations}
+                        refreshData={refreshData}
                       />
                     <ReactPaginate
                                            previousLabel = {"Հետ"}    

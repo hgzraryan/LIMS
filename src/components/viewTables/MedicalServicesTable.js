@@ -8,6 +8,7 @@ import researchSvg from "../../../src/dist/img/research.svg";
 import "../../dist/css/data-table.css";
 import { Modal } from "react-bootstrap";
 import ComponentToConfirm from '../ComponentToConfirm';
+import MedicalServiceEditModal from "../EditViews/MedicalServiceEditModal";
 
 function MedicalServicesTable({
     confirmRef,
@@ -18,9 +19,15 @@ function MedicalServicesTable({
     handleCloseModal,
     researches,
     setResearches,
-    getResearches,
+    refreshData
+
   }) {
     const [modalInfo, setModalInfo] = useState("");
+    const [editRow, setEditRow] = useState(false);
+
+    const handleOpenEditModal = (value) => {
+        setEditRow((prev) => value);
+      };
     const handleOpenInfoModal = (user) => {    
       setModalInfo((prev) => user);
     };
@@ -200,7 +207,9 @@ function MedicalServicesTable({
                   data-bs-toggle="tooltip"
                   data-placement="top"
                   title="Edit"
-                  href="edit-contact.html"
+                  href="#"
+                  onClick={() => handleOpenEditModal(row.original)}
+
                 >
                   <span className="icon">
                     <span className="feather-icon">
@@ -333,6 +342,11 @@ function MedicalServicesTable({
       </Modal>
         )
       }
+      {
+      editRow &&(
+        <MedicalServiceEditModal medicalService={editRow} setEditRow={setEditRow} refreshData={refreshData}/>
+      )
+    }
       <table  className="table nowrap w-100 mb-5 dataTable no-footer" {...getTableProps()} >
        <thead>
           {headerGroups.map((headerGroup) => (

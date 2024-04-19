@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-no-comment-textnodes */
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useMemo, useState } from 'react'
 import { Checkbox } from '../Checkbox';
 import FeatherIcon from 'feather-icons-react/build/FeatherIcon';
@@ -28,7 +30,8 @@ function DoctorsVisitsTable({
 }) {
   const navigate = useNavigate()
   const [modalInfo, setModalInfo] = useState("");
-  
+  const [editRow, setEditRow] = useState(false);
+
   const handlePatientsDetail = async (patientId) => {  
      navigate(`/patients/${patientId}`)
       
@@ -44,7 +47,9 @@ function DoctorsVisitsTable({
   const handleDoctorInfo = async (doctorId)=>{
     navigate(`/doctors/${doctorId}`)
     }
-   
+    const handleOpenEditModal = (value) => {
+      setEditRow((prev) => value);
+    };
     const defaultColumn = React.useMemo(
         () => ({
           minWidth: 20,
@@ -227,19 +232,20 @@ function DoctorsVisitsTable({
             />
             </div> 
                 <div className="d-flex">
-                  <a
-                    className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover"
-                    data-bs-toggle="tooltip"
-                    data-placement="top"
-                    title="Edit"
-                    href="edit-contact.html"
-                  >
-                    <span className="icon">
-                      <span className="feather-icon">
-                        <FeatherIcon icon="edit" />
-                      </span>
-                    </span>
-                  </a>
+                <a
+                className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover"
+                data-bs-toggle="tooltip"
+                data-placement="top"
+                title="Edit"
+                href="#"
+                onClick={() => handleOpenEditModal(row.original)}
+              >
+                <span className="icon">
+                  <span className="feather-icon">
+                    <FeatherIcon icon="edit" />
+                  </span>
+                </span>
+              </a>
                 </div>
               </div>
             ),
@@ -444,18 +450,29 @@ function DoctorsVisitsTable({
           </thead>
           {doctorsVisits?.length>0? (
                 <tbody {...getTableBodyProps()}>
-                {rows.map(row => {
-                  prepareRow(row)
-                  return (
-                    <tr {...row.getRowProps({style:{width:'100%'}})}>
-                      {row.cells.map(cell => {
-                        return <td {...cell.getCellProps({
-                          style: cell.column.style // Apply custom style to the column cells
-                        })}>{cell.render('Cell')}</td>
-                      })}
-                    </tr>
-                  )
-                })}
+                    {rows.map((row) => {
+              prepareRow(row);
+              const rowProps = row.getRowProps();
+              const diagStatus = row.original?.doctorVisitStatus === "Cancelled";
+              // const diagStatus = row.original.patientId > 'Cancelled';
+              return (
+                <tr
+                  {...rowProps}
+                  style={{
+                    backgroundColor: diagStatus
+                      ? "rgb(255, 99, 71, 0.2)"
+                      : "inherit",
+                    borderStyle: "none !important",
+                  }}
+                >
+                  {row.cells.map((cell) => {
+                    return (
+                      <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                    );
+                  })}
+                </tr>
+              );
+            })}
               
                 </tbody>
               ):''}

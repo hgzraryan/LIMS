@@ -15,6 +15,7 @@ import { Modal } from "react-bootstrap";
 import DefaultProfileImage from "../../../src/dist/img/Missing.svg";
 import ComponentToConfirm from "../ComponentToConfirm";
 import "../../dist/css/data-table.css";
+import MedInstitutionEditModal from "../EditViews/MedInstitutionEditModal";
 
 function MedInstitutionsTable({
   confirmRef,
@@ -25,9 +26,14 @@ function MedInstitutionsTable({
   handleCloseModal,
   medInstitutions,
   setMedInstitutions,
-  //getMedinstitutions //"//comment":{
+  refreshData
 }) {
   const [modalInfo, setModalInfo] = useState("");
+  const [editRow, setEditRow] = useState(false);
+
+  const handleOpenEditModal = (value) => {
+      setEditRow((prev) => value);
+    };
   const handleOpenInfoModal = (user) => {
     setModalInfo((prev) => user);
   };
@@ -49,7 +55,7 @@ function MedInstitutionsTable({
             <div className="columnHeader">ID</div>
           </>
         ),
-        accessor: "medInstitutionId",
+        accessor: "medInstitutionsId",
         sortable: true,
         width: 80,
         Filter: ({ column: { id } }) => (
@@ -65,7 +71,7 @@ function MedInstitutionsTable({
             <div className="columnHeader">Անվանում</div>
           </>
         ),
-        accessor: "medInstitutionName",
+        accessor: "institutionName",
         sortable: true,
         width: 400,
         Filter: ({ column: { id } }) => (
@@ -95,6 +101,12 @@ function MedInstitutionsTable({
           setData={setMedInstitutions}
           placeholder={"Հասցե"} />
         ),
+        Cell: ({ row }) => (
+          <div className="d-flex align-items-center">
+           {row.original?.contact?.address?.country},
+           {row.original?.contact?.address?.city}
+          </div>
+        ),
       },
       {
         Header: (event) => (
@@ -115,6 +127,12 @@ function MedInstitutionsTable({
           setData={setMedInstitutions} 
           placeholder={"Էլ․ հասցե"} 
           />
+        ),
+        Cell: ({ row }) => (
+          <div className="d-flex align-items-center">
+           {row.original?.contact?.email},
+           
+          </div>
         ),
       },
       {
@@ -137,6 +155,12 @@ function MedInstitutionsTable({
           placeholder={"Հեռախոս"} 
           />
         ),
+        Cell: ({ row }) => (
+          <div className="d-flex align-items-center">
+           {row.original?.contact?.phone},
+           
+          </div>
+        )            
       },
       {
         Header: (event) => (
@@ -161,7 +185,9 @@ function MedInstitutionsTable({
                 data-bs-toggle="tooltip"
                 data-placement="top"
                 title="Edit"
-                href="edit-contact.html"
+                href="#"
+                onClick={() => handleOpenEditModal(row.original)}
+
               >
                 <span className="icon">
                   <span className="feather-icon">
@@ -229,6 +255,11 @@ function MedInstitutionsTable({
  // console.log(selectedFlatRows);
   return (
     <>
+     {
+      editRow &&(
+        <MedInstitutionEditModal medInstitution={editRow} setEditRow={setEditRow} refreshData={refreshData}/>
+      )
+    }
       {modalInfo && (
         <Modal show={() => true} size="md" onHide={() => setModalInfo(false)}>
           <Modal.Header closeButton>

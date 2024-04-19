@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Modal } from 'react-bootstrap';
 
-function UserDeactivateModal({handleCloseEditModal,rowData,getUsers}) {
+function UserDeactivateModal({handleCloseEditModal,rowData,refreshData}) {
     const axiosPrivate = useAxiosPrivate()
     const navigate = useNavigate();
     const {userId,firstname,lastname,username,email,isActive} = rowData
@@ -30,7 +30,7 @@ function UserDeactivateModal({handleCloseEditModal,rowData,getUsers}) {
           headers: { "Content-Type": "application/json" },
           withCredentials: true,
         } );
-        getUsers()
+        refreshData()
         handleDisableUser(true)
         notify(
           `Աշխատակցի կարգավիճակը փոխված է`

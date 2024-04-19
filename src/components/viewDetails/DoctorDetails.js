@@ -216,14 +216,14 @@ function DoctorDetails() {
                                 <i className="bi bi-house-door-fill text-disabled me-2"></i>
                                 <span className="text-muted">Գրանցման ամսաթիվ:</span>
                               </span>
-                              <span className="ms-2">{doctorDetails?.joiningDate}</span>
+                              <span className="ms-2">{doctorDetails?.joiningDate.split("T")[0].split('-').reverse().join('-')}</span>
                             </li>
                             <li className="list-group-item border-0">
                               <span>
                                 <i className="bi bi-briefcase-fill text-disabled me-2"></i>
                                 <span className="text-muted">Ծննդյան ամսաթիվ:</span>
                               </span>
-                              <span className="ms-2">{doctorDetails?.dateOfBirth}</span>
+                              <span className="ms-2">{doctorDetails?.dateOfBirth.split("T")[0].split('-').reverse().join('-')}</span>
                             </li>
                             <li className="list-group-item border-0">
                               <span>

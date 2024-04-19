@@ -2,7 +2,6 @@ import FeatherIcon from 'feather-icons-react/build/FeatherIcon'
 import React, { useEffect, useRef, useState } from 'react'
 import { Modal } from 'react-bootstrap'
 import { Form, FormProvider, useForm,Controller } from 'react-hook-form'
-import Multiselect from 'multiselect-react-dropdown'
 import useAxiosPrivate from '../../hooks/useAxiosPrivate'
 import { RESEARCHLISTS_URL } from '../../utils/constants'
 import makeAnimated from "react-select/animated";
@@ -15,7 +14,6 @@ function ActivityModal({overlayIsOpen,setOverlayIsOpen,selectedItem,setSelectedI
     const [researchesArray, setResearchesArray] = useState([]);
     const [researcheList, setResearcheList] = useState([]);
     const [selectedResearch, setSelectedResearch] = useState([]);
-    const multiselectRef = useRef("");
     const animatedComponents = makeAnimated();
     const handleResearchChange = (selectedOption) => {
       setSelectedResearch(selectedOption);

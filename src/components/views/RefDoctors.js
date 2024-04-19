@@ -167,7 +167,7 @@ function RefDoctors() {
                         handleCloseModal={handleCloseModal}
                         refDoctors={refDoctors}
                         setRefDoctors={setRefDoctors}
-                        getRefDoctors={getRefDoctors}
+                        refreshData={refreshData}
                       />
                       <ReactPaginate
                         previousLabel = {"Հետ"}    

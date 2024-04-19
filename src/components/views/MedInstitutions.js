@@ -82,7 +82,7 @@ function MedInstitutions() {
                     aria-haspopup="true"
                     aria-expanded="false"
                   >
-                    <h1>Բուժ. հաստատություններ</h1>
+                    <h1>Բուժհաստատություններ</h1>
                   </a>
                 </div>
                 <div className="dropdown ms-3">
@@ -97,7 +97,7 @@ function MedInstitutions() {
 
                     <Dropdown.Menu>
                       <Dropdown.Item onClick={() => setIsOpen(true)}>
-                      Բուժ․ հաստատություն
+                      Բուժհաստատություն
                       </Dropdown.Item>
                     </Dropdown.Menu>
                   </Dropdown>
@@ -165,7 +165,7 @@ function MedInstitutions() {
                         handleCloseModal={handleCloseModal}
                         medInstitutions={medInstitutions}
                         setMedInstitutions={setMedInstitutions}
-                        //getMedInstitutions={getMedInstitutions}
+                        refreshData={refreshData}
                       />
                       <ReactPaginate
                         previousLabel = {"Հետ"}    

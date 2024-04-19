@@ -327,7 +327,7 @@ const ResearchLists = () => {
                         handleCloseModal={handleCloseModal}
                         researches={researchList}
                         setResearches={setResearches}
-                        getResearches={getResearches}
+                        refreshData={refreshData}
                       />
                       <ReactPaginate
                         previousLabel = {"Հետ"}    

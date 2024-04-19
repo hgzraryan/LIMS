@@ -3,7 +3,6 @@ import React, { useEffect, useState, useRef } from "react";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
-import Multiselect from "multiselect-react-dropdown";
 //import emptyCard from "../../dist/img/discount-bg.png";
 import emptyCard from "../../dist/img/discount_testImg.png";
 import emptydiscountBG from "../../dist/img/discountBgC.jpg";

@@ -436,7 +436,7 @@ responseType:'blob'
                               </span>
                             </span>
                             <span className="ms-2">
-                              {diagnosticsDetails?.createdAt}
+                              {diagnosticsDetails?.createdAt.split("T")[0].split('-').reverse().join('-')}
                             </span>
                           </li>
 
@@ -535,108 +535,7 @@ responseType:'blob'
                 )}
                 {pageTab === "tab_documents" && (
                   <div className="col-lg-12">
-                    <div className="card card-border card-profile-feed mb-lg-4 mb-3">
-                      <div className="card-header card-header-action">
-                        <div className="media align-items-center">
-                          <p>Վերբեռնել փաստաթուղթ</p>
-                        </div>
-                        <div className="card-action-wrap"></div>
-                      </div>
-                      <div
-                        className="row"
-                        style={{
-                          display: "flex",
-                          justifyContent: "center",
-                          flexDirection: "column",
-                        }}
-                      >
-                        <div className="d-flex justify-content-center">
-                          <div className="upload-logo">
-                            <div
-                              className="dropify-wrapper"
-                              onClick={(e) => {
-                                e.stopPropagation()
-                                fileInputRef?.current.click()}}
-                              style={{ cursor: "pointer" }}
-                            >
-                              <div className="dropify-message d-flex justify-content-center  align-items-center flex-column">
-                                <span
-                                  className="file-icon d-flex justify-content-center  align-items-center"
-                                  style={{ width: "32px", height: "32px" }}
-                                ></span>
-                                <p className="d-flex justify-content-center align-items-center">
-                                  Ընտրել
-                                </p>
-
-                                <p
-                                  className="dropify-error"
-                                  style={{ display: "none" }}
-                                >
-                                  Ooops, something wrong appended.
-                                </p>
-                              </div>
-                              <div
-                                className="dropify-loader"
-                                style={{ display: "none" }}
-                                
-                              ></div>
-                              
-                              <form onSubmit={(e) => handleSubmit(e)}>
-                                <div >
-
-                                <input
-                                  type="file"
-                                  ref={fileInputRef}
-                                  onChange={handleChangeFile}
-                                  onDrop={handleDrop}
-                                  onDragOver={(e) => e.preventDefault()}
-                                  style={{ display: "none" }}
-                                  />
-                                  </div>
-                                <button
-                                  className="btn btn-primary"
-                                  type="submit"
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    handleSubmit(e);
-                                  }}
-                                >
-                                  Վերբեռնել!
-                                </button>
-                              </form>
-                              <button
-                                type="button"
-                                className="dropify-clear"
-                                style={{ display: "none" }}
-                              >
-                                Remove
-                              </button>
-                              <div className="dropify-preview">
-                                <span className="dropify-render"></span>
-                                <div className="dropify-infos">
-                                  <div className="dropify-infos-inner">
-                                    <p className="dropify-filename">
-                                      <span className="file-icon"></span>
-                                      <span className="dropify-filename-inner">
-                                        {" "}
-                                      </span>
-                                    </p>
-                                    <p
-                                      className="dropify-infos-message"
-                                      style={{ display: "none" }}
-                                    >
-                                      Drag and drop or click to replace
-                                    </p>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-
-                        {fileName && <span>{" " + fileName}</span>}
-                      </div>
-                    </div>
+                    
 
                     <div>
                       <div className="card-body">

@@ -314,7 +314,7 @@ function ResearchesPrint({ modalPrint, setModalPrint }) {
                           <span
                             style={{ fontWeight: "bold", fontSize: "1.1rem" }}
                           >
-                            {currentClient?.dateOfBirth}
+                            {currentClient?.dateOfBirth.split("T")[0].split('-').reverse().join('-')}
                           </span>
                         </li>
                         <li>

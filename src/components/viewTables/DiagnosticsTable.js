@@ -48,7 +48,6 @@ function DiagnosticsTable({
   const [modalInfo, setModalInfo] = useState("");
   const [modalResult, setModalResult] = useState("");
   const [modalPrint, setModalPrint] = useState("");
-  const [disable, setDisable] = useState(false);
   // const ComponentToPrintWrapper = ({ diagData }) => {
 
   //   // 1.

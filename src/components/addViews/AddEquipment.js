@@ -55,7 +55,7 @@ function AddEquipment({ handleToggleCreateModal, refreshData }) {
   });
   const onStatusChange = (data) => {
     switch (data[0].status) {
-      case "Աշխատում է":
+      case "Սարքին":
         setEquipmentStatus("Operational");
         break;
       case "Վերանորոգվում է":

@@ -9,6 +9,7 @@ import { BiSolidInfoCircle } from "react-icons/bi";
 import researchSvg from "../../../src/dist/img/research.svg";
 import "../../dist/css/data-table.css";
 import { Modal } from "react-bootstrap";
+import ResearchListEditModal from "../EditViews/ResearchListEditModal";
 function ResearchListsTable({
   confirmRef,
   selectedItem,
@@ -18,9 +19,14 @@ function ResearchListsTable({
   handleCloseModal,
   researches,
   setResearches,
-  getResearches,
+  refreshData,
 }) {
   const [modalInfo, setModalInfo] = useState("");
+  const [editRow, setEditRow] = useState(false);
+
+  const handleOpenEditModal = (value) => {
+      setEditRow((prev) => value);
+    };
   const handleOpenInfoModal = (user) => {    
     setModalInfo((prev) => user);
   };
@@ -362,7 +368,8 @@ function ResearchListsTable({
                 data-bs-toggle="tooltip"
                 data-placement="top"
                 title="Edit"
-                href="edit-contact.html"
+                href="#"
+                onClick={() => handleOpenEditModal(row.original)}
               >
                 <span className="icon">
                   <span className="feather-icon">
@@ -496,6 +503,11 @@ function ResearchListsTable({
                   </div>
       </Modal.Body>
     </Modal>
+      )
+    }
+    {
+      editRow &&(
+        <ResearchListEditModal researchList={editRow} setEditRow={setEditRow} refreshData={refreshData}/>
       )
     }
     <table  className="table nowrap w-100 mb-5 dataTable no-footer" {...getTableProps()} >

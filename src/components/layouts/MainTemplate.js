@@ -1594,7 +1594,7 @@ const MainTemplate = () => {
                                 }
                               >
                                 <span className="nav-link-text">
-                                  Բուժ․ հաստատություններ
+                                  Բուժհաստատություններ
                                 </span>
                               </Link>
                             </li>

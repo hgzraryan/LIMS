@@ -18,6 +18,8 @@ import DefaultProfileImage from "../../../src/dist/img/Missing.svg";
 import "../../dist/css/data-table.css";
 import { useNavigate } from "react-router-dom";
 import UserDeactivateModal from "../EditViews/UserDeactivateModal";
+import UserEditModal from "../EditViews/UserEditModal";
+
 
 function UsersTable({
   confirmRef,
@@ -28,15 +30,20 @@ function UsersTable({
   handleCloseModal,
   users,
   setUsers,
-  getUsers
+  refreshData
 }) {
 const navigate = useNavigate()
+const [disableRow, setDisableRow] = useState(false);
 const [editRow, setEditRow] = useState(false);
+
 const handleOpenEditModal = (value) => {
-  setEditRow((prev) => value);
+    setEditRow((prev) => value);
+  };
+const handleOpenDisableModal = (value) => {
+  setDisableRow((prev) => value);
 };
 const handleCloseEditModal = () => {
-  setEditRow(false);
+  setDisableRow(false);
 };
   const setUserTypeStyle = (userType) => {
     switch (userType) {
@@ -180,7 +187,7 @@ const handleCloseEditModal = () => {
           </>
         ),
         accessor: "email",
-        width: 190,
+        width: 250,
         Filter: ({ column: { id } })=>(
           <ColumnFilter
             id={id}
@@ -206,7 +213,7 @@ const handleCloseEditModal = () => {
                   "Unknown Role")}
             </span>
           )),
-        width: 190,
+        width: 350,
         Filter: ({ column: { id } }) => <></>,
       },
       // {
@@ -244,7 +251,9 @@ const handleCloseEditModal = () => {
                 data-bs-toggle="tooltip"
                 data-placement="top"
                 title="Edit"
-                href="edit-contact.html"
+                href="#"
+                onClick={() => handleOpenEditModal(row.original)}
+
               >
                 <span className="icon">
                   <span className="feather-icon">
@@ -255,7 +264,7 @@ const handleCloseEditModal = () => {
               <a
                 className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover del-button"
                 data-bs-toggle="tooltip"
-                onClick={() => handleOpenEditModal(row.original)}
+                onClick={() => handleOpenDisableModal(row.original)}
                 data-placement="top"
                 title=""
                 data-bs-original-title="Delete"
@@ -312,6 +321,11 @@ const handleCloseEditModal = () => {
   );
   return (
     <>
+    {
+      editRow &&(
+        <UserEditModal user={editRow} setEditRow={setEditRow} refreshData={refreshData}/>
+      )
+    }
       <table
         {...getTableProps()}
         className="table nowrap w-100 mb-5 dataTable no-footer"
@@ -376,11 +390,11 @@ const handleCloseEditModal = () => {
                 </tr>
               );
             })}
-            {editRow && (
+            {disableRow && (
               <UserDeactivateModal
                 handleCloseEditModal={handleCloseEditModal}
-                rowData={editRow}
-                getUsers={getUsers}
+                rowData={disableRow}
+                refreshData={refreshData}
               />
             )}
             <ComponentToConfirm

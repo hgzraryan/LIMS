@@ -15,6 +15,7 @@ import { Modal } from "react-bootstrap";
 import DefaultProfileImage from "../../../src/dist/img/Missing.svg";
 import { BiSolidInfoCircle } from "react-icons/bi";
 import "../../dist/css/data-table.css";
+import RefDoctorEditModal from "../EditViews/RefDoctorEditModal";
 
 function RefDoctorsTable({
   confirmRef,
@@ -25,9 +26,14 @@ function RefDoctorsTable({
   handleCloseModal,
   refDoctors,
   setRefDoctors,
-  //getRefDoctors
+  refreshData
 }) {
   const [modalInfo, setModalInfo] = useState("");
+  const [editRow, setEditRow] = useState(false);
+
+  const handleOpenEditModal = (value) => {
+      setEditRow((prev) => value);
+    };
   const handleOpenInfoModal = (user) => {
     setModalInfo((prev) => user);
   };
@@ -152,7 +158,8 @@ function RefDoctorsTable({
                 data-bs-toggle="tooltip"
                 data-placement="top"
                 title="Edit"
-                href="edit-contact.html"
+                href="#"
+                onClick={() => handleOpenEditModal(row.original)}
               >
                 <span className="icon">
                   <span className="feather-icon">
@@ -312,6 +319,11 @@ function RefDoctorsTable({
           </Modal.Body>
         </Modal>
       )}
+       {
+      editRow &&(
+        <RefDoctorEditModal refDoctor={editRow} setEditRow={setEditRow} refreshData={refreshData}/>
+      )
+    }
 
       <table
         className="table nowrap w-100 mb-5 dataTable no-footer"

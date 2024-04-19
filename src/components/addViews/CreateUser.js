@@ -1,6 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
 import { Modal } from "react-bootstrap";
-import Multiselect from "multiselect-react-dropdown";
 import FeatherIcon from "feather-icons-react";
 import MissingAvatar from "../../dist/img/Missing.svg";
 import { Controller, Form, FormProvider, useForm } from "react-hook-form";
@@ -23,9 +22,7 @@ import {
 } from "../../utils/inputValidations";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import {  toast } from 'react-toastify';
-import ReactDatePicker from "react-datepicker";
 import { REGISTER_USER } from "../../utils/constants";
-import PhoneInput from "react-phone-number-input";
 import ErrorSvg from "../../dist/svg/error.svg";
 import CustomPhoneComponent from "../CustomPhoneComponent";
 import CustomDateComponent from "../CustomDateComponent";

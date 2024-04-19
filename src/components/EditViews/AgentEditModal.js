@@ -1,0 +1,421 @@
+import React, { Suspense, useState,useEffect } from "react";
+import { Form, FormProvider, useForm, Controller } from "react-hook-form";
+import ErrorSvg from "../../dist/svg/error.svg";
+import { Modal } from "react-bootstrap";
+import FeatherIcon from "feather-icons-react";
+import { Input } from "../Input";
+import { toast } from "react-toastify";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import LoadingSpinner from "../LoadingSpinner";
+import { deleteNullProperties } from "../../utils/helper";
+import { name_validation, desc_validation, email_validation, director_validation, tin_validation, zipCode_validation, street_validation, city_validation,bankAccNumber_validation, bankName_validation } from "../../utils/inputValidations";
+import {
+    CountryDropdown,
+    RegionDropdown,
+    CountryRegionData,
+  } from "react-country-region-selector";
+import CustomPhoneComponent from "../CustomPhoneComponent";
+import { AGENTS_URL } from "../../utils/constants";
+function AgentEditModal({ agent, setEditRow, refreshData }) {
+    const [errMsg, setErrMsg] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+    const axiosPrivate = useAxiosPrivate();
+    const [country, setCountry] = useState("");
+    const [region, setRegion] = useState("");
+  
+    const { trigger } = useForm();
+    const methods = useForm({
+      mode: "onChange",
+    });
+    useEffect(() => {
+        if (CountryRegionData[11][0] === "Armenia") {
+          CountryRegionData[11][0] = "Հայաստան";
+          CountryRegionData[11][2] =
+            "Արագածոտն~AG|Արարատ~AR|Արմավիր~AV|Գեղարքունիք~GR|Կոտայք~KT|Լոռի~LO|Շիրակ~SH|Սյունիք~SU|Տավուշ~TV|Վայոց Ձոր~VD|Երևան~ER";
+        }
+        setCountry(agent?.contact?.address?.country);
+      }, []);
+      const notify = (text) =>
+      toast.success(text, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      const onSubmit = methods.handleSubmit(async ({
+        name,director,bankName,bankAccNumber,tin,email,description,country,
+        state,
+        street,
+        city,
+        zipCode,
+        phone
+      }) => {
+        const updatedAgent = {
+           name:name?.trim() !== agent?.name?.trim() ? name : null,
+           director:director?.trim() !== agent?.director?.trim() ? director : null,
+           bankName:bankName?.trim() !== agent?.bankName?.trim() ? bankName : null,
+           bankAccNumber:+bankAccNumber !== +agent?.bankAccNumber ? +bankAccNumber : null,
+           tin:+tin !== +agent?.tin ? +tin : null,
+           contact: {
+            email:
+              email?.trim() !== agent?.contact?.email?.trim() ? email : null,
+            phone:
+              phone?.trim() !== agent?.contact?.phone?.trim() ? phone : null,
+            address: {
+              street:
+                street?.trim() !== agent?.contact?.address?.street?.trim()
+                  ? street
+                  : null,
+              city:
+                city?.trim() !== agent?.contact?.address?.city?.trim()
+                  ? city
+                  : null,
+              state:
+                state?.trim() !== agent?.contact?.address?.state?.trim()
+                  ? state
+                  : null,
+              country:
+                country?.trim() !== agent?.contact?.address?.country?.trim()
+                  ? country
+                  : null,
+              zipCode:
+                +zipCode.trim() !== +agent?.contact?.address?.zipCode
+                  ? zipCode
+                  : null,
+            },
+          },
+           role:description?.trim() !== agent?.role?.trim() ? description : null,
+          //additional: editorRef.current.getContent({ format: "text" }),
+        };
+        const updatedFields = deleteNullProperties(updatedAgent);
+        //console.log(updatedAgent);
+        try {
+            await axiosPrivate.put(
+              AGENTS_URL,
+              { ...updatedFields, id: agent.agentId },
+              {
+                headers: { "Content-Type": "application/json" },
+                withCredentials: true,
+              }
+            );
+    
+            setEditRow(false);
+            refreshData();
+            //notify(`${newResearchList.researchName} ավելացված է`)
+          } catch (err) {
+              if (!err?.response) {
+                setErrMsg("No Server Response");
+              } else if (err.response?.status === 409) {
+                setErrMsg("Username Taken");
+              } else {
+                setErrMsg(" Failed");
+              }
+          }
+      }); 
+  return (
+    <>
+    <Modal show={() => true} size="xl" onHide={() => setEditRow(false)}>
+      <Modal.Header closeButton>
+        <Modal.Title style={{ width: "100%", textAlign: "center" }}>
+          Թարմացնել գործընկերոջ տվյալները
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Suspense fallback={<LoadingSpinner />}>
+          {isLoading ? (
+            <LoadingSpinner />
+          ) : (
+            <FormProvider {...methods}>
+          <div className="contact-body contact-detail-body">
+            <div data-simplebar className="nicescroll-bar">
+              <div className="d-flex flex-xxl-nowrap flex-wrap">
+                <div className="contact-info w-100">
+                  <Form
+                    onSubmit={(e) => e.preventDefault()}
+                    noValidate
+                    autoComplete="off"
+                    className="container"
+                  >
+                    <div className="card">
+                      <div className="card-header">
+                        <a href="#">Գործընկերոջ տվյալներ</a>
+                        <button
+                          className="btn btn-xs btn-icon btn-rounded btn-light"
+                          data-bs-toggle="tooltip"
+                          data-bs-placement="top"
+                          title=""
+                          data-bs-original-title="Edit"
+                        >
+                          <span
+                            className="icon"
+                            data-bs-toggle="modal"
+                            data-bs-target="#editInfo"
+                          >
+                            <span class="feather-icon">
+                              <FeatherIcon icon="edit-2" />
+                            </span>
+                          </span>
+                        </button>
+                      </div>
+                      <div className="card-body">
+                        <div className="modal-body">
+                          <div className="row gx-3">
+                            <div className="col-sm-6">
+                              <Input {...name_validation} defaultValue={agent?.name}/>
+                            </div>
+                            <div className="col-sm-6">
+                              <Input {...director_validation} defaultValue={agent?.director}/>
+                            </div>
+                          </div>
+                          <div className="row gx-3">
+                            <div className="col-sm-6">
+                              <Input {...email_validation} defaultValue={agent?.contact?.email}/>
+                            </div>
+                            <div className="col-sm-6">
+                                    <div className="d-flex justify-content-between me-2">
+                                      <label
+                                        className="form-label"
+                                        htmlFor="phoneNumber"
+                                      >
+                                        Հեռախոս
+                                      </label>
+                                      {methods.formState.errors.phone && (
+                                        <span className="error text-red">
+                                          <span>
+                                            <img
+                                              src={ErrorSvg}
+                                              alt="errorSvg"
+                                            />
+                                          </span>{" "}
+                                          պարտադիր
+                                        </span>
+                                      )}
+                                    </div>
+                                    <CustomPhoneComponent
+                                      name="phone"
+                                      control={methods.control}
+                                      defaultValue={agent?.contact?.phone}
+                                    />
+                                  </div>
+                          </div>
+                          <div className="row gx-3">
+                          <div className="col-sm-6">
+                                    <div className="d-flex justify-content-between me-2">
+                                      <label
+                                        className="form-label"
+                                        htmlFor="country"
+                                      >
+                                        Երկիր
+                                      </label>
+                                      {methods?.formState.errors.country && (
+                                        <span className="error text-red">
+                                          <img src={ErrorSvg} alt="errorSvg" />
+                                          Պարտադիր
+                                        </span>
+                                      )}
+                                    </div>
+                                    <Controller
+                                      name="country"
+                                      control={methods.control}
+                                      defaultValue={
+                                        agent?.contact?.address?.country
+                                      }
+                                      rules={{ required: true }}
+                                      render={({ field }) => (
+                                        <CountryDropdown
+                                          {...field}
+                                          classes="form-control"
+                                          defaultOptionLabel="Երկիր"
+                                          value={field.value}
+                                          priorityOptions={["Armenia"]}
+                                          onChange={(val) => {
+                                            field.onChange(val);
+                                            setCountry(val);
+                                            trigger("country");
+                                          }}
+                                          style={{
+                                            appearance: "auto",
+                                          }}
+                                        />
+                                      )}
+                                    />
+                                  </div>
+                                  <div className="col-sm-6">
+                                    <div className="d-flex justify-content-between me-2">
+                                      <label
+                                        className="form-label"
+                                        htmlFor="state"
+                                      >
+                                        Մարզ
+                                      </label>
+                                      {methods?.formState.errors.state && (
+                                        <span className="error text-red">
+                                          <span>
+                                            <img
+                                              src={ErrorSvg}
+                                              alt="errorSvg"
+                                            />
+                                          </span>
+                                          պարտադիր
+                                        </span>
+                                      )}
+                                    </div>
+                                    <Controller
+                                      name="state"
+                                      control={methods.control}
+                                      defaultValue={
+                                        agent?.contact?.address?.state
+                                      }
+                                      rules={{ required: true }}
+                                      render={({ field }) => (
+                                        <RegionDropdown
+                                          {...field}
+                                          classes="form-control"
+                                          country={country}
+                                          defaultOptionLabel="Մարզ"
+                                          value={field.value}
+                                          onChange={(val) => {
+                                            field.onChange(val);
+                                            setRegion(val);
+                                            trigger("state");
+                                          }}
+                                          style={{
+                                            appearance: "auto",
+                                          }}
+                                        />
+                                      )}
+                                    />
+                                  </div>
+                          </div>
+                          <div className="row gx-3">
+                            <div className="col-sm-6">
+                              <Input {...city_validation} defaultValue={agent?.contact?.address?.city}/>
+                            </div>
+                            <div className="col-sm-6">
+                              <Input {...street_validation} defaultValue={agent?.contact?.address?.street}/>
+                            </div>
+                          </div>
+                          <div className="row gx-3">
+                            <div className="col-sm-6">
+                              <Input {...zipCode_validation} defaultValue={agent?.contact?.address?.zipCode}/>
+                            </div>
+                          
+                            <div className="col-sm-6">
+                            <Input {...desc_validation} defaultValue={agent?.role}/>
+                            </div>
+                          </div>
+                          <div className="row gx-3">
+                            
+                            
+                          </div>
+                          <div className="row gx-3">
+                            <div className="col-sm-6">
+                              <Input {...bankName_validation} defaultValue={agent?.bankName}/>
+                            </div>
+                            <div className="col-sm-6">
+                              <Input {...bankAccNumber_validation} defaultValue={agent?.bankAccNumber}/>
+                            </div>
+                          </div>
+                          <div className="row gx-3">
+                            <div className="col-sm-6">
+                              <Input {...tin_validation} defaultValue={agent?.tin}/>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    {/* <div className="separator-full"></div>
+                    <div className="card">
+                      <div className="card-header">
+                        <a href="#">Հավելյալ տվյալներ</a>
+                        <button
+                          className="btn btn-xs btn-icon btn-rounded btn-light"
+                          data-bs-toggle="tooltip"
+                          data-bs-placement="top"
+                          title=""
+                          data-bs-original-title="Edit"
+                        >
+                          <span
+                            class="icon"
+                            data-bs-toggle="modal"
+                            data-bs-target="#moreContact"
+                          >
+                            <span class="feather-icon">
+                              <FeatherIcon icon="edit-2" />
+                            </span>
+                          </span>
+                        </button>
+                      </div>
+                      <div className="card-body"style={{zIndex:'0'}}>
+                        <div className="modal-body">
+                          <form>
+                            <div className="row gx-12">
+                              <div className="col-sm-12">
+                                <Editor
+                                  apiKey="wiejyphh2h0z879p5bvha1lqdfd0z7utg4rqsw6cyjhd28lx"
+                                  name="fieldName"
+                                  onInit={(evt, editor) =>
+                                    (editorRef.current = editor)
+                                  }
+                                  //initialValue=""
+                                  init={{
+                                    height: 200,
+                                    menubar: false,
+                                    plugins: [
+                                      "advlist autolink lists link image charmap print preview anchor",
+                                      "searchreplace visualblocks code fullscreen",
+                                      "insertdatetime media table paste code help wordcount",
+                                    ],
+                                    toolbar:
+                                      "undo redo | formatselect | " +
+                                      "bold italic backcolor | alignleft aligncenter " +
+                                      "alignright alignjustify | bullist numlist outdent indent | " +
+                                      "removeformat | help",
+                                    content_style:
+                                      "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
+                                  }}
+                                  />
+                              </div>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div> */}
+                    <div className="separator-full"></div>
+
+                    <div className="modal-footer align-items-center">
+                      <button
+                        type="button"
+                        className="btn btn-secondary"
+                        onClick={() => setEditRow(false)}
+                      >
+                        Չեղարկել
+                      </button>
+                      <button
+                        type="button"
+                        onClick={onSubmit}
+                        className="btn btn-primary"
+                        data-bs-dismiss="modal"
+                      >
+                        Ավելացնել
+                      </button>
+                    </div>
+                  </Form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </FormProvider>
+          )}
+        </Suspense>
+      </Modal.Body>
+    </Modal>
+  </>
+  )
+}
+
+export default AgentEditModal

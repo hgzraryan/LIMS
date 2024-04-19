@@ -37,6 +37,7 @@ import {
   CountryRegionData,
 } from "react-country-region-selector";
 import CustomDateTimeComponent from "../CustomDateTimeComponent";
+import { calculateAge } from "../../utils/helper";
 
 function CreatePatient({
   handleToggleCreateModal,
@@ -155,27 +156,6 @@ function CreatePatient({
       progress: undefined,
       theme: "light",
     });
-  const calculateAge = (dateOfBirth) => {
-    // Convert the birthdate string to a Date object
-    const birthdateObj = new Date(dateOfBirth);
-
-    // Get the current date
-    const currentDate = new Date();
-
-    // Calculate the difference in years
-    let age = currentDate.getFullYear() - birthdateObj.getFullYear();
-
-    // Check if the birthday hasn't occurred yet this year
-    if (
-      currentDate.getMonth() < birthdateObj.getMonth() ||
-      (currentDate.getMonth() === birthdateObj.getMonth() &&
-        currentDate.getDate() < birthdateObj.getDate())
-    ) {
-      age--;
-    }
-
-    return age;
-  };
   const onSubmit = methods.handleSubmit(
     async ({
       firstName,
@@ -510,26 +490,15 @@ function CreatePatient({
                               style={{
                                 display: "flex",
                                 justifyContent: "center",
-                                alignItems: "center",
+                                paddingTop:'41px'
                               }}
                               >
                                 {!additionalPhone &&
-                                <button
-                                style={{
-                                  width: "25px",
-                                  height: "25px",
-                                    display: "flex",
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                    marginLeft: ".5rem",
-                                    border: "none",
-                                    borderRadius:"50%",
-                                    fontSize:'1.5rem'
-                                  }}
-                                  onClick={(e)=>enableAdditionalPhone(e,true)}
-                                  >
-                                  +
-                                </button>
+                               
+                                  
+                                  
+                                  <FeatherIcon icon="plus-circle" width='35' onClick={(e)=>enableAdditionalPhone(e,true)} style={{ cursor: 'pointer' }}   />
+                                
                                   }
                               </div>
                             </div>

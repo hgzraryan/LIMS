@@ -17,6 +17,7 @@ import { Modal } from "react-bootstrap";
 import infoModalImg from "../../../src/dist/svg/organizationsSvg.svg";
 import "../../dist/css/data-table.css";
 import { useNavigate } from "react-router-dom";
+import OrganizationEditModal from "../EditViews/OrganizationEditModal";
 
 function OrganizationsTable({
   confirmRef,
@@ -27,10 +28,15 @@ function OrganizationsTable({
   handleCloseModal,
   organizations,
   setOrganizations,
-  getOrganizations,
+  refreshData,
 }) {
   const navigate = useNavigate()
   const [modalInfo, setModalInfo] = useState("");
+  const [editRow, setEditRow] = useState(false);
+
+  const handleOpenEditModal = (value) => {
+      setEditRow((prev) => value);
+    };
   const handleOpenInfoModal = (data) => {
     
     setModalInfo((prev) => data);
@@ -203,7 +209,9 @@ function OrganizationsTable({
                 data-bs-toggle="tooltip"
                 data-placement="top"
                 title="Edit"
-                href="edit-contact.html"
+                href="#"
+                onClick={() => handleOpenEditModal(row.original)}
+
               >
                 <span className="icon">
                   <span className="feather-icon">
@@ -342,6 +350,11 @@ function OrganizationsTable({
                   </div>
       </Modal.Body>
     </Modal>
+      )
+    }
+    {
+      editRow &&(
+        <OrganizationEditModal organization={editRow} setEditRow={setEditRow} refreshData={refreshData}/>
       )
     }
     <table

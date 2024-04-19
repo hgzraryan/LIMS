@@ -60,12 +60,12 @@ function PatientDetails() {
     navigate(`/doctorsVisits/${patientId}`)
      
  };
+
   const pageCount = 1;
   //const pageCount = Math.ceil(useersCount/usersPerPage)
   const handleOpenDiagModal = (data) => {
     setIsOpen(true);
     setResearch((prev) => data.statusBoard[4]?.researches);
-    console.log(data)
   };
   const handleOpenVisitModal = (data) => {
     // setIsOpen(true);
@@ -93,8 +93,11 @@ function PatientDetails() {
         .then((resp) => {
            axiosPrivate.get(`/getVisitsByid/patient/${id}`).then((resp) => {
             let array=[]
-            array.push(resp.data)
-            setPatientVisits((prev) => array);
+            if(resp.data) {
+              array.push(resp.data)
+            }
+            
+            setPatientVisits([]);
             setIsLoading(false);
           });
         })
@@ -130,6 +133,9 @@ function PatientDetails() {
           <>
             <div className="columnHeader">Ամսաթիվ</div>
           </>
+        ),
+        Cell:({row})=>(
+          <>{row.original.createdAt.split("T").join(', ').split('.')[0]}</>
         ),
         accessor: "createdAt",
         sortable: true,
@@ -242,16 +248,23 @@ function PatientDetails() {
             <div className="columnHeader">գրանցման ամսաթիվ</div>
           </>
         ),
+        Cell:({row})=>(
+          <>{row.original?.createdAt?.split("T").join(', ').split('.')[0]}</>
+        ),
         accessor: "createdAt",
         sortable: true,
         width: 250,
+
         Filter: ({ column: { id } }) => <></>,
       },
-      {
+      {//
         Header: (event) => (
           <>
             <div className="columnHeader">Այցի ամսաթիվ</div>
           </>
+        ),
+        Cell:({row})=>(
+          <>{row.original?.visitDate?.split("T").join(', ').split('.')[0]}</>
         ),
         accessor: "visitDate",
         sortable: true,
@@ -687,7 +700,7 @@ function PatientDetails() {
                               <i className="bi bi-briefcase-fill text-disabled me-2"></i>
                               <span className="text-muted">Ծննդյան ամսաթիվ:</span>
                             </span>
-                            <span className="ms-2">{patientDetails?.dateOfBirth}</span>
+                            <span className="ms-2">{patientDetails?.dateOfBirth.split("T")[0].split('-').reverse().join('-')}</span>
                           </li>
                          
                           
@@ -789,7 +802,7 @@ function PatientDetails() {
                             </tr>
                           ))}
                         </thead>
-                        {patientDiagnostics?.length && (
+                        {patientDiagnostics?.length ? (
                           <tbody {...getTableBodyProps()}>
                             {rows.map((row) => {
                               prepareRow(row);
@@ -814,7 +827,7 @@ function PatientDetails() {
                               );
                             })}
                           </tbody>
-                        )}{" "}
+                        ):''}
                       </table>
                     </div>
                   </section>
@@ -886,7 +899,7 @@ function PatientDetails() {
                             </tr>
                           ))}
                         </thead>
-                        {patientVisits?.length && (
+                        {patientVisits?.length ? (
                           <tbody {...getTableBodyProps2()}>
                             {rows2.map((row) => {
                               prepareRow2(row);
@@ -911,7 +924,7 @@ function PatientDetails() {
                               );
                             })}
                           </tbody>
-                        )}{" "}
+                        ):''}
                       </table>
                     </div>
                   </section>

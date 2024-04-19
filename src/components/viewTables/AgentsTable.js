@@ -1,11 +1,12 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import ComponentToConfirm from "../ComponentToConfirm";
 import { useBlockLayout, useFilters, useResizeColumns, useRowSelect, useSortBy, useTable } from "react-table";
 import { Checkbox } from "../Checkbox";
 import FeatherIcon from "feather-icons-react/build/FeatherIcon";
 import { ColumnFilter } from "../ColumnFilter";
 import "../../dist/css/data-table.css";
+import AgentEditModal from "../EditViews/AgentEditModal";
 
 
 function AgentsTable({
@@ -17,8 +18,13 @@ function AgentsTable({
   handleCloseModal,
   agents,
   setAgents,
-  getAgents
+  refreshData
 }) {
+  const [editRow, setEditRow] = useState(false);
+
+  const handleOpenEditModal = (value) => {
+      setEditRow((prev) => value);
+    };
   const defaultColumn = React.useMemo(
     () => ({
       minWidth: 20,
@@ -161,7 +167,9 @@ function AgentsTable({
                 data-bs-toggle="tooltip"
                 data-placement="top"
                 title="Edit"
-                href="edit-contact.html"
+                href="#"
+                onClick={() => handleOpenEditModal(row.original)}
+
               >
                 <span className="icon">
                   <span className="feather-icon">
@@ -227,6 +235,12 @@ function AgentsTable({
   );
   // console.log(selectedFlatRows);
   return (
+    <>
+    {
+      editRow &&(
+        <AgentEditModal agent={editRow} setEditRow={setEditRow} refreshData={refreshData}/>
+      )
+    }
     <table  className="table nowrap w-100 mb-5 dataTable no-footer" {...getTableProps()} >
       <thead>
         {headerGroups.map((headerGroup) => (
@@ -302,6 +316,7 @@ function AgentsTable({
             </tbody>
           ):''}
     </table>
+    </>
   );
 }
 

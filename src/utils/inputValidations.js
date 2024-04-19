@@ -65,6 +65,7 @@ export const user_validation = {
   type: "text",
   id: "user",
   placeholder: "Ծածկանուն",
+  
   validation: {
     required: {
       value: true,
@@ -852,6 +853,7 @@ export const street_validation = {
 export const zipCode_validation = {
   name: "zipCode",
   label: "Փոստային համար",
+  type: "number",
   multiline: true,
   id: "zipCode",
   placeholder: "Փոստային համար",

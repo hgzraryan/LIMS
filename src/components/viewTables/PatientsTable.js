@@ -18,6 +18,7 @@ import {  useNavigate } from 'react-router-dom';
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { Modal } from "react-bootstrap";
 import DefaultProfileImage from "../../../src/dist/img/Missing.svg";
+import PatientEditModal from "../EditViews/PatientEditModal";
 
 function PatientsTable({
   selectedItem,
@@ -26,11 +27,17 @@ function PatientsTable({
   researchState,
   patients,
   setPatients,
+  refreshData
 }) {
   const axiosPrivate = useAxiosPrivate()
 
   const navigate = useNavigate();
   const [modalInfo, setModalInfo] = useState("");
+  const [editRow, setEditRow] = useState(false);
+
+  const handleOpenEditModal = (value) => {
+      setEditRow((prev) => value);
+    };
   const handleOpenInfoModal = (user) => {
     
     setModalInfo((prev) => user);
@@ -171,38 +178,6 @@ function PatientsTable({
           />
         ),
       },
-      // {
-      //   Header: (event) => (
-      //     <>
-      //       <div className="columnHeader">Ախտորոշումներ</div>
-      //     </>
-      //   ),
-      //   Cell: ({ row }) => (
-      //     <div className="d-flex">
-      //       <div className="pe-2">{row.original.researchList.length}</div>
-      //       <BiSolidInfoCircle
-      //         cursor={"pointer"}
-      //         size={"1.5rem"}
-      //         onClick={() => handleOpenModal(row.original)}
-      //       />
-      //     </div>
-      //   ),
-      //   accessor: "researchList",
-      //   width: 200,
-      //   Filter: ({ column: { id } }) => <></>,
-      // },
-      // {
-      //   Header: (event) => (
-      //     <>
-      //       <div className="columnHeader">Արժեք (դրամ)</div>
-      //     </>
-      //   ),
-      //   Cell: ({ row }) => <div>{row.original.totalPrice}</div>,
-      //   accessor: "totalPrice",
-      //   width: 200,
-      //   Filter: ({ column: { id } }) => <></>,
-
-      // },
       {
         Header: (event) => (
           <>
@@ -218,6 +193,22 @@ function PatientsTable({
               size={"1.5rem"}
               onClick={() => handleOpenInfoModal(row.original)}
             />
+            </div>            
+            <div className="d-flex">
+            <a
+                className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover"
+                data-bs-toggle="tooltip"
+                data-placement="top"
+                title="Edit"
+                href="#"
+                onClick={() => handleOpenEditModal(row.original)}
+              >
+                <span className="icon">
+                  <span className="feather-icon">
+                    <FeatherIcon icon="edit" />
+                  </span>
+                </span>
+              </a>
             </div>            
             <div className="dropdown">
               <button
@@ -384,6 +375,11 @@ function PatientsTable({
                   </div>
       </Modal.Body>
     </Modal>
+      )
+    }
+    {
+      editRow &&(
+        <PatientEditModal patient={editRow} setEditRow={setEditRow} refreshData={refreshData}/>
       )
     }
     <table

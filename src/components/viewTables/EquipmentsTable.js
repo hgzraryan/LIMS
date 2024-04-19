@@ -11,6 +11,7 @@ import equipmentSvg from "../../../src/dist/img/equipmentSvg.svg";
 import { Modal } from "react-bootstrap";
 import { MdImportantDevices } from "react-icons/md";
 import "../../dist/css/data-table.css";
+import EquipmentEditModal from "../EditViews/EquipmentEditModal";
 
 function EquipmentsTable({
   confirmRef,
@@ -21,9 +22,14 @@ function EquipmentsTable({
   handleCloseModal,
   equipments,
   setEquipments,
-  getEquipments,
+  refreshData,
 }) {
   const [modalInfo, setModalInfo] = useState("");
+  const [editRow, setEditRow] = useState(false);
+
+  const handleOpenEditModal = (value) => {
+      setEditRow((prev) => value);
+    };
   const handleOpenInfoModal = (user) => {    
     setModalInfo((prev) => user);
   };
@@ -192,7 +198,9 @@ function EquipmentsTable({
                 data-bs-toggle="tooltip"
                 data-placement="top"
                 title="Edit"
-                href="edit-contact.html"
+                href="#"
+                onClick={() => handleOpenEditModal(row.original)}
+
               >
                 <span className="icon">
                   <span className="feather-icon">
@@ -330,6 +338,11 @@ function EquipmentsTable({
                   </div>
       </Modal.Body>
     </Modal>
+      )
+    }
+    {
+      editRow &&(
+        <EquipmentEditModal equipment={editRow} setEditRow={setEditRow} refreshData={refreshData}/>
       )
     }
     <table  className="table nowrap w-100 mb-5 dataTable no-footer" {...getTableProps()} >

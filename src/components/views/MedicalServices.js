@@ -315,8 +315,8 @@ function MedicalServices() {
                           handleCloseModal={handleCloseModal}
                           researches={medicalServices}
                           setResearches={setMedicalServices}
-                          getResearches={getMedicalServices}
-                        />
+                          refreshData={refreshData}
+                          />
                         <ReactPaginate
                           previousLabel = {"Հետ"}    
                           nextLabel = {"Առաջ"}

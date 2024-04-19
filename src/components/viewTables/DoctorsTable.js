@@ -18,6 +18,7 @@ import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { useNavigate } from "react-router-dom";
 import LoadingSpinner from "../LoadingSpinner";
 import "../../dist/css/data-table.css";
+import DoctorEditModal from "../EditViews/DoctorEditModal";
 
 function DoctorsTable({
   confirmRef,
@@ -28,14 +29,18 @@ function DoctorsTable({
   handleCloseModal,
   doctors,
   setDoctors,
-  // getDoctors
+  refreshData
 }) {
   const axiosPrivate = useAxiosPrivate()  
   const navigate = useNavigate();
   const [openModal,setOpenModal]=useState(false)
   const [modalInfo,setModalInfo]=useState({})
   const [imageUrl, setImageUrl] = useState(MissingAvatar);
+  const [editRow, setEditRow] = useState(false);
 
+  const handleOpenEditModal = (value) => {
+      setEditRow((prev) => value);
+    };
   const defaultColumn = React.useMemo(
     () => ({
       minWidth: 20,
@@ -189,7 +194,8 @@ function DoctorsTable({
                 data-bs-toggle="tooltip"
                 data-placement="top"
                 title="Edit"
-                href="edit-contact.html"
+                href="#"
+                onClick={() => handleOpenEditModal(row.original)}
               >
                 <span className="icon">
                   <span className="feather-icon">
@@ -295,6 +301,11 @@ function DoctorsTable({
           </Modal.Body>
         </Modal>
       )}
+ {
+      editRow &&(
+        <DoctorEditModal doctor={editRow} setEditRow={setEditRow} refreshData={refreshData}/>
+      )
+    }
         <table
           className="table nowrap w-100 mb-5 dataTable no-footer"
           {...getTableProps()}

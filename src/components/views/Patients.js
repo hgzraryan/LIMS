@@ -285,7 +285,7 @@ const Patients = () => {
                     selectedItem={selectedItem}
                     patients={patients}
                     setPatients={setPatients}
-                    getPatients={getPatients}
+                    refreshData={refreshData}
                     />
                       <ReactPaginate
                         previousLabel = {"Հետ"}    
