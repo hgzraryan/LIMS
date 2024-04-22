@@ -27,6 +27,7 @@ import organizationsSvg from "../../dist/svg/organizationsSvg.svg";
 import patientSvg from "../../dist/svg/patientSvg.svg";
 import ResearchesPrint from "../views/ResearchesPrint";
 import ProgressBar from "../ProgressBar";
+import moment from "moment";
 
 function DiagnosticsTable({
   confirmRef,
@@ -274,6 +275,12 @@ function DiagnosticsTable({
             placeholder="Գրանցման ամսաթիվ"
           />
         ),
+        Cell: ({ row }) => (
+          <div className="d-flex justify-content-center align-items-center">
+            {/* {new Date()} */}
+            {moment(row.original?.diagnosisDate).format('YYYY-MM-DD HH:mm')}
+          </div>
+        ),
       },
       {
         Header: "Տեսակ",
@@ -492,7 +499,7 @@ function DiagnosticsTable({
                       <div className="d-flex justify-content-between">
                         {" "}
                         <span>Գրանցվել է </span>{" "}
-                        <span>{modalInfo.createdAt}</span>
+                        <span>{moment.utc(modalInfo.createdAt).format('DD-MM-YYYY HH:mm')}</span>                        
                       </div>
 
                       <div className="separator-full m-0"></div>
@@ -522,7 +529,7 @@ function DiagnosticsTable({
                       <div className="separator-full m-0"></div>
                       <div className="d-flex justify-content-between">
                         <span>Վճարման ամսաթիվը </span>{" "}
-                        <span>{modalInfo.paymentDate}</span>
+                        <span>{moment.utc(modalInfo.paymentDate).format('DD-MM-YYYY HH:mm')}</span>
                       </div>
                       <div className="separator-full m-0"></div>
                     </div>

@@ -7,6 +7,7 @@ import FeatherIcon from "feather-icons-react/build/FeatherIcon";
 import { ColumnFilter } from "../ColumnFilter";
 import "../../dist/css/data-table.css";
 import AgentEditModal from "../EditViews/AgentEditModal";
+import moment from "moment";
 
 
 function AgentsTable({
@@ -149,6 +150,11 @@ function AgentsTable({
             setData={setAgents}
             placeholder = "Գրանցված է"
           />
+        ),
+        Cell: ({ row }) => (
+          <div className="d-flex align-items-center">
+             {moment.utc(row.original?.createdAt).format('DD-MM-YYYY HH:mm')}
+          </div>
         ),
       },
       {

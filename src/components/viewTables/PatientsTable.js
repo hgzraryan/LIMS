@@ -19,6 +19,7 @@ import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { Modal } from "react-bootstrap";
 import DefaultProfileImage from "../../../src/dist/img/Missing.svg";
 import PatientEditModal from "../EditViews/PatientEditModal";
+import moment from "moment";
 
 function PatientsTable({
   selectedItem,
@@ -346,11 +347,11 @@ function PatientsTable({
                        <div className="separator-full m-0"></div>
                        <div className="d-flex justify-content-between">  <span>Անուն Ազգանուն Հայրանուն </span> <span>{modalInfo.lastName} {modalInfo.firstName} {modalInfo.midName}</span></div>
                        <div className="separator-full m-0"></div>
-                       <div className="d-flex justify-content-between">  <span>Ծննդյան ամսաթիվ </span> <span>{modalInfo.dateOfBirth}</span></div>
+                       <div className="d-flex justify-content-between">  <span>Ծննդյան ամսաթիվ </span> <span>{moment.utc(modalInfo.dateOfBirth).format('DD-MM-YYYY')}</span></div>
                        <div className="separator-full m-0"></div>
                        <div className="d-flex justify-content-between">  <span>Սեռ </span> <span>{(modalInfo.gender==='Male')?'Արական':'Իգական'}</span></div>
                        <div className="separator-full m-0"></div>
-                       <div className="d-flex justify-content-between">  <span>Գրանցվել է </span> <span>{modalInfo.createdAt}</span></div>
+                       <div className="d-flex justify-content-between">  <span>Գրանցվել է </span> <span>{moment.utc(modalInfo.createdAt).format('DD-MM-YYYY HH:mm')}</span></div>
                        <div className="separator-full m-0"></div>
                        <div className="d-flex justify-content-between">  <span>Հասցե </span> <span>{modalInfo.contact?.address?.city}, {modalInfo.contact?.address?.street}</span></div>
                        <div className="separator-full m-0"></div>

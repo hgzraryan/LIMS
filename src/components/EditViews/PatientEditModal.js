@@ -101,10 +101,7 @@ function PatientEditModal({ patient, setEditRow, refreshData }) {
         lastName:
           lastName?.trim() !== patient?.lastName?.trim() ? lastName : null,
         midName: midName?.trim() !== patient?.midName?.trim() ? midName : null,
-        age:
-          calculateAge(dateOfBirth) !== patient.age
-            ? calculateAge(dateOfBirth)
-            : null,
+        age:calculateAge(dateOfBirth) !== patient.age? calculateAge(dateOfBirth): null,
         additional: editorRef.current.getContent({ format: "text" }),
         gender: gender?.trim() !== patient?.gender?.trim() ? gender : null,
         contact: {
@@ -142,18 +139,17 @@ function PatientEditModal({ patient, setEditRow, refreshData }) {
           },
         },
         dateOfBirth:
-          patient?.dateOfBirth.split("-").reverse().join("-").toString() !==
-          newDateOfBirthString
-            ? newDateOfBirthString
-            : null,
+          patient?.dateOfBirth?.split("T")[0] !==newDateOfBirthString
+           ? newDateOfBirthString
+           : null,
       };
 
       const updatedFields = deleteNullProperties(updatedPatient);
-      //console.log(updatedFields);
+      console.log(updatedFields);
       try {
         await axiosPrivate.put(
           PATIENTS_URL,
-          { ...updatedFields, id: patient.patientId },
+          { updatedFields, id: patient.patientId },
           {
             headers: { "Content-Type": "application/json" },
             withCredentials: true,
@@ -553,15 +549,17 @@ function PatientEditModal({ patient, setEditRow, refreshData }) {
                                           </span>
                                         )}
                                       </div>
+                                     { console.log(patient?.dateOfBirth)}
                                       <div>
                                         <CustomDateComponent
                                           name="dateOfBirth"
                                           control={methods.control}
-                                          defaultValue={patient?.dateOfBirth
-                                            .split("-")
-                                            .reverse()
-                                            .join("-")
-                                            .toString()}
+                                          defaultValue={patient?.dateOfBirth.split('T')[0]
+                                            // .split("-")
+                                            // .reverse()
+                                            // .join("-")
+                                            // .toString()
+                                          }
                                         />
                                       </div>
                                     </div>

@@ -22,6 +22,7 @@ import mobileSvg from "../../dist/svg/mobileSvg.svg";
 import emailSvg from "../../dist/svg/emailSvg.svg";
 import LoadingSpinner from "../LoadingSpinner";
 import profileBgImg from "../../dist/img/profile-bg.jpg";
+import moment from "moment";
 
 function PatientDetails() {
   const axiosPrivate = useAxiosPrivate()
@@ -135,7 +136,7 @@ function PatientDetails() {
           </>
         ),
         Cell:({row})=>(
-          <>{row.original.createdAt.split("T").join(', ').split('.')[0]}</>
+          <>{row.original.createdAt.split("T").join(' ').split('.',1)}</>
         ),
         accessor: "createdAt",
         sortable: true,
@@ -249,7 +250,9 @@ function PatientDetails() {
           </>
         ),
         Cell:({row})=>(
-          <>{row.original?.createdAt?.split("T").join(', ').split('.')[0]}</>
+          <>
+          {moment.utc(row.original?.createdAt).format('DD-MM-YYYY HH:mm')}
+          </>
         ),
         accessor: "createdAt",
         sortable: true,
@@ -257,14 +260,16 @@ function PatientDetails() {
 
         Filter: ({ column: { id } }) => <></>,
       },
-      {//
+      {
         Header: (event) => (
           <>
             <div className="columnHeader">Այցի ամսաթիվ</div>
           </>
         ),
         Cell:({row})=>(
-          <>{row.original?.visitDate?.split("T").join(', ').split('.')[0]}</>
+          <>
+          {moment.utc(row.original?.visitDate).format('DD-MM-YYYY HH:mm')}
+          </>
         ),
         accessor: "visitDate",
         sortable: true,
@@ -699,8 +704,14 @@ function PatientDetails() {
                             <span>
                               <i className="bi bi-briefcase-fill text-disabled me-2"></i>
                               <span className="text-muted">Ծննդյան ամսաթիվ:</span>
+                            <span className="ms-2">{moment.utc(patientDetails?.dateOfBirth).format('DD-MM-YYYY')}</span></span>
+                          </li>
+                          <li className="list-group-item border-0">
+                            <span>
+                              <i className="bi bi-briefcase-fill text-disabled me-2"></i>
+                              <span className="text-muted">Գրանցման ամսաթիվ:</span>
                             </span>
-                            <span className="ms-2">{patientDetails?.dateOfBirth.split("T")[0].split('-').reverse().join('-')}</span>
+                            <span className="ms-2">{moment.utc(patientDetails?.createdAt).format('DD-MM-YYYY HH:mm')}</span>
                           </li>
                          
                           

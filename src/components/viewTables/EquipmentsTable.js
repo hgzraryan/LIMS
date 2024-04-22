@@ -12,6 +12,7 @@ import { Modal } from "react-bootstrap";
 import { MdImportantDevices } from "react-icons/md";
 import "../../dist/css/data-table.css";
 import EquipmentEditModal from "../EditViews/EquipmentEditModal";
+import moment from "moment";
 
 function EquipmentsTable({
   confirmRef,
@@ -155,6 +156,11 @@ function EquipmentsTable({
             placeholder={'Գնման ամսաթիվ'}
 
           />
+        ),
+        Cell: ({ row }) => (
+          <div className="d-flex align-items-center">
+             {row.original?.purchaseDate?.split("T")[0]}
+          </div>
         ),
       },
       {
@@ -315,11 +321,11 @@ function EquipmentsTable({
                        <div className="separator-full m-0"></div>
                        <div className="d-flex justify-content-between">  <span>Սերիական համար</span> <span>{modalInfo.serialNumber}</span></div>
                        <div className="separator-full m-0"></div>
-                       <div className="d-flex justify-content-between">  <span>Գրանցման ամսաթիվ </span> <span>{modalInfo.createdAt}</span></div>
+                       <div className="d-flex justify-content-between">  <span>Գրանցման ամսաթիվ </span> <span>{moment.utc(modalInfo.createdAt).format('DD-MM-YYYY HH:mm')}</span></div>
                        <div className="separator-full m-0"></div>                  
-                       <div className="d-flex justify-content-between">  <span>Ձեռք բերման ամսաթիվ </span> <span>{modalInfo.purchaseDate}</span></div>
+                       <div className="d-flex justify-content-between">  <span>Ձեռք բերման ամսաթիվ </span> <span>{moment.utc(modalInfo.purchaseDate).format('DD-MM-YYYY')}</span></div>
                        <div className="separator-full m-0"></div>                  
-                       <div className="d-flex justify-content-between">  <span>Երաշխիքի ավարտ </span> <span>{modalInfo.warrantyExpiryDate}</span></div>
+                       <div className="d-flex justify-content-between">  <span>Երաշխիքի ավարտ </span> <span>{moment.utc(modalInfo.warrantyExpiryDate).format('DD-MM-YYYY')}</span></div>
                        <div className="separator-full m-0"></div>                  
                   </div>
                 </div>

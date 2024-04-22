@@ -463,7 +463,7 @@ function AddDoctorsVisit({
                                           closeMenuOnSelect={false}
                                           options={medicalServices.map((res) => ({
                                             value: res.medServiceId,
-                                            label: `${res?.serviceName}`,
+                                            label: `${res?.medServiceId}. ${res?.serviceName}`,
                                             price: res?.price
                                           }))}
                                           // styles={colourStyles}

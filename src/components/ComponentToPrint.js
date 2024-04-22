@@ -8,6 +8,7 @@ import { connect, useSelector } from "react-redux";
 import { selectResearches } from "../redux/features/researches/researchesSlice";
 import BarcodeComp from "./BarcodeComp";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
+import moment from "moment";
 
 export const ComponentToPrint = forwardRef(({ value,currentClient }, ref) => {
 
@@ -130,10 +131,10 @@ const { inputRef } = Barcode({
               <li >Անուն Ազգանուն: <span style={{fontWeight:'bold',fontSize:'1.1rem'}}>{currentClient?.firstName+" "+ currentClient?.lastName}</span>
               </li>
               <li >Սեռ: <span style={{fontWeight:'bold',fontSize:'1.1rem'}}>{(currentClient?.gender==='Male')?'Արական':'Իգական'}</span></li>
-              <li >Ծննդյան ամսաթիվ: <span style={{fontWeight:'bold',fontSize:'1.1rem'}}>{currentClient?.dateOfBirth.split("T")[0].split('-').reverse().join('-')}</span></li>
+              <li >Ծննդյան ամսաթիվ: <span style={{fontWeight:'bold',fontSize:'1.1rem'}}>{moment.utc(currentClient?.dateOfBirth).format('DD-MM-YYYY')}</span></li>
               <li >Տարիք: <span style={{fontWeight:'bold',fontSize:'1.1rem'}}>{currentClient?.age}</span></li>
               <li >Հեռախոս: <span style={{fontWeight:'bold',fontSize:'1.1rem'}}>{currentClient?.contact?.phone}</span></li>
-              <li >Տրման ամսաթիվ: <span style={{fontWeight:'bold',fontSize:'1.1rem'}}>{value?.createdAt}</span></li>
+              <li >Տրման ամսաթիվ: <span style={{fontWeight:'bold',fontSize:'1.1rem'}}>{moment.utc(value?.createdAt).format('DD-MM-YYYY HH:mm')}</span></li>
               {/* <li>
                 Անուն Ազգանուն: `${value.firstName} ${value.lastName} `
               </li>
@@ -163,7 +164,7 @@ const { inputRef } = Barcode({
                   </tr>
                 ))}
               </thead>
-              {value.statusBoard[1].researches?.length && (
+              {value.statusBoard[1].researches?.length ? (
            
                 <tbody {...getTableBodyProps()}>
                 {rows.map((row, i) => {
@@ -184,7 +185,7 @@ const { inputRef } = Barcode({
                   );
                 })}
               </tbody>
-                )}
+                ):''}
             </table>
           </div>
         </section>

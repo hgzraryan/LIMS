@@ -23,6 +23,7 @@ import emailSvg from "../../dist/svg/emailSvg.svg";
 import LoadingSpinner from "../LoadingSpinner";
 import userSamplePhoto from "../../dist/img/Missing.svg";
 import profileBgImg from "../../dist/img/profile-bg.jpg";
+import moment from "moment";
 
 function UserDetails() {
   const axiosPrivate = useAxiosPrivate()
@@ -180,14 +181,14 @@ function UserDetails() {
                                 <i className="bi bi-house-door-fill text-disabled me-2"></i>
                                 <span className="text-muted">Գրանցման ամսաթիվ:</span>
                               </span>
-                              <span className="ms-2">{userDetails?.createdAt}</span>
+                              <span className="ms-2">{moment.utc(userDetails?.createdAt).format('DD-MM-YYYY HH:mm')}</span>
                             </li>
                             <li className="list-group-item border-0">
                               <span>
                                 <i className="bi bi-briefcase-fill text-disabled me-2"></i>
                                 <span className="text-muted">Ծննդյան ամսաթիվ:</span>
                               </span>
-                              <span className="ms-2">{userDetails?.birthday}</span>
+                              <span className="ms-2">{moment.utc(userDetails?.birthday).format('DD-MM-YYYY')}</span>
                             </li>
                             <li className="list-group-item border-0">
                               <span>

@@ -65,14 +65,14 @@ function ResearchListEditModal({ researchList, setEditRow, refreshData }) {
           researchName?.trim() !== researchList?.researchName?.trim()
             ? researchName
             : null,
-        localCode:
-          localCode?.trim() !== researchList?.localCode?.trim()
-            ? localCode
-            : null,
-        partnerCode:
-          partnerCode?.trim() !== researchList?.partnerCode?.trim()
-            ? partnerCode
-            : null,
+        // localCode:
+        //   localCode?.trim() !== researchList?.localCode?.trim()
+        //     ? localCode
+        //     : null,
+        // partnerCode:
+        //   partnerCode?.trim() !== researchList?.partnerCode?.trim()
+        //     ? partnerCode
+        //     : null,
         laboratoryService:
           laboratoryService?.trim() !== researchList?.laboratoryService?.trim()
             ? laboratoryService
@@ -267,7 +267,7 @@ function ResearchListEditModal({ researchList, setEditRow, refreshData }) {
                                     />
                                   </div>
                                 </div>
-                                <div className="row gx-3">
+                                {/* <div className="row gx-3">
                                   <div className="col-sm-6">
                                     <Input
                                       {...localCode_validation}
@@ -280,7 +280,7 @@ function ResearchListEditModal({ researchList, setEditRow, refreshData }) {
                                       defaultValue={researchList?.partnerCode}
                                     />
                                   </div>
-                                </div>
+                                </div> */}
                                 <div className="row gx-3">
                                   <div className="col-sm-6">
                                     <div className="d-flex justify-content-between me-2">

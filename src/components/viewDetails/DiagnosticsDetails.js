@@ -17,6 +17,7 @@ import profileBgImg from "../../dist/img/profile-bg.jpg";
 import FeatherIcon from "feather-icons-react/build/FeatherIcon";
 import { toast } from "react-toastify";
 import FileDownload from "js-file-download";
+import moment from "moment";
 
 function DiagnosticsDetails() {
   const axiosPrivate = useAxiosPrivate();
@@ -436,7 +437,7 @@ responseType:'blob'
                               </span>
                             </span>
                             <span className="ms-2">
-                              {diagnosticsDetails?.createdAt.split("T")[0].split('-').reverse().join('-')}
+                            {moment.utc(diagnosticsDetails?.createdAt).format('DD-MM-YYYY HH:mm')}
                             </span>
                           </li>
 
@@ -481,9 +482,61 @@ responseType:'blob'
                             <p>Հետազոտություններ</p>
                           </div>
                           <div className="card-action-wrap"></div>
-                        </div>
+                        </div>                        
+                          <div className="ps-2 pe-2" >
+                          {(diagnosticsDetails && diagnosticsDetails?.statusBoard?.[1]?.researches?.length)?
+                            (
+                              <>
+                              <p className="fw-bold">Նմուշառման փուլ</p>
+                              <ol>
+                        {diagnosticsDetails?.statusBoard?.[1]?.researches?.map((el,id)=>{
+                          return ( 
+                              <li key={el.id}>{el.name}</li>
+                            )
+                          })}
+                          </ol>
+                          </>)
+                        :''   
+                        }
+                        
+                          </div>                        
+                          <div className="ps-2 pe-2" >
+                          {(diagnosticsDetails && diagnosticsDetails?.statusBoard?.[2]?.researches?.length)?
+                            (
+                            <>
+                            <p className="fw-bold">Հետազոտման փուլ</p>
+                            <ol>
+                        {diagnosticsDetails?.statusBoard?.[2]?.researches?.map((el,id)=>{
+                          return ( 
+                              <li key={el.id}>{el.name}</li>
+                            )
+                          })}
+                          </ol>
+                          </>)
+                        :''   
+                        }
+                            
+                          </div>
+                        
+                          <div className="ps-2 pe-2" >
+                          {(diagnosticsDetails && diagnosticsDetails?.statusBoard?.[3]?.researches?.length)?
+                            (
+                            <>
+                            <p className="fw-bold">Հաստատման փուլ</p>
+                            <ol>
+                        {diagnosticsDetails?.statusBoard?.[3]?.researches?.map((el,id)=>{
+                          return ( 
+                              <li key={el.id}>{el.name}</li>
+                            )
+                          })}
+                          </ol>
+                          </>)
+                        :''   
+                        }                    
+                          </div>                       
                         <div className="card-body">
-                          <div className="d-flex justify-content-center align-items-center ms-10 me-10">
+                          <div className="ms-10 me-10">
+                          <p className="fw-bold">Պատասխանների հանձնման փուլ </p>
                             <table
                               className="table"
                               style={{

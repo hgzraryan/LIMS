@@ -3,6 +3,7 @@ import { Modal } from "react-bootstrap";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import moment from "moment";
 
 function DiagnosticsEditModal({
   handleCloseEditModal,
@@ -64,7 +65,7 @@ function DiagnosticsEditModal({
       </Modal.Header>
       <Modal.Body>
         <p>Ախտորոշման նույնականացման համար։{rowData.diagnosticsId}</p>
-        <p>Ախտորոշման ամսաթիվ։{rowData.diagnosisDate}</p>
+        <p>Ախտորոշման ամսաթիվ։{moment.utc(rowData?.diagnosisDate).format('DD-MM-YYYY HH:mm')}</p>
         <p>Ախտորոշման տեսակը։{rowData.internalStatus}</p>
         <div className="separator-full"></div>
 

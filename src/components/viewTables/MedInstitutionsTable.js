@@ -16,6 +16,7 @@ import DefaultProfileImage from "../../../src/dist/img/Missing.svg";
 import ComponentToConfirm from "../ComponentToConfirm";
 import "../../dist/css/data-table.css";
 import MedInstitutionEditModal from "../EditViews/MedInstitutionEditModal";
+import moment from "moment";
 
 function MedInstitutionsTable({
   confirmRef,
@@ -326,7 +327,7 @@ function MedInstitutionsTable({
                       <div className="d-flex justify-content-between">
                         {" "}
                         <span>Գրանցված է </span>{" "}
-                        <span>{modalInfo.createdAt}</span>
+                        <span>{moment.utc(modalInfo.createdAt).format('DD-MM-YYYY HH:mm')}</span>
                       </div>
                       <div className="separator-full m-0"></div>
                       <div className="d-flex justify-content-between">

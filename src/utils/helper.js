@@ -8,6 +8,13 @@ export  function deleteNullProperties(obj) {
         delete obj[key];
       }
     }
+    if(obj?.contact?.address && Object.keys(obj?.contact?.address).length===0){
+      delete obj?.contact?.address
+    }
+    if(obj?.contact && Object.keys(obj?.contact).length===0){
+      delete obj?.contact
+    }
+
     return obj
   }
   

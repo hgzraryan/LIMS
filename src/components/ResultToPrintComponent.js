@@ -4,6 +4,7 @@ import { useTable } from "react-table";
 // import Barcode from "react-barcode";
 import mainLogo from "../dist/img/main-logo.png";
 import BarcodeComp from "./BarcodeComp";
+import moment from "moment";
 
 export const ResultToPrintComponent = forwardRef(({ value,patient,statusBoard }, ref) => {
    const columns = React.useMemo(
@@ -162,7 +163,7 @@ return (
 
                 <div className="d-flex ">
                   <p className="ms-2 fw-bold">{patient?.gender==='Male' ? 'Ար․':'Իգ'}</p>
-                  <p className="ms-2 fw-bold">{patient?.dateOfBirth }</p>
+                  <p className="ms-2 fw-bold">{moment.utc(patient?.dateOfBirth).format('DD-MM-YYYY')},</p>
                   <p className="ms-2 fw-bold">{patient?.age }</p>
                 </div>
               </div>
@@ -256,7 +257,7 @@ return (
                     fill="#000000"
                   />
                 </svg>
-                <p>{value?.createdAt }</p>
+                <p>{moment.utc(value?.createdAt).format('DD-MM-YYYY HH:mm')}</p>
               </div>
               <div className="d-flex">
                 <svg
@@ -297,7 +298,7 @@ return (
                     fill="#000000"
                   />
                 </svg>
-                <p>{value?.diagnosisDate }</p>
+                <p>{moment.utc(value?.diagnosisDate).format('DD-MM-YYYY HH:mm')}</p>
               </div>
             </div>
           </div>
@@ -313,7 +314,7 @@ return (
             <div className="d-flex justify-content-center align-items-center mt-2">
               <p>
                 
-                Նմուշառված է՝ {value?.diagnosisDate || '22․01․24 10։08'}
+                Նմուշառված է՝ {moment.utc(value?.diagnosisDate).format('DD-MM-YYYY HH:mm')}
                 {/* <span className="ps-8"> Արտաքին նմուշ [] </span> */}
               </p>
             </div>

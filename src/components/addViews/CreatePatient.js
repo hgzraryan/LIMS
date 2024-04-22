@@ -887,7 +887,7 @@ function CreatePatient({
                                           components={animatedComponents}
                                           options={researchState.map((res) => ({
                                             value: res.researchListId,
-                                            label: res?.researchName,
+                                            label: `${res?.researchListId} - ${res?.researchName}`,
                                             //label:`${res.researchName} - ${res.price}`,
                                             price: res?.price
                                           }))}
@@ -1072,7 +1072,7 @@ function CreatePatient({
                                           closeMenuOnSelect={false}
                                           options={medicalServices.map((res) => ({
                                             value: res.medServiceId,
-                                            label: `${res?.serviceName}`,
+                                            label: `${res?.medServiceId}. ${res?.serviceName}`,
                                             price: res?.price
                                           }))}
                                           // styles={colourStyles}

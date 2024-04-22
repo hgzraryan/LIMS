@@ -5,6 +5,7 @@ import BarcodeComp from "../BarcodeComp";
 import mainLogo from "../../dist/img/main-logo.png";
 import { useTable } from "react-table";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import moment from "moment";
 
 function ResearchesPrint({ modalPrint, setModalPrint }) {
   const axiosPrivate = useAxiosPrivate();
@@ -314,7 +315,7 @@ function ResearchesPrint({ modalPrint, setModalPrint }) {
                           <span
                             style={{ fontWeight: "bold", fontSize: "1.1rem" }}
                           >
-                            {currentClient?.dateOfBirth.split("T")[0].split('-').reverse().join('-')}
+                            {moment.utc(currentClient?.dateOfBirth).format('DD-MM-YYYY')}
                           </span>
                         </li>
                         <li>
@@ -338,7 +339,7 @@ function ResearchesPrint({ modalPrint, setModalPrint }) {
                           <span
                             style={{ fontWeight: "bold", fontSize: "1.1rem" }}
                           >
-                            {modalPrint?.createdAt}
+                            {moment.utc(modalPrint?.createdAt).format('DD-MM-YYYY HH:mm')}
                           </span>
                         </li>
                       </ul>

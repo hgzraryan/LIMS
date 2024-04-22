@@ -14,6 +14,7 @@ import ComponentToPrintResultWrapper from './ComponentToPrintResultWrapper.js';
 import useAxiosPrivate from '../hooks/useAxiosPrivate.js';
 import LoadingSpinner from './LoadingSpinner.js';
 import organizationsSvg from '../dist/svg/organizationsSvg.svg'
+import moment from 'moment';
 
   function ResultData({modalResult,setModalResult}) { 
     // const [patient,setPatient]=useState({})
@@ -254,7 +255,7 @@ useEffect(()=>{
    
                    <div style={{display:'flex'}}>
                      <p style={{marginLeft:'2px',fontWeight:'bold'}}>{currentClient?.gender==='Male' ? 'Ար․':'Իգ'}</p>
-                     <p style={{marginLeft:'2px',fontWeight:'bold'}}>{currentClient.dateOfBirth }</p>
+                     <p style={{marginLeft:'2px',fontWeight:'bold'}}>{moment.utc(currentClient.dateOfBirth).format('DD-MM-YYYY') },</p>
                      <p style={{marginLeft:'2px',fontWeight:'bold'}}>{currentClient.age}</p>
                    </div>
                  </div>
@@ -280,12 +281,12 @@ useEffect(()=>{
                  <div style={{display:'flex'}}>
                  <img src={calendarIcon} alt='calendarIcon' width='20px' height='20px' style={{marginLeft:'10px', marginRight:'10px'}}/>
 
-                   <p>{modalResult.createdAt || '22.01.24 10:08'}</p>
+                   <p>{moment.utc(modalResult?.createdAt).format('DD-MM-YYYY HH:mm')}</p>
                  </div>
                  <div style={{display:'flex'}}>
                  <img src={calendarIcon} alt='calendarIcon' width='20px' height='20px' style={{marginLeft:'10px', marginRight:'10px'}}/>
 
-                   <p>{modalResult.diagnosisDate || '22.01.24 15:08'}</p>
+                   <p>{moment.utc(modalResult?.diagnosisDate).format('DD-MM-YYYY HH:mm')}</p>
                  </div>
                </div>
              </div>
@@ -301,7 +302,7 @@ useEffect(()=>{
                <div style={{display:'flex',justifyContent:'center',marginTop:'0.5rem',alignItems:'center'}} >
                  <p>
                    
-                   Նմուշառված է՝ {modalResult.diagnosisDate}
+                   Նմուշառված է՝ {moment.utc(modalResult?.diagnosisDate).format('DD-MM-YYYY HH:mm')}
                    {/* <span className="ps-8"> Արտաքին նմուշ [] </span> */}
                  </p>
                </div>

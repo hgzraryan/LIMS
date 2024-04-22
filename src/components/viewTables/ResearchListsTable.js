@@ -10,6 +10,7 @@ import researchSvg from "../../../src/dist/img/research.svg";
 import "../../dist/css/data-table.css";
 import { Modal } from "react-bootstrap";
 import ResearchListEditModal from "../EditViews/ResearchListEditModal";
+import moment from "moment";
 function ResearchListsTable({
   confirmRef,
   selectedItem,
@@ -484,7 +485,7 @@ function ResearchListsTable({
                        <div className="separator-full m-0"></div>
                        <div className="d-flex justify-content-between">  <span>Արժեք </span> <span>{modalInfo.researchesPrice}</span></div>
                        <div className="separator-full m-0"></div>                  
-                       <div className="d-flex justify-content-between">  <span>Գրանցված է </span> <span>{modalInfo.createdAt}</span></div>
+                       <div className="d-flex justify-content-between">  <span>Գրանցված է </span> <span>{moment.utc(modalInfo.createdAt).format('DD-MM-YYYY HH:mm')}</span></div>
                        <div className="separator-full m-0"></div>                     
                   </div>
                 </div>

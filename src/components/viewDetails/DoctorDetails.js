@@ -21,6 +21,7 @@ import profileBgImg from "../../dist/img/profile-bg.jpg";
 
 import { Button } from "react-bootstrap";
 import FeatherIcon from "feather-icons-react/build/FeatherIcon";
+import moment from "moment";
 const customAppointData = [
   { time: "10:00AM", available: true },
   { time: "10:15AM", available: true },
@@ -216,14 +217,14 @@ function DoctorDetails() {
                                 <i className="bi bi-house-door-fill text-disabled me-2"></i>
                                 <span className="text-muted">Գրանցման ամսաթիվ:</span>
                               </span>
-                              <span className="ms-2">{doctorDetails?.joiningDate.split("T")[0].split('-').reverse().join('-')}</span>
+                              <span className="ms-2">{moment.utc(doctorDetails?.joiningDate).format('DD-MM-YYYY HH:mm')}</span>
                             </li>
                             <li className="list-group-item border-0">
                               <span>
                                 <i className="bi bi-briefcase-fill text-disabled me-2"></i>
                                 <span className="text-muted">Ծննդյան ամսաթիվ:</span>
                               </span>
-                              <span className="ms-2">{doctorDetails?.dateOfBirth.split("T")[0].split('-').reverse().join('-')}</span>
+                              <span className="ms-2">{moment.utc(doctorDetails?.dateOfBirth).format('DD-MM-YYYY')}</span>
                             </li>
                             <li className="list-group-item border-0">
                               <span>

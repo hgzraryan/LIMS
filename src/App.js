@@ -99,11 +99,11 @@ function App() {
   useEffect(() => {
     const userLoginData1 = JSON.parse(localStorage.getItem('userData'));
     if (userLoginData1) {
-      const asd={
-        ...userLoginData1,
-        //Roles:[9578]
-      }
-      setuserLoginData(asd)
+      // const currentUser={
+      //   ...userLoginData1,
+      //   //Roles:[9578]
+      // }
+      setuserLoginData(userLoginData1)
     }
   }, []);
   return (

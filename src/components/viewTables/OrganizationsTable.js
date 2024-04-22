@@ -18,6 +18,7 @@ import infoModalImg from "../../../src/dist/svg/organizationsSvg.svg";
 import "../../dist/css/data-table.css";
 import { useNavigate } from "react-router-dom";
 import OrganizationEditModal from "../EditViews/OrganizationEditModal";
+import moment from "moment";
 
 function OrganizationsTable({
   confirmRef,
@@ -158,6 +159,7 @@ function OrganizationsTable({
         ),
       },
       {
+        
         Header: (event) => (
           <>
             <div className="columnHeader">Գրանցված է</div>
@@ -172,6 +174,11 @@ function OrganizationsTable({
           setData={setOrganizations}
           placeholder = "Գրանցված է"
           />
+        ),
+        Cell: ({ row }) => (
+          <div className="d-flex align-items-center">
+             {moment.utc(row.original?.createdAt).format('DD-MM-YYYY HH:mm')}
+          </div>
         ),
       },
       {
@@ -315,7 +322,7 @@ function OrganizationsTable({
                        <div className="separator-full m-0"></div>
                        <div className="d-flex justify-content-between">  <span>Անվանում </span> <span>{modalInfo.name}</span></div>
                        <div className="separator-full m-0"></div>
-                       <div className="d-flex justify-content-between">  <span>Գրանցվել է </span> <span>{modalInfo.createdAt}</span></div>
+                       <div className="d-flex justify-content-between">  <span>Գրանցվել է </span> <span>{moment.utc(modalInfo.createdAt).format('DD-MM-YYYY HH:mm')}</span></div>
                        <div className="separator-full m-0"></div>
                        <div className="d-flex justify-content-between">  <span>Հասցե </span> <span>{modalInfo.address?.city}, {modalInfo.address?.street}</span></div>
                        <div className="separator-full m-0"></div>

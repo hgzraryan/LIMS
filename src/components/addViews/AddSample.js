@@ -362,21 +362,21 @@ function Sample() {
                         </div>
                       </div>
                       {/*
-                                            <div className="dropdown-divider"></div>
-                                            <a className="dropdown-item" href="profile.html">Profile</a>
-                                                <a className="dropdown-item" href="/privacy-policy">
-                                                <span className="me-2">Offers</span>
-                                                <span className="badge badge-sm badge-soft-pink">2</span>
-                                                </a>
-                                                <div className="dropdown-divider"></div>
-                                                <h6 className="dropdown-header">Manage Account</h6>
-                                                <a className="dropdown-item" href="/privacy-policy"><span className="dropdown-icon feather-icon"><i data-feather="credit-card"></i></span><span>Payment methods</span></a>
-                                                <a className="dropdown-item" href="/privacy-policy"><span className="dropdown-icon feather-icon"><i data-feather="check-square"></i></span><span>Subscriptions</span></a>
-                                                <a className="dropdown-item" href="/privacy-policy"><span className="dropdown-icon feather-icon"><i data-feather="settings"></i></span><span>Settings</span></a>
-                                                <div className="dropdown-divider"></div>
-                                                <a className="dropdown-item" href="/privacy-policy"><span className="dropdown-icon feather-icon"><i data-feather="tag"></i></span><span>Raise a ticket</span></a>
-                                                <div className="dropdown-divider"></div>
-                                              */}
+                        <div className="dropdown-divider"></div>
+                        <a className="dropdown-item" href="profile.html">Profile</a>
+                            <a className="dropdown-item" href="/privacy-policy">
+                            <span className="me-2">Offers</span>
+                            <span className="badge badge-sm badge-soft-pink">2</span>
+                            </a>
+                            <div className="dropdown-divider"></div>
+                            <h6 className="dropdown-header">Manage Account</h6>
+                            <a className="dropdown-item" href="/privacy-policy"><span className="dropdown-icon feather-icon"><i data-feather="credit-card"></i></span><span>Payment methods</span></a>
+                            <a className="dropdown-item" href="/privacy-policy"><span className="dropdown-icon feather-icon"><i data-feather="check-square"></i></span><span>Subscriptions</span></a>
+                            <a className="dropdown-item" href="/privacy-policy"><span className="dropdown-icon feather-icon"><i data-feather="settings"></i></span><span>Settings</span></a>
+                            <div className="dropdown-divider"></div>
+                            <a className="dropdown-item" href="/privacy-policy"><span className="dropdown-icon feather-icon"><i data-feather="tag"></i></span><span>Raise a ticket</span></a>
+                            <div className="dropdown-divider"></div>
+                        */}
                       {/* <a className="dropdown-item" href="/support">
                           Օգնություն և սպասարկում
                         </a> */}
@@ -448,7 +448,7 @@ function Sample() {
                                 {data.client.firstName + " "}
                                 {data.client.midName + " "}
                                 {data.client.lastName + ", "}
-                                {data.client.dateOfBirth + ", "}
+                                {data.client.dateOfBirth?.split("T")[0].split("-").reverse().join("-")}
                               </span>
                             </div>
                           </header>

@@ -5,6 +5,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import FeatherIcon from 'feather-icons-react/build/FeatherIcon';
 import profileBgImg from "../../dist/img/profile-bg.jpg";
 import FileDownload from "js-file-download";
+import moment from 'moment';
 
 function DoctorsVisitsDetails() {
   const navigate = useNavigate()
@@ -278,7 +279,7 @@ function DoctorsVisitsDetails() {
                               </span>
                             </span>
                             <span className="ms-2">
-                              {doctorsVisitsDetails?.createdAt.split("T").join(', ').split('.')[0]}
+                              {moment.utc(doctorsVisitsDetails?.createdAt).format('DD-MM-YYYY HH:mm')}
                             </span>
                           </li>
 

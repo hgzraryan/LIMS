@@ -17,6 +17,7 @@ import { useNavigate } from 'react-router-dom';
 import { BiSolidInfoCircle } from 'react-icons/bi';
 import { Modal } from 'react-bootstrap';
 import ProgressBar from '../ProgressBar';
+import moment from 'moment';
 
 function DoctorsVisitsTable({
     selectedItem,
@@ -167,6 +168,13 @@ function DoctorsVisitsTable({
               setData={setDoctorsVisits}
               placeholder = "Այցի ամսաթիվ"
               />
+              ),
+              Cell: ({ row }) => (
+                
+                <div className="d-flex justify-content-center align-items-center flex-column">
+                {moment.utc(row.original?.visitDate).format('DD-MM-YYYY HH:mm') }
+                  
+                </div>
               ),
             },
             {
@@ -335,9 +343,9 @@ function DoctorsVisitsTable({
                        <div className="separator-full m-0"></div>                  
                        <div className="d-flex justify-content-between">  <span>Բժիշկ </span> <span>{modalInfo.doctorName}</span></div>
                        <div className="separator-full m-0"></div>
-                       <div className="d-flex justify-content-between">  <span>Այցի ամսաթիվ </span> <span>{modalInfo?.visitDate}</span></div>
+                       <div className="d-flex justify-content-between">  <span>Այցի ամսաթիվ </span> <span>{modalInfo?.visitDate?.split("T").join(' ').split('.',1)}</span></div>
                        <div className="separator-full m-0"></div>
-                       <div className="d-flex justify-content-between">  <span>Հաջորդ այց </span> <span>{modalInfo?.nextVisit}</span></div>
+                       <div className="d-flex justify-content-between">  <span>Հաջորդ այց </span> <span>{modalInfo?.nextVisit?.split("T").join(' ').split('.',1)}</span></div>
                        <div className="separator-full m-0"></div>
                       <div className="d-flex justify-content-between">
                         {" "}
@@ -353,7 +361,7 @@ function DoctorsVisitsTable({
                       <div className="separator-full m-0"></div>
                       <div className="d-flex justify-content-between">
                         <span>Վճարման ամսաթիվը </span>{" "}
-                        <span>{modalInfo.paymentDate}</span>
+                        <span>{modalInfo.paymentDate?.split("T").join(' ').split('.',1)}</span>
                       </div>
                       <div className="separator-full m-0"></div>
                   </div>

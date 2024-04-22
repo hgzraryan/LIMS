@@ -749,6 +749,7 @@ const onResearchSelect = (data) => {
                                     )}
                                   </div>
                                   <div className="form-control">
+                                    {console.log(researches)}
                                     <Controller
                                       name="research"
                                       control={methods.control}
@@ -768,7 +769,7 @@ const onResearchSelect = (data) => {
                                           components={animatedComponents}
                                           options={researches.map((res) => ({
                                             value: res.researchListId,
-                                            label: res?.researchName,
+                                            label: `${res?.researchListId} - ${res?.researchName}`,
                                             price: res?.price
                                           }))}
                                           styles={colourStyles}
