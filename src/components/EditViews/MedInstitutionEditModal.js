@@ -90,7 +90,7 @@ function MedInstitutionEditModal({medInstitution,setEditRow,refreshData}) {
 
       console.log(updatedMedInstitution);
       try {
-        await axiosPrivate.put(MEDICALSERVICES_URL, { ...updatedFields, id: medInstitution.medInstitutionsId }, {
+        await axiosPrivate.put(MEDICALSERVICES_URL, { updatedFields, id: medInstitution.medInstitutionsId }, {
           headers: { "Content-Type": "application/json" },
           withCredentials: true,
         });
@@ -194,7 +194,9 @@ function MedInstitutionEditModal({medInstitution,setEditRow,refreshData}) {
                                           onChange={(val) => {
                                             field.onChange(val);
                                             setCountry(val);
-                                            trigger("country");
+                                            methods.trigger("country");
+                                            methods.setValue("state",'')
+                                            methods.trigger("state")
                                           }}
                                           style={{
                                             appearance: "auto",
@@ -363,7 +365,7 @@ function MedInstitutionEditModal({medInstitution,setEditRow,refreshData}) {
                           className="btn btn-primary"
                           data-bs-dismiss="modal"
                         >
-                          Ավելացնել
+                          Հաստատել
                         </button>
                       </div>
                     </Form>

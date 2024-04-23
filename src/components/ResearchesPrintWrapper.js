@@ -2,6 +2,7 @@
 import React, { useRef } from 'react'
 import { ComponentToPrint } from './ComponentToPrint';
 import ReactToPrint from 'react-to-print';
+import {ComponentToPrintVisit} from './ComponentToPrintVisit';
 
 function ResearchesPrintWrapper({ value,currentClient }) {
     let componentRef = useRef(null); // 2.
@@ -20,7 +21,12 @@ function ResearchesPrintWrapper({ value,currentClient }) {
           content={() => componentRef.current}
         />
         <div style={{ display: "none" }}>
-          <ComponentToPrint ref={componentRef} value={value} currentClient={currentClient} />
+         {value?.diagnosticsId 
+         ?<ComponentToPrint ref={componentRef} value={value} currentClient={currentClient} />
+         :value?.doctorsVisitId
+         ?<ComponentToPrintVisit ref={componentRef} value={value} currentClient={currentClient} />
+         :''
+         }
         </div>
       </div>
     );

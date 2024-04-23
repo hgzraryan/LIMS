@@ -340,9 +340,9 @@ function DiagnosticsTable({
                 href="#"
                 onClick={() => handleOpenEditModal(row.original)}
               >
-                <span className="icon">
+                 <span className="icon">
                   <span className="feather-icon">
-                    <FeatherIcon icon="edit" />
+                    <FeatherIcon icon="power" style={{color: row.original?.diagStatus==="Active" ?'green':row.original?.diagStatus==="Cancelled"? 'red' : 'black' }} />
                   </span>
                 </span>
               </a>

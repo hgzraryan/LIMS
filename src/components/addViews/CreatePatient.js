@@ -370,7 +370,9 @@ function CreatePatient({
                                     onChange={(val) => {
                                       field.onChange(val);
                                       setCountry(val);
-                                      trigger("country");
+                                      methods.trigger("country");
+                                      methods.setValue("state",'')
+                                      methods.trigger("state")
                                     }}
                                     style={{
                                       appearance: "auto",
@@ -637,7 +639,6 @@ function CreatePatient({
                                     type="checkbox"
                                     name="selectDoctorsVisit"
                                     checked={addDoctorsVisit}
-                                    disabled={addDiagnostic}
                                     onChange={(e) =>
                                       setAddDoctorsVisit(e.target.checked)
                                     }

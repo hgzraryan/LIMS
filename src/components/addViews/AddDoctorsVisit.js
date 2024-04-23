@@ -122,6 +122,7 @@ function AddDoctorsVisit({
     const [errMsg, setErrMsg] = useState("");
     const axiosPrivate = useAxiosPrivate();
     const [isLoading, setIsLoading] = useState(true);
+    const [enableSMS, setEnableSMS] = useState(true);
     const animatedComponents = makeAnimated();
     const colourStyles = {
       control: (styles, { isFocused, isSelected }) => ({
@@ -223,6 +224,13 @@ function AddDoctorsVisit({
           notify(
             `Բժշկի այցելությունը ավելացված է`
           );
+           // Send notification if enableSMS is checked
+  if (!!enableSMS) {
+    await axiosPrivate.post('/sendNotification', { patientId: client?.value, type:'sms' }, {
+      headers: { "Content-Type": "application/json" },
+      withCredentials: true,
+    });
+  }
         } catch (err) {
           if (!err?.response) {
             setErrMsg("No Server Response");
@@ -383,10 +391,6 @@ function AddDoctorsVisit({
                                 </div>
                               </div>
                               <div className="row gx-3">
-                              
-                            
-                              </div>
-                              <div className="row gx-3">
                               <div className="col-sm-6">
                               <div className="form-group">
                                 <div className="d-flex justify-content-between me-2">
@@ -405,6 +409,22 @@ function AddDoctorsVisit({
                                 </div>
                               </div>
                             </div>
+                            <div className="col-sm-6">
+                            <div className="d-flex justify-content-between me-2 flex-column">
+                                <label>Կարճ հաղորդագրություն</label>
+                                <div>
+                                  <input
+                                    type="checkbox"
+                                    name="selectDoctorsVisit"
+                                    checked={enableSMS}
+                                    onChange={(e) =>
+                                      setEnableSMS(e.target.checked)
+                                    }
+                                    style={{ transform: "scale(1.5)",marginTop:'12px', marginLeft:'5px' }}
+                                  />
+                                </div>
+                                </div>
+                              </div>
                               {/* <div className="col-sm-6">
                               <div className="form-group">
                                 <div className="d-flex justify-content-between me-2">

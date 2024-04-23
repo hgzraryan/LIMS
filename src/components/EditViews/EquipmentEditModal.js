@@ -85,7 +85,7 @@ function EquipmentEditModal({ equipment, setEditRow, refreshData }) {
           const updatedFields = deleteNullProperties(updatedEquipment);
           //console.log(updatedEquipment);
           try {
-            await axiosPrivate.put(EQUIPMENTS_URL, { ...updatedFields, id: equipment.equipmentId }, {
+            await axiosPrivate.put(EQUIPMENTS_URL, { updatedFields, id: equipment.equipmentId }, {
               headers: { "Content-Type": "application/json" },
               withCredentials: true,
             });
@@ -357,7 +357,7 @@ function EquipmentEditModal({ equipment, setEditRow, refreshData }) {
                               className="btn btn-primary"
                               data-bs-dismiss="modal"
                             >
-                              Ավելացնել
+                              Հաստատել
                             </button>
                           </div>
                         </Form>

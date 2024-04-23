@@ -156,7 +156,8 @@ function AddDoctor({ handleToggleCreateModal, refreshData }) {
       dateOfBirth,
       user,
       password,
-      maritalStatus
+      maritalStatus,
+      additional
     }) => {
       const newDoctor = {
         doctorName: fullName,        
@@ -178,6 +179,7 @@ function AddDoctor({ handleToggleCreateModal, refreshData }) {
         licenseNumber: licenseNumber,
         gender: gender,
         maritalStatus:maritalStatus,
+        additional:additional,
         dateOfBirth: new Date(
           dateOfBirth.getTime() - dateOfBirth.getTimezoneOffset() * 60000
         )
@@ -341,7 +343,9 @@ function AddDoctor({ handleToggleCreateModal, refreshData }) {
                                     onChange={(val) => {
                                       field.onChange(val);
                                       setCountry(val);
-                                      trigger("country");
+                                      methods.trigger("country");
+                                      methods.setValue("state",'')
+                                      methods.trigger("state")
                                     }}
                                     style={{
                                       appearance:'auto'

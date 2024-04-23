@@ -40,13 +40,12 @@ function DoctorEditModal({ doctor, setEditRow, refreshData }) {
   const [isActive, setIsActive] = useState("");
   const [merried, setMerried] = useState("");
 
-  const { trigger } = useForm();
   const methods = useForm({
     mode: "onChange",
   });
   const onGenderSelect = (value) => {
     setGender(value);
-    trigger("gender");
+    methods.trigger("gender");
   };
   const onDoctorStateSelect = (value) => {
     console.log(value);
@@ -86,6 +85,7 @@ function DoctorEditModal({ doctor, setEditRow, refreshData }) {
       password,
       isActive,
     }) => {
+      
       const newDateOfBirthString = dateOfBirth
         ? new Date(
             dateOfBirth.getTime() - dateOfBirth.getTimezoneOffset() * 60000
@@ -155,11 +155,11 @@ function DoctorEditModal({ doctor, setEditRow, refreshData }) {
             ? emergencyContactNumber
             : null,
         //profilePictureUrl: "profilePictureUrl",
-        //isActive: !!isActive?.trim()!==!!doctor?.isActive?isActive:null,
+        //isActive: isActive,
       };
       const updatedFields = deleteNullProperties(updatedDoctor);
 
-      console.log(additional);
+      console.log(state);
       //   formData.append("text", JSON.stringify(newDoctor));
       //   formData.append("image", image);
       try {
@@ -188,6 +188,10 @@ function DoctorEditModal({ doctor, setEditRow, refreshData }) {
       }
     }
   );
+  const handle = () =>{
+    methods.setValue("state",'')
+    methods.trigger("state")
+  }
   return (
     <>
       <Modal show={() => true} size="xl" onHide={() => setEditRow(false)}>
@@ -331,9 +335,12 @@ function DoctorEditModal({ doctor, setEditRow, refreshData }) {
                                           value={field.value}
                                           priorityOptions={["Armenia"]}
                                           onChange={(val) => {
+                                            
                                             field.onChange(val);
-                                            setCountry(val);
-                                            trigger("country");
+                                            setCountry(val);                                         
+                                            methods.trigger("country");
+                                            methods.setValue("state",'')
+                                            methods.trigger("state")
                                           }}
                                           style={{
                                             appearance: "auto",
@@ -375,11 +382,14 @@ function DoctorEditModal({ doctor, setEditRow, refreshData }) {
                                           classes="form-control"
                                           country={country}
                                           defaultOptionLabel="Մարզ"
-                                          value={field.value}
+                                           value={field.value}
                                           onChange={(val) => {
                                             field.onChange(val);
                                             setRegion(val);
-                                            trigger("state");
+                                            //handle()
+                                            console.log(val)
+                                            console.log('methods',methods)
+                                           // methods.trigger("state");
                                           }}
                                           style={{
                                             appearance: "auto",

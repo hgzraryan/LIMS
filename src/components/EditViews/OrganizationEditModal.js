@@ -114,7 +114,7 @@ function OrganizationEditModal({ organization, setEditRow, refreshData }) {
               },
             contactPerson: {
               name: contactName?.trim() !== organization?.contactPerson?.name?.trim() ? contactName : null,
-              email: contactEmail?.trim() !== organization?.contactPerson?.email?.trim() ? contactName : null,
+              email: contactEmail?.trim() !== organization?.contactPerson?.email?.trim() ? contactEmail : null,
               phone: contactPhoneNumber?.trim() !== organization?.contactPerson?.phone?.trim() ? contactPhoneNumber : null,
             },
             description: description?.trim() !== organization?.description?.trim() ? description : null,
@@ -123,7 +123,7 @@ function OrganizationEditModal({ organization, setEditRow, refreshData }) {
           console.log(updatedFields);
 
           try {
-            await axiosPrivate.put(ORGANIZATIONS_URL, { ...updatedFields, id: organization?.organizationId }, {
+            await axiosPrivate.put(ORGANIZATIONS_URL, { updatedFields, id: organization?.organizationId }, {
               headers: { "Content-Type": "application/json" },
               withCredentials: true,
             });
@@ -261,7 +261,9 @@ function OrganizationEditModal({ organization, setEditRow, refreshData }) {
                                           onChange={(val) => {
                                             field.onChange(val);
                                             setCountry(val);
-                                            trigger("country");
+                                            methods.trigger("country");
+                                            methods.setValue("state",'')
+                                            methods.trigger("state")
                                           }}
                                           style={{
                                             appearance: "auto",
@@ -500,7 +502,7 @@ function OrganizationEditModal({ organization, setEditRow, refreshData }) {
                         className="btn btn-primary"
                         data-bs-dismiss="modal"
                       >
-                        Ավելացնել
+                        Հաստատել
                       </button>
                     </div>
                   </Form>

@@ -14,6 +14,9 @@ export  function deleteNullProperties(obj) {
     if(obj?.contact && Object.keys(obj?.contact).length===0){
       delete obj?.contact
     }
+    if(obj?.contactPerson && Object.keys(obj?.contactPerson).length===0){
+      delete obj?.contactPerson
+    }
 
     return obj
   }

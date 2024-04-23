@@ -37,7 +37,6 @@ function DiagnosticsDetails() {
   const intupAvatarRef = useRef(null);
 
   const [activeLink, setActiveLink] = useState("tab_summery");
-
   const [pageTab, setPageTab] = useState("tab_summery");
   const notify = (text) =>
     toast.success(text, {
@@ -200,7 +199,29 @@ responseType:'blob'
       alert("Please select a file to upload.");
     }
   };
-
+  const handleSendSMS = async (e) => {
+    try {
+      await axiosPrivate.post('/sendNotification', { patientId: diagnosticsDetails?.clientId, type:'sms' }, {
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+      });  
+      notify(
+        `Հաղորդագրությունը ուղարկված է`
+      );  
+      e.target.disabled = true;  
+      setTimeout(() => {
+        e.target.disabled = false;
+      }, 5000);
+  
+    } catch (err) {
+      console.log(err);
+      // if (!err?.response) {
+      //   setErrMsg("No Server Response");
+      // }  else {
+      //   setErrMsg(" Failed");
+      // }
+    }
+  }
   return (
     <>
       <Suspense fallback={<LoadingSpinner />}>
@@ -375,7 +396,7 @@ responseType:'blob'
 								</li> */}
                 </ul>
               </header>
-              <div className="row mt-7">
+              <div className="row ">
                 {pageTab === "tab_summery" && (
                   <>
                     <div className="col-lg-4 mb-lg-0 mb-3">
@@ -444,6 +465,26 @@ responseType:'blob'
                           <li className="list-group-item border-0">
                             <span>
                               <i className="bi bi-file-medical-fill text-disabled me-2"></i>
+                              <span className="text-muted">Այցելու:</span>
+                            </span>
+                            <span className="ms-2">
+                              {/* {diagnosticsDetails?.patientName  */}
+                            </span>
+                          </li>
+                          {diagnosticsDetails?.refDoctor?
+                          <li className="list-group-item border-0">
+                            <span>
+                              <i className="bi bi-file-medical-fill text-disabled me-2"></i>
+                              <span className="text-muted">Ուղղորդող բժիշկ:</span>
+                            </span>
+                            <span className="ms-2">
+                              {/* {diagnosticsDetails?.doctors && diagnosticsDetails?.doctors[0]} */}
+                            </span>
+                          </li>:''
+                          }
+                          <li className="list-group-item border-0">
+                            <span>
+                              <i className="bi bi-file-medical-fill text-disabled me-2"></i>
                               <span className="text-muted">Բժիշկ:</span>
                             </span>
                             <span className="ms-2">
@@ -472,9 +513,49 @@ responseType:'blob'
                               {diagnosticsDetails?.totalPayed}
                             </span>
                           </li>
+                          {diagnosticsDetails?.totalPayed ?
+                          <>
+                          <li className="list-group-item border-0">
+                            <span>
+                            <i className="bi bi-ui-checks text-disabled me-2"></i>
+                              <span className="text-muted">
+                                Վճարման տեսակ:
+                              </span>
+                            </span>
+                            <span className="ms-2">
+                              {diagnosticsDetails?.paymentMethod}
+                            </span>
+                          </li>
+                          <li className="list-group-item border-0">
+                            <span>
+                            <i className="bi bi-calendar-month-fill text-disabled me-2"></i>
+                              <span className="text-muted">
+                                Վճարման ամսաթիվ:
+                              </span>
+                            </span>
+                            <span className="ms-2">
+                              {moment.utc(diagnosticsDetails?.paymentDate).format('DD-MM-YYYY HH:mm')}
+                            </span>
+                          </li>
+                          </>:''}
                         </ul>
                       </div>
+                      
+                      <div className="card card-border ">
+                        <div className="card-header card-header-action"> Ծանուցումներ</div>
+                          <ul>
+                            <li>
+                              <div className="d-flex justify-content-between align-items-center p-2" >
+
+                                <p>Կարճ հաղորդագրություն</p>
+                                <button type="button" onClick={(e)=>handleSendSMS(e)} className="btn btn-primary">Ուղարկել</button>
+                              </div>
+                            </li>
+                          </ul>
+                        
+                      </div>
                     </div>
+                    
                     <div className="col-lg-8">
                       <div className="card card-border card-profile-feed mb-lg-4 mb-3">
                         <div className="card-header card-header-action">

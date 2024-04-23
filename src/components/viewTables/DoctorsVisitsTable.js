@@ -18,6 +18,7 @@ import { BiSolidInfoCircle } from 'react-icons/bi';
 import { Modal } from 'react-bootstrap';
 import ProgressBar from '../ProgressBar';
 import moment from 'moment';
+import DoctorVisitsPrint from '../views/DoctorVisitsPrint';
 
 function DoctorsVisitsTable({
     selectedItem,
@@ -32,7 +33,12 @@ function DoctorsVisitsTable({
   const navigate = useNavigate()
   const [modalInfo, setModalInfo] = useState("");
   const [editRow, setEditRow] = useState(false);
+  const [toggleDisableRow, setToggleDisableRow] = useState(false);
+  const [modalPrint, setModalPrint] = useState("");
 
+ const handleOpenPrintModal = (data) => {
+    setModalPrint((prev) => data);
+  };
   const handlePatientsDetail = async (patientId) => {  
      navigate(`/patients/${patientId}`)
       
@@ -44,6 +50,9 @@ function DoctorsVisitsTable({
   const handleOpenInfoModal = (data) => {
     
     setModalInfo((prev) => data);
+  };
+  const handleOpenDisableModal = (value) => {
+    setToggleDisableRow((prev) => value);
   };
   const handleDoctorInfo = async (doctorId)=>{
     navigate(`/doctors/${doctorId}`)
@@ -239,6 +248,22 @@ function DoctorsVisitsTable({
               onClick={() => handleOpenInfoModal(row.original)}
             />
             </div> 
+                 <div className="d-flex">
+                 <a
+                    className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover"
+                    data-bs-toggle="tooltip"
+                    data-placement="top"
+                    title="Edit"
+                    href="#"
+                    onClick={() => handleOpenDisableModal(row.original)}
+                  >
+                    <span className="icon">
+                  <span className="feather-icon">
+                    <FeatherIcon icon="power" style={{color: row.original?.visitStatus==="Active" ?'green':row.original?.visitStatus==="Cancelled"? 'red' : 'black' }}  />
+                  </span>
+                </span>
+                  </a>
+            </div> 
                 <div className="d-flex">
                 <a
                 className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover"
@@ -255,6 +280,25 @@ function DoctorsVisitsTable({
                 </span>
               </a>
                 </div>
+                {/* {row.original?.visitStatus === "Active" && ( */}
+                <>
+                  <a
+                    className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover"
+                    data-bs-toggle="tooltip"
+                    data-placement="top"
+                    title="Print"
+                    href="#"
+                    onClick={() => handleOpenPrintModal(row.original)}
+                  >
+                    <span className="icon">
+                      <span className="feather-icon">
+                        <FeatherIcon icon="printer" />
+                      </span>
+                    </span>
+                  </a>
+                  
+                </>
+              {/* )} */}
               </div>
             ),
             disableSortBy: true,
@@ -266,6 +310,7 @@ function DoctorsVisitsTable({
         []
       );
      
+    
       const {
         getTableProps,
         getTableBodyProps,
@@ -298,6 +343,30 @@ function DoctorsVisitsTable({
       // console.log(selectedFlatRows);
       return (
         <>
+        {modalPrint && (
+        <Modal show={() => true} size="xl" onHide={() => setModalPrint(false)}>
+          <Modal.Header closeButton>
+            <Modal.Title
+              style={{ width: "100%", textAlign: "center" }}
+            ></Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <div className="contact-body contact-detail-body">
+              <div data-simplebar className="nicescroll-bar">
+                <div className="d-flex flex-xxl-nowrap flex-wrap">
+                  <div className="contact-info w-100">
+                    <DoctorVisitsPrint
+                      modalPrint={modalPrint}
+                      setModalPrint={setModalPrint}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="modal-footer "></div>
+          </Modal.Body>
+        </Modal>
+      )}
          {
       modalInfo && (
         <Modal
@@ -307,7 +376,7 @@ function DoctorsVisitsTable({
     >
       <Modal.Header closeButton>
         <Modal.Title style={{ width: "100%", textAlign: "center" }}>
-        {modalInfo.name}
+        {modalInfo?.name}
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>        
@@ -330,7 +399,7 @@ function DoctorsVisitsTable({
                   </div>
                   <div className="w-100">
                   <div className="modal-body">
-                        
+                        {console.log(modalInfo)}
                        <div className="d-flex justify-content-between">  <span> Այցելության ID </span> <span>{modalInfo.doctorsVisitId}</span></div>
                        <div className="separator-full m-0"></div>
                        <div className="d-flex justify-content-between">  <span>Տարիք </span> <span>{modalInfo?.patientData?.age}</span></div>
@@ -343,9 +412,9 @@ function DoctorsVisitsTable({
                        <div className="separator-full m-0"></div>                  
                        <div className="d-flex justify-content-between">  <span>Բժիշկ </span> <span>{modalInfo.doctorName}</span></div>
                        <div className="separator-full m-0"></div>
-                       <div className="d-flex justify-content-between">  <span>Այցի ամսաթիվ </span> <span>{modalInfo?.visitDate?.split("T").join(' ').split('.',1)}</span></div>
+                       <div className="d-flex justify-content-between">  <span>Այցի ամսաթիվ </span> <span>{moment.utc(modalInfo?.visitDate).format('DD-MM-YYYY HH:mm')}</span></div>
                        <div className="separator-full m-0"></div>
-                       <div className="d-flex justify-content-between">  <span>Հաջորդ այց </span> <span>{modalInfo?.nextVisit?.split("T").join(' ').split('.',1)}</span></div>
+                       <div className="d-flex justify-content-between">  <span>Հաջորդ այց </span> <span>{modalInfo?.nextVisit ? moment.utc(modalInfo?.nextVisit).format('DD-MM-YYYY HH:mm'):''}</span></div>
                        <div className="separator-full m-0"></div>
                       <div className="d-flex justify-content-between">
                         {" "}
@@ -461,13 +530,13 @@ function DoctorsVisitsTable({
                     {rows.map((row) => {
               prepareRow(row);
               const rowProps = row.getRowProps();
-              const diagStatus = row.original?.doctorVisitStatus === "Cancelled";
+              const visitStatus = row.original?.visitStatus === "Cancelled";
               // const diagStatus = row.original.patientId > 'Cancelled';
               return (
                 <tr
                   {...rowProps}
                   style={{
-                    backgroundColor: diagStatus
+                    backgroundColor: visitStatus
                       ? "rgb(255, 99, 71, 0.2)"
                       : "inherit",
                     borderStyle: "none !important",

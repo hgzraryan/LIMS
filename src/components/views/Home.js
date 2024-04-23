@@ -14,6 +14,7 @@ import { selectDiagnosticsCount } from "../../redux/features/diagnostics/diagnos
 import { selectUsersCount } from "../../redux/features/users/usersCountSlice";
 import { selectResearchListCount } from "../../redux/features/researches/researchListCountSlice";
 import { selectDoctorCount } from "../../redux/features/doctor/doctorCountSlice";
+import StackedBarChart from "../StackedBarChart";
 
 
 
@@ -134,7 +135,8 @@ const Home = ({asd}) => {
           sx={{}}
           >
             <Box mb='5px'  backgroundColor = "#EDF7F7">
-          <BarChartWithMultiXAxis/>
+          {/* <BarChartWithMultiXAxis/> */}
+          <StackedBarChart/>
   
             </Box>
             <Box display="flex" justifyContent="space-between" overflow="hidden">

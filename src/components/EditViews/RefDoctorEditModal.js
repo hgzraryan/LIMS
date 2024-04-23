@@ -108,7 +108,7 @@ function RefDoctorEditModal({ refDoctor, setEditRow, refreshData }) {
       try {
         await axiosPrivate.put(
           REFDOCTORS_URL,
-          { ...updatedFields, id: refDoctor.refDoctorId },
+          { updatedFields, id: refDoctor.refDoctorId },
           {
             headers: { "Content-Type": "application/json" },
             withCredentials: true,
@@ -255,7 +255,9 @@ function RefDoctorEditModal({ refDoctor, setEditRow, refreshData }) {
                                           onChange={(val) => {
                                             field.onChange(val);
                                             setCountry(val);
-                                            trigger("country");
+                                            methods.trigger("country");
+                                            methods.setValue("state",'')
+                                            methods.trigger("state")
                                           }}
                                           style={{
                                             appearance: "auto",
@@ -415,7 +417,7 @@ function RefDoctorEditModal({ refDoctor, setEditRow, refreshData }) {
                               className="btn btn-primary"
                               data-bs-dismiss="modal"
                             >
-                              Ավելացնել
+                              Հաստատել
                             </button>
                           </div>
                         </Form>

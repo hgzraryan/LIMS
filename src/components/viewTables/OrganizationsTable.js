@@ -102,7 +102,7 @@ function OrganizationsTable({
         width: 200,
         Cell: ({ row }) => (
           <div className="d-flex align-items-center">
-            {row.original?.contactPerson?.email}
+            {row.original?.contact?.email}
           </div>
         ),
         Filter: ({ column: { id } })=>(

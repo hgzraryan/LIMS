@@ -69,7 +69,7 @@ function MedicalServiceEditModal({ medicalService, setEditRow, refreshData }) {
       try {
         await axiosPrivate.put(
           MEDICALSERVICES_URL,
-          { ...updatedFields, id: medicalService.medServiceId },
+          { updatedFields, id: medicalService.medServiceId },
           {
             headers: { "Content-Type": "application/json" },
             withCredentials: true,
@@ -267,7 +267,7 @@ function MedicalServiceEditModal({ medicalService, setEditRow, refreshData }) {
                               className="btn btn-primary"
                               data-bs-dismiss="modal"
                             >
-                              Ավելացնել
+                              Հաստատել
                             </button>
                           </div>
                         </Form>

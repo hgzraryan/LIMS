@@ -23,7 +23,6 @@ function AgentEditModal({ agent, setEditRow, refreshData }) {
     const [country, setCountry] = useState("");
     const [region, setRegion] = useState("");
   
-    const { trigger } = useForm();
     const methods = useForm({
       mode: "onChange",
     });
@@ -92,11 +91,11 @@ function AgentEditModal({ agent, setEditRow, refreshData }) {
           //additional: editorRef.current.getContent({ format: "text" }),
         };
         const updatedFields = deleteNullProperties(updatedAgent);
-        //console.log(updatedAgent);
+        console.log(updatedAgent);
         try {
             await axiosPrivate.put(
               AGENTS_URL,
-              { ...updatedFields, id: agent.agentId },
+              { updatedFields, id: agent.agentId },
               {
                 headers: { "Content-Type": "application/json" },
                 withCredentials: true,
@@ -235,7 +234,9 @@ function AgentEditModal({ agent, setEditRow, refreshData }) {
                                           onChange={(val) => {
                                             field.onChange(val);
                                             setCountry(val);
-                                            trigger("country");
+                                            methods.trigger("country");
+                                            methods.setValue("state",'')
+                                            methods.trigger("state")
                                           }}
                                           style={{
                                             appearance: "auto",
@@ -281,7 +282,7 @@ function AgentEditModal({ agent, setEditRow, refreshData }) {
                                           onChange={(val) => {
                                             field.onChange(val);
                                             setRegion(val);
-                                            trigger("state");
+                                            methods.trigger("state");
                                           }}
                                           style={{
                                             appearance: "auto",
@@ -401,7 +402,7 @@ function AgentEditModal({ agent, setEditRow, refreshData }) {
                         className="btn btn-primary"
                         data-bs-dismiss="modal"
                       >
-                        Ավելացնել
+                        Հաստատել
                       </button>
                     </div>
                   </Form>

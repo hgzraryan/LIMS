@@ -123,7 +123,7 @@ function ResearchListEditModal({ researchList, setEditRow, refreshData }) {
       try {
         await axiosPrivate.put(
           RESEARCHLISTS_URL,
-          { ...updatedFields, id: researchList.researchListId },
+          { updatedFields, id: researchList.researchListId },
           {
             headers: { "Content-Type": "application/json" },
             withCredentials: true,
@@ -450,7 +450,7 @@ function ResearchListEditModal({ researchList, setEditRow, refreshData }) {
                               className="btn btn-primary"
                               data-bs-dismiss="modal"
                             >
-                              Ավելացնել
+                              Հաստատել
                             </button>
                           </div>
                         </Form>

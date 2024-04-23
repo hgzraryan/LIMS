@@ -103,7 +103,7 @@ function EditModal({overlayIsOpen,setOverlayIsOpen,activity}) {
                    className="btn btn-primary"
                    data-bs-dismiss="modal"
                  >
-                   Ավելացնել
+                   Հաստատել
                  </button>
                </div>
              </Form>

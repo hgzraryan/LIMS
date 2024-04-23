@@ -171,7 +171,7 @@ function UserEditModal({ user, setEditRow, refreshData }) {
       try {
         await axiosPrivate.put(
           USERS_URL,
-          { ...updatedFields, id: user.userId },
+          { updatedFields, id: user.userId },
           {
             headers: { "Content-Type": "application/json" },
             withCredentials: true,
@@ -745,7 +745,7 @@ function UserEditModal({ user, setEditRow, refreshData }) {
                               className="btn btn-primary"
                               data-bs-dismiss="modal"
                             >
-                              Ավելացնել
+                              Հաստատել
                             </button>
                           </div>
                         </Form>
