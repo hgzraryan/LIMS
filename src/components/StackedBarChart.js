@@ -1,4 +1,4 @@
-
+import React, { useEffect, useState } from "react";
 import {
   BarChart,
   Bar,
@@ -9,13 +9,12 @@ import {
   Legend,
   ResponsiveContainer
 } from "recharts";
-import React, { useEffect, useState } from "react";
 import { STATISTICS_URL } from "../utils/constants";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 
 function StackedBarChart() {
   const axiosPrivate = useAxiosPrivate();
-  const [statistics,setStatistics] = useState([])
+  const [statistics, setStatistics] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -23,7 +22,7 @@ function StackedBarChart() {
       axiosPrivate
         .get(STATISTICS_URL)
         .then((resp) => {
-          setStatistics(resp?.data);
+          setStatistics(resp?.data?.results);
           setIsLoading(false);
         })
         .catch((err) => {
@@ -33,32 +32,29 @@ function StackedBarChart() {
         });
     }, 500);
   }, []);
-    return (
-        <ResponsiveContainer width={800} height={350}>
-          {statistics &&
-        <BarChart
-        width={500}
-        height={300}
-        data={statistics.data}
+
+  return (
+    <ResponsiveContainer width="100%" height={350}>
+      <BarChart
+        data={statistics}
         margin={{
-          top: 20,
+          top: 5,
           right: 30,
           left: 20,
           bottom: 5
         }}
-        >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
-          <YAxis />
-          <Tooltip />
-          <Legend />
-          <Bar dataKey="Վճարված" stackId="a" fill="#8884d8" />
-          <Bar dataKey="Զեղչ" stackId="a" fill="#82ca9d" />
-        </BarChart>
-        }
-        </ResponsiveContainer>
-      );
+        
+      >
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="name" />
+        <YAxis />
+        <Tooltip />
+        <Legend />
+        <Bar dataKey="Վճարված" stackId="a" fill="#8884d8" barSize={30} />
+        {/* <Bar dataKey="Զեղչ" stackId="a" fill="#82ca9d" /> */}
+      </BarChart>
+    </ResponsiveContainer>
+  );
 }
 
-export default StackedBarChart
-  
+export default StackedBarChart;

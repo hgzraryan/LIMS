@@ -154,7 +154,7 @@ function DoctorsVisitsTable({
                     
                   }}
                 >
-                 <p> 1000</p>
+                 <p> {row.original?.originalPrice-row.original?.totalPrice}</p>
                 </div>
                 </div>
               ):''
@@ -325,15 +325,18 @@ function DoctorsVisitsTable({
         headerGroups,
         rows,
         prepareRow,
-        selectedFlatRows,    
+        selectedFlatRows,
         toggleHideColumn,
       } = useTable(
         {
           columns,
-          data: doctorsVisits, 
-          defaultColumn      
+          data: doctorsVisits,
+          defaultColumn,
         },
-        useFilters,useBlockLayout,useResizeColumns,useSortBy,
+        useFilters,
+        useBlockLayout,
+        useResizeColumns,
+        useSortBy,
         useRowSelect,
         (hooks) => {
           hooks.visibleColumns.push((columns) => [
@@ -414,7 +417,6 @@ function DoctorsVisitsTable({
                   </div>
                   <div className="w-100">
                   <div className="modal-body">
-                        {console.log(modalInfo)}
                        <div className="d-flex justify-content-between">  <span> Այցելության ID </span> <span>{modalInfo.doctorsVisitId}</span></div>
                        <div className="separator-full m-0"></div>
                        <div className="d-flex justify-content-between">  <span>Տարիք </span> <span>{modalInfo?.patientData?.age}</span></div>
@@ -489,60 +491,64 @@ function DoctorsVisitsTable({
       </Modal.Body>
     </Modal>
       )
-    }
-       
-        <table  className="table nowrap w-100 mb-5 dataTable no-footer" {...getTableProps()} >
-          <thead>
-            {headerGroups.map((headerGroup) => (
-              <tr {...headerGroup.getHeaderGroupProps({style:{width:'100%'}})}>
-                {headerGroup.headers.map((column) => (
-                  <th  {...column.getHeaderProps(column.getSortByToggleProps({
-                    style: column.style // Apply custom style to the column header
-                  }))}>
+    }       
+         <table
+        className="table nowrap w-100 mb-5 dataTable no-footer diagTable"
+        {...getTableProps()}
+      >
+        <thead>
+          {headerGroups.map((headerGroup) => (
+            <tr {...headerGroup.getHeaderGroupProps()}>
+              {headerGroup.headers.map((column) => (
+                <th {...column.getHeaderProps(column.getSortByToggleProps())}>
                   <div>
                     {column.id !== "selection" && (
                       <>
-                      <div>
-                        {column.canFilter ? column.render("Filter") : null}
-                      </div>
-                    
-                    <div  style={{
-                      marginTop: "2px",
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                    }}>
-                      <div>{column.render("Header")}</div>
-                      
-                        <div style={{paddingTop:'20px'}} >
-                          {column.isSorted ? (
-                            column.isSortedDesc ? (
-                              <span className="sorting_asc"></span>
+                        <div>
+                          {column.canFilter ? column.render("Filter") : null}
+                        </div>
+
+                        <div
+                          style={{
+                            marginTop: "2px",
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                          }}
+                        >
+                          <div>{column.render("Header")}</div>
+
+                          <div style={{ paddingTop: "20px" }}>
+                            {column.isSorted ? (
+                              column.isSortedDesc ? (
+                                <span className="sorting_asc"></span>
                               ) : (
                                 <span className="sorting_desc"></span>
-                                )
-                                ) : (
-                                  <span className="sorting"></span>
-                                  )}
+                              )
+                            ) : (
+                              <span className="sorting"></span>
+                            )}
+                          </div>
                         </div>
-                    </div>
-                                  </>
-                      )}
+                      </>
+                    )}
                   </div>
                   <div
-                  {...column.getResizerProps()}
+                    {...column.getResizerProps()}
                     className={`resizer ${
                       column.isResizing ? "isResizing" : ""
                     }`}
                   />
                 </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
+              ))}
+            </tr>
+          ))}
+        </thead>
           {doctorsVisits?.length>0? (
+            <>
+               
                 <tbody {...getTableBodyProps()}>
-                    {rows.map((row) => {
+            {rows.map((row) => {
               prepareRow(row);
               const rowProps = row.getRowProps();
               const visitStatus = row.original?.visitStatus === "Cancelled";
@@ -565,8 +571,8 @@ function DoctorsVisitsTable({
                 </tr>
               );
             })}
-              
-                </tbody>
+          </tbody>
+            </>
               ):''}
         </table>
         </>

@@ -91,12 +91,7 @@ function PatientDetails() {
         })
         .then((resp) => {
            axiosPrivate.get(`/getVisitsByid/patient/${id}`).then((resp) => {
-            let array=[]
-            if(resp.data) {
-              array.push(resp.data)
-            }
-            console.log(resp)
-            setPatientVisits(array);
+            setPatientVisits(resp.data);
             setIsLoading(false);
           });
         })

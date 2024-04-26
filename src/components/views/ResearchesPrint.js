@@ -22,7 +22,6 @@ function ResearchesPrint({ modalPrint, setModalPrint }) {
       const response = await axiosPrivate.get(`/patients/${clientId}`);
       setIsLoading(false);
       setCurrentClient((prevUsers) => response.data.jsonString);
-      console.log(response.data.jsonString);
     } catch (err) {
       console.error(err);
       //navigate("/login", { state: { from: location }, replace: true });
@@ -33,7 +32,6 @@ function ResearchesPrint({ modalPrint, setModalPrint }) {
       const response = await axiosPrivate.get(`/organizations`);
       setIsLoading(false);
       setCurrentClient((prevUsers) => response.data.jsonString[0]);
-      console.log(response.data.jsonString);
     } catch (err) {
       console.error(err);
       //navigate("/login", { state: { from: location }, replace: true });
@@ -291,13 +289,15 @@ function ResearchesPrint({ modalPrint, setModalPrint }) {
                     <div className=" mb-3r">
                       <ul>
                         <li>
-                          Անուն Ազգանուն:
+                          ԱԱՀ:
                           <span
                             style={{ fontWeight: "bold", fontSize: "1.1rem" }}
                           >
-                            {currentClient?.firstName +
+                            {" "+currentClient?.firstName +
                               " " +
-                              currentClient?.lastName}
+                              currentClient?.lastName+
+                              " " +
+                              currentClient?.midName}
                           </span>
                         </li>
                         <li>
@@ -306,8 +306,8 @@ function ResearchesPrint({ modalPrint, setModalPrint }) {
                             style={{ fontWeight: "bold", fontSize: "1.1rem" }}
                           >
                             {currentClient?.gender === "Male"
-                              ? "Արական"
-                              : "Իգական"}
+                              ? " Արական"
+                              : " Իգական"}
                           </span>
                         </li>
                         <li>
@@ -315,7 +315,7 @@ function ResearchesPrint({ modalPrint, setModalPrint }) {
                           <span
                             style={{ fontWeight: "bold", fontSize: "1.1rem" }}
                           >
-                            {moment.utc(currentClient?.dateOfBirth).format('DD-MM-YYYY')}
+                            {" "+ moment.utc(currentClient?.dateOfBirth).format('DD-MM-YYYY')}
                           </span>
                         </li>
                         <li>
@@ -323,7 +323,7 @@ function ResearchesPrint({ modalPrint, setModalPrint }) {
                           <span
                             style={{ fontWeight: "bold", fontSize: "1.1rem" }}
                           >
-                            {currentClient?.age}
+                            {" "+currentClient?.age}
                           </span>
                         </li>
                         <li>
@@ -331,7 +331,7 @@ function ResearchesPrint({ modalPrint, setModalPrint }) {
                           <span
                             style={{ fontWeight: "bold", fontSize: "1.1rem" }}
                           >
-                            {currentClient?.contact?.phone}
+                            {" "+currentClient?.contact?.phone}
                           </span>
                         </li>
                         <li>
@@ -339,7 +339,7 @@ function ResearchesPrint({ modalPrint, setModalPrint }) {
                           <span
                             style={{ fontWeight: "bold", fontSize: "1.1rem" }}
                           >
-                            {moment.utc(modalPrint?.createdAt).format('DD-MM-YYYY HH:mm')}
+                            {" "+moment.utc(modalPrint?.createdAt).format('DD-MM-YYYY HH:mm')}
                           </span>
                         </li>
                       </ul>

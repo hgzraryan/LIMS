@@ -60,7 +60,6 @@ function DiagnosticsTable({
   };
   const handleSendResult = () => {
     const resultData = document.getElementById("resultData");
-    console.log(JSON.stringify(resultData));
   };
   const handleOpenStatusModal = (data) => {
     setSelectedItem1((prev) => data);
@@ -86,6 +85,7 @@ function DiagnosticsTable({
     navigate(`/diagnostics/${diagnosticsId}`);
   };
   const handleClientDetails = async (rowData) => {
+    
     const { clientId } = rowData;
     const { clientType } = rowData;
     clientType === "patient"
@@ -136,15 +136,15 @@ function DiagnosticsTable({
         ),
       },
       {
-        Header: "Հաճախորդի ID",
+        Header: "Այցելու",
         accessor: "patientId",
         sortable: true,
-        width: 200,
+        width: 300,
         Filter: ({ column: { id } }) => (
           <ColumnFilter
             id={id}
             setData={setDiagnostics}
-            placeholder="Հաճախորդի ID"
+            placeholder="Այցլու"
           />
         ),
         Cell: ({ row }) => (
@@ -170,7 +170,7 @@ function DiagnosticsTable({
                   className="me-2"
                 />
               )}
-              {row.original.clientId}
+              {row.original.clientFirstName + " " +row.original.clientLastName +  " " +row.original.clientMidName}
             </div>
           </>
         ),
@@ -603,6 +603,7 @@ function DiagnosticsTable({
           ))}
         </thead>
         {diagnostics?.length > 0 ? (
+          <>
           <tbody {...getTableBodyProps()}>
             {rows.map((row) => {
               prepareRow(row);
@@ -627,6 +628,7 @@ function DiagnosticsTable({
                 </tr>
               );
             })}
+          </tbody>
             {editRow && (
               <DiagnosticsDeactivate
                 handleCloseDeactivateModal={handleCloseDeactivateModal}
@@ -651,7 +653,7 @@ function DiagnosticsTable({
               keyName={selectedItem.diagnosticsName}
               delId={selectedItem.diagnosticstId}
             />
-          </tbody>
+            </>
         ) : (
           ""
         )}

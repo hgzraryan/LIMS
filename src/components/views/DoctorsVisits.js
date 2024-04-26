@@ -34,7 +34,6 @@ function DoctorsVisits() {
   useEffect(() => {
     const storedData = JSON.parse(localStorage.getItem('role'));
     if (storedData) {
-      console.log(storedData.Role)
       setUserRole(storedData.Role);
     }
   }, []);
@@ -167,7 +166,7 @@ function DoctorsVisits() {
                           handleCloseModal={handleCloseModal}
                           doctorsVisits={doctorsVisits}
                           setDoctorsVisits={setDoctorsVisits}
-                          // getDoctorsVisits={getDoctorsVisits}
+                          refreshData={refreshData}
                         />
                         <ReactPaginate
                                                previousLabel = {"Հետ"}    

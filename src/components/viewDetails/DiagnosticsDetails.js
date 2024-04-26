@@ -38,12 +38,12 @@ function DiagnosticsDetails() {
   const fileMimeType = /file\/(pdf|txt)/i;
   const intupAvatarRef = useRef(null);
   const [modalResult, setModalResult] = useState("");
+  const [smsCount, setSmsCount] = useState(0);
 
   const [activeLink, setActiveLink] = useState("tab_summery");
   const [pageTab, setPageTab] = useState("tab_summery");
   const handleOpenResultModal = (data) => {
     setModalResult((prev) => data);
-    console.log(data)
   };
   const getToastOptions = () => ({
     position: "top-right",
@@ -130,13 +130,14 @@ responseType:'blob'
         .get(`/diagnostics/${id}`)
         .then((resp) => {
           setDiagnosticsDetails(resp?.data);
+          setSmsCount(resp?.data?.notifications?.length)
           setIsLoading(false);
         })
         .then((resp) => {
           axiosPrivate.get(`/uploadExtResult/${id}`)
           .then((resp) => {
             setDownloadFiles((prev) => resp?.data?.jsondata);
-
+          
             setIsLoading(false);
           });
         })
@@ -211,31 +212,36 @@ responseType:'blob'
       alert("Please select a file to upload.");
     }
   };
-  const handleSendSMS = async (e) => {
-    try {
-      await axiosPrivate.post('/sendNotification', { patientId: diagnosticsDetails?.clientId, type:'sms',notify:'result' }, {
+  const handleSendSMS =  (e) => {    
+      axiosPrivate.post('/sendNotification', { 
+        patientId: diagnosticsDetails?.clientId,
+        diagnosticsId: diagnosticsDetails?.diagnosticsId,
+        type:'sms',notify:'result' 
+      }, {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
-      });  
-      notify(
-        `Հաղորդագրությունը ուղարկված է`
-      );  
-      e.target.disabled = true;  
+      }).then((resp) => {
+        notify(
+          `Հաղորդագրությունը ուղարկված է`
+        );
+        e.target.disabled = true;  
       setTimeout(() => {
         e.target.disabled = false;
       }, 20000);
-  
-    } catch (err) {
-      console.log(err);
+      }).catch((err) => {
+        console.log(err);
       notifyError(
         `Հաղորդագրությունը չի ուղարկվել`
       );  
-      // if (!err?.response) {
-      //   setErrMsg("No Server Response");
-      // }  else {
-      //   setErrMsg(" Failed");
-      // }
-    }
+      }).then((resp) => {
+        axiosPrivate
+        .get(`/diagnostics/${id}`)
+        .then((resp) => {
+          setDiagnosticsDetails(resp?.data);
+          setIsLoading(false);
+        })
+      }) 
+     
   }
   return (
     <>
@@ -507,7 +513,9 @@ responseType:'blob'
                               <span className="text-muted">Այցելու:</span>
                             </span>
                             <span className="ms-2">
-                              {/* {diagnosticsDetails?.patientName  */}
+                            {diagnosticsDetails?.clientFirstName +" " + 
+                               diagnosticsDetails?.clientLastName + " "+ 
+                               diagnosticsDetails?.clientMidName}
                             </span>
                           </li>
                           {diagnosticsDetails?.refDoctor?
@@ -527,7 +535,7 @@ responseType:'blob'
                               <span className="text-muted">Բժիշկ:</span>
                             </span>
                             <span className="ms-2">
-                              {/* {diagnosticsDetails?.doctors && diagnosticsDetails?.doctors[0]} */}
+                               {diagnosticsDetails?.doctorName } 
                             </span>
                           </li>
                           <li className="list-group-item border-0">
@@ -595,8 +603,8 @@ responseType:'blob'
                               borderRadius:'50%',
                               fontWeight:'bold',
                               color:'gray',
-                              paddingTop:'2px'
-                              }}>2</div>
+                              paddingTop:'1px'
+                              }}>{diagnosticsDetails?.notifications?.length ||0}</div>
                             </div> 
                             </div>
                           <ul className="p-0 m-0">

@@ -128,13 +128,13 @@ const { inputRef } = Barcode({
                     </div>
           <div className=" mb-3r">
             <ul>
-              <li >Անուն Ազգանուն: <span style={{fontWeight:'bold',fontSize:'1.1rem'}}>{currentClient?.firstName+" "+ currentClient?.lastName}</span>
+              <li >ԱԱՀ: <span style={{fontWeight:'bold',fontSize:'1.1rem'}}>{" "+currentClient?.firstName+" "+ currentClient?.lastName +" "+ currentClient?.midName}</span>
               </li>
-              <li >Սեռ: <span style={{fontWeight:'bold',fontSize:'1.1rem'}}>{(currentClient?.gender==='Male')?'Արական':'Իգական'}</span></li>
-              <li >Ծննդյան ամսաթիվ: <span style={{fontWeight:'bold',fontSize:'1.1rem'}}>{moment.utc(currentClient?.dateOfBirth).format('DD-MM-YYYY')}</span></li>
-              <li >Տարիք: <span style={{fontWeight:'bold',fontSize:'1.1rem'}}>{currentClient?.age}</span></li>
-              <li >Հեռախոս: <span style={{fontWeight:'bold',fontSize:'1.1rem'}}>{currentClient?.contact?.phone}</span></li>
-              <li >Տրման ամսաթիվ: <span style={{fontWeight:'bold',fontSize:'1.1rem'}}>{moment.utc(value?.createdAt).format('DD-MM-YYYY HH:mm')}</span></li>
+              <li >Սեռ: <span style={{fontWeight:'bold',fontSize:'1.1rem'}}>{(currentClient?.gender==='Male')?' Արական':' Իգական'}</span></li>
+              <li >Ծննդյան ամսաթիվ: <span style={{fontWeight:'bold',fontSize:'1.1rem'}}>{" "+moment.utc(currentClient?.dateOfBirth).format('DD-MM-YYYY')}</span></li>
+              <li >Տարիք: <span style={{fontWeight:'bold',fontSize:'1.1rem'}}>{" "+currentClient?.age}</span></li>
+              <li >Հեռախոս: <span style={{fontWeight:'bold',fontSize:'1.1rem'}}>{" "+currentClient?.contact?.phone}</span></li>
+              <li >Տրման ամսաթիվ: <span style={{fontWeight:'bold',fontSize:'1.1rem'}}>{" "+moment.utc(value?.createdAt).format('DD-MM-YYYY HH:mm')}</span></li>
               {/* <li>
                 Անուն Ազգանուն: `${value.firstName} ${value.lastName} `
               </li>
