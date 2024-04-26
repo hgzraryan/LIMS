@@ -18,12 +18,11 @@ function DoctorsVisitsDetails() {
     const [doctorsVisitsDetails, setDoctorsVisitsDetails] = useState({});
     const [currentPage, setCurrentPage] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
-    const [downloadFiles, setDownloadFiles] = useState(""); // State to hold the file name
+    const [downloadFiles, setDownloadFiles] = useState(""); 
     const [usersPerPage, setUsersPerPage] = useState(
       Math.round((window.innerHeight / 100) * 1.5)
     );
     const [activeLink, setActiveLink] = useState("tab_summery");
-
     const [pageTab, setPageTab] = useState("tab_summery");
     const pageCount = 1;
     //const pageCount = Math.ceil(useersCount/usersPerPage)
@@ -280,6 +279,18 @@ function DoctorsVisitsDetails() {
                             </span>
                             <span className="ms-2">
                               {moment.utc(doctorsVisitsDetails?.createdAt).format('DD-MM-YYYY HH:mm')}
+                            </span>
+                          </li>
+                          <li className="list-group-item border-0">
+                            <span>
+                              <i className="bi bi-calendar-month-fill text-disabled me-2"></i>
+                              <span className="text-muted">
+                                Այցի ամսաթիվ:
+                              </span>
+                              
+                            </span>
+                            <span className="ms-2">
+                              {moment.utc(doctorsVisitsDetails?.visitDate).format('DD-MM-YYYY HH:mm')}
                             </span>
                           </li>
 

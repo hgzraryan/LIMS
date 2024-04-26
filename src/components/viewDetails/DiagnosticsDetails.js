@@ -18,6 +18,8 @@ import FeatherIcon from "feather-icons-react/build/FeatherIcon";
 import { toast } from "react-toastify";
 import FileDownload from "js-file-download";
 import moment from "moment";
+import ResultData from "../ResultData";
+import { Modal } from "react-bootstrap";
 
 function DiagnosticsDetails() {
   const axiosPrivate = useAxiosPrivate();
@@ -35,20 +37,30 @@ function DiagnosticsDetails() {
   const formData = new FormData();
   const fileMimeType = /file\/(pdf|txt)/i;
   const intupAvatarRef = useRef(null);
+  const [modalResult, setModalResult] = useState("");
 
   const [activeLink, setActiveLink] = useState("tab_summery");
   const [pageTab, setPageTab] = useState("tab_summery");
+  const handleOpenResultModal = (data) => {
+    setModalResult((prev) => data);
+    console.log(data)
+  };
+  const getToastOptions = () => ({
+    position: "top-right",
+    autoClose: 3000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+  });
+  
   const notify = (text) =>
-    toast.success(text, {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
+    toast.success(text, getToastOptions());
+  
+  const notifyError = (text) =>
+    toast.error(text, getToastOptions());
   const handleLinkClick = (linkId) => {
     setActiveLink(linkId);
     setPageTab(linkId);
@@ -201,7 +213,7 @@ responseType:'blob'
   };
   const handleSendSMS = async (e) => {
     try {
-      await axiosPrivate.post('/sendNotification', { patientId: diagnosticsDetails?.clientId, type:'sms' }, {
+      await axiosPrivate.post('/sendNotification', { patientId: diagnosticsDetails?.clientId, type:'sms',notify:'result' }, {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
       });  
@@ -211,10 +223,13 @@ responseType:'blob'
       e.target.disabled = true;  
       setTimeout(() => {
         e.target.disabled = false;
-      }, 5000);
+      }, 20000);
   
     } catch (err) {
       console.log(err);
+      notifyError(
+        `Հաղորդագրությունը չի ուղարկվել`
+      );  
       // if (!err?.response) {
       //   setErrMsg("No Server Response");
       // }  else {
@@ -224,6 +239,30 @@ responseType:'blob'
   }
   return (
     <>
+    {modalResult && (
+        <Modal show={() => true} size="xl" onHide={() => setModalResult(false)}>
+          <Modal.Header closeButton>
+            <Modal.Title
+              style={{ width: "100%", textAlign: "center" }}
+            ></Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <div className="contact-body contact-detail-body">
+              <div data-simplebar className="nicescroll-bar">
+                <div className="d-flex flex-xxl-nowrap flex-wrap">
+                  <div className="contact-info w-100">
+                    <ResultData
+                      modalResult={modalResult}
+                      setModalResult={setModalResult}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="modal-footer "></div>
+          </Modal.Body>
+        </Modal>
+      )}
       <Suspense fallback={<LoadingSpinner />}>
         {isLoading ? (
           <LoadingSpinner />
@@ -542,10 +581,31 @@ responseType:'blob'
                       </div>
                       
                       <div className="card card-border ">
-                        <div className="card-header card-header-action"> Ծանուցումներ</div>
-                          <ul>
-                            <li>
-                              <div className="d-flex justify-content-between align-items-center p-2" >
+                        <div className="card-header card-header-action">
+                          <div className="d-flex justify-content-between align-items-center w-100">
+                            <p>
+                              Ծանուցումներ
+                              </p>
+                            <div 
+                            className="d-flex justify-content-center align-items-center" 
+                            style={{
+                              width:'25px',
+                              height:'25px', 
+                              border:'2px solid gray',
+                              borderRadius:'50%',
+                              fontWeight:'bold',
+                              color:'gray',
+                              paddingTop:'2px'
+                              }}>2</div>
+                            </div> 
+                            </div>
+                          <ul className="p-0 m-0">
+                            <li >
+                              <div className="d-flex justify-content-between align-items-center  w-100"
+                              style={{
+                                marginLeft:0,
+                                padding:'10px 20px 10px 20px'
+                              }} >
 
                                 <p>Կարճ հաղորդագրություն</p>
                                 <button type="button" onClick={(e)=>handleSendSMS(e)} className="btn btn-primary">Ուղարկել</button>
@@ -662,14 +722,122 @@ responseType:'blob'
                             </table>
                           </div>
                         </div>
-                        <div className="card-footer justify-content-between"></div>
+                        <div className="card-footer justify-content-between">
+                          <div className="d-flex justify-content-between w-100">
+                            <p>Ուղարկել արդյունքները</p>
+                          <button 
+                          className="btn btn-primary"
+                          onClick={()=>handleOpenResultModal(diagnosticsDetails)}>Ուղարկել</button></div>
                       </div>
+                          </div>
                     </div>
+                   
                   </>
                 )}
                 {pageTab === "tab_documents" && (
                   <div className="col-lg-12">
-                    
+                     <div className="card card-border card-profile-feed mb-lg-4 mb-3">
+                      <div className="card-header card-header-action">
+                        <div className="media align-items-center">
+                          <p>Վերբեռնել փաստաթուղթ</p>
+                        </div>
+                        <div className="card-action-wrap"></div>
+                      </div>
+                      <div
+                        className="row"
+                        style={{
+                          display: "flex",
+                          justifyContent: "center",
+                          flexDirection: "column",
+                        }}
+                      >
+                        <div className="d-flex justify-content-center">
+                          <div className="upload-logo">
+                            <div
+                              className="dropify-wrapper"
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                fileInputRef?.current.click()}}
+                              style={{ cursor: "pointer" }}
+                            >
+                              <div className="dropify-message d-flex justify-content-center  align-items-center flex-column">
+                                <span
+                                  className="file-icon d-flex justify-content-center  align-items-center"
+                                  style={{ width: "32px", height: "32px" }}
+                                ></span>
+                                <p className="d-flex justify-content-center align-items-center">
+                                  Ընտրել
+                                </p>
+
+                                <p
+                                  className="dropify-error"
+                                  style={{ display: "none" }}
+                                >
+                                  Ooops, something wrong appended.
+                                </p>
+                              </div>
+                              <div
+                                className="dropify-loader"
+                                style={{ display: "none" }}
+                                
+                              ></div>
+                              
+                              <form onSubmit={(e) => handleSubmit(e)}>
+                                <div >
+
+                                <input
+                                  type="file"
+                                  ref={fileInputRef}
+                                  onChange={handleChangeFile}
+                                  onDrop={handleDrop}
+                                  onDragOver={(e) => e.preventDefault()}
+                                  style={{ display: "none" }}
+                                  />
+                                  </div>
+                                <button
+                                  className="btn btn-primary"
+                                  type="submit"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleSubmit(e);
+                                  }}
+                                >
+                                  Վերբեռնել!
+                                </button>
+                              </form>
+                              <button
+                                type="button"
+                                className="dropify-clear"
+                                style={{ display: "none" }}
+                              >
+                                Remove
+                              </button>
+                              <div className="dropify-preview">
+                                <span className="dropify-render"></span>
+                                <div className="dropify-infos">
+                                  <div className="dropify-infos-inner">
+                                    <p className="dropify-filename">
+                                      <span className="file-icon"></span>
+                                      <span className="dropify-filename-inner">
+                                        {" "}
+                                      </span>
+                                    </p>
+                                    <p
+                                      className="dropify-infos-message"
+                                      style={{ display: "none" }}
+                                    >
+                                      Drag and drop or click to replace
+                                    </p>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        {fileName && <span>{" " + fileName}</span>}
+                      </div>
+                    </div>
 
                     <div>
                       <div className="card-body">

@@ -355,7 +355,8 @@ function Sample() {
                                 onClick={() => handleUserPage(2095)}
                               >
                                 {userData?.firstname + " "}
-                                {userData?.lastname}
+                                {userData?.lastname + " "}
+                                {userData?.midName}
                               </p>
                             </p>
                           </div>

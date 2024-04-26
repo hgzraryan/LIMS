@@ -1,8 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState, useMemo, useEffect, Suspense } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import useGetData from "../../hooks/useGetData";
-import ComponentToConfirm from "../ComponentToConfirm";
 import {
   useBlockLayout,
   useFilters,
@@ -97,8 +95,8 @@ function PatientDetails() {
             if(resp.data) {
               array.push(resp.data)
             }
-            
-            setPatientVisits([]);
+            console.log(resp)
+            setPatientVisits(array);
             setIsLoading(false);
           });
         })
@@ -304,16 +302,6 @@ function PatientDetails() {
     []
   );
   const {
-    getTableProps: getTableProps1,
-    getTableBodyProps: getTableBodyProps1,
-    headerGroups: headerGroups1,
-    rows: rows1,
-    prepareRow: prepareRow1,
-  } = useTable({
-    columns: columns1,
-    data: research,
-  });
-  const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
@@ -346,13 +334,22 @@ function PatientDetails() {
     }
   );
   const {
+    getTableProps: getTableProps1,
+    getTableBodyProps: getTableBodyProps1,
+    headerGroups: headerGroups1,
+    rows: rows1,
+    prepareRow: prepareRow1,
+  } = useTable({
+    columns: columns1,
+    data: research,
+  });
+ 
+  const {
     getTableProps:getTableProps2,
     getTableBodyProps:getTableBodyProps2,
     headerGroups:headerGroups2,
     rows:rows2,
     prepareRow:prepareRow2,
-    selectedFlatRows:selectedFlatRows2,
-    toggleHideColumn:toggleHideColumn2,
   } = useTable(
     {
       columns:columns2,
@@ -395,6 +392,7 @@ function PatientDetails() {
                 color: "#000",
                 marginTop: "10px",
               }}
+              {...getTableProps1()}
             >
               <thead>
                 {headerGroups1.map((headerGroup) => (
@@ -845,6 +843,7 @@ function PatientDetails() {
                 )}
                 {pageTab === "tab_doctorsVisits" && (
                   <section className="d-flex flex-column">
+
                     <div>
                       <table
                         className="table nowrap w-100 mb-5 dataTable no-footer"

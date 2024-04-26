@@ -17,7 +17,7 @@ import { checkResearchListCount } from "../../redux/features/researches/research
 import { useGetFullData } from "../../hooks/useGetFullData";
 import { checkMedicalServicesCount } from "../../redux/features/medicalServices/medicalServicesSlice";
 import { checkDoctorsVisitCount } from "../../redux/features/DoctorsVisit/DoctorsVisitSlice";
-
+import medicalCenter from '../../dist/svg/medical_center.svg'
 const MainTemplate = () => {
     const navigate = useNavigate();
     const location = useLocation();
@@ -649,6 +649,48 @@ const MainTemplate = () => {
                       </Link>
                     </li>
                     <li className="nav-item">
+                              <Link
+                                className={
+                                  sisActive1 === "medInstitutions" ||
+                                  location.pathname ===
+                                    "/medInstitutions"
+                                    ? "nav-link active"
+                                    : "nav-link"
+                                }
+                                to="/medInstitutions"
+                                onClick={() =>
+                                  handleSubmenuClick(
+                                    "settings",
+                                    "medInstitutions"
+                                  )
+                                }
+                              >
+                                 <span className="nav-icon-wrap">
+                          <span className="svg-icon">
+                          <svg 
+                          fill="#000000" 
+                          version="1.1" 
+                          id="Layer_1" 
+                          xmlns="http://www.w3.org/2000/svg"
+                           width="800px" 
+                           height="800px" 
+                           viewBox="0 0 230 290" 
+                           
+                           >
+
+<g id="SVGRepo_bgCarrier" stroke-width="0"/>
+
+<g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/>
+
+<g id="SVGRepo_iconCarrier"> <path d="M128,100.602V17.996H96.5V2h-63v15.996H2V254h47.25v-47.25h31.5V254h30.516H128h126V100.602H128z M96.5,100.468H74.844 v23.594H55.033v-23.594H33.5V80.627h21.533V57.094h19.811v23.533H96.5V100.468z M147.688,206.75H128v-19.688h19.688V206.75z M147.688,167.375H128v-19.688h19.688V167.375z M187.063,206.75h-19.688v-19.688h19.688V206.75z M187.063,167.375h-19.688v-19.688 h19.688V167.375z M226.438,206.75H206.75v-19.688h19.688V206.75z M226.602,167.375H206.75v-19.852h19.852V167.375z"/> </g>
+
+</svg>
+                          </span>
+                        </span>
+                                <span className="nav-link-text">Բուժհաստատություններ</span>
+                              </Link>
+                            </li>
+                    <li className="nav-item">
                       <a
                         className={
                           misActive1 === "doctors"
@@ -730,6 +772,24 @@ const MainTemplate = () => {
                               >
                                 <span className="nav-link-text">
                                   Բժիշկների ցանկ
+                                </span>
+                              </Link>
+                            </li>
+                            <li className="nav-item">
+                              <Link
+                                className={
+                                  sisActive1 === "refDoctors" ||
+                                  location.pathname === "/doctors/refDoctors"
+                                    ? "nav-link active"
+                                    : "nav-link"
+                                }
+                                to="./doctors/refDoctors"
+                                onClick={() =>
+                                  handleSubmenuClick("doctors", "refDoctors")
+                                }
+                              >
+                                <span className="nav-link-text">
+                                  Ուղղորդող բժիշկներ
                                 </span>
                               </Link>
                             </li>
@@ -1403,16 +1463,14 @@ const MainTemplate = () => {
                       </Link>
                     </li>
                     <li className="nav-item">
-                      <a
+                      <Link
                         className={
-                          misActive1 === "settings"
+                          misActive1 === "setup"
                             ? "nav-link active"
                             : "nav-link"
                         }
-                        href="#"
-                        data-bs-toggle="collapse"
-                        onClick={dropDownMenu2Click}
-                        data-bs-target="#dash_integ"
+                        to="/setup"
+                        onClick={() => handleSubmenuClick("setup", "")}
                       >
                         <span className="nav-icon-wrap">
                           <span className="svg-icon">
@@ -1445,180 +1503,7 @@ const MainTemplate = () => {
                           </span>
                         </span>
                         <span className="nav-link-text">Կարգաբերումներ</span>
-                      </a>
-                      <ul
-                        id="dash_integ"
-                        className={
-                          dropDownMenu2
-                            ? "nav flex-column collapse  nav-children"
-                            : "nav flex-column collapse  nav-children show"
-                        }
-                      >
-                        <li className="nav-item">
-                          <ul className="nav flex-column">
-                            {/* <li className="nav-item">
-                              <Link
-                                className={
-                                  sisActive1 === "prices" ||
-                                  location.pathname === "/settings/prices"
-                                    ? "nav-link active"
-                                    : "nav-link"
-                                }
-                                to="./settings/prices"
-                                onClick={() =>
-                                  handleSubmenuClick("settings", "prices")
-                                }
-                              >
-                                <span className="nav-link-text">
-                                  Գնացուցակներ
-                                </span>
-                              </Link>
-                            </li> */}
-                            <li className="nav-item">
-                              <Link
-                                className={
-                                  sisActive1 === "discountCards" ||
-                                  location.pathname ===
-                                    "/settings/discountCards"
-                                    ? "nav-link active"
-                                    : "nav-link"
-                                }
-                                to="./settings/discountCards"
-                                onClick={() =>
-                                  handleSubmenuClick(
-                                    "settings",
-                                    "discountCards"
-                                  )
-                                }
-                              >
-                                <span className="nav-link-text">
-                                  Զեղչի քարտեր
-                                </span>
-                              </Link>
-                            </li>
-                            <li className="nav-item">
-                              <Link
-                                className={
-                                  sisActive1 === "reagents" ||
-                                  location.pathname === "/settings/reagents"
-                                    ? "nav-link active"
-                                    : "nav-link"
-                                }
-                                to="./settings/reagents"
-                                onClick={() =>
-                                  handleSubmenuClick("settings", "reagents")
-                                }
-                              >
-                                <span className="nav-link-text">
-                                  Ռեագենտներ
-                                </span>
-                              </Link>
-                            </li>
-                            <li className="nav-item">
-                              <Link
-                                className={
-                                  sisActive1 === "equipments" ||
-                                  location.pathname === "/settings/equipments"
-                                    ? "nav-link active"
-                                    : "nav-link"
-                                }
-                                to="./settings/equipments"
-                                onClick={() =>
-                                  handleSubmenuClick("settings", "equipments")
-                                }
-                              >
-                                <span className="nav-link-text">
-                                  Սարքավորումներ
-                                </span>
-                              </Link>
-                            </li>
-                            <li className="nav-item">
-                              <Link
-                                className={
-                                  sisActive1 === "researchlists" ||
-                                  location.pathname ===
-                                    "/settings/researchlists"
-                                    ? "nav-link active"
-                                    : "nav-link"
-                                }
-                                to="./settings/researchlists"
-                                onClick={() =>
-                                  handleSubmenuClick(
-                                    "settings",
-                                    "researchlists"
-                                  )
-                                }
-                              >
-                                <span className="nav-link-text">
-                                  Հետ․ տեսակներ
-                                </span>
-                              </Link>
-                            </li>
-                            <li className="nav-item">
-                              <Link
-                                className={
-                                  sisActive1 === "medicalServices" ||
-                                  location.pathname ===
-                                    "/settings/medicalServices"
-                                    ? "nav-link active"
-                                    : "nav-link"
-                                }
-                                to="./settings/medicalServices"
-                                onClick={() =>
-                                  handleSubmenuClick(
-                                    "settings",
-                                    "medicalServices"
-                                  )
-                                }
-                              >
-                                <span className="nav-link-text">
-                                  Բուժ․ ծառայություններ
-                                </span>
-                              </Link>
-                            </li>
-                            <li className="nav-item">
-                              <Link
-                                className={
-                                  sisActive1 === "medInstitutions" ||
-                                  location.pathname ===
-                                    "/settings/medInstitutions"
-                                    ? "nav-link active"
-                                    : "nav-link"
-                                }
-                                to="./settings/medInstitutions"
-                                onClick={() =>
-                                  handleSubmenuClick(
-                                    "settings",
-                                    "medInstitutions"
-                                  )
-                                }
-                              >
-                                <span className="nav-link-text">
-                                  Բուժհաստատություններ
-                                </span>
-                              </Link>
-                            </li>
-                            <li className="nav-item">
-                              <Link
-                                className={
-                                  sisActive1 === "refDoctors" ||
-                                  location.pathname === "/settings/refDoctors"
-                                    ? "nav-link active"
-                                    : "nav-link"
-                                }
-                                to="./settings/refDoctors"
-                                onClick={() =>
-                                  handleSubmenuClick("settings", "refDoctors")
-                                }
-                              >
-                                <span className="nav-link-text">
-                                  Ուղղորդող բժիշկներ
-                                </span>
-                              </Link>
-                            </li>
-                          </ul>
-                        </li>
-                      </ul>
+                      </Link>
                     </li>
                   </ul>
                 </div>

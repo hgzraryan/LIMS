@@ -166,9 +166,11 @@ function CreateUser({ setIsOpen,refreshData }) {
     roles,
     emergencyContactNumber,
     emergencyContactName,
-    dateOfBirth}) => {
+    dateOfBirth,
+    additional}) => {
    
     const newUser = {
+      additionalData:additional,
       firstname:firstName,
       lastname:lastName,
       position:position,
@@ -221,6 +223,7 @@ function CreateUser({ setIsOpen,refreshData }) {
     }
   });
   const onRoleSelect = (data) => {
+    console.log(data)
     let rolesArr = {};
     for (let role of data) {
       rolesArr[role.name]=role.value
@@ -375,29 +378,6 @@ function CreateUser({ setIsOpen,refreshData }) {
                             </div>
                           </div>
                           <div className="row gx-3">
-                            {/* <div className="col-sm-6">
-                              <Input {...position_validation} />
-                            </div> */}
-                            <div className="col-sm-6">
-                              <div className="form-group">
-                              <div className="d-flex justify-content-between me-2">
-                                <label
-                                  className="form-label"
-                                  htmlFor="purchaseDate"
-                                  >
-                                  Ծննդյան ամսաթիվ
-                                </label>
-                                  {methods.formState.errors.dateOfBirth && (
-                                    <span className="error text-red"><span><img src={ErrorSvg} alt="errorSvg"/></span> պարտադիր</span>
-                                    )}
-                                    </div>
-                                <div>                                  
-                                   <CustomDateComponent name="dateOfBirth" control={methods.control}/>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="row gx-3">
                             <div className="col-sm-6">
                               <Input {...email_validation} />
                             </div>
@@ -415,7 +395,7 @@ function CreateUser({ setIsOpen,refreshData }) {
 
                             </div>
                           </div>
-                          <div className="row gx-3">
+                          <div className="row gx-3 mb-3">
                           <div className="col-sm-6">
                             <div className="d-flex justify-content-between me-2">
                               <label className="form-label" htmlFor="country">
@@ -501,7 +481,7 @@ function CreateUser({ setIsOpen,refreshData }) {
                               <Input {...street_validation} />
                             </div>
                           </div>
-                          <div className="row gx-3">
+                          <div className="row gx-3 mt-2 mb-2">
                             <div className="col-sm-6">
                               <Input {...zipCode_validation} />
                             </div>
@@ -613,6 +593,29 @@ function CreateUser({ setIsOpen,refreshData }) {
                               Չամուսնացած
                               </label>
                               </div>
+                              </div>
+                            </div>
+                          </div>                          
+                          <div className="row gx-3">
+                            {/* <div className="col-sm-6">
+                              <Input {...position_validation} />
+                            </div> */}
+                            <div className="col-sm-6">
+                              <div className="form-group">
+                              <div className="d-flex justify-content-between me-2">
+                                <label
+                                  className="form-label"
+                                  htmlFor="dateOfBirth"
+                                  >
+                                  Ծննդյան ամսաթիվ
+                                </label>
+                                  {methods.formState.errors.dateOfBirth && (
+                                    <span className="error text-red"><span><img src={ErrorSvg} alt="errorSvg"/></span> պարտադիր</span>
+                                    )}
+                                    </div>
+                                <div>                                  
+                                   <CustomDateComponent name="dateOfBirth" control={methods.control}/>
+                                </div>
                               </div>
                             </div>
                           </div>

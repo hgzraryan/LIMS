@@ -17,9 +17,8 @@ import { BiSolidInfoCircle } from "react-icons/bi";
 import { MdViewKanban } from "react-icons/md";
 import ResearchViewBoard from "../StatusBoard/ResearchViewBoard";
 import { Modal } from "react-bootstrap";
-import DiagnosticsEditModal from "../EditViews/DiagnosticsEditModal";
+import DiagnosticsDeactivate from "../DeactivateItems/DiagnosticsDeactivate";
 import diagnoseSvg from "../../../src/dist/img/diagnose.svg";
-import ResultData from "../ResultData";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { useNavigate } from "react-router-dom";
 import "../../dist/css/data-table.css";
@@ -28,6 +27,8 @@ import patientSvg from "../../dist/svg/patientSvg.svg";
 import ResearchesPrint from "../views/ResearchesPrint";
 import ProgressBar from "../ProgressBar";
 import moment from "moment";
+import cancelledSvg from "../../dist/svg/cancelled.svg";
+import isActiveSvg from "../../dist/svg/isActive.svg";
 
 function DiagnosticsTable({
   confirmRef,
@@ -38,7 +39,7 @@ function DiagnosticsTable({
   handleOpenModal,
   selectedItemId,
   selectedItem,
-  getDiagnostics,
+  refreshData,
 }) {
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
@@ -47,47 +48,15 @@ function DiagnosticsTable({
   const [isOpen, setIsopen] = useState(false);
   const [editRow, setEditRow] = useState(false);
   const [modalInfo, setModalInfo] = useState("");
-  const [modalResult, setModalResult] = useState("");
   const [modalPrint, setModalPrint] = useState("");
-  // const ComponentToPrintWrapper = ({ diagData }) => {
 
-  //   // 1.
-  //   let componentRef = useRef(null); // 2.
-  //   return (
-  //     <div style={{ display: "flex" }}>
-  //       <ReactToPrint
-  //         trigger={() => (
-  //           <a
-  //             className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover"
-  //             data-bs-toggle="tooltip"
-  //             data-placement="top"
-  //             title=""
-  //             data-bs-original-title="Archive"
-  //             href="#"
-  //           >
-  //             <span className="icon">
-  //               <span className="feather-icon">
-  //                 <FeatherIcon icon="printer" />
-  //               </span>
-  //             </span>
-  //           </a>
-  //         )}
-  //         content={() => componentRef.current}
-  //       />
-  //       <div style={{ display: "none" }}>
-  //         <ComponentToPrint ref={componentRef} value={diagData} />
-  //       </div>
-  //     </div>
-  //   );
-  // };
   const handleOpenInfoModal = (data) => {
     setModalInfo((prev) => data);
   };
-  const handleOpenResultModal = (data) => {
-    setModalResult((prev) => data);
-  };
+ 
   const handleOpenPrintModal = (data) => {
     setModalPrint((prev) => data);
+    
   };
   const handleSendResult = () => {
     const resultData = document.getElementById("resultData");
@@ -99,10 +68,10 @@ function DiagnosticsTable({
   const handleCloseStatusModal = () => {
     setSelectedItem1("");
   };
-  const handleOpenEditModal = (value) => {
+  const handleOpenDeactivateModal = (value) => {
     setEditRow((prev) => value);
   };
-  const handleCloseEditModal = () => {
+  const handleCloseDeactivateModal = () => {
     setEditRow(false);
   };
   const defaultColumn = React.useMemo(
@@ -324,6 +293,25 @@ function DiagnosticsTable({
         Cell: ({ row }) => (
           <div className="d-flex align-items-center">
             <div className="d-flex">
+            <a
+                className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover"
+                data-bs-toggle="tooltip"
+                data-placement="top"
+                title="Deactivate"
+                href="#"
+                onClick={() => handleOpenDeactivateModal(row.original)}
+              >
+                 <span className="icon">
+                  <span className="feather-icon">
+                   {row.original?.diagStatus==="Active" ?<img src={isActiveSvg} width={'20px'} height={'20px'} alt="isActiveSvg"/>:row.original?.diagStatus==="Cancelled"? <img width={'20px'} height={'20px'} src={cancelledSvg} alt="cancelledSvg"/> : 'black' }
+                  </span>
+                </span>
+              </a>
+
+              </div>
+
+              <div className="d-flex">
+
               <BiSolidInfoCircle
                 cursor={"pointer"}
                 size={"1.5rem"}
@@ -332,22 +320,7 @@ function DiagnosticsTable({
             </div>
 
             <div className="d-flex">
-              <a
-                className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover"
-                data-bs-toggle="tooltip"
-                data-placement="top"
-                title="Edit"
-                href="#"
-                onClick={() => handleOpenEditModal(row.original)}
-              >
-                 <span className="icon">
-                  <span className="feather-icon">
-                    <FeatherIcon icon="power" style={{color: row.original?.diagStatus==="Active" ?'green':row.original?.diagStatus==="Cancelled"? 'red' : 'black' }} />
-                  </span>
-                </span>
-              </a>
-              {/* <ComponentToPrintWrapper diagData={row.original} /> */}
-              {row.original?.diagStatus === "Active" && (
+            {row.original?.diagStatus === "Active" && (
                 <>
                   <a
                     className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover"
@@ -363,7 +336,7 @@ function DiagnosticsTable({
                       </span>
                     </span>
                   </a>
-                  <a
+                  {/* <a
                     className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover"
                     data-bs-toggle="tooltip"
                     data-placement="top"
@@ -376,9 +349,12 @@ function DiagnosticsTable({
                         <FeatherIcon icon="send" />
                       </span>
                     </span>
-                  </a>
+                  </a> */}
                 </>
               )}
+           
+              {/* <ComponentToPrintWrapper diagData={row.original} /> */}
+            
               {/*
               //TODO Delete diagnostics option
               {!row.original.patientId && (
@@ -550,30 +526,6 @@ function DiagnosticsTable({
           </Modal.Body>
         </Modal>
       )}
-      {modalResult && (
-        <Modal show={() => true} size="xl" onHide={() => setModalResult(false)}>
-          <Modal.Header closeButton>
-            <Modal.Title
-              style={{ width: "100%", textAlign: "center" }}
-            ></Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <div className="contact-body contact-detail-body">
-              <div data-simplebar className="nicescroll-bar">
-                <div className="d-flex flex-xxl-nowrap flex-wrap">
-                  <div className="contact-info w-100">
-                    <ResultData
-                      modalResult={modalResult}
-                      setModalResult={setModalResult}
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="modal-footer "></div>
-          </Modal.Body>
-        </Modal>
-      )}
       {modalPrint && (
         <Modal show={() => true} size="xl" onHide={() => setModalPrint(false)}>
           <Modal.Header closeButton>
@@ -676,10 +628,10 @@ function DiagnosticsTable({
               );
             })}
             {editRow && (
-              <DiagnosticsEditModal
-                handleCloseEditModal={handleCloseEditModal}
+              <DiagnosticsDeactivate
+                handleCloseDeactivateModal={handleCloseDeactivateModal}
                 rowData={editRow}
-                getDiagnostics={getDiagnostics}
+                refreshData={refreshData}
               />
             )}
             <ResearchViewBoard

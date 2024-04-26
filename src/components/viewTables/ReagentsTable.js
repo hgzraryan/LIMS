@@ -14,7 +14,7 @@ import FeatherIcon from "feather-icons-react/build/FeatherIcon";
 import { ColumnFilter } from "../ColumnFilter";
 import { BiSolidInfoCircle } from "react-icons/bi";
 import { Modal } from "react-bootstrap";
-import reagentSvg from "../../../src/dist/img/reagent.svg";
+import reagentSvg from "../../../src/dist/svg/reagent.svg";
 import "../../dist/css/data-table.css";
 
 const customReagentsData = [

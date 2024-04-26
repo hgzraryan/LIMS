@@ -16,9 +16,6 @@ import { selectResearchListCount } from "../../redux/features/researches/researc
 import { selectDoctorCount } from "../../redux/features/doctor/doctorCountSlice";
 import StackedBarChart from "../StackedBarChart";
 
-
-
-
 const Home = ({asd}) => {    
     const navigate = useNavigate();
     const logout = useLogout();

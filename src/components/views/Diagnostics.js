@@ -201,7 +201,7 @@ const Diagnostics = () => {
                         setDiagnostics={setDiagnostics}
                         handleCloseModal={handleCloseModal}
                         handleOpenModal={handleOpenModal}
-                        getDiagnostics={getDiagnostics}
+                        refreshData={refreshData}
                       />
                          <ReactPaginate
                           previousLabel = {"Հետ"}    

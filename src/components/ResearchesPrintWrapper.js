@@ -24,7 +24,7 @@ function ResearchesPrintWrapper({ value,currentClient }) {
          {value?.diagnosticsId 
          ?<ComponentToPrint ref={componentRef} value={value} currentClient={currentClient} />
          :value?.doctorsVisitId
-         ?<ComponentToPrintVisit ref={componentRef} value={value} currentClient={currentClient} />
+         ?<ComponentToPrintVisit ref={componentRef} value={value}  />
          :''
          }
         </div>

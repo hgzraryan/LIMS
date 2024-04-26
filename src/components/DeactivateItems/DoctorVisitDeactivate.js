@@ -1,21 +1,18 @@
-import React from "react";
+import React from 'react'
 import { Modal } from "react-bootstrap";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import moment from "moment";
-
-function DiagnosticsEditModal({
-  handleCloseEditModal,
+function DoctorVisitDeactivate({
+  handleCloseDeactivateModal,
   rowData,
-  getDiagnostics,
+  refreshData,
 }) {
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
-  const { diagnosticsId } = rowData;
-  const handleDisableDiagnose = (data) => {
-    handleCloseEditModal(false);
-  };
+  const { doctorsVisitId } = rowData;
+
   const notify = (text) =>
     toast.success(text, {
       position: "top-right",
@@ -27,19 +24,19 @@ function DiagnosticsEditModal({
       progress: undefined,
       theme: "light",
     });
-  const handleDiagnosticssDetails = async (data) => {
+  const handleDoctorVistStatus = async (data) => {
     try {
       const response = await axiosPrivate.post(
-        "/diagStatusChange",
-        { id: diagnosticsId, diagStatus: data },
+        "/visitStatusChange",
+        { id: doctorsVisitId, visitStatus: data },
         {
           headers: { "Content-Type": "application/json" },
           withCredentials: true,
         }
       );
-      getDiagnostics();
-      handleDisableDiagnose(true);
-      notify(`Ախտորոշման կարգավիճակը փոխված է`);
+      refreshData();
+      handleCloseDeactivateModal(false);
+      notify(`Այցելության կարգավիճակը փոխված է`);
     } catch (err) {
       console.log(err);
       // navigate(`/diagnostics/${diagnosticsId}`)
@@ -53,54 +50,54 @@ function DiagnosticsEditModal({
     }
   };
   return (
-    <Modal
+<Modal
       show={() => true}
       size="xs"
-      onHide={() => handleCloseEditModal(false)}
+      onHide={() => handleCloseDeactivateModal(false)}
     >
       <Modal.Header closeButton>
         <Modal.Title style={{ width: "100%", textAlign: "center" }}>
-          Հետազոտություն
+          Բժշկի այցելություն
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <p>Ախտորոշման նույնականացման համար։{rowData.diagnosticsId}</p>
-        <p>Ախտորոշման ամսաթիվ։{moment.utc(rowData?.diagnosisDate).format('DD-MM-YYYY HH:mm')}</p>
-        <p>Ախտորոշման տեսակը։{rowData.internalStatus}</p>
-        <div className="separator-full"></div>
+        <p>Այցելության նույնականացման համար։{rowData.doctorsVisitId}</p>
+        <p>Այցելության ամսաթիվ։{moment.utc(rowData?.visitDate).format('DD-MM-YYYY HH:mm')}</p>
+        <p>Բժշկի անունը։{rowData?.doctorName}</p>
+        <p>Այցելուի անունը։{rowData?.clientFirstName+" "+rowData?.clientLastName +" "+ rowData?.clientMidName}</p>
 
         <div className="modal-footer align-items-center d-flex">
-          {rowData.diagStatus === "Active" && (
+          {rowData.visitStatus === "Active" && (
             <button
               type="button"
-              onClick={() => handleDiagnosticssDetails("Cancelled")}
+              onClick={() => handleDoctorVistStatus("Cancelled")}
               className="btn btn-primary"
               data-bs-dismiss="modal"
             >
-              Չեղարկել ախտորոշումը
+              Չեղարկել այցելությունը
             </button>
           )}
-          {rowData.diagStatus === "Cancelled" && (
+          {rowData.visitStatus === "Cancelled" && (
             <button
               type="button"
-              onClick={() => handleDiagnosticssDetails("Active")}
+              onClick={() => handleDoctorVistStatus("Active")}
               className="btn btn-primary"
               data-bs-dismiss="modal"
             >
-              Ակտիվացնել ախտորոշումը
+              Ակտիվացնել այցելությունը
             </button>
           )}
           <button
             type="button"
             className="btn btn-secondary"
-            onClick={() => handleCloseEditModal(false)}
+            onClick={() => handleCloseDeactivateModal(false)}
           >
             Փակել
           </button>
         </div>
       </Modal.Body>
     </Modal>
-  );
+  )
 }
 
-export default DiagnosticsEditModal;
+export default DoctorVisitDeactivate

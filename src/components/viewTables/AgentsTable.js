@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useMemo, useState } from "react";
 import ComponentToConfirm from "../ComponentToConfirm";
 import { useBlockLayout, useFilters, useResizeColumns, useRowSelect, useSortBy, useTable } from "react-table";
@@ -8,7 +7,6 @@ import { ColumnFilter } from "../ColumnFilter";
 import "../../dist/css/data-table.css";
 import AgentEditModal from "../EditViews/AgentEditModal";
 import moment from "moment";
-
 
 function AgentsTable({
   confirmRef,
@@ -24,8 +22,14 @@ function AgentsTable({
   const [editRow, setEditRow] = useState(false);
 
   const handleOpenEditModal = (value) => {
-      setEditRow((prev) => value);
-    };
+    setEditRow((prev) => value);
+  };
+
+  const handleRowClick = (row) => {
+    // Add logic here to handle row click
+    console.log("Clicked row:", row);
+  };
+
   const defaultColumn = React.useMemo(
     () => ({
       minWidth: 20,
@@ -34,6 +38,7 @@ function AgentsTable({
     }),
     []
   );
+
   const columns = useMemo(
     () => [
       {
@@ -209,22 +214,25 @@ function AgentsTable({
     ],
     []
   );
- 
+
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
     rows,
     prepareRow,
-    selectedFlatRows,    
+    selectedFlatRows,
     toggleHideColumn,
   } = useTable(
     {
       columns,
-      data: agents, 
-      defaultColumn      
+      data: agents,
+      defaultColumn
     },
-    useFilters,useBlockLayout,useResizeColumns,useSortBy,
+    useFilters,
+    useBlockLayout,
+    useResizeColumns,
+    useSortBy,
     useRowSelect,
     (hooks) => {
       hooks.visibleColumns.push((columns) => [
@@ -239,69 +247,70 @@ function AgentsTable({
       ]);
     }
   );
-  // console.log(selectedFlatRows);
+
   return (
     <>
-    {
-      editRow &&(
-        <AgentEditModal agent={editRow} setEditRow={setEditRow} refreshData={refreshData}/>
-      )
-    }
-    <table  className="table nowrap w-100 mb-5 dataTable no-footer" {...getTableProps()} >
-      <thead>
-        {headerGroups.map((headerGroup) => (
-          <tr {...headerGroup.getHeaderGroupProps({style:{width:'100%'}})}>
-            {headerGroup.headers.map((column) => (
-              <th  {...column.getHeaderProps(column.getSortByToggleProps({
-                style: column.style // Apply custom style to the column header
-              }))}>
-              <div>
-                {column.id !== "selection" && (
-                  <>
+      {editRow && (
+        <AgentEditModal agent={editRow} setEditRow={setEditRow} refreshData={refreshData} />
+      )}
+      <table className="table nowrap w-100 mb-5 dataTable no-footer" {...getTableProps()}>
+        <thead>
+          {headerGroups.map((headerGroup) => (
+            <tr {...headerGroup.getHeaderGroupProps({ style: { width: '100%' } })}>
+              {headerGroup.headers.map((column) => (
+                <th {...column.getHeaderProps(column.getSortByToggleProps({
+                  style: column.style // Apply custom style to the column header
+                }))}>
                   <div>
-                    {column.canFilter ? column.render("Filter") : null}
-                  </div>
-                
-                <div  style={{
-                  marginTop: "2px",
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}>
-                  <div>{column.render("Header")}</div>
-                  
-                    <div style={{paddingTop:'20px'}} >
-                      {column.isSorted ? (
-                        column.isSortedDesc ? (
-                          <span className="sorting_asc"></span>
-                          ) : (
-                            <span className="sorting_desc"></span>
-                            )
+                    {column.id !== "selection" && (
+                      <>
+                        <div>
+                          {column.canFilter ? column.render("Filter") : null}
+                        </div>
+
+                        <div style={{
+                          marginTop: "2px",
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                        }}>
+                          <div>{column.render("Header")}</div>
+
+                          <div style={{ paddingTop: '20px' }} >
+                            {column.isSorted ? (
+                              column.isSortedDesc ? (
+                                <span className="sorting_asc"></span>
+                              ) : (
+                                  <span className="sorting_desc"></span>
+                                )
                             ) : (
-                              <span className="sorting"></span>
+                                <span className="sorting"></span>
                               )}
-                    </div>
-                </div>
-                              </>
-                  )}
-              </div>
-              <div
-              {...column.getResizerProps()}
-                className={`resizer ${
-                  column.isResizing ? "isResizing" : ""
-                }`}
-              />
-            </th>
-            ))}
-          </tr>
-        ))}
-      </thead>
-      {agents?.length>0 ?  (
-            <tbody {...getTableBodyProps()}>
+                          </div>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                  <div
+                    {...column.getResizerProps()}
+                    className={`resizer ${
+                      column.isResizing ? "isResizing" : ""
+                      }`}
+                  />
+                </th>
+              ))}
+            </tr>
+          ))}
+        </thead>
+        {agents?.length > 0 && (
+          <tbody {...getTableBodyProps()}>
             {rows.map(row => {
               prepareRow(row)
               return (
-                <tr {...row.getRowProps({style:{width:'100%'}})}>
+                <tr {...row.getRowProps({
+                  style: { width: '100%',cursor:'pointer' },
+                  onClick: () => handleRowClick(row) // Attach onClick event handler
+                })}>
                   {row.cells.map(cell => {
                     return <td {...cell.getCellProps({
                       style: cell.column.style // Apply custom style to the column cells
@@ -310,18 +319,18 @@ function AgentsTable({
                 </tr>
               )
             })}
-             <ComponentToConfirm
-            handleCloseModal={handleCloseModal}
-            handleOpenModal={handleOpenModal}
-            handleDeleteItem={handleDeleteItem}
-            selectedItemId={selectedItemId}
-            confirmUserRef={confirmRef}
-            keyName={selectedItem.name}
-            delId={selectedItem.agentId}
-          />
-            </tbody>
-          ):''}
-    </table>
+            <ComponentToConfirm
+              handleCloseModal={handleCloseModal}
+              handleOpenModal={handleOpenModal}
+              handleDeleteItem={handleDeleteItem}
+              selectedItemId={selectedItemId}
+              confirmUserRef={confirmRef}
+              keyName={selectedItem.name}
+              delId={selectedItem.agentId}
+            />
+          </tbody>
+        )}
+      </table>
     </>
   );
 }

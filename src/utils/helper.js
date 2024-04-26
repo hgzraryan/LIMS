@@ -42,3 +42,40 @@ export  function deleteNullProperties(obj) {
 
     return age;
   };
+  
+  export function deepEqual(obj1, obj2) {
+    // Base case: If both are primitive types, compare directly
+    if (obj1 === obj2) return true;
+
+    // Check if both are objects
+    if (typeof obj1 !== 'object' || typeof obj2 !== 'object') return false;
+
+    // Check if both objects have the same keys
+    const keys1 = Object.keys(obj1);
+    const keys2 = Object.keys(obj2);
+    if (keys1.length !== keys2.length) return false;
+
+    // Recursively compare values
+    for (let key of keys1) {
+        if (!keys2.includes(key) || !deepEqual(obj1[key], obj2[key])) return false;
+    }
+
+    return true;
+}
+//Change Role structure for react-select 
+export function objToArrWithObjects(roles) {
+  const labels = {
+    Admin: 'Ադմին',
+    Approver: 'Հաստատող',
+    Editor: 'Փոփոխող',
+    User: 'Օգտատեր',
+    Sampler: 'Նմուշառող',
+    Doctor: 'Բժիշկ'
+  };
+
+  return Object.entries(roles).map(([key, value]) => ({
+    label: labels[key],
+    name: key,
+    value
+  }));
+}

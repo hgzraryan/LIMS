@@ -35,6 +35,7 @@ USERS_ID_ROUTE,
 DOCTORSTAMPLETE_ROUTE,
 ORGANIZATIONS_ID_ROUTE,
 DOCTORS_EMPLOYMENT_ROUTE,
+SETUP_ROUTE,
 MEDICALSERVICES_ROUTE} from '../src/utils/constants' 
 import { lazy, Suspense, useEffect, useState } from "react";
 import Support from "./components/views/Support";
@@ -77,9 +78,10 @@ import DoctorsEmployment from "./components/views/DoctorsEmployment";
  const MedInstitutions = lazy(()=>  import("./components/views/MedInstitutions"));
  const PatientDetails = lazy(()=>  import("./components/viewDetails/PatientDetails"));
  const AddSample = lazy(()=>  import("./components/addViews/AddSample"));
- const Samples = lazy(()=>  import("./components/viewTables/SamplesTable"));
+ const Samples = lazy(()=>  import("./components/views/Samples"));
  const MedicalServices = lazy(()=>  import("./components/views/MedicalServices"));
  const DoctorsPatients = lazy(()=>  import("./components/views/DoctorsPatients"));
+ const Setup = lazy(()=>  import("./components/views/Setup"));
  
 
 //import React, { useState, useEffect } from "react";
@@ -162,6 +164,7 @@ function App() {
 
             <Route index path="/" element={<Home />} />
           
+            <Route index path={SETUP_ROUTE} element={<Setup />} />
             <Route path={DOCTORSTAMPLETE_ROUTE} element={<DoctorsTemplete />} />
             <Route path={DOCTORSVISITS_ROUTE} element={<DoctorsVisits />} />
             <Route path={DOCTORSVISITS_ID_ROUTE} element={<DoctorsVisitsDetails/>} />

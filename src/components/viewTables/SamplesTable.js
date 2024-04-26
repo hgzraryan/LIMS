@@ -5,32 +5,31 @@ import FeatherIcon from "feather-icons-react/build/FeatherIcon";
 import { ColumnFilter } from "../ColumnFilter";
 import "../../dist/css/data-table.css";
 
-function SamplesTable() {
-  // const [currentPage, setCurrentPage] = useState(0);  
-  // const [usersPerPage, setUsersPerPage] = useState(Math.round((window.innerHeight / 100) * 1.5));
-  // const pageCount = Math.ceil(patientsCount/usersPerPage)
-  
-  //   const {
-  //     data: patients,
-  //     setData: setPatients,
-  //     getData: getPatients,  
-  //   } = useGetData(PATIENTS_URL,currentPage,usersPerPage);
-  const [samples,setSamples]=useState([
-    {
-      sampleId:101000,
-      bgkCode:303014,
-      localCode:303014,
-      labService:"Բջջագենետիկայի լաբորատորիա",
-      category:"Քաղցկեղի մոլեկուլային հետազոտություն",
-      name:'Սուր Միելոբլաստային Լեյկոզի և ՄԴՍ Միելոդիսպլազիայի  (FISH) 1 վերակառուցում',
-      price:35000,
-      purchasePrice:35000,
-      serveDate:'3-4 աշխ. օր',
-      biomass:'Ոսկրածուծ/  արյուն ',
-      vial:' Heparin',
-      sampleTime:'Երկ-Ուրբ 08։30-17։00 Շաբաթ 09։30-13։00',
-      prepare:"Ոսկրածուծի ախտաբան. / արյան ընդհ. Վերլուծության պատասխան պահանջվում է"
-    }])
+function SamplesTable({selectedItem,
+  selectedItemId,
+  handleOpenModal,
+  handleCloseModal,
+  samples,
+  setSamples,
+  refreshData,}) { 
+ 
+  // const [samples,setSamples]=useState([
+  //    {
+  //      sampleId:101000,
+  //      bgkCode:303014,
+  //      localCode:303014,
+  //      labService:"Բջջագենետիկայի լաբորատորիա",
+  //      category:"Քաղցկեղի մոլեկուլային հետազոտություն",
+  //      name:'Սուր Միելոբլաստային Լեյկոզի և ՄԴՍ Միելոդիսպլազիայի  (FISH) 1 վերակառուցում',
+  //      price:35000,
+  //      purchasePrice:35000,
+  //      serveDate:'3-4 աշխ. օր',
+  //      biomass:'Ոսկրածուծ/  արյուն ',
+  //      vial:' Heparin',
+  //      sampleTime:'Երկ-Ուրբ 08։30-17։00 Շաբաթ 09։30-13։00',
+  //      prepare:"Ոսկրածուծի ախտաբան. / արյան ընդհ. Վերլուծության պատասխան պահանջվում է"
+  //    }
+  // ])
   const defaultColumn = React.useMemo(
     () => ({
       minWidth: 20,

@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState } from 'react'
 import ReactPaginate from 'react-paginate'
 import SamplesTable from '../viewTables/SamplesTable'
@@ -7,17 +8,18 @@ import useGetData from '../../hooks/useGetData';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 
 function Samples() {
+  const [samples, setSamples] = useState([]);
   const [selectedItem, setSelectedItem] = useState("");
   const [selectedItemId, setSelectedItemId] = useState(null);
   const [currentPage, setCurrentPage] = useState(0);  
   const [usersPerPage, setUsersPerPage] = useState(Math.round((window.innerHeight / 100)));
   //const pageCount = Math.ceil(patientsCount/usersPerPage)
-  const {
-    data: samples,
-    setData: setSamples,
-    getData: getSamples, 
-    refreshData 
-  } = useGetData(SAMPLES_URL,currentPage,usersPerPage);
+  // const {
+  //   data: samples,
+  //   setData: setSamples,
+  //   getData: getSamples, 
+  //   refreshData 
+  // } = useGetData(SAMPLES_URL,currentPage,usersPerPage);
   //-------------------------PAGINATION---------------------------//  
   const handlePageClick = ({ selected: selectedPage }) => {
     setCurrentPage(selectedPage);
@@ -32,9 +34,9 @@ const handleCloseModal = () => {
 };
   //--------------------------------------------------------------//
   const refreshPage = () => {
+   // refreshData()
     let paglink = document.querySelectorAll(".page-item");
     paglink[0]?.firstChild.click();
-    refreshData()
   };
   return (
     
@@ -143,9 +145,9 @@ const handleCloseModal = () => {
                       //handleDeleteItem={handleDeleteItem}
                       handleOpenModal={handleOpenModal}
                       handleCloseModal={handleCloseModal}
-                      agents={samples}
-                      setAgents={setSamples}
-                      getAgents={getSamples}
+                      samples={samples}
+                      setSamples={setSamples}
+                      //refreshData={refreshData}
                     />
                     <ReactPaginate
                       previousLabel = {"Հետ"}    

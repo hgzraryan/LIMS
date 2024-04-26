@@ -226,7 +226,7 @@ function AddDoctorsVisit({
           );
            // Send notification if enableSMS is checked
   if (!!enableSMS) {
-    await axiosPrivate.post('/sendNotification', { patientId: client?.value, type:'sms' }, {
+    await axiosPrivate.post('/sendNotification', { patientId: client?.value, type:'sms',notify:'visit' }, {
       headers: { "Content-Type": "application/json" },
       withCredentials: true,
     });

@@ -386,10 +386,7 @@ function DoctorEditModal({ doctor, setEditRow, refreshData }) {
                                           onChange={(val) => {
                                             field.onChange(val);
                                             setRegion(val);
-                                            //handle()
-                                            console.log(val)
-                                            console.log('methods',methods)
-                                           // methods.trigger("state");
+                                            methods.trigger("state");
                                           }}
                                           style={{
                                             appearance: "auto",

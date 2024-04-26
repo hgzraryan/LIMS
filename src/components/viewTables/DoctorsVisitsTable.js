@@ -19,6 +19,9 @@ import { Modal } from 'react-bootstrap';
 import ProgressBar from '../ProgressBar';
 import moment from 'moment';
 import DoctorVisitsPrint from '../views/DoctorVisitsPrint';
+import DoctorVisitDeactivate from '../DeactivateItems/DoctorVisitDeactivate';
+import cancelledSvg from "../../dist/svg/cancelled.svg";
+import isActiveSvg from "../../dist/svg/isActive.svg";
 
 function DoctorsVisitsTable({
     selectedItem,
@@ -28,12 +31,12 @@ function DoctorsVisitsTable({
     handleCloseModal,
     doctorsVisits,
     setDoctorsVisits,
-    //getDoctorsVisits
+    refreshData
 }) {
   const navigate = useNavigate()
   const [modalInfo, setModalInfo] = useState("");
   const [editRow, setEditRow] = useState(false);
-  const [toggleDisableRow, setToggleDisableRow] = useState(false);
+  const [DisableRowData, setDisableRowData] = useState(false);
   const [modalPrint, setModalPrint] = useState("");
 
  const handleOpenPrintModal = (data) => {
@@ -51,14 +54,14 @@ function DoctorsVisitsTable({
     
     setModalInfo((prev) => data);
   };
-  const handleOpenDisableModal = (value) => {
-    setToggleDisableRow((prev) => value);
+  const handleOpenDeactivateModal = (value) => {
+    setDisableRowData((prev) => value);
   };
   const handleDoctorInfo = async (doctorId)=>{
     navigate(`/doctors/${doctorId}`)
     }
-    const handleOpenEditModal = (value) => {
-      setEditRow((prev) => value);
+    const handleCloseDeactivateModal = (value) => {
+      setDisableRowData((prev) => value);
     };
     const defaultColumn = React.useMemo(
         () => ({
@@ -122,7 +125,7 @@ function DoctorsVisitsTable({
                 onClick={()=>handlePatientsDetail(row.original?.clientId)}
                 style={{ cursor: 'pointer', textDecoration:'underline' }}
               >
-                {row.original?.clientFirstName+" " +row.original?.clientLastName}
+                {row.original?.clientFirstName+" " +row.original?.clientLastName+" " +row.original?.clientMidName}
               </div>
             ),
           },
@@ -227,7 +230,7 @@ function DoctorsVisitsTable({
                 }}
                 style={{ cursor: 'pointer' ,textDecoration:'underline'}}
               >
-                {row.original.doctorName}
+                {row.original?.doctorName}
               </div>
             ),
           },
@@ -242,29 +245,34 @@ function DoctorsVisitsTable({
             Cell: ({ row }) => (
               <div className="d-flex align-items-center">
                  <div className="d-flex">
+            <a
+                className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover"
+                data-bs-toggle="tooltip"
+                data-placement="top"
+                title="Deactivate"
+                href="#"
+                onClick={() => handleOpenDeactivateModal(row.original)}
+              >
+                 <span className="icon">
+                  <span className="feather-icon">
+                   {row.original?.visitStatus==="Active" 
+                   ?<img src={isActiveSvg} width={'20px'} height={'20px'} alt="isActiveSvg"/>
+                   :row.original?.visitStatus==="Cancelled"
+                   ? <img width={'20px'} height={'20px'} src={cancelledSvg} alt="cancelledSvg"/> 
+                   : '' }
+                  </span>
+                </span>
+              </a>
+
+              </div>
+                 <div className="d-flex">
               <BiSolidInfoCircle
               cursor={"pointer"}
               size={"1.5rem"}
               onClick={() => handleOpenInfoModal(row.original)}
             />
-            </div> 
-                 <div className="d-flex">
-                 <a
-                    className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover"
-                    data-bs-toggle="tooltip"
-                    data-placement="top"
-                    title="Edit"
-                    href="#"
-                    onClick={() => handleOpenDisableModal(row.original)}
-                  >
-                    <span className="icon">
-                  <span className="feather-icon">
-                    <FeatherIcon icon="power" style={{color: row.original?.visitStatus==="Active" ?'green':row.original?.visitStatus==="Cancelled"? 'red' : 'black' }}  />
-                  </span>
-                </span>
-                  </a>
-            </div> 
-                <div className="d-flex">
+            </div>  
+                {/* <div className="d-flex">
                 <a
                 className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover"
                 data-bs-toggle="tooltip"
@@ -279,7 +287,7 @@ function DoctorsVisitsTable({
                   </span>
                 </span>
               </a>
-                </div>
+                </div> */}
                 {/* {row.original?.visitStatus === "Active" && ( */}
                 <>
                   <a
@@ -343,6 +351,13 @@ function DoctorsVisitsTable({
       // console.log(selectedFlatRows);
       return (
         <>
+          {DisableRowData && (
+              <DoctorVisitDeactivate
+                handleCloseDeactivateModal={handleCloseDeactivateModal}
+                rowData={DisableRowData}
+                refreshData={refreshData}
+              />
+            )}
         {modalPrint && (
         <Modal show={() => true} size="xl" onHide={() => setModalPrint(false)}>
           <Modal.Header closeButton>

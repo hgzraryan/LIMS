@@ -75,6 +75,8 @@ function PatientsTable({
             placeholder={'ID'}
           />
         ),
+        
+        
       },
       {
         Header: (event,) => (
@@ -96,8 +98,8 @@ function PatientsTable({
         ),
         Cell: ({ row }) => (
           <div
-            onClick={()=>handlePatientsDetail(row.original.patientId)}
-            style={{ cursor: 'pointer', textDecoration:'underline' }}
+            // onClick={()=>handlePatientsDetail(row.original.patientId)}
+            // style={{ cursor: 'pointer', textDecoration:'underline' }}
           >
             {row.original.firstName}
           </div>
@@ -435,24 +437,35 @@ function PatientsTable({
       </thead>
       {patients?.length>0? (
         <tbody {...getTableBodyProps()}>
-          {rows.map((row) => {
-            prepareRow(row);
-            return (
-              <tr {...row.getRowProps()}>
-                {row.cells.map((cell) => {
-                  return (
-                    <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
-                    );
-                  })}
-              </tr>
-            );
-          })}
-          <PatientInfo
-            selectedItem={selectedItem}
-            handleCloseModal={handleCloseModal}
-            researchState={researchState}
-            />
-        </tbody>
+        {rows.map((row) => {
+          prepareRow(row);
+          return (
+            <tr {...row.getRowProps()}>
+              {row.cells.map((cell) => {
+                return (
+                  <td
+                    {...cell.getCellProps({style:cell.column?.id === "options"
+                    ? undefined
+                    : { cursor:'pointer' },
+                      onClick:
+                        cell.column?.id === "options"
+                          ? undefined
+                          : () => handlePatientsDetail(row.original?.patientId), // Attach onClick event handler
+                    })}
+                  >
+                    {cell.render("Cell")}
+                  </td>
+                );
+              })}
+            </tr>
+          );
+        })}
+        <PatientInfo
+          selectedItem={selectedItem}
+          handleCloseModal={handleCloseModal}
+          researchState={researchState}
+        />
+      </tbody>
        ):''}
     </table>
       </>

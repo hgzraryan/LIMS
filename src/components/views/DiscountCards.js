@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, Suspense } from "react";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
@@ -38,6 +38,7 @@ import {
 import { Input } from "../Input";
 import CustomDateTimeComponent from "../CustomDateTimeComponent";
 import { DISCOUNTS_URL, REGISTER_DISCOUNT } from "../../utils/constants";
+import LoadingSpinner from "../LoadingSpinner";
 
 const GET_RESEARCHES = "/researchLists";
 
@@ -129,7 +130,7 @@ export default function DiscountCards() {
         .get(GET_RESEARCHES)
         .then((resp) => {
           setResearchState(resp?.data?.jsonString);
-          setIsLoading(false);
+          //setIsLoading(false);
         })
         .then((resp) => {
           axiosPrivate.get(DISCOUNTS_URL).then((resp) => {
@@ -778,11 +779,20 @@ export default function DiscountCards() {
                                     </button>
                                       </div>
                                       </div>
-                                      <div style={{display:'flex',marginBottom:'5px',flexWrap:'wrap'}}>                                    
-                                          {globalDiscountData.length>0 ? globalDiscountData.map((el)=>{
+                                        <div style={{display:'flex',marginBottom:'5px',flexWrap:'wrap'}}>                                    
+                                      <Suspense fallback={<LoadingSpinner />}>
+                                      {isLoading ? (
+                                        <div className="d-flex justify-content-center  align-items-center ms-15">
 
-                                         return(  
-                                          <div style={{display:'flex',flexDirection:'column',margin:'5px'}}>   
+                                          <LoadingSpinner />
+                                        </div>
+                                      ) : (
+                                        <>
+                                          {globalDiscountData.length>0 ? globalDiscountData.map((el)=>{
+                                            
+                                            return(                                              
+                                              
+                                              <div style={{display:'flex',flexDirection:'column',margin:'5px'}}>   
                                       <div className="third_column d-flex justify-content-center align-items-center">
                                         <div className="new_discount-box d-flex justify-content-center align-items-center">
                                           <img
@@ -790,7 +800,7 @@ export default function DiscountCards() {
                                             className="new_box-image"
                                             alt="emptyCard"
                                             style={{objectFit:'cover'}}
-                                          />
+                                            />
                                           <div className="new_box-content">
                                             <p style={{ fontSize: "1rem" }}>
                                               {" "}
@@ -814,14 +824,17 @@ export default function DiscountCards() {
                                     <button
                                       type="button"
                                       className="btn btn-secondary"
-                                       onClick={(e) => handleCancelDiscount(el?.discountId)}
-                                    >
+                                      onClick={(e) => handleCancelDiscount(el?.discountId)}
+                                      >
                                       Չեղարկել
                                     </button>
                                   </div>
                                   </div>
                                          ) }):'' }
-                                  </div>   
+                                        </>
+                                        )}
+                                        </Suspense>
+                                        </div>   
                                     </div>
                                   </div>
                                 </div>

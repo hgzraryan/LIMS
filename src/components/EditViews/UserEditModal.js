@@ -41,8 +41,15 @@ import {
 } from "react-country-region-selector";
 import LoadingSpinner from "../LoadingSpinner";
 import { USERS_URL } from "../../utils/constants";
-import { deleteNullProperties } from "../../utils/helper";
-
+import { deepEqual, deleteNullProperties, objToArrWithObjects } from "../../utils/helper";
+const roleState = [
+  { label:'Ադմին',name: "Admin", value: 5150 },
+  { label:'Հաստատող',name: "Approver", value: 3345 },
+  { label:'Փոփոխող',name: "Editor", value: 1984 },
+  { label:'Օգտատեր',name: "User", value: 2001 },
+  { label:'Նմուշառող',name: "Sampler", value: 1212 },
+  { label:'Բժիշկ',name: "Doctor", value: 9578 },  
+]
 function UserEditModal({ user, setEditRow, refreshData }) {
   const [isLoading, setIsLoading] = useState(false);
   const axiosPrivate = useAxiosPrivate();
@@ -56,6 +63,37 @@ function UserEditModal({ user, setEditRow, refreshData }) {
   const methods = useForm({
     mode: "onChange",
   });
+  const animatedComponents = makeAnimated();
+  const colourStyles = {
+    control: (styles, { isFocused, isSelected }) => ({
+      ...styles,
+      backgroundColor: "#fff",
+      borderColor: isFocused ? "#fff" : "#e8e3e3",
+      boxShadow: "#e8e3e3",
+
+      ":hover": {
+        borderColor: "#fff",
+      },
+    }),
+    option: (styles, { data }) => ({
+      ...styles,
+      zIndex:100,
+    }),
+    multiValueLabel: (styles, { data }) => ({
+      ...styles,
+      backgroundColor: "#0096fb",
+      color: "#fff",
+    }),
+    multiValueRemove: (styles, { data }) => ({
+      ...styles,
+      backgroundColor: "#0096fb",
+      color: "#e8e3e3",
+      ":hover": {
+        backgroundColor: "#0096fb",
+        color: "#eb3434",
+      },
+    }),
+  };
   const onRoleSelect = (data) => {
     let rolesArr = {};
     for (let role of data) {
@@ -98,6 +136,7 @@ function UserEditModal({ user, setEditRow, refreshData }) {
       emergencyContactNumber,
       emergencyContactName,
       dateOfBirth,
+      additional
     }) => {
       const newDateOfBirthString = dateOfBirth
         ? new Date(
@@ -106,8 +145,8 @@ function UserEditModal({ user, setEditRow, refreshData }) {
             .toISOString()
             .split("T")[0]
         : null;
-      //  console.log(firstName?.trim())
-      //  console.log(user)
+       console.log(gender)
+       console.log(user.gender)
       const updatedUser = {
         firstname:
           firstName?.trim() !== user?.firstname?.trim() ? firstName : null,
@@ -149,7 +188,8 @@ function UserEditModal({ user, setEditRow, refreshData }) {
               : null,
           phone: phone?.trim() !== user?.contact?.phone?.trim() ? phone : null,
         },
-        //gender: gender?.trim()!==user?.gender?.trim()?gender:null,
+        gender: gender?.trim() !== user?.gender?.trim() ? gender : null,
+        additionalData: additional?.trim()!==user?.additionalData?.trim()?additional:null,
         maritalStatus:
           maritalStatus?.trim() !== user?.maritalStatus?.trim()
             ? maritalStatus
@@ -157,7 +197,7 @@ function UserEditModal({ user, setEditRow, refreshData }) {
 
         // username:user,
         // password:password,
-        // roles: onRoleSelect(roles),
+        roles:!deepEqual(objToArrWithObjects(user?.roles),roles)?onRoleSelect(roles):null ,
         //type:userType,
         birthday:
           user?.birthday !== newDateOfBirthString ? newDateOfBirthString : null,
@@ -167,31 +207,32 @@ function UserEditModal({ user, setEditRow, refreshData }) {
       // console.log(newUser)
       const updatedFields = deleteNullProperties(updatedUser);
 
-      console.log(updatedUser);
-      try {
-        await axiosPrivate.put(
-          USERS_URL,
-          { updatedFields, id: user.userId },
-          {
-            headers: { "Content-Type": "application/json" },
-            withCredentials: true,
-          }
-        );
+      console.log('updatedFields',updatedFields);
+      // try {
+      //   await axiosPrivate.put(
+      //     USERS_URL,
+      //     { updatedFields, id: user.userId },
+      //     {
+      //       headers: { "Content-Type": "application/json" },
+      //       withCredentials: true,
+      //     }
+      //   );
 
-        setEditRow(false);
-        refreshData();
-        //notify(`${newUser.firstname} ${newUser.lastname} աշխատակիցը ավելացված է`)
-      } catch (err) {
-        // if (!err?.response) {
-        //   setErrMsg("No Server Response");
-        // } else if (err.response?.status === 409) {
-        //   setErrMsg("Username Taken");
-        // } else {
-        //   setErrMsg(" Failed");
-        // }
-      }
+      //   setEditRow(false);
+      //   refreshData();
+      //   //notify(`${newUser.firstname} ${newUser.lastname} աշխատակիցը ավելացված է`)
+      // } catch (err) {
+      //   // if (!err?.response) {
+      //   //   setErrMsg("No Server Response");
+      //   // } else if (err.response?.status === 409) {
+      //   //   setErrMsg("Username Taken");
+      //   // } else {
+      //   //   setErrMsg(" Failed");
+      //   // }
+      // }
     }
   );
+
   return (
     <>
       <Modal show={() => true} size="xl" onHide={() => setEditRow(false)}>
@@ -291,42 +332,6 @@ function UserEditModal({ user, setEditRow, refreshData }) {
                                   </div>
                                 </div>
                                 <div className="row gx-3">
-                                  {/* <div className="col-sm-6">
-                                  <Input {...position_validation} />
-                                </div> */}
-                                  <div className="col-sm-6">
-                                    <div className="form-group">
-                                      <div className="d-flex justify-content-between me-2">
-                                        <label
-                                          className="form-label"
-                                          htmlFor="birthday"
-                                        >
-                                          Ծննդյան ամսաթիվ
-                                        </label>
-                                        {methods.formState.errors
-                                          .dateOfBirth && (
-                                          <span className="error text-red">
-                                            <span>
-                                              <img
-                                                src={ErrorSvg}
-                                                alt="errorSvg"
-                                              />
-                                            </span>{" "}
-                                            պարտադիր
-                                          </span>
-                                        )}
-                                      </div>
-                                      <div>
-                                        <CustomDateComponent
-                                          name="dateOfBirth"
-                                          control={methods.control}
-                                          defaultValue={user?.birthday}
-                                        />
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                                <div className="row gx-3">
                                   <div className="col-sm-6">
                                     <Input
                                       {...email_validation}
@@ -360,7 +365,7 @@ function UserEditModal({ user, setEditRow, refreshData }) {
                                     />
                                   </div>
                                 </div>
-                                <div className="row gx-3">
+                                <div className="row gx-3 mb-3">
                                   <div className="col-sm-6">
                                     <div className="d-flex justify-content-between me-2">
                                       <label
@@ -476,31 +481,34 @@ function UserEditModal({ user, setEditRow, refreshData }) {
                                       }
                                     />{" "}
                                   </div>
-                                  {/* <div className="col-sm-6">
+                                  <div className="col-sm-6">
                                   <Input {...additional_validation} defaultValue={
                                         user?.additional
                                       }/>
-                                </div> */}
                                 </div>
-                                <div className="row gx-3">
-                                  {/* <div className="col-sm-6">
-                                  <div className="d-flex justify-content-between me-2">
-                                    <label
-                                      className="form-check-label"
-                                      htmlFor="gender"
-                                    >
-                                      Սեռ
-                                    </label>
-                                    {methods.formState.errors.gender && (
-                                      <span className="error text-red">
-                                        <span>
-                                          <img src={ErrorSvg} alt="errorSvg" />
-                                        </span>{" "}
-                                        պարտադիր
-                                      </span>
-                                    )}
-                                  </div>
-                                  <div className="d-flex  align-items-center">
+                                </div>
+                                <div className="row gx-3 mt-2 mb-2">
+                                <div className="col-sm-6">
+                                    <div className="d-flex justify-content-between me-2">
+                                      <label
+                                        className="form-check-label"
+                                        htmlFor="gender"
+                                      >
+                                        Սեռ
+                                      </label>
+                                      {methods.formState.errors.gender && (
+                                        <span className="error text-red">
+                                          <span>
+                                            <img
+                                              src={ErrorSvg}
+                                              alt="errorSvg"
+                                            />
+                                          </span>{" "}
+                                          պարտադիր
+                                        </span>
+                                      )}
+                                    </div>
+                                    <div className="d-flex  align-items-center">
                                       <div className="form-check form-check-inline">
                                         <input
                                           className="form-check-input"
@@ -548,62 +556,82 @@ function UserEditModal({ user, setEditRow, refreshData }) {
                                         </label>
                                       </div>
                                     </div>
-                                </div> */}
+                                  </div>
                                   <div className="col-sm-6">
                                     <div className="mb-2">
-                                      <div className="d-flex  align-items-center">
-                                        <div className="form-check form-check-inline">
-                                          <input
-                                            className="form-check-input"
-                                            type="radio"
-                                            id="married"
-                                            value="married"
-                                            defaultChecked={
-                                              user?.maritalStatus === "married"
+                                      <div className="d-flex justify-content-between me-2">
+                                        <label
+                                          className="form-check-label"
+                                          htmlFor="male"
+                                        >
+                                          Ընտանեկան կարգավիճակ
+                                        </label>
+                                        {methods.formState.errors
+                                          .maritalStatus && (
+                                          <span className="error text-red">
+                                            <span>
+                                              <img
+                                                src={ErrorSvg}
+                                                alt="errorSvg"
+                                              />
+                                            </span>{" "}
+                                            պարտադիր
+                                          </span>
+                                        )}
+                                      </div>
+                                    </div>
+                                    <div className="d-flex  align-items-center">
+                                      <div className="form-check form-check-inline">
+                                        <input
+                                          className="form-check-input"
+                                          type="radio"
+                                          id="married"
+                                          value="married"
+                                          defaultChecked={
+                                            user?.maritalStatus === "married"
+                                          }
+                                          onChange={() =>
+                                            onUserMerriedSelect("married")
+                                          }
+                                          {...methods.register(
+                                            "maritalStatus",
+                                            {
+                                              required: true,
                                             }
-                                            onChange={() =>
-                                              onUserMerriedSelect("married")
+                                          )}
+                                        />
+                                        <label
+                                          className="form-check-label"
+                                          htmlFor="married"
+                                        >
+                                          Ամուսնացած
+                                        </label>
+                                      </div>
+                                      <div className="form-check form-check-inline">
+                                        <input
+                                          className="form-check-input"
+                                          type="radio"
+                                          id="single"
+                                          value="single"
+                                          defaultChecked={
+                                            user?.maritalStatus === "single"
+                                          }
+                                          onChange={() =>
+                                            onUserMerriedSelect("single")
+                                          }
+                                          {...methods.register(
+                                            "maritalStatus",
+                                            {
+                                              required: true,
                                             }
-                                            {...methods.register(
-                                              "maritalStatus",
-                                              {
-                                                required: true,
-                                              }
-                                            )}
-                                          />
-                                          <label
-                                            className="form-check-label"
-                                            htmlFor="married"
-                                          >
-                                            Ամուսնացած
-                                          </label>
-                                        </div>
-                                        <div className="form-check form-check-inline">
-                                          <input
-                                            className="form-check-input"
-                                            type="radio"
-                                            id="single"
-                                            value="single"
-                                            defaultChecked={
-                                              user?.maritalStatus === "single"
-                                            }
-                                            onChange={() =>
-                                              onUserMerriedSelect("single")
-                                            }
-                                            {...methods.register(
-                                              "maritalStatus",
-                                              {
-                                                required: true,
-                                              }
-                                            )}
-                                          />
-                                          <label
-                                            className="form-check-label"
-                                            htmlFor="single"
-                                          >
-                                            Չամուսնացած
-                                          </label>
-                                        </div>
+                                          )}
+                                        />
+                                        <label
+                                          className="form-check-label"
+                                          htmlFor="single"
+                                        >
+                                          Չամուսնացած
+                                        </label>
                                       </div>
                                     </div>
                                   </div>
@@ -617,6 +645,42 @@ function UserEditModal({ user, setEditRow, refreshData }) {
                                 </div>
                               </div> */}
 
+                                <div className="row gx-3">
+                                  {/* <div className="col-sm-6">
+                                  <Input {...position_validation} />
+                                </div> */}
+                                  <div className="col-sm-6">
+                                    <div className="form-group">
+                                      <div className="d-flex justify-content-between me-2">
+                                        <label
+                                          className="form-label"
+                                          htmlFor="birthday"
+                                        >
+                                          Ծննդյան ամսաթիվ
+                                        </label>
+                                        {methods.formState.errors
+                                          .dateOfBirth && (
+                                          <span className="error text-red">
+                                            <span>
+                                              <img
+                                                src={ErrorSvg}
+                                                alt="errorSvg"
+                                              />
+                                            </span>{" "}
+                                            պարտադիր
+                                          </span>
+                                        )}
+                                      </div>
+                                      <div>
+                                        <CustomDateComponent
+                                          name="dateOfBirth"
+                                          control={methods.control}
+                                          defaultValue={user?.birthday}
+                                        />
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
                                 <div className="row gx-3">
                                   <div className="col-sm-6">
                                     <Input
@@ -660,7 +724,7 @@ function UserEditModal({ user, setEditRow, refreshData }) {
                             </div>
                           </div>
                           <div className="separator-full"></div>
-                          {/* <div className="card">
+                          <div className="card">
                           <div className="card-header">
                             <a href="#">Դերեր</a>
                             <button
@@ -708,7 +772,7 @@ function UserEditModal({ user, setEditRow, refreshData }) {
                                           name="roles"
                                           control={methods.control}
                                           isClearable={true}
-                                          defaultValue={null}
+                                          defaultValue={ objToArrWithObjects(user?.roles) }
                                           rules={{ required: true }}
                                           render={({ field }) => (
                                             <Select
@@ -729,7 +793,7 @@ function UserEditModal({ user, setEditRow, refreshData }) {
                               </form>
                             </div>
                           </div>
-                        </div> */}
+                        </div>
 
                           <div className="modal-footer align-items-center">
                             <button

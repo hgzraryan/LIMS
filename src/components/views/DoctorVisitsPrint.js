@@ -8,35 +8,42 @@ import moment from "moment";
 import ResearchesPrintWrapper from "../ResearchesPrintWrapper";
 function DoctorVisitsPrint({ modalPrint, setModalPrint }) {
   const axiosPrivate = useAxiosPrivate();
-  const [isLoading, setIsLoading] = useState(true);
-  const [currentClient, setCurrentClient] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  //const [currentClient, setCurrentClient] = useState([]);
   const {
     clientId,
     createdAt,
-    doctorName,
     originalPrice,
     totalPayed,
     totalPrice,
     visitDate,
     doctorsVisitId,
-    medicalServices
+    mServices,
+    doctorName,
+    clientAge,
+    clientDob,
+    clientGender,
+    clientTel,
+    clientFirstName,
+    clientLastName,
+    clientMidName
   } = modalPrint;
-
+console.log(mServices)
   const componentRef = useRef();
-  useEffect(() => {
-    setTimeout(() => {
-      axiosPrivate
-        .get(`/patients/${clientId}`)
-        .then((resp) => {
-          console.log(resp);
-          setCurrentClient(resp?.data?.jsonString);
-          setIsLoading(false);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }, 500);
-  }, []);
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     axiosPrivate
+  //       .get(`/patients/${clientId}`)
+  //       .then((resp) => {
+  //         console.log(resp);
+  //         setCurrentClient(resp?.data?.jsonString);
+  //         setIsLoading(false);
+  //       })
+  //       .catch((err) => {
+  //         console.log(err);
+  //       });
+  //   }, 500);
+  // }, []);
   const columns = React.useMemo(
     () => [
       {
@@ -48,7 +55,7 @@ function DoctorVisitsPrint({ modalPrint, setModalPrint }) {
       //   accessor: "research",
       // },
       {
-        Header: "Բուժծառայություն",
+        Header: "Ծառայության անվանում",
         accessor: "serviceName",
       },
       {
@@ -61,7 +68,7 @@ function DoctorVisitsPrint({ modalPrint, setModalPrint }) {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({
       columns,
-      data: medicalServices,
+      data: mServices,
     });
   return (
     <>
@@ -217,7 +224,7 @@ function DoctorVisitsPrint({ modalPrint, setModalPrint }) {
           }}
         >
           <p style={{ padding: "5px", fontSize: "20px", fontWeight: "bold" }}>
-            Բուժծառայության թերթիկ
+            Բժշկի այցելության թերթիկ
           </p>
         </div>
         <main>
@@ -255,13 +262,13 @@ function DoctorVisitsPrint({ modalPrint, setModalPrint }) {
                   <div className=" mb-3r">
                     <ul>
                       <li>
-                        Անուն Ազգանուն:
+                        ԱԱՀ: 
                         <span
                           style={{ fontWeight: "bold", fontSize: "1.1rem" }}
                         >
-                          {currentClient.firstName +
+                          {" " +clientFirstName +
                             " " +
-                            currentClient.lastName}
+                            clientLastName +" " +clientMidName}
                         </span>
                       </li>
                       <li>
@@ -269,9 +276,9 @@ function DoctorVisitsPrint({ modalPrint, setModalPrint }) {
                         <span
                           style={{ fontWeight: "bold", fontSize: "1.1rem" }}
                         >
-                          {currentClient?.gender === "Male"
-                            ? "Արական"
-                            : "Իգական"}
+                          {clientGender === "Male"
+                            ? " Արական"
+                            :clientGender === "Female"? " Իգական":''}
                         </span>
                       </li>
                       <li>
@@ -279,8 +286,8 @@ function DoctorVisitsPrint({ modalPrint, setModalPrint }) {
                         <span
                           style={{ fontWeight: "bold", fontSize: "1.1rem" }}
                         >
-                          {moment
-                            .utc(currentClient?.dateOfBirth)
+                          {" " +moment
+                            .utc(clientDob)
                             .format("DD-MM-YYYY")}
                         </span>
                       </li>
@@ -289,7 +296,7 @@ function DoctorVisitsPrint({ modalPrint, setModalPrint }) {
                         <span
                           style={{ fontWeight: "bold", fontSize: "1.1rem" }}
                         >
-                          {currentClient?.age}
+                          {" " +clientAge}
                         </span>
                       </li>
                       <li>
@@ -297,15 +304,15 @@ function DoctorVisitsPrint({ modalPrint, setModalPrint }) {
                         <span
                           style={{ fontWeight: "bold", fontSize: "1.1rem" }}
                         >
-                          {currentClient?.contact?.phone}
+                          {" " +clientTel}
                         </span>
                       </li>
                       <li>
-                        Տրման ամսաթիվ:
+                        Այցի ամսաթիվ:
                         <span
                           style={{ fontWeight: "bold", fontSize: "1.1rem" }}
                         >
-                          {moment
+                          {" " +moment
                             .utc(visitDate)
                             .format("DD-MM-YYYY HH:mm")}
                         </span>
@@ -315,7 +322,7 @@ function DoctorVisitsPrint({ modalPrint, setModalPrint }) {
                         <span
                           style={{ fontWeight: "bold", fontSize: "1.1rem" }}
                         >
-                          {doctorName}
+                          {" " +doctorName}
                         </span>
                       </li>
                     </ul>
@@ -341,7 +348,7 @@ function DoctorVisitsPrint({ modalPrint, setModalPrint }) {
                           </tr>
                         ))}
                       </thead>
-                      {medicalServices.researches?.length && (
+                      {mServices?.length && (
                         <tbody {...getTableBodyProps()}>
                           {rows.map((row, i) => {
                             prepareRow(row);
@@ -398,7 +405,7 @@ function DoctorVisitsPrint({ modalPrint, setModalPrint }) {
         >
           <ResearchesPrintWrapper
             value={modalPrint}
-            currentClient={currentClient}
+            currentClient={modalPrint}
           />
           <button
             type="button"

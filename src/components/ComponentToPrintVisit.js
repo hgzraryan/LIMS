@@ -12,14 +12,22 @@ import { useTable } from "react-table";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import moment from "moment";
 export const ComponentToPrintVisit = forwardRef(
-  ({ value, currentClient }, ref) => {
-    const axiosPrivate = useAxiosPrivate();
-    const [isLoading, setIsLoading] = useState(false);
-    //const [currentClient, setCurrentClient] = useState([]);
-    //   const { clientId } = value;
-    //   const { clientFirstName,clientLastName,createdAt,doctorName,originalPrice,totalPayed,totalPrice,visitDate,doctorsVisitId } = value;
-    //  console.log()
-    const { medicalServices } = value;
+  ({ value }, ref) => {
+    const {
+      originalPrice,
+      totalPrice,
+      visitDate,
+      doctorsVisitId,
+      mServices,
+      doctorName,
+      clientAge,
+      clientDob,
+      clientGender,
+      clientTel,
+      clientFirstName,
+      clientLastName,
+      clientMidName
+    } = value;
     //   const componentRef = useRef();
 
     const columns = React.useMemo(
@@ -28,12 +36,8 @@ export const ComponentToPrintVisit = forwardRef(
           Header: "ID",
           accessor: "medServiceId",
         },
-        // {
-        //   Header: "Հետազոտություն",
-        //   accessor: "research",
-        // },
         {
-          Header: "Բուժծառայություն",
+          Header: "Ծառայության անվանում",
           accessor: "serviceName",
         },
         {
@@ -46,7 +50,7 @@ export const ComponentToPrintVisit = forwardRef(
     const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
       useTable({
         columns,
-        data: medicalServices,
+        data: mServices,
       });
     return (
       <div className="wrapper m-4" ref={ref}>
@@ -192,7 +196,7 @@ export const ComponentToPrintVisit = forwardRef(
           }}
         >
           <p style={{ padding: "5px", fontSize: "20px", fontWeight: "bold" }}>
-            Բուժծառայության թերթիկ
+            Բժշկի այցելության թերթիկ
           </p>
         </div>
         <main>
@@ -210,23 +214,23 @@ export const ComponentToPrintVisit = forwardRef(
                         alignItems: "center",
                       }}
                     >
-                      <BarcodeComp data={value.doctorsVisitId} />
+                      <BarcodeComp data={doctorsVisitId} />
                     </div>
           <div className=" mb-3r">
             <ul>
-              <li >Անուն Ազգանուն: <span style={{fontWeight:'bold',fontSize:'1.1rem'}}>{currentClient?.firstName+" "+ currentClient?.lastName}</span>
+              <li >ԱԱՀ: <span style={{fontWeight:'bold',fontSize:'1.1rem'}}>{" "+clientFirstName+" "+ clientLastName +" " +clientMidName}</span>
               </li>
-              <li >Սեռ: <span style={{fontWeight:'bold',fontSize:'1.1rem'}}>{(currentClient?.gender==='Male')?'Արական':'Իգական'}</span></li>
-              <li >Ծննդյան ամսաթիվ: <span style={{fontWeight:'bold',fontSize:'1.1rem'}}>{moment.utc(currentClient?.dateOfBirth).format('DD-MM-YYYY')}</span></li>
-              <li >Տարիք: <span style={{fontWeight:'bold',fontSize:'1.1rem'}}>{currentClient?.age}</span></li>
-              <li >Հեռախոս: <span style={{fontWeight:'bold',fontSize:'1.1rem'}}>{currentClient?.contact?.phone}</span></li>
-              <li >Տրման ամսաթիվ: <span style={{fontWeight:'bold',fontSize:'1.1rem'}}>{moment.utc(value?.createdAt).format('DD-MM-YYYY HH:mm')}</span></li>
+              <li >Սեռ: <span style={{fontWeight:'bold',fontSize:'1.1rem'}}>{(clientGender==='Male')?' Արական':(clientGender==='Female')?' Իգական':''}</span></li>
+              <li >Ծննդյան ամսաթիվ: <span style={{fontWeight:'bold',fontSize:'1.1rem'}}>{" "+moment.utc(clientDob).format('DD-MM-YYYY')}</span></li>
+              <li >Տարիք: <span style={{fontWeight:'bold',fontSize:'1.1rem'}}>{" "+clientAge}</span></li>
+              <li >Հեռախոս: <span style={{fontWeight:'bold',fontSize:'1.1rem'}}>{" "+clientTel}</span></li>
+              <li >Այցի ամսաթիվ: <span style={{fontWeight:'bold',fontSize:'1.1rem'}}>{" "+moment.utc(visitDate).format('DD-MM-YYYY HH:mm')}</span></li>
               <li>
                               Բժիշկ:
                               <span
                                 style={{ fontWeight: "bold", fontSize: "1.1rem" }}
                               >
-                                {value?.doctorName}
+                                {doctorName}
                               </span>
                             </li>
               {/* <li>
@@ -258,7 +262,7 @@ export const ComponentToPrintVisit = forwardRef(
                   </tr>
                 ))}
               </thead>
-              {medicalServices.length ? (
+              {mServices.length ? (
            
                 <tbody {...getTableBodyProps()}>
                 {rows.map((row, i) => {
@@ -285,14 +289,14 @@ export const ComponentToPrintVisit = forwardRef(
         </section>
         <section className="research_container">
         <div className="total d-flex flex-column align-items-end">
-                      {value?.totalPrice < value?.originalPrice ?(
-                          <p style={{ marginRight: "6px" }}>Զեղչ {value?.originalPrice-value?.totalPrice}դր․</p>
+                      {totalPrice < originalPrice ?(
+                          <p style={{ marginRight: "6px" }}>Զեղչ {originalPrice-totalPrice}դր․</p>
 
                         ):''
                       }
                       <p>
                         Ընդհանուր արժեք
-                        {" " + value?.totalPrice}դր
+                        {" " + totalPrice}դր
                       </p>
                     </div>
         </section>
