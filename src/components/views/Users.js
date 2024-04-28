@@ -242,6 +242,7 @@ const Users = () => {
                         users={users}
                         setUsers={setUsers}
                         getUsers={getUsers}
+                        refreshData={refreshData}
                       />
                      <ReactPaginate
                       previousLabel = {"Հետ"}    

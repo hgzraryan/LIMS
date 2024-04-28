@@ -173,6 +173,8 @@ const Reagents = () => {
                         reagents={reagents}
                         setReagents={setReagents}
                         getReagents={getReagents}
+                        refreshData={refreshData}
+
                       />
                        <ReactPaginate
                         previousLabel = {"Հետ"}    

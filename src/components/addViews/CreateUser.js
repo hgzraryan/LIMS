@@ -11,7 +11,6 @@ import {
   mobile_validation,
   password_validation,
   user_validation,
-  position_validation,
   country_validation,
   city_validation,
   state_validation,
@@ -151,7 +150,6 @@ function CreateUser({ setIsOpen,refreshData }) {
     });
   const onSubmit = methods.handleSubmit(async ({firstName,
     lastName,
-    position,
     email,
     user,
     password,
@@ -173,7 +171,6 @@ function CreateUser({ setIsOpen,refreshData }) {
       additionalData:additional,
       firstname:firstName,
       lastname:lastName,
-      position:position,
       email:email,
       contact: {
         phone: phone,
@@ -201,7 +198,7 @@ function CreateUser({ setIsOpen,refreshData }) {
     };
     formData.append("text", JSON.stringify(newUser));
     formData.append("image", image);      
-    // console.log(newUser)
+     console.log(newUser)
     try {
       await axiosPrivate.post(REGISTER_USER, newUser, {
         headers: { "Content-Type": "application/json"  },
@@ -224,7 +221,7 @@ function CreateUser({ setIsOpen,refreshData }) {
   });
   const onRoleSelect = (data) => {
    
-    const  role ={ [data.name]: data.value };
+    const  role ={ [data?.name]: data?.value };
     return role
     // use when multiselect
     // let rolesArr = {};
