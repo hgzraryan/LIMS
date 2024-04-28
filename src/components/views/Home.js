@@ -90,7 +90,7 @@ const Home = ({asd}) => {
           {doctorsCount} 
             </p>
             <p style={{ fontSize:'18px'}}>
-          Փորձառու բժիշկներ
+          Գրանցված բժիշկներ
             </p>
             </Box>
             <Box mb="5px" sx={{
@@ -121,7 +121,7 @@ const Home = ({asd}) => {
           {usersCount} 
             </p>
             <p style={{ fontSize:'18px'}}>
-          Պրոֆեսիոնալ աշխատակիցներ 
+            Գրանցված աշխատակիցներ 
             </p> 
             </Box>
             

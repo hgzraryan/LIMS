@@ -63,6 +63,12 @@ const Login = () => {
             if (response?.data?.authUserData?.isactive === 0) {
                 logout();
                 navigate('/login');
+                Swal.fire({  
+                    icon: 'error',  
+                    title: 'Օգտահաշիվը ապաակտիվացված է !',  
+                    text: 'Ձեր օգտահաշիվը ապաակտիվացված է !', 
+                    //footer: '<a href>Why do I have this issue?</a>'  
+                });  
                           }
             if (roles.includes(1212)) {
                 navigate('/addsample');
