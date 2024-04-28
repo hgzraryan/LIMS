@@ -25,8 +25,10 @@ function Sample() {
   const [sortedResearches, setsortedResearches] = useState([]);
   const [noData, setNoData] = useState(true);
   const [wrongId, setWrongId] = useState(false);
-
   const [userData, setUserData] = useState("");
+  const [statusBoard, setStatusBoard] = useState([]);
+  const [currentDiagnostic, setCurrentDiagnostic] = useState([]);
+
 
   useEffect(() => {
     const storedData = JSON.parse(localStorage.getItem("userData"));
@@ -38,6 +40,7 @@ function Sample() {
   useEffect(() => {
     barcodeInputRef.current?.focus();
   }, []);
+
   const handleOpenInfoModal = (user) => {
     setModalInfo((prev) => user);
   };
@@ -46,6 +49,7 @@ function Sample() {
 
     setModalPrint((prev) => sampleData);
   };
+
   const signOut = async () => {
     await logout();
     navigate("/login");
@@ -54,6 +58,7 @@ function Sample() {
   const menuClick = (event) => {
     setIsActive((current) => !current);
   };
+  
   const handleUserPage = async (userId) => {
     try {
       navigate(`/users/2095`);
@@ -94,14 +99,46 @@ function Sample() {
     try {
       const response = await axiosPrivate.get(`./diagnosticsSampling/${data}`);
       // setTimeout(() => {
+        console.log(response)
       setData((prev) => response?.data);
       sortResearches(response?.data?.diagnostics?.statusBoard[1]?.researches);
+      setStatusBoard(response?.data?.diagnostics?.statusBoard);
+      setCurrentDiagnostic(response?.data?.diagnostics);
       response.status===204?setWrongId(true):setWrongId(false)
      
       // }, 500);
     } catch (err) {
       console.error(err);
       //navigate("/login", { state: { from: location }, replace: true });
+    }
+  };
+  const moveResearchToNextPhase = (researchId) => {
+    console.log(researchId)
+    //debugger
+    const updatedStatusBoard = [...statusBoard];
+
+    const researchIndex = updatedStatusBoard[1].researches.findIndex(research => research.id === researchId);
+    if (researchIndex !== -1) {
+        const researchToMove = { ...updatedStatusBoard[1].researches[researchIndex] };
+        updatedStatusBoard[1].researches.splice(researchIndex, 1);
+        updatedStatusBoard[2].researches.push(researchToMove);
+        setStatusBoard(updatedStatusBoard);
+    } else {
+        console.error("Հետազոտությունը առկա չէ");
+    }
+};
+  const updateData = async (uptData) => {
+    for(let obj of uptData){
+      moveResearchToNextPhase(obj.id)
+    }
+    try {
+      const response = await axiosPrivate.put("./sampleCollection", JSON.stringify({
+        statusBoard: statusBoard,
+        diagnosticsId:currentDiagnostic?.diagnosticsId
+      }));
+    } catch (err) {
+      console.error(err);
+      // navigate("/login", { state: { from: location }, replace: true });
     }
   };
   return (
@@ -617,7 +654,9 @@ function Sample() {
                                               backgroundColor: "#4eafcb",
                                             }}
                                             onClick={(e) => {
-                                              e.target.disabled = true;
+                                               e.target.disabled = true;
+                                              console.log(group)
+                                              updateData(group)
                                             }}
                                           >
                                             Կատարել

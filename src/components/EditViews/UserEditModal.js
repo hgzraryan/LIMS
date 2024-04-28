@@ -483,7 +483,7 @@ function UserEditModal({ user, setEditRow, refreshData }) {
                                   </div>
                                   <div className="col-sm-6">
                                   <Input {...additional_validation} defaultValue={
-                                        user?.additional
+                                        user?.additionalData
                                       }/>
                                 </div>
                                 </div>

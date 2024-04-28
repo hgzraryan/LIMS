@@ -51,7 +51,6 @@ import DoctorsEmployment from "./components/views/DoctorsEmployment";
  const Layout = lazy(()=>  import("./components/layouts/Layout"));
  const Editor = lazy(()=>  import("./components/Editor"));
  const Admin = lazy(()=>  import("./components/Admin"));
- const UserAdd = lazy(()=>  import("./components/UserAdd"));
  const Missing = lazy(()=>  import("./components/Missing"));
  const Unauthorized = lazy(()=>  import("./components/Unauthorized"));
  const Lounge = lazy(()=>  import("./components/Lounge"));

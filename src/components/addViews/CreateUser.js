@@ -223,12 +223,15 @@ function CreateUser({ setIsOpen,refreshData }) {
     }
   });
   const onRoleSelect = (data) => {
-    console.log(data)
-    let rolesArr = {};
-    for (let role of data) {
-      rolesArr[role.name]=role.value
-    }
-    return rolesArr
+   
+    const  role ={ [data.name]: data.value };
+    return role
+    // use when multiselect
+    // let rolesArr = {};
+    // for (let role of data) {
+    //   rolesArr[role.name]=role.value
+    // }
+    // return rolesArr
   };
   /*----------------ADD USER END---------------------*/
   fileReader.onloadend = () => {
@@ -701,8 +704,8 @@ function CreateUser({ setIsOpen,refreshData }) {
                                       render={({ field }) => (
                                         <Select
                                           {...field}
-                                          isMulti
-                                          closeMenuOnSelect={false}
+                                          
+                                          closeMenuOnSelect={true}
                                           components={animatedComponents}
                                           options={roleState}
                                           styles={colourStyles}
