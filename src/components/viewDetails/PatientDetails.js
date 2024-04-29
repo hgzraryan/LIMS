@@ -198,7 +198,7 @@ function PatientDetails() {
       },
       {
         Header: "Անվանում",
-        accessor: "researchName",
+        accessor: "name",
       },
       {
         Header: "Արդյունք",

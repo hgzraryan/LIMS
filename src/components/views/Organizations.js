@@ -67,13 +67,6 @@ const Organizations = () => {
    //updateUsersCount();
 }
  //--------------------------------------------------------------//
-  //-------------------
-  const [showCreateNew, setIsActive] = useState(false);
-  const CreateNew = (event) => {
-    setIsActive((current) => !current);
-  };
-
-  //-------------------
 
   return (
     <HelmetProvider>

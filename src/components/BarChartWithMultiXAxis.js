@@ -1,5 +1,5 @@
 import "../dist/css/style.css";
-import React, { useCallback, useState } from "react";
+import React from "react";
 import {
   BarChart,
   Bar,

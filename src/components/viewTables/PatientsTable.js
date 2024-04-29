@@ -30,8 +30,6 @@ function PatientsTable({
   setPatients,
   refreshData
 }) {
-  const axiosPrivate = useAxiosPrivate()
-
   const navigate = useNavigate();
   const [modalInfo, setModalInfo] = useState("");
   const [editRow, setEditRow] = useState(false);
@@ -450,7 +448,7 @@ function PatientsTable({
                       onClick:
                         cell.column?.id === "options"
                           ? undefined
-                          : () => handlePatientsDetail(row.original?.patientId), // Attach onClick event handler
+                          : () => handlePatientsDetail(row.original?.patientId), 
                     })}
                   >
                     {cell.render("Cell")}

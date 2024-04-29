@@ -384,7 +384,14 @@ const handleCloseEditModal = () => {
                 <tr {...row.getRowProps()}>
                   {row.cells.map((cell) => {
                     return (
-                      <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                      <td  {...cell.getCellProps({style:cell.column?.id === "actions"
+                      ? undefined
+                      : { cursor:'pointer' },
+                        onClick:
+                          cell.column?.id === "options"
+                            ? undefined
+                            : () => handleUserPage(row.original?.userId), 
+                      })}>{cell.render("Cell")}</td>
                     );
                   })}
                 </tr>

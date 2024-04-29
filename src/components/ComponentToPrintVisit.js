@@ -1,15 +1,10 @@
 import React, {
-  Suspense,
-  useEffect,
-  useRef,
-  useState,
   forwardRef,
 } from "react";
 import LoadingSpinner from "../components/LoadingSpinner";
 import BarcodeComp from "../components/BarcodeComp";
 import mainLogo from "../dist/img/main-logo.png";
 import { useTable } from "react-table";
-import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import moment from "moment";
 export const ComponentToPrintVisit = forwardRef(
   ({ value }, ref) => {

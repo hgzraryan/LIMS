@@ -77,3 +77,12 @@ export const SUPPORT_URL = "/support";
 export const DOCTORSVISITS_URL = '/doctorsVisits'
 
 export const STATISTICS_URL = '/getStatistics/StackedBarChart'
+
+export const ROLES = {
+    User: 2001,
+    Editor: 1984,
+    Approver: 3345,
+    Admin: 5150,
+    Sampler: 1212,
+    Doctor:9578,
+  };

@@ -4,7 +4,6 @@ import useLogout from "../../hooks/useLogout";
 import React, { Suspense, useState, useEffect, useRef, useMemo } from "react";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import LoadingSpinner from "../LoadingSpinner";
-import { useGetFullData } from "../../hooks/useGetFullData";
 import { useSelector } from "react-redux";
 import { selectUserLoginData } from "../../redux/features/users/userLoginDataSlice";
 import profileBackImg from "../../dist/img/profile-bg.jpg";
@@ -40,20 +39,7 @@ email:'Arm@AdsClick.er',
 age:25
 }
 ]
-const customEvents = [
-  {
-    id: 1,
-    title: 'Meeting',
-    start: new Date(2024, 3, 1, 10, 0),
-    end: new Date(2024, 3, 1, 12, 0),
-  },
-  {
-    id: 2,
-    title: 'Conference',
-    start: new Date(2024, 3, 2, 11, 0),
-    end: new Date(2024, 3, 2, 15, 0),
-  },
-];
+
 const DoctorsTemplete = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -70,7 +56,6 @@ const DoctorsTemplete = () => {
   const [activeLink, setActiveLink] = useState('tab_summery'); // Default active link
   const [pageTab,setPageTab] =useState('tab_summery')
   const [patients,setPatients] =useState([])
-  const [events,setEvents] =useState(customEvents)
   const localizer = momentLocalizer(moment);
   const handlePatientsDetails = async (patientId) => {  
     navigate(`/patients/${patientId}`)
@@ -1169,7 +1154,7 @@ const DoctorsTemplete = () => {
 
                           <div className="App">
                           <div style={{ height: 500 }}>
-                            <MyBigCalendar events={events} setEvents={setEvents}/>
+                            <MyBigCalendar/>
                             {/* <Calendar
                               localizer={localizer}
                               events={events}

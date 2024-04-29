@@ -1,20 +1,14 @@
-import React, { Suspense, useEffect, useRef, useState } from "react";
+import React, { Suspense, useRef, useState } from "react";
 import LoadingSpinner from "../LoadingSpinner";
 import BarcodeComp from "../BarcodeComp";
 import mainLogo from "../../dist/img/main-logo.png";
 import { useTable } from "react-table";
-import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import moment from "moment";
 import ResearchesPrintWrapper from "../ResearchesPrintWrapper";
 function DoctorVisitsPrint({ modalPrint, setModalPrint }) {
-  const axiosPrivate = useAxiosPrivate();
   const [isLoading, setIsLoading] = useState(false);
-  //const [currentClient, setCurrentClient] = useState([]);
   const {
-    clientId,
-    createdAt,
     originalPrice,
-    totalPayed,
     totalPrice,
     visitDate,
     doctorsVisitId,
@@ -30,20 +24,6 @@ function DoctorVisitsPrint({ modalPrint, setModalPrint }) {
   } = modalPrint;
 console.log(mServices)
   const componentRef = useRef();
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     axiosPrivate
-  //       .get(`/patients/${clientId}`)
-  //       .then((resp) => {
-  //         console.log(resp);
-  //         setCurrentClient(resp?.data?.jsonString);
-  //         setIsLoading(false);
-  //       })
-  //       .catch((err) => {
-  //         console.log(err);
-  //       });
-  //   }, 500);
-  // }, []);
   const columns = React.useMemo(
     () => [
       {

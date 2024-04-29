@@ -31,7 +31,6 @@ function DoctorsTable({
   setDoctors,
   refreshData
 }) {
-  const axiosPrivate = useAxiosPrivate()  
   const navigate = useNavigate();
   const [openModal,setOpenModal]=useState(false)
   const [modalInfo,setModalInfo]=useState({})

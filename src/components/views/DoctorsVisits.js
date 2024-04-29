@@ -1,10 +1,9 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import FeatherIcon from 'feather-icons-react/build/FeatherIcon';
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Dropdown } from 'react-bootstrap';
 import ReactPaginate from 'react-paginate';
 import { useSelector } from 'react-redux';
-import { selectDoctorCount } from '../../redux/features/doctor/doctorCountSlice';
 import DoctorsVisitsTable from '../viewTables/DoctorsVisitsTable';
 import AddDoctorsVisit from '../addViews/AddDoctorsVisit';
 import { DOCTORSVISITS_URL } from '../../utils/constants';
@@ -16,7 +15,6 @@ function DoctorsVisits() {
     const [isOpen, setIsOpen] = useState(false);
     const [selectedItem, setSelectedItem] = useState("");
     const [selectedItemId, setSelectedItemId] = useState(null);
-    const confirmDoctorsRef = useRef("");
     const doctorsVisitCount = useSelector(selectDoctorsVisitCount)
     const [currentPage, setCurrentPage] = useState(0);  
     const [usersPerPage, setUsersPerPage] = useState(Math.round((window.innerHeight / 100)));
@@ -28,7 +26,6 @@ function DoctorsVisits() {
     const {
       data: doctorsVisits,
       setData: setDoctorsVisits,
-      getData: getDoctorsVisits,
       refreshData  
     } = useGetData(DOCTORSVISITS_URL,currentPage,usersPerPage);
   useEffect(() => {

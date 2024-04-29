@@ -21,7 +21,6 @@ const ResearchLists = () => {
   useEffect(() => {
     const storedData = JSON.parse(localStorage.getItem('role'));
     if (storedData) {
-      console.log(storedData.Role)
       setUserRole(storedData.Role);
     }
   }, []);

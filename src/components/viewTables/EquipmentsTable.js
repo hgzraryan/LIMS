@@ -9,7 +9,6 @@ import { BiSolidInfoCircle } from "react-icons/bi";
 import equipmentSvg from "../../../src/dist/img/equipmentSvg.svg";
 
 import { Modal } from "react-bootstrap";
-import { MdImportantDevices } from "react-icons/md";
 import "../../dist/css/data-table.css";
 import EquipmentEditModal from "../EditViews/EquipmentEditModal";
 import moment from "moment";

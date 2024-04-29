@@ -2,20 +2,16 @@
 import FeatherIcon from 'feather-icons-react/build/FeatherIcon';
 import React, { useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux';
-import { selectResearchListCount } from '../../redux/features/researches/researchListCountSlice';
 import { MEDICALSERVICES_URL } from '../../utils/constants';
 import useGetData from '../../hooks/useGetData';
 import { Dropdown } from "react-bootstrap";
 import AddMedicalService from '../addViews/AddMedicalService';
 import ReactPaginate from "react-paginate";
-import ResearchListsTable from '../viewTables/ResearchListsTable';
 import MedicalServicesTable from '../viewTables/MedicalServicesTable';
 import { selectMedicalServicesCount } from '../../redux/features/medicalServices/medicalServicesSlice';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 
 function MedicalServices() {
-    const [userRole, setUserRole] = useState('');
-
     /*------------------ Create user Component --------------------*/
     const handleToggleCreateModal = (value) => {
       setIsOpen((prev) => value);
@@ -37,7 +33,6 @@ function MedicalServices() {
     const {
       data: medicalServices,
       setData: setMedicalServices,
-      getData: getMedicalServices,
       refreshData
     } = useGetData(MEDICALSERVICES_URL,currentPage,usersPerPage);
     const handleOpenModal = (user) => {

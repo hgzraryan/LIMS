@@ -11,7 +11,6 @@ import useDeleteData from '../../hooks/useDeleteData';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 
 function RefDoctors() {
-  //const [refDoctors, setRefDoctors] = useState(refDoctorsData);
     const [selectedItem, setSelectedItem] = useState("");
     const [selectedItemId, setSelectedItemId] = useState(null);
     const [isOpen, setIsOpen] = useState(false);

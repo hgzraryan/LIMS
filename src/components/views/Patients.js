@@ -27,7 +27,6 @@ const Patients = () => {
     const {
       data: patients,
       setData: setPatients,
-      getData: getPatients,
       refreshData  
     } = useGetData(PATIENTS_URL,currentPage,usersPerPage);
 

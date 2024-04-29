@@ -1,78 +1,135 @@
 import React, { useEffect, useState } from "react";
-// import { connect } from 'react-redux';
-// import { bindActionCreators } from 'redux';
 import { Calendar, momentLocalizer } from "react-big-calendar";
-// import CustomToolbar from './toolbar';
-// import Input from './input';
 import moment from "moment";
-// import { fetchEvents, createEvent, updateEvent, deleteEvent } from '../actions';
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { Modal, Button } from "react-bootstrap";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const localizer = momentLocalizer(moment);
 
-const MyBigCalendar = ({ events, setEvents }) => {
-  const [showModal, setShowModal] = useState(false);
-  const [showCheckModal, setShowCheckModal] = useState(false);
-  const [selectedEvent, setSelectedEvent] = useState(null);
 
-  const handleModalClose = () => {
-    setShowModal(false);
-  };
-  const handleCheckModalClose = () => {
-    setShowCheckModal(false);
-  };
-
-  const updateEvents = (values) => {
-    const updatedEvents = events.map((event) =>
-      event.id === values.id ? { ...event, ...values } : event
-    );
-    setEvents(updatedEvents);
-  };
-
-  const handleModalSave = () => {
-    if (selectedEvent) {
-      if (selectedEvent.id) {
-        // Update existing event
-        updateEvents(selectedEvent);
-      } else {
-        // Generate a new id for the new event
-        const newEventId = Math.max(...events.map(event => event.id), 0) + 1;
-        const newEvent = { ...selectedEvent, id: newEventId };
-        setEvents([...events, newEvent]); 
+  const MyBigCalendar = ({ doctorId }) => {
+    const navigate = useNavigate();
+    const location = useLocation();
+    const axiosPrivate = useAxiosPrivate();
+    const [errMsg, setErrMsg] = useState("");
+    const [showModal, setShowModal] = useState(false);
+    const [showCheckModal, setShowCheckModal] = useState(false);
+    const [selectedEvent, setSelectedEvent] = useState(null);
+    const [events, setEvents] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+  
+    // useEffect(() => {
+    //   fetchData();
+    // }, [axiosPrivate, navigate, location]);
+  
+    const fetchData = async () => {
+      try {
+        const response = await axiosPrivate.get('/bigCalendar');
+        setEvents(response?.data?.jsonString || []);
+        setIsLoading(false);
+      } catch (error) {
+        console.error("Error fetching events:", error);
+        navigate("/login", { state: { from: location }, replace: true });
       }
-    }
-    setShowModal(false);
-  };
-
- 
-  const handleModalOpen = (slotInfo) => {
-    slotInfo?.id ? setShowCheckModal(slotInfo) : setShowModal(true);
-    setSelectedEvent(slotInfo);
-  };
-
-  const handleEditModalOpen = () => {
-    setShowModal(true);
-    setShowCheckModal(false);
-  };
-  const handleDeleteEvent = (eventId) => {
-    const updatedEvents = events.filter((event) => event.id !== eventId);
-    setEvents(updatedEvents);
-    setShowModal(false);
-    setShowCheckModal(false);
-  };
-
-  const eventStyleGetter = (event, start, end, isSelected) => {
-    let current_time = moment.utc().format("YYYY MM DD HH:mm");
-    let event_time = moment.utc(event.start).format("YYYY MM DD HH:mm");
-    let background = current_time > event_time ? "#DE6987" : "#8CBD4C";
-    return {
-      style: {
-        backgroundColor: background,
-      },
     };
-  };
-
+    const handleDeleteEvent = async (eventId) => {
+      try {
+        await axiosPrivate.delete(`/updateBigCalendar/${eventId}`);
+        const updatedEvents = events.filter((event) => event.id !== eventId);
+        setEvents(updatedEvents);
+        setShowCheckModal(false);
+      } catch (error) {
+        console.error("Error deleting event:", error);
+        navigate("/login", { state: { from: location }, replace: true });
+      }
+    };
+    const createEvent = async (newEvent) => {
+      try {
+        const response = await axiosPrivate.post(`/createEvent`, newEvent);
+        const createdEvent = response.data;
+        setEvents([...events, createdEvent]);
+        setShowModal(false);
+      } catch (error) {
+        console.error("Error creating event:", error);
+        navigate("/login", { state: { from: location }, replace: true });
+      }
+    };
+  
+    const updateEvent = async (updatedEvent) => {
+      try {
+        await axiosPrivate.put(`/updateBigCalendar/${updatedEvent.id}`, updatedEvent);
+        const updatedEvents = events.map((event) =>
+          event.id === updatedEvent.id ? updatedEvent : event
+        );
+        setEvents(updatedEvents);
+        setShowModal(false);
+      } catch (error) {
+        console.error("Error updating event:", error);
+        navigate("/login", { state: { from: location }, replace: true });
+      }
+    };
+  
+    const deleteEvent = async (eventId) => {
+      try {
+        await axiosPrivate.delete(`/updateBigCalendar/${eventId}`);
+        const updatedEvents = events.filter((event) => event.id !== eventId);
+        setEvents(updatedEvents);
+        setShowCheckModal(false);
+      } catch (error) {
+        console.error("Error deleting event:", error);
+        navigate("/login", { state: { from: location }, replace: true });
+      }
+    };
+  
+    const handleModalClose = () => {
+      setShowModal(false);
+    };
+  
+    const handleCheckModalClose = () => {
+      setShowCheckModal(false);
+    };
+  
+    const updateEvents = (values) => {
+      const updatedEvents = events.map((event) =>
+        event.id === values.id ? { ...event, ...values } : event
+      );
+      setEvents(updatedEvents);
+    };
+  
+    const handleModalSave = () => {
+      if (selectedEvent) {
+        if (selectedEvent.id) {
+          // Update existing event
+          updateEvent(selectedEvent);
+        } else {
+          // Create new event
+          createEvent(selectedEvent);
+        }
+      }
+      setShowModal(false);
+    };
+    const handleModalOpen = (slotInfo) => {
+      slotInfo?.id ? setShowCheckModal(slotInfo) : setShowModal(true);
+      setSelectedEvent(slotInfo);
+    };
+  
+    const handleEditModalOpen = () => {
+      setShowModal(true);
+      setShowCheckModal(false);
+    };
+  
+    const eventStyleGetter = (event, start, end, isSelected) => {
+      let current_time = moment.utc().format("YYYY MM DD HH:mm");
+      let event_time = moment.utc(event.start).format("YYYY MM DD HH:mm");
+      let background = current_time > event_time ? "#DE6987" : "#8CBD4C";
+      return {
+        style: {
+          backgroundColor: background,
+        },
+      };
+    };
   return (
     <div className="calendar-container">
       <Calendar
@@ -121,10 +178,8 @@ const MyBigCalendar = ({ events, setEvents }) => {
           <Button variant="primary" onClick={handleModalSave}>
           Ստեղծել
           </Button>}
-          
         </Modal.Footer>
       </Modal>
-{/* Check Edit Modal */}
       <Modal show={showCheckModal} onHide={handleCheckModalClose} size="sm">
         <Modal.Header closeButton>
           <Modal.Title>
@@ -141,13 +196,12 @@ const MyBigCalendar = ({ events, setEvents }) => {
           <Button variant="secondary" onClick={()=>handleEditModalOpen(selectedEvent)}>
             Փոփոխել
           </Button>
-            <Button
-              variant="danger"
-              onClick={() => handleDeleteEvent(showCheckModal.id)}
-            >
-              Ջնջել
-            </Button>
-          
+          <Button
+            variant="danger"
+            onClick={() => handleDeleteEvent(showCheckModal.id)}
+          >
+            Ջնջել
+          </Button>
         </Modal.Footer>
       </Modal>
     </div>

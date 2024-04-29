@@ -41,7 +41,6 @@ function DiagnosticsTable({
   selectedItem,
   refreshData,
 }) {
-  const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
   const [selectedItem1, setSelectedItem1] = useState("");
   const [selectedItemId1, setSelectedItemId1] = useState(null);
@@ -57,9 +56,6 @@ function DiagnosticsTable({
   const handleOpenPrintModal = (data) => {
     setModalPrint((prev) => data);
     
-  };
-  const handleSendResult = () => {
-    const resultData = document.getElementById("resultData");
   };
   const handleOpenStatusModal = (data) => {
     setSelectedItem1((prev) => data);

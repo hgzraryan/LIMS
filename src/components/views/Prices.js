@@ -10,9 +10,6 @@ import useGetData from "../../hooks/useGetData";
 import useDeleteData from "../../hooks/useDeleteData";
 import PricesTable from "../viewTables/PricesTable";
 import AddPrice from "../addViews/AddPrice";
-import { useGetFullData } from "../../hooks/useGetFullData";
-import { reserchesList } from "../../redux/features/researches/researchesSlice";
-const GET_RESEARCHES = "/researchLists";
 
 const PRICES_URL = "/priceList"
 const Prices = () => {
@@ -20,7 +17,6 @@ const Prices = () => {
   const [selectedItemId, setSelectedItemId] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const confirmPriceRef = useRef("");
-  const [researchState] = useGetFullData(GET_RESEARCHES,reserchesList)
 
   const handleOpenModal = (user) => {
     setSelectedItemId(true);
@@ -108,7 +104,7 @@ const Prices = () => {
                     <AddPrice
                       handleToggleCreateModal={handleToggleCreateModal}
                       getPrices={() => getPrices()}
-                      researchState={researchState}
+                      //researchState={researchState}
                     />
                   )}
                 </div>

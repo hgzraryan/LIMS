@@ -91015,18 +91015,41 @@ Project:	Jampack
 }
 /*----------------------------------------*/
 /*-------------------Multiselect Dropdown---------------------*/
-.discount-section_title{
-  margin-bottom: 4rem;
-  text-align: center;
-  font-size: 4.5rem;
+@media (max-width: 660px) {
+  .setDiscount_section{
+flex-wrap: wrap;
+justify-content: center;
+align-items: center;
+  }
+.showDiscounts_section{
+  justify-content:center;
+   align-items:center;
 }
-.discount-section_container{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 2.5rem;
-  margin: 20px;
+.discount-header_section{
+  margin-bottom: 30px;
+}
+}
+@media (max-width: 480px) {
+  .colomns_wrapper{
+flex-wrap: wrap;
+justify-content: center;
+align-items: center;
+  }
+  .discount-header_section{
+    margin-bottom: 50px;
+  }
+}
+.new_box-content{
+  font-size: 17px;
+  }
+@media (max-width: 360px) {
+  .new_box-content{
+font-size: 15px;
+}
+}
+.colomns_wrapper{
+  display:flex;
+  gap:30px
 }
 .discount-section_box,.new_discount-box{
   position: relative;
@@ -91046,35 +91069,6 @@ Project:	Jampack
   position: absolute;
   color: #000;
 }
-.section_box-image, .new_box-image{
-  width: 100%;
-}
-.custom_discount{
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-.custom_discount-form{
-  display: flex;
-  flex-direction: column;
-}
-.custom_discount_form-input{
-  min-width: 20rem;
-      min-height: 3rem;
-      font-size: 1.5rem;
-      font-weight: 600;
-      padding: 0 10px;
-      border-radius: 20px;
-      margin-bottom: 5px;
-}
-.new_discount-container{
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
 /*----------------------------------------*/
 
 @media (max-width: 991px) {

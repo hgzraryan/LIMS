@@ -14,13 +14,7 @@ import {
   firstName_validation,
   lastName_validation,
   email_validation,
-  mobile_validation,
-  password_validation,
-  user_validation,
-  position_validation,
-  country_validation,
   city_validation,
-  state_validation,
   street_validation,
   zipCode_validation,
   additional_validation,
@@ -56,7 +50,6 @@ function UserEditModal({ user, setEditRow, refreshData }) {
   const [country, setCountry] = useState("");
   const [region, setRegion] = useState("");
   const [gender, setGender] = useState("");
-  const [isActive, setIsActive] = useState("");
   const [merried, setMerried] = useState("");
   //console.log(user)
   const { trigger } = useForm();
@@ -95,11 +88,13 @@ function UserEditModal({ user, setEditRow, refreshData }) {
     }),
   };
   const onRoleSelect = (data) => {
-    let rolesArr = {};
-    for (let role of data) {
-      rolesArr[role.name] = role.value;
-    }
-    return rolesArr;
+    const  role ={ [data?.name]: data?.value };
+    return role
+    // let rolesArr = {};
+    // for (let role of data) {
+    //   rolesArr[role.name] = role.value;
+    // }
+    // return rolesArr;
   };
   const onGenderSelect = (value) => {
     setGender(value);
@@ -772,12 +767,14 @@ function UserEditModal({ user, setEditRow, refreshData }) {
                                           name="roles"
                                           control={methods.control}
                                           isClearable={true}
-                                          defaultValue={ objToArrWithObjects(user?.roles) }
+                                          defaultValue={ (objToArrWithObjects(user?.roles).length>1)
+                                            ?objToArrWithObjects(user?.roles).slice(1)
+                                            :objToArrWithObjects(user?.roles) }
                                           rules={{ required: true }}
                                           render={({ field }) => (
                                             <Select
                                               {...field}
-                                              isMulti
+                                              //isMulti
                                               closeMenuOnSelect={false}
                                               components={animatedComponents}
                                               options={roleState}

@@ -24,11 +24,6 @@ import cancelledSvg from "../../dist/svg/cancelled.svg";
 import isActiveSvg from "../../dist/svg/isActive.svg";
 
 function DoctorsVisitsTable({
-    selectedItem,
-    selectedItemId,
-    handleDeleteItem,
-    handleOpenModal,
-    handleCloseModal,
     doctorsVisits,
     setDoctorsVisits,
     refreshData
