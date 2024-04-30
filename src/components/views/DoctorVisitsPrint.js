@@ -22,7 +22,6 @@ function DoctorVisitsPrint({ modalPrint, setModalPrint }) {
     clientLastName,
     clientMidName
   } = modalPrint;
-console.log(mServices)
   const componentRef = useRef();
   const columns = React.useMemo(
     () => [

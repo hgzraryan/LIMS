@@ -78,6 +78,9 @@ export const DOCTORSVISITS_URL = '/doctorsVisits'
 
 export const STATISTICS_URL = '/getStatistics/StackedBarChart'
 
+export const CREATE_POS_PAY = '/posPayment'
+
+
 export const ROLES = {
     User: 2001,
     Editor: 1984,

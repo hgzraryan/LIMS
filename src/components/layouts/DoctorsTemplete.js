@@ -57,6 +57,14 @@ const DoctorsTemplete = () => {
   const [pageTab,setPageTab] =useState('tab_summery')
   const [patients,setPatients] =useState([])
   const localizer = momentLocalizer(moment);
+  const [userData,setUserData]=useState('')
+    //const {userId} = userData
+    useEffect(() => {
+      const storedData = JSON.parse(localStorage.getItem('userData'));
+      if (storedData) {
+        setUserData(storedData);
+      }
+    }, []);
   const handlePatientsDetails = async (patientId) => {  
     navigate(`/patients/${patientId}`)
 };
@@ -515,7 +523,7 @@ const DoctorsTemplete = () => {
                                 textDecoration: "underline",
                                 cursor: "pointer",
                               }}
-                              onClick={() => handleUserPage(2095)}
+                              onClick={() => handleUserPage(userData?.userId)}
                             >
                               {/* {userData?.firstname + " "}
                                 {userData?.lastname} */}

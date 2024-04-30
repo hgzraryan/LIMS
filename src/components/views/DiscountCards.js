@@ -332,7 +332,7 @@ export default function DiscountCards() {
               <main>
                
                 
-                <section className="discount-section">
+                <section className="discount-section min-vh-100">
                   <div
                     className="common_discount_container "
                     style={{ padding: "1rem" }}

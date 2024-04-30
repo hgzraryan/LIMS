@@ -53,11 +53,12 @@ const Login = () => {
             const decodedJWT = jwt(accessToken);
             const roles = decodedJWT.UserInfo.roles;
             const isActive = decodedJWT.UserInfo.isActive;
+            const userId = decodedJWT.UserInfo.userId;
 
             localStorage.setItem("userData", JSON.stringify(response?.data?.authUserData));
             console.log('roles',roles);
 
-            setAuth({ user, pwd, roles, isActive, accessToken });
+            setAuth({ user, pwd, roles, isActive, accessToken, userId });
             resetUser();
             setPwd('');  
             if (response?.data?.authUserData?.isactive === 0) {

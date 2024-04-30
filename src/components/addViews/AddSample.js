@@ -69,6 +69,8 @@ function Sample() {
   const sortResearches = (data) => {
     if(!data?.length){
       setNoData(true)
+    }else if(data?.length){
+      setNoData(false)
     }
     const sortedResearches = data?.reduce(
       (acc, research) => {

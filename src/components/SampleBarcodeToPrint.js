@@ -1,6 +1,7 @@
 import React from "react";
 import BarcodeComp from "./BarcodeComp";
 import { forwardRef } from "react";
+import moment from "moment";
 
 export const SampleBarcodeToPrint = forwardRef(({ modalPrint }, ref) => {
   const { firstName, lastName, dateOfBirth } = modalPrint.client;
@@ -25,7 +26,7 @@ export const SampleBarcodeToPrint = forwardRef(({ modalPrint }, ref) => {
                       }}
                     >
                       <p>{diagnosticsId}</p>
-                      <p>{dateOfBirth}</p>
+                      <p>{moment(dateOfBirth).format('DD-MM-YYYY')}</p>
                     </div>
                   </header>
                   <section>

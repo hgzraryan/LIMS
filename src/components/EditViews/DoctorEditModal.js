@@ -154,6 +154,7 @@ function DoctorEditModal({ doctor, setEditRow, refreshData }) {
           doctor?.emergencyContactNumber?.trim()
             ? emergencyContactNumber
             : null,
+            additional:additional?.trim() !== doctor?.additional?.trim()?additional:null
         //profilePictureUrl: "profilePictureUrl",
         //isActive: isActive,
       };
@@ -165,7 +166,7 @@ function DoctorEditModal({ doctor, setEditRow, refreshData }) {
       try {
         await axiosPrivate.put(
           DOCTORS_URL,
-          { ...updatedFields, id: doctor.doctorId },
+          { updatedFields, id: doctor.doctorId },
           {
             headers: { "Content-Type": "application/json" },
             // headers: { "Content-Type": "multipart/form-data" },
@@ -426,7 +427,7 @@ function DoctorEditModal({ doctor, setEditRow, refreshData }) {
                                   <div className="col-sm-6">
                                     <Input
                                       {...additional_validation}
-                                      defaultValue={doctor?.contact?.additional}
+                                      defaultValue={doctor?.additional}
                                     />
                                   </div>
                                 </div>

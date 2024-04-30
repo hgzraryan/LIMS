@@ -2,8 +2,10 @@ import React from 'react'
 import { useController } from 'react-hook-form'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import moment from 'moment';
+import { calculateAge } from '../utils/helper';
 
-function CustomDateComponent({ control, name,required='true',defaultValue='' })  {
+function CustomDateComponent({ control, name,required='true',defaultValue='',setIsChild=false })  {
     const {
       field,
       fieldState: { invalid, isTouched, isDirty },
@@ -15,9 +17,16 @@ function CustomDateComponent({ control, name,required='true',defaultValue='' }) 
       defaultValue:!!defaultValue ? new Date(defaultValue) : '',
 
     });
-  
     const handleDateChange = (date) => {
       field.onChange(date);
+      if(setIsChild){
+        if(calculateAge(date)<18) {
+          console.log(calculateAge(date))
+          setIsChild(true)
+        }else if(calculateAge(date)>18){
+          setIsChild(false)
+        }
+      }
     };
     return (
       <DatePicker

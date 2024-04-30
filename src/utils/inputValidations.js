@@ -107,6 +107,32 @@ export const passport_validation = {
     },
   },
 };
+export const respPersonPassport_validation = {
+  name: "respPersonPassport",
+  label: "Պատասխանատու անձի  անձնագիր/ID",
+  type: "text",
+  id: "parentPassport",
+  placeholder: "Պատասխանատու անձի  անձնագիր/ID",
+  validation: {
+    required: {
+      value: true,
+      message: "պարտադիր",
+    },
+  },
+};
+export const respPersonFullName_validation = {
+  name: "respPersonFullName",
+  label: "Պատասխանատու անձի ԱԱՀ",
+  type: "text",
+  id: "parentFullName",
+  placeholder: "Պատասխանատու անձի ԱԱՀ",
+  validation: {
+    required: {
+      value: true,
+      message: "պարտադիր",
+    },
+  },
+};
 export const position_validation = {
   name: "position",
   label: "Պաշտոն",
@@ -117,6 +143,51 @@ export const position_validation = {
     required: {
       value: true,
       message: "պարտադիր",
+    },
+    maxLength: {
+      value: 30,
+      message: "30 characters max",
+    },
+  },
+};
+export const authCode_validation = {
+  name: "authCode",
+  label: "Վճարման կոդ",
+  type: "number",
+  id: "authCode",
+  placeholder: "Վճարման կոդ",
+  validation: {
+    required: {
+      value: true,
+      message: "պարտադիր",
+    },
+    maxLength: {
+      value: 30,
+      message: "30 characters max",
+    },
+    pattern: {
+      value:
+        /^(?!.*-)\d+$/,
+      message: "Սխալ ձևաչափ",
+    },
+  },
+};
+export const payment_validation = {
+  name: "payment",
+  label: "Վճարման գումար",
+  type: "number",
+  id: "payment",
+  min:'1',
+  placeholder: "Վճարման գումար",
+  validation: {
+    required: {
+      value: true,
+      message: "պարտադիր",
+    },
+    pattern: {
+      value:
+        /^(?!.*-)\d+$/,
+      message: "Սխալ ձևաչափ",
     },
     maxLength: {
       value: 30,
@@ -336,8 +407,8 @@ export const patientEmail_validation = {
     pattern: {
       value:
         /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-      message: "not valid",
-    },
+        message: "Սխալ ձևաչափ",
+      },
   },
 };
 export const contactEmail_validation = {

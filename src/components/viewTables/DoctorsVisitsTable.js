@@ -22,6 +22,8 @@ import DoctorVisitsPrint from '../views/DoctorVisitsPrint';
 import DoctorVisitDeactivate from '../DeactivateItems/DoctorVisitDeactivate';
 import cancelledSvg from "../../dist/svg/cancelled.svg";
 import isActiveSvg from "../../dist/svg/isActive.svg";
+import posTerminalSvg from "../../dist/svg/posTerminal.svg";
+import CreatePayByPos from '../CreatePayByPos';
 
 function DoctorsVisitsTable({
     doctorsVisits,
@@ -33,7 +35,16 @@ function DoctorsVisitsTable({
   const [editRow, setEditRow] = useState(false);
   const [DisableRowData, setDisableRowData] = useState(false);
   const [modalPrint, setModalPrint] = useState("");
+  const [openPosModal, setOpenPosModal] = useState(false);
 
+  const handlePosPay = (actionData) => {
+      setOpenPosModal(actionData);
+    };
+    const handleClosePosPay = () => {
+      setOpenPosModal(false);
+    };
+               
+  
  const handleOpenPrintModal = (data) => {
     setModalPrint((prev) => data);
   };
@@ -120,7 +131,7 @@ function DoctorsVisitsTable({
                 onClick={()=>handlePatientsDetail(row.original?.clientId)}
                 style={{ cursor: 'pointer', textDecoration:'underline' }}
               >
-                {row.original?.clientFirstName+" " +row.original?.clientLastName+" " +row.original?.clientMidName}
+                {row.original?.clientLastName+" " +row.original?.clientFirstName+" " +row.original?.clientMidName}
               </div>
             ),
           },
@@ -129,34 +140,39 @@ function DoctorsVisitsTable({
             accessor: "paymentProgress",
             disableSortBy: true,
             width: 200,
-            Cell: ({ row }) => (<>
-              
-              <div className="d-flex justify-content-center align-items-center flex-column">
-              {row.original?.originalPrice && !(row.original?.originalPrice === row.original?.totalPrice) ? (
-                <div style={{width:'100%',display:'flex',
-                flexDirection:'row-reverse',fontSize:'14px'}}>
-
-                
-                <div
-                  style={{
-                    backgroundColor: "#bb86fc",
-                    borderRadius: "8px",
-                    padding: "0 10px 0 10px",
-                    marginBottom: "-3px",
-                    zIndex: "9999",
-                    color:'white',
-                    textDecoration:'line-through'
+            Cell: ({ row }) => (
+              <>
+                <div className="d-flex justify-content-center align-items-center flex-column">
+                  {row.original?.originalPrice && !(row.original?.originalPrice === row.original?.totalPrice) ? (
+                    <div style={{width:'100%',display:'flex',
+                    flexDirection:'row-reverse',fontSize:'14px'}}>
+    
                     
-                  }}
-                >
-                 <p> {row.original?.originalPrice-row.original?.totalPrice}</p>
+                    <div
+                      style={{
+                        backgroundColor: "#bb86fc",
+                        borderRadius: "8px",
+                        padding: "0 10px 0 10px",
+                        margin: "0 0 -3px 0",
+                        zIndex: "9999",
+                        color:'white',
+                        textDecoration:'line-through',
+                        
+                      }}
+                    >
+                     <p> {row.original?.originalPrice}</p>
+                    </div>
+                    </div>
+                  ):''
+                  }
+                  <div className='d-flex'>
+
+                  <ProgressBar totalPrice ={row.original?.totalPrice||0} totalPayed={row.original?.totalPayed||0}/>
+                  
+                  </div>
+    
                 </div>
-                </div>
-              ):''
-            }
-                <ProgressBar totalPrice ={row.original?.totalPrice||0} totalPayed={row.original?.totalPayed||0}/>
-              </div>
-                  </>
+              </>
             ),
             Filter: ({ column: { id } }) => <></>,
           },        
@@ -299,7 +315,10 @@ function DoctorsVisitsTable({
                       </span>
                     </span>
                   </a>
-                  
+                  <div className="d-flex">
+              
+                <img title="POS" style={{cursor:'pointer'}} width='20xp' height='20px' src={posTerminalSvg} alt='posTerminalSvg' onClick={()=>handlePosPay(row.original)}/>
+                </div> 
                 </>
               {/* )} */}
               </div>
@@ -349,6 +368,11 @@ function DoctorsVisitsTable({
       // console.log(selectedFlatRows);
       return (
         <>
+          {openPosModal && (
+      <CreatePayByPos actionData={openPosModal} handleClosePosPay={handleClosePosPay} refreshData={refreshData}/>         
+    )
+
+    }
           {DisableRowData && (
               <DoctorVisitDeactivate
                 handleCloseDeactivateModal={handleCloseDeactivateModal}

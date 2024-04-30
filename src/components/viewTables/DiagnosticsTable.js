@@ -29,6 +29,9 @@ import ProgressBar from "../ProgressBar";
 import moment from "moment";
 import cancelledSvg from "../../dist/svg/cancelled.svg";
 import isActiveSvg from "../../dist/svg/isActive.svg";
+import posTerminalSvg from "../../dist/svg/posTerminal.svg";
+import CreatePayByPos from "../CreatePayByPos";
+
 
 function DiagnosticsTable({
   confirmRef,
@@ -48,6 +51,7 @@ function DiagnosticsTable({
   const [editRow, setEditRow] = useState(false);
   const [modalInfo, setModalInfo] = useState("");
   const [modalPrint, setModalPrint] = useState("");
+  const [openPosModal, setOpenPosModal] = useState(false);
 
   const handleOpenInfoModal = (data) => {
     setModalInfo((prev) => data);
@@ -69,6 +73,13 @@ function DiagnosticsTable({
   const handleCloseDeactivateModal = () => {
     setEditRow(false);
   };
+  const handlePosPay = (diagnosticsId) => {
+    setOpenPosModal(diagnosticsId);
+  };
+  const handleClosePosPay = () => {
+    setOpenPosModal(false);
+  };
+
   const defaultColumn = React.useMemo(
     () => ({
       minWidth: 20,
@@ -210,10 +221,10 @@ function DiagnosticsTable({
                     backgroundColor: "#bb86fc",
                     borderRadius: "8px",
                     padding: "0 10px 0 10px",
-                    marginBottom: "-3px",
+                    margin: "0 0 -3px 0",
                     zIndex: "9999",
                     color:'white',
-                    textDecoration:'line-through'
+                    textDecoration:'line-through',
                     
                   }}
                 >
@@ -222,7 +233,9 @@ function DiagnosticsTable({
                 </div>
               ):''
               }
+              <div className='d-flex'>
               <ProgressBar totalPrice ={row.original?.totalPrice||0} totalPayed={row.original?.totalPayed||0}/>
+              </div>
 
             </div>
           </>
@@ -311,13 +324,14 @@ function DiagnosticsTable({
               <BiSolidInfoCircle
                 cursor={"pointer"}
                 size={"1.5rem"}
+                title="info"
                 onClick={() => handleOpenInfoModal(row.original)}
               />
             </div>
 
-            <div className="d-flex">
             {row.original?.diagStatus === "Active" && (
                 <>
+            <div className="d-flex">
                   <a
                     className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover"
                     data-bs-toggle="tooltip"
@@ -332,45 +346,35 @@ function DiagnosticsTable({
                       </span>
                     </span>
                   </a>
-                  {/* <a
-                    className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover"
-                    data-bs-toggle="tooltip"
-                    data-placement="top"
-                    title="send"
-                    href="#"
-                    onClick={() => handleOpenResultModal(row.original)}
-                  >
-                    <span className="icon">
-                      <span className="feather-icon">
-                        <FeatherIcon icon="send" />
-                      </span>
-                    </span>
-                  </a> */}
-                </>
-              )}
            
-              {/* <ComponentToPrintWrapper diagData={row.original} /> */}
+              
             
               {/*
               //TODO Delete diagnostics option
               {!row.original.patientId && (
                 <a
-                  className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover del-button"
-                  data-bs-toggle="tooltip"
-                  onClick={() => handleOpenModal(row.original)}
-                  data-placement="top"
-                  title="Delete"
-                  data-bs-original-title="Delete"
-                  href="#"
+                className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover del-button"
+                data-bs-toggle="tooltip"
+                onClick={() => handleOpenModal(row.original)}
+                data-placement="top"
+                title="Delete"
+                data-bs-original-title="Delete"
+                href="#"
                 >
-                  <span className="icon">
-                    <span className="feather-icon">
-                      <FeatherIcon icon="trash" />
-                    </span>
-                  </span>
+                <span className="icon">
+                <span className="feather-icon">
+                <FeatherIcon icon="trash" />
+                </span>
+                </span>
                 </a>
               )} */}
             </div>
+                <div className="d-flex">
+              
+                <img title="POS" style={{cursor:'pointer'}} width='20xp' height='20px' src={posTerminalSvg} alt='posTerminalSvg' onClick={()=>handlePosPay(row.original)}/>
+                </div>                  
+                </>
+                )}
           </div>
         ),
         disableSortBy: true,
@@ -415,6 +419,11 @@ function DiagnosticsTable({
 
   return (
     <>
+    {openPosModal && (
+      <CreatePayByPos actionData={openPosModal} handleClosePosPay={handleClosePosPay} refreshData={refreshData}/>         
+    )
+
+    }
       {modalInfo && (
         <Modal show={() => true} size="md" onHide={() => setModalInfo(false)}>
           <Modal.Header closeButton>

@@ -140,9 +140,7 @@ const handleCloseEditModal = () => {
           />
         ),
         Cell:({row})=>(
-          <div  
-          style={{ cursor: 'pointer', textDecoration:'underline'}}
-        onClick={()=>handleUserPage(row.original?.userId)} >{row.original?.username}</div>
+          <div>{row.original?.username}</div>
         )
       },
       {
@@ -388,7 +386,7 @@ const handleCloseEditModal = () => {
                       ? undefined
                       : { cursor:'pointer' },
                         onClick:
-                          cell.column?.id === "options"
+                          cell.column?.id === "actions"
                             ? undefined
                             : () => handleUserPage(row.original?.userId), 
                       })}>{cell.render("Cell")}</td>

@@ -3,7 +3,7 @@ import { useController } from 'react-hook-form'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-function CustomDateTimeComponent({ control, name,required='true' }) {
+function CustomDateTimeComponent({ control, name,required='true',defaultValue='' }) {
     const {
         field,
         fieldState: { invalid, isTouched, isDirty },
@@ -12,6 +12,8 @@ function CustomDateTimeComponent({ control, name,required='true' }) {
         name,
         control,
         rules: { required: required },
+        defaultValue:defaultValue,
+
       });
     
       const handleDateChange = (date) => {
@@ -31,6 +33,7 @@ function CustomDateTimeComponent({ control, name,required='true' }) {
          required
          placeholderText="Ընտրեք ամսաթիվը" 
          className='form-control'
+         
          />
       )
   }

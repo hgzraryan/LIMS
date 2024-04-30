@@ -15,6 +15,8 @@ import {
   street_validation,
   city_validation,
   passport_validation,
+  respPersonFullName_validation,
+  respPersonPassport_validation,
 } from "../../utils/inputValidations";
 import CustomPhoneComponent from "../CustomPhoneComponent";
 import "react-datepicker/dist/react-datepicker.css";
@@ -30,12 +32,17 @@ import {
 import { PATIENTS_URL, UPDATE_PATIENT } from "../../utils/constants";
 import { calculateAge, deleteNullProperties } from "../../utils/helper";
 function PatientEditModal({ patient, setEditRow, refreshData }) {
+  const axiosPrivate = useAxiosPrivate();
   const [isLoading, setIsLoading] = useState(false);
   const [country, setCountry] = useState("");
   const [region, setRegion] = useState("");
   const [additionalPhone, setAdditionalPhone] = useState(false);
   const [gender, setGender] = useState("");
-  const axiosPrivate = useAxiosPrivate();
+  const [isChild,setIsChild]= useState(false)
+
+  const handleCheckIfChild = () =>{
+    setIsChild(false)
+  }
 
   const editorRef = useRef(null);
   const { trigger } = useForm();
@@ -562,6 +569,8 @@ function PatientEditModal({ patient, setEditRow, refreshData }) {
                                             // .join("-")
                                             // .toString()
                                           }
+                                         // handleCheckIfChild={handleCheckIfChild}
+
                                         />
                                       </div>
                                     </div>
@@ -571,7 +580,25 @@ function PatientEditModal({ patient, setEditRow, refreshData }) {
                             </div>
                           </div>
                           <div className="separator-full"></div>
-
+                          {isChild &&
+                          <>
+                           <div className="card">
+                           <div className="card-body">
+                        <div className="modal-body">
+                          <div className="row gx-3">
+                            <div className="col-sm-6">
+                              <Input {...respPersonFullName_validation} />
+                            </div>
+                            <div className="col-sm-6">
+                              <Input {...respPersonPassport_validation} />
+                            </div>
+                          </div>
+                          </div>
+                          </div>
+                          </div>
+                            <div className="separator-full"></div>
+                          </>
+                          }
                           <div className="card">
                             <div className="card-header">
                               <a href="#">Հավելյալ տվյալներ</a>

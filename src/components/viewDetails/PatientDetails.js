@@ -699,6 +699,22 @@ function PatientDetails() {
                               <span className="text-muted">Ծննդյան ամսաթիվ:</span>
                             <span className="ms-2">{moment.utc(patientDetails?.dateOfBirth).format('DD-MM-YYYY')}</span></span>
                           </li>
+                          {patientDetails?.respPersonFullName &&
+                          <>
+                            <li className="list-group-item border-0">
+                            <span>
+                              <i className="bi bi-briefcase-fill text-disabled me-2"></i>
+                              <span className="text-muted">Ծննողի ԱԱՀ:</span>
+                            <span className="ms-2">{patientDetails?.respPersonFullName}</span></span>
+                          </li>
+                            <li className="list-group-item border-0">
+                            <span>
+                              <i className="bi bi-briefcase-fill text-disabled me-2"></i>
+                              <span className="text-muted">Ծննողի անձնագիր:</span>
+                            <span className="ms-2">{patientDetails?.respPersonPassport}</span></span>
+                          </li>
+                          </>
+                          }
                           <li className="list-group-item border-0">
                             <span>
                               <i className="bi bi-briefcase-fill text-disabled me-2"></i>
@@ -720,13 +736,13 @@ function PatientDetails() {
                           <div className="card-action-wrap"></div>
                         </div>
                         <div className="card-body">
-                          <ol>
+                          <ul>
                             <li>
                               <p className="card-text mb-5">
-                                {/* Այցելուն ունի ||| կարգի հաշմանդամություն */}
+                               {patientDetails?.additional}
                               </p>
                             </li>
-                          </ol>
+                          </ul>
                         </div>
                         <div className="card-footer justify-content-between"></div>
                       </div>

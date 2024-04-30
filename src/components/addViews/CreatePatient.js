@@ -23,6 +23,8 @@ import {
   street_validation,
   city_validation,
   passport_validation,
+  respPersonFullName_validation,
+  respPersonPassport_validation,
 } from "../../utils/inputValidations";
 import CustomPhoneComponent from "../CustomPhoneComponent";
 import "react-datepicker/dist/react-datepicker.css";
@@ -60,7 +62,11 @@ function CreatePatient({
   const [additionalPhone, setAdditionalPhone] = useState(false);
   const [researchesPrice, setResearchesPrice] = useState(0);
   const [medicalServicePrice,setMedicalServicePrice] = useState(0)
+  const [isChild,setIsChild]= useState(false)
 
+  const handleCheckIfChild = () =>{
+    setIsChild(false)
+  }
   const onMedServiceSelect = (data) => {
           console.log(data);
           const calcPrice = data.reduce((acc,el)=>{
@@ -177,7 +183,9 @@ function CreatePatient({
       refDoctor,
       doctor,
       visitDoctor,
-      addPhone
+      addPhone,
+      respPersonFullName,
+      respPersonPassport
     }) => {
       const newPatient = {
         firstName: firstName,
@@ -202,6 +210,8 @@ function CreatePatient({
           phone: phone,
           addPhone:addPhone?addPhone:null,
           passport: passport,
+          respPersonPassport: respPersonPassport,
+          respPersonFullName: respPersonFullName,
           address: {
             street: street,
             city: city,
@@ -233,6 +243,7 @@ function CreatePatient({
               .toISOString()
               .split("T")[0]
           : null,
+
       };
 
       console.log(newPatient);
@@ -612,6 +623,8 @@ function CreatePatient({
                                   <CustomDateComponent
                                     name="dateOfBirth"
                                     control={methods.control}
+                                    handleCheckIfChild={handleCheckIfChild}
+                                    setIsChild={setIsChild}
                                   />
                                 </div>
                               </div>
@@ -652,6 +665,25 @@ function CreatePatient({
                       </div>
                     </div>
                     <div className="separator-full"></div>
+                          {isChild &&
+                          <>
+                           <div className="card">
+                           <div className="card-body">
+                        <div className="modal-body">
+                          <div className="row gx-3">
+                            <div className="col-sm-6">
+                              <Input {...respPersonFullName_validation} />
+                            </div>
+                            <div className="col-sm-6">
+                              <Input {...respPersonPassport_validation} />
+                            </div>
+                          </div>
+                          </div>
+                          </div>
+                          </div>
+                            <div className="separator-full"></div>
+                          </>
+                          }
 
                     {addDiagnostic && (
                       <>

@@ -48,7 +48,7 @@ function DoctorsTable({
     }),
     []
   );
-  const handleDoctorInfo = async ({doctorId})=>{
+  const handleDoctorInfo = async (doctorId)=>{
   navigate(`/doctors/${doctorId}`)
   }
   const columns = useMemo(
@@ -98,13 +98,7 @@ function DoctorsTable({
           placeholder = "Անուն հայրանուն ազգանուն" />
         ),
         Cell: ({ row }) => (
-          <div
-            onClick={(e) => {
-              e.stopPropagation();
-              handleDoctorInfo(row.original);
-            }}
-            style={{ cursor: 'pointer' ,textDecoration:'underline'}}
-          >
+          <div>
             {row.original.doctorName}
           </div>
         ),
@@ -365,7 +359,16 @@ function DoctorsTable({
                   <tr {...row.getRowProps()}>
                     {row.cells.map((cell) => {
                       return (
-                        <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                        <td
+                    {...cell.getCellProps({style:cell.column?.id === "actions"
+                    ? undefined
+                    : { cursor:'pointer' },
+                      onClick:
+                        cell.column?.id === "actions"
+                          ? undefined
+                          : () => handleDoctorInfo(row.original?.doctorId), 
+                    })}
+                  >{cell.render("Cell")}</td>
                       );
                     })}
                   </tr>

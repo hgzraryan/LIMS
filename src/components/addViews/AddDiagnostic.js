@@ -67,7 +67,6 @@ function AddDiagnostic({
 
   const [researchesPrice, setResearchesPrice] = useState(0);
 const onResearchSelect = (data) => {
-    console.log(data);
     const calcPrice = data.reduce((acc,el)=>{
       return acc+=el.price
     },0)
@@ -749,7 +748,6 @@ const onResearchSelect = (data) => {
                                     )}
                                   </div>
                                   <div className="form-control">
-                                    {console.log(researches)}
                                     <Controller
                                       name="research"
                                       control={methods.control}

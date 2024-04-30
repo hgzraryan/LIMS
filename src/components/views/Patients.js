@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState} from "react";
+import React, { useEffect, useState} from "react";
 import FeatherIcon from "feather-icons-react";
 import LoadingSpinner from "../LoadingSpinner";
 import Loading from "../Loading";
@@ -12,16 +12,20 @@ import ReactPaginate from "react-paginate";
 import { useSelector } from "react-redux";
 import { selectPatientsCount } from "../../redux/features/patients/patientsCountSlice";
 import { selectResearches } from "../../redux/features/researches/researchesSlice";
-import { PATIENTS_URL } from "../../utils/constants";
+import { PATIENTS_URL, RESEARCHLISTS_URL } from "../../utils/constants";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
 const Patients = () => {
   const patientsCount = useSelector(selectPatientsCount)
-  const researchState= useSelector(selectResearches)
+  //const researchState= useSelector(selectResearches)
+  const axiosPrivate = useAxiosPrivate();
+  const [isLoading, setIsLoading] = useState(false);
 
   const [isOpen, setIsOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState("");
   const [currentPage, setCurrentPage] = useState(0);  
   const [usersPerPage, setUsersPerPage] = useState(Math.round((window.innerHeight / 100)));
+  const [researches, setResearches] = useState([]);
   const pageCount = Math.ceil(patientsCount/usersPerPage)
   
     const {
@@ -45,6 +49,21 @@ const Patients = () => {
       setCurrentPage(selectedPage);
       //updateUsersCount();
   }
+  useEffect(() => {
+    setTimeout(() => {
+      axiosPrivate
+        .get(RESEARCHLISTS_URL)
+        .then((resp) => {
+          setResearches(resp?.data?.jsonString);
+          setIsLoading(false);
+        })     
+        .catch((err) => {
+          console.log(err);
+          //navigate("/login", { state: { from: location }, replace: true });
+
+        });
+    }, 500);
+  }, []);
     //--------------------------------------------------------------//
   //-------------------------
 
@@ -111,7 +130,7 @@ const Patients = () => {
                     <CreatePatient
                       handleToggleCreateModal={handleToggleCreateModal}
                       refreshData={()=>refreshData()}
-                      researchState={researchState}
+                      researchState={researches}
                       //errMsg={errMsg}
                     />
                   )}
@@ -280,7 +299,7 @@ const Patients = () => {
                     tableData={patients}
                     handleOpenModal={handleOpenModal}
                     handleCloseModal={handleCloseModal}
-                    researchState={researchState}
+                    researchState={researches}
                     selectedItem={selectedItem}
                     patients={patients}
                     setPatients={setPatients}

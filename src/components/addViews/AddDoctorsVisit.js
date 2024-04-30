@@ -255,7 +255,7 @@ function AddDoctorsVisit({
         >
           <Modal.Header closeButton>
             <Modal.Title style={{ width: "100%", textAlign: "center" }}>
-              Ավելացնել նոր գործընկեր
+              Ավելացնել նոր այցելություն
             </Modal.Title>
           </Modal.Header>
           <Suspense fallback={<LoadingSpinner />}>
