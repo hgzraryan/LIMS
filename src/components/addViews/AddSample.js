@@ -13,6 +13,7 @@ import heparinVial from '../../dist/img/vial_IMG/heparinVial.png'
 import edtaVial from '../../dist/img/vial_IMG/EDTAVial.png'
 import helVial from '../../dist/img/vial_IMG/helVial.png'
 import citratVial from '../../dist/img/vial_IMG/citratVial.png'
+import moment from "moment";
 function Sample() {
   const [barcodeScan, setBarcodeScan] = useState("");
   const [data, setData] = useState('');
@@ -488,14 +489,13 @@ function Sample() {
                                 {data.client.firstName + " "}
                                 {data.client.midName + " "}
                                 {data.client.lastName + ", "}
-                                {data.client.dateOfBirth?.split("T")[0].split("-").reverse().join("-")}
+                                {moment(data.client.dateOfBirth).format("DD-MM-YYYY")}
                               </span>
                             </div>
                           </header>
                           <main>
                             {sortedResearches?.length && (
                               <>
-                              {console.log('sortedResearches',sortedResearches)}
                                 {sortedResearches.map((group, groupId) => {
                                   if (
                                     Array.isArray(group) &&

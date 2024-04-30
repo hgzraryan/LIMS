@@ -22,6 +22,7 @@ import profileBgImg from "../../dist/img/profile-bg.jpg";
 import { Button } from "react-bootstrap";
 import FeatherIcon from "feather-icons-react/build/FeatherIcon";
 import moment from "moment";
+import MyBigCalendar from "../MyBigCalendar";
 const customAppointData = [
   { time: "10:00AM", available: true },
   { time: "10:15AM", available: true },
@@ -97,8 +98,8 @@ function DoctorDetails() {
           <LoadingSpinner />
         ) : (
           <>
-            <div className="hk-pg-body p-2">
-              <div className="profile-wrap">
+            <div className="hk-pg-body p-2 " >
+              <div className="profile-wrap "  >
                 <div className="profile-img-wrap">
                   <img
                     className="img-fluid rounded-5"
@@ -107,7 +108,7 @@ function DoctorDetails() {
                   />
                 </div>
                 <div className="profile-intro">
-                  <div className="card card-flush mw-400p bg-transparent">
+                  <div className="card card-flush mw-400p bg-transparent ">
                     <div className="card-body">
                       <div className="avatar avatar-xxl avatar-rounded position-relative mb-2">
                         <img
@@ -177,9 +178,25 @@ function DoctorDetails() {
                         <span className="nav-link-text">Գլխավոր</span>
                       </a>
                     </li>
+                    <li className="nav-item">
+                      <a
+                        className={`nav-link ${activeLink === "tab_calendar" ? "active" : ""
+                          }`}
+                        onClick={() => handleLinkClick("tab_calendar")}
+                        data-bs-toggle="tab"
+                        href="#"
+                      >
+                        <span className="nav-icon-wrap">
+                          <span className="feather-icon">
+                            <FeatherIcon icon="zap" />
+                          </span>
+                        </span>
+                        <span className="nav-link-text">Օրացույց</span>
+                      </a>
+                    </li>
                   </ul>
                 </header>
-                <div className="row mt-7">
+                <div className="row">
                   {pageTab === "tab_summery" && (
                     <>
                       <div className="col-lg-4 mb-lg-0 mb-3">
@@ -258,6 +275,11 @@ function DoctorDetails() {
 
                           </ul>
                         </div>
+                      </div>
+                      <div className="col-lg-8 ">
+                          <div style={{ height: 600}}>
+                            <MyBigCalendar/>
+                          </div>
                       </div>
                       {/* <div className="col-lg-8">
                         <div className="card card-border card-profile-feed mb-lg-4 mb-3">
@@ -364,6 +386,12 @@ function DoctorDetails() {
                       </div> */}
                     </>
                   )}
+                  {pageTab ==='tab_calendar' &&
+                          
+                          <div style={{ height: 700}}>
+                            <MyBigCalendar/>
+                          </div>
+                        }
                 </div>
               </div>
             </div>
