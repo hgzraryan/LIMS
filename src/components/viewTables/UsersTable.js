@@ -65,19 +65,6 @@ const handleCloseEditModal = () => {
     }
   };
 
-  const setUserActiveState = (activeState) => {
-    switch (activeState) {
-      case 0:
-        return ["badge badge-soft-danger  my-1  me-2", "Ոչ ակտիվ"];
-      case 1:
-        return ["badge badge-soft-success my-1  me-2  my-1  me-2", "Ակտիվ"];
-      default:
-        break;
-    }
-  };
-  const handleColumnToggle = (columnId) => {
-    toggleHideColumn(columnId);
-  };
   const handleUserPage = async(userId) =>{
       navigate(`/users/${userId}`)
   }

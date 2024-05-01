@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useMemo, useRef, useState } from "react";
+import React, { useMemo, useState } from "react";
 import {
   useBlockLayout,
   useFilters,
@@ -15,7 +15,6 @@ import { BiSolidInfoCircle } from "react-icons/bi";
 import { ColumnFilter } from "../ColumnFilter";
 import "../../dist/css/data-table.css";
 import {  useNavigate } from 'react-router-dom';
-import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { Modal } from "react-bootstrap";
 import DefaultProfileImage from "../../../src/dist/img/Missing.svg";
 import PatientEditModal from "../EditViews/PatientEditModal";
@@ -280,8 +279,6 @@ function PatientsTable({
       getTableBodyProps,
       headerGroups,
       rows,
-      state,
-    setGlobalFilter,
     prepareRow,
     selectedFlatRows,
     toggleHideColumn,

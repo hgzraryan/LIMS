@@ -37,7 +37,6 @@ function DoctorEditModal({ doctor, setEditRow, refreshData }) {
   const [country, setCountry] = useState("");
   const [region, setRegion] = useState("");
   const [gender, setGender] = useState("");
-  const [isActive, setIsActive] = useState("");
   const [merried, setMerried] = useState("");
 
   const methods = useForm({
@@ -46,10 +45,6 @@ function DoctorEditModal({ doctor, setEditRow, refreshData }) {
   const onGenderSelect = (value) => {
     setGender(value);
     methods.trigger("gender");
-  };
-  const onDoctorStateSelect = (value) => {
-    console.log(value);
-    setIsActive(value);
   };
   const onDoctorMerriedSelect = (event) => {
     setMerried((prev) => event.target.value);
@@ -81,9 +76,6 @@ function DoctorEditModal({ doctor, setEditRow, refreshData }) {
       dateOfBirth,
       maritalStatus,
       additional,
-      user,
-      password,
-      isActive,
     }) => {
       
       const newDateOfBirthString = dateOfBirth
@@ -189,10 +181,6 @@ function DoctorEditModal({ doctor, setEditRow, refreshData }) {
       }
     }
   );
-  const handle = () =>{
-    methods.setValue("state",'')
-    methods.trigger("state")
-  }
   return (
     <>
       <Modal show={() => true} size="xl" onHide={() => setEditRow(false)}>

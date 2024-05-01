@@ -5,114 +5,16 @@ import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import { Modal } from "react-bootstrap";
 import FeatherIcon from 'feather-icons-react/build/FeatherIcon';
 import { Controller, Form, FormProvider, useForm} from "react-hook-form";
-import { Input } from '../Input';
 import ErrorSvg from "../../dist/svg/error.svg";
 import Select from "react-select";
 import "react-phone-number-input/style.css";
 import LoadingSpinner from '../LoadingSpinner';
 import makeAnimated from "react-select/animated";
 import CustomDateTimeComponent from '../CustomDateTimeComponent';
-const CustomData=[
-  {
-    doctorsVisitsId:30001,
-      patientData:{
-        name:"Արման Գևորգի Ստեփանյան",
-        contact:{
-          email:"fdfgfg1942@as.tu",
-          phone:"+37485745896",
-        },
-        age:45,
-        gender:'Ար',
-        patientId:49
-        //patient's all data
-      },
-      visitDate:"24-02-2022",
-      doctorName:"Կարինե Սամվելի Մանւկյան",
-      doctorsAppointments:
-        {
-          instructions:['Մերսում'],
-          medicine:['Դիկլակ գել'],
-          researches:[]
-      },
-    nextVisit:'24-03-2022',
-  },
-  {
-    doctorsVisitsId:30025,
-      patientData:{
-        contact:{
-
-          email:"Anka1942@as.tu",
-          phone:"+3748596584",
-        },
-        name:"Անուշ Ռազմիկի Գաբրիելյան",
-        age:85,
-        patientId:48,
-        gender:'Իգ',
-        //patient's all data
-      },
-      visitDate:"25-02-2024",
-      doctorName:"Կարինե Սամվելի Մանւկյան",
-      doctorsAppointments:
-        {
-          instructions:['Դիետիկ սնունդ'],
-          medicine:['Մեզիմ ֆոռտե'],
-          researches:['Արյան ընդհանուր հետազոտություն']
-      },
-    
-    nextVisit:'24-03-2024',
-  },
-  {
-    doctorsVisitsId:30852,
-      patientData:{
-        name:"Կարեն Սերոբի Ստեփանյան",
-        contact:{
-          email:"ASD1942@as.tu",
-          phone:"+3748785263",
-        },
-        age:32,
-        gender:'Ար',
-        patientId:85
-        //patient's all data
-      },
-      visitDate:"01-03-2024",
-      doctorName:"Կարինե Սամվելի Մանւկյան",
-      doctorsAppointments:
-        {
-          instructions:['Քաղցր չուտել','քայլել օրեկան 1կմ'],
-          medicine:['Դիաբետոն'],
-          researches:['Արյան ընդհանուր հետազոտություն','ԲԱԿ հետազոտություն']
-      },
-    nextVisit:'05-03-2024',
-  },
-  {
-    doctorsVisitsId:30857,
-      patientData:{
-        name:"Կարեն Սերոբի Ստեփանյան",
-        contact:{
-          email:"ASD1942@as.tu",
-          phone:"+3748785263",
-        },
-        age:32,
-        gender:'Ար',
-        patientId:85
-        //patient's all data
-      },
-      visitDate:"01-03-2024",
-      doctorName:"Կարինե Սամվելի Մանւկյան",
-      doctorsAppointments:
-        {
-          instructions:['Քաղցր չուտել','քայլել օրեկան 1կմ'],
-          medicine:['Դիաբետոն'],
-          researches:['Արյան ընդհանուր հետազոտություն','ԲԱԿ հետազոտություն']
-      },
-    nextVisit:'05-03-2024',
-  },
-]
 
 function AddDoctorsVisit({
     handleToggleCreateModal,
     refreshData,
-    doctorsVisits,
   }) {
     const [doctor,setDoctor] = useState([])
     const [doctors,setDoctors] = useState([])
@@ -177,7 +79,6 @@ function AddDoctorsVisit({
       const methods = useForm({
         mode: "onChange",
       });
-      const { trigger } = useForm();
       const onDoctorSelect = (data) => {
         setDoctor((prev) => data.label);
       };

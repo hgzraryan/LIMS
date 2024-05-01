@@ -3,7 +3,6 @@ import "./Styles//ActivityCard.scss";
 import "./Styles/EntityCard.scss";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 import { CardComponent } from "./CardComponent";
-import ActivityCard from "./ActivityCard";
 import ActivityModal from "./ActivityModal";
 function ColumnComponent({
   columnIndex,
@@ -16,14 +15,12 @@ function ColumnComponent({
 }) {
   // const intl = useIntl();
   // const { globalState, handleGlobalState } = useContext(globalContext);
-  const [editStatusName, setEditStatusName] = useState(false);
   const [newResearchModal,setNewResearchModal]=useState(false)
-  const [optionsList] = useState(["Edit", "Delete"]);
-  const statusBoard = selectedItem?.statusBoard
+  //const statusBoard = selectedItem?.statusBoard
   // const [, setOverlayNameActivity] = useState('');
-  const handleOpenOverlayActivity =()=>{
-    setNewResearchModal(true)
-  }
+  // const handleOpenOverlayActivity =()=>{
+  //   setNewResearchModal(true)
+  // }
   
   return (
     <>

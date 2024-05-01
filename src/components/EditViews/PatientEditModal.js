@@ -29,7 +29,7 @@ import {
   RegionDropdown,
   CountryRegionData,
 } from "react-country-region-selector";
-import { PATIENTS_URL, UPDATE_PATIENT } from "../../utils/constants";
+import { PATIENTS_URL } from "../../utils/constants";
 import { calculateAge, deleteNullProperties } from "../../utils/helper";
 function PatientEditModal({ patient, setEditRow, refreshData }) {
   const axiosPrivate = useAxiosPrivate();

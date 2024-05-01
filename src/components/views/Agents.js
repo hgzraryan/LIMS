@@ -96,7 +96,30 @@ const Agents = () => {
                     <h1>Գործընկերներ</h1>
                   </a>
                 </div>
-              
+                <div className="dropdown ms-3">
+                  <Dropdown>
+                    <Dropdown.Toggle
+                      variant="success"
+                      id="dropdown-basic"
+                      className="btn btn-sm btn-outline-secondary flex-shrink-0 dropdown-toggle d-lg-inline-block d-none"
+                    >
+                      Ավելացնել նոր
+                    </Dropdown.Toggle>
+
+                    <Dropdown.Menu>
+                      <Dropdown.Item onClick={() => setIsOpen(true)}>
+                      Գործընկեր
+                      </Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+
+                  {isOpen && (
+                    <AddAgent
+                      handleToggleCreateModal={handleToggleCreateModal}
+                      refreshData={() => refreshData()}
+                    />
+                  )}
+                </div>
               </div>
               <div className="contact-options-wrap">
                 <div className="dropdown-menu dropdown-menu-end">

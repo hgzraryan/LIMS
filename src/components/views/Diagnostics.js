@@ -11,7 +11,7 @@ import { useSelector } from "react-redux";
 
 import AddDiagnostic from "../addViews/AddDiagnostic";
 import { selectDiagnosticsCount} from "../../redux/features/diagnostics/diagnosticsCountSlice";
-import { DIAGNOSTICS_URL, DOCTORS_URL, PATIENTS_URL } from "../../utils/constants";
+import { DIAGNOSTICS_URL, DOCTORS_URL } from "../../utils/constants";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 
@@ -24,7 +24,6 @@ const Diagnostics = () => {
   const [currentPage, setCurrentPage] = useState(0);  
   const [usersPerPage, setUsersPerPage] = useState(Math.round((window.innerHeight / 100)));
   const [doctors,setDoctors] = useState([]);
-  const [patients,setPatients] = useState([]);
   const pageCount = Math.ceil(diagnosticsCount/usersPerPage)
   const axiosPrivate =useAxiosPrivate()
   const {
@@ -83,11 +82,6 @@ const Diagnostics = () => {
   };
   //-------------------
 
-  //-------------------
-  const [showCreateNew, setIsActive] = useState(false);
-  const CreateNew = (event) => {
-    setIsActive((current) => !current);
-  };
 
   return (
     <HelmetProvider>

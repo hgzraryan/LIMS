@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import LoadingSpinner from "../LoadingSpinner";
 import { deleteNullProperties } from "../../utils/helper";
-import { name_validation, desc_validation, email_validation, director_validation, tin_validation, zipCode_validation, street_validation, city_validation,bankAccNumber_validation, bankName_validation, orgDesc_validation, contactName_validation, contactEmail_validation } from "../../utils/inputValidations";
+import { name_validation, email_validation, director_validation, tin_validation, zipCode_validation, street_validation, city_validation,bankAccNumber_validation, bankName_validation, orgDesc_validation, contactName_validation, contactEmail_validation } from "../../utils/inputValidations";
 import {
     CountryDropdown,
     RegionDropdown,

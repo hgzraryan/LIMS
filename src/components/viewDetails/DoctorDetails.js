@@ -1,25 +1,12 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState, useMemo, useEffect, Suspense } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { useParams } from "react-router-dom";
-import useGetData from "../../hooks/useGetData";
-import ComponentToConfirm from "../ComponentToConfirm";
-import {
-  useBlockLayout,
-  useFilters,
-  useResizeColumns,
-  useRowSelect,
-  useSortBy,
-  useTable,
-} from "react-table";
-import doctorSamplePhoto from "../../dist/img/doctorSamplePhoto.jpg";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import mobileSvg from "../../dist/svg/mobileSvg.svg";
 import emailSvg from "../../dist/svg/emailSvg.svg";
 import LoadingSpinner from "../LoadingSpinner";
 import missingAvatar from "../../dist/img/Missing.svg";
 import profileBgImg from "../../dist/img/profile-bg.jpg";
-
-import { Button } from "react-bootstrap";
 import FeatherIcon from "feather-icons-react/build/FeatherIcon";
 import moment from "moment";
 import MyBigCalendar from "../MyBigCalendar";
@@ -47,13 +34,7 @@ function DoctorDetails() {
   const [isOpen, setIsOpen] = useState(false);
   const [research, setResearch] = useState([]);
   const [doctorDetails, setDoctorDetails] = useState({});
-  const [currentPage, setCurrentPage] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
-  const [usersPerPage, setUsersPerPage] = useState(
-    Math.round((window.innerHeight / 100) * 1.5)
-  );
-  const pageCount = 1;
-  const [isChecked, setIsChecked] = useState(false);
   const [selectedOption, setSelectedOption] = useState(customAppointData);
   const [activeLink, setActiveLink] = useState('tab_summery');
 

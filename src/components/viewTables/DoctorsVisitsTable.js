@@ -32,7 +32,6 @@ function DoctorsVisitsTable({
 }) {
   const navigate = useNavigate()
   const [modalInfo, setModalInfo] = useState("");
-  const [editRow, setEditRow] = useState(false);
   const [DisableRowData, setDisableRowData] = useState(false);
   const [modalPrint, setModalPrint] = useState("");
   const [openPosModal, setOpenPosModal] = useState(false);

@@ -1,18 +1,11 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { Suspense, useEffect, useState, useRef } from "react";
 import LoadingSpinner from "../LoadingSpinner";
-import diagnosticsSvg from "../../dist/svg/diagnosticsSvg.svg";
 import {
-  useBlockLayout,
-  useFilters,
-  useResizeColumns,
-  useRowSelect,
-  useSortBy,
   useTable,
 } from "react-table";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { useNavigate, useParams } from "react-router-dom";
-import { Button } from "@coreui/coreui";
 import profileBgImg from "../../dist/img/profile-bg.jpg";
 import FeatherIcon from "feather-icons-react/build/FeatherIcon";
 import { toast } from "react-toastify";
@@ -25,18 +18,12 @@ function DiagnosticsDetails() {
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
   const { id } = useParams();
-  const [isOpen, setIsOpen] = useState(false);
-  const [research, setResearch] = useState([]);
   const [diagnosticsDetails, setDiagnosticsDetails] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [file, setFile] = useState(null); // State to hold the uploaded file
   const [fileName, setFileName] = useState(""); // State to hold the file name
   const [downloadFiles, setDownloadFiles] = useState(""); // State to hold the file name
   const fileInputRef = useRef(null);
-  const fileReader = new FileReader();
-  const formData = new FormData();
-  const fileMimeType = /file\/(pdf|txt)/i;
-  const intupAvatarRef = useRef(null);
   const [modalResult, setModalResult] = useState("");
   const [smsCount, setSmsCount] = useState(0);
 
@@ -604,7 +591,7 @@ responseType:'blob'
                               fontWeight:'bold',
                               color:'gray',
                               paddingTop:'1px'
-                              }}>{diagnosticsDetails?.notifications?.length ||0}</div>
+                              }}>{smsCount}</div>
                             </div> 
                             </div>
                           <ul className="p-0 m-0">

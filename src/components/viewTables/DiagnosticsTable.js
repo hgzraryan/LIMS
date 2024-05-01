@@ -19,7 +19,6 @@ import ResearchViewBoard from "../StatusBoard/ResearchViewBoard";
 import { Modal } from "react-bootstrap";
 import DiagnosticsDeactivate from "../DeactivateItems/DiagnosticsDeactivate";
 import diagnoseSvg from "../../../src/dist/img/diagnose.svg";
-import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { useNavigate } from "react-router-dom";
 import "../../dist/css/data-table.css";
 import organizationsSvg from "../../dist/svg/organizationsSvg.svg";
@@ -46,8 +45,6 @@ function DiagnosticsTable({
 }) {
   const navigate = useNavigate();
   const [selectedItem1, setSelectedItem1] = useState("");
-  const [selectedItemId1, setSelectedItemId1] = useState(null);
-  const [isOpen, setIsopen] = useState(false);
   const [editRow, setEditRow] = useState(false);
   const [modalInfo, setModalInfo] = useState("");
   const [modalPrint, setModalPrint] = useState("");

@@ -19,7 +19,6 @@ function AddMedinstitution({ handleToggleCreateModal,
 }) {
     const [errMsg, setErrMsg] = useState("");
     const axiosPrivate = useAxiosPrivate();
-    const [phoneNumber, setPhoneNumber] = useState("");
     const editorRef = useRef(null);
     const [country, setCountry] = useState('')
     const [region, setRegion] = useState('')
@@ -28,10 +27,6 @@ function AddMedinstitution({ handleToggleCreateModal,
       mode: "onChange",
     });
   
-    const handlePhoneNumberChange = (value) => {
-      setPhoneNumber(value);
-  
-    };
     useEffect(() => {
       if (CountryRegionData[11][0] === "Armenia") {
         CountryRegionData[11][0] = "Հայաստան"

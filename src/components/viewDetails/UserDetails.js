@@ -1,21 +1,7 @@
  /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState, useMemo, useEffect, Suspense } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import useGetData from "../../hooks/useGetData";
-import ComponentToConfirm from "../ComponentToConfirm";
-import {
-  useBlockLayout,
-  useFilters,
-  useResizeColumns,
-  useRowSelect,
-  useSortBy,
-  useTable,
-} from "react-table";
-import { Checkbox } from "../Checkbox";
 import FeatherIcon from "feather-icons-react/build/FeatherIcon";
-import { ColumnFilter } from "../ColumnFilter";
-import { BiSolidInfoCircle } from "react-icons/bi";
-import { Modal } from "react-bootstrap";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import missingAvatar from "../../dist/img/Missing.svg";
 import mobileSvg from "../../dist/svg/mobileSvg.svg";

@@ -1,13 +1,11 @@
-import React, { useRef } from "react";
+import React from "react";
 import { Modal } from "react-bootstrap";
 import FeatherIcon from "feather-icons-react";
 import { Editor } from "@tinymce/tinymce-react";
 import { useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
-import { Controller, Form, FormProvider, useForm } from "react-hook-form";
+import {  Form, FormProvider, useForm } from "react-hook-form";
 import { Input } from "../Input";
-import Select from "react-select";
-import ErrorSvg from "../../dist/svg/error.svg";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import {  toast } from 'react-toastify';
 import {
@@ -22,20 +20,8 @@ import {
 import { REGISTER_MEDICALSERVICES } from "../../utils/constants";
 function AddMedicalService({ handleToggleCreateModal, refreshData }) {
     const [errMsg, setErrMsg] = useState("");
-    const [currency, setCurrency] = useState("AMD");
-    const [amount, setAmount] = useState("");
-    const [externalType, setExternalType] = useState(false);
-    const researchTypeRef = useRef("");
-    const additionalData = useRef({});
-    const editorRef = useRef(null);
     const axiosPrivate = useAxiosPrivate();
 
-    const handleCurrencyChange = (e) => {
-      setCurrency(prev=>e.target.value)
- }
- const handleAmountChange = (e) => {
-  setAmount(prev=>e.target.value)
- }
     // const { onSubmit, methods } = useSubmitForm(
     //   REGISTER_URL,
     //   editorRef,

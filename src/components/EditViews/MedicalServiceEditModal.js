@@ -23,7 +23,6 @@ function MedicalServiceEditModal({ medicalService, setEditRow, refreshData }) {
   const [isLoading, setIsLoading] = useState(false);
   const axiosPrivate = useAxiosPrivate();
 
-  const { trigger } = useForm();
   const methods = useForm({
     mode: "onChange",
   });

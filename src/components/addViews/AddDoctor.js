@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import useSubmitForm from "../../hooks/useSubmitForm";
 import { Editor } from "@tinymce/tinymce-react";
 import FeatherIcon from "feather-icons-react/build/FeatherIcon";
 import MissingAvatar from "../../dist/img/Missing.svg";
@@ -13,8 +12,6 @@ import {
   licenseNumber_validation,
   specialty_validation,
   qualification_validation,
-  state_validation,
-  country_validation,
   city_validation,
   street_validation,
   zipCode_validation,
@@ -34,8 +31,6 @@ import { CountryDropdown, RegionDropdown,CountryRegionData  } from 'react-countr
 
 function AddDoctor({ handleToggleCreateModal, refreshData }) {
   const axiosPrivate = useAxiosPrivate();
-  const multiselectRef = useRef("");
-  const [birthday, setBirthday] = useState(new Date());
   const [gender, setGender] = useState(""); 
   const [merried, setMerried] = useState(""); 
   const [isActive, setIsActive] = useState(""); 
@@ -65,9 +60,6 @@ function AddDoctor({ handleToggleCreateModal, refreshData }) {
   };
   const onDoctorMerriedSelect = (event) => {
     setMerried(prev=>event.target.value)
-  };
-  const getAge = (date) => {
-    setBirthday(date);
   };
   fileReader.onloadend = () => {
     setImageUrl(fileReader.result);

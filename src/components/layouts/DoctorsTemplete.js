@@ -1,14 +1,11 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { useNavigate, Link, Outlet, useLocation, NavLink } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import useLogout from "../../hooks/useLogout";
-import React, { Suspense, useState, useEffect, useRef, useMemo } from "react";
+import React, {  useEffect, useRef, useMemo, useState } from "react";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
-import LoadingSpinner from "../LoadingSpinner";
 import { useSelector } from "react-redux";
 import { selectUserLoginData } from "../../redux/features/users/userLoginDataSlice";
-import profileBackImg from "../../dist/img/profile-bg.jpg";
 import doctorSampleImg from "../../dist/img/doctorSamplePhoto.jpg";
-import emptyImg from "../../dist/img/avatar2.jpg";
 import FeatherIcon from "feather-icons-react/build/FeatherIcon";
 import {
   useBlockLayout,
@@ -24,7 +21,7 @@ import { BiSolidInfoCircle } from "react-icons/bi";
 import { Checkbox } from "../Checkbox";
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import { Calendar, momentLocalizer } from 'react-big-calendar';
+import {  momentLocalizer } from 'react-big-calendar';
 import MyBigCalendar from "../MyBigCalendar";
 import GanttChart from "../GanttChart";
 // import 'react-big-calendar/lib/sass/styles';
@@ -45,7 +42,6 @@ const DoctorsTemplete = () => {
   const location = useLocation();
   const logout = useLogout();
   const axiosPrivate = useAxiosPrivate();
-  const userLoginData = useSelector(selectUserLoginData);
 
   const intupAvatarRef = useRef(null);
   const imageMimeType = /image\/(png|jpg|jpeg)/i;
@@ -90,31 +86,8 @@ const DoctorsTemplete = () => {
     }
   };
   //-------------------
-  const [isActive, setIsActive] = useState(false);
-  const menuClick = (event) => {
-    setIsActive((current) => !current);
-  };
-
-  const [misActive, msetIsActive] = useState(false);
-  const mmenuClick = (event) => {
-    msetIsActive((current) => !current);
-  };
 
   //---------------------------------------------//
-  const [misActive1, msetIsActive1] = useState(false);
-  const [sisActive1, ssetIsActive1] = useState(false);
-
-  const handleSubmenuClick = (menu, subMenu) => {
-    ssetIsActive1(subMenu);
-    msetIsActive1(menu);
-  };
-
-  const [dropDownMenu2, dropDownMenu2IsActive] = useState(false);
-  const dropDownMenu2Click = (event) => {
-    dropDownMenu2IsActive((current) => !current);
-  };
-  //--------------------------------------
-
   const signOut = async () => {
     await logout();
     navigate("/login");
@@ -464,7 +437,7 @@ const DoctorsTemplete = () => {
           <div className="nav-start-wrap">
             <button
               className="btn btn-icon btn-rounded btn-flush-dark flush-soft-hover navbar-toggle d-xl-none"
-              onClick={mmenuClick}
+              
             >
               <span className="icon">
                 <span className="feather-icon">
@@ -479,7 +452,7 @@ const DoctorsTemplete = () => {
           </div>
           {/* /Start Nav */}
           {/* End Nav */}
-          <div className="nav-end-wrap" onClick={menuClick}>
+          <div className="nav-end-wrap" >
             <ul className="navbar-nav flex-row">
               <li className="nav-item">
                 <div className="dropdown ps-2">
@@ -502,11 +475,7 @@ const DoctorsTemplete = () => {
                     </div>
                   </a>
                   <div
-                    className={
-                      isActive
-                        ? "dropdown-menu dropdown-menu-end show showSlow"
-                        : "dropdown-menu dropdown-menu-end showSlow"
-                    }
+                   
                   >
                     <div className="p-2">
                       <div className="media">

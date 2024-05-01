@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useMemo, useState } from "react";
 import ComponentToConfirm from "../ComponentToConfirm";
 import {
@@ -14,9 +15,7 @@ import { ColumnFilter } from "../ColumnFilter";
 import DefaultProfileImage from "../../../src/dist/img/Missing.svg";
 import { Modal } from "react-bootstrap";
 import MissingAvatar from "../../dist/img/Missing.svg";
-import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { useNavigate } from "react-router-dom";
-import LoadingSpinner from "../LoadingSpinner";
 import "../../dist/css/data-table.css";
 import DoctorEditModal from "../EditViews/DoctorEditModal";
 
@@ -59,7 +58,7 @@ function DoctorsTable({
         Cell: ({ row }) => (
           <img
             src={row.original.photo || DefaultProfileImage}
-            alt="User Photo"
+            alt="UserImg"
             style={{ width: "50px", height: "50px", borderRadius: "50%" }}
           />
         ),

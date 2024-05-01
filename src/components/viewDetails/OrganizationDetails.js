@@ -1,7 +1,5 @@
 import React, { useState, useMemo, useEffect, Suspense } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import useGetData from "../../hooks/useGetData";
-import ComponentToConfirm from "../ComponentToConfirm";
 import {
   useBlockLayout,
   useFilters,
@@ -11,14 +9,9 @@ import {
   useTable,
 } from "react-table";
 import { Checkbox } from "../Checkbox";
-import FeatherIcon from "feather-icons-react/build/FeatherIcon";
-import { ColumnFilter } from "../ColumnFilter";
 import { BiSolidInfoCircle } from "react-icons/bi";
 import { Modal } from "react-bootstrap";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
-import MissingAvatar from "../../dist/img/Missing.svg";
-import mobileSvg from "../../dist/svg/mobileSvg.svg";
-import emailSvg from "../../dist/svg/emailSvg.svg";
 import LoadingSpinner from "../LoadingSpinner";
 const customData = [
     {    

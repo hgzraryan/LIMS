@@ -24,7 +24,6 @@ import {
   researchPrepSub_validation,
   researchName_validation,
 } from "../../utils/inputValidations";
-import useSubmitForm from "../../hooks/useSubmitForm";
 import {  toast } from 'react-toastify';
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { REGISTER_RESEARCHLISTS } from "../../utils/constants";
@@ -37,9 +36,6 @@ function AddResearchList({ handleToggleCreateModal, refreshData }) {
     const [errMsg, setErrMsg] = useState("");
     const [currency, setCurrency] = useState("AMD");
     const [amount, setAmount] = useState("");
-    const [externalType, setExternalType] = useState(false);
-    const researchTypeRef = useRef("");
-    const additionalData = useRef({});
     const editorRef = useRef(null);
     const axiosPrivate = useAxiosPrivate();
 
@@ -136,9 +132,6 @@ function AddResearchList({ handleToggleCreateModal, refreshData }) {
     //     setExternalType(false)
     //   }
     // };
-    const onPartnerSelect = (data) => {
-      additionalData.partnerName =  data[0].partner
-    };
     return (
       <Modal
         show={() => true}

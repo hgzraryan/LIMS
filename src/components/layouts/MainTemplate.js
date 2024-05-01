@@ -805,7 +805,7 @@ const MainTemplate = () => {
               </div>
             </div>
             {/* /Main Menu */}
-            <div className="menu-footer"><p style={{fontSize:'12px',marginLeft:'5px'}}>V{packageJson?packageJson?.version:''} Rev290424</p></div>
+            <div className="menu-footer"><p style={{fontSize:'12px',marginLeft:'5px'}}>V{packageJson?packageJson?.version:''} Rev{packageJson?packageJson?.revision:''}</p></div>
           </div>
           <div id="hk_menu_backdrop" className="hk-menu-backdrop"></div>
           {/* /Vertical Nav */}

@@ -8,12 +8,9 @@ import {
   firstName_validation,
   lastName_validation,
   email_validation,
-  mobile_validation,
   password_validation,
   user_validation,
-  country_validation,
   city_validation,
-  state_validation,
   street_validation,
   zipCode_validation,
   additional_validation,
@@ -25,7 +22,7 @@ import { REGISTER_USER } from "../../utils/constants";
 import ErrorSvg from "../../dist/svg/error.svg";
 import CustomPhoneComponent from "../CustomPhoneComponent";
 import CustomDateComponent from "../CustomDateComponent";
-import Select, { StylesConfig } from "react-select";
+import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import 'react-phone-number-input/style.css'
 import { CountryDropdown, RegionDropdown,CountryRegionData  } from 'react-country-region-selector';
@@ -43,13 +40,10 @@ function CreateUser({ setIsOpen,refreshData }) {
   const axiosPrivate = useAxiosPrivate();
   const intupAvatarRef = useRef(null);
   const [imageUrl, setImageUrl] = useState(MissingAvatar);
-  const [userType, setUserType] = useState('local');
   const [image, setImage] = useState("");
-  const [birthday, setBirthday] = useState(new Date());
   const imageMimeType = /image\/(png|jpg|jpeg)/i;
   const fileReader = new FileReader();
   const formData = new FormData();
-  const [emergencyContactNumber, setEmergencyContactNumber] = useState("");
   const [gender, setGender] = useState(""); 
   const [merried, setMerried] = useState(""); 
   const [country, setCountry] = useState('')
@@ -124,8 +118,6 @@ function CreateUser({ setIsOpen,refreshData }) {
   const methods = useForm({
     mode: "onChange",
   });
-  const [validName, setValidName] = useState(false);
-  const [validPwd, setValidPwd] = useState(false);
   const [errMsg, setErrMsg] = useState("");
 
   /*------------------ Create user Component --------------------*/
@@ -133,10 +125,6 @@ function CreateUser({ setIsOpen,refreshData }) {
     setIsOpen((prev) => value);
   };
   /*------------------------------------------------*/
-  const getAge = (date) => {
-    
-    setBirthday(date)
-  };
 
   const notify = (text) => toast.success(text, {
     position: "top-right",

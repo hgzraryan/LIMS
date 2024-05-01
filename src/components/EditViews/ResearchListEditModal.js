@@ -15,8 +15,6 @@ import {
   categoryName_validation,
   vial_validation,
   laboratoryService_validation,
-  localCode_validation,
-  partnerCode_validation,
   samplingPeriod_validation,
   researchPrepSub_validation,
   researchName_validation,
@@ -37,15 +35,12 @@ function ResearchListEditModal({ researchList, setEditRow, refreshData }) {
   const [isLoading, setIsLoading] = useState(false);
   const axiosPrivate = useAxiosPrivate();
 
-  const { trigger } = useForm();
   const methods = useForm({
     mode: "onChange",
   });
   const onSubmit = methods.handleSubmit(
     async ({
       researchName,
-      localCode,
-      partnerCode,
       laboratoryService,
       categoryName,
       serviceName,

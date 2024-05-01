@@ -11,7 +11,6 @@ import {
 } from "react-table";
 import { Checkbox } from "../Checkbox";
 import FeatherIcon from "feather-icons-react/build/FeatherIcon";
-import { ColumnFilter } from "../ColumnFilter";
 import { BiSolidInfoCircle } from "react-icons/bi";
 import { Modal } from "react-bootstrap";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
@@ -32,12 +31,8 @@ function PatientDetails() {
   const [patientDiagnostics, setPatientDiagnostics] = useState([]);
   const [patientVisits, setPatientVisits] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [currentPage, setCurrentPage] = useState(0);
   const [activeLink, setActiveLink] = useState('tab_summery'); 
   const [pageTab, setPageTab] = useState('tab_summery')
-  const [usersPerPage, setUsersPerPage] = useState(
-    Math.round((window.innerHeight / 100) * 1.5)
-  );
   const handleDiagnosticssDetails = async (diagnosticsId) => {
     try {
       //const response = await axiosPrivate.get(`/diagnostics/${id}`, );

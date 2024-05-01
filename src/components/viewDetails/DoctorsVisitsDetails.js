@@ -13,18 +13,11 @@ function DoctorsVisitsDetails() {
 
     const axiosPrivate = useAxiosPrivate();
     const { id } = useParams();
-    const [isOpen, setIsOpen] = useState(false);
-    const [research, setResearch] = useState([]);
     const [doctorsVisitsDetails, setDoctorsVisitsDetails] = useState({});
-    const [currentPage, setCurrentPage] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
     const [downloadFiles, setDownloadFiles] = useState(""); 
-    const [usersPerPage, setUsersPerPage] = useState(
-      Math.round((window.innerHeight / 100) * 1.5)
-    );
     const [activeLink, setActiveLink] = useState("tab_summery");
     const [pageTab, setPageTab] = useState("tab_summery");
-    const pageCount = 1;
     //const pageCount = Math.ceil(useersCount/usersPerPage)
     const handleLinkClick = (linkId) => {
       setActiveLink(linkId);

@@ -49,10 +49,8 @@ function CreatePatient({
   const [medicalServices, setMedicalServices] = useState([]);
   const [addDiagnostic, setAddDiagnostic] = useState(false);
   const [addDoctorsVisit, setAddDoctorsVisit] = useState(false);
-  const [startDate, setStartDate] = useState(new Date());
   const [gender, setGender] = useState("");
   const [doctor, setDoctor] = useState("Առանց բժիշկ");
-  const [refDoctor, setRefDoctor] = useState("Առանց բժիշկ");
   const [extraDoctor, setExtraDoctor] = useState(false);
   const [errMsg, setErrMsg] = useState("");
   const [doctors, setDoctors] = useState([]);
@@ -81,8 +79,6 @@ function CreatePatient({
     mode: "onChange",
   });
   const axiosPrivate = useAxiosPrivate();
-  const handlingDate = useRef("");
-  const multiselectRef = useRef("");
   const editorRef = useRef(null);
   const animatedComponents = makeAnimated();
 
@@ -145,11 +141,6 @@ function CreatePatient({
         });
     }, 500);
   }, []);
-  const getDate = (date) => {
-    setStartDate(date);
-    handlingDate.current =
-      date.toLocaleDateString("en-GB") + " " + date.toLocaleTimeString("en-GB");
-  };
 
   const notify = (text) =>
     toast.success(text, {

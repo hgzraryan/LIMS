@@ -12,11 +12,9 @@ import ErrorSvg from "../../dist/svg/error.svg";
 
 import {
   city_validation,
-  country_validation,
   email_validation,
   fullName_validation,
   medInstitution_validation,
-  state_validation,
   street_validation,
   zipCode_validation,
 } from "../../utils/inputValidations";

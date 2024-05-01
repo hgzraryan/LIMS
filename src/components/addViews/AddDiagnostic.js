@@ -53,11 +53,8 @@ function AddDiagnostic({
   const [organizationId, setOrganizationId] = useState(null);
   const [clientType, setClientType] = useState(null);
   const [externalType, setExternalType] = useState(false);
-  const [researchesIds, setResearchesIds] = useState([]);
   const [partnerName, setPartnerName] = useState("");
   const [diagnosticsType, setDiagnosticsType] = useState(null);
-  const [doctor, setDoctor] = useState("");
-  const [refDoctor, setRefDoctor] = useState("");
   const [patients, setPatients] = useState([]);
   const [organizations, setOrganizations] = useState([]);
   const [agents, setAgents] = useState([]);
@@ -148,13 +145,6 @@ const onResearchSelect = (data) => {
         });
     }, 500);
   }, []);
-
-  const onDoctorSelect = (data) => {
-    setDoctor((prev) => data.label);
-  };
-  const onRefDoctorSelect = (data) => {
-    setRefDoctor((prev) => data.label);
-  };
   const onDiagnosticClassSelect = (data) => {
     switch (data.value) {
       case "External":
@@ -184,16 +174,6 @@ const onResearchSelect = (data) => {
       : (() => {
           setOrganizationId(data.value);
           setClientType("organization");
-        })();
-  };
-  const onPatientSelect = (data) => {
-    data.label === "Առանց այցելու"
-      ? (() => {
-          setPatientId(false);
-        })()
-      : (() => {
-          setPatientId(data.value);
-          setClientType("patient");
         })();
   };
 

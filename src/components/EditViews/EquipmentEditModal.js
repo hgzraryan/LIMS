@@ -23,10 +23,7 @@ function EquipmentEditModal({ equipment, setEditRow, refreshData }) {
     const [errMsg, setErrMsg] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const axiosPrivate = useAxiosPrivate();
-    const [country, setCountry] = useState("");
-    const [region, setRegion] = useState("");
   
-    const { trigger } = useForm();
     const methods = useForm({
       mode: "onChange",
     });

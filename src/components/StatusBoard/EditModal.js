@@ -1,6 +1,5 @@
-import FeatherIcon from 'feather-icons-react/build/FeatherIcon'
-import React, { useState } from 'react'
 
+import React, { useState } from 'react'
 import { Modal } from 'react-bootstrap'
 import { Form, FormProvider, useForm } from 'react-hook-form'
 function EditModal({overlayIsOpen,setOverlayIsOpen,activity}) {

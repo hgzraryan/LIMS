@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useMemo, useState } from "react";
 import { ColumnFilter } from "../ColumnFilter";
 import FeatherIcon from "feather-icons-react/build/FeatherIcon";

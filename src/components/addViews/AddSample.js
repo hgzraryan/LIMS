@@ -1,9 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { Input } from "@mui/icons-material";
-import FeatherIcon from "feather-icons-react/build/FeatherIcon";
 import React, { useEffect, useRef, useState } from "react";
 import { Button, Modal } from "react-bootstrap";
-import useScanDetection from "use-scan-detection-react18";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { useNavigate } from "react-router-dom";
 import useLogout from "../../hooks/useLogout";

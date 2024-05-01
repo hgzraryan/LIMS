@@ -3,7 +3,6 @@ import { useState } from "react";
 import "./Styles/CardComponent.scss";
 import { Draggable } from "react-beautiful-dnd";
 import ActivityCard from "./ActivityCard";
-import ActivityModal from "./ActivityModal";
 import EditModal from "./EditModal";
 
 export const CardComponent = ({ item, index, key,selectedItem }) => {

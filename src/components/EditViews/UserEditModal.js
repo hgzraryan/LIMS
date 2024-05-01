@@ -1,15 +1,8 @@
-import React, { useRef, useState, useEffect, Suspense } from "react";
-
+import React, { useState, useEffect, Suspense } from "react";
 import { Modal } from "react-bootstrap";
-
 import FeatherIcon from "feather-icons-react";
-
-import MissingAvatar from "../../dist/img/Missing.svg";
-
 import { Controller, Form, FormProvider, useForm } from "react-hook-form";
-
 import { Input } from "../Input";
-
 import {
   firstName_validation,
   lastName_validation,
@@ -25,7 +18,7 @@ import { toast } from "react-toastify";
 import ErrorSvg from "../../dist/svg/error.svg";
 import CustomPhoneComponent from "../CustomPhoneComponent";
 import CustomDateComponent from "../CustomDateComponent";
-import Select, { StylesConfig } from "react-select";
+import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import "react-phone-number-input/style.css";
 import {
@@ -34,7 +27,6 @@ import {
   CountryRegionData,
 } from "react-country-region-selector";
 import LoadingSpinner from "../LoadingSpinner";
-import { USERS_URL } from "../../utils/constants";
 import { deepEqual, deleteNullProperties, objToArrWithObjects } from "../../utils/helper";
 const roleState = [
   { label:'Ադմին',name: "Admin", value: 5150 },
