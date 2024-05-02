@@ -242,7 +242,7 @@ function DiagnosticsTable({
       {
         Header: "Գրանցման ամսաթիվ",
         accessor: "diagnosisDate",
-        width: 300,
+        width: 200,
         Filter: ({ column: { id } }) => (
           <ColumnFilter
             id={id}
@@ -260,7 +260,7 @@ function DiagnosticsTable({
       {
         Header: "Տեսակ",
         accessor: "class",
-        width: 200,
+        width: 180,
         Filter: ({ column: { id } }) => (
           <ColumnFilter id={id} setData={setDiagnostics} placeholder="Տեսակ" />
         ),
@@ -366,10 +366,11 @@ function DiagnosticsTable({
                 </a>
               )} */}
             </div>
-                <div className="d-flex">
-              
+            {!(row.original?.totalPrice <= row.original?.totalPayed )   ?
+                <div className="d-flex">              
                 <img title="POS" style={{cursor:'pointer'}} width='20xp' height='20px' src={posTerminalSvg} alt='posTerminalSvg' onClick={()=>handlePosPay(row.original)}/>
-                </div>                  
+                </div>:''                  
+                }
                 </>
                 )}
           </div>

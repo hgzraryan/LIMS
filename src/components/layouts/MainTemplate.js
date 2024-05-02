@@ -74,6 +74,10 @@ const MainTemplate = () => {
 	const doctorsDropDownMenuClick = event => {
 		setdoctorsDropDownMenu(current => !current);
 	};
+	const [reportsDropDownMenu, setReportsDropDownMenu] = useState(true);
+	const reportsDropDownMenuClick = event => {
+		setReportsDropDownMenu(current => !current);
+	};
    //--------------------------------------
 	useEffect(() => {
         let isMounted = true;
@@ -673,14 +677,17 @@ const MainTemplate = () => {
                         </span>
                         <span className="nav-link-text">Նմուշառումներ</span>
                       </Link>
-                      <Link
+                    </li>
+                    <li className="nav-item">
+                      <a
                         className={
                           misActive1 === "reports"
                             ? "nav-link active"
                             : "nav-link"
                         }
-                        to="./"
+                        href="#"
                         data-bs-toggle="collapse"
+                        onClick={reportsDropDownMenuClick}
                         data-bs-target="#dash_integ"
                       >
                         <span className="nav-icon-wrap">
@@ -689,70 +696,33 @@ const MainTemplate = () => {
                           </span>
                         </span>
                         <span className="nav-link-text">Հաշվետվություններ</span>
-                      </Link>
+                      </a>
                       <ul
-                        id="dash_integ"
-                        className="nav flex-column collapse  nav-children"
+                       className={
+                        reportsDropDownMenu
+                          ? "nav flex-column collapse  nav-children"
+                          : "nav flex-column collapse  nav-children show"
+                      }
                       >
                         <li className="nav-item">
                           <ul className="nav flex-column">
                             <li className="nav-item">
                               <Link
                                 className={
-                                  sisActive1 === "allApps"
+                                  sisActive1 === "export" || 
+                                  location.pathname === "/reports/export"
                                     ? "nav-link active"
                                     : "nav-link"
                                 }
-                                to="all-apps.html"
+                                to="/reports/export"
                               >
                                 <span
                                   className="nav-link-text"
                                   onClick={() =>
-                                    handleSubmenuClick("reports", "allApps")
+                                    handleSubmenuClick("reports", "export")
                                   }
                                 >
-                                  All Apps
-                                </span>
-                              </Link>
-                            </li>
-                            <li className="nav-item">
-                              <Link
-                                className={
-                                  sisActive1 === "allDetails"
-                                    ? "nav-link active"
-                                    : "nav-link"
-                                }
-                                to="integrations-detail.html"
-                              >
-                                <span
-                                  className="nav-link-text"
-                                  onClick={() =>
-                                    handleSubmenuClick("reports", "allDetails")
-                                  }
-                                >
-                                  App Detail
-                                </span>
-                              </Link>
-                            </li>
-                            <li className="nav-item">
-                              <Link
-                                className={
-                                  sisActive1 === "integrations"
-                                    ? "nav-link active"
-                                    : "nav-link"
-                                }
-                                to="integrations.html"
-                              >
-                                <span
-                                  className="nav-link-text"
-                                  onClick={() =>
-                                    handleSubmenuClick(
-                                      "reports",
-                                      "integrations"
-                                    )
-                                  }
-                                >
-                                  Integrations
+                                  Արտահանում
                                 </span>
                               </Link>
                             </li>

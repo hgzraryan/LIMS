@@ -48,6 +48,7 @@ const ResearchLists = () => {
     getData: getResearches,
     refreshData
   } = useGetData(RESEARCHLISTS_URL,currentPage,usersPerPage);
+  
   const handleOpenModal = (user) => {
     setSelectedItemId(true);
     setSelectedItem((prev) => user);

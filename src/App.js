@@ -37,7 +37,9 @@ ORGANIZATIONS_ID_ROUTE,
 DOCTORS_EMPLOYMENT_ROUTE,
 SETUP_ROUTE,
 MEDICALSERVICES_ROUTE,
-ROLES} from '../src/utils/constants' 
+PACKAGES_ROUTE,
+ROLES,
+REPORTSEXPORT_ROUTE} from '../src/utils/constants' 
 import { lazy, Suspense } from "react";
 import Support from "./components/views/Support";
 import DoctorsTemplete from "./components/layouts/DoctorsTemplete";
@@ -68,6 +70,7 @@ import DoctorsEmployment from "./components/views/DoctorsEmployment";
  const Reagents = lazy(()=>  import("./components/views/Reagents"));
  const Equipments = lazy(()=>  import("./components/views/Equipments"));
  const ResearchLists = lazy(()=>  import("./components/views/ResearchLists"));
+ const Packages = lazy(()=>  import("./components/views/Packages"));
  const Diagnostics = lazy(()=>  import("./components/views/Diagnostics"));
  const DiagnosticsDetails = lazy(()=>  import("./components/viewDetails/DiagnosticsDetails"));
  const DoctorsVisits = lazy(()=>  import("./components/views/DoctorsVisits"));
@@ -82,6 +85,7 @@ import DoctorsEmployment from "./components/views/DoctorsEmployment";
  const MedicalServices = lazy(()=>  import("./components/views/MedicalServices"));
  const DoctorsPatients = lazy(()=>  import("./components/views/DoctorsPatients"));
  const Setup = lazy(()=>  import("./components/views/Setup"));
+ const ReportsExport = lazy(()=>  import("./components/views/ReportsExport"));
  
 function App() {
   return (
@@ -136,7 +140,7 @@ function App() {
               <Route path={PATIENTS_ID_ROUTE} element={<PatientDetails/>} />
               {/* <Route path="admin/useradd" element={<UserAdd />} /> */}
               <Route path={USERS_ROUTE} element={<Users />} />
-            <Route path={USERS_ID_ROUTE} element={<UserDetails />} />
+              <Route path={USERS_ID_ROUTE} element={<UserDetails />} />
               <Route path={ADMIN_ROUTE} element={<Admin />} />
               {/* <Route path="settings/prices" element={<Prices />} /> */}
               <Route
@@ -145,10 +149,8 @@ function App() {
               />
               <Route path={REAGENTS_ROUTE} element={<Reagents />} />
               <Route path={EQUIPMENTS_ROUTE} element={<Equipments />} />
-              <Route
-                path={RESEARCH_LISTS_ROUTE}
-                element={<ResearchLists />}
-              />
+              <Route path={RESEARCH_LISTS_ROUTE} element={<ResearchLists />}/>
+              <Route path={PACKAGES_ROUTE} element={<Packages />}/>
               <Route
                 path={MEDICALSERVICES_ROUTE}
                 element={<MedicalServices />}
@@ -157,6 +159,7 @@ function App() {
               <Route path={DIAGNOSTICS_ID_ROUTE} element={<DiagnosticsDetails/>} />
               <Route path={REFDOCTORS_ROUTE} element={<RefDoctors />} />
               <Route path={MEDINSTITUTIONS_ROUTE} element={<MedInstitutions />} />
+              <Route path={REPORTSEXPORT_ROUTE} element={<ReportsExport />} />
             </Route>
 
             <Route element={<RequireAuth allowedRoles={[ROLES.Editor]} />}>

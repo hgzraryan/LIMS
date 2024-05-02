@@ -59,6 +59,7 @@ function CreatePatient({
   const [refDoctors, setRefDoctors] = useState("");
   const [additionalPhone, setAdditionalPhone] = useState(false);
   const [researchesPrice, setResearchesPrice] = useState(0);
+  const [packagesPrice, setPackagesPrice] = useState(0);
   const [medicalServicePrice,setMedicalServicePrice] = useState(0)
   const [isChild,setIsChild]= useState(false)
 
@@ -282,7 +283,15 @@ function CreatePatient({
     setResearchesPrice(calcPrice)
 
   };
-  const enableAdditionalPhone = (e, value) => {
+  const onPackageSelect = (data) => {
+    console.log(data);
+    const calcPrice = data.reduce((acc,el)=>{
+      return acc+=el.price
+    },0)
+    setPackagesPrice(calcPrice)
+
+  };
+  const toggleAdditionalPhone = (e, value) => {
     e.stopPropagation()
     e.preventDefault()
     setAdditionalPhone(value)
@@ -465,7 +474,7 @@ function CreatePatient({
                               {additionalPhone &&
                               <>
                               <div className="col-sm-6">
-                                <div className="d-flex justify-content-between me-2">
+                                <div className="d-flex justify-content-between ">
                                   <label
                                     className="form-label"
                                     htmlFor="addPhone"
@@ -481,11 +490,17 @@ function CreatePatient({
                                     </span>
                                   )}
                                 </div>
+                         <div className="d-flex">
+
                                 <CustomPhoneComponent
                                   name="addPhone"
                                   control={methods.control}
                                   required={false}
                                   />
+                                         <div>
+                                  <FeatherIcon icon="minus-circle" width='24' onClick={(e)=>toggleAdditionalPhone(e,false)} style={{ cursor: 'pointer',marginTop:'8px' }}   />
+                                          </div>                         
+                                  </div>
                               </div>
 
                               </>
@@ -501,7 +516,7 @@ function CreatePatient({
                                
                                   
                                   
-                                  <FeatherIcon icon="plus-circle" width='35' onClick={(e)=>enableAdditionalPhone(e,true)} style={{ cursor: 'pointer' }}   />
+                                  <FeatherIcon icon="plus-circle" width='35' onClick={(e)=>toggleAdditionalPhone(e,true)} style={{ cursor: 'pointer' }}   />
                                 
                                   }
                               </div>
@@ -917,6 +932,59 @@ function CreatePatient({
                                           }))}
                                           styles={colourStyles}
                                           placeholder={"Հետազոտություններ"}
+                                        />
+                                      )}
+                                    />
+                                    
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="row gx-3 mt-2">
+                                <div className="col-sm-12">
+                                  <div className="d-flex justify-content-between me-2">
+                                  {packagesPrice ? <div className="d-flex flex-row-reverse" ><p style={{color:'#4eafcb',}}>Ընդհանուր արժեք։ <span style={{fontWeight:'bold'}} >{packagesPrice}</span>դր․</p></div>:''}
+                                    <label
+                                      className="form-label"
+                                      htmlFor="package"
+                                      placeholder={"Ընտրել"}
+                                    >
+                                      Ընտրել փաթեթ
+                                    </label>
+                                    {methods.formState.errors.package && (
+                                      <span className="error text-red">
+                                        <span>
+                                          <img src={ErrorSvg} alt="errorSvg" />
+                                        </span>{" "}
+                                        պարտադիր
+                                      </span>
+                                    )}
+                                  </div>
+                                  <div className="form-control">
+                                    <Controller
+                                      name="package"
+                                      control={methods.control}
+                                      isClearable={true}
+                                      defaultValue={null}
+                                      rules={{ required: true }}
+                                      render={({ field }) => (
+                                        <Select
+                                          {...field}
+                                          onChange={(val) => {
+                                            field.onChange(val);
+                                            onPackageSelect(val);
+                                          }}
+                                          value={field.value}
+                                          isMulti
+                                          closeMenuOnSelect={false}
+                                          components={animatedComponents}
+                                          options={researchState.map((pack) => ({
+                                            value: pack.researchListId,
+                                            label: `${pack?.researchListId} - ${pack?.researchName}`,
+                                            //label:`${res.researchName} - ${res.price}`,
+                                            price: pack?.price
+                                          }))}
+                                          styles={colourStyles}
+                                          placeholder={"Փաթեթներ"}
                                         />
                                       )}
                                     />

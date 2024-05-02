@@ -35,6 +35,8 @@ export const PURCHASETWO_ROUTE = 'purchases/purchaseTwo'
 export const DIAGNOSTICS_ROUTE = 'diagnostics'
 export const DIAGNOSTICS_ID_ROUTE = 'diagnostics/:id'
 export const MISSING_ROUTE = '*'
+export const PACKAGES_ROUTE = 'setup/packages'
+export const REPORTSEXPORT_ROUTE = 'reports/export'
 
 export const DOCTORSTAMPLETE_ROUTE = 'doctorsTemplete'
 export const DOCTORSPATIENT_ID_ROUTE = 'doctorsPatients/:id'
@@ -58,6 +60,7 @@ export const REGISTER_ROLE = "/registerRole";
 export const REGISTER_REFDOCTOR = "/registerRefDoctors";
 export const REGISTER_MEDINSTITUTION = "/registerMedInstitutions";
 export const REGISTER_MEDICALSERVICES = "/registerMedicalServices";
+export const REGISTER_PACKAGES = "/registerPackages";
 
 export const RESEARCHLISTS_URL = "/researchLists";
 export const MEDICALSERVICES_URL = "/medicalServices";
@@ -75,6 +78,7 @@ export const REAGENTS_URL = "/reagentList";
 export const EQUIPMENTS_URL = "/equipmentList";
 export const SUPPORT_URL = "/support";
 export const DOCTORSVISITS_URL = '/doctorsVisits'
+export const PACKAGES_URL = "/packages";
 
 export const STATISTICS_URL = '/getStatistics/StackedBarChart'
 

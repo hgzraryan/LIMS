@@ -314,10 +314,11 @@ function DoctorsVisitsTable({
                       </span>
                     </span>
                   </a>
-                  <div className="d-flex">
-              
+                  {!(row.original?.totalPrice <= row.original?.totalPayed )   ?
+                <div className="d-flex">              
                 <img title="POS" style={{cursor:'pointer'}} width='20xp' height='20px' src={posTerminalSvg} alt='posTerminalSvg' onClick={()=>handlePosPay(row.original)}/>
-                </div> 
+                </div>:''                  
+                }
                 </>
               {/* )} */}
               </div>

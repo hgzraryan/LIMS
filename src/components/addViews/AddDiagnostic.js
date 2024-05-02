@@ -38,7 +38,20 @@ const diagnosticStatus = [
   { value: "Generated", label: "Ստեղծված" },
   { value: "Other", label: "Այլ" },
 ];
-
+const customPackageData = [
+  {
+    packageId:123,
+    localCode:45678,
+    name:'Բիլիռուբին',
+    price:37000
+  },
+  {
+    packageId:124,
+    localCode:45679,
+    name:'Որովայն',
+    price:42000
+  },
+]
 function AddDiagnostic({
   handleToggleCreateModal,
   refreshData,
@@ -63,6 +76,16 @@ function AddDiagnostic({
   const [refDoctors, setRefDoctors] = useState([])
 
   const [researchesPrice, setResearchesPrice] = useState(0);
+  const [packagesPrice, setPackagesPrice] = useState(0);
+
+  const onPackageSelect = (data) => {
+    console.log(data);
+    const calcPrice = data.reduce((acc,el)=>{
+      return acc+=el.price
+    },0)
+    setPackagesPrice(calcPrice)
+
+  };
 const onResearchSelect = (data) => {
     const calcPrice = data.reduce((acc,el)=>{
       return acc+=el.price
@@ -204,6 +227,7 @@ const onResearchSelect = (data) => {
       partner: partnerName || null,
       refDoctor:data.refDoctor?.id || null,
       additional: editorRef.current.getContent({ format: "text" }),
+      packages:data?.package.map((el) => el.value)
     };
 
     console.log(newDiagnose);
@@ -644,7 +668,7 @@ const onResearchSelect = (data) => {
                                       control={methods.control}
                                       isClearable={true}
                                       defaultValue={null}
-                                      rules={{ required: false }}
+                                      rules={{ required: true }}
                                       render={({ field }) => (
                                    <Select
                                     {...field}
@@ -759,6 +783,59 @@ const onResearchSelect = (data) => {
                                   </div>
                                 
                                 </div>
+                                <div className="row gx-3 mt-2">
+                                <div className="col-sm-12">
+                                  <div className="d-flex justify-content-between me-2">
+                                  {packagesPrice ? <div className="d-flex flex-row-reverse" ><p style={{color:'#4eafcb',}}>Ընդհանուր արժեք։ <span style={{fontWeight:'bold'}} >{packagesPrice}</span>դր․</p></div>:''}
+                                    <label
+                                      className="form-label"
+                                      htmlFor="package"
+                                      placeholder={"Ընտրել"}
+                                    >
+                                      Ընտրել փաթեթ
+                                    </label>
+                                    {methods.formState.errors.package && (
+                                      <span className="error text-red">
+                                        <span>
+                                          <img src={ErrorSvg} alt="errorSvg" />
+                                        </span>{" "}
+                                        պարտադիր
+                                      </span>
+                                    )}
+                                  </div>
+                                  <div className="form-control">
+                                    <Controller
+                                      name="package"
+                                      control={methods.control}
+                                      isClearable={true}
+                                      defaultValue={null}
+                                      rules={{ required: true }}
+                                      render={({ field }) => (
+                                        <Select
+                                          {...field}
+                                          onChange={(val) => {
+                                            field.onChange(val);
+                                            onPackageSelect(val);
+                                          }}
+                                          value={field.value}
+                                          isMulti
+                                          closeMenuOnSelect={false}
+                                          components={animatedComponents}
+                                          options={customPackageData.map((pack) => ({
+                                            value: pack.packageId,
+                                            label: `${pack?.packageId} - ${pack?.name}`,
+                                            //label:`${res.researchName} - ${res.price}`,
+                                            price: pack?.price
+                                          }))}
+                                          styles={colourStyles}
+                                          placeholder={"Փաթեթներ"}
+                                        />
+                                      )}
+                                    />
+                                    
+                                  </div>
+                                </div>
+                              </div>
                               </div>
                             </div>
                           </div>

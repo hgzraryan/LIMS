@@ -9,6 +9,7 @@ import equipments  from '../../dist/svg/equipments.svg'
 import reagent  from '../../dist/svg/reagent.svg'
 import notifications  from '../../dist/svg/notifications.svg'
 import medicalServices  from '../../dist/svg/medicalServices.svg'
+import Packages  from '../../dist/svg/packages.svg'
 import tube  from '../../dist/svg/tube.svg'
 import { useNavigate } from 'react-router-dom'
 import { Helmet, HelmetProvider } from 'react-helmet-async';
@@ -60,6 +61,11 @@ const setupData = [
         name:'Լաբորատորիայի մասին',
         icon:info,
         pathname:''
+    },
+    {
+        name:'Փաթեթներ',
+        icon:Packages,
+        pathname:'setup/packages'
     },
 ]
 function Setup() {
