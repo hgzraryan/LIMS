@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useState } from 'react'
+import React, { Suspense, useEffect, useRef, useState } from 'react'
 import { DOCTORS_URL, MEDICALSERVICES_URL, PATIENTS_URL, REGISTER_DOCTORSVISITS } from '../../utils/constants';
 import { toast } from "react-toastify";
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
@@ -11,6 +11,7 @@ import "react-phone-number-input/style.css";
 import LoadingSpinner from '../LoadingSpinner';
 import makeAnimated from "react-select/animated";
 import CustomDateTimeComponent from '../CustomDateTimeComponent';
+import { Editor } from '@tinymce/tinymce-react';
 
 function AddDoctorsVisit({
     handleToggleCreateModal,
@@ -26,6 +27,8 @@ function AddDoctorsVisit({
     const [isLoading, setIsLoading] = useState(true);
     const [enableSMS, setEnableSMS] = useState(true);
     const animatedComponents = makeAnimated();
+    const editorRef = useRef(null);
+
     const colourStyles = {
       control: (styles, { isFocused, isSelected }) => ({
         ...styles,
@@ -98,6 +101,7 @@ function AddDoctorsVisit({
         doctor,
         visitDate,medicalServices}) => {
         const newDoctorsVisit = {
+            additional: editorRef.current.getContent({ format: "text" }),
             clientId:client?.value,
             doctor:doctor,
             medicalServices:medicalServices?.map((el)=>el.value),
@@ -406,8 +410,8 @@ function AddDoctorsVisit({
                             </div>
                           </div>
                         </div>
-                        {/* <div className="separator-full"></div> */}
-                        {/* <div className="card">
+                         <div className="separator-full"></div> 
+                        <div className="card">
                           <div className="card-header">
                             <a href="#">Հավելյալ տվյալներ</a>
                             <button
@@ -428,8 +432,37 @@ function AddDoctorsVisit({
                               </span>
                             </button>
                           </div>
+                          <div className="card-body" style={{ zIndex: "0" }}>
+                            <div className="modal-body">
+                              <form>
+                                <div className="row gx-12">
+                                <div className="col-sm-12">
+                              <Editor
+                                apiKey='yx10svi3vbrzauhd8j5jtut8pi6v59tb9ozhno5b1qcz902v'
+                                onInit={(evt, editor) =>
+                                  (editorRef.current = editor)
+                                }                                
+                                init={{
+                                  height:300,
+                                  plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage advtemplate ai mentions tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss',
+                                  toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+                                  tinycomments_mode: 'embedded',
+                                  tinycomments_author: 'Author name',
+                                  mergetags_list: [
+                                    { value: 'First.Name', title: 'First Name' },
+                                    { value: 'Email', title: 'Email' },
+                                  ],
+                                  ai_request: (request, respondWith) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant")),
+                                }}
+                                
+                              />
+                              </div>
+                                </div>
+                              </form>
+                            </div>
+                          </div>
                         </div>
-                        <div className="separator-full"></div> */}
+                        <div className="separator-full"></div> 
     
                         <div className="modal-footer align-items-center">
                           <button

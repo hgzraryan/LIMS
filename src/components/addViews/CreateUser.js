@@ -26,6 +26,7 @@ import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import 'react-phone-number-input/style.css'
 import { CountryDropdown, RegionDropdown,CountryRegionData  } from 'react-country-region-selector';
+import { Editor } from "@tinymce/tinymce-react";
 
 const roleState = [
     { label:'Ադմին',name: "Admin", value: 5150 },
@@ -48,6 +49,7 @@ function CreateUser({ setIsOpen,refreshData }) {
   const [merried, setMerried] = useState(""); 
   const [country, setCountry] = useState('')
   const [region, setRegion] = useState('')
+  const editorRef = useRef(null);
 
 
   const { trigger } = useForm();
@@ -156,7 +158,7 @@ function CreateUser({ setIsOpen,refreshData }) {
     additional}) => {
    
     const newUser = {
-      additionalData:additional,
+      additionalData: editorRef.current.getContent({ format: "text" }),
       firstname:firstName,
       lastname:lastName,
       email:email,
@@ -474,7 +476,22 @@ function CreateUser({ setIsOpen,refreshData }) {
                               <Input {...zipCode_validation} />
                             </div>
                             <div className="col-sm-6">
-                              <Input {...additional_validation} />
+                              <div className="form-group">
+                              <div className="d-flex justify-content-between me-2">
+                                <label
+                                  className="form-label"
+                                  htmlFor="dateOfBirth"
+                                  >
+                                  Ծննդյան ամսաթիվ
+                                </label>
+                                  {methods.formState.errors.dateOfBirth && (
+                                    <span className="error text-red"><span><img src={ErrorSvg} alt="errorSvg"/></span> պարտադիր</span>
+                                    )}
+                                    </div>
+                                <div>                                  
+                                   <CustomDateComponent name="dateOfBirth" control={methods.control}/>
+                                </div>
+                              </div>
                             </div>
                             </div>
                           <div className="row gx-3">
@@ -588,24 +605,7 @@ function CreateUser({ setIsOpen,refreshData }) {
                             {/* <div className="col-sm-6">
                               <Input {...position_validation} />
                             </div> */}
-                            <div className="col-sm-6">
-                              <div className="form-group">
-                              <div className="d-flex justify-content-between me-2">
-                                <label
-                                  className="form-label"
-                                  htmlFor="dateOfBirth"
-                                  >
-                                  Ծննդյան ամսաթիվ
-                                </label>
-                                  {methods.formState.errors.dateOfBirth && (
-                                    <span className="error text-red"><span><img src={ErrorSvg} alt="errorSvg"/></span> պարտադիր</span>
-                                    )}
-                                    </div>
-                                <div>                                  
-                                   <CustomDateComponent name="dateOfBirth" control={methods.control}/>
-                                </div>
-                              </div>
-                            </div>
+                            
                           </div>
                           <div className="row gx-3">
                             <div className="col-sm-6">
@@ -706,7 +706,59 @@ function CreateUser({ setIsOpen,refreshData }) {
                         </div>
                       </div>
                     </div>
-
+                    <div className="separator-full"></div> 
+                        <div className="card">
+                          <div className="card-header">
+                            <a href="#">Հավելյալ տվյալներ</a>
+                            <button
+                              className="btn btn-xs btn-icon btn-rounded btn-light"
+                              data-bs-toggle="tooltip"
+                              data-bs-placement="top"
+                              title=""
+                              data-bs-original-title="Edit"
+                            >
+                              <span
+                                class="icon"
+                                data-bs-toggle="modal"
+                                data-bs-target="#moreContact"
+                              >
+                                <span class="feather-icon">
+                                  <FeatherIcon icon="edit-2" />
+                                </span>
+                              </span>
+                            </button>
+                          </div>
+                          <div className="card-body" style={{ zIndex: "0" }}>
+                            <div className="modal-body">
+                              <form>
+                                <div className="row gx-12">
+                                <div className="col-sm-12">
+                              <Editor
+                                apiKey='yx10svi3vbrzauhd8j5jtut8pi6v59tb9ozhno5b1qcz902v'
+                                onInit={(evt, editor) =>
+                                  (editorRef.current = editor)
+                                }                                
+                                init={{
+                                  height:300,
+                                  plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage advtemplate ai mentions tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss',
+                                  toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+                                  tinycomments_mode: 'embedded',
+                                  tinycomments_author: 'Author name',
+                                  mergetags_list: [
+                                    { value: 'First.Name', title: 'First Name' },
+                                    { value: 'Email', title: 'Email' },
+                                  ],
+                                  ai_request: (request, respondWith) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant")),
+                                }}
+                                
+                              />
+                              </div>
+                                </div>
+                              </form>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="separator-full"></div> 
                     <div className="modal-footer align-items-center">
                       <button
                         type="button"

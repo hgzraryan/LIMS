@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { Modal } from "react-bootstrap";
 import FeatherIcon from "feather-icons-react";
 import { Editor } from "@tinymce/tinymce-react";
@@ -21,6 +21,7 @@ import { REGISTER_MEDICALSERVICES } from "../../utils/constants";
 function AddMedicalService({ handleToggleCreateModal, refreshData }) {
     const [errMsg, setErrMsg] = useState("");
     const axiosPrivate = useAxiosPrivate();
+    const editorRef = useRef(null);
 
     // const { onSubmit, methods } = useSubmitForm(
     //   REGISTER_URL,
@@ -48,8 +49,7 @@ function AddMedicalService({ handleToggleCreateModal, refreshData }) {
         categoryName,
         shortName,
         price,
-        purchasePrice,
-        additional,}
+        purchasePrice}
       ) => {
      
       const newMedicalService = {
@@ -59,7 +59,7 @@ function AddMedicalService({ handleToggleCreateModal, refreshData }) {
           shortName,
           price,
           purchasePrice,
-          additional,
+          additional: editorRef.current.getContent({ format: "text" }),
       }; 
       console.log(newMedicalService)     
        try {
@@ -154,18 +154,10 @@ function AddMedicalService({ handleToggleCreateModal, refreshData }) {
                               </div>
                             </div>
                             
-                            <div className="row gx-3">
-                              <div className="col-sm-6">
-                                <Input {...additional_validation} />
-                              </div>
-                              
-                              
-                            </div>
-                            
                           </div>
                           </div>
                           </div>
-                          {/* <div className="separator-full"></div>
+                          <div className="separator-full"></div>
                           <div className="card">
                         <div className="card-header">
                           <a href="#">Հավելյալ տվյալներ</a>
@@ -191,38 +183,33 @@ function AddMedicalService({ handleToggleCreateModal, refreshData }) {
                           <div className="modal-body">
                             <form>
                               <div className="row gx-12">
-                                <div className="col-sm-12">
-                                  <Editor
-                                    apiKey="wiejyphh2h0z879p5bvha1lqdfd0z7utg4rqsw6cyjhd28lx"
-                                    onInit={(evt, editor) =>
-                                      (editorRef.current = editor)
-                                    }
-                                    //initialValue="<p>This is the initial content of the editor.</p>"
-                                    init={{
-                                      height: 200,
-                                      menubar: false,
-                                      plugins: [
-                                        "advlist autolink lists link image charmap print preview anchor",
-                                        "searchreplace visualblocks code fullscreen",
-                                        "insertdatetime media table paste code help wordcount",
-                                      ],
-                                      toolbar:
-                                        "undo redo | formatselect | " +
-                                        "bold italic backcolor | alignleft aligncenter " +
-                                        "alignright alignjustify | bullist numlist outdent indent | " +
-                                        "removeformat | help",
-                                      content_style:
-                                        "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
-                                    }}
-                                  />
-                                </div>
+                              <div className="col-sm-12">
+                              <Editor
+                                apiKey='yx10svi3vbrzauhd8j5jtut8pi6v59tb9ozhno5b1qcz902v'
+                                onInit={(evt, editor) =>
+                                  (editorRef.current = editor)
+                                }
+                                init={{
+                                  height:300,
+                                  plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage advtemplate ai mentions tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss',
+                                  toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+                                  tinycomments_mode: 'embedded',
+                                  tinycomments_author: 'Author name',
+                                  mergetags_list: [
+                                    { value: 'First.Name', title: 'First Name' },
+                                    { value: 'Email', title: 'Email' },
+                                  ],
+                                  ai_request: (request, respondWith) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant")),
+                                }}
+                                
+                              />
+                              </div>
                               </div>
                             </form>
                           </div>
                         </div>
                       </div>
                       <div className="separator-full"></div>
-   */}
                       <div className="modal-footer align-items-center">
                         <button
                           type="button"

@@ -40,6 +40,7 @@ function AddDoctor({ handleToggleCreateModal, refreshData }) {
   const imageMimeType = /image\/(png|jpg|jpeg)/i;
   const fileReader = new FileReader();
   const formData = new FormData();
+  const editorRef = useRef(null);
 
  const [country, setCountry] = useState('')
   const [region, setRegion] = useState('')
@@ -149,7 +150,6 @@ function AddDoctor({ handleToggleCreateModal, refreshData }) {
       user,
       password,
       maritalStatus,
-      additional
     }) => {
       const newDoctor = {
         doctorName: fullName,        
@@ -171,7 +171,7 @@ function AddDoctor({ handleToggleCreateModal, refreshData }) {
         licenseNumber: licenseNumber,
         gender: gender,
         maritalStatus:maritalStatus,
-        additional:additional,
+        //additional:additional,
         dateOfBirth: new Date(
           dateOfBirth.getTime() - dateOfBirth.getTimezoneOffset() * 60000
         )
@@ -181,8 +181,10 @@ function AddDoctor({ handleToggleCreateModal, refreshData }) {
         emergencyContactNumber: emergencyContactNumber,
         profilePictureUrl: "profilePictureUrl",
         isActive: 1,
+        additional: editorRef.current.getContent({ format: "text" }),
+
       };
-     //console.log(newDoctor)
+     console.log(newDoctor)
       formData.append("text", JSON.stringify(newDoctor));
       formData.append("image", image);
       try {
@@ -397,9 +399,9 @@ function AddDoctor({ handleToggleCreateModal, refreshData }) {
                             <div className="col-sm-6">
                               <Input {...zipCode_validation} />
                             </div>
-                            <div className="col-sm-6">
+                            {/* <div className="col-sm-6">
                               <Input {...additional_validation} />
-                            </div>
+                            </div> */}
                           </div>
                           <div className="row gx-3">
                             <div className="col-sm-6">
@@ -632,6 +634,59 @@ function AddDoctor({ handleToggleCreateModal, refreshData }) {
                         </div>
                       </div>
                     </div>
+                    <div className="separator-full"></div>
+                        <div className="card">
+                          <div className="card-header">
+                            <a href="#">Հավելյալ տվյալներ</a>
+                            <button
+                              className="btn btn-xs btn-icon btn-rounded btn-light"
+                              data-bs-toggle="tooltip"
+                              data-bs-placement="top"
+                              title=""
+                              data-bs-original-title="Edit"
+                            >
+                              <span
+                                class="icon"
+                                data-bs-toggle="modal"
+                                data-bs-target="#moreContact"
+                              >
+                                <span class="feather-icon">
+                                  <FeatherIcon icon="edit-2" />
+                                </span>
+                              </span>
+                            </button>
+                          </div>
+                          <div className="card-body" style={{ zIndex: "0" }}>
+                            <div className="modal-body">
+                              <form>
+                                <div className="row gx-12">
+                                <div className="col-sm-12">
+                              <Editor
+                                apiKey='yx10svi3vbrzauhd8j5jtut8pi6v59tb9ozhno5b1qcz902v'
+                                onInit={(evt, editor) =>
+                                  (editorRef.current = editor)
+                                }
+                                init={{
+                                  height: 300,
+                                  plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage advtemplate ai mentions tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss',
+                                  toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+                                  tinycomments_mode: 'embedded',
+                                  tinycomments_author: 'Author name',
+                                  mergetags_list: [
+                                    { value: 'First.Name', title: 'First Name' },
+                                    { value: 'Email', title: 'Email' },
+                                  ],
+                                  ai_request: (request, respondWith) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant")),
+                                }}
+                                
+                              />
+                              </div>
+                                </div>
+                              </form>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="separator-full"></div>
                     <div className="modal-footer align-items-center">
                       <button
                         type="button"
