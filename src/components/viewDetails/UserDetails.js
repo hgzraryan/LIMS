@@ -199,7 +199,17 @@ function UserDetails() {
                               </span>
                               <span className="ms-2">{userDetails?.username}</span>
                             </li>
-
+                            <li className="list-group-item border-0">
+                            <span>
+                              <i className="bi bi-info text-disabled me-2"></i>
+                              <span className="text-muted">
+                                Հավելյալ տեղեկություն:
+                              </span>
+                            </span>
+                            <span className="ms-2">
+                              {userDetails?.additionalData}
+                            </span>
+                          </li>
 
                           </ul>
                       </div>

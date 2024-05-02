@@ -636,7 +636,7 @@ const MainTemplate = () => {
                                 </span>
                               </Link>
                             </li>
-                            <li className="nav-item">
+                            {/* <li className="nav-item">
                               <Link
                                 className={
                                   sisActive1 === "Զբաղվածություն" ||
@@ -653,7 +653,7 @@ const MainTemplate = () => {
                                 Զբաղվածություն
                                 </span>
                               </Link>
-                            </li>
+                            </li> */}
                             
                           </ul>
                         </li>

@@ -41,6 +41,20 @@ import {
 import CustomDateTimeComponent from "../CustomDateTimeComponent";
 import { calculateAge } from "../../utils/helper";
 
+const customPackageData = [
+  {
+    packageId:123,
+    localCode:45678,
+    name:'Բիլիռուբին',
+    price:37000
+  },
+  {
+    packageId:124,
+    localCode:45679,
+    name:'Որովայն',
+    price:42000
+  },
+]
 function CreatePatient({
   handleToggleCreateModal,
   refreshData,
@@ -177,7 +191,8 @@ function CreatePatient({
       visitDoctor,
       addPhone,
       respPersonFullName,
-      respPersonPassport
+      respPersonPassport,
+      packages
     }) => {
       const newPatient = {
         firstName: firstName,
@@ -188,6 +203,7 @@ function CreatePatient({
         // internalStatus: "Approval",
         // externalStatus:  null,
         researchList: research ? research?.map((el) => el.value) : null,
+        packages:packages.map((el) => el.value),
         additional: editorRef.current.getContent({ format: "text" }),
         gender: gender,
         doctors: doctor || null,
@@ -238,28 +254,28 @@ function CreatePatient({
 
       };
 
-      //console.log(newPatient);
+      console.log(newPatient);
 
-      try {
-        await axiosPrivate.post(REGISTER_PATIENT, newPatient, {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
-        });
+      // try {
+      //   await axiosPrivate.post(REGISTER_PATIENT, newPatient, {
+      //     headers: { "Content-Type": "application/json" },
+      //     withCredentials: true,
+      //   });
 
-        handleToggleCreateModal(false);
-        refreshData();
-        notify(
-          `${newPatient.firstName} ${newPatient.lastName} հաճախորդը ավելացված է`
-        );
-      } catch (err) {
-        if (!err?.response) {
-          setErrMsg("No Server Response");
-        } else if (err.response?.status === 409) {
-          setErrMsg("Username Taken");
-        } else {
-          setErrMsg(" Failed");
-        }
-      }
+      //   handleToggleCreateModal(false);
+      //   refreshData();
+      //   notify(
+      //     `${newPatient.firstName} ${newPatient.lastName} հաճախորդը ավելացված է`
+      //   );
+      // } catch (err) {
+      //   if (!err?.response) {
+      //     setErrMsg("No Server Response");
+      //   } else if (err.response?.status === 409) {
+      //     setErrMsg("Username Taken");
+      //   } else {
+      //     setErrMsg(" Failed");
+      //   }
+      // }
     }
   );
   const onGenderSelect = (value) => {
@@ -267,7 +283,6 @@ function CreatePatient({
     trigger("gender");
   };
   const onDoctorSelect = (data) => {
-    console.log(data);
     if (data.label === "Ուղղորդող բժիշկ") {
       setExtraDoctor(true);
     } else {
@@ -276,7 +291,6 @@ function CreatePatient({
     setDoctor((prev) => data?.id);
   };
   const onResearchSelect = (data) => {
-    console.log(data);
     const calcPrice = data.reduce((acc,el)=>{
       return acc+=el.price
     },0)
@@ -284,7 +298,6 @@ function CreatePatient({
 
   };
   const onPackageSelect = (data) => {
-    console.log(data);
     const calcPrice = data.reduce((acc,el)=>{
       return acc+=el.price
     },0)
@@ -939,18 +952,18 @@ function CreatePatient({
                                   </div>
                                 </div>
                               </div>
-                              <div className="row gx-3 mt-2">
+                              {/* <div className="row gx-3 mt-2">
                                 <div className="col-sm-12">
                                   <div className="d-flex justify-content-between me-2">
                                   {packagesPrice ? <div className="d-flex flex-row-reverse" ><p style={{color:'#4eafcb',}}>Ընդհանուր արժեք։ <span style={{fontWeight:'bold'}} >{packagesPrice}</span>դր․</p></div>:''}
                                     <label
                                       className="form-label"
-                                      htmlFor="package"
+                                      htmlFor="packages"
                                       placeholder={"Ընտրել"}
                                     >
                                       Ընտրել փաթեթ
                                     </label>
-                                    {methods.formState.errors.package && (
+                                    {methods.formState.errors.packages && (
                                       <span className="error text-red">
                                         <span>
                                           <img src={ErrorSvg} alt="errorSvg" />
@@ -961,7 +974,7 @@ function CreatePatient({
                                   </div>
                                   <div className="form-control">
                                     <Controller
-                                      name="package"
+                                      name="packages"
                                       control={methods.control}
                                       isClearable={true}
                                       defaultValue={null}
@@ -977,9 +990,9 @@ function CreatePatient({
                                           isMulti
                                           closeMenuOnSelect={false}
                                           components={animatedComponents}
-                                          options={researchState.map((pack) => ({
-                                            value: pack.researchListId,
-                                            label: `${pack?.researchListId} - ${pack?.researchName}`,
+                                          options={customPackageData.map((pack) => ({
+                                            value: pack.packageId,
+                                            label: `${pack?.packageId} - ${pack?.name}`,
                                             //label:`${res.researchName} - ${res.price}`,
                                             price: pack?.price
                                           }))}
@@ -991,7 +1004,7 @@ function CreatePatient({
                                     
                                   </div>
                                 </div>
-                              </div>
+                              </div> */}
                             </div>
                           </div>
                         </div>

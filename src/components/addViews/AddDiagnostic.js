@@ -79,7 +79,6 @@ function AddDiagnostic({
   const [packagesPrice, setPackagesPrice] = useState(0);
 
   const onPackageSelect = (data) => {
-    console.log(data);
     const calcPrice = data.reduce((acc,el)=>{
       return acc+=el.price
     },0)
@@ -231,26 +230,26 @@ const onResearchSelect = (data) => {
     };
 
     console.log(newDiagnose);
-    try {
-      await axiosPrivate.post(REGISTER_DIAGNOSTICS, newDiagnose, {
-        headers: { "Content-Type": "application/json" },
-        withCredentials: true,
-      });
+    // try {
+    //   await axiosPrivate.post(REGISTER_DIAGNOSTICS, newDiagnose, {
+    //     headers: { "Content-Type": "application/json" },
+    //     withCredentials: true,
+    //   });
 
-      handleToggleCreateModal(false);
-      refreshData();
-      notify(
-        `${newDiagnose.diagnosticsName} Ախտորոշումը ավելացված է`
-      );
-    } catch (err) {
-      if (!err?.response) {
-        setErrMsg("No Server Response");
-      } else if (err.response?.status === 409) {
-        setErrMsg("Username Taken");
-      } else {
-        setErrMsg(" Failed");
-      }
-    }
+    //   handleToggleCreateModal(false);
+    //   refreshData();
+    //   notify(
+    //     `${newDiagnose.diagnosticsName} Ախտորոշումը ավելացված է`
+    //   );
+    // } catch (err) {
+    //   if (!err?.response) {
+    //     setErrMsg("No Server Response");
+    //   } else if (err.response?.status === 409) {
+    //     setErrMsg("Username Taken");
+    //   } else {
+    //     setErrMsg(" Failed");
+    //   }
+    // }
   });
   // const { onSubmit, methods } = useSubmitForm(
   //   REGISTER_DIAGNOSTICS,
@@ -783,7 +782,7 @@ const onResearchSelect = (data) => {
                                   </div>
                                 
                                 </div>
-                                <div className="row gx-3 mt-2">
+                                {/* <div className="row gx-3 mt-2">
                                 <div className="col-sm-12">
                                   <div className="d-flex justify-content-between me-2">
                                   {packagesPrice ? <div className="d-flex flex-row-reverse" ><p style={{color:'#4eafcb',}}>Ընդհանուր արժեք։ <span style={{fontWeight:'bold'}} >{packagesPrice}</span>դր․</p></div>:''}
@@ -835,7 +834,7 @@ const onResearchSelect = (data) => {
                                     
                                   </div>
                                 </div>
-                              </div>
+                              </div> */}
                               </div>
                             </div>
                           </div>

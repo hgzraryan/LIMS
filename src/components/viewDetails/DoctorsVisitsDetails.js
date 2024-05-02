@@ -331,6 +331,17 @@ function DoctorsVisitsDetails() {
                               {doctorsVisitsDetails?.totalPayed}
                             </span>
                           </li>
+                          <li className="list-group-item border-0">
+                            <span>
+                              <i className="bi bi-info text-disabled me-2"></i>
+                              <span className="text-muted">
+                                Հավելյալ տեղեկություն:
+                              </span>
+                            </span>
+                            <span className="ms-2">
+                              {doctorsVisitsDetails?.additional}
+                            </span>
+                          </li>
                         </ul>
                       </div>
                     </div>

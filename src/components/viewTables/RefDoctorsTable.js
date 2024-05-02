@@ -300,7 +300,7 @@ function RefDoctorsTable({
                       <div className="separator-full m-0"></div>
                       <div className="d-flex justify-content-between">
                         {" "}
-                        <span>Այլ </span> <span>{modalInfo.additional}</span>
+                        <span>Հավելյալ տեղեկություն </span> <span>{modalInfo.additional}</span>
                       </div>
                       <div className="separator-full m-0"></div>
                     </div>

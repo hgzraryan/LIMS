@@ -159,7 +159,7 @@ function DoctorDetails() {
                         <span className="nav-link-text">Գլխավոր</span>
                       </a>
                     </li>
-                    <li className="nav-item">
+                    {/* <li className="nav-item">
                       <a
                         className={`nav-link ${activeLink === "tab_calendar" ? "active" : ""
                           }`}
@@ -174,7 +174,7 @@ function DoctorDetails() {
                         </span>
                         <span className="nav-link-text">Օրացույց</span>
                       </a>
-                    </li>
+                    </li> */}
                   </ul>
                 </header>
                 <div className="row">
@@ -252,6 +252,17 @@ function DoctorDetails() {
                               </span>
                               <span className="ms-2">{doctorDetails?.qualification}</span>
                             </li>
+                            <li className="list-group-item border-0">
+                            <span>
+                              <i className="bi bi-info text-disabled me-2"></i>
+                              <span className="text-muted">
+                                Հավելյալ տեղեկություն:
+                              </span>
+                            </span>
+                            <span className="ms-2">
+                              {doctorDetails?.additional}
+                            </span>
+                          </li>
 
 
                           </ul>

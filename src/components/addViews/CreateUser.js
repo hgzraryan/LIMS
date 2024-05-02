@@ -36,7 +36,6 @@ const roleState = [
     { label:'Նմուշառող',name: "Sampler", value: 1212 },
     { label:'Բժիշկ',name: "Doctor", value: 9578 },  
   ]
-
 function CreateUser({ setIsOpen,refreshData }) {
   const axiosPrivate = useAxiosPrivate();
   const intupAvatarRef = useRef(null);

@@ -325,7 +325,9 @@ function EquipmentsTable({
                        <div className="d-flex justify-content-between">  <span>Ձեռք բերման ամսաթիվ </span> <span>{moment.utc(modalInfo.purchaseDate).format('DD-MM-YYYY')}</span></div>
                        <div className="separator-full m-0"></div>                  
                        <div className="d-flex justify-content-between">  <span>Երաշխիքի ավարտ </span> <span>{moment.utc(modalInfo.warrantyExpiryDate).format('DD-MM-YYYY')}</span></div>
-                       <div className="separator-full m-0"></div>                  
+                       <div className="separator-full m-0"></div>   
+                       <div className="d-flex justify-content-between">  <span>Հավելյալ տեղեկություն </span> <span>{modalInfo?.additional}</span></div>
+                       <div className="separator-full m-0"></div>                 
                   </div>
                 </div>
               </div>

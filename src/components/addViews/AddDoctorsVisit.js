@@ -12,7 +12,20 @@ import LoadingSpinner from '../LoadingSpinner';
 import makeAnimated from "react-select/animated";
 import CustomDateTimeComponent from '../CustomDateTimeComponent';
 import { Editor } from '@tinymce/tinymce-react';
-
+const customPackageData = [
+  {
+    packageId:123,
+    localCode:45678,
+    name:'Բիլիռուբին',
+    price:37000
+  },
+  {
+    packageId:124,
+    localCode:45679,
+    name:'Որովայն',
+    price:42000
+  },
+]
 function AddDoctorsVisit({
     handleToggleCreateModal,
     refreshData,
