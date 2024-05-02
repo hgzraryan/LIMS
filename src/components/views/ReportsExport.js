@@ -25,48 +25,50 @@ function ReportsExport() {
     //     }
     // })
     useEffect(() => {
-     
-        axiosPrivate.get(RESEARCHLISTS_URL).then((resp) => {
-          setResearchesList(resp?.data?.jsonString);
-          setIsLoading(false);
-        }).catch((err) => {
-              console.log(err);
-              navigate("/login", { state: { from: location }, replace: true });
-              
-            });
-       
-      }, []);
-      useEffect(()=>{
-        axiosPrivate.get(DIAGNOSTICS_URL)
-        .then((resp) => {
-          const formatedData=resp?.data?.jsonString.map((el)=>{
-            return{
-              ...el,
-              researchList: el.researchList.map((researchItem) => {
-
-                let asd=''
-                for(let item of researchesList){
-                    if(item.researchListId===researchItem){
-                        asd=item.researchName
-                    }
-                }
-                return asd; // Return the filtered list for the current researchItem
-            })
-            }
-              })
-              setDiagnostics(formatedData);
+      setTimeout(() => {
+        axiosPrivate
+          .get(RESEARCHLISTS_URL)
+          .then((resp) => {
+            setResearchesList(resp?.data?.jsonString);
+            setIsLoading(false);
+          })
+          .then((resp) => {
+            axiosPrivate.get(DIAGNOSTICS_URL).then((resp) => {
+              setDiagnostics(resp?.data?.jsonString);
               setIsLoading(false);
-            }).catch((err) => {
-              console.log(err);
-              navigate("/login", { state: { from: location }, replace: true });
-              
-            });       
-      },[researchesList])
+            });
+          })          
+          .catch((err) => {
+            console.log(err);
+            navigate("/login", { state: { from: location }, replace: true });
   
-      const handleExportDiagnostics = (exportName,exportData)=>{
-        const exportData1 = exportData.map(item => ({
+          });
+      }, 500);
+    }, []);
+
+    const handleExportDiagnostics = (exportName,exportData)=>{
+        const formatedData=exportData.map((el)=>{
+          return {
+            ...el,
+            researchList: el.researchList.map((researchItem) => {
+                const foundResearch = researchesList.find((item) => item.researchListId === researchItem);
+                return foundResearch ? foundResearch.researchName : '';
+            })
+        }
+            })
+        const exportData1 = formatedData.map(item => ({
           ...item,
-          researchList: item.researchList.join(', ') // Convert array to comma-separated string
+          researchList: item.researchList.join(', '),
+          createdAt:moment(item.createdAt).format('DD-MM-YYYY HH:mm'),
+          generationDate:moment(item.generationDate).format('DD-MM-YYYY HH:mm'),
+          updatedAt:moment(item.updatedAt).format('DD-MM-YYYY HH:mm'),
+          clientDob:moment(item.generationDate).format('DD-MM-YYYY'),
+          clientGender:item.clientGender==="Male"?'Արական':item.clientGender==="Female"?'իգական':'',
+          diagStatus:item.diagStatus==="Active"?'Ակտիվ':item.diagStatus==="Cancelled"?'Չեղարկված':'',
+          class:item.class==="Internal"?'Ներքին':item.class==="External"?'Արտաքին':'',
+          internalStatus:item.internalStatus==="Approval"?'Ընդունված':item.internalStatus,
+          externalStatus:item.externalStatus==="Approval"?'Ընդունված':item.externalStatus,
+          clientType:item.clientType==="patient"?'Այցելու':item.clientType==="organization"?'Պատվիրատու':'',
       }));
         const workBook = utils.book_new()
         const workSheet = utils.json_to_sheet(exportData1)
