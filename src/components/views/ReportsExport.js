@@ -48,8 +48,8 @@ function ReportsExport() {
         console.log(diagnostics)
         const workBook = utils.book_new()
         const workSheet = utils.json_to_sheet(exportData)
-        utils.book_append_sheet(workBook,workSheet,'exportName')
-        writeFile(workBook,`exportName.xlsx`)
+        utils.book_append_sheet(workBook,workSheet,exportName)
+        writeFile(workBook,`diag${moment(new Date()).format('DD-MM-YYYY')}.xlsx`)
       }
   return (
     <div>
