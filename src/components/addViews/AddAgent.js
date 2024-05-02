@@ -14,15 +14,15 @@ import CustomPhoneComponent from "../CustomPhoneComponent";
 import 'react-phone-number-input/style.css'
 import { CountryDropdown, RegionDropdown,CountryRegionData  } from 'react-country-region-selector';
 
+
 const REGISTER_AGENT = "/registerAgent";
 
 function AddAgent({ handleToggleCreateModal, refreshData }) {
   const [errMsg, setErrMsg] = useState("");
   const axiosPrivate = useAxiosPrivate();
-
-
   const [country, setCountry] = useState('')
   const [region, setRegion] = useState('')
+
 useEffect(() => {
     if (CountryRegionData[11][0] === "Armenia") {
       CountryRegionData[11][0] = "Հայաստան"
@@ -317,13 +317,13 @@ useEffect(() => {
                             <div className="row gx-12">
                               <div className="col-sm-12">
                               <Editor
-                                apiKey='yx10svi3vbrzauhd8j5jtut8pi6v59tb9ozhno5b1qcz902v'
+                                apiKey={process.env.REACT_APP_EDITOR_KEY}
                                 onInit={(evt, editor) =>
                                   (editorRef.current = editor)
                                 }
                                 init={{
                                   height:300,
-                                  plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage advtemplate ai mentions tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss',
+                                  plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage advtemplate ai mentions tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss markdown markdown',
                                   toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
                                   tinycomments_mode: 'embedded',
                                   tinycomments_author: 'Author name',
