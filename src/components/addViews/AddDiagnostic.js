@@ -230,26 +230,26 @@ const onResearchSelect = (data) => {
     };
 
     console.log(newDiagnose);
-    // try {
-    //   await axiosPrivate.post(REGISTER_DIAGNOSTICS, newDiagnose, {
-    //     headers: { "Content-Type": "application/json" },
-    //     withCredentials: true,
-    //   });
+    try {
+      await axiosPrivate.post(REGISTER_DIAGNOSTICS, newDiagnose, {
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+      });
 
-    //   handleToggleCreateModal(false);
-    //   refreshData();
-    //   notify(
-    //     `${newDiagnose.diagnosticsName} Ախտորոշումը ավելացված է`
-    //   );
-    // } catch (err) {
-    //   if (!err?.response) {
-    //     setErrMsg("No Server Response");
-    //   } else if (err.response?.status === 409) {
-    //     setErrMsg("Username Taken");
-    //   } else {
-    //     setErrMsg(" Failed");
-    //   }
-    // }
+      handleToggleCreateModal(false);
+      refreshData();
+      notify(
+        `${newDiagnose.diagnosticsName} Ախտորոշումը ավելացված է`
+      );
+    } catch (err) {
+      if (!err?.response) {
+        setErrMsg("No Server Response");
+      } else if (err.response?.status === 409) {
+        setErrMsg("Username Taken");
+      } else {
+        setErrMsg(" Failed");
+      }
+    }
   });
   // const { onSubmit, methods } = useSubmitForm(
   //   REGISTER_DIAGNOSTICS,

@@ -256,26 +256,26 @@ function CreatePatient({
 
       console.log(newPatient);
 
-      // try {
-      //   await axiosPrivate.post(REGISTER_PATIENT, newPatient, {
-      //     headers: { "Content-Type": "application/json" },
-      //     withCredentials: true,
-      //   });
+      try {
+        await axiosPrivate.post(REGISTER_PATIENT, newPatient, {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+        });
 
-      //   handleToggleCreateModal(false);
-      //   refreshData();
-      //   notify(
-      //     `${newPatient.firstName} ${newPatient.lastName} հաճախորդը ավելացված է`
-      //   );
-      // } catch (err) {
-      //   if (!err?.response) {
-      //     setErrMsg("No Server Response");
-      //   } else if (err.response?.status === 409) {
-      //     setErrMsg("Username Taken");
-      //   } else {
-      //     setErrMsg(" Failed");
-      //   }
-      // }
+        handleToggleCreateModal(false);
+        refreshData();
+        notify(
+          `${newPatient.firstName} ${newPatient.lastName} հաճախորդը ավելացված է`
+        );
+      } catch (err) {
+        if (!err?.response) {
+          setErrMsg("No Server Response");
+        } else if (err.response?.status === 409) {
+          setErrMsg("Username Taken");
+        } else {
+          setErrMsg(" Failed");
+        }
+      }
     }
   );
   const onGenderSelect = (value) => {
