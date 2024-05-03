@@ -203,8 +203,8 @@ function CreatePatient({
         // internalStatus: "Approval",
         // externalStatus:  null,
         researchList: research ? research?.map((el) => el.value) : null,
-        packages:packages.map((el) => el.value),
-        additional: editorRef.current.getContent({ format: "text" }),
+        packages:packages?.map((el) => el.value),
+        additional: editorRef?.current?.getContent({ format: "text" }),
         gender: gender,
         doctors: doctor || null,
         serviceType: addDoctorsVisit

@@ -213,20 +213,20 @@ const onResearchSelect = (data) => {
 
   const onSubmit = methods.handleSubmit(async (data) => {
     const newDiagnose = {
-      diagnosticsName: data.diagName,
-      class: data.diagnosticsType,
+      diagnosticsName: data?.diagName,
+      class: data?.diagnosticsType,
       internalStatus: data?.internalDiagnosticsStatus?.value || null,
       externalStatus: data?.externalDiagnosticsStatus?.value || null,
       researchList: data?.research.map((el) => el.value),
-      clientId: data.patient || data.organizations,
-      clientType: data.organization?"organization":"patient",
-      orgPatientId:data.organization ? data.patient : null,
-      doctors: data.doctor.id,
-      biomassType:data.biomassType.value,
+      clientId: data?.patient || data?.organizations,
+      clientType: data?.organization?"organization":"patient",
+      orgPatientId:data?.organization ? data?.patient : null,
+      doctors: data?.doctor?.id,
+      biomassType:data?.biomassType?.value,
       partner: partnerName || null,
-      refDoctor:data.refDoctor?.id || null,
-      additional: editorRef.current.getContent({ format: "text" }),
-      packages:data?.package.map((el) => el.value)
+      refDoctor:data?.refDoctor?.id || null,
+      additional: editorRef?.current?.getContent({ format: "text" }),
+      packages:data?.package?.map((el) => el.value)
     };
 
     console.log(newDiagnose);

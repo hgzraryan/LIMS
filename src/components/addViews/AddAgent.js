@@ -316,6 +316,7 @@ useEffect(() => {
                           <form>
                             <div className="row gx-12">
                               <div className="col-sm-12">
+                                {console.log()}
                               <Editor
                                 apiKey={process.env.REACT_APP_EDITOR_KEY}
                                 onInit={(evt, editor) =>
