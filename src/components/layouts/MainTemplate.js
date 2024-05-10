@@ -29,6 +29,7 @@ import sideUsersSvg from '../../dist/svg/sideUsers.svg'
 import sideSetupSvg from '../../dist/svg/sideSetup.svg'
 import sideDiagnosticsSvg from '../../dist/svg/sideDiagnostics.svg'
 import packageJson from '../../../package.json';
+import { checkRefDoctorsCount } from "../../redux/features/refDoctors/refDoctorsCountSlice";
 const MainTemplate = () => {
     const navigate = useNavigate();
     const location = useLocation();
@@ -91,6 +92,7 @@ const MainTemplate = () => {
               isMounted && dispatch(checkAgentsCount(response.data?.agentsCount));
               isMounted && dispatch(checkDiagnosticsCount(response.data?.diagnosticsCount));
 				      isMounted && dispatch(checkDoctorCount(response.data?.doctorCount));
+				      isMounted && dispatch(checkRefDoctorsCount(response.data?.refDoctorsCount));
 				      isMounted && dispatch(checkEquipmentCount(response.data?.equipmentCount));
 				      isMounted && dispatch(checkOrganisationCount(response.data?.organisationCount));
 				      isMounted && dispatch(checkPatientsCount(response.data?.patientsCount));

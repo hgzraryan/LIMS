@@ -523,7 +523,7 @@ responseType:'blob'
                               <span className="text-muted">Ուղղորդող բժիշկ:</span>
                             </span>
                             <span className="ms-2">
-                              {/* {diagnosticsDetails?.doctors && diagnosticsDetails?.doctors[0]} */}
+                              {diagnosticsDetails?.refDoctorName && diagnosticsDetails?.refDoctorName[0]}
                             </span>
                           </li>:''
                           }

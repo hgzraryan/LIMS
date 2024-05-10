@@ -41,9 +41,15 @@ function DoctorsVisitsDetails() {
       const getData = async () => {
         try {
           const response = await axiosPrivate.get(`/getVisitsByid/visit/${id}`);
-          setDoctorsVisitsDetails((prevUsers) => response.data);
+          setDoctorsVisitsDetails((prevUsers) => {
+            if (response?.data && Array.isArray(response.data) && response.data.length > 0) {
+              return response.data[0];
+            } else {
+              console.error("Invalid response data format");
+              return prevUsers;
+            }
+          });
           setIsLoading(false);
-          // setCurrentPage((prev) => prev = 1);
         } catch (err) {
           console.error(err);
           navigate("/login", { state: { from: location }, replace: true });
@@ -356,9 +362,9 @@ function DoctorsVisitsDetails() {
                         </div>
                         <div className="card-body">
                           <div className="d-flex justify-content-center align-items-center ms-10 me-10">
-                            {console.log(doctorsVisitsDetails)}
+
                             <ol>
-                              {doctorsVisitsDetails[0].mServices? doctorsVisitsDetails[0].mServices.map((el)=>{
+                              {doctorsVisitsDetails.mServices? doctorsVisitsDetails.mServices.map((el)=>{
                                   return <li key={el.medServiceId}>{el.serviceName}</li>
                                     
                               }):'' }

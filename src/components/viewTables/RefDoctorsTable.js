@@ -274,9 +274,10 @@ function RefDoctorsTable({
                       <div className="d-flex justify-content-between">
                         {" "}
                         <span>Հասցե </span>{" "}
-                        <span>
-                          {modalInfo.contact?.address?.city},{" "}
-                          {modalInfo.contact?.address?.street}
+                        <span>{modalInfo?.contact?.address?.country}, 
+                        {modalInfo?.contact?.address?.state},
+                        {modalInfo?.contact?.address?.city},
+                        {modalInfo?.contact?.address?.street}
                         </span>
                       </div>
                       <div className="separator-full m-0"></div>

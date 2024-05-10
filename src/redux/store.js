@@ -6,6 +6,7 @@ import researchesReducer from './features/researches/researchesSlice'
 import discountValueReducer from './features/discounts/discountValueSlice'
 import agentsCountReducer from './features/agents/agentsCountSlice'
 import doctorCountReducer from './features/doctor/doctorCountSlice'
+import refDoctorsCountReducer from './features/refDoctors/refDoctorsCountSlice'
 import equipmentCountReducer from './features/equipment/equipmentCountSlice'
 import organisationCountReducer from './features/organisation/organisationCountSlice'
 import reagentsCountReducer from './features/reagents/reagentsCountSlice'
@@ -33,5 +34,6 @@ export default configureStore({
         DoctorsVisitCount:DoctorsVisitCountReducer,
         doctors:doctorsReducer,
         refDoctors:refDoctorsReducer,
+        refDoctorsCount:refDoctorsCountReducer,
     }
 })

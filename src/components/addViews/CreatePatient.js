@@ -259,7 +259,7 @@ console.log(referrer === 'other')
           : addDiagnostic
           ? "diagnostics"
           : null,
-        refDoctor: extraDoctor && refDoctor ? refDoctor?.id : null,
+        refDoctor: extraDoctor && refDoctor ? +refDoctor?.id : null,
         contact: {
           email: email,
           phone: phone,

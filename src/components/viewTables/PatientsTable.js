@@ -358,6 +358,10 @@ function PatientsTable({
                        <div className="separator-full m-0"></div>
                        <div className="d-flex justify-content-between">  <span>Հեռախոս </span> <span>{modalInfo.contact?.phone}</span></div>
                        <div className="separator-full m-0"></div>                  
+                       <div className="d-flex justify-content-between">  <span>Հեռախոս </span> <span>{modalInfo.additional}</span></div>
+                       <div className="separator-full m-0"></div>                  
+                       <div className="d-flex justify-content-between">  <span>Տեղեկացվածության աղբյուր</span> <span>{modalInfo?.referrer || modalInfo?.extraReferrer}</span></div>
+                       <div className="separator-full m-0"></div>                  
                   </div>
                 </div>
               </div>

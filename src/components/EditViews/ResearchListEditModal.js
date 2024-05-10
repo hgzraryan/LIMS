@@ -403,8 +403,7 @@ function ResearchListEditModal({ researchList, setEditRow, refreshData }) {
                               <div className="row gx-12">
                                     <div className="col-sm-12">
                               <Editor
-                                                                apiKey={process.env.REACT_APP_EDITOR_KEY}
-
+                                 apiKey={process.env.REACT_APP_EDITOR_KEY}
                                 onInit={(evt, editor) =>
                                   (editorRef.current = editor)
                                 }

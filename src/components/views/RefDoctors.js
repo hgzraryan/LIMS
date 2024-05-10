@@ -9,6 +9,8 @@ import { REFDOCTORS_URL } from '../../utils/constants';
 import useGetData from '../../hooks/useGetData';
 import useDeleteData from '../../hooks/useDeleteData';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
+import { useSelector } from 'react-redux';
+import { selectRefDoctorsCount } from '../../redux/features/refDoctors/refDoctorsCountSlice';
 
 function RefDoctors() {
     const [selectedItem, setSelectedItem] = useState("");
@@ -17,8 +19,8 @@ function RefDoctors() {
     const confirmRefDoctorsRef = useRef("");
     const [currentPage, setCurrentPage] = useState(0);  
     const [usersPerPage, setUsersPerPage] = useState(Math.round((window.innerHeight / 100)));
-    // const clinicsCount = useSelector(selectClinics)
-    // const pageCount = Math.ceil(clinicsCount/usersPerPage)
+     const refDoctorsCount = useSelector(selectRefDoctorsCount)
+    const pageCount = Math.ceil(refDoctorsCount/usersPerPage)
     
     const {
       data: refDoctors,
@@ -171,7 +173,7 @@ function RefDoctors() {
                       <ReactPaginate
                         previousLabel = {"Հետ"}    
                         nextLabel = {"Առաջ"}
-                        pageCount = {1}
+                        pageCount = {pageCount}
                         onPageChange = {handlePageClick}
                         initialPage = {0}
                         containerClassName={"pagination"}

@@ -761,6 +761,19 @@ function PatientDetails() {
                             {moment.utc(patientDetails?.updatedAt).format('DD-MM-YYYY HH:mm')}
                             </span>
                           </li>
+                          {(patientDetails?.referrer || patientDetails?.extraReferrer) ?
+                          <li className="list-group-item border-0">
+                            <span>
+                              <i className="bi bi-calendar-event text-disabled me-2"></i>
+                              <span className="text-muted">
+                              Տեղեկացվածության աղբյուր:
+                              </span>
+                            </span>
+                            <span className="ms-2">
+                            {patientDetails?.referrer || patientDetails?.extraReferrer}
+                            </span>
+                          </li>
+                          :<></>}
                           
                         </ul>
                       </div>

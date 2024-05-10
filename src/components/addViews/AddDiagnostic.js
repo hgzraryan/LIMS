@@ -236,7 +236,7 @@ const onResearchSelect = (data) => {
       doctors: data?.doctor?.id,
       biomassType:data?.biomassType?.value,
       partner: partnerName || null,
-      refDoctor:data.refDoctor?.id || null,
+      refDoctor:+data.refDoctor?.id || null,
       additional: editorRef.current.getContent({ format: "text" }),
       // packages:data?.package.map((el) => el.value)
     };
