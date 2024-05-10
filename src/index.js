@@ -7,8 +7,8 @@ import store from './redux/store';
 import { AuthProvider } from './context/AuthProvider';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import './vendors/daterangepicker/daterangepicker.css';
-import './vendors/datatables.net-bs5/css/dataTables.bootstrap5.min.css';
+// import './vendors/daterangepicker/daterangepicker.css';
+// import './vendors/datatables.net-bs5/css/dataTables.bootstrap5.min.css';
 
 //import './vendors/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css';
 
@@ -19,7 +19,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { registerLicense } from '@syncfusion/ej2-base';
 
 // Set Syncfusion license key
-registerLicense('Ngo9BigBOggjHTQxAR8/V1NBaF5cXmZCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdnWXxcc3VTQmFeU0dxW0Y=');
+registerLicense(process.env.REACT_APP_SYNCFUSION_KEY);
 
 const root =createRoot(document.getElementById('root'))
 root.render(

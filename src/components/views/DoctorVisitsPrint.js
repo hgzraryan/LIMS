@@ -4,6 +4,7 @@ import BarcodeComp from "../BarcodeComp";
 import mainLogo from "../../dist/img/main-logo.png";
 import { useTable } from "react-table";
 import moment from "moment";
+import { Modal } from 'react-bootstrap';
 import ResearchesPrintWrapper from "../ResearchesPrintWrapper";
 function DoctorVisitsPrint({ modalPrint, setModalPrint }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -49,8 +50,18 @@ function DoctorVisitsPrint({ modalPrint, setModalPrint }) {
       columns,
       data: mServices,
     });
-  return (
-    <>
+  return ( 
+    <Modal show={() => true} size="xl" onHide={() => setModalPrint(false)}>
+          <Modal.Header closeButton>
+            <Modal.Title
+              style={{ width: "100%", textAlign: "center" }}
+            ></Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <div className="contact-body contact-detail-body">
+              <div data-simplebar className="nicescroll-bar">
+                <div className="d-flex flex-xxl-nowrap flex-wrap">
+                <div className="contact-info w-100">
       <div
         className="resultTable"
         style={{
@@ -366,7 +377,7 @@ function DoctorVisitsPrint({ modalPrint, setModalPrint }) {
                       {" " + totalPrice}դր
                     </p>
                   </div>
-                </section>
+                </section> 
               </>
             )}
           </Suspense>
@@ -395,7 +406,12 @@ function DoctorVisitsPrint({ modalPrint, setModalPrint }) {
           </button>
         </footer>
       </div>
-    </>
+      </div>
+                </div>
+              </div>
+            </div>
+          </Modal.Body>
+        </Modal>
   );
 }
 

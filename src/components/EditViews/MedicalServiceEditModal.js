@@ -1,4 +1,4 @@
-import React, { Suspense, useState } from "react";
+import React, { Suspense, useRef, useState } from "react";
 import { Form, FormProvider, useForm } from "react-hook-form";
 import { Modal } from "react-bootstrap";
 import FeatherIcon from "feather-icons-react";
@@ -17,11 +17,13 @@ import {
   shortName_validation,
 } from "../../utils/inputValidations";
 import { MEDICALSERVICES_URL } from "../../utils/constants";
+import { Editor } from "@tinymce/tinymce-react";
 
 function MedicalServiceEditModal({ medicalService, setEditRow, refreshData }) {
   const [errMsg, setErrMsg] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const axiosPrivate = useAxiosPrivate();
+  const editorRef = useRef(null);
 
   const methods = useForm({
     mode: "onChange",
@@ -58,10 +60,9 @@ function MedicalServiceEditModal({ medicalService, setEditRow, refreshData }) {
           +purchasePrice !== medicalService?.purchasePrice
             ? purchasePrice
             : null,
-        additional:
-          additional?.trim() !== medicalService?.additional?.trim()
-            ? additional
-            : null,
+        additional: editorRef.current.getContent({ format: "text" }).trim()!==medicalService?.additional?.trim()?editorRef.current.getContent({ format: "text" }):null,
+
+
       };
       const updatedFields = deleteNullProperties(updatedMedicalService);
       console.log(updatedFields);
@@ -182,19 +183,10 @@ function MedicalServiceEditModal({ medicalService, setEditRow, refreshData }) {
                                     />
                                   </div>
                                 </div>
-
-                                <div className="row gx-3">
-                                  <div className="col-sm-6">
-                                    <Input
-                                      {...additional_validation}
-                                      defaultValue={medicalService?.additional}
-                                    />
-                                  </div>
-                                </div>
                               </div>
                             </div>
                           </div>
-                          {/* <div className="separator-full"></div>
+                          <div className="separator-full"></div>
                           <div className="card">
                         <div className="card-header">
                           <a href="#">Հավելյալ տվյալներ</a>
@@ -222,8 +214,8 @@ function MedicalServiceEditModal({ medicalService, setEditRow, refreshData }) {
                               <div className="row gx-12">
                                     <div className="col-sm-12">
                               <Editor
-                                                                apiKey={process.env.REACT_APP_EDITOR_KEY}
-
+                                apiKey={process.env.REACT_APP_EDITOR_KEY}
+                                initialValue={medicalService?.additional}
                                 onInit={(evt, editor) =>
                                   (editorRef.current = editor)
                                 }
@@ -247,7 +239,7 @@ function MedicalServiceEditModal({ medicalService, setEditRow, refreshData }) {
                         </div>
                       </div>
                       <div className="separator-full"></div>
-   */}
+  
                           <div className="modal-footer align-items-center">
                             <button
                               type="button"

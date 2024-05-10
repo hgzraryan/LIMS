@@ -15,7 +15,6 @@ import {
   city_validation,
   street_validation,
   zipCode_validation,
-  additional_validation,
   user_validation,
   password_validation,
 } from "../../utils/inputValidations";
@@ -28,6 +27,7 @@ import CustomPhoneComponent from "../CustomPhoneComponent";
 import CustomDateComponent from "../CustomDateComponent";
 import 'react-phone-number-input/style.css'
 import { CountryDropdown, RegionDropdown,CountryRegionData  } from 'react-country-region-selector';
+import { deleteNullProperties } from "../../utils/helper";
 
 function AddDoctor({ handleToggleCreateModal, refreshData }) {
   const axiosPrivate = useAxiosPrivate();
@@ -187,8 +187,10 @@ function AddDoctor({ handleToggleCreateModal, refreshData }) {
      console.log(newDoctor)
       formData.append("text", JSON.stringify(newDoctor));
       formData.append("image", image);
+      const updatedData = deleteNullProperties(newDoctor)
+
       try {
-        await axiosPrivate.post(REGISTER_DOCTORS, newDoctor, {
+        await axiosPrivate.post(REGISTER_DOCTORS, updatedData, {
           headers: { "Content-Type": "application/json" },
          // headers: { "Content-Type": "multipart/form-data" },
           withCredentials: true,

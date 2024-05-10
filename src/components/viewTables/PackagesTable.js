@@ -11,20 +11,7 @@ import { BiSolidInfoCircle } from 'react-icons/bi';
 import PackagesSvg  from '../../dist/svg/packages.svg'
 import "../../dist/css/data-table.css";
 
-const customData = [
-  {
-    packageId:123,
-    localCode:45678,
-    name:'Բիլիռուբին',
-    price:37000
-  },
-  {
-    packageId:124,
-    localCode:45679,
-    name:'Որովայն',
-    price:42000
-  },
-]
+
 function PackagesTable({
   confirmRef,
   selectedItem,
@@ -32,11 +19,11 @@ function PackagesTable({
   handleDeleteItem,
   handleOpenModal,
   handleCloseModal,
-  //packages,
-  //setPackages,
-  //refreshData,
+  packages,
+  setPackages,
+  refreshData,
 }) {
-  const [packages, setPackages] = useState(customData);
+  //const [packages, setPackages] = useState(customData);
   const [modalInfo, setModalInfo] = useState("");
   const [editRow, setEditRow] = useState(false);
   const handleOpenEditModal = (value) => {
@@ -74,29 +61,12 @@ const columns = useMemo(
     },
     {
       Header: (event) => (
-        <>            
-          <div className="columnHeader">Ներքին կոդ</div>
-        </>
-      ),
-      accessor: "localCode",
-      sortable: true,
-      width:100,
-      Filter: ({ column: { id } })=>(
-        <ColumnFilter
-          id={id}
-          setData={setPackages}
-          placeholder={'ID'}
-        />
-      ),
-    },
-    {
-      Header: (event) => (
         <>
           
           <div className="columnHeader">Անվանում</div>
         </>
       ),
-      accessor: "name",
+      accessor: "packageName",
       sortable: true,
       width:800,
       Filter: ({ column: { id } })=>(
@@ -129,6 +99,43 @@ const columns = useMemo(
     {
       Header: (event) => (
         <>
+          
+          <div className="columnHeader">Ծառ․</div>
+        </>
+      ),
+      accessor: "mServices",
+      width:100,
+      Filter: ({ column: { id } })=>(
+        <></>
+
+      ),
+      Cell: ({ row }) => (
+        <div className="d-flex align-items-center justify-content-center">
+          {row.original?.mServices?.length}
+        </div>
+      ),
+    },
+    {
+      Header: (event) => (
+        <>
+          
+          <div className="columnHeader">Հետ․</div>
+        </>
+      ),
+      accessor: "resList",
+      width:100,
+      Filter: ({ column: { id } })=>(
+        <></>
+      ),
+      Cell: ({ row }) => (
+        <div className="d-flex align-items-center justify-content-center">
+          {row.original?.resList?.length}
+        </div>
+      ),
+    },
+    {
+      Header: (event) => (
+        <>
           <div className="columnHeader">Գործողություններ</div>
         </>
       ),
@@ -142,7 +149,7 @@ const columns = useMemo(
             onClick={() => handleOpenInfoModal(row.original)}
           />
           </div>
-          <div className="d-flex">
+          {/* <div className="d-flex">
             <a
               className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover"
               data-bs-toggle="tooltip"
@@ -172,7 +179,7 @@ const columns = useMemo(
                 </span>
               </span>
             </a>
-          </div>
+          </div> */}
         </div>
       ),
       disableSortBy: true,
@@ -184,7 +191,7 @@ const columns = useMemo(
   ],
   []
 );
-
+console.log(packages)
 const {
   getTableProps,
   getTableBodyProps,
@@ -221,7 +228,7 @@ const {
      modalInfo && (
        <Modal
      show={() => true}
-     size="md"
+     size="xl"
      onHide={() => setModalInfo(false)}
    >
      <Modal.Header closeButton>
@@ -248,26 +255,30 @@ const {
                        />
                  </div>
                  <div className="w-100">
-                      <div className="d-flex justify-content-between">  <span> ID </span> <span>{modalInfo.researchListId}</span></div>
+                      <div className="d-flex justify-content-between">  <span> Ծառայություններ </span> 
+                        <ol>
+                      <span>{modalInfo?.mServices?.map((el,index)=>
+                          <li key={index}>
+                          {el.serviceName}
+                          </li>
+                      )}
+                        </span>
+                        </ol>
+                        </div>
                       <div className="separator-full m-0"></div>
-                      <div className="d-flex justify-content-between">  <span> Հապավում </span> <span>{modalInfo.shortName}</span></div>
-                      <div className="separator-full m-0"></div>
-                      <div className="d-flex justify-content-between">  <span>Անվանում</span> <span>{modalInfo.researchName}</span></div>
-                      <div className="separator-full m-0"></div>
-                      <div className="d-flex justify-content-between">  <span>Նորմա </span> <span>{modalInfo.referenceRange}</span></div>
-                      <div className="separator-full m-0"></div>
-                      <div className="d-flex justify-content-between">  <span>Դասակարգ</span> <span>{modalInfo.category}</span></div>
-                      <div className="separator-full m-0"></div>
-                      <div className="d-flex justify-content-between">  <span>Չափման միավոր</span> <span>{modalInfo.units}</span></div>
-                      <div className="separator-full m-0"></div>
-                      <div className="d-flex justify-content-between">  <span>Արժույթ</span> <span>{modalInfo.currencyCode}</span></div>
-                      <div className="separator-full m-0"></div>
-                      <div className="d-flex justify-content-between">  <span>Արժեք </span> <span>{modalInfo.researchesPrice}</span></div>
-                      <div className="separator-full m-0"></div>                  
-                      <div className="d-flex justify-content-between">  <span>Գրանցված է </span> <span>{moment.utc(modalInfo.createdAt).format('DD-MM-YYYY HH:mm')}</span></div>
-                      <div className="separator-full m-0"></div>      
-                      <div className="d-flex justify-content-between">  <span>Հավելյալ տեղեկություն </span> <span>{modalInfo?.additional}</span></div>
-                      <div className="separator-full m-0"></div>                 
+                      <div className="d-flex justify-content-between">  <span> Հետազոտություններ </span> 
+                        <ol>
+                      <span>{modalInfo?.resList?.map((el,index)=>
+                          <li key={index}>
+                          {el.researchName}
+                          </li>
+                      )}
+                        </span>
+                        </ol>
+                        </div>  
+                        <div className="separator-full m-0"></div>
+                        <div className="d-flex justify-content-between">  <span>Հավելյալ տեղեկություն </span> <span>{modalInfo?.additional}</span></div>
+   
                  </div>
                </div>
              </div>

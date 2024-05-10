@@ -389,7 +389,7 @@ export const email_validation = {
     pattern: {
       value:
         /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-      message: "not valid",
+        message: "Սխալ ձևաչափ",
     },
   },
 };
@@ -425,7 +425,7 @@ export const contactEmail_validation = {
     pattern: {
       value:
         /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-      message: "not valid",
+        message: "Սխալ ձևաչափ",
     },
   },
 };
@@ -516,10 +516,27 @@ export const contactName_validation = {
 };
 export const fullName_validation = {
   name: "fullName",
-  label: "Անուն ազգանուն հայրանուն",
+  label: "Անուն հայրանուն ազգանուն",
   type: "text",
   id: "fullName",
-  placeholder: "Անուն ազգանուն հայրանուն",
+  placeholder: "Անուն հայրանուն ազգանուն",
+  validation: {
+    required: {
+      value: true,
+      message: "պարտադիր",
+    },
+    maxLength: {
+      value: 30,
+      message: "30 characters max",
+    },
+  },
+};
+export const extraReferrer_validation = {
+  name: "extraReferrer",
+  label: "Տեղեկացվածության աղբյուր",
+  type: "text",
+  id: "extraReferrer",
+  placeholder: "Տեղեկացվածության աղբյուր",
   validation: {
     required: {
       value: true,

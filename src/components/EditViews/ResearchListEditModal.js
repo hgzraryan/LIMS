@@ -1,4 +1,4 @@
-import React, { Suspense, useState } from "react";
+import React, { Suspense, useRef, useState } from "react";
 import { Form, FormProvider, useForm, Controller } from "react-hook-form";
 import { Modal } from "react-bootstrap";
 import FeatherIcon from "feather-icons-react";
@@ -25,6 +25,7 @@ import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import LoadingSpinner from "../LoadingSpinner";
 import { RESEARCHLISTS_URL } from "../../utils/constants";
 import { deleteNullProperties } from "../../utils/helper";
+import { Editor } from "@tinymce/tinymce-react";
 
 const researchListClassState = [
   { value: "External", label: "Արտաքին" },
@@ -34,6 +35,7 @@ const researchListClassState = [
 function ResearchListEditModal({ researchList, setEditRow, refreshData }) {
   const [isLoading, setIsLoading] = useState(false);
   const axiosPrivate = useAxiosPrivate();
+  const editorRef = useRef(null);
 
   const methods = useForm({
     mode: "onChange",
@@ -110,8 +112,8 @@ function ResearchListEditModal({ researchList, setEditRow, refreshData }) {
           researchType?.value?.trim() !== researchList?.class?.trim()
             ? researchType?.value
             : null,
-        //additional: editorRef.current.getContent({ format: "text" }),
-        //currency:currency,
+            additional: editorRef.current.getContent({ format: "text" }).trim()!==researchList?.additional?.trim()?editorRef.current.getContent({ format: "text" }):null,
+            //currency:currency,
       };
       const updatedFields = deleteNullProperties(updatedResearchList);
       console.log(updatedFields);
@@ -373,7 +375,7 @@ function ResearchListEditModal({ researchList, setEditRow, refreshData }) {
                               </div>
                             </div>
                           </div>
-                          {/* <div className="separator-full"></div>
+                          <div className="separator-full"></div>
                           <div className="card">
                         <div className="card-header">
                           <a href="#">Հավելյալ տվյալներ</a>
@@ -406,6 +408,7 @@ function ResearchListEditModal({ researchList, setEditRow, refreshData }) {
                                 onInit={(evt, editor) =>
                                   (editorRef.current = editor)
                                 }
+                                initialValue={researchList?.additional}
                                 init={{
                                   plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage advtemplate ai mentions tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss markdown',
                                   toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
@@ -424,7 +427,7 @@ function ResearchListEditModal({ researchList, setEditRow, refreshData }) {
                             </form>
                           </div>
                         </div>
-                      </div> */}
+                      </div>
                           <div className="separator-full"></div>
 
                           <div className="modal-footer align-items-center">

@@ -31,6 +31,7 @@ import CustomPhoneComponent from "../CustomPhoneComponent";
 import CustomDateComponent from "../CustomDateComponent";
 import { deleteNullProperties } from "../../utils/helper";
 import { DOCTORS_URL } from "../../utils/constants";
+import { Editor } from "@tinymce/tinymce-react";
 function DoctorEditModal({ doctor, setEditRow, refreshData }) {
   const [isLoading, setIsLoading] = useState(false);
   const axiosPrivate = useAxiosPrivate();
@@ -38,6 +39,7 @@ function DoctorEditModal({ doctor, setEditRow, refreshData }) {
   const [region, setRegion] = useState("");
   const [gender, setGender] = useState("");
   const [merried, setMerried] = useState("");
+  const editorRef = useRef(null);
 
   const methods = useForm({
     mode: "onChange",
@@ -146,7 +148,7 @@ function DoctorEditModal({ doctor, setEditRow, refreshData }) {
           doctor?.emergencyContactNumber?.trim()
             ? emergencyContactNumber
             : null,
-            additional:additional?.trim() !== doctor?.additional?.trim()?additional:null
+            additional: editorRef.current.getContent({ format: "text" }).trim()!==doctor?.additional?.trim()?editorRef.current.getContent({ format: "text" }):null,
         //profilePictureUrl: "profilePictureUrl",
         //isActive: isActive,
       };
@@ -749,6 +751,59 @@ function DoctorEditModal({ doctor, setEditRow, refreshData }) {
                               </div>
                             </div>
                           </div>
+                          <div className="card">
+                            <div className="card-header">
+                              <a href="#">Հավելյալ տվյալներ</a>
+                              <button
+                                className="btn btn-xs btn-icon btn-rounded btn-light"
+                                data-bs-toggle="tooltip"
+                                data-bs-placement="top"
+                                title=""
+                                data-bs-original-title="Edit"
+                              >
+                                <span
+                                  class="icon"
+                                  data-bs-toggle="modal"
+                                  data-bs-target="#moreContact"
+                                >
+                                  <span class="feather-icon">
+                                    <FeatherIcon icon="edit-2" />
+                                  </span>
+                                </span>
+                              </button>
+                            </div>
+                            <div className="card-body" style={{zIndex:'0'}}>
+                              <div className="modal-body">
+                                <form>
+                                  <div className="row gx-12">
+                                  <div className="col-sm-12">
+                              <Editor
+                                                                apiKey={process.env.REACT_APP_EDITOR_KEY}
+
+                                onInit={(evt, editor) =>
+                                  (editorRef.current = editor)
+                                }
+                                initialValue={doctor?.additional}
+                                init={{
+                                  plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage advtemplate ai mentions tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss markdown',
+                                  toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+                                  tinycomments_mode: 'embedded',
+                                  tinycomments_author: 'Author name',
+                                  mergetags_list: [
+                                    { value: 'First.Name', title: 'First Name' },
+                                    { value: 'Email', title: 'Email' },
+                                  ],
+                                  ai_request: (request, respondWith) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant")),
+                                }}
+                                
+                              />
+                              </div>
+                                  </div>
+                                </form>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="separator-full"></div>
                           <div className="modal-footer align-items-center">
                             <button
                               type="button"

@@ -10,6 +10,7 @@ import { diagName_validation } from "../../utils/inputValidations";
 import {
   AGENTS_URL,
   ORGANIZATIONS_URL,
+  PACKAGES_URL,
   PATIENTS_URL,
   REFDOCTORS_URL,
   REGISTER_DIAGNOSTICS,
@@ -22,6 +23,7 @@ import ErrorSvg from "../../dist/svg/error.svg";
 import makeAnimated from "react-select/animated";
 import LoadingSpinner from "../LoadingSpinner";
 import { useLocation, useNavigate } from "react-router-dom";
+import { deleteNullProperties } from "../../utils/helper";
 
 const diagnosticClassState = [
   { value: "External", label: "Արտաքին" },
@@ -43,13 +45,16 @@ const customPackageData = [
     packageId:123,
     localCode:45678,
     name:'Բիլիռուբին',
-    price:37000
+    price:37000,
+    researches:[30345,30741]
+
   },
   {
     packageId:124,
     localCode:45679,
     name:'Որովայն',
-    price:42000
+    price:42000,
+    researches:[30340,30341]
   },
 ]
 function AddDiagnostic({
@@ -74,6 +79,7 @@ function AddDiagnostic({
   const [researches, setResearches] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [refDoctors, setRefDoctors] = useState([])
+  const [packages, setPackages] = useState([])
 
   const [researchesPrice, setResearchesPrice] = useState(0);
   const [packagesPrice, setPackagesPrice] = useState(0);
@@ -160,6 +166,12 @@ const onResearchSelect = (data) => {
             setIsLoading(false);
           });
         })
+        .then((resp) => {
+          axiosPrivate.get(PACKAGES_URL).then((resp) => {
+            setPackages(resp?.data?.jsonString);
+            setIsLoading(false);
+          });
+        })
         .catch((err) => {
           console.log(err);
           navigate("/login", { state: { from: location }, replace: true });
@@ -226,30 +238,32 @@ const onResearchSelect = (data) => {
       partner: partnerName || null,
       refDoctor:data.refDoctor?.id || null,
       additional: editorRef.current.getContent({ format: "text" }),
-      packages:data?.package.map((el) => el.value)
+      // packages:data?.package.map((el) => el.value)
     };
 
     console.log(newDiagnose);
-    // try {
-    //   await axiosPrivate.post(REGISTER_DIAGNOSTICS, newDiagnose, {
-    //     headers: { "Content-Type": "application/json" },
-    //     withCredentials: true,
-    //   });
+    const updatedData = deleteNullProperties(newDiagnose)
 
-    //   handleToggleCreateModal(false);
-    //   refreshData();
-    //   notify(
-    //     `${newDiagnose.diagnosticsName} Ախտորոշումը ավելացված է`
-    //   );
-    // } catch (err) {
-    //   if (!err?.response) {
-    //     setErrMsg("No Server Response");
-    //   } else if (err.response?.status === 409) {
-    //     setErrMsg("Username Taken");
-    //   } else {
-    //     setErrMsg(" Failed");
-    //   }
-    // }
+    try {
+      await axiosPrivate.post(REGISTER_DIAGNOSTICS, updatedData, {
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+      });
+
+      handleToggleCreateModal(false);
+      refreshData();
+      notify(
+        `${newDiagnose.diagnosticsName} Ախտորոշումը ավելացված է`
+      );
+    } catch (err) {
+      if (!err?.response) {
+        setErrMsg("No Server Response");
+      } else if (err.response?.status === 409) {
+        setErrMsg("Username Taken");
+      } else {
+        setErrMsg(" Failed");
+      }
+    }
   });
   // const { onSubmit, methods } = useSubmitForm(
   //   REGISTER_DIAGNOSTICS,
@@ -756,7 +770,7 @@ const onResearchSelect = (data) => {
                                       control={methods.control}
                                       isClearable={true}
                                       defaultValue={null}
-                                      rules={{ required: true }}
+                                      rules={{ required: false }}
                                       render={({ field }) => (
                                         <Select
                                           {...field}
@@ -808,7 +822,7 @@ const onResearchSelect = (data) => {
                                       control={methods.control}
                                       isClearable={true}
                                       defaultValue={null}
-                                      rules={{ required: true }}
+                                      rules={{ required: false }}
                                       render={({ field }) => (
                                         <Select
                                           {...field}
@@ -820,9 +834,9 @@ const onResearchSelect = (data) => {
                                           isMulti
                                           closeMenuOnSelect={false}
                                           components={animatedComponents}
-                                          options={customPackageData.map((pack) => ({
+                                          options={packages.map((pack) => ({
                                             value: pack.packageId,
-                                            label: `${pack?.packageId} - ${pack?.name}`,
+                                            label: `${pack?.packageId} - ${pack?.packageName}`,
                                             //label:`${res.researchName} - ${res.price}`,
                                             price: pack?.price
                                           }))}

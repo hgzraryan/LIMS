@@ -24,6 +24,7 @@
     "@types/react-big-calendar": "^1.8.9",
     "axios": "^0.24.0",
     "bootstrap": "^4.6.2",
+    "bootstrap-icons": "^1.11.3",
     "css-loader": "^6.7.3",
     "faker": "^6.6.6",
     "feather-icons-react": "^0.6.2",

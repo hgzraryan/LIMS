@@ -139,7 +139,7 @@ function UserDetails() {
                         <ul className="list-group list-group-flush">
                             <li className="list-group-item border-0">
                               <span>
-                                <i className="bi bi-geo-alt-fill text-disabled me-2"></i>
+                                <i className="bi bi-file-earmark-person text-disabled me-2"></i>
                                 <span className="text-muted">Նույնականացման համար:</span>
                               </span>
                               <span className="ms-2">
@@ -152,7 +152,9 @@ function UserDetails() {
                                 <span className="text-muted">Հասցե:</span>
                               </span>
                               <span className="ms-2">
-                                {userDetails?.contact?.address?.country + ", " + userDetails?.contact?.address?.city}
+                                {userDetails?.contact?.address?.country + ", " + userDetails?.contact?.address?.state
+                                + ", " + userDetails?.contact?.address?.city+ ", " + userDetails?.contact?.address?.street
+                                + ", " + userDetails?.contact?.address?.zipCode}
                               </span>
                             </li>
                             {/* <li className="list-group-item border-0">
@@ -164,17 +166,35 @@ function UserDetails() {
                             </li> */}
                             <li className="list-group-item border-0">
                               <span>
-                                <i className="bi bi-house-door-fill text-disabled me-2"></i>
+                                <i className="bi bi-calendar-event text-disabled me-2"></i>
                                 <span className="text-muted">Գրանցման ամսաթիվ:</span>
                               </span>
                               <span className="ms-2">{moment.utc(userDetails?.createdAt).format('DD-MM-YYYY HH:mm')}</span>
                             </li>
                             <li className="list-group-item border-0">
+                            <span>
+                              <i className="bi bi-calendar-event text-disabled me-2"></i>
+                              <span className="text-muted">
+                                Վերջին թարմացում:
+                              </span>
+                            </span>
+                            <span className="ms-2">
+                            {moment.utc(userDetails?.updatedAt).format('DD-MM-YYYY HH:mm')}
+                            </span>
+                          </li>
+                            <li className="list-group-item border-0">
                               <span>
-                                <i className="bi bi-briefcase-fill text-disabled me-2"></i>
+                                <i className="bi bi-calendar-event text-disabled me-2"></i>
                                 <span className="text-muted">Ծննդյան ամսաթիվ:</span>
                               </span>
                               <span className="ms-2">{moment.utc(userDetails?.birthday).format('DD-MM-YYYY')}</span>
+                            </li>
+                            <li className="list-group-item border-0">
+                              <span>
+                                <i className="bi bi-gender-ambiguous text-disabled me-2"></i>
+                                <span className="text-muted">Սեռ:</span>
+                              </span>
+                              <span className="ms-2">{userDetails?.gender === 'Male' ? 'Արական' :userDetails?.gender === 'Female'? 'Իգական':''}</span>
                             </li>
                             <li className="list-group-item border-0">
                               <span>
@@ -194,12 +214,26 @@ function UserDetails() {
                             </li>
                             <li className="list-group-item border-0">
                               <span>
-                                <i className="bi bi-briefcase-fill text-disabled me-2"></i>
+                                <i className="bi bi-file-earmark-person text-disabled me-2"></i>
+                                <span className="text-muted">Լրացուցիչ կոնտակտ:</span>
+                              </span>
+                              <span className="ms-2">{userDetails?.contact?.emergencyContactName}</span>
+                            </li>
+                            <li className="list-group-item border-0">
+                              <span>
+                                <i className="bi bi-phone text-disabled me-2"></i>
+                                <span className="text-muted">Լրացուցիչ կոնտակտի հեռախոս:</span>
+                              </span>
+                              <span className="ms-2">{userDetails?.contact?.emergencyContactNumber}</span>
+                            </li>
+                            <li className="list-group-item border-0">
+                              <span>
+                                <i className="bi bi-file-earmark-person text-disabled me-2"></i>
                                 <span className="text-muted">Ծածկանուն:</span>
                               </span>
                               <span className="ms-2">{userDetails?.username}</span>
                             </li>
-                            <li className="list-group-item border-0">
+                            {/* <li className="list-group-item border-0">
                             <span>
                               <i className="bi bi-info text-disabled me-2"></i>
                               <span className="text-muted">
@@ -209,7 +243,7 @@ function UserDetails() {
                             <span className="ms-2">
                               {userDetails?.additionalData}
                             </span>
-                          </li>
+                          </li> */}
 
                           </ul>
                       </div>
@@ -321,7 +355,7 @@ function UserDetails() {
                           <ol>
                             <li>
                               <p className="card-text mb-5">
-                                {/* Երկրորդ հերթափոխ */}
+                              {userDetails?.additionalData}
                               </p>
                             </li>
                           </ol>

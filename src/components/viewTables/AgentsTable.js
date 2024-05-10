@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useMemo, useState } from "react";
 import ComponentToConfirm from "../ComponentToConfirm";
 import { useBlockLayout, useFilters, useResizeColumns, useRowSelect, useSortBy, useTable } from "react-table";
@@ -7,6 +8,8 @@ import { ColumnFilter } from "../ColumnFilter";
 import "../../dist/css/data-table.css";
 import AgentEditModal from "../EditViews/AgentEditModal";
 import moment from "moment";
+import AgentsInfoModal from "../infoModals/AgentsInfoModal";
+import { BiSolidInfoCircle } from "react-icons/bi";
 
 function AgentsTable({
   confirmRef,
@@ -20,11 +23,15 @@ function AgentsTable({
   refreshData
 }) {
   const [editRow, setEditRow] = useState(false);
+  const [modalInfo, setModalInfo] = useState(false);
 
   const handleOpenEditModal = (value) => {
     setEditRow((prev) => value);
   };
-
+  const handleOpenInfoModal = (data) => {
+    
+    setModalInfo((prev) => data);
+  };
   const handleRowClick = (row) => {
     // Add logic here to handle row click
     console.log("Clicked row:", row);
@@ -173,6 +180,13 @@ function AgentsTable({
         Cell: ({ row }) => (
           <div className="d-flex align-items-center">
             <div className="d-flex">
+              <BiSolidInfoCircle
+              cursor={"pointer"}
+              size={"1.5rem"}
+              onClick={() => handleOpenInfoModal(row.original)}
+            />
+            </div>
+            <div className="d-flex">
               <a
                 className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover"
                 data-bs-toggle="tooltip"
@@ -250,6 +264,10 @@ function AgentsTable({
 
   return (
     <>
+    {
+      modalInfo && (
+        <AgentsInfoModal modalInfo={modalInfo} setModalInfo={setModalInfo}/>
+      )}
       {editRow && (
         <AgentEditModal agent={editRow} setEditRow={setEditRow} refreshData={refreshData} />
       )}

@@ -6,6 +6,7 @@ import mainLogo from "../../dist/img/main-logo.png";
 import { useTable } from "react-table";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import moment from "moment";
+import { Modal } from "react-bootstrap";
 
 function ResearchesPrint({ modalPrint, setModalPrint }) {
   const axiosPrivate = useAxiosPrivate();
@@ -101,6 +102,17 @@ function ResearchesPrint({ modalPrint, setModalPrint }) {
     });
   return (
     <>
+    <Modal show={() => true} size="xl" onHide={() => setModalPrint(false)}>
+          <Modal.Header closeButton>
+            <Modal.Title
+              style={{ width: "100%", textAlign: "center" }}
+            ></Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <div className="contact-body contact-detail-body">
+              <div data-simplebar className="nicescroll-bar">
+                <div className="d-flex flex-xxl-nowrap flex-wrap">
+                  <div className="contact-info w-100">
       <div
         className="resultTable"
         style={{
@@ -347,6 +359,8 @@ function ResearchesPrint({ modalPrint, setModalPrint }) {
                   </section>
                   <section className="container">
                     <div className="container">
+                    {statusBoard[1].researches?.length 
+                    ?
                       <table
                         className="table table-striped"
                         style={{ border: "1px solid black" }}
@@ -364,8 +378,7 @@ function ResearchesPrint({ modalPrint, setModalPrint }) {
                               ))}
                             </tr>
                           ))}
-                        </thead>
-                        {statusBoard[1].researches?.length && (
+                        </thead>                         
                           <tbody {...getTableBodyProps()}>
                             {rows.map((row, i) => {
                               prepareRow(row);
@@ -385,15 +398,16 @@ function ResearchesPrint({ modalPrint, setModalPrint }) {
                               );
                             })}
                           </tbody>
-                        )}
                       </table>
+                    :<div style={{display:'flex',justifyContent:'center',fontWeight:'bold',fontSize:'20px'}}>
+                      <p>Նմուշառման փուլում հետազոտություններ չկան</p>
+                    </div>}
                     </div>
                   </section>
                   <section className="container">
                     <div className="total d-flex flex-column align-items-end">
                       {modalPrint.totalPrice < modalPrint.originalPrice ?(
                           <p style={{ marginRight: "6px" }}>Զեղչ {modalPrint?.originalPrice-modalPrint?.totalPrice}դր․</p>
-
                         ):''
                       }
                       <p>
@@ -430,6 +444,12 @@ function ResearchesPrint({ modalPrint, setModalPrint }) {
           </button>
         </footer>
       </div>
+      </div>
+                </div>
+              </div>
+            </div>
+          </Modal.Body>
+        </Modal>
     </>
   );
 }

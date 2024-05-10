@@ -37,6 +37,7 @@ const roleState = [
     { label:'Բժիշկ',name: "Doctor", value: 9578 },  
   ]
 function CreateUser({ setIsOpen,refreshData }) {
+  const [errMsg, setErrMsg] = useState("");
   const axiosPrivate = useAxiosPrivate();
   const intupAvatarRef = useRef(null);
   const [imageUrl, setImageUrl] = useState(MissingAvatar);
@@ -119,7 +120,6 @@ function CreateUser({ setIsOpen,refreshData }) {
   const methods = useForm({
     mode: "onChange",
   });
-  const [errMsg, setErrMsg] = useState("");
 
   /*------------------ Create user Component --------------------*/
   const handleToggleCreateModal = (value) => {
@@ -154,7 +154,7 @@ function CreateUser({ setIsOpen,refreshData }) {
     emergencyContactNumber,
     emergencyContactName,
     dateOfBirth,
-    additional}) => {
+    }) => {
    
     const newUser = {
       additionalData: editorRef.current.getContent({ format: "text" }),
@@ -201,18 +201,19 @@ function CreateUser({ setIsOpen,refreshData }) {
     } catch (err) {
       if (!err?.response) {
         setErrMsg("No Server Response");
-      } else if (err.response?.status === 409) {
-        setErrMsg("Username Taken");
-      } else {
+      } else if (err.response?.status === 409 & err.response?.data?.message ==="Conflict email already registered"  ) {
+        setErrMsg("Կրկնվող էլ․ հասցե");
+      } else if (err.response?.status === 409 & err.response?.data?.message ==="Conflict username already registered"  ) {
+        setErrMsg("Կրկնվող ծածկանուն");
+      }else {
         setErrMsg(" Failed");
       }
     }
   });
-  const onRoleSelect = (data) => {
-   
+  const onRoleSelect = (data) => {   
     const  role ={ [data?.name]: data?.value };
     return role
-    // use when multiselect
+    // use when select is multi
     // let rolesArr = {};
     // for (let role of data) {
     //   rolesArr[role.name]=role.value
@@ -758,6 +759,15 @@ function CreateUser({ setIsOpen,refreshData }) {
                           </div>
                         </div>
                         <div className="separator-full"></div> 
+                        {errMsg && 
+                        <div>
+                          <ol>
+                            <li style={{fontSize:'12px',color:'red',listStyle: 'inside'}}>
+                            {errMsg}
+                            </li>
+                          </ol>
+                        </div>
+                        }
                     <div className="modal-footer align-items-center">
                       <button
                         type="button"

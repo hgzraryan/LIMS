@@ -72,7 +72,7 @@ const handleCloseModal = () => {
                   <Dropdown.Toggle
                     variant="success"
                     id="dropdown-basic"
-                    className="btn btn-sm btn-outline-secondary flex-shrink-0 dropdown-toggle d-lg-inline-block d-none"
+                    className="btn btn-sm btn-outline-secondary flex-shrink-0 dropdown-toggle d-lg-inline-block"
                   >
                     Ավելացնել նոր
                   </Dropdown.Toggle>

@@ -236,7 +236,7 @@ function DoctorsVisitsDetails() {
                         <ul className="list-group list-group-flush">
                           <li className="list-group-item border-0">
                             <span>
-                              <i className="bi bi-credit-card-2-front-fill text-disabled me-2"></i>
+                              <i className="bi bi-file-earmark-person text-disabled me-2"></i>
                               <span className="text-muted">
                                 Նույնականացման համար:
                               </span>
@@ -247,7 +247,7 @@ function DoctorsVisitsDetails() {
                           </li>
                           <li className="list-group-item border-0">
                             <span>
-                              <i className="bi bi-activity text-disabled me-2"></i>
+                              <i className="bi bi-file-earmark-person text-disabled me-2"></i>
                               <span className="text-muted">Հաճախորդի ID:</span>
                             </span>
                             <span className="ms-2">
@@ -256,7 +256,7 @@ function DoctorsVisitsDetails() {
                           </li>
                           <li className="list-group-item border-0">
                             <span>
-                              <i className="bi bi-ui-checks text-disabled me-2"></i>
+                              <i className="bi bi-file-earmark-person text-disabled me-2"></i>
                               <span className="text-muted">Բժիշկ:</span>
                             </span>
                             <span className="ms-2">
@@ -265,7 +265,7 @@ function DoctorsVisitsDetails() {
                           </li>
                           <li className="list-group-item border-0">
                             <span>
-                              <i className="bi bi-calendar-month-fill text-disabled me-2"></i>
+                              <i className="bi bi-calendar-event text-disabled me-2"></i>
                               <span className="text-muted">
                                 Գրանցման ամսաթիվ:
                               </span>
@@ -276,7 +276,18 @@ function DoctorsVisitsDetails() {
                           </li>
                           <li className="list-group-item border-0">
                             <span>
-                              <i className="bi bi-calendar-month-fill text-disabled me-2"></i>
+                              <i className="bi bi-calendar-event text-disabled me-2"></i>
+                              <span className="text-muted">
+                                Վերջին թարմացում:
+                              </span>
+                            </span>
+                            <span className="ms-2">
+                            {moment.utc(doctorsVisitsDetails?.updatedAt).format('DD-MM-YYYY HH:mm')}
+                            </span>
+                          </li>
+                          <li className="list-group-item border-0">
+                            <span>
+                              <i className="bi bi-calendar-event text-disabled me-2"></i>
                               <span className="text-muted">
                                 Այցի ամսաթիվ:
                               </span>
@@ -284,16 +295,6 @@ function DoctorsVisitsDetails() {
                             </span>
                             <span className="ms-2">
                               {moment.utc(doctorsVisitsDetails?.visitDate).format('DD-MM-YYYY HH:mm')}
-                            </span>
-                          </li>
-
-                          <li className="list-group-item border-0">
-                            <span>
-                              <i className="bi bi-file-medical-fill text-disabled me-2"></i>
-                              <span className="text-muted">Բժիշկ:</span>
-                            </span>
-                            <span className="ms-2">
-                              {/* {doctorsVisitsDetails?.doctors && doctorsVisitsDetails?.doctors[0]} */}
                             </span>
                           </li>
                           <li className="list-group-item border-0">
@@ -333,7 +334,7 @@ function DoctorsVisitsDetails() {
                           </li>
                           <li className="list-group-item border-0">
                             <span>
-                              <i className="bi bi-info text-disabled me-2"></i>
+                              <i className="bi bi-info-lg text-disabled me-2"></i>
                               <span className="text-muted">
                                 Հավելյալ տեղեկություն:
                               </span>
@@ -355,33 +356,18 @@ function DoctorsVisitsDetails() {
                         </div>
                         <div className="card-body">
                           <div className="d-flex justify-content-center align-items-center ms-10 me-10">
+                            {console.log(doctorsVisitsDetails)}
                             <ol>
-                              {doctorsVisitsDetails.medicalServices? doctorsVisitsDetails.medicalServices.map((el)=>{
-                                  return <li>{el}</li>
+                              {doctorsVisitsDetails[0].mServices? doctorsVisitsDetails[0].mServices.map((el)=>{
+                                  return <li key={el.medServiceId}>{el.serviceName}</li>
+                                    
                               }):'' }
                             </ol>
                           </div>
                         </div>
                         <div className="card-footer justify-content-between"></div>
                       </div>
-                      <div className="card card-border card-profile-feed mb-lg-4 mb-3">
-                        <div className="card-header card-header-action">
-                          <div className="media align-items-center">
-                            <p>Բուժ․ ծառայություններ</p>
-                          </div>
-                          <div className="card-action-wrap"></div>
-                        </div>
-                        <div className="card-body">
-                          <div className="d-flex justify-content-center align-items-center ms-10 me-10">
-                            <ol>
-                              {doctorsVisitsDetails.medicalServices? doctorsVisitsDetails.medicalServices.map((el)=>{
-                                  return <li>{el}</li>
-                              }):'' }
-                            </ol>
-                          </div>
-                        </div>
-                        <div className="card-footer justify-content-between"></div>
-                      </div>
+                     
                     </div>
                     
                   </>

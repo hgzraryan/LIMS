@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Suspense } from "react";
+import React, { useState, useEffect, Suspense, useRef } from "react";
 import { Modal } from "react-bootstrap";
 import FeatherIcon from "feather-icons-react";
 import { Controller, Form, FormProvider, useForm } from "react-hook-form";
@@ -28,6 +28,8 @@ import {
 } from "react-country-region-selector";
 import LoadingSpinner from "../LoadingSpinner";
 import { deepEqual, deleteNullProperties, objToArrWithObjects } from "../../utils/helper";
+import { USERS_URL } from "../../utils/constants";
+import { Editor } from "@tinymce/tinymce-react";
 const roleState = [
   { label:'Ադմին',name: "Admin", value: 5150 },
   { label:'Հաստատող',name: "Approver", value: 3345 },
@@ -37,6 +39,7 @@ const roleState = [
   { label:'Բժիշկ',name: "Doctor", value: 9578 },  
 ]
 function UserEditModal({ user, setEditRow, refreshData }) {
+  const [errMsg, setErrMsg] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const axiosPrivate = useAxiosPrivate();
   const [country, setCountry] = useState("");
@@ -48,6 +51,8 @@ function UserEditModal({ user, setEditRow, refreshData }) {
   const methods = useForm({
     mode: "onChange",
   });
+  const editorRef = useRef(null);
+
   const animatedComponents = makeAnimated();
   const colourStyles = {
     control: (styles, { isFocused, isSelected }) => ({
@@ -176,18 +181,15 @@ function UserEditModal({ user, setEditRow, refreshData }) {
           phone: phone?.trim() !== user?.contact?.phone?.trim() ? phone : null,
         },
         gender: gender?.trim() !== user?.gender?.trim() ? gender : null,
-        additionalData: additional?.trim()!==user?.additionalData?.trim()?additional:null,
         maritalStatus:
           maritalStatus?.trim() !== user?.maritalStatus?.trim()
             ? maritalStatus
             : null,
-
-        // username:user,
-        // password:password,
         roles:!deepEqual(objToArrWithObjects(user?.roles),roles)?onRoleSelect(roles):null ,
-        //type:userType,
         birthday:
           user?.birthday !== newDateOfBirthString ? newDateOfBirthString : null,
+          additionalData: editorRef.current.getContent({ format: "text" }).trim()!==user?.additionalData?.trim()?editorRef.current.getContent({ format: "text" }):null,
+
       };
       // formData.append("text", JSON.stringify(newUser));
       // formData.append("image", image);
@@ -195,28 +197,31 @@ function UserEditModal({ user, setEditRow, refreshData }) {
       const updatedFields = deleteNullProperties(updatedUser);
 
       console.log('updatedFields',updatedFields);
-      // try {
-      //   await axiosPrivate.put(
-      //     USERS_URL,
-      //     { updatedFields, id: user.userId },
-      //     {
-      //       headers: { "Content-Type": "application/json" },
-      //       withCredentials: true,
-      //     }
-      //   );
+      try {
+        await axiosPrivate.put(
+          USERS_URL,
+          { updatedFields, id: user.userId },
+          {
+            headers: { "Content-Type": "application/json" },
+            withCredentials: true,
+          }
+        );
 
-      //   setEditRow(false);
-      //   refreshData();
-      //   //notify(`${newUser.firstname} ${newUser.lastname} աշխատակիցը ավելացված է`)
-      // } catch (err) {
-      //   // if (!err?.response) {
-      //   //   setErrMsg("No Server Response");
-      //   // } else if (err.response?.status === 409) {
-      //   //   setErrMsg("Username Taken");
-      //   // } else {
-      //   //   setErrMsg(" Failed");
-      //   // }
-      // }
+        setEditRow(false);
+        refreshData();
+        //notify(`${newUser.firstname} ${newUser.lastname} աշխատակիցը ավելացված է`)
+      }
+      catch (err) {
+            if (!err?.response) {
+              setErrMsg("No Server Response");
+            } else if (err.response?.status === 409 & err.response?.data?.message ==="Conflict email already registered"  ) {
+              setErrMsg("Կրկնվող էլ․ հասցե");
+            } else if (err.response?.status === 409 & err.response?.data?.message ==="Conflict username already registered"  ) {
+              setErrMsg("Կրկնվող ծածկանուն");
+            }else {
+              setErrMsg(" Failed");
+            }
+          }
     }
   );
 
@@ -469,10 +474,36 @@ function UserEditModal({ user, setEditRow, refreshData }) {
                                     />{" "}
                                   </div>
                                   <div className="col-sm-6">
-                                  <Input {...additional_validation} defaultValue={
-                                        user?.additionalData
-                                      }/>
-                                </div>
+                                    <div className="form-group">
+                                      <div className="d-flex justify-content-between me-2">
+                                        <label
+                                          className="form-label"
+                                          htmlFor="birthday"
+                                        >
+                                          Ծննդյան ամսաթիվ
+                                        </label>
+                                        {methods.formState.errors
+                                          .dateOfBirth && (
+                                          <span className="error text-red">
+                                            <span>
+                                              <img
+                                                src={ErrorSvg}
+                                                alt="errorSvg"
+                                              />
+                                            </span>{" "}
+                                            պարտադիր
+                                          </span>
+                                        )}
+                                      </div>
+                                      <div>
+                                        <CustomDateComponent
+                                          name="dateOfBirth"
+                                          control={methods.control}
+                                          defaultValue={user?.birthday}
+                                        />
+                                      </div>
+                                    </div>
+                                  </div>
                                 </div>
                                 <div className="row gx-3 mt-2 mb-2">
                                 <div className="col-sm-6">
@@ -633,42 +664,6 @@ function UserEditModal({ user, setEditRow, refreshData }) {
                               </div> */}
 
                                 <div className="row gx-3">
-                                  {/* <div className="col-sm-6">
-                                  <Input {...position_validation} />
-                                </div> */}
-                                  <div className="col-sm-6">
-                                    <div className="form-group">
-                                      <div className="d-flex justify-content-between me-2">
-                                        <label
-                                          className="form-label"
-                                          htmlFor="birthday"
-                                        >
-                                          Ծննդյան ամսաթիվ
-                                        </label>
-                                        {methods.formState.errors
-                                          .dateOfBirth && (
-                                          <span className="error text-red">
-                                            <span>
-                                              <img
-                                                src={ErrorSvg}
-                                                alt="errorSvg"
-                                              />
-                                            </span>{" "}
-                                            պարտադիր
-                                          </span>
-                                        )}
-                                      </div>
-                                      <div>
-                                        <CustomDateComponent
-                                          name="dateOfBirth"
-                                          control={methods.control}
-                                          defaultValue={user?.birthday}
-                                        />
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                                <div className="row gx-3">
                                   <div className="col-sm-6">
                                     <Input
                                       {...emergencyContactName_validation}
@@ -710,80 +705,67 @@ function UserEditModal({ user, setEditRow, refreshData }) {
                               </div>
                             </div>
                           </div>
-                          <div className="separator-full"></div>
                           <div className="card">
-                          <div className="card-header">
-                            <a href="#">Դերեր</a>
-                            <button
-                              className="btn btn-xs btn-icon btn-rounded btn-light"
-                              data-bs-toggle="tooltip"
-                              data-bs-placement="top"
-                              title=""
-                              data-bs-original-title="Add Tags"
+                        <div className="card-header">
+                          <a href="#">Հավելյալ տվյալներ</a>
+                          <button
+                            className="btn btn-xs btn-icon btn-rounded btn-light"
+                            data-bs-toggle="tooltip"
+                            data-bs-placement="top"
+                            title=""
+                            data-bs-original-title="Edit"
+                          >
+                            <span
+                              class="icon"
+                              data-bs-toggle="modal"
+                              data-bs-target="#moreContact"
                             >
-                              <span
-                                className="icon"
-                                data-bs-toggle="modal"
-                                data-bs-target="#tagsInput"
-                              >
-                                <span className="feather-icon">
-                                  <FeatherIcon icon="edit-2" />
-                                </span>
+                              <span class="feather-icon">
+                                <FeatherIcon icon="edit-2" />
                               </span>
-                            </button>
-                          </div>
-                          <div className="card-body">
-                            <div className="modal-body">
-                              <form>
-                              <div className="row gx-3">
-                                    <div className="col-sm-12">
-                                      <div className="d-flex justify-content-between me-2">
-                                        <label
-                                          className="form-label"
-                                          htmlFor="research"
-                                          placeholder={"Ընտրել"}
-                                        >
-                                        Ավելացնել դերեր
-                                        </label>
-                                        {methods.formState.errors.roles && (
-                                          <span className="error text-red">
-                                            <span>
-                                              <img src={ErrorSvg} alt="errorSvg" />
-                                            </span>{" "}
-                                            պարտադիր
-                                          </span>
-                                        )}
-                                      </div>
-                                      <div className="form-control">
-                                        <Controller
-                                          name="roles"
-                                          control={methods.control}
-                                          isClearable={true}
-                                          defaultValue={ (objToArrWithObjects(user?.roles).length>1)
-                                            ?objToArrWithObjects(user?.roles).slice(1)
-                                            :objToArrWithObjects(user?.roles) }
-                                          rules={{ required: true }}
-                                          render={({ field }) => (
-                                            <Select
-                                              {...field}
-                                              //isMulti
-                                              closeMenuOnSelect={false}
-                                              components={animatedComponents}
-                                              options={roleState}
-                                              styles={colourStyles}
-                                              placeholder={"Ընտրել"}
-                                              menuPlacement="top"
-                                            />
-                                          )}
-                                        />
-                                      </div>
-                                    </div>
-                                  </div>
-                              </form>
-                            </div>
+                            </span>
+                          </button>
+                        </div>
+                        <div className="card-body" style={{zIndex:'0'}}>
+                          <div className="modal-body">
+                            <form>
+                              <div className="row gx-12">
+                                   <div className="col-sm-12">
+                              <Editor
+                                                                apiKey={process.env.REACT_APP_EDITOR_KEY}
+
+                                onInit={(evt, editor) =>
+                                  (editorRef.current = editor)
+                                }
+                                initialValue={user?.additionalData}
+                                init={{
+                                  plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage advtemplate ai mentions tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss markdown',
+                                  toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+                                  tinycomments_mode: 'embedded',
+                                  tinycomments_author: 'Author name',
+                                  mergetags_list: [
+                                    { value: 'First.Name', title: 'First Name' },
+                                    { value: 'Email', title: 'Email' },
+                                  ],
+                                  ai_request: (request, respondWith) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant")),
+                                }}
+                                
+                              />
+                              </div>
+                              </div>
+                            </form>
                           </div>
                         </div>
-
+                      </div> 
+                      {errMsg && 
+                        <div>
+                          <ol>
+                            <li style={{fontSize:'12px',color:'red',listStyle: 'inside'}}>
+                            {errMsg}
+                            </li>
+                          </ol>
+                        </div>
+                        }
                           <div className="modal-footer align-items-center">
                             <button
                               type="button"

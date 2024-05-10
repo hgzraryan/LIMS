@@ -133,7 +133,7 @@ function CreateUserRole({setIsOpenRole,getUsers}) {
                               </div>
                             </div>
                             <div className="row gx-3">
-                          <div className="col-sm-6">
+                          {/* <div className="col-sm-6">
                               <label className="form-label" htmlFor="doctor">
                               Տեսակը
                               </label>
@@ -155,7 +155,7 @@ function CreateUserRole({setIsOpenRole,getUsers}) {
                                 }}
                                 
                               />
-                            </div>
+                            </div> */}
                           </div>
                             
                           </div>

@@ -69,6 +69,9 @@ function ReportsExport() {
           internalStatus:item.internalStatus==="Approval"?'Ընդունված':item.internalStatus,
           externalStatus:item.externalStatus==="Approval"?'Ընդունված':item.externalStatus,
           clientType:item.clientType==="patient"?'Այցելու':item.clientType==="organization"?'Պատվիրատու':'',
+          paymentDate:item?.paymentDate?moment(item?.paymentDate).format('DD-MM-YYYY HH:mm'):null,
+          diagnosisDate:item?.diagnosisDate?moment(item?.diagnosisDate).format('DD-MM-YYYY HH:mm'):null,
+          doctors:item?.doctors?.length?item.doctors[0]:null
       }));
         const workBook = utils.book_new()
         const workSheet = utils.json_to_sheet(exportData1)

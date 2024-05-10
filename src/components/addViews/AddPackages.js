@@ -12,27 +12,36 @@ import ErrorSvg from "../../dist/svg/error.svg";
 import makeAnimated from "react-select/animated";
 import LoadingSpinner from "../LoadingSpinner";
 import { name_validation } from '../../utils/inputValidations';
-import { REGISTER_PACKAGES, RESEARCHLISTS_URL } from '../../utils/constants';
+import { MEDICALSERVICES_URL, REGISTER_PACKAGES, RESEARCHLISTS_URL } from '../../utils/constants';
 
 function PackagesTable({
   handleToggleCreateModal,
   refreshData,
-  doctors,
 }) {
   const navigate = useNavigate()
   const location = useLocation();
   const axiosPrivate = useAxiosPrivate();
   const [isLoading, setIsLoading] = useState(true);
-  const [researches, setResearches] = useState(true);
+  const [researches, setResearches] = useState([]);
   const [errMsg, setErrMsg] = useState("");
   const [researchesPrice, setResearchesPrice] = useState(0);
   const editorRef = useRef(null);
+  const [medicalServicePrice,setMedicalServicePrice] = useState(0)
+  const [medicalServices,setMedicalServices] = useState([])
 
   const onResearchSelect = (data) => {
     const calcPrice = data.reduce((acc,el)=>{
       return acc+=el.price
     },0)
     setResearchesPrice(calcPrice)
+
+  };
+  const onMedServiceSelect = (data) => {
+    console.log(data);
+    const calcPrice = data.reduce((acc,el)=>{
+      return acc+=el.price
+    },0)
+    setMedicalServicePrice(calcPrice)
 
   };
   const methods = useForm({
@@ -71,6 +80,12 @@ function PackagesTable({
         setResearches(resp?.data?.jsonString);
         setIsLoading(false);
       })
+      .then((resp) => {
+        axiosPrivate.get(MEDICALSERVICES_URL).then((resp) => {
+          setMedicalServices(resp?.data?.jsonString);
+          setIsLoading(false);
+        });
+      })
       .catch((err) => {
           console.log(err);
           navigate("/login", { state: { from: location }, replace: true });
@@ -93,8 +108,10 @@ function PackagesTable({
     const newPackage = {
       packageName: data.name,
       researchList: data?.research.map((el) => el.value),
-      price: researchesPrice,
+      price: researchesPrice+medicalServicePrice,
       additional: editorRef.current.getContent({ format: "text" }),
+      medicalServices:data.medicalServices?.map((el)=>el.value),
+
     };
 
     console.log(newPackage);
@@ -210,7 +227,7 @@ function PackagesTable({
                                       control={methods.control}
                                       isClearable={true}
                                       defaultValue={null}
-                                      rules={{ required: true }}
+                                      rules={{ required: false }}
                                       render={({ field }) => (
                                         <Select
                                           {...field}
@@ -235,6 +252,61 @@ function PackagesTable({
                                     
                                   </div>
                                 
+                                </div>
+                                <div className="col-sm-12">
+                                  <div className="d-flex justify-content-between me-2">
+
+                                  {medicalServicePrice ? <div className="d-flex flex-row-reverse" ><p style={{color:'#4eafcb',}}>Ընդհանուր արժեք։ <span style={{fontWeight:'bold'}} >{medicalServicePrice}</span>դր․</p></div>:''}
+
+                                    <label
+                                      className="form-label"
+                                      htmlFor="research"
+                                      placeholder={"Ընտրել"}
+                                    >
+                                      Ընտրել ծառայությունը
+                                    </label>
+                                    {methods.formState.errors.medicalServices && (
+                                      <span className="error text-red">
+                                        <span>
+                                          <img src={ErrorSvg} alt="errorSvg" />
+                                        </span>{" "}
+                                        պարտադիր
+                                      </span>
+                                    )}
+                                  </div>
+                                  <div className="form-control">
+                                  <Controller
+                                    name="medicalServices"
+                                    control={methods.control}
+                                    isClearable={true}
+                                    defaultValue={null}
+                                    rules={{ required: false }}
+                                    render={({ field }) => (
+                                      <div style={{ zIndex: 9999 }}> {/* Set zIndex for the wrapper div */}
+                                        <Select
+                                          {...field}
+                                          isMulti
+                                          components={animatedComponents}
+                                          closeMenuOnSelect={false}
+                                          options={medicalServices.map((res) => ({
+                                            value: res.medServiceId,
+                                            label: `${res?.medServiceId}. ${res?.serviceName}`,
+                                            price: res?.price
+                                          }))}
+                                          // styles={colourStyles}
+                                          menuPortalTarget={document.body} 
+                                          styles={{ ...colourStyles,menuPortal: base => ({ ...base, zIndex: 9999 }) }}
+                                          placeholder={"Բժշկական ծառայություններ"}
+                                          onChange={(val) => {
+                                            field.onChange(val);
+                                            onMedServiceSelect(val);
+                                          }}
+                                          value={field.value}
+                                        />
+                                      </div>
+                                    )}
+                                  />
+                                  </div>
                                 </div>
                               </div>
                             </div>

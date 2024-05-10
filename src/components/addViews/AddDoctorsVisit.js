@@ -12,6 +12,7 @@ import LoadingSpinner from '../LoadingSpinner';
 import makeAnimated from "react-select/animated";
 import CustomDateTimeComponent from '../CustomDateTimeComponent';
 import { Editor } from '@tinymce/tinymce-react';
+import moment from 'moment';
 const customPackageData = [
   {
     packageId:123,
@@ -35,6 +36,7 @@ function AddDoctorsVisit({
     const [patients,setPatients] = useState([])
     const [medicalServices,setMedicalServices] = useState([])
     const [medicalServicePrice,setMedicalServicePrice] = useState(0)
+    const [notValidVisitDate,setNotValidVisitDate] = useState(false)
     const [errMsg, setErrMsg] = useState("");
     const axiosPrivate = useAxiosPrivate();
     const [isLoading, setIsLoading] = useState(true);
@@ -110,6 +112,8 @@ function AddDoctorsVisit({
         progress: undefined,
         theme: "light",
       });
+
+      console.log(methods.formState.errors)
       const onSubmit = methods.handleSubmit(async ({client,
         doctor,
         visitDate,medicalServices}) => {
@@ -117,20 +121,9 @@ function AddDoctorsVisit({
             additional: editorRef.current.getContent({ format: "text" }),
             clientId:client?.value,
             doctor:doctor,
-            medicalServices:medicalServices?.map((el)=>el.value),
-            visitDate:visitDate ? new Date(
-              visitDate.getTime() - visitDate.getTimezoneOffset() * 60000
-          )
-          .toISOString()
-          .replace('T', ' ')
-          .replace(/\.\d{3}Z/, '') 
-          .split(':')
-          .slice(0, -1)
-          .join(':')  : null,   
-          
+            medicalServices: medicalServices? medicalServices?.map((el) => el.value): null,
+            visitDate:visitDate?moment(visitDate).format('YYYY-MM-DD HH:mm'):null,          
         }
-    
-        console.log('newDoctorsVisit',newDoctorsVisit);
         try {
           await axiosPrivate.post(REGISTER_DOCTORSVISITS, newDoctorsVisit, {
             headers: { "Content-Type": "application/json" },
@@ -316,14 +309,19 @@ function AddDoctorsVisit({
                                   className="form-label"
                                   htmlFor="purchaseDate"
                                   >
-                                  Այցի ամսաթիվ
+                                  Այցի ժամ
                                 </label>
-                                  {methods.formState.errors.visitDate && (
+                                  {(methods.formState.errors.visitDate & !methods.formState.errors.notValidVisitDate?.message) ? (
                                     <span className="error text-red"><span><img src={ErrorSvg} alt="errorSvg"/></span> պարտադիր</span>
+                                    ):''}
+                                  {methods.formState.errors.notValidVisitDate?.message && (
+                                   
+                                    <span className="error text-red"><span><img src={ErrorSvg} alt="errorSvg"/></span> Սխալ ձևաչափ</span>
                                     )}
+
                                     </div>
                                 <div>
-                                <CustomDateTimeComponent name="visitDate" control={methods.control} required={true}/>
+                                <CustomDateTimeComponent name="visitDate" methods={methods} control={methods.control} required={true}/>
                                 </div>
                               </div>
                             </div>

@@ -16,9 +16,7 @@ import { ColumnFilter } from "../ColumnFilter";
 import { BiSolidInfoCircle } from "react-icons/bi";
 import { MdViewKanban } from "react-icons/md";
 import ResearchViewBoard from "../StatusBoard/ResearchViewBoard";
-import { Modal } from "react-bootstrap";
 import DiagnosticsDeactivate from "../DeactivateItems/DiagnosticsDeactivate";
-import diagnoseSvg from "../../../src/dist/img/diagnose.svg";
 import { useNavigate } from "react-router-dom";
 import "../../dist/css/data-table.css";
 import organizationsSvg from "../../dist/svg/organizationsSvg.svg";
@@ -30,6 +28,7 @@ import cancelledSvg from "../../dist/svg/cancelled.svg";
 import isActiveSvg from "../../dist/svg/isActive.svg";
 import posTerminalSvg from "../../dist/svg/posTerminal.svg";
 import CreatePayByPos from "../CreatePayByPos";
+import DiagnosticsInfoModal from "../infoModals/DiagnosticsInfoModal";
 
 
 function DiagnosticsTable({
@@ -419,139 +418,12 @@ function DiagnosticsTable({
     <>
     {openPosModal && (
       <CreatePayByPos actionData={openPosModal} handleClosePosPay={handleClosePosPay} refreshData={refreshData}/>         
-    )
-
-    }
+    )}
       {modalInfo && (
-        <Modal show={() => true} size="md" onHide={() => setModalInfo(false)}>
-          <Modal.Header closeButton>
-            <Modal.Title style={{ width: "100%", textAlign: "center" }}>
-              {modalInfo.name}
-            </Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <div className="contact-body contact-detail-body">
-              <div data-simplebar className="nicescroll-bar">
-                <div className="d-flex flex-xxl-nowrap flex-wrap">
-                  <div className="contact-info w-100">
-                    <div className="d-flex justify-content-center align-items-center">
-                      <img
-                        width={"150px"}
-                        height={"200px"}
-                        style={{
-                          borderRadius: "5px",
-                        }}
-                        src={diagnoseSvg}
-                        className="avatar_upload_preview"
-                        alt="preview"
-                      />
-                    </div>
-                    <div className="w-100">
-                      <div className="d-flex justify-content-between">
-                        {" "}
-                        <span>ID</span> <span>{modalInfo.diagnosticsId}</span>
-                      </div>
-                      <div className="separator-full m-0"></div>
-                      <div className="d-flex justify-content-between">
-                        {" "}
-                        <span>Ախտորոշման Տեսակը </span>{" "}
-                        <span>
-                          {modalInfo.class === "Internal"
-                            ? "Ներքին"
-                            : "External"
-                            ? "Արտաքին"
-                            : "Այլ"}
-                        </span>
-                      </div>
-                      <div className="separator-full m-0"></div>
-                      <div className="d-flex justify-content-between">
-                        {" "}
-                        {/* <span>Բժիշկ </span> <span>{modalInfo?.doctors && modalInfo.doctors[0]}</span> */}
-                      </div>
-                      <div className="separator-full m-0"></div>
-                      <div className="d-flex justify-content-between">
-                        {" "}
-                        <span>Հաճախորդի ID </span>{" "}
-                        <span>{modalInfo.clientId}</span>
-                      </div>
-                      <div className="separator-full m-0"></div>
-                      <div className="d-flex justify-content-between">
-                        {" "}
-                        <span>Գրանցվել է </span>{" "}
-                        <span>{moment.utc(modalInfo.createdAt).format('DD-MM-YYYY HH:mm')}</span>                        
-                      </div>
-
-                      <div className="separator-full m-0"></div>
-                      <div className="d-flex justify-content-between">
-                        {" "}
-                        <span>ներքին հետ․ կարգավիճակ </span>{" "}
-                        <span>{modalInfo.internalStatus}</span>
-                      </div>
-                      <div className="separator-full m-0"></div>
-                      <div className="d-flex justify-content-between">
-                        {" "}
-                        <span>Արտաքին հետ․ կարգավիճակ </span>{" "}
-                        <span>{modalInfo.externalStatus}</span>
-                      </div>
-                      <div className="separator-full m-0"></div>
-                      <div className="d-flex justify-content-between">
-                        {" "}
-                        <span>Վճարման կոդ </span>{" "}
-                        <span>{modalInfo?.authcode}</span>
-                      </div>
-                      <div className="separator-full m-0"></div>
-                      <div className="d-flex justify-content-between">
-                        {" "}
-                        <span>Վճարման տեսակը </span>{" "}
-                        <span>{modalInfo.paymentMethod}</span>
-                      </div>
-                      <div className="separator-full m-0"></div>
-                      <div className="d-flex justify-content-between">
-                        <span>Վճարման ամսաթիվը </span>{" "}
-                        <span>{moment.utc(modalInfo.paymentDate).format('DD-MM-YYYY HH:mm')}</span>
-                      </div>
-                      <div className="separator-full m-0"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="modal-footer ">
-              <button
-                type="button"
-                className="btn btn-secondary"
-                onClick={() => setModalInfo(false)}
-              >
-                Փակել
-              </button>
-            </div>
-          </Modal.Body>
-        </Modal>
+        <DiagnosticsInfoModal modalInfo={modalInfo} setModalInfo={setModalInfo}/>
       )}
       {modalPrint && (
-        <Modal show={() => true} size="xl" onHide={() => setModalPrint(false)}>
-          <Modal.Header closeButton>
-            <Modal.Title
-              style={{ width: "100%", textAlign: "center" }}
-            ></Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <div className="contact-body contact-detail-body">
-              <div data-simplebar className="nicescroll-bar">
-                <div className="d-flex flex-xxl-nowrap flex-wrap">
-                  <div className="contact-info w-100">
-                    <ResearchesPrint
-                      modalPrint={modalPrint}
-                      setModalPrint={setModalPrint}
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="modal-footer "></div>
-          </Modal.Body>
-        </Modal>
+                    <ResearchesPrint modalPrint={modalPrint} setModalPrint={setModalPrint} />
       )}
       <table
         className="table nowrap w-100 mb-5 dataTable no-footer diagTable"

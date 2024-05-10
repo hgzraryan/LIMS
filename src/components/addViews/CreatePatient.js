@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { Suspense, useEffect, useRef } from "react";
 import { Modal } from "react-bootstrap";
 import FeatherIcon from "feather-icons-react";
 import ErrorSvg from "../../dist/svg/error.svg";
@@ -11,6 +11,8 @@ import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import {
   DOCTORS_URL,
   MEDICALSERVICES_URL,
+  PACKAGES_URL,
+  PATIENTS_URL,
   REFDOCTORS_URL,
   REGISTER_PATIENT,
 } from "../../utils/constants";
@@ -25,6 +27,10 @@ import {
   passport_validation,
   respPersonFullName_validation,
   respPersonPassport_validation,
+  fullName_validation,
+  extraBroker_validation,
+  extrareferer_validation,
+  extraReferrer_validation,
 } from "../../utils/inputValidations";
 import CustomPhoneComponent from "../CustomPhoneComponent";
 import "react-datepicker/dist/react-datepicker.css";
@@ -39,8 +45,27 @@ import {
   CountryRegionData,
 } from "react-country-region-selector";
 import CustomDateTimeComponent from "../CustomDateTimeComponent";
-import { calculateAge } from "../../utils/helper";
-
+import { calculateAge, deleteNullProperties } from "../../utils/helper";
+import LoadingSpinner from "../LoadingSpinner";
+import { useLocation, useNavigate } from "react-router-dom";
+import moment from "moment";
+const brokers = [
+  {
+    brokerId:123,
+    label:"Stepan Martirosyan",
+    value:'Stepan Martirosyan',
+  },
+  {
+    brokerId:456,
+    label:"Gagik Lalayan",
+    value:'Gagik Lalayan',
+  },
+  {
+    brokerId:789,
+    label:"Andranik Kirakosyan",
+    value:'Andranik Kirakosyan',
+  },
+]
 const customPackageData = [
   {
     packageId:123,
@@ -58,15 +83,25 @@ const customPackageData = [
 function CreatePatient({
   handleToggleCreateModal,
   refreshData,
-  researchState,
+  researchState
 }) {
+  const navigate = useNavigate()
+
+  const location = useLocation();
+
   const [medicalServices, setMedicalServices] = useState([]);
+  const [patients, setPatients] = useState([]);
   const [addDiagnostic, setAddDiagnostic] = useState(false);
   const [addDoctorsVisit, setAddDoctorsVisit] = useState(false);
+  const [addReferrer, setAddReferrer] = useState(false);
+  const [referrer, setReferrer] = useState('Ավելացնել աղբյուր');
+  const [extraReferrer, setExtraReferrer] = useState(false);
   const [gender, setGender] = useState("");
   const [doctor, setDoctor] = useState("Առանց բժիշկ");
+  const [patient, setPatient] = useState("Առանց բժիշկ");
   const [extraDoctor, setExtraDoctor] = useState(false);
   const [errMsg, setErrMsg] = useState("");
+  const [isLoading, setIsLoading] = useState("");
   const [doctors, setDoctors] = useState([]);
   const [country, setCountry] = useState("");
   const [region, setRegion] = useState("");
@@ -74,15 +109,12 @@ function CreatePatient({
   const [additionalPhone, setAdditionalPhone] = useState(false);
   const [researchesPrice, setResearchesPrice] = useState(0);
   const [packagesPrice, setPackagesPrice] = useState(0);
+  const [packages, setPackages] = useState([]);
   const [medicalServicePrice,setMedicalServicePrice] = useState(0)
   const [isChild,setIsChild]= useState(false)
   const axiosPrivate = useAxiosPrivate();
   const editorRef = useRef(null);
   const animatedComponents = makeAnimated();
-
-  const handleCheckIfChild = () =>{
-    setIsChild(false)
-  }
   const onMedServiceSelect = (data) => {
           console.log(data);
           const calcPrice = data.reduce((acc,el)=>{
@@ -142,13 +174,19 @@ function CreatePatient({
         .then((resp) => {
           axiosPrivate.get(MEDICALSERVICES_URL).then((resp) => {
             setMedicalServices(resp?.data?.jsonString);
-            //setIsLoading(false);
+            setIsLoading(false);
           });
         })
         .then((resp) => {
           axiosPrivate.get(REFDOCTORS_URL).then((resp) => {
             setRefDoctors(resp?.data?.jsonString);
-            //setIsLoading(false);
+            setIsLoading(false);
+          });
+        }) 
+        .then((resp) => {
+          axiosPrivate.get(PATIENTS_URL).then((resp) => {
+            setPatients(resp?.data?.jsonString);
+            setIsLoading(false);
           });
         })
         .catch((err) => {
@@ -168,6 +206,8 @@ function CreatePatient({
       progress: undefined,
       theme: "light",
     });
+    console.log(methods.formState.errors)
+
   const onSubmit = methods.handleSubmit(
     async ({
       firstName,
@@ -192,18 +232,25 @@ function CreatePatient({
       addPhone,
       respPersonFullName,
       respPersonPassport,
-      packages
+      referrer,
+      extraReferrer,
+      packages,
     }) => {
+
+console.log(extraReferrer)
+console.log(referrer === 'other')
       const newPatient = {
         firstName: firstName,
         lastName: lastName,
         midName: midName,
+        referrer: (referrer!=='other')?referrer:null,
+        extraReferrer: (referrer === 'other' & !!extraReferrer)?extraReferrer:(referrer !== 'other')?null:null ,
         age: calculateAge(dateOfBirth),
         //lastHandlingDate: handlingDate.current,
         // internalStatus: "Approval",
         // externalStatus:  null,
         researchList: research ? research?.map((el) => el.value) : null,
-        packages:packages.map((el) => el.value),
+        // packages:packages.map((el) => el.value),
         additional: editorRef.current.getContent({ format: "text" }),
         gender: gender,
         doctors: doctor || null,
@@ -230,52 +277,32 @@ function CreatePatient({
         },
         medicalHistory: "medicalHistory",
         visitDoctor: visitDoctor ? visitDoctor.id : null,
-        medicalServices: medicalServices
-          ? medicalServices?.map((el) => el.value)
-          : null,
-        visitDate: visitDate
-          ? new Date(
-              visitDate.getTime() - visitDate.getTimezoneOffset() * 60000
-            )
-              .toISOString()
-              .replace("T", " ")
-              .replace(/\.\d{3}Z/, "")
-              .split(":")
-              .slice(0, -1)
-              .join(":")
-          : null,
-        dateOfBirth: dateOfBirth
-          ? new Date(
-              dateOfBirth.getTime() - dateOfBirth.getTimezoneOffset() * 60000
-            )
-              .toISOString()
-              .split("T")[0]
-          : null,
-
+        medicalServices: medicalServices? medicalServices?.map((el) => el.value): null,
+        visitDate:visitDate?moment(visitDate).format('YYYY-MM-DD HH:mm'):null,          
+        dateOfBirth: dateOfBirth ? moment(dateOfBirth).format('YYYY-MM-DD') : null,
       };
+      const updatedData = deleteNullProperties(newPatient)
+      console.log(updatedData)
+      try {
+        await axiosPrivate.post(REGISTER_PATIENT, updatedData, {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+        });
 
-      console.log(newPatient);
-
-      // try {
-      //   await axiosPrivate.post(REGISTER_PATIENT, newPatient, {
-      //     headers: { "Content-Type": "application/json" },
-      //     withCredentials: true,
-      //   });
-
-      //   handleToggleCreateModal(false);
-      //   refreshData();
-      //   notify(
-      //     `${newPatient.firstName} ${newPatient.lastName} հաճախորդը ավելացված է`
-      //   );
-      // } catch (err) {
-      //   if (!err?.response) {
-      //     setErrMsg("No Server Response");
-      //   } else if (err.response?.status === 409) {
-      //     setErrMsg("Username Taken");
-      //   } else {
-      //     setErrMsg(" Failed");
-      //   }
-      // }
+        handleToggleCreateModal(false);
+        refreshData();
+        notify(
+          `${newPatient.firstName} ${newPatient.lastName} հաճախորդը ավելացված է`
+        );
+      } catch (err) {
+        if (!err?.response) {
+          setErrMsg("No Server Response");
+        } else if (err.response?.status === 409) {
+          setErrMsg("Username Taken");
+        } else {
+          setErrMsg(" Failed");
+        }
+      }
     }
   );
   const onGenderSelect = (value) => {
@@ -289,6 +316,16 @@ function CreatePatient({
       setExtraDoctor(false);
     }
     setDoctor((prev) => data?.id);
+  };
+  const onReferrerSelect = (data) => { 
+    console.log(data)   
+    if (data.label === "Ավելացնել աղբյուր") {
+      setExtraReferrer(true);
+      setReferrer(data?.label)
+    } else {
+      setExtraReferrer(false);
+      setReferrer(data?.label)
+    }
   };
   const onResearchSelect = (data) => {
     const calcPrice = data.reduce((acc,el)=>{
@@ -321,6 +358,10 @@ function CreatePatient({
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
+      <Suspense fallback={<LoadingSpinner />}>
+          {isLoading ? (
+            <LoadingSpinner />
+          ) : (
         <FormProvider {...methods}>
           <div className="contact-body contact-detail-body">
             <div data-simplebar className="nicescroll-bar">
@@ -504,7 +545,6 @@ function CreatePatient({
                                   )}
                                 </div>
                          <div className="d-flex">
-
                                 <CustomPhoneComponent
                                   name="addPhone"
                                   control={methods.control}
@@ -515,7 +555,6 @@ function CreatePatient({
                                           </div>                         
                                   </div>
                               </div>
-
                               </>
                               }
                               <div
@@ -526,12 +565,8 @@ function CreatePatient({
                               }}
                               >
                                 {!additionalPhone &&
-                               
-                                  
-                                  
                                   <FeatherIcon icon="plus-circle" width='35' onClick={(e)=>toggleAdditionalPhone(e,true)} style={{ cursor: 'pointer' }}   />
-                                
-                                  }
+                                }
                               </div>
                             </div>
                           </div>
@@ -539,8 +574,36 @@ function CreatePatient({
                             <div className="col-sm-6">
                               <Input {...passport_validation} />
                             </div>
-
                             <div className="col-sm-6">
+                              <div className="form-group">
+                                <div className="d-flex justify-content-between me-2">
+                                  <label
+                                    className="form-label"
+                                    htmlFor="birthday"
+                                  >
+                                    Ծննդյան ամսաթիվ
+                                  </label>
+                                  {methods.formState.errors.dateOfBirth && (
+                                    <span className="error text-red">
+                                      <span>
+                                        <img src={ErrorSvg} alt="errorSvg" />
+                                      </span>{" "}
+                                      պարտադիր
+                                    </span>
+                                  )}
+                                </div>
+                                <div>
+                                  <CustomDateComponent
+                                    name="dateOfBirth"
+                                    control={methods.control}
+                                    setIsChild={setIsChild}
+                                  />
+                                </div>
+                              </div>
+                            </div> 
+                          </div>
+                          <div className="row gx-3">    
+                          <div className="col-sm-3">
                               <div className="d-flex justify-content-between me-2">
                                 <label
                                   className="form-check-label"
@@ -596,60 +659,20 @@ function CreatePatient({
                                 </div>
                               </div>
                             </div>
-                            {/* <div className="col-sm-6">
-                              <div className="form-group">
-                                <label
-                                  className="form-label"
-                                  htmlFor="handlingDate"
-                                >
-                                  Հանձնման ամսաթիվ
-                                </label>
-                                <div>
-                                  <DatePicker
-                                    selected={startDate}
-                                    showTimeSelect
-                                    onChange={(date) => getDate(date)}
-                                    dateFormat={"dd/MM/yyyy HH:mm"}
-                                    timeFormat="HH:mm"
-                                    minDate={new Date()}
-                                    isClearable
-                                    placeholderText="Select date"
-                                  />
-                                </div>
-                              </div>
-                            </div> */}
-                          </div>
-                          <div className="row gx-3">
-                            <div className="col-sm-6">
-                              <div className="form-group">
-                                <div className="d-flex justify-content-between me-2">
-                                  <label
-                                    className="form-label"
-                                    htmlFor="birthday"
-                                  >
-                                    Ծննդյան ամսաթիվ
-                                  </label>
-                                  {methods.formState.errors.dateOfBirth && (
-                                    <span className="error text-red">
-                                      <span>
-                                        <img src={ErrorSvg} alt="errorSvg" />
-                                      </span>{" "}
-                                      պարտադիր
-                                    </span>
-                                  )}
-                                </div>
-                                <div>
-                                  <CustomDateComponent
-                                    name="dateOfBirth"
-                                    control={methods.control}
-                                    handleCheckIfChild={handleCheckIfChild}
-                                    setIsChild={setIsChild}
-                                  />
-                                </div>
-                              </div>
                             </div>
-                            <div className="col-sm-6 d-flex">
-                              <div className="col-sm-6">
+                        </div>
+                      </div>
+                    </div>
+                    <div className="separator-full"></div>
+                    <div className="card">
+                          <div className="card-body">
+                          <div className="row gx-3 d-flex" style={{
+                              // 
+                              marginTRop:'10px',
+                              padding:'5px',
+                              borderRadius:'10px'}} >
+                          
+                              <div className="col-sm-4">
                                 <label>Ավելացնել ախտորոշում</label>
                                 <div>
                                   <input
@@ -664,13 +687,14 @@ function CreatePatient({
                                   />
                                 </div>
                               </div>
-                              <div className="col-sm-6">
-                                <label>Բժշկի այց</label>
+                              <div className="col-sm-4">
+                                <label>Ավելացնել բժշկի այց</label>
                                 <div>
                                   <input
                                     type="checkbox"
                                     name="selectDoctorsVisit"
                                     checked={addDoctorsVisit}
+                                    disabled={addDiagnostic}
                                     onChange={(e) =>
                                       setAddDoctorsVisit(e.target.checked)
                                     }
@@ -678,12 +702,24 @@ function CreatePatient({
                                   />
                                 </div>
                               </div>
-                            </div>
+                              <div className="col-sm-4">
+                                <label>Ավելացնել տեղեկացվածության աղբյուր</label>
+                                <div>
+                                  <input
+                                    type="checkbox"
+                                    name="selectBroker"
+                                    checked={addReferrer}
+                                    onChange={(e) =>
+                                      setAddReferrer(e.target.checked)
+                                    }
+                                    style={{ transform: "scale(1.5)" }}
+                                  />
+                                </div>
+                              </div>
+                          </div>
                           </div>
                         </div>
-                      </div>
-                    </div>
-                    <div className="separator-full"></div>
+                        <div className="separator-full"></div>
                           {isChild &&
                           <>
                            <div className="card">
@@ -978,7 +1014,7 @@ function CreatePatient({
                                       control={methods.control}
                                       isClearable={true}
                                       defaultValue={null}
-                                      rules={{ required: true }}
+                                      rules={{ required: false }}
                                       render={({ field }) => (
                                         <Select
                                           {...field}
@@ -990,7 +1026,7 @@ function CreatePatient({
                                           isMulti
                                           closeMenuOnSelect={false}
                                           components={animatedComponents}
-                                          options={customPackageData.map((pack) => ({
+                                          options={packages.map((pack) => ({
                                             value: pack.packageId,
                                             label: `${pack?.packageId} - ${pack?.name}`,
                                             //label:`${res.researchName} - ${res.price}`,
@@ -1117,23 +1153,20 @@ function CreatePatient({
                                       >
                                         Այցի ամսաթիվ
                                       </label>
-                                      {methods.formState.errors.visitDate && (
-                                        <span className="error text-red">
-                                          <span>
-                                            <img
-                                              src={ErrorSvg}
-                                              alt="errorSvg"
-                                            />
-                                          </span>{" "}
-                                          պարտադիր
-                                        </span>
-                                      )}
+                                       {(methods.formState.errors.visitDate & !methods.formState.errors.notValidVisitDate?.message) ? (
+                                    <span className="error text-red"><span><img src={ErrorSvg} alt="errorSvg"/></span> պարտադիր</span>
+                                    ):''}
+                                  {methods.formState.errors.notValidVisitDate?.message && (
+                                   
+                                    <span className="error text-red"><span><img src={ErrorSvg} alt="errorSvg"/></span> Սխալ ձևաչափ</span>
+                                    )}
                                     </div>
                                     <div>
                                       <CustomDateTimeComponent
                                         name="visitDate"
                                         control={methods.control}
                                         required={false}
+                                        methods={methods}
                                       />
                                     </div>
                                   </div>
@@ -1196,6 +1229,111 @@ function CreatePatient({
                                   </div>
                                 </div>
                               </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="separator-full"></div>
+                      </>
+                    )}
+                    {addReferrer && (
+                      <>
+                        <div className="card">
+                          <div className="card-header">
+                            <a href="#">Տեղեկացվածության աղբյուր</a>
+                            <button
+                              className="btn btn-xs btn-icon btn-rounded btn-light"
+                              data-bs-toggle="tooltip"
+                              data-bs-placement="top"
+                              title=""
+                              data-bs-original-title="Add Tags"
+                            >
+                              <span
+                                className="icon"
+                                data-bs-toggle="modal"
+                                data-bs-target="#tagsInput"
+                              >
+                                <span className="feather-icon">
+                                  <FeatherIcon icon="edit-2" />
+                                </span>
+                              </span>
+                            </button>
+                          </div>
+                          <div className="card-body">
+                            <div className="modal-body">
+                              <div className="row gx-3">
+                               
+                              <div className="col-sm-6">
+                                  <div className="d-flex justify-content-between me-2">
+                                    <label
+                                      className="form-label"
+                                      htmlFor="brokers"
+                                    >
+                                      Աղբյուր
+                                    </label>
+                                    {methods.formState.errors.referrer && (
+                                      <span className="error text-red">
+                                        <span>
+                                          <img src={ErrorSvg} alt="errorSvg" />
+                                        </span>{" "}
+                                        պարտադիր
+                                      </span>
+                                    )}
+                                  </div>
+                                  {console.log(addReferrer)}
+                                  <div className="form-control">
+                                    <Controller
+                                      name="referrer"
+                                      control={methods.control}
+                                      defaultValue={null}
+                                      rules={{ required: false }}
+                                      render={({ field }) => (
+                                        <Select
+                                          {...field}
+                                          onChange={(val) => {
+                                            field.onChange(val ? val.value : null);
+                                            onReferrerSelect(val);
+                                          }}
+                                          value={patients.find(
+                                            (option) =>
+                                              option.value === referrer
+                                          )}
+                                          options={[
+                                            {
+                                              value: "other",
+                                              label: "Ավելացնել աղբյուր",
+                                              id: null,
+                                            },
+                                            ...patients.map((item) => ({
+                                              value: item.patientId,
+                                              label: `${item?.patientId}․  ${item?.firstName} ${item?.lastName } ${item?.midName }`,
+                                            })),
+                                          ]}
+                                          placeholder={"Ընտրել"}
+                                        />
+                                      //   <Select
+                                      //   {...field}
+                                      //   onChange={(val) => {
+                                      //     field.onChange(val.value);
+                                      //     onDiagnosticClassSelect(val);
+                                      //   }}
+                                      //   value={diagnosticClassState.find(
+                                      //     (option) =>
+                                      //       option.value === diagnosticsType
+                                      //   )}
+                                      //   options={diagnosticClassState}
+                                      //   placeholder={"Ընտրել"}
+                                      // />
+                                      )}
+                                    />
+                                  </div>
+                                </div>
+                                {extraReferrer && 
+                                <div className="col-sm-6">
+                              <Input {...extraReferrer_validation} />
+                            </div>
+                                }
+                              </div>
+                              
                             </div>
                           </div>
                         </div>
@@ -1278,6 +1416,8 @@ function CreatePatient({
             </div>
           </div>
         </FormProvider>
+         )}
+         </Suspense>
       </Modal.Body>
     </Modal>
   );

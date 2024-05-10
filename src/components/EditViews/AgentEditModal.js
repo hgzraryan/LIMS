@@ -1,4 +1,4 @@
-import React, { Suspense, useState,useEffect } from "react";
+import React, { Suspense, useState,useEffect, useRef } from "react";
 import { Form, FormProvider, useForm, Controller } from "react-hook-form";
 import ErrorSvg from "../../dist/svg/error.svg";
 import { Modal } from "react-bootstrap";
@@ -16,13 +16,15 @@ import {
   } from "react-country-region-selector";
 import CustomPhoneComponent from "../CustomPhoneComponent";
 import { AGENTS_URL } from "../../utils/constants";
+import { Editor } from "@tinymce/tinymce-react";
 function AgentEditModal({ agent, setEditRow, refreshData }) {
     const [errMsg, setErrMsg] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const axiosPrivate = useAxiosPrivate();
     const [country, setCountry] = useState("");
     const [region, setRegion] = useState("");
-  
+    const editorRef = useRef(null);
+
     const methods = useForm({
       mode: "onChange",
     });
@@ -88,8 +90,8 @@ function AgentEditModal({ agent, setEditRow, refreshData }) {
             },
           },
            role:description?.trim() !== agent?.role?.trim() ? description : null,
-          //additional: editorRef.current.getContent({ format: "text" }),
-        };
+           additional: editorRef.current.getContent({ format: "text" }).trim()!==agent?.additional?.trim()?editorRef.current.getContent({ format: "text" }):null,
+          };
         const updatedFields = deleteNullProperties(updatedAgent);
         console.log(updatedAgent);
         try {
@@ -329,7 +331,7 @@ function AgentEditModal({ agent, setEditRow, refreshData }) {
                         </div>
                       </div>
                     </div>
-                    {/* <div className="separator-full"></div>
+                    <div className="separator-full"></div>
                     <div className="card">
                       <div className="card-header">
                         <a href="#">Հավելյալ տվյալներ</a>
@@ -357,8 +359,8 @@ function AgentEditModal({ agent, setEditRow, refreshData }) {
                             <div className="row gx-12">
                                   <div className="col-sm-12">
                               <Editor
-                                                                apiKey={process.env.REACT_APP_EDITOR_KEY}
-
+                                apiKey={process.env.REACT_APP_EDITOR_KEY}
+                                initialValue={agent?.additional}
                                 onInit={(evt, editor) =>
                                   (editorRef.current = editor)
                                 }
@@ -380,7 +382,7 @@ function AgentEditModal({ agent, setEditRow, refreshData }) {
                           </form>
                         </div>
                       </div>
-                    </div> */}
+                    </div>
                     <div className="separator-full"></div>
 
                     <div className="modal-footer align-items-center">

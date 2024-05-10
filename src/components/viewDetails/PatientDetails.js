@@ -234,7 +234,7 @@ function PatientDetails() {
       {
         Header: (event) => (
           <>
-            <div className="columnHeader">գրանցման ամսաթիվ</div>
+            <div className="columnHeader">Գրանցման ամսաթիվ</div>
           </>
         ),
         Cell:({row})=>(
@@ -449,7 +449,6 @@ function PatientDetails() {
                         alt="user"
                         className="avatar-img border border-4 border-white"
                       />
-                      <span className="badge badge-indicator badge-success  badge-indicator-xl position-bottom-end-overflow-1 me-1"></span>
                     </div>
                     <h4>
                       {" "}
@@ -609,7 +608,21 @@ function PatientDetails() {
                           </span>
                         </span>
                       </span>
-                      <span className="nav-link-text">Ախտորոշումներ</span>
+                      <span className="nav-link-text d-flex">Ախտորոշումներ 
+                      {patientDiagnostics?.length 
+                      ?<div 
+                      className="d-flex justify-content-center align-items-center" 
+                      style={{
+                        marginLeft:'5px',
+                        width:'20px',
+                        height:'20px', 
+                        border:'2px solid #4eafcb',
+                        borderRadius:'100px',
+                        fontWeight:'bold',
+                        color:'#4eafcb',
+                        paddingTop:'1px'
+                        }}>{patientDiagnostics?.length}</div>
+                      :<></>}</span>
                     </a>
                   </li>
                   <li className="nav-item">
@@ -629,7 +642,21 @@ function PatientDetails() {
                           <path d="M50.4,79.7h1.4c5.2-.5,2.4-3.7,2.4-3.7h0c-3.2-4.6-5-9.1-5-13.5a13.74,13.74,0,0,1,.6-4.2c.2-2-.6-2.5-1-2.7h-.2a18.48,18.48,0,0,0-2.4-.1,24.26,24.26,0,0,0-24,20.9c0,1.2.4,3.5,4.2,3.5H50.2C50.2,79.7,50.3,79.7,50.4,79.7Z"/></svg>
                           </span>
                         </span>
-                      <span className="nav-link-text">Բժշկի այցելություններ</span>
+                      <span className="nav-link-text d-flex">Բժշկի այցելություններ
+                      {(patientVisits?.length>0) 
+                      ?<div 
+                      className="d-flex justify-content-center align-items-center" 
+                      style={{
+                        marginLeft:'5px',
+                        width:'20px',
+                        height:'20px', 
+                        border:'2px solid #4eafcb',
+                        borderRadius:'100px',
+                        fontWeight:'bold',
+                        color:'#4eafcb',
+                        paddingTop:'1px'
+                        }}>{patientVisits?.length}</div>
+                      :<></>}</span>
                     </a>
                   </li>
                   {/* <li className="nav-item">
@@ -658,7 +685,7 @@ function PatientDetails() {
                         <ul className="list-group list-group-flush">
                         <li className="list-group-item border-0">
                             <span>
-                              <i className="bi bi-geo-alt-fill text-disabled me-2"></i>
+                              <i className="bi bi-file-earmark-person text-disabled me-2"></i>                              
                               <span className="text-muted">Նույնականացման համար:</span>
                             </span>
                             <span className="ms-2">
@@ -676,35 +703,41 @@ function PatientDetails() {
                           </li>
                           <li className="list-group-item border-0">
                             <span>
-                              <i className="bi bi-calendar-check-fill text-disabled me-2"></i>
+                              <i className="bi bi-gender-ambiguous text-disabled me-2"></i>
                               <span className="text-muted">Սեռ:</span>
                             </span>
                             <span className="ms-2">{patientDetails?.gender === 'Male' ? 'Արական' :patientDetails?.gender === 'Female'? 'Իգական':''}</span>
                           </li>
                           <li className="list-group-item border-0">
                             <span>
-                              <i className="bi bi-house-door-fill text-disabled me-2"></i>
+                            <i className="bi bi-file-earmark-person text-disabled me-2"></i>                              
                               <span className="text-muted">Տարիք:</span>
                             </span>
                             <span className="ms-2">{patientDetails?.age}</span>
                           </li>
                           <li className="list-group-item border-0">
                             <span>
-                              <i className="bi bi-briefcase-fill text-disabled me-2"></i>
+                              <i className="bi  bi-calendar-event text-disabled me-2"></i>
                               <span className="text-muted">Ծննդյան ամսաթիվ:</span>
                             <span className="ms-2">{moment.utc(patientDetails?.dateOfBirth).format('DD-MM-YYYY')}</span></span>
+                          </li>
+                          <li className="list-group-item border-0">
+                            <span>
+                              <i className="bi bi-file-earmark-person text-disabled me-2"></i>
+                              <span className="text-muted">Անձնագիր:</span>
+                            <span className="ms-2">{patientDetails?.contact?.passport}</span></span>
                           </li>
                           {patientDetails?.respPersonFullName &&
                           <>
                             <li className="list-group-item border-0">
                             <span>
-                              <i className="bi bi-briefcase-fill text-disabled me-2"></i>
+                              <i className="bi bi-file-earmark-person text-disabled me-2"></i>
                               <span className="text-muted">Ծննողի ԱԱՀ:</span>
                             <span className="ms-2">{patientDetails?.respPersonFullName}</span></span>
                           </li>
                             <li className="list-group-item border-0">
                             <span>
-                              <i className="bi bi-briefcase-fill text-disabled me-2"></i>
+                              <i className="bi bi-file-earmark-person text-disabled me-2"></i>
                               <span className="text-muted">Ծննողի անձնագիր:</span>
                             <span className="ms-2">{patientDetails?.respPersonPassport}</span></span>
                           </li>
@@ -712,12 +745,22 @@ function PatientDetails() {
                           }
                           <li className="list-group-item border-0">
                             <span>
-                              <i className="bi bi-briefcase-fill text-disabled me-2"></i>
+                              <i className="bi bi-calendar-event text-disabled me-2"></i>
                               <span className="text-muted">Գրանցման ամսաթիվ:</span>
                             </span>
                             <span className="ms-2">{moment.utc(patientDetails?.createdAt).format('DD-MM-YYYY HH:mm')}</span>
                           </li>
-                         
+                          <li className="list-group-item border-0">
+                            <span>
+                              <i className="bi bi-calendar-event text-disabled me-2"></i>
+                              <span className="text-muted">
+                                Վերջին թարմացում:
+                              </span>
+                            </span>
+                            <span className="ms-2">
+                            {moment.utc(patientDetails?.updatedAt).format('DD-MM-YYYY HH:mm')}
+                            </span>
+                          </li>
                           
                         </ul>
                       </div>

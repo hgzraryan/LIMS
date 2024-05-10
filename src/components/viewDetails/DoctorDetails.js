@@ -97,7 +97,7 @@ function DoctorDetails() {
                           alt="user"
                           className="avatar-img border border-4 border-white"
                         />
-                        <span className="badge badge-indicator badge-success  badge-indicator-xl position-bottom-end-overflow-1 me-1"></span>
+                      <span className={`badge badge-indicator ${doctorDetails.isActive ? 'badge-success' : 'badge-danger'} badge-indicator-xl position-bottom-end-overflow-1 me-1`}></span>
                       </div>
                       <h4>
                         {" "}
@@ -159,7 +159,7 @@ function DoctorDetails() {
                         <span className="nav-link-text">Գլխավոր</span>
                       </a>
                     </li>
-                    {/* <li className="nav-item">
+                    <li className="nav-item">
                       <a
                         className={`nav-link ${activeLink === "tab_calendar" ? "active" : ""
                           }`}
@@ -174,7 +174,7 @@ function DoctorDetails() {
                         </span>
                         <span className="nav-link-text">Օրացույց</span>
                       </a>
-                    </li> */}
+                    </li>
                   </ul>
                 </header>
                 <div className="row">
@@ -187,7 +187,7 @@ function DoctorDetails() {
                           <ul className="list-group list-group-flush">
                             <li className="list-group-item border-0">
                               <span>
-                                <i className="bi bi-geo-alt-fill text-disabled me-2"></i>
+                                <i className="bi bi-file-earmark-person text-disabled me-2"></i>
                                 <span className="text-muted">Նույնականացման համար:</span>
                               </span>
                               <span className="ms-2">
@@ -205,28 +205,39 @@ function DoctorDetails() {
                             </li>
                             <li className="list-group-item border-0">
                               <span>
-                                <i className="bi bi-calendar-check-fill text-disabled me-2"></i>
+                                <i className="bi bi-gender-ambiguous text-disabled me-2"></i>
                                 <span className="text-muted">Սեռ:</span>
                               </span>
                               <span className="ms-2">{doctorDetails?.gender === 'Male' ? 'Արական' : 'Իգական'}</span>
                             </li>
                             <li className="list-group-item border-0">
                               <span>
-                                <i className="bi bi-house-door-fill text-disabled me-2"></i>
+                                <i className="bi bi-calendar-event text-disabled me-2"></i>
                                 <span className="text-muted">Գրանցման ամսաթիվ:</span>
                               </span>
                               <span className="ms-2">{moment.utc(doctorDetails?.joiningDate).format('DD-MM-YYYY HH:mm')}</span>
                             </li>
                             <li className="list-group-item border-0">
+                            <span>
+                              <i className="bi bi-calendar-event text-disabled me-2"></i>
+                              <span className="text-muted">
+                                Վերջին թարմացում:
+                              </span>
+                            </span>
+                            <span className="ms-2">
+                            {moment.utc(doctorDetails?.updatedAt).format('DD-MM-YYYY HH:mm')}
+                            </span>
+                          </li>
+                            <li className="list-group-item border-0">
                               <span>
-                                <i className="bi bi-briefcase-fill text-disabled me-2"></i>
+                                <i className="bi bi-calendar-event text-disabled me-2"></i>
                                 <span className="text-muted">Ծննդյան ամսաթիվ:</span>
                               </span>
                               <span className="ms-2">{moment.utc(doctorDetails?.dateOfBirth).format('DD-MM-YYYY')}</span>
                             </li>
                             <li className="list-group-item border-0">
                               <span>
-                                <i className="bi bi-briefcase-fill text-disabled me-2"></i>
+                                <i className="bi bi-pass-fill text-disabled me-2"></i>
                                 <span className="text-muted">Լիցենզիայի համար:</span>
                               </span>
                               <span className="ms-2">{doctorDetails?.licenseNumber}</span>
@@ -254,7 +265,7 @@ function DoctorDetails() {
                             </li>
                             <li className="list-group-item border-0">
                             <span>
-                              <i className="bi bi-info text-disabled me-2"></i>
+                              <i className="bi bi-info-lg text-disabled me-2"></i>
                               <span className="text-muted">
                                 Հավելյալ տեղեկություն:
                               </span>
@@ -269,9 +280,7 @@ function DoctorDetails() {
                         </div>
                       </div>
                       <div className="col-lg-8 ">
-                          <div style={{ height: 600}}>
-                            <MyBigCalendar/>
-                          </div>
+                          
                       </div>
                       {/* <div className="col-lg-8">
                         <div className="card card-border card-profile-feed mb-lg-4 mb-3">

@@ -196,14 +196,13 @@ function CreatePayByPos({ handleClosePosPay, actionData, refreshData }) {
                                   >
                                     Վճարման ամսաթիվ
                                   </label>
-                                  {methods.formState.errors.paymentDate && (
-                                    <span className="error text-red">
-                                      <span>
-                                        <img src={ErrorSvg} alt="errorSvg" />
-                                      </span>{" "}
-                                      պարտադիր
-                                    </span>
-                                  )}
+                                   {(methods.formState.errors.paymentDate & !methods.formState.errors.notValidVisitDate?.message) ? (
+                                    <span className="error text-red"><span><img src={ErrorSvg} alt="errorSvg"/></span> պարտադիր</span>
+                                    ):''}
+                                  {methods.formState.errors.notValidVisitDate?.message && (
+                                   
+                                    <span className="error text-red"><span><img src={ErrorSvg} alt="errorSvg"/></span> Սխալ ձևաչափ</span>
+                                    )}
                                 </div>
                                 <div>
                                   <CustomDateTimeComponent
@@ -211,6 +210,7 @@ function CreatePayByPos({ handleClosePosPay, actionData, refreshData }) {
                                     control={methods.control}
                                     required={true}
                                     defaultValue={new Date()}
+                                    methods={methods}
                                   />
                                 </div>
                               </div>

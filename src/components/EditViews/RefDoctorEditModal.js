@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useState } from "react";
+import React, { Suspense, useEffect, useRef, useState } from "react";
 import LoadingSpinner from "../LoadingSpinner";
 import { Modal } from "react-bootstrap";
 import FeatherIcon from "feather-icons-react";
@@ -31,6 +31,8 @@ function RefDoctorEditModal({ refDoctor, setEditRow, refreshData }) {
   const [country, setCountry] = useState("");
   const [region, setRegion] = useState("");
   const { trigger } = useForm();
+  const editorRef = useRef(null);
+
   const methods = useForm({
     mode: "onChange",
   });
@@ -101,14 +103,14 @@ function RefDoctorEditModal({ refDoctor, setEditRow, refreshData }) {
           },
         },
         //timestamps:'',
-        //additional: editorRef.current.getContent({ format: "text" }),
+        additional: editorRef.current.getContent({ format: "text" }).trim()!==refDoctor?.additional?.trim()?editorRef.current.getContent({ format: "text" }):null,
       };
       const updatedFields = deleteNullProperties(updatedRefDoctor);
       console.log(updatedRefDoctor);
       try {
         await axiosPrivate.put(
           REFDOCTORS_URL,
-          { updatedFields, id: refDoctor.refDoctorId },
+          { updatedFields, id: refDoctor.refDoctorsId },
           {
             headers: { "Content-Type": "application/json" },
             withCredentials: true,
@@ -344,7 +346,7 @@ function RefDoctorEditModal({ refDoctor, setEditRow, refreshData }) {
                               </div>
                             </div>
                           </div>
-                          {/* <div className="separator-full"></div>
+                           <div className="separator-full"></div>
                       <div className="card">
                         <div className="card-header">
                           <a href="#">Հավելյալ տվյալներ</a>
@@ -377,6 +379,7 @@ function RefDoctorEditModal({ refDoctor, setEditRow, refreshData }) {
                                 onInit={(evt, editor) =>
                                   (editorRef.current = editor)
                                 }
+                                initialValue={refDoctor?.additional}
                                 init={{
                                   plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage advtemplate ai mentions tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss markdown',
                                   toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
@@ -395,7 +398,7 @@ function RefDoctorEditModal({ refDoctor, setEditRow, refreshData }) {
                             </form>
                           </div>
                         </div>
-                      </div> */}
+                      </div> 
                           <div className="separator-full"></div>
 
                           <div className="modal-footer align-items-center">

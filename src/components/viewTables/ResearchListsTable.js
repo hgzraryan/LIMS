@@ -487,6 +487,8 @@ function ResearchListsTable({
                        <div className="separator-full m-0"></div>                  
                        <div className="d-flex justify-content-between">  <span>Գրանցված է </span> <span>{moment.utc(modalInfo.createdAt).format('DD-MM-YYYY HH:mm')}</span></div>
                        <div className="separator-full m-0"></div>   
+                       <div className="d-flex justify-content-between">  <span>Վերջին թարմացում</span> <span>{moment.utc(modalInfo?.updatedAt).format('DD-MM-YYYY HH:mm')}</span></div>
+                       <div className="separator-full m-0"></div>
                        <div className="d-flex justify-content-between">  <span>Հավելյալ տեղեկություն </span> <span>{modalInfo?.additional}</span></div>
                        <div className="separator-full m-0"></div>                  
                   </div>

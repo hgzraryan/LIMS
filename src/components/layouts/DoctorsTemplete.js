@@ -85,9 +85,13 @@ const DoctorsTemplete = () => {
       // }
     }
   };
-  //-------------------
-
-  //---------------------------------------------//
+    //-------------------
+    const [isActive, setIsActive] = useState(false);
+    const menuClick = (event) => {
+      setIsActive((current) => !current);
+    };
+    //---------------------------------------------//
+  
   const signOut = async () => {
     await logout();
     navigate("/login");
@@ -452,7 +456,7 @@ const DoctorsTemplete = () => {
           </div>
           {/* /Start Nav */}
           {/* End Nav */}
-          <div className="nav-end-wrap" >
+          <div className="nav-end-wrap" onClick={menuClick}>
             <ul className="navbar-nav flex-row">
               <li className="nav-item">
                 <div className="dropdown ps-2">
@@ -475,7 +479,11 @@ const DoctorsTemplete = () => {
                     </div>
                   </a>
                   <div
-                   
+                    className={
+                      isActive
+                        ? "dropdown-menu dropdown-menu-end show showSlow"
+                        : "dropdown-menu dropdown-menu-end showSlow"
+                    }
                   >
                     <div className="p-2">
                       <div className="media">

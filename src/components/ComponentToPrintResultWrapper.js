@@ -3,16 +3,16 @@ import FeatherIcon from 'feather-icons-react/build/FeatherIcon';
 import  { useRef } from 'react'
 import ReactToPrint from 'react-to-print';
 import { ResultToPrintComponent } from './ResultToPrintComponent';
-
 function ComponentToPrintResultWrapper({data,patient}) {
     let patientRef = useRef(null); 
+    
 const handlePrint = () =>{
 }
      const {statusBoard}=data
 
     let componentRef = useRef(null); 
     return (
-        <div style={{ display: "flex" }}>
+        <div  style={{ display: "flex" }}>
             <ReactToPrint
                 trigger={() => (
                     <button

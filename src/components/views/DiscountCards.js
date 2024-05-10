@@ -367,25 +367,22 @@ export default function DiscountCards() {
                                                 htmlFor="startDate"
                                               >
                                                 Զեղչի սկիզբ
-                                              </label>
-                                              {methods.formState.errors
-                                                .startDate && (
-                                                <span className="error text-red">
-                                                  <span>
-                                                    <img
-                                                      src={ErrorSvg}
-                                                      alt="errorSvg"
-                                                    />
-                                                  </span>{" "}
-                                                  պարտադիր
-                                                </span>
-                                              )}
+                                              </label>                                              
+                                                 {(methods.formState.errors.startDate & !methods.formState.errors.notValidVisitDate?.message) ? (
+                                    <span className="error text-red"><span><img src={ErrorSvg} alt="errorSvg"/></span> պարտադիր</span>
+                                    ):''}
+                                  {methods.formState.errors.notValidVisitDate?.message && (
+                                   
+                                    <span className="error text-red"><span><img src={ErrorSvg} alt="errorSvg"/></span> Սխալ ձևաչափ</span>
+                                    )}
                                             </div>
                                             <div>
                                               <CustomDateTimeComponent
                                                 name="startDate"
                                                 control={methods.control}
                                                 required={true}
+                                                methods={methods}
+
                                               />
                                             </div>
                                           </div>
@@ -397,24 +394,20 @@ export default function DiscountCards() {
                                               >
                                                 Զեղչի ավարտ
                                               </label>
-                                              {methods.formState.errors
-                                                .endDate && (
-                                                <span className="error text-red">
-                                                  <span>
-                                                    <img
-                                                      src={ErrorSvg}
-                                                      alt="errorSvg"
-                                                    />
-                                                  </span>{" "}
-                                                  պարտադիր
-                                                </span>
-                                              )}
+                                              {(methods.formState.errors.endDate & !methods.formState.errors.notValidVisitDate?.message) ? (
+                                    <span className="error text-red"><span><img src={ErrorSvg} alt="errorSvg"/></span> պարտադիր</span>
+                                    ):''}
+                                  {methods.formState.errors.notValidVisitDate?.message && (
+                                   
+                                    <span className="error text-red"><span><img src={ErrorSvg} alt="errorSvg"/></span> Սխալ ձևաչափ</span>
+                                    )}
                                             </div>
                                             <div>
                                               <CustomDateTimeComponent
                                                 name="endDate"
                                                 control={methods.control}
                                                 required={true}
+                                                methods={methods}
                                               />
                                             </div>
                                           </div>

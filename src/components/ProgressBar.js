@@ -4,12 +4,12 @@ function ProgressBar({totalPrice,
     const [progress,setProgress] = useState(0)
     useEffect(()=>{
       setProgress(Number(totalPayed/(totalPrice/100)))
-    },[totalPayed])
+    },[totalPayed,totalPrice])
     const getColor = () =>{
-     // console.log(progress)
+      //console.log(progress)
         if((progress)<60){
             return'rgb(255, 98, 28,.7)'
-        }else if((progress) === 100){
+        }else if((progress) === 100 || totalPayed === totalPrice){
             return "rgb(126, 224, 152,.7)"
         }else{
           return'rgb(255, 98, 28,.7)'

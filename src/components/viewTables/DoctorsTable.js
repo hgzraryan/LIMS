@@ -31,8 +31,6 @@ function DoctorsTable({
   refreshData
 }) {
   const navigate = useNavigate();
-  const [openModal,setOpenModal]=useState(false)
-  const [modalInfo,setModalInfo]=useState({})
   const [imageUrl, setImageUrl] = useState(MissingAvatar);
   const [editRow, setEditRow] = useState(false);
 
@@ -255,44 +253,6 @@ function DoctorsTable({
 
   return (
     <>
-      {openModal && (
-        <Modal
-          show={() => true}
-          size="xs"
-          onHide={() => setOpenModal(false)}
-        >
-          <Modal.Header closeButton>
-            <Modal.Title style={{ width: "100%", textAlign: "center" }}>
-              {modalInfo.name}
-            </Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <div className="contact-body contact-detail-body">
-              <div data-simplebar className="nicescroll-bar">
-                <div className="d-flex flex-xxl-nowrap flex-wrap">
-                  <div className="contact-info w-100">
-                    <div className="d-flex justify-content-center align-items-center">
-                      <img
-                        width={"200px"}
-                        height={"300px"}
-                        style={{
-                          borderRadius: "5px",
-                        }}
-                        src={imageUrl}
-                        className="avatar_upload_preview"
-                        alt="preview"
-                      />
-                    </div>
-                    <div className="w-100">
-                      {/* Render additional information here */}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </Modal.Body>
-        </Modal>
-      )}
  {
       editRow &&(
         <DoctorEditModal doctor={editRow} setEditRow={setEditRow} refreshData={refreshData}/>

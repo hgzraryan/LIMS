@@ -1,4 +1,4 @@
-import React, { Suspense, useState,useEffect } from "react";
+import React, { Suspense, useState,useEffect, useRef } from "react";
 import { Form, FormProvider, useForm, Controller } from "react-hook-form";
 import ErrorSvg from "../../dist/svg/error.svg";
 import { Modal } from "react-bootstrap";
@@ -17,6 +17,8 @@ import {
 import CustomPhoneComponent from "../CustomPhoneComponent";
 import { ORGANIZATIONS_URL } from "../../utils/constants";
 import Select from "react-select";
+import 'react-phone-number-input/style.css'
+import { Editor } from "@tinymce/tinymce-react";
 
 const organizationTypes = [
     { value: "Laboratory", label: "Լաբորատորիա" },
@@ -30,7 +32,8 @@ function OrganizationEditModal({ organization, setEditRow, refreshData }) {
     const axiosPrivate = useAxiosPrivate();
     const [country, setCountry] = useState("");
     const [region, setRegion] = useState("");
-  
+    const editorRef = useRef(null);
+
     const { trigger } = useForm();
     const methods = useForm({
       mode: "onChange",
@@ -118,6 +121,8 @@ function OrganizationEditModal({ organization, setEditRow, refreshData }) {
               phone: contactPhoneNumber?.trim() !== organization?.contactPerson?.phone?.trim() ? contactPhoneNumber : null,
             },
             description: description?.trim() !== organization?.description?.trim() ? description : null,
+            additional: editorRef.current.getContent({ format: "text" }).trim()!==organization?.additional?.trim()?editorRef.current.getContent({ format: "text" }):null,
+
           };
           const updatedFields = deleteNullProperties(updatedOrganization);
           console.log(updatedFields);
@@ -400,6 +405,7 @@ function OrganizationEditModal({ organization, setEditRow, refreshData }) {
                       <div className="card-body">
                         <div className="modal-body">
                           <div className="row gx-3">
+                            
                             <div className="col-sm-6">
                               <Input {...contactName_validation} defaultValue={organization?.contactPerson?.name}/>
                             </div>
@@ -430,7 +436,7 @@ function OrganizationEditModal({ organization, setEditRow, refreshData }) {
                         </div>
                       </div>
                     </div>
-                    {/* <div className="separator-full"></div>
+                    <div className="separator-full"></div>
                     <div className="card">
                       <div className="card-header">
                         <a href="#">Հավելյալ տվյալներ</a>
@@ -458,8 +464,8 @@ function OrganizationEditModal({ organization, setEditRow, refreshData }) {
                             <div className="row gx-12">
                                  <div className="col-sm-12">
                               <Editor
-                                                                apiKey={process.env.REACT_APP_EDITOR_KEY}
-
+                                apiKey={process.env.REACT_APP_EDITOR_KEY}
+                                initialValue={organization?.additional}
                                 onInit={(evt, editor) =>
                                   (editorRef.current = editor)
                                 }
@@ -481,7 +487,7 @@ function OrganizationEditModal({ organization, setEditRow, refreshData }) {
                           </form>
                         </div>
                       </div>
-                    </div> */}
+                    </div>
                     <div className="separator-full"></div>
 
                     <div className="modal-footer align-items-center">

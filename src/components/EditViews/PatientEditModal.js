@@ -31,6 +31,7 @@ import {
 } from "react-country-region-selector";
 import { PATIENTS_URL } from "../../utils/constants";
 import { calculateAge, deleteNullProperties } from "../../utils/helper";
+import moment from "moment";
 function PatientEditModal({ patient, setEditRow, refreshData }) {
   const axiosPrivate = useAxiosPrivate();
   const [isLoading, setIsLoading] = useState(false);
@@ -94,6 +95,8 @@ function PatientEditModal({ patient, setEditRow, refreshData }) {
       phone,
       dateOfBirth,
       addPhone,
+      respPersonFullName,
+      respPersonPassport
     }) => {
       const newDateOfBirthString = dateOfBirth
         ? new Date(
@@ -109,18 +112,18 @@ function PatientEditModal({ patient, setEditRow, refreshData }) {
           lastName?.trim() !== patient?.lastName?.trim() ? lastName : null,
         midName: midName?.trim() !== patient?.midName?.trim() ? midName : null,
         age:calculateAge(dateOfBirth) !== patient.age? calculateAge(dateOfBirth): null,
-        additional: editorRef.current.getContent({ format: "text" }),
+        additional: editorRef.current.getContent({ format: "text" }).trim()!==patient?.additional?.trim()?editorRef.current.getContent({ format: "text" }):null,
         gender: gender?.trim() !== patient?.gender?.trim() ? gender : null,
         contact: {
-          email:
-            email?.trim() !== patient?.contact?.email?.trim() ? email : null,
-          phone:
-            phone?.trim() !== patient?.contact?.phone?.trim() ? phone : null,
-          addPhone:
-            addPhone === patient?.contact?.addPhone?.trim() ? null : addPhone,
-          passport:
-            passport?.trim() !== patient.contact?.passport?.trim()
-              ? passport
+          email:email?.trim() !== patient?.contact?.email?.trim() ? email : null,
+          phone:phone?.trim() !== patient?.contact?.phone?.trim() ? phone : null,
+          addPhone:addPhone === patient?.contact?.addPhone?.trim() ? null : addPhone,
+          passport:passport?.trim() !== patient.contact?.passport?.trim()? passport:null,
+          respPersonFullName:respPersonFullName?.trim() !== patient.contact?.respPersonFullName?.trim()
+              ? respPersonFullName
+              : null,
+          respPersonPassport:respPersonPassport?.trim() !== patient.contact?.respPersonPassport?.trim()
+              ? respPersonPassport
               : null,
           address: {
             street:
@@ -563,14 +566,9 @@ function PatientEditModal({ patient, setEditRow, refreshData }) {
                                         <CustomDateComponent
                                           name="dateOfBirth"
                                           control={methods.control}
-                                          defaultValue={patient?.dateOfBirth.split('T')[0]
-                                            // .split("-")
-                                            // .reverse()
-                                            // .join("-")
-                                            // .toString()
-                                          }
+                                          defaultValue={moment(patient?.dateOfBirth).format('YYYY-MM-DD')}
+                                          setIsChild={setIsChild}                                          
                                          // handleCheckIfChild={handleCheckIfChild}
-
                                         />
                                       </div>
                                     </div>
@@ -591,6 +589,25 @@ function PatientEditModal({ patient, setEditRow, refreshData }) {
                             </div>
                             <div className="col-sm-6">
                               <Input {...respPersonPassport_validation} />
+                            </div>
+                          </div>
+                          </div>
+                          </div>
+                          </div>
+                            <div className="separator-full"></div>
+                          </>
+                          }
+                          {patient?.contact?.respPersonFullName &&
+                          <>
+                           <div className="card">
+                           <div className="card-body">
+                        <div className="modal-body">
+                          <div className="row gx-3">
+                            <div className="col-sm-6">
+                              <Input {...respPersonFullName_validation} defaultValue={patient?.contact?.respPersonFullName} />
+                            </div>
+                            <div className="col-sm-6">
+                              <Input {...respPersonPassport_validation}defaultValue={patient?.contact?.respPersonPassport} />
                             </div>
                           </div>
                           </div>
@@ -631,6 +648,7 @@ function PatientEditModal({ patient, setEditRow, refreshData }) {
                                 onInit={(evt, editor) =>
                                   (editorRef.current = editor)
                                 }
+                                initialValue={patient?.additional}
                                 init={{
                                   plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage advtemplate ai mentions tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss markdown',
                                   toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',

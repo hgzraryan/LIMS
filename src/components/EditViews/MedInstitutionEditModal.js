@@ -1,4 +1,4 @@
-import React, { Suspense, useState,useEffect } from "react";
+import React, { Suspense, useState,useEffect, useRef } from "react";
 import { Form, FormProvider, useForm, Controller } from "react-hook-form";
 import ErrorSvg from "../../dist/svg/error.svg";
 import { Modal } from "react-bootstrap";
@@ -16,13 +16,15 @@ import {
   RegionDropdown,
   CountryRegionData,
 } from "react-country-region-selector";
+import { Editor } from "@tinymce/tinymce-react";
 function MedInstitutionEditModal({medInstitution,setEditRow,refreshData}) {
     const [errMsg, setErrMsg] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const axiosPrivate = useAxiosPrivate();
     const [country, setCountry] = useState("");
     const [region, setRegion] = useState("");
-  
+    const editorRef = useRef(null);
+
     const { trigger } = useForm();
     const methods = useForm({
       mode: "onChange",
@@ -82,9 +84,10 @@ function MedInstitutionEditModal({medInstitution,setEditRow,refreshData}) {
               +zipCode.trim() !== +medInstitution?.contact?.address?.zipCode
                 ? zipCode
                 : null,
+                additional: editorRef.current.getContent({ format: "text" }).trim()!==medInstitution?.additional?.trim()?editorRef.current.getContent({ format: "text" }):null,
+
           },
         },
-        //additional: editorRef.current.getContent({ format: "text" }),
       };
       const updatedFields = deleteNullProperties(updatedMedInstitution);
 
@@ -292,7 +295,7 @@ function MedInstitutionEditModal({medInstitution,setEditRow,refreshData}) {
                           </div>
                         </div>
                       </div>
-                      {/* <div className="separator-full"></div>
+                      <div className="separator-full"></div>
                       <div className="card">
                         <div className="card-header">
                           <a href="#">Հավելյալ տվյալներ</a>
@@ -325,6 +328,7 @@ function MedInstitutionEditModal({medInstitution,setEditRow,refreshData}) {
                                 onInit={(evt, editor) =>
                                   (editorRef.current = editor)
                                 }
+                                initialValue={medInstitution?.additional}
                                 init={{
                                   plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage advtemplate ai mentions tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss markdown',
                                   toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
@@ -343,7 +347,7 @@ function MedInstitutionEditModal({medInstitution,setEditRow,refreshData}) {
                             </form>
                           </div>
                         </div>
-                      </div> */}
+                      </div>
                       <div className="separator-full"></div>
 
                       <div className="modal-footer align-items-center">

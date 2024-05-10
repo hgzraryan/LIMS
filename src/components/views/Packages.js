@@ -20,11 +20,11 @@ function Packages() {
     const [currentPage, setCurrentPage] = useState(0);  
     const [usersPerPage, setUsersPerPage] = useState(Math.round((window.innerHeight / 100)));
     //const pageCount = Math.ceil(packagesCount/usersPerPage)
-    // const {
-    //     data: packages,
-    //     setData: setPackages,
-    //     refreshData
-    //   } = useGetData(PACKAGES_URL,currentPage,usersPerPage);
+    const {
+        data: packages,
+        setData: setPackages,
+        refreshData
+      } = useGetData(PACKAGES_URL,currentPage,usersPerPage);
       const handleToggleCreateModal = (value) => {
         setIsOpen((prev) => value);
       };
@@ -96,7 +96,7 @@ function Packages() {
                 <Dropdown.Toggle
                   variant="success"
                   id="dropdown-basic"
-                  className="btn btn-sm btn-outline-secondary flex-shrink-0 dropdown-toggle d-lg-inline-block d-none"
+                  className="btn btn-sm btn-outline-secondary flex-shrink-0 dropdown-toggle d-lg-inline-block"
                 >
                   Ավելացնել նոր
                 </Dropdown.Toggle>
@@ -110,7 +110,7 @@ function Packages() {
               {isOpen && (
                 <AddPackages
                 handleToggleCreateModal={handleToggleCreateModal}
-                //refreshData={() => refreshData()}
+                refreshData={() => refreshData()}
 
                 />
               )}
@@ -246,9 +246,9 @@ function Packages() {
                     //handleDeleteItem={handleDeleteItem}
                     handleOpenModal={handleOpenModal}
                     handleCloseModal={handleCloseModal}
-                    // researches={Packages}
-                    // setResearches={setPackages}
-                    // refreshData={refreshData}
+                    packages={packages}
+                    setPackages={setPackages}
+                    refreshData={refreshData}
                   />
                   <ReactPaginate
                     previousLabel = {"Հետ"}    

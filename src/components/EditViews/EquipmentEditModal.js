@@ -1,4 +1,4 @@
-import React, { Suspense, useState } from "react";
+import React, { Suspense, useRef, useState } from "react";
 import { Form, FormProvider, useForm, Controller } from "react-hook-form";
 import { Modal } from "react-bootstrap";
 import FeatherIcon from "feather-icons-react";
@@ -12,6 +12,7 @@ import { equipmentType_validation, location_validation, manufacturer_validation,
 import CustomDateComponent from "../CustomDateComponent";
 import ErrorSvg from "../../dist/svg/error.svg";
 import Select from "react-select";
+import { Editor } from "@tinymce/tinymce-react";
 
 const EquipmentStatus = [
     {value:'Operational', label: "Սարքին" },
@@ -23,7 +24,8 @@ function EquipmentEditModal({ equipment, setEditRow, refreshData }) {
     const [errMsg, setErrMsg] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const axiosPrivate = useAxiosPrivate();
-  
+    const editorRef = useRef(null);
+
     const methods = useForm({
       mode: "onChange",
     });
@@ -76,6 +78,8 @@ function EquipmentEditModal({ equipment, setEditRow, refreshData }) {
             : null,
             purchaseDate: equipment?.purchaseDate?.split('T')[0] !== newPurchaseDate ? equipment?.purchaseDate?.split('T')[0] : null,
             warrantyExpiryDate: equipment?.warrantyExpiryDate?.split('T')[0] !== newExpireDate ? equipment?.warrantyExpiryDate?.split('T')[0] : null,
+            additional: editorRef.current.getContent({ format: "text" }).trim()!==equipment?.additional?.trim()?editorRef.current.getContent({ format: "text" }):null,
+
           };
     
       
@@ -282,7 +286,7 @@ function EquipmentEditModal({ equipment, setEditRow, refreshData }) {
                               </div>
                             </div>
                           </div>
-                          {/* <div className="separator-full"></div>
+                          <div className="separator-full"></div>
                           <div className="card">
                             <div className="card-header">
                               <a href="#">Հավելյալ տվյալներ</a>
@@ -315,6 +319,7 @@ function EquipmentEditModal({ equipment, setEditRow, refreshData }) {
                                 onInit={(evt, editor) =>
                                   (editorRef.current = editor)
                                 }
+                                initialValue={equipment?.additional}
                                 init={{
                                   plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage advtemplate ai mentions tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss markdown',
                                   toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
@@ -333,7 +338,7 @@ function EquipmentEditModal({ equipment, setEditRow, refreshData }) {
                                 </form>
                               </div>
                             </div>
-                          </div> */}
+                          </div>
                           <div className="separator-full"></div>
       
                           <div className="modal-footer align-items-center">

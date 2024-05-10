@@ -16,7 +16,7 @@ import {
   usage_validation,
   producer_validation,
 } from "../../utils/inputValidations";
-import Multiselect from "multiselect-react-dropdown";
+//import Multiselect from "multiselect-react-dropdown";
 import { REGISTER_REAGENT } from "../../utils/constants";
 function AddReagent({ handleToggleCreateModal, refreshData }) {
   const [errMsg, setErrMsg] = useState("");
@@ -178,7 +178,7 @@ function AddReagent({ handleToggleCreateModal, refreshData }) {
                             <div className="col-sm-6">
                               <Input {...unit_validation} />
                             </div>
-                            <div className="col-sm-6">
+                            {/* <div className="col-sm-6">
                               <label className="form-label">Չափման տեսակ</label>
                               <Multiselect
                                 options={[
@@ -194,7 +194,7 @@ function AddReagent({ handleToggleCreateModal, refreshData }) {
                                 ref={multiselectRef}
                                 placeholder="Չափման միավոր"
                               />
-                            </div>
+                            </div> */}
                           </div>
                           <div className="row gx-3">
                             <div className="col-sm-6">

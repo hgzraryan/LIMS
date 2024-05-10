@@ -60,7 +60,7 @@ export const REGISTER_ROLE = "/registerRole";
 export const REGISTER_REFDOCTOR = "/registerRefDoctors";
 export const REGISTER_MEDINSTITUTION = "/registerMedInstitutions";
 export const REGISTER_MEDICALSERVICES = "/registerMedicalServices";
-export const REGISTER_PACKAGES = "/registerPackages";
+export const REGISTER_PACKAGES = "/registerPackage";
 
 export const RESEARCHLISTS_URL = "/researchLists";
 export const MEDICALSERVICES_URL = "/medicalServices";
@@ -78,7 +78,7 @@ export const REAGENTS_URL = "/reagentList";
 export const EQUIPMENTS_URL = "/equipmentList";
 export const SUPPORT_URL = "/support";
 export const DOCTORSVISITS_URL = '/doctorsVisits'
-export const PACKAGES_URL = "/packages";
+export const PACKAGES_URL = "/customPackage";
 
 export const STATISTICS_URL = '/getStatistics/StackedBarChart'
 

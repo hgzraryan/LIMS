@@ -438,7 +438,7 @@ responseType:'blob'
                         <ul className="list-group list-group-flush">
                           <li className="list-group-item border-0">
                             <span>
-                              <i className="bi bi-credit-card-2-front-fill text-disabled me-2"></i>
+                              <i className="bi bi-file-earmark-person text-disabled me-2"></i>
                               <span className="text-muted">
                                 Նույնականացման համար:
                               </span>
@@ -484,7 +484,7 @@ responseType:'blob'
                           </li>
                           <li className="list-group-item border-0">
                             <span>
-                              <i className="bi bi-calendar-month-fill text-disabled me-2"></i>
+                              <i className="bi bi-calendar-event text-disabled me-2"></i>
                               <span className="text-muted">
                                 Գրանցման ամսաթիվ:
                               </span>
@@ -493,10 +493,21 @@ responseType:'blob'
                             {moment.utc(diagnosticsDetails?.createdAt).format('DD-MM-YYYY HH:mm')}
                             </span>
                           </li>
+                          <li className="list-group-item border-0">
+                            <span>
+                              <i className="bi bi-calendar-event text-disabled me-2"></i>
+                              <span className="text-muted">
+                                Վերջին թարմացում:
+                              </span>
+                            </span>
+                            <span className="ms-2">
+                            {moment.utc(diagnosticsDetails?.updatedAt).format('DD-MM-YYYY HH:mm')}
+                            </span>
+                          </li>
 
                           <li className="list-group-item border-0">
                             <span>
-                              <i className="bi bi-file-medical-fill text-disabled me-2"></i>
+                              <i className="bi bi-file-earmark-person text-disabled me-2"></i>
                               <span className="text-muted">Այցելու:</span>
                             </span>
                             <span className="ms-2">
@@ -508,7 +519,7 @@ responseType:'blob'
                           {diagnosticsDetails?.refDoctor?
                           <li className="list-group-item border-0">
                             <span>
-                              <i className="bi bi-file-medical-fill text-disabled me-2"></i>
+                              <i className="bi bi-file-earmark-person text-disabled me-2"></i>
                               <span className="text-muted">Ուղղորդող բժիշկ:</span>
                             </span>
                             <span className="ms-2">
@@ -522,7 +533,7 @@ responseType:'blob'
                               <span className="text-muted">Բժիշկ:</span>
                             </span>
                             <span className="ms-2">
-                               {diagnosticsDetails?.doctorName } 
+                               {diagnosticsDetails?.docs.map((el)=>el.doctorName+",") } 
                             </span>
                           </li>
                           <li className="list-group-item border-0">
@@ -562,7 +573,7 @@ responseType:'blob'
                           </li>
                           <li className="list-group-item border-0">
                             <span>
-                            <i className="bi bi-calendar-month-fill text-disabled me-2"></i>
+                            <i className="bi bi-calendar-event text-disabled me-2"></i>
                               <span className="text-muted">
                                 Վճարման ամսաթիվ:
                               </span>
@@ -598,7 +609,7 @@ responseType:'blob'
                               width:'25px',
                               height:'25px', 
                               border:'2px solid gray',
-                              borderRadius:'50%',
+                              borderRadius:'100px',
                               fontWeight:'bold',
                               color:'gray',
                               paddingTop:'1px'

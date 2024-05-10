@@ -10,6 +10,7 @@ import "../../dist/css/data-table.css";
 import { Modal } from "react-bootstrap";
 import ComponentToConfirm from '../ComponentToConfirm';
 import MedicalServiceEditModal from "../EditViews/MedicalServiceEditModal";
+import moment from "moment";
 
 function MedicalServicesTable({
     confirmRef,
@@ -323,6 +324,8 @@ function MedicalServicesTable({
                          <div className="separator-full m-0"></div>
                          <div className="d-flex justify-content-between">  <span>Դասակարգ</span> <span>{modalInfo.categoryName}</span></div>
                          <div className="separator-full m-0"></div>
+                         <div className="d-flex justify-content-between">  <span>Վերջին թարմացում</span> <span>{moment.utc(modalInfo?.updatedAt).format('DD-MM-YYYY HH:mm')}</span></div>
+                        <div className="separator-full m-0"></div>
                          <div className="d-flex justify-content-between">  <span>Հավելյալ տվյալ</span> <span>{modalInfo.additional}</span></div>
                          <div className="separator-full m-0"></div>
                     </div>
