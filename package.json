@@ -1,7 +1,7 @@
 {
   "name": "LIMS_VTEAM_CLIENT",
   "version": "0.1.0",
-  "revision": "030524",
+  "revision": "100524",
   "private": true,
   "dependencies": {
     "@coreui/chartjs": "^3.1.1",
