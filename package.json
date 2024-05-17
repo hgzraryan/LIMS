@@ -1,7 +1,7 @@
 {
   "name": "LIMS_VTEAM_CLIENT",
   "version": "0.1.0",
-  "revision": "170524",
+  "revision": "180524",
   "private": true,
   "dependencies": {
     "@coreui/coreui": "^4.2.6",
