@@ -1,15 +1,13 @@
 {
   "name": "LIMS_VTEAM_CLIENT",
   "version": "0.1.0",
-  "revision": "100524",
+  "revision": "170524",
   "private": true,
   "dependencies": {
-    "@coreui/chartjs": "^3.1.1",
     "@coreui/coreui": "^4.2.6",
     "@coreui/icons": "^3.0.1",
     "@coreui/icons-react": "^2.1.0",
     "@coreui/react": "^4.6.0",
-    "@coreui/react-chartjs": "^2.1.2",
     "@coreui/utils": "^2.0.1",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",

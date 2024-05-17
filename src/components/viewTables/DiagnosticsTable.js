@@ -88,12 +88,15 @@ function DiagnosticsTable({
     navigate(`/diagnostics/${diagnosticsId}`);
   };
   const handleClientDetails = async (rowData) => {
-    
+    console.log(rowData)
     const { clientId } = rowData;
     const { clientType } = rowData;
     clientType === "patient"
       ? navigate(`/patients/${clientId}`)
-      : navigate(`/organizations/${clientId}`);
+      // :
+      // clientType === "organization"
+      // ? navigate(`/organizations/${clientId}`)
+      :<></>
   };
 
   const sendPDFToBackend = (pdfData) => {
@@ -154,7 +157,7 @@ function DiagnosticsTable({
           <>
             <div
               onClick={() => handleClientDetails(row.original)}
-              style={{ cursor: "pointer", textDecoration: "underline" }}
+              style={{ cursor: "pointer",  }}
             >
               {row.original.clientType === "organization" ? (
                 <img
@@ -164,7 +167,7 @@ function DiagnosticsTable({
                   height={25}
                   className="me-2"
                 />
-              ) : (
+              ) : row.original.clientType === "patient"?(
                 <img
                   src={patientSvg}
                   alt="patientIcon"
@@ -172,8 +175,14 @@ function DiagnosticsTable({
                   height={25}
                   className="me-2"
                 />
-              )}
-              {row.original.clientFirstName + " " +row.original.clientLastName +  " " +row.original.clientMidName}
+              ):'Առանց այցելու'}
+              {row.original?.clientType==='patient'
+              ? row.original?.clientFirstName + " " +
+              row.original?.clientLastName +  " " +
+              row.original?.clientMidName
+              :row.original?.clientType==='organization'
+              ?'Պատվիրատու'
+            :''}
             </div>
           </>
         ),

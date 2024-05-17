@@ -231,7 +231,7 @@ const onResearchSelect = (data) => {
       externalStatus: data?.externalDiagnosticsStatus?.value || null,
       researchList: data?.research.map((el) => el.value),
       clientId: data?.patient || data?.organizations,
-      clientType: data?.organization?"organization":"patient",
+      clientType: data?.organization?"organization":data?.patient?"patient":'none',
       orgPatientId:data?.organization ? data?.patient : null,
       doctors: data?.doctor?.id,
       biomassType:data?.biomassType?.value,

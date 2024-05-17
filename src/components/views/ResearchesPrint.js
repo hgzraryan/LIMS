@@ -67,10 +67,15 @@ function ResearchesPrint({ modalPrint, setModalPrint }) {
           //     setIsLoading(false);
           //   });
           // })
+          
           .catch((err) => {
             console.log(err);
           });
       }, 500);
+    }else if (!clientType || clientType==='none') {      
+            setCurrentClient([]);  
+            setIsLoading(false);
+     
     }
   }, []);
 
@@ -297,8 +302,8 @@ function ResearchesPrint({ modalPrint, setModalPrint }) {
                     >
                       <BarcodeComp data={modalPrint.diagnosticsId} />
                     </div>
-
-                    <div className=" mb-3r">
+                    {currentClient?.patientId
+                    ?<div className=" mb-3r">
                       <ul>
                         <li>
                           ԱԱՀ:
@@ -356,6 +361,19 @@ function ResearchesPrint({ modalPrint, setModalPrint }) {
                         </li>
                       </ul>
                     </div>
+                    :<div className=" mb-3r">
+                    <ul> 
+                      <li>
+                        Տրման ամսաթիվ:
+                        <span
+                          style={{ fontWeight: "bold", fontSize: "1.1rem" }}
+                        >
+                          {" "+moment.utc(modalPrint?.createdAt).format('DD-MM-YYYY HH:mm')}
+                        </span>
+                      </li>
+                    </ul>
+                  </div>
+                    }
                   </section>
                   <section className="container">
                     <div className="container">

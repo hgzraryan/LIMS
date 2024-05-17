@@ -511,9 +511,11 @@ responseType:'blob'
                               <span className="text-muted">Այցելու:</span>
                             </span>
                             <span className="ms-2">
-                            {diagnosticsDetails?.clientFirstName +" " + 
+                            {diagnosticsDetails?.clientFirstName
+                            ?diagnosticsDetails?.clientFirstName +" " + 
                                diagnosticsDetails?.clientLastName + " "+ 
-                               diagnosticsDetails?.clientMidName}
+                               diagnosticsDetails?.clientMidName
+                            :'Առանց այցելու'}
                             </span>
                           </li>
                           {diagnosticsDetails?.refDoctor?

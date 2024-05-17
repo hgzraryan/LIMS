@@ -126,7 +126,10 @@ const { inputRef } = Barcode({
                     >
                       <BarcodeComp data={value.diagnosticsId} />
                     </div>
-          <div className=" mb-3r">
+                    
+                    
+                     {currentClient?.patientId
+                    ?<div className=" mb-3r">
             <ul>
               <li >ԱԱՀ: <span style={{fontWeight:'bold',fontSize:'1.1rem'}}>{" "+currentClient?.firstName+" "+ currentClient?.lastName +" "+ currentClient?.midName}</span>
               </li>
@@ -143,6 +146,19 @@ const { inputRef } = Barcode({
               <li>Տրման ամսաթիվ: {value.date}</li> */}
             </ul>
           </div>
+          :<div className=" mb-3r">
+                    <ul> 
+                      <li>
+                        Տրման ամսաթիվ:
+                        <span
+                          style={{ fontWeight: "bold", fontSize: "1.1rem" }}
+                        >
+                          {" "+moment.utc(currentClient?.createdAt).format('DD-MM-YYYY HH:mm')}
+                        </span>
+                      </li>
+                    </ul>
+                  </div>
+                    }
         </section>
         <section className="research_container">
           <div className="research_container">

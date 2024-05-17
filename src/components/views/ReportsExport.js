@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import useGetData from '../../hooks/useGetData';
-import { DIAGNOSTICS_URL, PATIENTS_URL, RESEARCHLISTS_URL } from '../../utils/constants';
+import React, { useEffect, useState } from 'react';
+import { DIAGNOSTICS_URL} from '../../utils/constants';
 import { useLocation, useNavigate } from 'react-router-dom';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import {utils, writeFile} from 'xlsx';
@@ -12,7 +11,6 @@ function ReportsExport() {
     const axiosPrivate = useAxiosPrivate();  
     const [errMsg, setErrMsg] = useState("");
     const [diagnostics, setDiagnostics] = useState([]);
-    const [researchesList, setResearchesList] = useState([]);
     const [isLoading, setIsLoading] = useState("");
   //patient data
     // const formatedData=resp?.data?.jsonString.map((el)=>{
@@ -26,34 +24,28 @@ function ReportsExport() {
     // })
     useEffect(() => {
       setTimeout(() => {
-        axiosPrivate
-          .get(RESEARCHLISTS_URL)
-          .then((resp) => {
-            setResearchesList(resp?.data?.jsonString);
-            setIsLoading(false);
-          })
-          .then((resp) => {
-            axiosPrivate.get(DIAGNOSTICS_URL).then((resp) => {
-              setDiagnostics(resp?.data?.jsonString);
-              setIsLoading(false);
-            });
-          })          
-          .catch((err) => {
+        axiosPrivate.get(DIAGNOSTICS_URL).then((resp) => {
+          setDiagnostics(resp?.data?.jsonString);
+          setIsLoading(false);       
+        })
+        .catch((err) => {
             console.log(err);
-            navigate("/login", { state: { from: location }, replace: true });
-  
+            navigate("/login", { state: { from: location }, replace: true });  
           });
       }, 500);
     }, []);
-
+    const findResearches = (statusBoard) => {
+      return statusBoard.flatMap(elem => elem.researches.map(research => research.name));
+    }
     const handleExportDiagnostics = (exportName,exportData)=>{
         const formatedData=exportData.map((el)=>{
           return {
             ...el,
-            researchList: el.researchList.map((researchItem) => {
-                const foundResearch = researchesList.find((item) => item.researchListId === researchItem);
-                return foundResearch ? foundResearch.researchName : '';
-            })
+            // researchList: el.researchList.map((researchItem) => {
+            //     const foundResearch = researchesList.find((item) => item.researchListId === researchItem);
+            //     return foundResearch ? foundResearch.researchName : '';
+            // })
+            researchList: findResearches(el.statusBoard)
         }
             })
         const exportData1 = formatedData.map(item => ({

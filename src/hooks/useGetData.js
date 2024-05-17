@@ -60,24 +60,18 @@ const useGetData = (url,currentPage,usersPerPage) => {
         };
         const refreshData = async () => {
           try {
-            const response = await axiosPrivate.post(url,{
-             
+            const controller = new AbortController();
+            const response = await axiosPrivate.post(url, {
+              signal: controller.signal,
               page: 1,
               onPage: usersPerPage,
             });
-            // console.log(response);
-            // if (
-            //   response.data.jsonString.length === 0 ||
-            //   response.data.jsonString.length < onPageCount
-            // ) {
-            //   setHasMore(false);
-            // }
-            
-              setData((prevUsers) => response.data.jsonString);
-            //setCurrentPage((prev) => prev + 1);
+            setData(response.data.jsonString);
           } catch (err) {
             console.error(err);
-            navigate("/login", { state: { from: location }, replace: true });
+            if (err.name !== "AbortError") {
+              navigate("/login", { state: { from: location }, replace: true });
+            }
           }
         };
     
