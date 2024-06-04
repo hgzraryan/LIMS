@@ -277,7 +277,7 @@ function DoctorsVisitsDetails() {
                               </span>
                             </span>
                             <span className="ms-2">
-                              {moment.utc(doctorsVisitsDetails?.createdAt).format('DD-MM-YYYY HH:mm')}
+                              {doctorsVisitsDetails?.createdAt && moment.utc(doctorsVisitsDetails?.createdAt).format('DD-MM-YYYY HH:mm')}
                             </span>
                           </li>
                           <li className="list-group-item border-0">
@@ -288,7 +288,7 @@ function DoctorsVisitsDetails() {
                               </span>
                             </span>
                             <span className="ms-2">
-                            {moment.utc(doctorsVisitsDetails?.updatedAt).format('DD-MM-YYYY HH:mm')}
+                            {doctorsVisitsDetails?.updatedAt && moment.utc(doctorsVisitsDetails?.updatedAt).format('DD-MM-YYYY HH:mm')}
                             </span>
                           </li>
                           <li className="list-group-item border-0">
@@ -300,7 +300,7 @@ function DoctorsVisitsDetails() {
                               
                             </span>
                             <span className="ms-2">
-                              {moment.utc(doctorsVisitsDetails?.visitDate).format('DD-MM-YYYY HH:mm')}
+                              {doctorsVisitsDetails?.visitDate && moment.utc(doctorsVisitsDetails?.visitDate).format('DD-MM-YYYY HH:mm')}
                             </span>
                           </li>
                           <li className="list-group-item border-0">

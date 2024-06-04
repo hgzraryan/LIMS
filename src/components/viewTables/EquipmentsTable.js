@@ -33,11 +33,13 @@ function EquipmentsTable({
   const handleOpenInfoModal = (user) => {    
     setModalInfo((prev) => user);
   };
-  const defaultColumn = useMemo(
+  const defaultColumn = React.useMemo(
     () => ({
       minWidth: 20,
       width: 20,
-      maxWidth: 600
+      maxWidth: 600,
+      Filter: ({ column: { id } }) => <></>,
+
     }),
     []
   );
@@ -53,13 +55,6 @@ function EquipmentsTable({
         accessor: "equipmentId",
         sortable: true,
         width:80,
-        Filter: ({ column: { id } })=>(
-          <ColumnFilter
-            id={id}
-            setData={setEquipments}
-            placeholder={'ID'}
-          />
-        ),
       },
       {
         Header: (event) => (
@@ -71,14 +66,6 @@ function EquipmentsTable({
         accessor: "equipmentName",
         sortable: true,
         width:200,
-        Filter: ({ column: { id } })=>(
-          <ColumnFilter
-            id={id}
-            setData={setEquipments}
-            placeholder={'Սարքի անվանումը'}
-
-          />
-        ),
       },
       {
         Header: (event) => (
@@ -90,14 +77,6 @@ function EquipmentsTable({
         accessor: "equipmentType",
         sortable: true,
         width:200,
-        Filter: ({ column: { id } })=>(
-          <ColumnFilter
-            id={id}
-            setData={setEquipments}
-            placeholder={'Սարքի տեսակը'}
-
-          />
-        ),
       },
       {
         Header: (event) => (
@@ -109,15 +88,6 @@ function EquipmentsTable({
         accessor: "model",
         sortable: true,
         width:200,
-        Filter: ({ column: { id } })=>(
-          <ColumnFilter
-            id={id}
-            setData={setEquipments}
-            placeholder={'Սարքի մոդելը'}
-
-          />
-          
-        ),
       },
       {
         Header: (event) => (
@@ -129,14 +99,6 @@ function EquipmentsTable({
         accessor: "manufacturer",
         sortable: true,
         width:200,
-        Filter: ({ column: { id } })=>(
-          <ColumnFilter
-            id={id}
-            setData={setEquipments}
-            placeholder={'Արտադրող'}
-
-          />
-        ),
       },
       {
         Header: (event) => (
@@ -148,14 +110,6 @@ function EquipmentsTable({
         accessor: "purchaseDate",
         sortable: true,
         width:200,
-        Filter: ({ column: { id } })=>(
-          <ColumnFilter
-            id={id}
-            setData={setEquipments}
-            placeholder={'Գնման ամսաթիվ'}
-
-          />
-        ),
         Cell: ({ row }) => (
           <div className="d-flex align-items-center">
              {row.original?.purchaseDate?.split("T")[0]}
@@ -172,14 +126,7 @@ function EquipmentsTable({
         accessor: "status",
         sortable: true,
         width:200,
-        Filter: ({ column: { id } })=>(
-          <ColumnFilter
-            id={id}
-            setData={setEquipments}
-            placeholder={'Կարգավիճակ'}
-
-          />
-        ),
+        
       },
       {
         Header: (event) => (
@@ -320,13 +267,13 @@ function EquipmentsTable({
                        <div className="separator-full m-0"></div>
                        <div className="d-flex justify-content-between">  <span>Սերիական համար</span> <span>{modalInfo.serialNumber}</span></div>
                        <div className="separator-full m-0"></div>
-                       <div className="d-flex justify-content-between">  <span>Գրանցման ամսաթիվ </span> <span>{moment.utc(modalInfo.createdAt).format('DD-MM-YYYY HH:mm')}</span></div>
+                       <div className="d-flex justify-content-between">  <span>Գրանցման ամսաթիվ </span> <span>{modalInfo.createdAt && moment.utc(modalInfo.createdAt).format('DD-MM-YYYY HH:mm')}</span></div>
                        <div className="separator-full m-0"></div>  
-                       <div className="d-flex justify-content-between">  <span>Վերջին թարմացում</span> <span>{moment.utc(modalInfo?.updatedAt).format('DD-MM-YYYY HH:mm')}</span></div>
+                       <div className="d-flex justify-content-between">  <span>Վերջին թարմացում</span> <span>{modalInfo?.updatedAt && moment.utc(modalInfo?.updatedAt).format('DD-MM-YYYY HH:mm')}</span></div>
                      <div className="separator-full m-0"></div>                
-                       <div className="d-flex justify-content-between">  <span>Ձեռք բերման ամսաթիվ </span> <span>{moment.utc(modalInfo.purchaseDate).format('DD-MM-YYYY')}</span></div>
+                       <div className="d-flex justify-content-between">  <span>Ձեռք բերման ամսաթիվ </span> <span>{modalInfo.purchaseDate && moment.utc(modalInfo.purchaseDate).format('DD-MM-YYYY')}</span></div>
                        <div className="separator-full m-0"></div>                  
-                       <div className="d-flex justify-content-between">  <span>Երաշխիքի ավարտ </span> <span>{moment.utc(modalInfo.warrantyExpiryDate).format('DD-MM-YYYY')}</span></div>
+                       <div className="d-flex justify-content-between">  <span>Երաշխիքի ավարտ </span> <span>{modalInfo.warrantyExpiryDate && moment.utc(modalInfo.warrantyExpiryDate).format('DD-MM-YYYY')}</span></div>
                        <div className="separator-full m-0"></div>   
                        <div className="d-flex justify-content-between">  <span>Հավելյալ տեղեկություն </span> <span>{modalInfo?.additional}</span></div>
                        <div className="separator-full m-0"></div>                 
@@ -355,48 +302,50 @@ function EquipmentsTable({
       )
     }
     <table  className="table nowrap w-100 mb-5 dataTable no-footer" {...getTableProps()} >
-      <thead>
+    <thead>
         {headerGroups.map((headerGroup) => (
           <tr {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map((column) => (
-               <th  {...column.getHeaderProps(column.getSortByToggleProps())}>
-               <div>
-                 {column.id !== "selection" && (
-                   <>
-                   <div>
-                     {column.canFilter ? column.render("Filter") : null}
-                   </div>
-                 
-                 <div  style={{
-                   marginTop: "2px",
-                   display: "flex",
-                   justifyContent: "space-between",
-                   alignItems: "center",
-                 }}>
-                   <div>{column.render("Header")}</div>
-                   
-                     <div style={{paddingTop:'20px'}} >
-                       {column.isSorted ? (
-                         column.isSortedDesc ? (
-                           <span className="sorting_asc"></span>
-                           ) : (
-                             <span className="sorting_desc"></span>
-                             )
-                             ) : (
-                               <span className="sorting"></span>
-                               )}
-                     </div>
-                 </div>
-                               </>
-                   )}
-               </div>
-               <div
-               {...column.getResizerProps()}
-                 className={`resizer ${
-                   column.isResizing ? "isResizing" : ""
-                 }`}
-               />
-             </th>
+              <th  {...column.getHeaderProps(column.getSortByToggleProps())}>
+                    {column.id !== "selection" && (
+                  <div className="d-flex justify-content-between ">
+                      
+                        <div>
+                          {column.canFilter ? column.render("Filter") : null}
+                        </div>
+                        <div
+                          style={{
+                            marginTop: "2px",
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                          }}
+                        >
+                          <div>{column.render("Header")}</div>
+                        </div>
+                        {column.id!=="patientId" && 
+                          <div style={{ paddingTop: "20px" }}>
+                            {column.isSorted ? (
+                              column.isSortedDesc ? (
+                                <span className="sorting_asc"></span>
+                              ) : (
+                                <span className="sorting_desc"></span>
+                              )
+                            ) : (
+                              <span className="sorting"></span>
+                            )}
+                          </div>
+                          }
+
+                        </div>
+                    )}
+                  <div
+                  {...column.getResizerProps()}
+                  className={`resizer ${
+                    column.isResizing ? "isResizing" : ""
+                  }`}
+                  />
+                </th>
             ))}
           </tr>
         ))}

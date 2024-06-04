@@ -44,7 +44,7 @@ console.log(inputValue)
          scrollableYearDropdown
          onChange={handleDateChange}
          onChangeRaw={handleInputChange} // For manual input
-         dateFormat={"yyyy-MM-dd  h:mm"}
+         dateFormat={"yyyy-MM-dd  HH:mm"}
          timeFormat="HH:mm"
          selected={field.value}
          isClearable

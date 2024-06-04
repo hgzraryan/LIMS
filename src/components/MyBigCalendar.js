@@ -254,8 +254,8 @@ console.log(slotInfo)
         </Modal.Header>
         <Modal.Body>
           <div className="d-flex flex-column">
-            <div><span>Սկիզբ: </span><span className="fw-bold">{moment.utc(showCheckModal.start).format("DD-MM-YYYY  HH:mm")}</span></div>
-            <div> <span>Ավարտ: </span><span className="fw-bold">{moment.utc(showCheckModal.end).format("DD-MM-YYYY  HH:mm")}</span></div>
+            <div><span>Սկիզբ: </span><span className="fw-bold">{showCheckModal?.start && moment.utc(showCheckModal.start).format("DD-MM-YYYY  HH:mm")}</span></div>
+            <div> <span>Ավարտ: </span><span className="fw-bold">{showCheckModal?.end && moment.utc(showCheckModal.end).format("DD-MM-YYYY  HH:mm")}</span></div>
           </div>
         </Modal.Body>
         <Modal.Footer>          

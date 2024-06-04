@@ -35,7 +35,9 @@ function SamplesTable({selectedItem,
     () => ({
       minWidth: 20,
       width: 20,
-      maxWidth: 600
+      maxWidth: 600,
+      Filter: ({ column: { id } }) => <></>,
+
     }),
     []
   );
@@ -51,13 +53,7 @@ function SamplesTable({selectedItem,
         accessor: "sampleId",
         sortable: true,
         width: 80,
-        Filter: ({ column: { id } })=>(
-          <ColumnFilter
-            id={id}
-          setData={setSamples}
-          placeholder={'ID'}
-          />
-        ),
+        
       },
       {
         Header: (event) => (
@@ -69,12 +65,7 @@ function SamplesTable({selectedItem,
         accessor: "name",
         sortable: true,
         width: 200,
-        Filter: ({ column: { id } })=>(
-          <ColumnFilter
-            id={id}
-          setData={setSamples}
-          />
-        ),
+        
       },
       {
         Header: (event) => (
@@ -84,12 +75,7 @@ function SamplesTable({selectedItem,
         ),
         accessor: "category",
         width: 200,
-        Filter: ({ column: { id } })=>(
-          <ColumnFilter
-            id={id}
-            setData={setSamples}
-          />
-        ),
+        
       },
       {
         Header: (event) => (
@@ -99,12 +85,7 @@ function SamplesTable({selectedItem,
         ),
         accessor: "labService",
         width: 200,
-        Filter: ({ column: { id } })=>(
-          <ColumnFilter
-            id={id}
-            setData={setSamples}
-          />
-        ),
+        
       },
       {
         Header: (event) => (
@@ -118,12 +99,7 @@ function SamplesTable({selectedItem,
            // Custom style for the 'description' column
         },
         width: 200,
-        Filter: ({ column: { id } })=>(
-          <ColumnFilter
-            id={id}
-            setData={setSamples}
-          />
-        ),
+       
       },
       {
         Header: (event) => (
@@ -137,12 +113,7 @@ function SamplesTable({selectedItem,
            // Custom style for the 'description' column
         },
         width: 200,
-        Filter: ({ column: { id } })=>(
-          <ColumnFilter
-            id={id}
-            setData={setSamples}
-          />
-        ),
+        
       },
       {
         Header: (event) => (
@@ -187,9 +158,7 @@ function SamplesTable({selectedItem,
           </div>
         ),
         disableSortBy: true,
-        Filter: ({ column: { id } })=>(
-          <></>
-        ),
+        
       },
     ],
     []
@@ -230,52 +199,54 @@ function SamplesTable({selectedItem,
     className="table nowrap w-100 mb-5 dataTable no-footer"
     {...getTableProps()}
   >
-    <thead>
-      {headerGroups.map((headerGroup) => (
-        <tr {...headerGroup.getHeaderGroupProps()}>
-          {headerGroup.headers.map((column) => (
-            <th {...column.getHeaderProps(column.getSortByToggleProps())}>
-              <div>
-                {column.id !== "selection" && (
-                  <>
-                    <div>
-                      {column.canFilter ? column.render("Filter") : null}
-                    </div>
+     <thead>
+        {headerGroups.map((headerGroup) => (
+          <tr {...headerGroup.getHeaderGroupProps()}>
+            {headerGroup.headers.map((column) => (
+              <th  {...column.getHeaderProps(column.getSortByToggleProps())}>
+                    {column.id !== "selection" && (
+                  <div className="d-flex justify-content-between ">
+                      
+                        <div>
+                          {column.canFilter ? column.render("Filter") : null}
+                        </div>
+                        <div
+                          style={{
+                            marginTop: "2px",
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                          }}
+                        >
+                          <div>{column.render("Header")}</div>
+                        </div>
+                        {column.id!=="patientId" && 
+                          <div style={{ paddingTop: "20px" }}>
+                            {column.isSorted ? (
+                              column.isSortedDesc ? (
+                                <span className="sorting_asc"></span>
+                              ) : (
+                                <span className="sorting_desc"></span>
+                              )
+                            ) : (
+                              <span className="sorting"></span>
+                            )}
+                          </div>
+                          }
 
-                    <div
-                      style={{
-                        marginTop: "2px",
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                      }}
-                    >
-                      <div>{column.render("Header")}</div>
-
-                      <div style={{ paddingTop: "20px" }}>
-                        {column.isSorted ? (
-                          column.isSortedDesc ? (
-                            <span className="sorting_asc"></span>
-                          ) : (
-                            <span className="sorting_desc"></span>
-                          )
-                        ) : (
-                          <span className="sorting"></span>
-                        )}
-                      </div>
-                    </div>
-                  </>
-                )}
-              </div>
-              <div
-                {...column.getResizerProps()}
-                className={`resizer ${column.isResizing ? "isResizing" : ""}`}
-              />
-            </th>
-          ))}
-        </tr>
-      ))}
-    </thead>
+                        </div>
+                    )}
+                  <div
+                  {...column.getResizerProps()}
+                  className={`resizer ${
+                    column.isResizing ? "isResizing" : ""
+                  }`}
+                  />
+                </th>
+            ))}
+          </tr>
+        ))}
+      </thead>
     {samples?.length>0? (
       <tbody {...getTableBodyProps()} style={{fontSize:'14px'}}>
         {rows.map((row) => {

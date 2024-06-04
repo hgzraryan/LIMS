@@ -44,6 +44,8 @@ function RefDoctorsTable({
       minWidth: 20,
       width: 20,
       maxWidth: 600,
+      Filter: ({ column: { id } }) => <></>,
+
     }),
     []
   );
@@ -58,12 +60,7 @@ function RefDoctorsTable({
         accessor: "refDoctorsId",
         sortable: true,
         width: 80,
-        Filter: ({ column: { id } }) => (
-          <ColumnFilter 
-          id={id} 
-          setData={setRefDoctors} 
-          placeholder={"ID"} />
-        ),
+        
       },
       {
         Header: (event) => (
@@ -73,13 +70,8 @@ function RefDoctorsTable({
         ),
         accessor: "doctorName",
         sortable: true,
-        width: 500,
-        Filter: ({ column: { id } }) => (
-          <ColumnFilter 
-          id={id} 
-          setData={setRefDoctors}
-          placeholder={"Անուն ազգանուն"} />
-        ),
+        width: 450,
+        
       },
       {
         Header: (event) => (
@@ -90,12 +82,7 @@ function RefDoctorsTable({
         accessor: "medInstitution",
         sortable: true,
         width: 250,
-        Filter: ({ column: { id } }) => (
-          <ColumnFilter 
-          id={id} 
-          setData={setRefDoctors} 
-          placeholder={"Աշխատավայր"}/>
-        ),
+        
       },
       {
         Header: (event) => (
@@ -110,12 +97,7 @@ function RefDoctorsTable({
             {row.original?.contact?.email}
           </div>
         ),
-        Filter: ({ column: { id } }) => (
-          <ColumnFilter 
-          id={id} 
-          setData={setRefDoctors} 
-          placeholder={"Էլ․ հասցե"}/>
-        ),
+        
       },
       {
         Header: (event) => (
@@ -130,12 +112,7 @@ function RefDoctorsTable({
             {row.original?.contact?.phone}
           </div>
         ),
-        Filter: ({ column: { id } }) => (
-          <ColumnFilter 
-          id={id}
-          setData={setRefDoctors} 
-          placeholder={"Հեռախոս"}/>
-        ),
+        
       },
       {
         Header: (event) => (
@@ -144,7 +121,7 @@ function RefDoctorsTable({
           </>
         ),
         accessor: "actions",
-        width: 300,
+        width: 200,
         Cell: ({ row }) => (
           <div className="d-flex align-items-center">
             <div className="d-flex">
@@ -188,7 +165,7 @@ function RefDoctorsTable({
           </div>
         ),
         disableSortBy: true,
-        Filter: ({ column: { id } }) => <></>,
+        
       },
     ],
     []
@@ -296,9 +273,9 @@ function RefDoctorsTable({
                       <div className="d-flex justify-content-between">
                         {" "}
                         <span>Գրանցված է </span>{" "}
-                        <span>{moment.utc(modalInfo.createdAt).format('DD-MM-YYYY HH:mm')}</span>
+                        <span>{modalInfo.createdAt && moment.utc(modalInfo.createdAt).format('DD-MM-YYYY HH:mm')}</span>
                       </div>
-                      <div className="d-flex justify-content-between">  <span>Վերջին թարմացում</span> <span>{moment.utc(modalInfo?.updatedAt).format('DD-MM-YYYY HH:mm')}</span></div>
+                      <div className="d-flex justify-content-between">  <span>Վերջին թարմացում</span> <span>{modalInfo?.updatedAt && moment.utc(modalInfo?.updatedAt).format('DD-MM-YYYY HH:mm')}</span></div>
                       <div className="separator-full m-0"></div>
                       <div className="separator-full m-0"></div>
                       <div className="d-flex justify-content-between">
@@ -334,26 +311,17 @@ function RefDoctorsTable({
         className="table nowrap w-100 mb-5 dataTable no-footer"
         {...getTableProps()}
       >
-        <thead>
-          {headerGroups.map((headerGroup) => (
-            <tr
-              {...headerGroup.getHeaderGroupProps({ style: { width: "100%" } })}
-            >
-              {headerGroup.headers.map((column) => (
-                <th
-                  {...column.getHeaderProps(
-                    column.getSortByToggleProps({
-                      style: column.style, // Apply custom style to the column header
-                    })
-                  )}
-                >
-                  <div>
+         <thead>
+        {headerGroups.map((headerGroup) => (
+          <tr {...headerGroup.getHeaderGroupProps()}>
+            {headerGroup.headers.map((column) => (
+              <th  {...column.getHeaderProps(column.getSortByToggleProps())}>
                     {column.id !== "selection" && (
-                      <>
+                  <div className="d-flex justify-content-between ">
+                      
                         <div>
                           {column.canFilter ? column.render("Filter") : null}
                         </div>
-
                         <div
                           style={{
                             marginTop: "2px",
@@ -363,7 +331,8 @@ function RefDoctorsTable({
                           }}
                         >
                           <div>{column.render("Header")}</div>
-
+                        </div>
+                        {column.id!=="patientId" && 
                           <div style={{ paddingTop: "20px" }}>
                             {column.isSorted ? (
                               column.isSortedDesc ? (
@@ -375,21 +344,21 @@ function RefDoctorsTable({
                               <span className="sorting"></span>
                             )}
                           </div>
+                          }
+
                         </div>
-                      </>
                     )}
-                  </div>
                   <div
-                    {...column.getResizerProps()}
-                    className={`resizer ${
-                      column.isResizing ? "isResizing" : ""
-                    }`}
+                  {...column.getResizerProps()}
+                  className={`resizer ${
+                    column.isResizing ? "isResizing" : ""
+                  }`}
                   />
                 </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
+            ))}
+          </tr>
+        ))}
+      </thead>
         {refDoctors?.length>0? (
           <tbody {...getTableBodyProps()}>
             {rows.map((row) => {

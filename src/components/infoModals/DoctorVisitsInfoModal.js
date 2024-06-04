@@ -46,9 +46,9 @@ function DoctorVisitsInfoModal({modalInfo,setModalInfo}) {
                      <div className="separator-full m-0"></div>                  
                      <div className="d-flex justify-content-between">  <span>Բժիշկ </span> <span>{modalInfo.doctorName}</span></div>
                      <div className="separator-full m-0"></div>
-                     <div className="d-flex justify-content-between">  <span>Այցի ամսաթիվ </span> <span>{moment.utc(modalInfo?.visitDate).format('DD-MM-YYYY HH:mm')}</span></div>
+                     <div className="d-flex justify-content-between">  <span>Այցի ամսաթիվ </span> <span>{modalInfo?.visitDate && moment.utc(modalInfo?.visitDate).format('DD-MM-YYYY HH:mm')}</span></div>
                      <div className="separator-full m-0"></div>
-                     <div className="d-flex justify-content-between">  <span>Վերջին թարմացում</span> <span>{moment.utc(modalInfo?.updatedAt).format('DD-MM-YYYY HH:mm')}</span></div>
+                     <div className="d-flex justify-content-between">  <span>Վերջին թարմացում</span> <span>{modalInfo?.updatedAt && moment.utc(modalInfo?.updatedAt).format('DD-MM-YYYY HH:mm')}</span></div>
                      <div className="separator-full m-0"></div>
                      <div className="d-flex justify-content-between">  <span>Հաջորդ այց </span> <span>{modalInfo?.nextVisit ? moment.utc(modalInfo?.nextVisit).format('DD-MM-YYYY HH:mm'):''}</span></div>
                      <div className="separator-full m-0"></div>

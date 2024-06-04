@@ -137,6 +137,7 @@ function App() {
 
             <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
               <Route path={PATIENTS_ROUTE} element={<Patients />} />
+              
               <Route path={PATIENTS_ID_ROUTE} element={<PatientDetails/>} />
               {/* <Route path="admin/useradd" element={<UserAdd />} /> */}
               <Route path={USERS_ROUTE} element={<Users />} />

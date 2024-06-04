@@ -24,13 +24,15 @@ import isActiveSvg from "../../dist/svg/isActive.svg";
 import posTerminalSvg from "../../dist/svg/posTerminal.svg";
 import CreatePayByPos from "../CreatePayByPos";
 import DoctorVisitsInfoModal from "../infoModals/DoctorVisitsInfoModal";
+import { DOCTORSVISITS_URL } from "../../utils/constants";
 
-function DoctorsVisitsTable({ doctorsVisits, setDoctorsVisits, refreshData }) {
+function DoctorsVisitsTable({ doctorsVisits, setDoctorsVisits, refreshData,handleSearchPageCount }) {
   const navigate = useNavigate();
   const [modalInfo, setModalInfo] = useState("");
   const [DisableRowData, setDisableRowData] = useState(false);
   const [modalPrint, setModalPrint] = useState("");
   const [openPosModal, setOpenPosModal] = useState(false);
+  const [filterData, setFilterData] = useState({});
 
   const handlePosPay = (actionData) => {
     setOpenPosModal(actionData);
@@ -65,6 +67,7 @@ function DoctorsVisitsTable({ doctorsVisits, setDoctorsVisits, refreshData }) {
       minWidth: 20,
       width: 20,
       maxWidth: 600,
+      Filter: ({ column: { id } }) => <></>,
     }),
     []
   );
@@ -79,8 +82,31 @@ function DoctorsVisitsTable({ doctorsVisits, setDoctorsVisits, refreshData }) {
         accessor: "doctorsVisitId",
         sortable: true,
         width: 80,
+        // Filter: ({ column: { id } }) => (
+        //   <ColumnFilter id={id} setData={setDoctorsVisits} placeholder={"ID"} />
+        // ),
         Filter: ({ column: { id } }) => (
-          <ColumnFilter id={id} setData={setDoctorsVisits} placeholder={"ID"} />
+          <ColumnFilter id={id} 
+          setData={setDoctorsVisits} 
+          placeholder={"ID"}
+          getUrl = {DOCTORSVISITS_URL}
+          searchUrl = {
+            DOCTORSVISITS_URL
+            //DOCTORSVISITS__SEARCH_URL
+          } 
+          handleSearchPageCount={(val)=>handleSearchPageCount(val)}
+            filterData={filterData}
+            setFilterData={(newFilterData) => {
+              if(Object.values(newFilterData).length>1 || Object.values(newFilterData).length===0){
+                setFilterData(newFilterData)
+              }else{
+                setFilterData((prevFilterData) => {
+                  return { ...prevFilterData, ...newFilterData };
+                })
+              }
+             
+            }}
+          />
         ),
         Cell: ({ row }) => (
           <>
@@ -102,13 +128,13 @@ function DoctorsVisitsTable({ doctorsVisits, setDoctorsVisits, refreshData }) {
         accessor: "name",
         sortable: true,
         width: 280,
-        Filter: ({ column: { id } }) => (
-          <ColumnFilter
-            id={id}
-            setData={setDoctorsVisits}
-            placeholder="Անուն ազգանուն"
-          />
-        ),
+        // Filter: ({ column: { id } }) => (
+        //   <ColumnFilter
+        //     id={id}
+        //     setData={setDoctorsVisits}
+        //     placeholder="Անուն ազգանուն"
+        //   />
+        // ),
         Cell: ({ row }) => (
           <div
             onClick={() => handlePatientsDetail(row.original?.clientId)}
@@ -166,7 +192,6 @@ function DoctorsVisitsTable({ doctorsVisits, setDoctorsVisits, refreshData }) {
             </div>
           </>
         ),
-        Filter: ({ column: { id } }) => <></>,
       },
       {
         Header: (event) => (
@@ -176,16 +201,16 @@ function DoctorsVisitsTable({ doctorsVisits, setDoctorsVisits, refreshData }) {
         ),
         accessor: "visitDate",
         width: 200,
-        Filter: ({ column: { id } }) => (
-          <ColumnFilter
-            id={id}
-            setData={setDoctorsVisits}
-            placeholder="Այցի ամսաթիվ"
-          />
-        ),
+        // Filter: ({ column: { id } }) => (
+        //   <ColumnFilter
+        //     id={id}
+        //     setData={setDoctorsVisits}
+        //     placeholder="Այցի ամսաթիվ"
+        //   />
+        // ),
         Cell: ({ row }) => (
           <div className="d-flex justify-content-center align-items-center flex-column">
-            {moment.utc(row.original?.visitDate).format("DD-MM-YYYY HH:mm")}
+            {row.original?.visitDate && moment.utc(row.original?.visitDate).format("DD-MM-YYYY HH:mm")}
           </div>
         ),
       },
@@ -197,13 +222,13 @@ function DoctorsVisitsTable({ doctorsVisits, setDoctorsVisits, refreshData }) {
         ),
         accessor: "nextVisit",
         width: 200,
-        Filter: ({ column: { id } }) => (
-          <ColumnFilter
-            id={id}
-            setData={setDoctorsVisits}
-            placeholder="Հաջորդ այց"
-          />
-        ),
+        // Filter: ({ column: { id } }) => (
+        //   <ColumnFilter
+        //     id={id}
+        //     setData={setDoctorsVisits}
+        //     placeholder="Հաջորդ այց"
+        //   />
+        // ),
       },
       {
         Header: (event) => (
@@ -213,13 +238,13 @@ function DoctorsVisitsTable({ doctorsVisits, setDoctorsVisits, refreshData }) {
         ),
         accessor: "doctorName",
         width: 280,
-        Filter: ({ column: { id } }) => (
-          <ColumnFilter
-            id={id}
-            setData={setDoctorsVisits}
-            placeholder="Բժիշկ"
-          />
-        ),
+        // Filter: ({ column: { id } }) => (
+        //   <ColumnFilter
+        //     id={id}
+        //     setData={setDoctorsVisits}
+        //     placeholder="Բժիշկ"
+        //   />
+        // ),
         Cell: ({ row }) => (
           <div
             onClick={(e) => {
@@ -333,7 +358,6 @@ function DoctorsVisitsTable({ doctorsVisits, setDoctorsVisits, refreshData }) {
           </div>
         ),
         disableSortBy: true,
-        Filter: ({ column: { id } }) => <></>,
       },
     ],
     []
@@ -404,18 +428,17 @@ function DoctorsVisitsTable({ doctorsVisits, setDoctorsVisits, refreshData }) {
         className="table nowrap w-100 mb-5 dataTable no-footer diagTable"
         {...getTableProps()}
       >
-        <thead>
-          {headerGroups.map((headerGroup) => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps(column.getSortByToggleProps())}>
-                  <div>
+         <thead>
+        {headerGroups.map((headerGroup) => (
+          <tr {...headerGroup.getHeaderGroupProps()}>
+            {headerGroup.headers.map((column) => (
+              <th  {...column.getHeaderProps(column.getSortByToggleProps())}>
                     {column.id !== "selection" && (
-                      <>
+                  <div className="d-flex justify-content-between ">
+                      
                         <div>
                           {column.canFilter ? column.render("Filter") : null}
                         </div>
-
                         <div
                           style={{
                             marginTop: "2px",
@@ -425,7 +448,8 @@ function DoctorsVisitsTable({ doctorsVisits, setDoctorsVisits, refreshData }) {
                           }}
                         >
                           <div>{column.render("Header")}</div>
-
+                        </div>
+                        {column.id!=="patientId" && 
                           <div style={{ paddingTop: "20px" }}>
                             {column.isSorted ? (
                               column.isSortedDesc ? (
@@ -437,21 +461,21 @@ function DoctorsVisitsTable({ doctorsVisits, setDoctorsVisits, refreshData }) {
                               <span className="sorting"></span>
                             )}
                           </div>
+                          }
+
                         </div>
-                      </>
                     )}
-                  </div>
                   <div
-                    {...column.getResizerProps()}
-                    className={`resizer ${
-                      column.isResizing ? "isResizing" : ""
-                    }`}
+                  {...column.getResizerProps()}
+                  className={`resizer ${
+                    column.isResizing ? "isResizing" : ""
+                  }`}
                   />
                 </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
+            ))}
+          </tr>
+        ))}
+      </thead>
         {doctorsVisits?.length > 0 ? (
           <>
             <tbody {...getTableBodyProps()}>

@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import FeatherIcon from 'feather-icons-react/build/FeatherIcon';
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import ReactPaginate from 'react-paginate';
 import MedInstitutionsTable from '../viewTables/MedInstitutionsTable';
 import { Dropdown } from "react-bootstrap";
@@ -9,24 +9,35 @@ import { MEDINSTITUTIONS_URL } from '../../utils/constants';
 import useDeleteData from '../../hooks/useDeleteData';
 import useGetData from '../../hooks/useGetData';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
+import { useNavigate, useParams } from 'react-router-dom';
 
 
 function MedInstitutions() {
+    const { pageNumber } = useParams();
+    const navigate = useNavigate();
+    const [currentPage, setCurrentPage] = useState(Number(pageNumber));
     const [selectedItem, setSelectedItem] = useState("");
     const [selectedItemId, setSelectedItemId] = useState(null);
     const [isOpen, setIsOpen] = useState(false);
     const confirmgetMedInstitutionsRef = useRef("");
-    const [currentPage, setCurrentPage] = useState(0);  
     const [usersPerPage, setUsersPerPage] = useState(Math.round((window.innerHeight / 100)));
-    // const medInstitutionsCount = useSelector(selectMedinstitutions)
-    // const pageCount = Math.ceil(medInstitutionsCount/usersPerPage)
-    
+    const [searchCount,setSearchCount] = useState(null)
+  const [searchId,setSearchId] = useState(null)
+  const [searchTerms,setSearchTerms] = useState(null)
+
+  const handleSearchPageCount = ({count,searchTerms,id}) =>{
+    setSearchCount(count)
+    setSearchTerms(searchTerms)
+    setSearchId(id)
+  }
     const {
       data: medInstitutions,
       setData: setMedInstitutions,
       getData: getMedInstitutions,
-      refreshData
-    } = useGetData(MEDINSTITUTIONS_URL,currentPage,usersPerPage);
+      refreshData,
+      dataCount
+    } = useGetData(MEDINSTITUTIONS_URL,currentPage,usersPerPage,searchCount,null,searchId,searchTerms);
+    const pageCount = searchCount?Math.ceil(searchCount/usersPerPage) : Math.ceil(dataCount/usersPerPage)
     const handleToggleCreateModal = (value) => {
       setIsOpen((prev) => value);
     };
@@ -48,10 +59,13 @@ function MedInstitutions() {
         setSelectedItemId(true);
         setSelectedItem((prev) => user);
       };
-      const handlePageClick = ({ selected: selectedPage }) => {
-        setCurrentPage(selectedPage);
-        //updateUsersCount(); 
-       }
+     //-------------------------PAGINATION---------------------------//  
+     useEffect(() => {
+      setCurrentPage(Number(pageNumber));
+    }, [pageNumber]);
+    const handlePageClick = ({ selected: selectedPage }) => {
+      navigate(`/patients/page/${selectedPage+1}`);
+  }
        const refreshPage = () => {
         let paglink = document.querySelectorAll(".page-item");
         paglink[0]?.firstChild.click();
@@ -167,12 +181,12 @@ function MedInstitutions() {
                         setMedInstitutions={setMedInstitutions}
                         refreshData={refreshData}
                       />
-                      <ReactPaginate
+                     <ReactPaginate
                         previousLabel = {"Հետ"}    
                         nextLabel = {"Առաջ"}
-                        pageCount = {1}
+                        pageCount = {pageCount}
                         onPageChange = {handlePageClick}
-                        initialPage = {0}
+                        //initialPage = {Number(pageNumber)}
                         containerClassName={"pagination"}
                         pageLinkClassName = {"page-link"}
                         pageClassName = {"page-item"}
@@ -181,6 +195,7 @@ function MedInstitutions() {
                         disabledLinkClassName={"disabled"}
                         //activeLinkClassName={"active"}
                         activeClassName={"active"}
+                        forcePage={currentPage - 1}
 											/>
                   </div>
                 </div>

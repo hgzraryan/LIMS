@@ -1,7 +1,7 @@
 {
   "name": "LIMS_VTEAM_CLIENT",
   "version": "0.1.0",
-  "revision": "180524",
+  "revision": "040624",
   "private": true,
   "dependencies": {
     "@coreui/coreui": "^4.2.6",
@@ -39,6 +39,7 @@
     "react-big-calendar": "^1.11.2",
     "react-bootstrap": "^2.7.4",
     "react-country-region-selector": "^3.6.1",
+    "react-csv": "^2.2.2",
     "react-datepicker": "^4.18.0",
     "react-dom": "^18.2.0",
     "react-fakers": "^1.0.3-rc1",

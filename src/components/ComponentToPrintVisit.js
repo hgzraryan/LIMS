@@ -21,7 +21,8 @@ export const ComponentToPrintVisit = forwardRef(
       clientTel,
       clientFirstName,
       clientLastName,
-      clientMidName
+      clientMidName,
+      clientId
     } = value;
     //   const componentRef = useRef();
 
@@ -213,6 +214,8 @@ export const ComponentToPrintVisit = forwardRef(
                     </div>
           <div className=" mb-3r">
             <ul>
+            <li>Նույնականացման համար:<span style={{ fontWeight: "bold", fontSize: "1.1rem" }}>
+              {" "+clientId}</span></li>
               <li >ԱԱՀ: <span style={{fontWeight:'bold',fontSize:'1.1rem'}}>{" "+clientFirstName+" "+ clientLastName +" " +clientMidName}</span>
               </li>
               <li >Սեռ: <span style={{fontWeight:'bold',fontSize:'1.1rem'}}>{(clientGender==='Male')?' Արական':(clientGender==='Female')?' Իգական':''}</span></li>
@@ -240,7 +243,7 @@ export const ComponentToPrintVisit = forwardRef(
         <section className="research_container">
           <div className="research_container">
             <table
-              className="table table-striped"
+              className="table"
               style={{ border: "1px solid black" }}
             >
               <thead>

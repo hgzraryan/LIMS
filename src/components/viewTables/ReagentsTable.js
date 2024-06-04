@@ -49,11 +49,12 @@ function ReagentsTable({
     
     setModalInfo((prev) => user);
   };
-  const defaultColumn = useMemo(
+  const defaultColumn = React.useMemo(
     () => ({
       minWidth: 20,
       width: 20,
       maxWidth: 600,
+      Filter: ({ column: { id } }) => <></>,
     }),
     []
   );
@@ -68,11 +69,6 @@ function ReagentsTable({
         accessor: "reagentId",
         sortable: true,
         width: 80,
-        Filter: ({ column: { id } }) =>  <ColumnFilter
-        id={id}
-        setData={setReagents}
-        placeholder={'ID'}
-      />,
       },
       {
         Header: (event) => (
@@ -83,13 +79,6 @@ function ReagentsTable({
         accessor: "name",
         sortable: true,
         width: 200,
-        Filter: ({ column: { id } }) => (
-          <ColumnFilter 
-          id={id} 
-          setData={setReagents}
-          placeholder={'Անվանում'}
-          />
-        ),
       },
       {
         Header: (event) => (
@@ -99,13 +88,6 @@ function ReagentsTable({
         ),
         accessor: "price",
         width: 200,
-        Filter: ({ column: { id } }) => (
-          <ColumnFilter 
-          id={id} 
-          setData={setReagents} 
-          placeholder={'Արժեք'}
-          />
-        ),
       },
       {
         Header: (event) => (
@@ -115,13 +97,6 @@ function ReagentsTable({
         ),
         accessor: "currency",
         width: 200,
-        Filter: ({ column: { id } }) => (
-          <ColumnFilter 
-          id={id} 
-          setData={setReagents}
-          placeholder={'Արժույթ'}
-          />
-        ),
       },
       {
         Header: (event) => (
@@ -132,11 +107,6 @@ function ReagentsTable({
         accessor: "unit",
         sortable: true,
         width: 200,
-        Filter: ({ column: { id } }) => (
-          <ColumnFilter id={id} 
-          setData={setReagents}          
-           placeholder={'Չափման միավոր'} />
-        ),
       },
       {
         Header: (event) => (
@@ -147,13 +117,6 @@ function ReagentsTable({
         accessor: "unitType",
         sortable: true,
         width: 200,
-        Filter: ({ column: { id } }) => (
-          <ColumnFilter 
-          id={id} 
-          setData={setReagents}
-          placeholder={'Չափման տեսակ'}
-          />
-        ),
       },
       {
         Header: (event) => (
@@ -163,13 +126,6 @@ function ReagentsTable({
         ),
         accessor: "vendor",
         width: 200,
-        Filter: ({ column: { id } }) => (
-          <ColumnFilter 
-          id={id} 
-          setData={setReagents}
-          placeholder={'Թողարկող'}
-          />
-        ),
       },
       {
         Header: (event) => (
@@ -180,13 +136,6 @@ function ReagentsTable({
         accessor: "usage",
         sortable: true,
         width: 250,
-        Filter: ({ column: { id } }) => (
-          <ColumnFilter 
-          id={id} 
-          setData={setReagents}
-          placeholder={'Կիրառություն'}
-           />
-        ),
       },
       {
         Header: (event) => (
@@ -197,13 +146,6 @@ function ReagentsTable({
         accessor: "expdate",
         sortable: true,
         width: 250,
-        Filter: ({ column: { id } }) => (
-          <ColumnFilter 
-          id={id} 
-          setData={setReagents} 
-          placeholder={'Ժամկետ'}
-          />
-        ),
       },
       {
         Header: (event) => (
@@ -213,13 +155,6 @@ function ReagentsTable({
         ),
         accessor: "description",
         width: 200,
-        Filter: ({ column: { id } }) => (
-          <ColumnFilter 
-          id={id} 
-          setData={setReagents}
-          placeholder={'Նկարագիր'}
-          />
-        ),
       },
       {
         Header: (event) => (
@@ -229,13 +164,6 @@ function ReagentsTable({
         ),
         accessor: "normaFemale",
         width: 200,
-        Filter: ({ column: { id } }) => (
-          <ColumnFilter 
-          id={id} 
-          setData={setReagents}
-          placeholder={'Կին նորմա'}
-          />
-        ),
       },
       {
         Header: (event) => (
@@ -245,13 +173,6 @@ function ReagentsTable({
         ),
         accessor: "normaMale",
         width: 200,
-        Filter: ({ column: { id } }) => (
-          <ColumnFilter 
-          id={id} 
-          setData={setReagents}
-          placeholder={'Տղ․ նորմա'}
-          />
-        ),
       },
       {
         Header: (event) => (
@@ -261,13 +182,6 @@ function ReagentsTable({
         ),
         accessor: "normaBoth",
         width: 200,
-        Filter: ({ column: { id } }) => (
-          <ColumnFilter 
-          id={id} 
-          setData={setReagents}
-          placeholder={'Նորմա'}
-          />
-        ),
       },
       {
         Header: (event) => (
@@ -319,7 +233,6 @@ function ReagentsTable({
         ),
         disableSortBy: true,
         width: 200,
-        Filter: ({ column: { id } }) => <></>,
       },
     ],
     []
@@ -435,48 +348,50 @@ function ReagentsTable({
       className="table nowrap w-100 mb-5 dataTable no-footer"
       {...getTableProps()}
     >
-      <thead>
+       <thead>
         {headerGroups.map((headerGroup) => (
           <tr {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map((column) => (
-              <th {...column.getHeaderProps(column.getSortByToggleProps())}>
-                <div>
-                  {column.id !== "selection" && (
-                    <>
-                      <div>
-                        {column.canFilter ? column.render("Filter") : null}
-                      </div>
-
-                      <div
-                        style={{
-                          marginTop: "2px",
-                          display: "flex",
-                          justifyContent: "space-between",
-                          alignItems: "center",
-                        }}
-                      >
-                        <div>{column.render("Header")}</div>
-
-                        <div style={{ paddingTop: "20px" }}>
-                          {column.isSorted ? (
-                            column.isSortedDesc ? (
-                              <span className="sorting_asc"></span>
-                            ) : (
-                              <span className="sorting_desc"></span>
-                            )
-                          ) : (
-                            <span className="sorting"></span>
-                          )}
+              <th  {...column.getHeaderProps(column.getSortByToggleProps())}>
+                    {column.id !== "selection" && (
+                  <div className="d-flex justify-content-between ">
+                      
+                        <div>
+                          {column.canFilter ? column.render("Filter") : null}
                         </div>
-                      </div>
-                    </>
-                  )}
-                </div>
-                <div
+                        <div
+                          style={{
+                            marginTop: "2px",
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                          }}
+                        >
+                          <div>{column.render("Header")}</div>
+                        </div>
+                        {column.id!=="patientId" && 
+                          <div style={{ paddingTop: "20px" }}>
+                            {column.isSorted ? (
+                              column.isSortedDesc ? (
+                                <span className="sorting_asc"></span>
+                              ) : (
+                                <span className="sorting_desc"></span>
+                              )
+                            ) : (
+                              <span className="sorting"></span>
+                            )}
+                          </div>
+                          }
+
+                        </div>
+                    )}
+                  <div
                   {...column.getResizerProps()}
-                  className={`resizer ${column.isResizing ? "isResizing" : ""}`}
-                />
-              </th>
+                  className={`resizer ${
+                    column.isResizing ? "isResizing" : ""
+                  }`}
+                  />
+                </th>
             ))}
           </tr>
         ))}

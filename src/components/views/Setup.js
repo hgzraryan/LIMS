@@ -35,12 +35,12 @@ const setupData = [
     {
         name:'Հետազոտություններ',
         icon:researches,
-        pathname:'setup/researchlists'
+        pathname:'setup/researchlists/page/1'
     },
     {
         name:'Բուժծառայություններ',
         icon:medicalServices,
-        pathname:'setup/medicalServices'
+        pathname:'setup/medicalServices/page/1'
     },
     {
         name:'Սրվակներ',
@@ -50,12 +50,12 @@ const setupData = [
     {
         name:'Ռեագենտներ',
         icon:reagent,
-        pathname:'setup/reagents'
+        pathname:'setup/reagents/page/1'
     },
     {
         name:'Սարքավորումներ',
         icon:equipments,
-        pathname:'setup/equipments'
+        pathname:'setup/equipments/page/1'
     },
     {
         name:'Լաբորատորիայի մասին',
@@ -65,7 +65,7 @@ const setupData = [
     {
         name:'Փաթեթներ',
         icon:Packages,
-        pathname:'setup/packages'
+        pathname:'setup/packages/page/1'
     },
 ]
 function Setup() {

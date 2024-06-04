@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-no-comment-textnodes */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import ComponentToConfirm from "../ComponentToConfirm";
 import {
   useBlockLayout,
@@ -29,6 +29,7 @@ import isActiveSvg from "../../dist/svg/isActive.svg";
 import posTerminalSvg from "../../dist/svg/posTerminal.svg";
 import CreatePayByPos from "../CreatePayByPos";
 import DiagnosticsInfoModal from "../infoModals/DiagnosticsInfoModal";
+import { DIAGNOSTICS_URL, DIAGNOSTICS__SEARCH_URL } from "../../utils/constants";
 
 
 function DiagnosticsTable({
@@ -41,6 +42,8 @@ function DiagnosticsTable({
   selectedItemId,
   selectedItem,
   refreshData,
+  handleSearchPageCount
+
 }) {
   const navigate = useNavigate();
   const [selectedItem1, setSelectedItem1] = useState("");
@@ -48,7 +51,7 @@ function DiagnosticsTable({
   const [modalInfo, setModalInfo] = useState("");
   const [modalPrint, setModalPrint] = useState("");
   const [openPosModal, setOpenPosModal] = useState(false);
-
+  const [filterData, setFilterData] = useState({});
   const handleOpenInfoModal = (data) => {
     setModalInfo((prev) => data);
   };
@@ -81,9 +84,12 @@ function DiagnosticsTable({
       minWidth: 20,
       width: 20,
       maxWidth: 600,
+      Filter: ({ column: { id } }) => <></>,
+
     }),
     []
   );
+  
   const handleDiagnosticsDetails = async (diagnosticsId) => {
     navigate(`/diagnostics/${diagnosticsId}`);
   };
@@ -118,6 +124,178 @@ function DiagnosticsTable({
     // });
   };
 
+  // const selectFilter = () =>{
+  //   return(
+  //     <div style={{ position: "relative" }}>
+  //     <span
+  //       className="d-flex justify-content-center align-items-center"
+  //       // onClick={handleSearchClick}
+  //       style={{ 
+  //         //backgroundColor: `${filterData ? '#4eafcb' : ''}`, 
+  //         padding: '5px', 
+  //         borderRadius: '5px' }}
+  //     >
+  //       <FeatherIcon icon="filter" width={15} height={15} />
+  //     </span>
+  //     {true && (
+  //         <div
+  //           //ref={modalRef}
+  //           style={{
+  //             position: "absolute",
+  //             padding: "8px",
+  //             backgroundColor: "#ffffff",
+  //             borderRadius: "5px",
+  //             boxShadow: "0 6px 16px 0 rgba(0, 0, 0, 0.1)",
+  //             zIndex: 1000,
+  //           }}
+  //         >
+  //           <input
+  //             type="checkBox"
+  //             // onClick={(e) => e.stopPropagation()}
+  //             // onChange={(e) => handleSearchInputChange(e.target.value)}
+  //             // value={filterData || ''}
+  //             // placeholder={placeholder ? placeholder : id}
+  //             style={{
+  //               width: "100%",
+  //               backgroundColor: "#fff",
+  //               border: "2px solid #f6f6f6",
+  //               borderRadius: "5px",
+  //               padding: "5px",
+  //             }}
+  //           />
+  //           <div className="d-flex">
+  //             <button
+  //               className="btn__search"
+  //               //onClick={() => setToggleSearchModal(false)}
+  //               style={{
+  //                 backgroundColor: "#26afeb",
+  //                 margin: "5px",
+  //                 borderRadius: "5px",
+  //                 border: "none",
+  //                 padding: "5px",
+  //               }}
+  //             >
+  //               &#x1F50E; Search
+  //             </button>
+  //             <button
+  //               className="btn__search"
+  //               onClick={() => {
+  //                 //setToggleSearchModal(false);
+  //                 //handleSearchInputChange('');
+  //               }}
+  //               style={{
+  //                 backgroundColor: "#f6f6f6",
+  //                 margin: "5px",
+  //                 borderRadius: "5px",
+  //                 border: "none",
+  //                 padding: "5px",
+  //               }}
+  //             >
+  //               Clear
+  //             </button>
+  //             <button
+  //               className="btn__search"
+  //               //onClick={handleSearchClick}
+  //               style={{
+  //                 backgroundColor: "#f6f6f6",
+  //                 margin: "5px",
+  //                 borderRadius: "5px",
+  //                 border: "none",
+  //                 padding: "5px",
+  //               }}
+  //             >
+  //               Close
+  //             </button>
+  //           </div>
+  //         </div>
+  //       )}
+  //   </div>
+  //   )
+  // }
+  const CheckboxFilter = ({ column: { filterValue, setFilter, preFilteredRows, id } }) => {
+    const [toggleFilterModal, setToggleFilterModal] = useState(false);
+    const modalRef = useRef();
+
+    const options = React.useMemo(() => {
+      const options = new Set();
+      preFilteredRows.forEach(row => {
+        options.add(row.values[id]);
+      });
+      return [...options.values()];
+    }, [id, preFilteredRows]);
+  
+    const handleCheckboxChange = (option) => {
+      setFilter((old = []) => {
+        if (old.includes(option)) {
+          return old.filter(item => item !== option);
+        } else {
+          return [...old, option];
+        }
+      });
+    };
+    const handleFilterClick = (e) => {
+      e.stopPropagation();
+      setToggleFilterModal((prev) => !prev);
+    };
+    const handleClickOutside = (event) => {
+      if (modalRef.current && !modalRef.current.contains(event.target)) {
+        setToggleFilterModal(false);
+      }
+    };
+  
+    useEffect(() => {
+      if (toggleFilterModal) {
+        document.addEventListener('mousedown', handleClickOutside);
+      } else {
+        document.removeEventListener('mousedown', handleClickOutside);
+      }
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+      };
+    }, [toggleFilterModal]);
+    return (
+      <div style={{ position: "relative" }}>
+       <span
+        className="d-flex justify-content-center align-items-center"
+        onClick={handleFilterClick}
+        style={{ 
+          //backgroundColor: `${filterData ? '#4eafcb' : ''}`, 
+          padding: '5px', 
+          borderRadius: '5px' }}
+      >
+        <FeatherIcon icon="filter" width={15} height={15} />
+      </span>
+      {toggleFilterModal && (
+        <div
+        ref={modalRef}
+        style={{
+          position: "absolute",
+          display:'flex',
+          flexDirection:'column',
+          padding: "8px 20px",
+          backgroundColor: "#ffffff",
+          borderRadius: "5px",
+          boxShadow: "0 6px 16px 0 rgba(0, 0, 0, 0.1)",
+          zIndex: 1000,
+        }}
+      >
+        {options.map((option, i) => (
+          <label key={i}>
+            <input
+              type="checkbox"
+              checked={filterValue ? filterValue.includes(option) : false}
+              onChange={() => handleCheckboxChange(option)}
+              style={{marginRight:'10px'}}
+              />
+            {option==="Active"?"Ակտիվ":"Չեղարկված"}
+          </label>
+        ))}
+        </div>
+      )}
+      </div>
+      
+    );
+  };
   const columns = useMemo(
     () => [
       {
@@ -126,8 +304,26 @@ function DiagnosticsTable({
         sortable: true,
         width: 80,
         Filter: ({ column: { id } }) => (
-          <ColumnFilter id={id} setData={setDiagnostics} placeholder={"ID"} />
+          <ColumnFilter id={id} 
+          setData={setDiagnostics} 
+          placeholder={"ID"}
+          getUrl = {DIAGNOSTICS_URL}
+          searchUrl = {DIAGNOSTICS__SEARCH_URL} 
+          handleSearchPageCount={(val)=>handleSearchPageCount(val)}
+            filterData={filterData}
+            setFilterData={(newFilterData) => {
+              if(Object.values(newFilterData).length>1 || Object.values(newFilterData).length===0){
+                setFilterData(newFilterData)
+              }else{
+                setFilterData((prevFilterData) => {
+                  return { ...prevFilterData, ...newFilterData };
+                })
+              }
+             
+            }}
+          />
         ),
+
         Cell: ({ row }) => (
           <>
             <div
@@ -143,16 +339,18 @@ function DiagnosticsTable({
       },
       {
         Header: "Այցելու",
-        accessor: "patientId",
+        accessor: "clientName",
         sortable: true,
         width: 300,
-        Filter: ({ column: { id } }) => (
-          <ColumnFilter
-            id={id}
-            setData={setDiagnostics}
-            placeholder="Այցլու"
-          />
-        ),
+        // Filter: ({ column}) => (
+        //   <ColumnFilter
+        //     id={column.id}
+        //     setData={setDiagnostics}
+        //     placeholder="Այցլու"
+        //     getUrl = {DIAGNOSTICS_URL}
+        //     searchUrl = {DIAGNOSTICS__SEARCH_URL}
+        //   />
+        // ),
         Cell: ({ row }) => (
           <>
             <div
@@ -206,7 +404,7 @@ function DiagnosticsTable({
             )}
           </>
         ),
-        Filter: ({ column: { id } }) => <></>,
+        // Filter: ({ column: { id } }) => <></>,
       },
       {
         Header: "Վճարում",
@@ -245,19 +443,20 @@ function DiagnosticsTable({
             </div>
           </>
         ),
-        Filter: ({ column: { id } }) => <></>,
       },
       {
         Header: "Գրանցման ամսաթիվ",
         accessor: "diagnosisDate",
         width: 200,
-        Filter: ({ column: { id } }) => (
-          <ColumnFilter
-            id={id}
-            setData={setDiagnostics}
-            placeholder="Գրանցման ամսաթիվ"
-          />
-        ),
+        // Filter: ({ column: { id } }) => (
+        //   <ColumnFilter
+        //     id={id}
+        //     setData={setDiagnostics}
+        //     placeholder="Գրանցման ամսաթիվ"
+        //     getUrl = {DIAGNOSTICS_URL}
+        //     searchUrl = {DIAGNOSTICS__SEARCH_URL}
+        //   />
+        // ),
         Cell: ({ row }) => (
           <div className="d-flex justify-content-center align-items-center">
             {/* {new Date()} */}
@@ -269,9 +468,14 @@ function DiagnosticsTable({
         Header: "Տեսակ",
         accessor: "class",
         width: 180,
-        Filter: ({ column: { id } }) => (
-          <ColumnFilter id={id} setData={setDiagnostics} placeholder="Տեսակ" />
-        ),
+        // Filter: ({ column: { id } }) => (
+        //   <ColumnFilter 
+        //   id={id} 
+        //   setData={setDiagnostics} 
+        //   placeholder="Տեսակ"
+        //   getUrl = {DIAGNOSTICS_URL}
+        //   searchUrl = {DIAGNOSTICS__SEARCH_URL} />
+        // ),
         Cell: ({ row }) => (
           <div className="d-flex justify-content-center align-items-center">
             {row.original?.class === "Internal"
@@ -288,13 +492,7 @@ function DiagnosticsTable({
         Header: "Կարգավիճակ",
         accessor: "diagStatus",
         width: 200,
-        Filter: ({ column: { id } }) => (
-          <ColumnFilter
-            id={id}
-            setData={setDiagnostics}
-            placeholder="Կարգավիճակ"
-          />
-        ),
+        Filter: CheckboxFilter,
         Cell: ({ row }) => (
           <div className="d-flex justify-content-center align-items-center">
             {row.original?.diagStatus === "Active" ? "Ակտիվ" : "Չեղարկված"}
@@ -425,6 +623,30 @@ function DiagnosticsTable({
 
   return (
     <>
+    {editRow && (
+      <DiagnosticsDeactivate
+        handleCloseDeactivateModal={handleCloseDeactivateModal}
+        rowData={editRow}
+        refreshData={refreshData}
+      />
+    )}
+    <ResearchViewBoard
+      selectedItem={selectedItem1}
+      setSelectedItem={setSelectedItem1}
+      handleCloseStatusModal={handleCloseStatusModal}
+      setResearches={setDiagnostics}
+      researches={diagnostics}
+    />
+
+    <ComponentToConfirm
+      handleCloseModal={handleCloseModal}
+      handleOpenModal={handleOpenModal}
+      handleDeleteItem={handleDeleteItem}
+      selectedItemId={selectedItemId}
+      confirmUserRef={confirmRef}
+      keyName={selectedItem.diagnosticsName}
+      delId={selectedItem.diagnosticstId}
+    />
     {openPosModal && (
       <CreatePayByPos actionData={openPosModal} handleClosePosPay={handleClosePosPay} refreshData={refreshData}/>         
     )}
@@ -432,24 +654,23 @@ function DiagnosticsTable({
         <DiagnosticsInfoModal modalInfo={modalInfo} setModalInfo={setModalInfo}/>
       )}
       {modalPrint && (
-                    <ResearchesPrint modalPrint={modalPrint} setModalPrint={setModalPrint} />
+        <ResearchesPrint modalPrint={modalPrint} setModalPrint={setModalPrint} />
       )}
       <table
         className="table nowrap w-100 mb-5 dataTable no-footer diagTable"
         {...getTableProps()}
       >
         <thead>
-          {headerGroups.map((headerGroup) => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps(column.getSortByToggleProps())}>
-                  <div>
+        {headerGroups.map((headerGroup) => (
+          <tr {...headerGroup.getHeaderGroupProps()}>
+            {headerGroup.headers.map((column) => (
+              <th  {...column.getHeaderProps(column.getSortByToggleProps())}>
                     {column.id !== "selection" && (
-                      <>
+                  <div className="d-flex justify-content-between ">
+                      
                         <div>
                           {column.canFilter ? column.render("Filter") : null}
                         </div>
-
                         <div
                           style={{
                             marginTop: "2px",
@@ -459,7 +680,8 @@ function DiagnosticsTable({
                           }}
                         >
                           <div>{column.render("Header")}</div>
-
+                        </div>
+                        {column.id!=="patientId" && 
                           <div style={{ paddingTop: "20px" }}>
                             {column.isSorted ? (
                               column.isSortedDesc ? (
@@ -471,21 +693,21 @@ function DiagnosticsTable({
                               <span className="sorting"></span>
                             )}
                           </div>
+                          }
+
                         </div>
-                      </>
                     )}
-                  </div>
                   <div
-                    {...column.getResizerProps()}
-                    className={`resizer ${
-                      column.isResizing ? "isResizing" : ""
-                    }`}
+                  {...column.getResizerProps()}
+                  className={`resizer ${
+                    column.isResizing ? "isResizing" : ""
+                  }`}
                   />
                 </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
+            ))}
+          </tr>
+        ))}
+      </thead>
         {diagnostics?.length > 0 ? (
           <>
           <tbody {...getTableBodyProps()}>
@@ -513,30 +735,6 @@ function DiagnosticsTable({
               );
             })}
           </tbody>
-            {editRow && (
-              <DiagnosticsDeactivate
-                handleCloseDeactivateModal={handleCloseDeactivateModal}
-                rowData={editRow}
-                refreshData={refreshData}
-              />
-            )}
-            <ResearchViewBoard
-              selectedItem={selectedItem1}
-              setSelectedItem={setSelectedItem1}
-              handleCloseStatusModal={handleCloseStatusModal}
-              setResearches={setDiagnostics}
-              researches={diagnostics}
-            />
-
-            <ComponentToConfirm
-              handleCloseModal={handleCloseModal}
-              handleOpenModal={handleOpenModal}
-              handleDeleteItem={handleDeleteItem}
-              selectedItemId={selectedItemId}
-              confirmUserRef={confirmRef}
-              keyName={selectedItem.diagnosticsName}
-              delId={selectedItem.diagnosticstId}
-            />
             </>
         ) : (
           ""

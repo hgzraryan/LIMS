@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import FeatherIcon from 'feather-icons-react/build/FeatherIcon';
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import ReactPaginate from 'react-paginate';
 import { Dropdown } from "react-bootstrap";
 import RefDoctorsTable from '../viewTables/RefDoctorsTable';
@@ -9,27 +9,36 @@ import { REFDOCTORS_URL } from '../../utils/constants';
 import useGetData from '../../hooks/useGetData';
 import useDeleteData from '../../hooks/useDeleteData';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
-import { useSelector } from 'react-redux';
-import { selectRefDoctorsCount } from '../../redux/features/refDoctors/refDoctorsCountSlice';
+import { useNavigate, useParams } from 'react-router-dom';
 
 function RefDoctors() {
+    const { pageNumber } = useParams();
+    const navigate = useNavigate();
+    const [currentPage, setCurrentPage] = useState(Number(pageNumber));
     const [selectedItem, setSelectedItem] = useState("");
     const [selectedItemId, setSelectedItemId] = useState(null);
     const [isOpen, setIsOpen] = useState(false);
-    const confirmRefDoctorsRef = useRef("");
-    const [currentPage, setCurrentPage] = useState(0);  
+    const confirmRefDoctorsRef = useRef(""); 
     const [usersPerPage, setUsersPerPage] = useState(Math.round((window.innerHeight / 100)));
-     const refDoctorsCount = useSelector(selectRefDoctorsCount)
-    const pageCount = Math.ceil(refDoctorsCount/usersPerPage)
-    
-    const {
-      data: refDoctors,
-      setData: setRefDoctors,
-      getData: getRefDoctors,
-      refreshData
-    } = useGetData(REFDOCTORS_URL,currentPage,usersPerPage)
-    ;
-    const handleCloseModal = () => {
+    const [searchCount,setSearchCount] = useState(null)
+    const [searchId,setSearchId] = useState(null)
+    const [searchTerms,setSearchTerms] = useState(null)
+  
+    const handleSearchPageCount = ({count,searchTerms,id}) =>{
+      setSearchCount(count)
+      setSearchTerms(searchTerms)
+      setSearchId(id)
+    }
+     const {
+       data: refDoctors,
+       setData: setRefDoctors,
+       getData: getRefDoctors,
+       refreshData,
+       dataCount
+      } = useGetData(REFDOCTORS_URL,currentPage,usersPerPage,searchCount,null,searchId,searchTerms);
+      const pageCount = searchCount?Math.ceil(searchCount/usersPerPage) : Math.ceil(dataCount/usersPerPage)
+      
+      const handleCloseModal = () => {
       setSelectedItemId(null);
     };
     /*------------------ Create user Component --------------------*/
@@ -51,10 +60,14 @@ function RefDoctors() {
         setSelectedItemId(true);
         setSelectedItem((prev) => user);
       };
-      const handlePageClick = ({ selected: selectedPage }) => {
-        setCurrentPage(selectedPage);
-        //updateUsersCount(); 
-       }
+      //-------------------------PAGINATION---------------------------//  
+   useEffect(() => {
+    setCurrentPage(Number(pageNumber));
+  }, [pageNumber]);
+  const handlePageClick = ({ selected: selectedPage }) => {
+    navigate(`/doctors/refDoctors/page/${selectedPage+1}`);
+}
+  //--------------------------------------------------------------//
        const refreshPage = () => {
         let paglink = document.querySelectorAll(".page-item");
         paglink[0]?.firstChild.click();
@@ -175,7 +188,7 @@ function RefDoctors() {
                         nextLabel = {"Առաջ"}
                         pageCount = {pageCount}
                         onPageChange = {handlePageClick}
-                        initialPage = {0}
+                        //initialPage = {Number(pageNumber)}
                         containerClassName={"pagination"}
                         pageLinkClassName = {"page-link"}
                         pageClassName = {"page-item"}
@@ -184,6 +197,7 @@ function RefDoctors() {
                         disabledLinkClassName={"disabled"}
                         //activeLinkClassName={"active"}
                         activeClassName={"active"}
+                        forcePage={currentPage - 1}
 											/>
                   </div>
                 </div>

@@ -33,11 +33,13 @@ function MedicalServicesTable({
     const handleOpenInfoModal = (user) => {    
       setModalInfo((prev) => user);
     };
-    const defaultColumn = useMemo(
+    const defaultColumn = React.useMemo(
       () => ({
         minWidth: 20,
         width: 20,
-        maxWidth: 1000
+        maxWidth: 600,
+        Filter: ({ column: { id } }) => <></>,
+  
       }),
       []
     );
@@ -52,13 +54,6 @@ function MedicalServicesTable({
           accessor: "medServiceId",
           sortable: true,
           width:80,
-          Filter: ({ column: { id } })=>(
-            <ColumnFilter
-              id={id}
-              setData={setResearches}
-              placeholder={'ID'}
-            />
-          ),
         },
         {
           Header: (event) => (
@@ -68,14 +63,7 @@ function MedicalServicesTable({
           ),
           accessor: "serviceName",
           sortable: true,
-          width:100,
-          Filter: ({ column: { id } })=>(
-            <ColumnFilter
-              id={id}
-              setData={setResearches}
-              placeholder={'Անվանում'}
-            />
-          ),
+          width:300,
         },
         {
           Header: (event) => (
@@ -86,15 +74,7 @@ function MedicalServicesTable({
           ),
           accessor: "localCode",
           disableSortBy: true,
-          width:100,
-          Filter: ({ column: { id } })=>(
-            <ColumnFilter
-              id={id}
-              setData={setResearches}
-              placeholder={'Ներքին կոդ'}
-  
-            />
-          ),
+          width:120,
         },
         {
           Header: (event) => (
@@ -105,15 +85,7 @@ function MedicalServicesTable({
           ),
           accessor: "categoryName",
           sortable: true,
-          width:300,
-          Filter: ({ column: { id } })=>(
-            <ColumnFilter
-              id={id}
-              setData={setResearches}
-              placeholder={'Դասակարգ'}
-  
-            />
-          ),
+          width:250,
         },
         {
           Header: (event) => (
@@ -124,15 +96,7 @@ function MedicalServicesTable({
           ),
           accessor: "price",
           sortable: true,
-          width:300,
-          Filter: ({ column: { id } })=>(
-            <ColumnFilter
-              id={id}
-              setData={setResearches}
-              placeholder={'Գին'}
-  
-            />
-          ),
+          width:100,
         },
         {
           Header: (event) => (
@@ -142,15 +106,7 @@ function MedicalServicesTable({
             </>
           ),
           accessor: "purchasePrice",
-          width:200,
-          Filter: ({ column: { id } })=>(
-            <ColumnFilter
-              id={id}
-              setData={setResearches}
-              placeholder={'Առքի գին'}
-  
-            />
-          ),
+          width:100,
         },
         {
           Header: (event) => (
@@ -160,14 +116,6 @@ function MedicalServicesTable({
           ),
           accessor: "additional",
           width:300,
-          Filter: ({ column: { id } })=>(
-            <ColumnFilter
-              id={id}
-              setData={setResearches}
-              placeholder={'Հավելյալ'}
-  
-            />
-          ),
         },
         {
           Header: (event) => (
@@ -176,15 +124,7 @@ function MedicalServicesTable({
             </>
           ),
           accessor: "shortName",
-          width:300,
-          Filter: ({ column: { id } })=>(
-            <ColumnFilter
-              id={id}
-              setData={setResearches}
-              placeholder={'Հապավում'}
-  
-            />
-          ),
+          width:120,
         },
         
         {
@@ -239,9 +179,6 @@ function MedicalServicesTable({
           ),
           disableSortBy: true,
           width:200,
-          Filter: ({ column: { id } })=>(
-            <></>
-          ),
         },
       ],
       []
@@ -324,7 +261,7 @@ function MedicalServicesTable({
                          <div className="separator-full m-0"></div>
                          <div className="d-flex justify-content-between">  <span>Դասակարգ</span> <span>{modalInfo.categoryName}</span></div>
                          <div className="separator-full m-0"></div>
-                         <div className="d-flex justify-content-between">  <span>Վերջին թարմացում</span> <span>{moment.utc(modalInfo?.updatedAt).format('DD-MM-YYYY HH:mm')}</span></div>
+                         <div className="d-flex justify-content-between">  <span>Վերջին թարմացում</span> <span>{modalInfo?.updatedAt && moment.utc(modalInfo?.updatedAt).format('DD-MM-YYYY HH:mm')}</span></div>
                         <div className="separator-full m-0"></div>
                          <div className="d-flex justify-content-between">  <span>Հավելյալ տվյալներ</span> <span>{modalInfo.additional}</span></div>
                          <div className="separator-full m-0"></div>
@@ -352,52 +289,54 @@ function MedicalServicesTable({
       )
     }
       <table  className="table nowrap w-100 mb-5 dataTable no-footer" {...getTableProps()} >
-       <thead>
-          {headerGroups.map((headerGroup) => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
-                <th  {...column.getHeaderProps(column.getSortByToggleProps())}>
-                <div>
-                  {column.id !== "selection" && (
-                    <>
-                    <div>
-                      {column.canFilter ? column.render("Filter") : null}
-                    </div>
-                  
-                  <div  style={{
-                    marginTop: "2px",
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                  }}>
-                    <div>{column.render("Header")}</div>
-                    
-                      <div style={{paddingTop:'20px'}} >
-                        {column.isSorted ? (
-                          column.isSortedDesc ? (
-                            <span className="sorting_asc"></span>
-                            ) : (
-                              <span className="sorting_desc"></span>
-                              )
+      <thead>
+        {headerGroups.map((headerGroup) => (
+          <tr {...headerGroup.getHeaderGroupProps()}>
+            {headerGroup.headers.map((column) => (
+              <th  {...column.getHeaderProps(column.getSortByToggleProps())}>
+                    {column.id !== "selection" && (
+                  <div className="d-flex justify-content-between ">
+                      
+                        <div>
+                          {column.canFilter ? column.render("Filter") : null}
+                        </div>
+                        <div
+                          style={{
+                            marginTop: "2px",
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                          }}
+                        >
+                          <div>{column.render("Header")}</div>
+                        </div>
+                        {column.id!=="patientId" && 
+                          <div style={{ paddingTop: "20px" }}>
+                            {column.isSorted ? (
+                              column.isSortedDesc ? (
+                                <span className="sorting_asc"></span>
                               ) : (
-                                <span className="sorting"></span>
-                                )}
-                      </div>
-                  </div>
-                                </>
+                                <span className="sorting_desc"></span>
+                              )
+                            ) : (
+                              <span className="sorting"></span>
+                            )}
+                          </div>
+                          }
+
+                        </div>
                     )}
-                </div>
-                <div
-                {...column.getResizerProps()}
-                className={`resizer ${
-                  column.isResizing ? "isResizing" : ""
-                }`}
-                />
-              </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
+                  <div
+                  {...column.getResizerProps()}
+                  className={`resizer ${
+                    column.isResizing ? "isResizing" : ""
+                  }`}
+                  />
+                </th>
+            ))}
+          </tr>
+        ))}
+      </thead>
         {researches?.length>0? (
               <tbody {...getTableBodyProps()}>
               {rows.map(row => {

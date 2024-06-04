@@ -64,7 +64,7 @@ function PatientDetails() {
   const handleOpenVisitModal = (data) => {
     // setIsOpen(true);
     // setResearch((prev) => data.statusBoard[4]?.researches);
-    console.log(data)
+    //console.log(data)
   };
   const handleLinkClick = (linkId) => {
     setActiveLink(linkId);
@@ -239,7 +239,7 @@ function PatientDetails() {
         ),
         Cell:({row})=>(
           <>
-          {moment.utc(row.original?.createdAt).format('DD-MM-YYYY HH:mm')}
+          {row.original?.createdAt && moment.utc(row.original?.createdAt).format('DD-MM-YYYY HH:mm')}
           </>
         ),
         accessor: "createdAt",
@@ -256,7 +256,7 @@ function PatientDetails() {
         ),
         Cell:({row})=>(
           <>
-          {moment.utc(row.original?.visitDate).format('DD-MM-YYYY HH:mm')}
+          {row.original?.visitDate && moment.utc(row.original?.visitDate).format('DD-MM-YYYY HH:mm')}
           </>
         ),
         accessor: "visitDate",
@@ -719,7 +719,7 @@ function PatientDetails() {
                             <span>
                               <i className="bi  bi-calendar-event text-disabled me-2"></i>
                               <span className="text-muted">Ծննդյան ամսաթիվ:</span>
-                            <span className="ms-2">{moment.utc(patientDetails?.dateOfBirth).format('DD-MM-YYYY')}</span></span>
+                            <span className="ms-2">{patientDetails?.dateOfBirth && moment.utc(patientDetails?.dateOfBirth).format('DD-MM-YYYY')}</span></span>
                           </li>
                           <li className="list-group-item border-0">
                             <span>
@@ -748,7 +748,7 @@ function PatientDetails() {
                               <i className="bi bi-calendar-event text-disabled me-2"></i>
                               <span className="text-muted">Գրանցման ամսաթիվ:</span>
                             </span>
-                            <span className="ms-2">{moment.utc(patientDetails?.createdAt).format('DD-MM-YYYY HH:mm')}</span>
+                            <span className="ms-2">{patientDetails?.createdAt && moment.utc(patientDetails?.createdAt).format('DD-MM-YYYY HH:mm')}</span>
                           </li>
                           <li className="list-group-item border-0">
                             <span>
@@ -758,7 +758,7 @@ function PatientDetails() {
                               </span>
                             </span>
                             <span className="ms-2">
-                            {moment.utc(patientDetails?.updatedAt).format('DD-MM-YYYY HH:mm')}
+                            {patientDetails?.updatedAt && moment.utc(patientDetails?.updatedAt).format('DD-MM-YYYY HH:mm')}
                             </span>
                           </li>
                           {(patientDetails?.referrer || patientDetails?.extraReferrer) ?

@@ -41,6 +41,7 @@ function AddDoctor({ handleToggleCreateModal, refreshData }) {
   const fileReader = new FileReader();
   const formData = new FormData();
   const editorRef = useRef(null);
+  const [errMsg, setErrMsg] = useState("");
 
  const [country, setCountry] = useState('')
   const [region, setRegion] = useState('')
@@ -171,7 +172,6 @@ function AddDoctor({ handleToggleCreateModal, refreshData }) {
         licenseNumber: licenseNumber,
         gender: gender,
         maritalStatus:maritalStatus,
-        //additional:additional,
         dateOfBirth: new Date(
           dateOfBirth.getTime() - dateOfBirth.getTimezoneOffset() * 60000
         )
@@ -201,14 +201,15 @@ function AddDoctor({ handleToggleCreateModal, refreshData }) {
         notify(`${newDoctor.doctorName}  Բժիշկը ավելացված է`)
 
       } catch (err) {
-        console.log(err)
-      //   if (!err?.response) {
-      //     setErrMsg("No Server Response");
-      //   } else if (err.response?.status === 409) {
-      //     setErrMsg("Username Taken");
-      //   } else {
-      //     setErrMsg(" Failed");
-      //   }
+        if (!err?.response) {
+          setErrMsg("No Server Response");
+        } else if (err.response?.status === 409 & err.response?.data?.message ==="Conflict email already registered"  ) {
+          setErrMsg("Կրկնվող էլ․ հասցե");
+        } else if (err.response?.status === 409 & err.response?.data?.message ==="Conflict username already registered"  ) {
+          setErrMsg("Կրկնվող ծածկանուն");
+        }else {
+          setErrMsg("Գրանցումը չի ստացվել");
+        }
       }
     }
   );
@@ -311,7 +312,7 @@ function AddDoctor({ handleToggleCreateModal, refreshData }) {
                               <Input {...licenseNumber_validation} />
                             </div>
                           </div>
-                          <div className="row gx-3">
+                          <div className="row gx-3 mb-3">
                           <div className="col-sm-6">
                             <div className="d-flex justify-content-between me-2">
                               <label className="form-label" htmlFor="country">
@@ -688,7 +689,16 @@ function AddDoctor({ handleToggleCreateModal, refreshData }) {
                             </div>
                           </div>
                         </div>
-                        <div className="separator-full"></div>
+                        <div className="separator-full"></div> 
+                        {errMsg && 
+                        <div>
+                          <ol>
+                            <li style={{fontSize:'12px',color:'red',listStyle: 'inside'}}>
+                            {errMsg}
+                            </li>
+                          </ol>
+                        </div>
+                        }
                     <div className="modal-footer align-items-center">
                       <button
                         type="button"

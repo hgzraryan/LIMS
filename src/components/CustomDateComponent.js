@@ -40,6 +40,9 @@ function CustomDateComponent({ control, name,required='true',defaultValue='',set
        required
        placeholderText="Ընտրեք ամսաթիվը" 
        className='form-control'
+       popperPlacement="auto"
+       //popperContainer={({ children }) => <div>{children}</div>} // Custom container
+
        />
     )
 }

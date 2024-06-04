@@ -13,12 +13,13 @@ function Samples() {
   const [selectedItemId, setSelectedItemId] = useState(null);
   const [currentPage, setCurrentPage] = useState(0);  
   const [usersPerPage, setUsersPerPage] = useState(Math.round((window.innerHeight / 100)));
-  //const pageCount = Math.ceil(patientsCount/usersPerPage)
+  //const pageCount = Math.ceil(dataCount/usersPerPage)
   // const {
   //   data: samples,
   //   setData: setSamples,
   //   getData: getSamples, 
-  //   refreshData 
+  //   refreshData ,
+  //    dataCount
   // } = useGetData(SAMPLES_URL,currentPage,usersPerPage);
   //-------------------------PAGINATION---------------------------//  
   const handlePageClick = ({ selected: selectedPage }) => {

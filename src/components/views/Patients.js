@@ -12,28 +12,45 @@ import ReactPaginate from "react-paginate";
 import { useSelector } from "react-redux";
 import { selectPatientsCount } from "../../redux/features/patients/patientsCountSlice";
 import { selectResearches } from "../../redux/features/researches/researchesSlice";
-import { PATIENTS_URL, RESEARCHLISTS_URL } from "../../utils/constants";
+import { PATIENTS_URL, PATIENTS__SEARCH_URL, RESEARCHLISTS_URL } from "../../utils/constants";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import { useNavigate, useParams } from "react-router-dom";
+import {utils, writeFile} from 'xlsx';
+import moment from 'moment';
+import ExportData from "../ExportData";
 
 const Patients = () => {
-  const patientsCount = useSelector(selectPatientsCount)
-  //const researchState= useSelector(selectResearches)
+  const { pageNumber } = useParams();
+  const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(Number(pageNumber));
   const axiosPrivate = useAxiosPrivate();
   const [isLoading, setIsLoading] = useState(false);
 
   const [isOpen, setIsOpen] = useState(false);
+  const [toggleExport, setToggleExport] = useState(false);
   const [selectedItem, setSelectedItem] = useState("");
-  const [currentPage, setCurrentPage] = useState(0);  
   const [usersPerPage, setUsersPerPage] = useState(Math.round((window.innerHeight / 100)));
   const [researches, setResearches] = useState([]);
-  const pageCount = Math.ceil(patientsCount/usersPerPage)
-  
+  const [exportData, setExportData] = useState([]);
+  const [searchCount,setSearchCount] = useState(null)
+  const [searchId,setSearchId] = useState(null)
+  const [searchTerms,setSearchTerms] = useState(null)
+
+  const handleToggleExportModal = (value) => {
+    setToggleExport((prev) => value);
+  };
+  const handleSearchPageCount = ({count,searchTerms,id}) =>{
+    setSearchCount(count)
+    setSearchTerms(searchTerms)
+    setSearchId(id)
+  }
     const {
       data: patients,
       setData: setPatients,
-      refreshData  
-    } = useGetData(PATIENTS_URL,currentPage,usersPerPage);
-
+      refreshData,
+      dataCount 
+    } = useGetData(PATIENTS_URL,currentPage,usersPerPage,searchCount,PATIENTS__SEARCH_URL,searchId,searchTerms);
+  const pageCount = searchCount?Math.ceil(searchCount/usersPerPage) : Math.ceil(dataCount/usersPerPage)
   const handleToggleCreateModal = (value) => {
     setIsOpen((prev) => value);
   };
@@ -45,9 +62,11 @@ const Patients = () => {
     setSelectedItem(null);
   };
     //-------------------------PAGINATION---------------------------//  
+    useEffect(() => {
+      setCurrentPage(Number(pageNumber));
+    }, [pageNumber]);
     const handlePageClick = ({ selected: selectedPage }) => {
-      setCurrentPage(selectedPage);
-      //updateUsersCount();
+      navigate(`/patients/page/${selectedPage+1}`);
   }
   useEffect(() => {
     setTimeout(() => {
@@ -65,8 +84,7 @@ const Patients = () => {
     }, 500);
   }, []);
     //--------------------------------------------------------------//
-  //-------------------------
-
+  
   const refreshPage = () => {
     let paglink = document.querySelectorAll(".page-item");
     paglink[0]?.firstChild.click();
@@ -76,6 +94,11 @@ const Patients = () => {
 
   return (
     <HelmetProvider>
+      <ExportData 
+      handleToggleExportModal = {handleToggleExportModal}
+      toggleExport={toggleExport}
+      section='patient'
+      />
     <div>
       <div>
 
@@ -126,6 +149,7 @@ const Patients = () => {
                       </Dropdown.Item>
                     </Dropdown.Menu>
                   </Dropdown>
+                  
                   {isOpen && (
                     <CreatePatient
                       handleToggleCreateModal={handleToggleCreateModal}
@@ -144,12 +168,13 @@ const Patients = () => {
                   data-bs-toggle="dropdown"
                 >
                   <span className="icon">
-                    <span className="feather-icon">
-                      <FeatherIcon icon="list" />
+                    <span className="feather-icon"
+                    onClick={handleToggleExportModal}>
+                      <FeatherIcon icon="download" />
                     </span>
                   </span>
                 </a>
-                <div className="dropdown-menu dropdown-menu-end">
+                {/* <div className="dropdown-menu dropdown-menu-end">
                   <a className="dropdown-item active" href="contact.html">
                     <span className="feather-icon dropdown-icon">
                       <FeatherIcon icon="list" />
@@ -168,7 +193,7 @@ const Patients = () => {
                     </span>
                     <span>Compact View</span>
                   </a>
-                </div>
+                </div> */}
                 <a
                   className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover no-caret d-sm-inline-block d-none"
                   href="#"
@@ -184,7 +209,7 @@ const Patients = () => {
                     </span>
                   </span>
                 </a>
-                <div className="v-separator d-lg-block d-none"></div>
+                {/* <div className="v-separator d-lg-block d-none"></div>
                 <a
                   className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover dropdown-toggle no-caret  d-lg-inline-block d-none  ms-sm-0"
                   href="#"
@@ -286,7 +311,7 @@ const Patients = () => {
                       <i data-feather="chevron-down"></i>
                     </span>
                   </span>
-                </a>
+                </a> */}
               </div>
             </header>
             <div className="contact-body">
@@ -305,13 +330,14 @@ const Patients = () => {
                     patients={patients}
                     setPatients={setPatients}
                     refreshData={refreshData}
+                    handleSearchPageCount={(data)=>handleSearchPageCount(data)}
                     />
                       <ReactPaginate
                         previousLabel = {"Հետ"}    
                         nextLabel = {"Առաջ"}
                         pageCount = {pageCount}
                         onPageChange = {handlePageClick}
-                        initialPage = {0}
+                        //initialPage = {Number(pageNumber)}
                         containerClassName={"pagination"}
                         pageLinkClassName = {"page-link"}
                         pageClassName = {"page-item"}
@@ -320,7 +346,9 @@ const Patients = () => {
                         disabledLinkClassName={"disabled"}
                         //activeLinkClassName={"active"}
                         activeClassName={"active"}
+                        forcePage={currentPage - 1}
 											/>
+                      
                   </div>
                 </div>
               </div>

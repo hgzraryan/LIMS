@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable no-lone-blocks */
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import FeatherIcon from "feather-icons-react";
 import LoadingSpinner from "../LoadingSpinner";
 import ReactPaginate from "react-paginate";
@@ -9,33 +9,41 @@ import CreateUser from "../addViews/CreateUser";
 import { Dropdown } from "react-bootstrap";
 import useGetData from "../../hooks/useGetData";
 import useDeleteData from "../../hooks/useDeleteData";
-import {  selectUsersCount } from "../../redux/features/users/usersCountSlice";
 import UsersTable from "../viewTables/UsersTable";
 import { Helmet, HelmetProvider } from 'react-helmet-async';
-import { useSelector } from "react-redux";
 import AddUserRole from "../addViews/AddUserRole";
 import { USERS_URL } from "../../utils/constants";
+import { useNavigate, useParams } from "react-router-dom";
 
 const Users = () => {
-
+  const { pageNumber } = useParams();
+  const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(Number(pageNumber));
   const confirmUserRef = useRef("");
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenRole, setIsOpenRole] = useState(false);
   const [selectedItem, setSelectedItem] = useState("");
   const [selectedItemId, setSelectedItemId] = useState(null);
-  const useersCount = useSelector(selectUsersCount)
-  const [currentPage, setCurrentPage] = useState(0);  
   const [usersPerPage, setUsersPerPage] = useState(Math.round((window.innerHeight / 100)));
-  const pageCount = Math.ceil(useersCount/usersPerPage)
+  const [searchCount,setSearchCount] = useState(null)
+  const [searchId,setSearchId] = useState(null)
+  const [searchTerms,setSearchTerms] = useState(null)
 
+  const handleSearchPageCount = ({count,searchTerms,id}) =>{
+    setSearchCount(count)
+    setSearchTerms(searchTerms)
+    setSearchId(id)
+  }
   const {
     data: users,
     setData: setUsers,
     // hasMore,
     // checkData,
     getData: getUsers,
-    refreshData
-  } = useGetData(USERS_URL,currentPage,usersPerPage);
+    refreshData,
+    dataCount
+  } = useGetData(USERS_URL,currentPage,usersPerPage,searchCount,null,searchId,searchTerms);
+  const pageCount = searchCount?Math.ceil(searchCount/usersPerPage) : Math.ceil(dataCount/usersPerPage)
   //-------------------
   
   const { handleDeleteItem,updateUsersCount } = useDeleteData(
@@ -49,10 +57,13 @@ const Users = () => {
     
   );
   
-  const handlePageClick = ({ selected: selectedPage }) => {
-    setCurrentPage(selectedPage);
-    //updateUsersCount();
-}
+    //-------------------------PAGINATION---------------------------//  
+    useEffect(() => {
+      setCurrentPage(Number(pageNumber));
+    }, [pageNumber]);
+    const handlePageClick = ({ selected: selectedPage }) => {
+      navigate(`/users/page/${selectedPage+1}`);
+  }
   const refreshPage = () => {
     let paglink = document.querySelectorAll(".page-item");
     paglink[0]?.firstChild.click();
@@ -245,19 +256,20 @@ const Users = () => {
                         refreshData={refreshData}
                       />
                      <ReactPaginate
-                      previousLabel = {"Հետ"}    
-                      nextLabel = {"Առաջ"}
-                      pageCount = {pageCount}
-                      onPageChange = {handlePageClick}
-                      initialPage = {0}
-                      containerClassName={"pagination"}
-                      pageLinkClassName = {"page-link"}
-                      pageClassName = {"page-item"}
-                      previousLinkClassName={"page-link"}
-                      nextLinkClassName={"page-link"}
-                      disabledLinkClassName={"disabled"}
-                      //activeLinkClassName={"active"}
-                      activeClassName={"active"}
+                        previousLabel = {"Հետ"}    
+                        nextLabel = {"Առաջ"}
+                        pageCount = {pageCount}
+                        onPageChange = {handlePageClick}
+                        //initialPage = {Number(pageNumber)}
+                        containerClassName={"pagination"}
+                        pageLinkClassName = {"page-link"}
+                        pageClassName = {"page-item"}
+                        previousLinkClassName={"page-link"}
+                        nextLinkClassName={"page-link"}
+                        disabledLinkClassName={"disabled"}
+                        //activeLinkClassName={"active"}
+                        activeClassName={"active"}
+                        forcePage={currentPage - 1}
 											/>
                   </div>
                 </div>

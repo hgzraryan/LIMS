@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import FeatherIcon from "feather-icons-react";
 import LoadingSpinner from "../LoadingSpinner";
 import ReactPaginate from "react-paginate";
@@ -13,23 +13,36 @@ import { useSelector } from "react-redux";
 import { selectReagentsCount } from "../../redux/features/reagents/reagentsCountSlice";
 import { REAGENTS_URL } from "../../utils/constants";
 import { Helmet, HelmetProvider } from 'react-helmet-async';
+import { useNavigate, useParams } from "react-router-dom";
 
 const Reagents = () => {
+  const { pageNumber } = useParams();
+  const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(Number(pageNumber));
   const [selectedItem, setSelectedItem] = useState("");
   const [selectedItemId, setSelectedItemId] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const confirmReagentRef = useRef("");
-  const reagentsCount = useSelector(selectReagentsCount)
-  const [currentPage, setCurrentPage] = useState(0);  
+  const reagentsCount = useSelector(selectReagentsCount) 
   const [usersPerPage, setUsersPerPage] = useState(Math.round((window.innerHeight / 100)));
-  const pageCount = Math.ceil(reagentsCount/usersPerPage)
+  const [searchCount,setSearchCount] = useState(null)
+  const [searchId,setSearchId] = useState(null)
+  const [searchTerms,setSearchTerms] = useState(null)
 
+  const handleSearchPageCount = ({count,searchTerms,id}) =>{
+    setSearchCount(count)
+    setSearchTerms(searchTerms)
+    setSearchId(id)
+  }
+  
   const {
     data: reagents,
     setData: setReagents,
     getData: getReagents,
-    refreshData
-  } = useGetData(REAGENTS_URL,currentPage,usersPerPage);
+    refreshData,
+    dataCount
+  } = useGetData(REAGENTS_URL,currentPage,usersPerPage,searchCount,null,searchId,searchTerms);
+  const pageCount = searchCount?Math.ceil(searchCount/usersPerPage) : Math.ceil(dataCount/usersPerPage)
 
   const handleOpenModal = (user) => {
     setSelectedItemId(true);
@@ -53,12 +66,14 @@ const Reagents = () => {
     'name',
     getReagents
   );
-   //-------------------------PAGINATION---------------------------//
-   const handlePageClick = ({ selected: selectedPage }) => {
-     setCurrentPage(selectedPage);
-     //updateUsersCount();
- }
-   //--------------------------------------------------------------//
+   //-------------------------PAGINATION---------------------------//  
+ useEffect(() => {
+  setCurrentPage(Number(pageNumber));
+}, [pageNumber]);
+const handlePageClick = ({ selected: selectedPage }) => {
+  navigate(`/setup/reagents/page/${selectedPage+1}`);
+}
+//--------------------------------------------------------------//
   const refreshPage = () => {
     let paglink = document.querySelectorAll(".page-item");
     paglink[0]?.firstChild.click();
@@ -181,7 +196,7 @@ const Reagents = () => {
                         nextLabel = {"Առաջ"}
                         pageCount = {pageCount}
                         onPageChange = {handlePageClick}
-                        initialPage = {0}
+                        //initialPage = {Number(pageNumber)}
                         containerClassName={"pagination"}
                         pageLinkClassName = {"page-link"}
                         pageClassName = {"page-item"}
@@ -190,6 +205,7 @@ const Reagents = () => {
                         disabledLinkClassName={"disabled"}
                         //activeLinkClassName={"active"}
                         activeClassName={"active"}
+                        forcePage={currentPage - 1}
 											/>
                   </div>
                 </div>

@@ -62,7 +62,7 @@ function DoctorVisitDeactivate({
       </Modal.Header>
       <Modal.Body>
         <p>Այցելության նույնականացման համար։{rowData.doctorsVisitId}</p>
-        <p>Այցելության ամսաթիվ։{moment.utc(rowData?.visitDate).format('DD-MM-YYYY HH:mm')}</p>
+        <p>Այցելության ամսաթիվ։{rowData?.visitDate && moment.utc(rowData?.visitDate).format('DD-MM-YYYY HH:mm')}</p>
         <p>Բժշկի անունը։{rowData?.doctorName}</p>
         <p>Այցելուի անունը։{rowData?.clientFirstName+" "+rowData?.clientLastName +" "+ rowData?.clientMidName}</p>
 

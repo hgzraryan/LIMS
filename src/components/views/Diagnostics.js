@@ -11,28 +11,52 @@ import { useSelector } from "react-redux";
 
 import AddDiagnostic from "../addViews/AddDiagnostic";
 import { selectDiagnosticsCount} from "../../redux/features/diagnostics/diagnosticsCountSlice";
-import { DIAGNOSTICS_URL, DOCTORS_URL } from "../../utils/constants";
+import { DIAGNOSTICS_URL, DIAGNOSTICS__SEARCH_URL, DOCTORS_URL } from "../../utils/constants";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { Helmet, HelmetProvider } from 'react-helmet-async';
+import { useNavigate, useParams } from "react-router-dom";
+import ExportData from "../ExportData";
 
 const Diagnostics = () => {
+  const { pageNumber } = useParams();
+  const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(Number(pageNumber));
   const [selectedItem, setSelectedItem] = useState("");
   const [selectedItemId, setSelectedItemId] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const confirmDiagnosticRef = useRef("");
-  const diagnosticsCount = useSelector(selectDiagnosticsCount)
-  const [currentPage, setCurrentPage] = useState(0);  
   const [usersPerPage, setUsersPerPage] = useState(Math.round((window.innerHeight / 100)));
   const [doctors,setDoctors] = useState([]);
-  const pageCount = Math.ceil(diagnosticsCount/usersPerPage)
   const axiosPrivate =useAxiosPrivate()
+  const [searchCount,setSearchCount] = useState(null)
+  const [searchId,setSearchId] = useState(null)
+  const [searchTerms,setSearchTerms] = useState(null)
+  const [toggleExport, setToggleExport] = useState(false);
+
+const handleToggleExportModal = (value) => {
+    setToggleExport((prev) => value);
+  };
+  const handleSearchPageCount = ({count,searchTerms,id}) =>{
+    setSearchCount(count)
+    setSearchTerms(searchTerms)
+    setSearchId(id)
+  }
   const {
     data: diagnostics,
     setData: setDiagnostics,
-    getData: getDiagnostics,
-    refreshData
-  } = useGetData(DIAGNOSTICS_URL,currentPage,usersPerPage);
+    refreshData,
+    dataCount
+  } = useGetData(DIAGNOSTICS_URL,currentPage,usersPerPage,searchCount,DIAGNOSTICS__SEARCH_URL,searchId,searchTerms);
+  const pageCount = searchCount?Math.ceil(searchCount/usersPerPage) : Math.ceil(dataCount/usersPerPage)
 
+    //-------------------------PAGINATION---------------------------//  
+    useEffect(() => {
+      setCurrentPage(Number(pageNumber));
+    }, [pageNumber]);
+    const handlePageClick = ({ selected: selectedPage }) => {
+      navigate(`/diagnostics/page/${selectedPage+1}`);
+  }
+   //--------------------------------------------------------------//
 
   useEffect(()=>{
     setTimeout(() => {      
@@ -41,7 +65,7 @@ const Diagnostics = () => {
      }).catch((err)=>{
        console.log(err)
      })
-    }, 1000);
+    }, 2000);
  },[])
   const handleOpenModal = (user) => {
     setSelectedItemId(true);
@@ -54,9 +78,6 @@ const Diagnostics = () => {
   const handleToggleCreateModal = (value) => {
     setIsOpen((prev) => value);
   };
-  // const {
-  //   data: patients,
-  // } = useGetData(PATIENTS_URL);
 
   const { handleDeleteItem } = useDeleteData(
     DIAGNOSTICS_URL,
@@ -67,24 +88,20 @@ const Diagnostics = () => {
     setDiagnostics,
     "diagnosticsName"
   );
-   //-------------------------PAGINATION---------------------------//
-   const handlePageClick = ({ selected: selectedPage }) => {
-     setCurrentPage(selectedPage);
-     //updateUsersCount();
- }
-   //--------------------------------------------------------------//
-  //-------------------------
+
 
   const refreshPage = () => {
     let paglink = document.querySelectorAll(".page-item");
     paglink[0]?.firstChild.click();
     refreshData()
   };
-  //-------------------
-
-
   return (
     <HelmetProvider>
+       <ExportData 
+      handleToggleExportModal = {handleToggleExportModal}
+      toggleExport={toggleExport}
+      section='diagnostics'
+      />
     <div>
       <div>
 
@@ -138,6 +155,18 @@ const Diagnostics = () => {
                 </div>
               </div>
               <div className="contact-options-wrap">
+              <a
+                  className="btn btn-icon btn-flush-dark flush-soft-hover dropdown-toggle no-caret active"
+                  href="#"
+                  data-bs-toggle="dropdown"
+                >
+                  <span className="icon">
+                    <span className="feather-icon"
+                    onClick={handleToggleExportModal}>
+                      <FeatherIcon icon="download" />
+                    </span>
+                  </span>
+                </a>
                 <div className="dropdown-menu dropdown-menu-end">
                   <a className="dropdown-item active" href="contact.html">
                     <span className="feather-icon dropdown-icon">
@@ -196,21 +225,24 @@ const Diagnostics = () => {
                         handleCloseModal={handleCloseModal}
                         handleOpenModal={handleOpenModal}
                         refreshData={refreshData}
+                        handleSearchPageCount={(val)=>handleSearchPageCount(val)}
+
                       />
-                         <ReactPaginate
-                          previousLabel = {"Հետ"}    
-                          nextLabel = {"Առաջ"}
-                          pageCount = {pageCount}
-                          onPageChange = {handlePageClick}
-                          initialPage = {0}
-                          containerClassName={"pagination"}
-                          pageLinkClassName = {"page-link"}
-                          pageClassName = {"page-item"}
-                          previousLinkClassName={"page-link"}
-                          nextLinkClassName={"page-link"}
-                          disabledLinkClassName={"disabled"}
-                          //activeLinkClassName={"active"}
-                          activeClassName={"active"}
+                      <ReactPaginate
+                        previousLabel = {"Հետ"}    
+                        nextLabel = {"Առաջ"}
+                        pageCount = {pageCount}
+                        onPageChange = {handlePageClick}
+                        //initialPage = {Number(pageNumber)}
+                        containerClassName={"pagination"}
+                        pageLinkClassName = {"page-link"}
+                        pageClassName = {"page-item"}
+                        previousLinkClassName={"page-link"}
+                        nextLinkClassName={"page-link"}
+                        disabledLinkClassName={"disabled"}
+                        //activeLinkClassName={"active"}
+                        activeClassName={"active"}
+                        forcePage={currentPage - 1}
 											/>
                   </div>
                 </div>

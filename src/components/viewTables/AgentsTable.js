@@ -41,7 +41,9 @@ function AgentsTable({
     () => ({
       minWidth: 20,
       width: 20,
-      maxWidth: 600
+      maxWidth: 600,
+      Filter: ({ column: { id } }) => <></>,
+
     }),
     []
   );
@@ -58,13 +60,7 @@ function AgentsTable({
         accessor: "agentId",
         sortable: true,
         width: 80,
-        Filter: ({ column: { id } })=>(
-          <ColumnFilter
-            id={id}
-            setData={setAgents}
-            placeholder={'ID'}
-          />
-        ),
+        
       },
       {
         Header: (event) => (
@@ -76,13 +72,7 @@ function AgentsTable({
         accessor: "name",
         sortable: true,
         width: 300,
-        Filter: ({ column: { id } })=>(
-          <ColumnFilter
-            id={id}
-            setData={setAgents}
-            placeholder = "Անվանում"
-          />
-        ),
+        
       },
       {
         Header: (event) => (
@@ -97,14 +87,7 @@ function AgentsTable({
             {row.original?.contact?.email}
           </div>
         ),
-        Filter: ({ column: { id } })=>(
-          <ColumnFilter
-            id={id}
-            setData={setAgents}
-            placeholder = "հասցե"
-
-          />
-        ),
+        
       },
       {
         Header: (event) => (
@@ -119,13 +102,7 @@ function AgentsTable({
             {row.original?.contact?.phone}
           </div>
         ),
-        Filter: ({ column: { id } })=>(
-          <ColumnFilter
-            id={id}
-            setData={setAgents}
-            placeholder = "Հեռախոս"
-          />
-        ),
+        
       },
       {
         Header: (event) => (
@@ -139,13 +116,7 @@ function AgentsTable({
            // Custom style for the 'description' column
         },
         width: 300,
-        Filter: ({ column: { id } })=>(
-          <ColumnFilter
-            id={id}
-            setData={setAgents}
-            placeholder = "Նկարագիր"
-          />
-        ),
+        
       },
       {
         Header: (event) => (
@@ -156,16 +127,10 @@ function AgentsTable({
         ),
         accessor: "createdAt",
         width: 300,
-        Filter: ({ column: { id } })=>(
-          <ColumnFilter
-            id={id}
-            setData={setAgents}
-            placeholder = "Գրանցված է"
-          />
-        ),
+        
         Cell: ({ row }) => (
           <div className="d-flex align-items-center">
-             {moment.utc(row.original?.createdAt).format('DD-MM-YYYY HH:mm')}
+             {row.original?.createdAt && moment.utc(row.original?.createdAt).format('DD-MM-YYYY HH:mm')}
           </div>
         ),
       },
@@ -221,9 +186,7 @@ function AgentsTable({
           </div>
         ),
         disableSortBy: true,
-        Filter: ({ column: { id } })=>(
-          <></>
-        ),
+        
       },
     ],
     []
@@ -272,54 +235,54 @@ function AgentsTable({
         <AgentEditModal agent={editRow} setEditRow={setEditRow} refreshData={refreshData} />
       )}
       <table className="table nowrap w-100 mb-5 dataTable no-footer" {...getTableProps()}>
-        <thead>
-          {headerGroups.map((headerGroup) => (
-            <tr {...headerGroup.getHeaderGroupProps({ style: { width: '100%' } })}>
-              {headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps(column.getSortByToggleProps({
-                  style: column.style // Apply custom style to the column header
-                }))}>
-                  <div>
+      <thead>
+        {headerGroups.map((headerGroup) => (
+          <tr {...headerGroup.getHeaderGroupProps()}>
+            {headerGroup.headers.map((column) => (
+              <th  {...column.getHeaderProps(column.getSortByToggleProps())}>
                     {column.id !== "selection" && (
-                      <>
+                  <div className="d-flex justify-content-between ">
+                      
                         <div>
                           {column.canFilter ? column.render("Filter") : null}
                         </div>
-
-                        <div style={{
-                          marginTop: "2px",
-                          display: "flex",
-                          justifyContent: "space-between",
-                          alignItems: "center",
-                        }}>
+                        <div
+                          style={{
+                            marginTop: "2px",
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                          }}
+                        >
                           <div>{column.render("Header")}</div>
-
-                          <div style={{ paddingTop: '20px' }} >
+                        </div>
+                        {column.id!=="patientId" && 
+                          <div style={{ paddingTop: "20px" }}>
                             {column.isSorted ? (
                               column.isSortedDesc ? (
                                 <span className="sorting_asc"></span>
                               ) : (
-                                  <span className="sorting_desc"></span>
-                                )
+                                <span className="sorting_desc"></span>
+                              )
                             ) : (
-                                <span className="sorting"></span>
-                              )}
+                              <span className="sorting"></span>
+                            )}
                           </div>
+                          }
+
                         </div>
-                      </>
                     )}
-                  </div>
                   <div
-                    {...column.getResizerProps()}
-                    className={`resizer ${
-                      column.isResizing ? "isResizing" : ""
-                      }`}
+                  {...column.getResizerProps()}
+                  className={`resizer ${
+                    column.isResizing ? "isResizing" : ""
+                  }`}
                   />
                 </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
+            ))}
+          </tr>
+        ))}
+      </thead>
         {agents?.length > 0 && (
           <tbody {...getTableBodyProps()}>
             {rows.map(row => {

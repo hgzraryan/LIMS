@@ -128,7 +128,6 @@ function UserEditModal({ user, setEditRow, refreshData }) {
       emergencyContactNumber,
       emergencyContactName,
       dateOfBirth,
-      additional
     }) => {
       const newDateOfBirthString = dateOfBirth
         ? new Date(

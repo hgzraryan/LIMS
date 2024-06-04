@@ -20,7 +20,6 @@ import { useNavigate } from "react-router-dom";
 import UserDeactivateModal from "../EditViews/UserDeactivateModal";
 import UserEditModal from "../EditViews/UserEditModal";
 
-
 function UsersTable({
   confirmRef,
   selectedItem,
@@ -30,21 +29,21 @@ function UsersTable({
   handleCloseModal,
   users,
   setUsers,
-  refreshData
+  refreshData,
 }) {
-const navigate = useNavigate()
-const [disableRow, setDisableRow] = useState(false);
-const [editRow, setEditRow] = useState(false);
+  const navigate = useNavigate();
+  const [disableRow, setDisableRow] = useState(false);
+  const [editRow, setEditRow] = useState(false);
 
-const handleOpenEditModal = (value) => {
+  const handleOpenEditModal = (value) => {
     setEditRow((prev) => value);
   };
-const handleOpenDisableModal = (value) => {
-  setDisableRow((prev) => value);
-};
-const handleCloseEditModal = () => {
-  setDisableRow(false);
-};
+  const handleOpenDisableModal = (value) => {
+    setDisableRow((prev) => value);
+  };
+  const handleCloseEditModal = () => {
+    setDisableRow(false);
+  };
   const setUserTypeStyle = (userType) => {
     switch (userType) {
       case "Admin":
@@ -65,23 +64,24 @@ const handleCloseEditModal = () => {
     }
   };
 
-  const handleUserPage = async(userId) =>{
-      navigate(`/users/${userId}`)
-  }
-  const defaultColumn = useMemo(
+  const handleUserPage = async (userId) => {
+    navigate(`/users/${userId}`);
+  };
+  const defaultColumn = React.useMemo(
     () => ({
       minWidth: 20,
       width: 20,
       maxWidth: 600,
+      Filter: ({ column: { id } }) => <></>,
     }),
     []
   );
-  
+
   const columns = useMemo(
     () => [
       {
         Header: "",
-        accessor: "photo", 
+        accessor: "photo",
         Cell: ({ row }) => (
           <img
             src={row.original.photo || DefaultProfileImage}
@@ -100,14 +100,6 @@ const handleCloseEditModal = () => {
         filterable: false,
         show: false,
         width: 80,
-        Filter: ({ column: { id } })=>(
-          <ColumnFilter
-            id={id}
-            setData={setUsers}
-            placeholder={'ID'}
-
-          />
-        ),
       },
       {
         Header: (event) => (
@@ -117,18 +109,8 @@ const handleCloseEditModal = () => {
         ),
         accessor: "username",
         sortable: true,
-        width: 190,
-        Filter: ({ column: { id } })=>(
-          <ColumnFilter
-            id={id}
-            setData={setUsers}
-            placeholder={'Ծածկանուն'}
-
-          />
-        ),
-        Cell:({row})=>(
-          <div>{row.original?.username}</div>
-        )
+        width: 250,
+        Cell: ({ row }) => <div>{row.original?.username}</div>,
       },
       {
         Header: (event) => (
@@ -138,14 +120,6 @@ const handleCloseEditModal = () => {
         ),
         accessor: "firstname",
         width: 190,
-        Filter: ({ column: { id } })=>(
-          <ColumnFilter
-            id={id}
-            setData={setUsers}
-            placeholder={'Անուն'}
-
-          />
-        ),
       },
       {
         Header: (event) => (
@@ -155,15 +129,7 @@ const handleCloseEditModal = () => {
         ),
         accessor: "lastname",
         sortable: true,
-        width: 190,
-        Filter: ({ column: { id } })=>(
-          <ColumnFilter
-            id={id}
-            setData={setUsers}
-            placeholder={'Ազգանուն'}
-
-          />
-        ),
+        width: 250,
       },
       {
         Header: (event) => (
@@ -172,15 +138,7 @@ const handleCloseEditModal = () => {
           </>
         ),
         accessor: "email",
-        width: 250,
-        Filter: ({ column: { id } })=>(
-          <ColumnFilter
-            id={id}
-            setData={setUsers}
-            placeholder={'Էլ․ հասցե'}
-
-          />
-        ),
+        width: 300,
       },
       {
         Header: "Դերեր",
@@ -188,18 +146,23 @@ const handleCloseEditModal = () => {
         filterable: false,
         Cell: ({ value }) =>
           Object.keys(value).map((role) => (
-            <span className={setUserTypeStyle(role)} key={role}>          
-              {(role === "User" ? "Օգտատեր" :
-                  role === "Doctor" ? "Բժիշկ" :
-                  role === "Editor" ? "Փոփոխող" :
-                  role === "Sampler" ? "Նմուշառող" :
-                  role === "Approver" ? "Հաստատող" :
-                  role === "Admin" ? "Ադմին" :
-                  "Unknown Role")}
+            <span className={setUserTypeStyle(role)} key={role}>
+              {role === "User"
+                ? "Օգտատեր"
+                : role === "Doctor"
+                ? "Բժիշկ"
+                : role === "Editor"
+                ? "Փոփոխող"
+                : role === "Sampler"
+                ? "Նմուշառող"
+                : role === "Approver"
+                ? "Հաստատող"
+                : role === "Admin"
+                ? "Ադմին"
+                : "Unknown Role"}
             </span>
           )),
-        width: 350,
-        Filter: ({ column: { id } }) => <></>,
+        width: 200,
       },
       // {
       //   Header: "Պաշտոն",
@@ -231,14 +194,13 @@ const handleCloseEditModal = () => {
         Cell: ({ row }) => (
           <div className="d-flex align-items-center">
             <div className="d-flex">
-            <a
+              <a
                 className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover"
                 data-bs-toggle="tooltip"
                 data-placement="top"
                 title="Edit"
                 href="#"
                 onClick={() => handleOpenEditModal(row.original)}
-
               >
                 <span className="icon">
                   <span className="feather-icon">
@@ -257,7 +219,12 @@ const handleCloseEditModal = () => {
               >
                 <span className="icon">
                   <span className="feather-icon">
-                    <FeatherIcon icon="power" style={{color: row.original?.isActive ? 'green' : 'red' }} />
+                    <FeatherIcon
+                      icon="power"
+                      style={{
+                        color: row.original?.isActive ? "green" : "red",
+                      }}
+                    />
                   </span>
                 </span>
               </a>
@@ -266,12 +233,11 @@ const handleCloseEditModal = () => {
         ),
         disableSortBy: true,
         width: 160,
-        Filter: ({ column: { id } }) => <></>,
       },
     ],
     []
   );
- 
+
   const {
     getTableProps,
     getTableBodyProps,
@@ -306,11 +272,13 @@ const handleCloseEditModal = () => {
   );
   return (
     <>
-    {
-      editRow &&(
-        <UserEditModal user={editRow} setEditRow={setEditRow} refreshData={refreshData}/>
-      )
-    }
+      {editRow && (
+        <UserEditModal
+          user={editRow}
+          setEditRow={setEditRow}
+          refreshData={refreshData}
+        />
+      )}
       <table
         {...getTableProps()}
         className="table nowrap w-100 mb-5 dataTable no-footer"
@@ -319,49 +287,49 @@ const handleCloseEditModal = () => {
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
-                      <th  {...column.getHeaderProps(column.getSortByToggleProps())}>
+                <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                  {column.id !== "selection" && (
+                    <div className="d-flex justify-content-between ">
                       <div>
-                        {column.id !== "selection" && (
-                          <>
-                          <div>
-                            {column.canFilter ? column.render("Filter") : null}
-                          </div>
-                        
-                        <div  style={{
+                        {column.canFilter ? column.render("Filter") : null}
+                      </div>
+                      <div
+                        style={{
                           marginTop: "2px",
                           display: "flex",
                           justifyContent: "space-between",
                           alignItems: "center",
-                        }}>
-                          <div>{column.render("Header")}</div>
-                          
-                            <div style={{paddingTop:'20px'}} >
-                              {column.isSorted ? (
-                                column.isSortedDesc ? (
-                                  <span className="sorting_asc"></span>
-                                  ) : (
-                                    <span className="sorting_desc"></span>
-                                    )
-                                    ) : (
-                                      <span className="sorting"></span>
-                                      )}
-                            </div>
-                        </div>
-                                      </>
-                          )}
+                        }}
+                      >
+                        <div>{column.render("Header")}</div>
                       </div>
-                      <div
-                       {...column.getResizerProps()}
-                       className={`resizer ${
-                         column.isResizing ? "isResizing" : ""
-                       }`}
-                       />
-                    </th>
+                      {column.id !== "patientId" && (
+                        <div style={{ paddingTop: "20px" }}>
+                          {column.isSorted ? (
+                            column.isSortedDesc ? (
+                              <span className="sorting_asc"></span>
+                            ) : (
+                              <span className="sorting_desc"></span>
+                            )
+                          ) : (
+                            <span className="sorting"></span>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  )}
+                  <div
+                    {...column.getResizerProps()}
+                    className={`resizer ${
+                      column.isResizing ? "isResizing" : ""
+                    }`}
+                  />
+                </th>
               ))}
             </tr>
           ))}
         </thead>
-        {users?.length>0? (
+        {users?.length > 0 ? (
           <tbody {...getTableBodyProps()}>
             {rows.map((row) => {
               prepareRow(row);
@@ -369,14 +337,20 @@ const handleCloseEditModal = () => {
                 <tr {...row.getRowProps()}>
                   {row.cells.map((cell) => {
                     return (
-                      <td  {...cell.getCellProps({style:cell.column?.id === "actions"
-                      ? undefined
-                      : { cursor:'pointer' },
-                        onClick:
-                          cell.column?.id === "actions"
-                            ? undefined
-                            : () => handleUserPage(row.original?.userId), 
-                      })}>{cell.render("Cell")}</td>
+                      <td
+                        {...cell.getCellProps({
+                          style:
+                            cell.column?.id === "actions"
+                              ? undefined
+                              : { cursor: "pointer" },
+                          onClick:
+                            cell.column?.id === "actions"
+                              ? undefined
+                              : () => handleUserPage(row.original?.userId),
+                        })}
+                      >
+                        {cell.render("Cell")}
+                      </td>
                     );
                   })}
                 </tr>
@@ -399,7 +373,9 @@ const handleCloseEditModal = () => {
               delId={selectedItem.userId}
             />
           </tbody>
-         ):''}
+        ) : (
+          ""
+        )}
       </table>
     </>
   );

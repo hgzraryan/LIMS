@@ -490,7 +490,7 @@ responseType:'blob'
                               </span>
                             </span>
                             <span className="ms-2">
-                            {moment.utc(diagnosticsDetails?.createdAt).format('DD-MM-YYYY HH:mm')}
+                            {diagnosticsDetails?.createdAt && moment.utc(diagnosticsDetails?.createdAt).format('DD-MM-YYYY HH:mm')}
                             </span>
                           </li>
                           <li className="list-group-item border-0">
@@ -501,7 +501,7 @@ responseType:'blob'
                               </span>
                             </span>
                             <span className="ms-2">
-                            {moment.utc(diagnosticsDetails?.updatedAt).format('DD-MM-YYYY HH:mm')}
+                            {diagnosticsDetails?.updatedAt && moment.utc(diagnosticsDetails?.updatedAt).format('DD-MM-YYYY HH:mm')}
                             </span>
                           </li>
 
@@ -581,7 +581,7 @@ responseType:'blob'
                               </span>
                             </span>
                             <span className="ms-2">
-                              {moment.utc(diagnosticsDetails?.paymentDate).format('DD-MM-YYYY HH:mm')}
+                              {diagnosticsDetails?.paymentDate && moment.utc(diagnosticsDetails?.paymentDate).format('DD-MM-YYYY HH:mm')}
                             </span>
                           </li>
                           </>:''}

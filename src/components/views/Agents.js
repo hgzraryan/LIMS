@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState, useRef} from "react";
+import React, { useState, useRef, useEffect} from "react";
 import FeatherIcon from "feather-icons-react";
 import LoadingSpinner from "../LoadingSpinner";
 import ReactPaginate from "react-paginate";
@@ -13,23 +13,35 @@ import { useSelector } from "react-redux";
 import { selectAgentsCount } from "../../redux/features/agents/agentsCountSlice";
 import { AGENTS_URL } from "../../utils/constants";
 import { Helmet, HelmetProvider } from 'react-helmet-async';
+import { useNavigate, useParams } from "react-router-dom";
 
 const Agents = () => {
+  const { pageNumber } = useParams();
+  const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(Number(pageNumber));
   const [selectedItem, setSelectedItem] = useState("");
   const [selectedItemId, setSelectedItemId] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const confirmAgentsRef = useRef("");
   const agentsCount = useSelector(selectAgentsCount)
-  const [currentPage, setCurrentPage] = useState(0);  
   const [usersPerPage, setUsersPerPage] = useState(Math.round((window.innerHeight / 100)));
-  const pageCount = Math.ceil(agentsCount/usersPerPage)
-  
+  const [searchCount,setSearchCount] = useState(null)
+  const [searchId,setSearchId] = useState(null)
+  const [searchTerms,setSearchTerms] = useState(null)
+
+  const handleSearchPageCount = ({count,searchTerms,id}) =>{
+    setSearchCount(count)
+    setSearchTerms(searchTerms)
+    setSearchId(id)
+  }
   const {
     data: agents,
     setData: setAgents,
     getData: getAgents,
-    refreshData
-  } = useGetData(AGENTS_URL,currentPage,usersPerPage);
+    refreshData,
+    dataCount
+  } = useGetData(AGENTS_URL,currentPage,usersPerPage,searchCount,null,searchId,searchTerms)
+  const pageCount = searchCount?Math.ceil(searchCount/usersPerPage) : Math.ceil(dataCount/usersPerPage)
 
   const handleOpenModal = (user) => {
     setSelectedItemId(true);
@@ -54,11 +66,13 @@ const Agents = () => {
     "name",
     getAgents 
   );
-   //-------------------------PAGINATION---------------------------//
-   const handlePageClick = ({ selected: selectedPage }) => {
-     setCurrentPage(selectedPage);
-     //updateUsersCount(); 
-    }
+     //-------------------------PAGINATION---------------------------//  
+     useEffect(() => {
+      setCurrentPage(Number(pageNumber));
+    }, [pageNumber]);
+    const handlePageClick = ({ selected: selectedPage }) => {
+      navigate(`/agents/page/${selectedPage+1}`);
+  }
    //--------------------------------------------------------------//
   //-------------------------
   const refreshPage = () => {
@@ -177,13 +191,15 @@ const Agents = () => {
                         agents={agents}
                         setAgents={setAgents}
                         refreshData={refreshData}
+                        handleSearchPageCount={(data)=>handleSearchPageCount(data)}
+
                       />
-                      <ReactPaginate
+                        <ReactPaginate
                         previousLabel = {"Հետ"}    
                         nextLabel = {"Առաջ"}
                         pageCount = {pageCount}
                         onPageChange = {handlePageClick}
-                        initialPage = {0}
+                        //initialPage = {Number(pageNumber)}
                         containerClassName={"pagination"}
                         pageLinkClassName = {"page-link"}
                         pageClassName = {"page-item"}
@@ -192,6 +208,7 @@ const Agents = () => {
                         disabledLinkClassName={"disabled"}
                         //activeLinkClassName={"active"}
                         activeClassName={"active"}
+                        forcePage={currentPage - 1}
 											/>
                   </div>
                 </div>

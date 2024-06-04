@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
   useBlockLayout,
   useFilters,
@@ -19,6 +19,11 @@ import { Modal } from "react-bootstrap";
 import DefaultProfileImage from "../../../src/dist/img/Missing.svg";
 import PatientEditModal from "../EditViews/PatientEditModal";
 import moment from "moment";
+import { PATIENTS_URL, PATIENTS__SEARCH_URL } from "../../utils/constants";
+import { axiosPrivate } from "../../api/axios";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import useDebounce from "../../hooks/useDebounce";
+
 
 function PatientsTable({
   selectedItem,
@@ -27,12 +32,14 @@ function PatientsTable({
   researchState,
   patients,
   setPatients,
-  refreshData
+  refreshData,
+  handleSearchPageCount
 }) {
   const navigate = useNavigate();
   const [modalInfo, setModalInfo] = useState("");
   const [editRow, setEditRow] = useState(false);
-
+  const [filterData, setFilterData] = useState({});
+  //console.log(filterData)
   const handleOpenEditModal = (value) => {
       setEditRow((prev) => value);
     };
@@ -49,6 +56,7 @@ function PatientsTable({
       minWidth: 20,
       width: 20,
       maxWidth: 400,
+      Filter: ({ column: { id } }) => <></>,
     }),
     []
   );  
@@ -63,13 +71,29 @@ function PatientsTable({
           </>
         ),
         accessor: "patientId",
-        sortable: true,
+        //sortable: true,
+        disableSortBy: true,
         width: 80,
         Filter: ({ column: { id } })=>(
           <ColumnFilter
             id={id}
             setData={setPatients}
+            data={patients}
             placeholder={'ID'}
+            getUrl={PATIENTS_URL}
+            searchUrl={PATIENTS__SEARCH_URL}
+            handleSearchPageCount={(data)=>handleSearchPageCount(data)}
+            filterData={filterData}
+            setFilterData={(newFilterData) => {
+              if(Object.values(newFilterData).length>1 || Object.values(newFilterData).length===0){
+                setFilterData(newFilterData)
+              }else{
+                setFilterData((prevFilterData) => {
+                  return {...newFilterData };
+                })
+              }
+             
+            }}
           />
         ),
         
@@ -86,11 +110,29 @@ function PatientsTable({
         accessor: "firstName",
         sortable: true,
         width: 200,
-        Filter: ({ column: { id } })=>(
+        Filter: ({ column: { id },column })=>(
           <ColumnFilter
+          column={column}
             id={id}
             setData={setPatients}
+            data={patients}
             placeholder={'Անուն'}
+            getUrl={PATIENTS_URL}
+            searchUrl={PATIENTS__SEARCH_URL}
+            handleSearchPageCount={(val)=>handleSearchPageCount(val)}
+            filterData={filterData}
+            setFilterData={(newFilterData) => {
+              
+              if(Object.values(newFilterData).length>1 || Object.values(newFilterData).length===0){
+                setFilterData(newFilterData)
+              }else{
+                setFilterData((prevFilterData) => {
+                  return { ...newFilterData };
+                })
+              }
+             
+            }}
+
           />
         ),
         Cell: ({ row }) => (
@@ -98,7 +140,7 @@ function PatientsTable({
             // onClick={()=>handlePatientsDetail(row.original.patientId)}
             // style={{ cursor: 'pointer', textDecoration:'underline' }}
           >
-            {row.original.firstName}
+            {row.original.firstName}{<span className="sorting_asc"></span>}
           </div>
         ),
 
@@ -116,7 +158,23 @@ function PatientsTable({
           <ColumnFilter
             id={id}
             setData={setPatients}
+            data={patients}
             placeholder={'Ազգանուն'}
+            getUrl={PATIENTS_URL}
+            searchUrl={PATIENTS__SEARCH_URL}
+            handleSearchPageCount={(val)=>handleSearchPageCount(val)}
+            filterData={filterData}
+            setFilterData={(newFilterData) => {
+              if(Object.values(newFilterData).length>1 || Object.values(newFilterData).length===0){
+                setFilterData(newFilterData)
+              }else{
+                setFilterData((prevFilterData) => {
+                  return { ...newFilterData };
+                })
+              }
+             
+            }}
+
           />
         ),        
       },
@@ -134,7 +192,23 @@ function PatientsTable({
           <ColumnFilter
             id={id}
             setData={setPatients}
+            data={patients}
             placeholder={'Հայրանուն'}
+            getUrl={PATIENTS_URL}
+            searchUrl={PATIENTS__SEARCH_URL}
+            handleSearchPageCount={(val)=>handleSearchPageCount(val)}
+            filterData={filterData}
+            setFilterData={(newFilterData) => {
+              
+              if(Object.values(newFilterData).length>1 || Object.values(newFilterData).length===0){
+                setFilterData(newFilterData)
+              }else{
+                setFilterData((prevFilterData) => {
+                  return {...newFilterData };
+                })
+              }
+             
+            }}
           />
         ),
       },
@@ -152,7 +226,22 @@ function PatientsTable({
           <ColumnFilter
             id={id}
             setData={setPatients}
+            data={patients}
             placeholder={'Էլ․ հասցե'}
+            getUrl={PATIENTS_URL}
+            searchUrl={PATIENTS__SEARCH_URL}
+            handleSearchPageCount={(val)=>handleSearchPageCount(val)}
+            filterData={filterData}
+            setFilterData={(newFilterData) => {
+              if(Object.values(newFilterData).length>1 || Object.values(newFilterData).length===0){
+                setFilterData(newFilterData)
+              }else{
+                setFilterData((prevFilterData) => {
+                  return {...newFilterData };
+                })
+              }
+             
+            }}
           />
         ),
         Cell: ({ row }) => <div>{row.original?.contact?.email}</div>,
@@ -174,7 +263,23 @@ function PatientsTable({
           <ColumnFilter
             id={id}
             setData={setPatients}
+            data={patients}
             placeholder={'Տարիք'}
+            getUrl={PATIENTS_URL}
+            searchUrl={PATIENTS__SEARCH_URL}
+            handleSearchPageCount={(val)=>handleSearchPageCount(val)}
+            filterData={filterData}
+            setFilterData={(newFilterData) => {
+              if(Object.values(newFilterData).length>1 || Object.values(newFilterData).length===0){
+                setFilterData(newFilterData)
+              }else{
+                setFilterData((prevFilterData) => {
+                  return { ...newFilterData };
+                })
+              }
+             
+            }}
+
           />
         ),
       },
@@ -271,14 +376,16 @@ function PatientsTable({
 
       },
     ],
-    [navigate, setPatients]
+    [setPatients,Object.keys(filterData)[0],filterData,patients]
     );
-    
+     console.log(filterData)
     const {
       getTableProps,
       getTableBodyProps,
       headerGroups,
       rows,
+      state,
+    setGlobalFilter,
     prepareRow,
     selectedFlatRows,
     toggleHideColumn,
@@ -307,6 +414,7 @@ function PatientsTable({
     }
   );
   // console.log(selectedFlatRows);
+
   return (
     <>
     {
@@ -344,13 +452,13 @@ function PatientsTable({
                        <div className="separator-full m-0"></div>
                        <div className="d-flex justify-content-between">  <span>Անուն Ազգանուն Հայրանուն </span> <span>{modalInfo.lastName} {modalInfo.firstName} {modalInfo.midName}</span></div>
                        <div className="separator-full m-0"></div>
-                       <div className="d-flex justify-content-between">  <span>Ծննդյան ամսաթիվ </span> <span>{moment.utc(modalInfo.dateOfBirth).format('DD-MM-YYYY')}</span></div>
+                       <div className="d-flex justify-content-between">  <span>Ծննդյան ամսաթիվ </span> <span>{modalInfo.dateOfBirth && moment.utc(modalInfo.dateOfBirth).format('DD-MM-YYYY')}</span></div>
                        <div className="separator-full m-0"></div>
                        <div className="d-flex justify-content-between">  <span>Սեռ </span> <span>{(modalInfo.gender==='Male')?'Արական':'Իգական'}</span></div>
                        <div className="separator-full m-0"></div>
-                       <div className="d-flex justify-content-between">  <span>Գրանցվել է </span> <span>{moment.utc(modalInfo.createdAt).format('DD-MM-YYYY HH:mm')}</span></div>
+                       <div className="d-flex justify-content-between">  <span>Գրանցվել է </span> <span>{modalInfo.createdAt && moment.utc(modalInfo.createdAt).format('DD-MM-YYYY HH:mm')}</span></div>
                        <div className="separator-full m-0"></div>
-                       <div className="d-flex justify-content-between">  <span>Վերջին թարմացում</span> <span>{moment.utc(modalInfo?.updatedAt).format('DD-MM-YYYY HH:mm')}</span></div>
+                       <div className="d-flex justify-content-between">  <span>Վերջին թարմացում</span> <span>{modalInfo?.updatedAt && moment.utc(modalInfo?.updatedAt).format('DD-MM-YYYY HH:mm')}</span></div>
                        <div className="separator-full m-0"></div>
                        <div className="d-flex justify-content-between">  <span>Հասցե </span> <span>{modalInfo.contact?.address?.city}, {modalInfo.contact?.address?.street}</span></div>
                        <div className="separator-full m-0"></div>
@@ -395,36 +503,38 @@ function PatientsTable({
           <tr {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map((column) => (
               <th  {...column.getHeaderProps(column.getSortByToggleProps())}>
-                  <div>
                     {column.id !== "selection" && (
-                      <>
-                      <div>
-                        {column.canFilter ? column.render("Filter") : null}
-                      </div>
-                    
-                    <div  style={{
-                      marginTop: "2px",
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                    }}>
-                      <div>{column.render("Header")}</div>
+                  <div className="d-flex justify-content-between ">
                       
-                        <div style={{paddingTop:'20px'}} >
-                          {column.isSorted ? (
-                            column.isSortedDesc ? (
-                              <span className="sorting_asc"></span>
+                        <div>
+                          {column.canFilter ? column.render("Filter") : null}
+                        </div>
+                        <div
+                          style={{
+                            marginTop: "2px",
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                          }}
+                        >
+                          <div>{column.render("Header")}</div>
+                        </div>
+                        {column.id!=="patientId" && 
+                          <div style={{ paddingTop: "20px" }}>
+                            {column.isSorted ? (
+                              column.isSortedDesc ? (
+                                <span className="sorting_asc"></span>
                               ) : (
                                 <span className="sorting_desc"></span>
-                                )
-                                ) : (
-                                  <span className="sorting"></span>
-                                  )}
+                              )
+                            ) : (
+                              <span className="sorting"></span>
+                            )}
+                          </div>
+                          }
+
                         </div>
-                    </div>
-                                  </>
-                      )}
-                  </div>
+                    )}
                   <div
                   {...column.getResizerProps()}
                   className={`resizer ${

@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import useAxiosPrivate from "./useAxiosPrivate";
 import { useLocation, useNavigate } from "react-router-dom";
+import { PATIENTS__SEARCH_URL } from "../utils/constants";
 
-const useGetData = (url,currentPage,usersPerPage) => {
+const useGetData = (url,currentPage,usersPerPage,searchCount=null,searchUrl=null,searchId=null,searchTerms=null) => {
     const [data, setData] = useState([]);
-   // const [hasMore, setHasMore] = useState(true);  
+    const [dataCount, setDataCount] = useState(null);
     const axiosPrivate = useAxiosPrivate();  
     const navigate = useNavigate();  
     const location = useLocation();    
@@ -12,33 +13,54 @@ const useGetData = (url,currentPage,usersPerPage) => {
     useEffect(() => {
         let isMounted = true;
         const controller = new AbortController();
-    
-        const getData = async () => {
-          try {
-            const response = await axiosPrivate.post(url,{
-              signal: controller.signal,
-              page: currentPage+1,
-              onPage: usersPerPage,
-            });
-            //console.log(response);
-            // if (
+    if(!searchCount){
+
+      const getData = async () => {
+        try {
+          const response = await axiosPrivate.post(url,{
+            signal: controller.signal,
+            page: currentPage===0?1:currentPage,
+            onPage: usersPerPage,
+          });
+          //console.log(response);
+          // if (
             //   response.data.jsonString.length === 0 ||
             //   response.data.jsonString.length < onPageCount
             // ) {
-            //   setHasMore(false);
+              //   setHasMore(false);
             // }
             isMounted &&
               setData((prevUsers) => response.data.jsonString);
-            //setCurrentPage((prev) => prev + 1);
-          } catch (err) {
+              setDataCount(response.data.count)
+              //setCurrentPage((prev) => prev + 1);
+            } catch (err) {
+              console.error(err);
+              navigate("/login", { state: { from: location }, replace: true });
+            }
+          };
+          
+          getData();
+          
+        }else{
+          const getData = async () => {
+          try {
+            const response = await axiosPrivate.post(searchUrl, {
+              params: { column: searchId, query: searchTerms},
+              page: currentPage+1,
+              onPage: usersPerPage,
+              signal: controller.signal
+            });
+            //console.log('get search data')
+            setData(response.data.jsonString);
+            //setToggleSearchModal(false)  
+            //handleSearchPageCount(response.data.count)    
+          }catch (err) {
             console.error(err);
-            navigate("/login", { state: { from: location }, replace: true });
-          }
-        };
-    
-        getData();
-    
-        return () => {
+          }  
+        }; 
+        getData()
+        }
+          return () => {
           isMounted = false;
           controller.abort();
         };
@@ -104,6 +126,7 @@ const useGetData = (url,currentPage,usersPerPage) => {
         data,
         setData,
         getData,
+        dataCount,
         refreshData
     }
 }

@@ -31,11 +31,12 @@ function ResearchListsTable({
   const handleOpenInfoModal = (user) => {    
     setModalInfo((prev) => user);
   };
-  const defaultColumn = useMemo(
+  const defaultColumn = React.useMemo(
     () => ({
       minWidth: 20,
       width: 20,
-      maxWidth: 1000
+      maxWidth: 600,
+      Filter: ({ column: { id } }) => <></>,
     }),
     []
   );
@@ -50,13 +51,6 @@ function ResearchListsTable({
         accessor: "researchListId",
         sortable: true,
         width:80,
-        Filter: ({ column: { id } })=>(
-          <ColumnFilter
-            id={id}
-            setData={setResearches}
-            placeholder={'ID'}
-          />
-        ),
       },
       {
         Header: (event) => (
@@ -66,14 +60,7 @@ function ResearchListsTable({
         ),
         accessor: "localCode",
         sortable: true,
-        width:100,
-        Filter: ({ column: { id } })=>(
-          <ColumnFilter
-            id={id}
-            setData={setResearches}
-            placeholder={'ID'}
-          />
-        ),
+        width:150,
       },
       {
         Header: (event) => (
@@ -84,15 +71,7 @@ function ResearchListsTable({
         ),
         accessor: "partnerCode",
         disableSortBy: true,
-        width:100,
-        Filter: ({ column: { id } })=>(
-          <ColumnFilter
-            id={id}
-            setData={setResearches}
-            placeholder={'ԲԳԿ ԿՈԴ'}
-
-          />
-        ),
+        width:150,
       },
       {
         Header: (event) => (
@@ -104,14 +83,6 @@ function ResearchListsTable({
         accessor: "researchName",
         sortable: true,
         width:300,
-        Filter: ({ column: { id } })=>(
-          <ColumnFilter
-            id={id}
-            setData={setResearches}
-            placeholder={'Լաբ. / Ծառ.'}
-
-          />
-        ),
       },
       {
         Header: (event) => (
@@ -122,15 +93,7 @@ function ResearchListsTable({
         ),
         accessor: "laboratoryService",
         sortable: true,
-        width:300,
-        Filter: ({ column: { id } })=>(
-          <ColumnFilter
-            id={id}
-            setData={setResearches}
-            placeholder={'Լաբ. / Ծառ.'}
-
-          />
-        ),
+        width:200,
       },
       {
         Header: (event) => (
@@ -141,14 +104,6 @@ function ResearchListsTable({
         ),
         accessor: "categoryName",
         width:200,
-        Filter: ({ column: { id } })=>(
-          <ColumnFilter
-            id={id}
-            setData={setResearches}
-            placeholder={'Դասկարգի անվ․'}
-
-          />
-        ),
       },
       {
         Header: (event) => (
@@ -158,14 +113,6 @@ function ResearchListsTable({
         ),
         accessor: "serviceName",
         width:300,
-        Filter: ({ column: { id } })=>(
-          <ColumnFilter
-            id={id}
-            setData={setResearches}
-            placeholder={'Ծառ. անվանում'}
-
-          />
-        ),
       },
       {
         Header: (event) => (
@@ -174,15 +121,7 @@ function ResearchListsTable({
           </>
         ),
         accessor: "shortName",
-        width:300,
-        Filter: ({ column: { id } })=>(
-          <ColumnFilter
-            id={id}
-            setData={setResearches}
-            placeholder={'Հապավում'}
-
-          />
-        ),
+        width:170,
       },
       {
         Header: (event) => (
@@ -192,15 +131,7 @@ function ResearchListsTable({
           </>
         ),
         accessor: "price",
-        width:70,
-        Filter: ({ column: { id } })=>(
-          <ColumnFilter
-            id={id}
-            setData={setResearches}
-            placeholder={'Գին'}
-
-          />
-        ),
+        width:100,
       },
       {
         Header: (event) => (
@@ -210,15 +141,7 @@ function ResearchListsTable({
           </>
         ),
         accessor: "purchasePrice",
-        width:80,
-        Filter: ({ column: { id } })=>(
-          <ColumnFilter
-            id={id}
-            setData={setResearches}
-            placeholder={'Առքի գին'}
-
-          />
-        ),
+        width:150,
       },
       {
         Header: (event) => (
@@ -229,14 +152,6 @@ function ResearchListsTable({
         ),
         accessor: "deliveryTimeLimit",
         width:200,
-        Filter: ({ column: { id } })=>(
-          <ColumnFilter
-            id={id}
-            setData={setResearches}
-            placeholder={'Հրապ․ առավել. ժամկետ'}
-
-          />
-        ),
       },
       {
         Header: (event) => (
@@ -247,14 +162,6 @@ function ResearchListsTable({
         ),
         accessor: "biomaterial",
         width:200,
-        Filter: ({ column: { id } })=>(
-          <ColumnFilter
-            id={id}
-            setData={setResearches}
-            placeholder={'Կենսանյութ'}
-
-          />
-        ),
       },
       {
         Header: (event) => (
@@ -265,14 +172,6 @@ function ResearchListsTable({
         ),
         accessor: "vial",
         width:100,
-        Filter: ({ column: { id } })=>(
-          <ColumnFilter
-            id={id}
-            setData={setResearches}
-            placeholder={'Սրվակ'}
-
-          />
-        ),
       }, 
       {
         Header: (event) => (
@@ -283,14 +182,6 @@ function ResearchListsTable({
         ),
         accessor: "samplingPeriod",
         width:200,
-        Filter: ({ column: { id } })=>(
-          <ColumnFilter
-            id={id}
-            setData={setResearches}
-            placeholder={'Նմուշ․ ժամկետը'}
-
-          />
-        ),
       },
       {
         Header: (event) => (
@@ -300,15 +191,7 @@ function ResearchListsTable({
           </>
         ),
         accessor: "researchPrepSub",
-        width:200,
-        Filter: ({ column: { id } })=>(
-          <ColumnFilter
-            id={id}
-            setData={setResearches}
-            placeholder={'Հետ․ Նախապատրաստում'}
-
-          />
-        ),
+        width:250,
       },
       {
         Header: (event) => (
@@ -318,15 +201,7 @@ function ResearchListsTable({
           </>
         ),
         accessor: "category",
-        width:100,
-        Filter: ({ column: { id } })=>(
-          <ColumnFilter
-            id={id}
-            setData={setResearches}
-            placeholder={'Դասակարգ'}
-
-          />
-        ),
+        width:150,
       },
      
       {
@@ -338,14 +213,6 @@ function ResearchListsTable({
         ),
         accessor: "class",
         width:200,
-        Filter: ({ column: { id } })=>(
-          <ColumnFilter
-            id={id}
-            setData={setResearches}
-            placeholder={'Հետ․ Նախապատրաստում'}
-
-          />
-        ),
       },
       {
         Header: (event) => (
@@ -398,9 +265,6 @@ function ResearchListsTable({
         ),
         disableSortBy: true,
         width:200,
-        Filter: ({ column: { id } })=>(
-          <></>
-        ),
       },
     ],
     []
@@ -485,9 +349,9 @@ function ResearchListsTable({
                        <div className="separator-full m-0"></div>
                        <div className="d-flex justify-content-between">  <span>Արժեք </span> <span>{modalInfo.researchesPrice}</span></div>
                        <div className="separator-full m-0"></div>                  
-                       <div className="d-flex justify-content-between">  <span>Գրանցված է </span> <span>{moment.utc(modalInfo.createdAt).format('DD-MM-YYYY HH:mm')}</span></div>
+                       <div className="d-flex justify-content-between">  <span>Գրանցված է </span> <span>{modalInfo.createdAt && moment.utc(modalInfo.createdAt).format('DD-MM-YYYY HH:mm')}</span></div>
                        <div className="separator-full m-0"></div>   
-                       <div className="d-flex justify-content-between">  <span>Վերջին թարմացում</span> <span>{moment.utc(modalInfo?.updatedAt).format('DD-MM-YYYY HH:mm')}</span></div>
+                       <div className="d-flex justify-content-between">  <span>Վերջին թարմացում</span> <span>{modalInfo?.updatedAt && moment.utc(modalInfo?.updatedAt).format('DD-MM-YYYY HH:mm')}</span></div>
                        <div className="separator-full m-0"></div>
                        <div className="d-flex justify-content-between">  <span>Հավելյալ տեղեկություն </span> <span>{modalInfo?.additional}</span></div>
                        <div className="separator-full m-0"></div>                  
@@ -516,48 +380,50 @@ function ResearchListsTable({
       )
     }
     <table  className="table nowrap w-100 mb-5 dataTable no-footer" {...getTableProps()} >
-     <thead>
+    <thead>
         {headerGroups.map((headerGroup) => (
           <tr {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map((column) => (
               <th  {...column.getHeaderProps(column.getSortByToggleProps())}>
-              <div>
-                {column.id !== "selection" && (
-                  <>
-                  <div>
-                    {column.canFilter ? column.render("Filter") : null}
-                  </div>
-                
-                <div  style={{
-                  marginTop: "2px",
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}>
-                  <div>{column.render("Header")}</div>
-                  
-                    <div style={{paddingTop:'20px'}} >
-                      {column.isSorted ? (
-                        column.isSortedDesc ? (
-                          <span className="sorting_asc"></span>
-                          ) : (
-                            <span className="sorting_desc"></span>
-                            )
+                    {column.id !== "selection" && (
+                  <div className="d-flex justify-content-between ">
+                      
+                        <div>
+                          {column.canFilter ? column.render("Filter") : null}
+                        </div>
+                        <div
+                          style={{
+                            marginTop: "2px",
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                          }}
+                        >
+                          <div>{column.render("Header")}</div>
+                        </div>
+                        {column.id!=="patientId" && 
+                          <div style={{ paddingTop: "20px" }}>
+                            {column.isSorted ? (
+                              column.isSortedDesc ? (
+                                <span className="sorting_asc"></span>
+                              ) : (
+                                <span className="sorting_desc"></span>
+                              )
                             ) : (
                               <span className="sorting"></span>
-                              )}
-                    </div>
-                </div>
-                              </>
-                  )}
-              </div>
-              <div
-              {...column.getResizerProps()}
-              className={`resizer ${
-                column.isResizing ? "isResizing" : ""
-              }`}
-              />
-            </th>
+                            )}
+                          </div>
+                          }
+
+                        </div>
+                    )}
+                  <div
+                  {...column.getResizerProps()}
+                  className={`resizer ${
+                    column.isResizing ? "isResizing" : ""
+                  }`}
+                  />
+                </th>
             ))}
           </tr>
         ))}

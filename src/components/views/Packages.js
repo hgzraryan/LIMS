@@ -1,30 +1,41 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import FeatherIcon from 'feather-icons-react/build/FeatherIcon'
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Helmet, HelmetProvider } from 'react-helmet-async'
 import ReactPaginate from 'react-paginate'
 import { Dropdown } from "react-bootstrap";
 import useGetData from '../../hooks/useGetData';
-import { useSelector } from 'react-redux';
 import AddPackages from '../addViews/AddPackages';
 import { PACKAGES_URL } from '../../utils/constants';
 import PackagesTable from '../viewTables/PackagesTable';
 import useDeleteData from '../../hooks/useDeleteData';
+import { useNavigate, useParams } from 'react-router-dom';
 
 function Packages() {
-    //const researchListCount = useSelector(selectResearchListCount)
+  const { pageNumber } = useParams();
+  const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(Number(pageNumber));
     const [selectedItem, setSelectedItem] = useState("");
     const [selectedItemId, setSelectedItemId] = useState(null);
     const [isOpen, setIsOpen] = useState(false);
     const confirmResearchRef = useRef("");  
-    const [currentPage, setCurrentPage] = useState(0);  
     const [usersPerPage, setUsersPerPage] = useState(Math.round((window.innerHeight / 100)));
-    //const pageCount = Math.ceil(packagesCount/usersPerPage)
+    const [searchCount,setSearchCount] = useState(null)
+  const [searchId,setSearchId] = useState(null)
+  const [searchTerms,setSearchTerms] = useState(null)
+
+  const handleSearchPageCount = ({count,searchTerms,id}) =>{
+    setSearchCount(count)
+    setSearchTerms(searchTerms)
+    setSearchId(id)
+  }
     const {
-        data: packages,
-        setData: setPackages,
-        refreshData
-      } = useGetData(PACKAGES_URL,currentPage,usersPerPage);
+      data: packages,
+      setData: setPackages,
+      refreshData,
+      dataCount
+    } = useGetData(PACKAGES_URL,currentPage,usersPerPage,searchCount,null,searchId,searchTerms);
+    const pageCount = searchCount?Math.ceil(searchCount/usersPerPage) : Math.ceil(dataCount/usersPerPage)
       const handleToggleCreateModal = (value) => {
         setIsOpen((prev) => value);
       };
@@ -46,10 +57,14 @@ function Packages() {
       const handleCloseModal = () => {
         setSelectedItemId(null);
       };
-      const handlePageClick = ({ selected: selectedPage }) => {
-        setCurrentPage(selectedPage);
-        //updateUsersCount();
-    }
+   //-------------------------PAGINATION---------------------------//  
+ useEffect(() => {
+  setCurrentPage(Number(pageNumber));
+}, [pageNumber]);
+const handlePageClick = ({ selected: selectedPage }) => {
+  navigate(`/setup/packages/page/${selectedPage+1}`);
+}
+//--------------------------------------------------------------//
     const refreshPage = () => {
         //refreshData()
         let paglink = document.querySelectorAll(".page-item");
@@ -250,22 +265,22 @@ function Packages() {
                     setPackages={setPackages}
                     refreshData={refreshData}
                   />
-                  <ReactPaginate
-                    previousLabel = {"Հետ"}    
-                    nextLabel = {"Առաջ"}
-                    //pageCount = {pageCount}
-                    onPageChange = {handlePageClick}
-                    initialPage = {0}
-                    pageRangeDisplayed={3}
-                    containerClassName={"pagination"}
-                    pageLinkClassName = {"page-link"}
-                    pageClassName = {"page-item"}
-                    previousLinkClassName={"page-link"}
-                    nextLinkClassName={"page-link"}
-                    disabledLinkClassName={"disabled"}
-                    //activeLinkClassName={"active"}
-                    activeClassName={"active"}
-                                        />
+                 <ReactPaginate
+                        previousLabel = {"Հետ"}    
+                        nextLabel = {"Առաջ"}
+                        pageCount = {pageCount}
+                        onPageChange = {handlePageClick}
+                        //initialPage = {Number(pageNumber)}
+                        containerClassName={"pagination"}
+                        pageLinkClassName = {"page-link"}
+                        pageClassName = {"page-item"}
+                        previousLinkClassName={"page-link"}
+                        nextLinkClassName={"page-link"}
+                        disabledLinkClassName={"disabled"}
+                        //activeLinkClassName={"active"}
+                        activeClassName={"active"}
+                        forcePage={currentPage - 1}
+											/>
               </div>
             </div>
           </div>

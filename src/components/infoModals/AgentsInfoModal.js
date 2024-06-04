@@ -40,9 +40,9 @@ function AgentsInfoModal({setModalInfo,modalInfo}) {
                        <div className="separator-full m-0"></div>
                        <div className="d-flex justify-content-between">  <span>Տնօրեն </span> <span>{modalInfo.director}</span></div>
                        <div className="separator-full m-0"></div>
-                       <div className="d-flex justify-content-between">  <span>Գրանցվել է </span> <span>{moment.utc(modalInfo.createdAt).format('DD-MM-YYYY HH:mm')}</span></div>
+                       <div className="d-flex justify-content-between">  <span>Գրանցվել է </span> <span>{modalInfo.createdAt && moment.utc(modalInfo.createdAt).format('DD-MM-YYYY HH:mm')}</span></div>
                        <div className="separator-full m-0"></div>
-                       <div className="d-flex justify-content-between">  <span>Վերջին թարմացում</span> <span>{moment.utc(modalInfo?.updatedAt).format('DD-MM-YYYY HH:mm')}</span></div>
+                       <div className="d-flex justify-content-between">  <span>Վերջին թարմացում</span> <span>{modalInfo?.updatedAt && moment.utc(modalInfo?.updatedAt).format('DD-MM-YYYY HH:mm')}</span></div>
                      <div className="separator-full m-0"></div>
                        <div className="d-flex justify-content-between">  <span>Հասցե </span> <span>{modalInfo?.contact?.address?.country}, {modalInfo?.contact?.address?.state},{modalInfo?.contact?.address?.city},{modalInfo?.contact?.address?.street}</span></div>
                        <div className="separator-full m-0"></div>

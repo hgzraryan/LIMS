@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import FeatherIcon from "feather-icons-react/build/FeatherIcon";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Dropdown } from "react-bootstrap";
 import DoctorsTable from "../viewTables/DoctorsTable";
 import useGetData from "../../hooks/useGetData";
@@ -11,23 +11,34 @@ import { useSelector } from "react-redux";
 import { selectDoctorCount } from "../../redux/features/doctor/doctorCountSlice";
 import { DOCTORS_URL } from "../../utils/constants";
 import { Helmet, HelmetProvider } from 'react-helmet-async';
+import { useNavigate, useParams } from "react-router-dom";
 
 function Doctors() {
+  const { pageNumber } = useParams();
+  const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(Number(pageNumber));
   const [selectedItem, setSelectedItem] = useState("");
   const [selectedItemId, setSelectedItemId] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
-  const confirmDoctorsRef = useRef("");
-  const doctorCount = useSelector(selectDoctorCount)
-  const [currentPage, setCurrentPage] = useState(0);  
+  const confirmDoctorsRef = useRef(""); 
   const [usersPerPage, setUsersPerPage] = useState(Math.round((window.innerHeight / 100)));
-  const pageCount = Math.ceil(doctorCount/usersPerPage)
-  
+  const [searchCount,setSearchCount] = useState(null)
+  const [searchId,setSearchId] = useState(null)
+  const [searchTerms,setSearchTerms] = useState(null)
+
+  const handleSearchPageCount = ({count,searchTerms,id}) =>{
+    setSearchCount(count)
+    setSearchTerms(searchTerms)
+    setSearchId(id)
+  }
   const {
-         data: doctors,
-         setData: setDoctors,
-         getData: getDoctors,
-         refreshData
-  } = useGetData(DOCTORS_URL,currentPage,usersPerPage);
+    data: doctors,
+    setData: setDoctors,
+    getData: getDoctors,
+    refreshData,
+    dataCount
+  } = useGetData(DOCTORS_URL,currentPage,usersPerPage,searchCount,null,searchId,searchTerms);
+  const pageCount = searchCount?Math.ceil(searchCount/usersPerPage) : Math.ceil(dataCount/usersPerPage)
 
   const handleOpenModal = (doctor) => {
     setSelectedItemId(true);
@@ -42,11 +53,13 @@ function Doctors() {
   };
 
 
-  //-------------------------PAGINATION---------------------------//
+   //-------------------------PAGINATION---------------------------//  
+   useEffect(() => {
+    setCurrentPage(Number(pageNumber));
+  }, [pageNumber]);
   const handlePageClick = ({ selected: selectedPage }) => {
-    setCurrentPage(selectedPage);
-    //updateUsersCount();
-  };
+    navigate(`/doctors/list/page/${selectedPage+1}`);
+}
   //--------------------------------------------------------------//
   const { handleDeleteItem } = useDeleteData(
     DOCTORS_URL,
@@ -178,19 +191,20 @@ function Doctors() {
                       refreshData={refreshData}
                     />
                     <ReactPaginate
-                                           previousLabel = {"Հետ"}    
-                                           nextLabel = {"Առաջ"}
-                                            pageCount = {pageCount}
-                                            onPageChange = {handlePageClick}
-                                            initialPage = {0}
-                                            containerClassName={"pagination"}
-                                            pageLinkClassName = {"page-link"}
-                                            pageClassName = {"page-item"}
-                                            previousLinkClassName={"page-link"}
-                                            nextLinkClassName={"page-link"}
-                                            disabledLinkClassName={"disabled"}
-                                            //activeLinkClassName={"active"}
-                                            activeClassName={"active"}
+                        previousLabel = {"Հետ"}    
+                        nextLabel = {"Առաջ"}
+                        pageCount = {pageCount}
+                        onPageChange = {handlePageClick}
+                        //initialPage = {Number(pageNumber)}
+                        containerClassName={"pagination"}
+                        pageLinkClassName = {"page-link"}
+                        pageClassName = {"page-item"}
+                        previousLinkClassName={"page-link"}
+                        nextLinkClassName={"page-link"}
+                        disabledLinkClassName={"disabled"}
+                        //activeLinkClassName={"active"}
+                        activeClassName={"active"}
+                        forcePage={currentPage - 1}
 											/>
                   </div>
                 </div>

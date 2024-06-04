@@ -21,7 +21,8 @@ function DoctorVisitsPrint({ modalPrint, setModalPrint }) {
     clientTel,
     clientFirstName,
     clientLastName,
-    clientMidName
+    clientMidName,
+    clientId
   } = modalPrint;
   const componentRef = useRef();
   const columns = React.useMemo(
@@ -251,6 +252,14 @@ function DoctorVisitsPrint({ modalPrint, setModalPrint }) {
 
                   <div className=" mb-3r">
                     <ul>
+                    <li>
+                          Նույնականացման համար:
+                          <span
+                            style={{ fontWeight: "bold", fontSize: "1.1rem" }}
+                          >
+                            {" "+clientId}
+                          </span>
+                        </li>
                       <li>
                         ԱԱՀ: 
                         <span
@@ -321,7 +330,7 @@ function DoctorVisitsPrint({ modalPrint, setModalPrint }) {
                 <section className="container">
                   <div className="container">
                     <table
-                      className="table table-striped"
+                      className="table"
                       style={{ border: "1px solid black" }}
                     >
                       <thead>

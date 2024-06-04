@@ -16,13 +16,14 @@ function DoctorsPatients() {
     const [selectedItem, setSelectedItem] = useState("");
     const [currentPage, setCurrentPage] = useState(0);  
     const [usersPerPage, setUsersPerPage] = useState(Math.round((window.innerHeight / 100)));
-    //const pageCount = Math.ceil(patientsCount/usersPerPage)
+    //const pageCount = Math.ceil(dataCount/usersPerPage)
     
       const {
         data: patients,
         setData: setPatients,
         getData: getPatients,
-        refreshData  
+        refreshData,
+        dataCount
       } = useGetData(DOCTORSPATIENTS_URL,currentPage,usersPerPage);
   
     const handleToggleCreateModal = (value) => {

@@ -60,12 +60,12 @@ function DiagnosticsInfoModal({modalInfo,setModalInfo}) {
                 <div className="d-flex justify-content-between">
                   {" "}
                   <span>Գրանցվել է </span>{" "}
-                  <span>{moment.utc(modalInfo.createdAt).format('DD-MM-YYYY HH:mm')}</span>                        
+                  <span>{modalInfo.createdAt && moment.utc(modalInfo.createdAt).format('DD-MM-YYYY HH:mm')}</span>                        
                 </div>
                 <div className="d-flex justify-content-between">
                   {" "}
                   <span>Վերջին թարմացում </span>{" "}
-                  <span>{moment.utc(modalInfo?.updatedAt).format('DD-MM-YYYY HH:mm')}</span>                        
+                  <span>{modalInfo?.updatedAt && moment.utc(modalInfo?.updatedAt).format('DD-MM-YYYY HH:mm')}</span>                        
                 </div>
                 <div className="separator-full m-0"></div>
                 <div className="d-flex justify-content-between">
@@ -94,7 +94,7 @@ function DiagnosticsInfoModal({modalInfo,setModalInfo}) {
                 <div className="separator-full m-0"></div>
                 <div className="d-flex justify-content-between">
                   <span>Վճարման ամսաթիվը </span>{" "}
-                  <span>{moment.utc(modalInfo.paymentDate).format('DD-MM-YYYY HH:mm')}</span>
+                  <span>{modalInfo?.paymentDate && moment.utc(modalInfo?.paymentDate).format('DD-MM-YYYY HH:mm')}</span>
                 </div>
                 <div className="separator-full m-0"></div>
               </div>

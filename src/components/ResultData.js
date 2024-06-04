@@ -255,7 +255,7 @@ useEffect(()=>{
    
                    <div style={{display:'flex'}}>
                      <p style={{marginLeft:'2px',fontWeight:'bold'}}>{currentClient?.gender==='Male' ? 'Ար․':'Իգ'}</p>
-                     <p style={{marginLeft:'2px',fontWeight:'bold'}}>{moment.utc(currentClient.dateOfBirth).format('DD-MM-YYYY') },</p>
+                     <p style={{marginLeft:'2px',fontWeight:'bold'}}>{currentClient.dateOfBirth && moment.utc(currentClient.dateOfBirth).format('DD-MM-YYYY') },</p>
                      <p style={{marginLeft:'2px',fontWeight:'bold'}}>{currentClient.age}</p>
                    </div>
                  </div>
@@ -281,12 +281,12 @@ useEffect(()=>{
                  <div style={{display:'flex'}}>
                  <img src={calendarIcon} alt='calendarIcon' width='20px' height='20px' style={{marginLeft:'10px', marginRight:'10px'}}/>
 
-                   <p>{moment.utc(modalResult?.createdAt).format('DD-MM-YYYY HH:mm')}</p>
+                   <p>{modalResult?.createdAt && moment.utc(modalResult?.createdAt).format('DD-MM-YYYY HH:mm')}</p>
                  </div>
                  <div style={{display:'flex'}}>
                  <img src={calendarIcon} alt='calendarIcon' width='20px' height='20px' style={{marginLeft:'10px', marginRight:'10px'}}/>
 
-                   <p>{moment.utc(modalResult?.diagnosisDate).format('DD-MM-YYYY HH:mm')}</p>
+                   <p>{modalResult?.diagnosisDate && moment.utc(modalResult?.diagnosisDate).format('DD-MM-YYYY HH:mm')}</p>
                  </div>
                </div>
              </div>
@@ -302,7 +302,7 @@ useEffect(()=>{
                <div style={{display:'flex',justifyContent:'center',marginTop:'0.5rem',alignItems:'center'}} >
                  <p>
                    
-                   Նմուշառված է՝ {moment.utc(modalResult?.diagnosisDate).format('DD-MM-YYYY HH:mm')}
+                   Նմուշառված է՝ {modalResult?.diagnosisDate && moment.utc(modalResult?.diagnosisDate).format('DD-MM-YYYY HH:mm')}
                    {/* <span className="ps-8"> Արտաքին նմուշ [] </span> */}
                  </p>
                </div>

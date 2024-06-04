@@ -63,7 +63,7 @@ function DiagnosticsDeactivate({
       </Modal.Header>
       <Modal.Body>
         <p>Ախտորոշման նույնականացման համար։{rowData.diagnosticsId}</p>
-        <p>Ախտորոշման ամսաթիվ։{moment.utc(rowData?.diagnosisDate).format('DD-MM-YYYY HH:mm')}</p>
+        <p>Ախտորոշման ամսաթիվ։{rowData?.diagnosisDate && moment.utc(rowData?.diagnosisDate).format('DD-MM-YYYY HH:mm')}</p>
         <p>Ախտորոշման տեսակը։{rowData.internalStatus}</p>
         <div className="separator-full"></div>
 

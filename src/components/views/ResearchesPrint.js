@@ -306,6 +306,14 @@ function ResearchesPrint({ modalPrint, setModalPrint }) {
                     ?<div className=" mb-3r">
                       <ul>
                         <li>
+                          Նույնականացման համար:
+                          <span
+                            style={{ fontWeight: "bold", fontSize: "1.1rem" }}
+                          >
+                            {" "+currentClient?.patientId}
+                          </span>
+                        </li>
+                        <li>
                           ԱԱՀ:
                           <span
                             style={{ fontWeight: "bold", fontSize: "1.1rem" }}
@@ -332,7 +340,7 @@ function ResearchesPrint({ modalPrint, setModalPrint }) {
                           <span
                             style={{ fontWeight: "bold", fontSize: "1.1rem" }}
                           >
-                            {" "+ moment.utc(currentClient?.dateOfBirth).format('DD-MM-YYYY')}
+                            {currentClient?.dateOfBirth && (" "+ moment.utc(currentClient?.dateOfBirth).format('DD-MM-YYYY'))}
                           </span>
                         </li>
                         <li>
@@ -356,7 +364,7 @@ function ResearchesPrint({ modalPrint, setModalPrint }) {
                           <span
                             style={{ fontWeight: "bold", fontSize: "1.1rem" }}
                           >
-                            {" "+moment.utc(modalPrint?.createdAt).format('DD-MM-YYYY HH:mm')}
+                            {modalPrint?.createdAt && (" "+moment.utc(modalPrint?.createdAt).format('DD-MM-YYYY HH:mm'))}
                           </span>
                         </li>
                       </ul>
@@ -368,7 +376,7 @@ function ResearchesPrint({ modalPrint, setModalPrint }) {
                         <span
                           style={{ fontWeight: "bold", fontSize: "1.1rem" }}
                         >
-                          {" "+moment.utc(modalPrint?.createdAt).format('DD-MM-YYYY HH:mm')}
+                          {modalPrint?.createdAt && (" "+moment.utc(modalPrint?.createdAt).format('DD-MM-YYYY HH:mm'))}
                         </span>
                       </li>
                     </ul>
@@ -380,7 +388,7 @@ function ResearchesPrint({ modalPrint, setModalPrint }) {
                     {statusBoard[1].researches?.length 
                     ?
                       <table
-                        className="table table-striped"
+                        className="table"
                         style={{ border: "1px solid black" }}
                       >
                         <thead>

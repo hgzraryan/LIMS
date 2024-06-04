@@ -131,13 +131,21 @@ const { inputRef } = Barcode({
                      {currentClient?.patientId
                     ?<div className=" mb-3r">
             <ul>
+            <li>
+                          Նույնականացման համար:
+                          <span
+                            style={{ fontWeight: "bold", fontSize: "1.1rem" }}
+                          >
+                            {" "+currentClient?.patientId}
+                          </span>
+                        </li>
               <li >ԱԱՀ: <span style={{fontWeight:'bold',fontSize:'1.1rem'}}>{" "+currentClient?.firstName+" "+ currentClient?.lastName +" "+ currentClient?.midName}</span>
               </li>
               <li >Սեռ: <span style={{fontWeight:'bold',fontSize:'1.1rem'}}>{(currentClient?.gender==='Male')?' Արական':' Իգական'}</span></li>
-              <li >Ծննդյան ամսաթիվ: <span style={{fontWeight:'bold',fontSize:'1.1rem'}}>{" "+moment.utc(currentClient?.dateOfBirth).format('DD-MM-YYYY')}</span></li>
+              <li >Ծննդյան ամսաթիվ: <span style={{fontWeight:'bold',fontSize:'1.1rem'}}>{currentClient?.dateOfBirth && (" "+moment.utc(currentClient?.dateOfBirth).format('DD-MM-YYYY'))}</span></li>
               <li >Տարիք: <span style={{fontWeight:'bold',fontSize:'1.1rem'}}>{" "+currentClient?.age}</span></li>
               <li >Հեռախոս: <span style={{fontWeight:'bold',fontSize:'1.1rem'}}>{" "+currentClient?.contact?.phone}</span></li>
-              <li >Տրման ամսաթիվ: <span style={{fontWeight:'bold',fontSize:'1.1rem'}}>{" "+moment.utc(value?.createdAt).format('DD-MM-YYYY HH:mm')}</span></li>
+              <li >Տրման ամսաթիվ: <span style={{fontWeight:'bold',fontSize:'1.1rem'}}>{value?.createdAt && (" "+moment.utc(value?.createdAt).format('DD-MM-YYYY HH:mm'))}</span></li>
               {/* <li>
                 Անուն Ազգանուն: `${value.firstName} ${value.lastName} `
               </li>
@@ -163,7 +171,7 @@ const { inputRef } = Barcode({
         <section className="research_container">
           <div className="research_container">
             <table
-              className="table table-striped"
+              className="table"
               style={{ border: "1px solid black" }}
             >
               <thead>

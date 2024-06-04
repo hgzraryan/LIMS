@@ -157,7 +157,9 @@ const DoctorsTemplete = () => {
     () => ({
       minWidth: 20,
       width: 20,
-      maxWidth: 400,
+      maxWidth: 600,
+      Filter: ({ column: { id } }) => <></>,
+
     }),
     []
   );  

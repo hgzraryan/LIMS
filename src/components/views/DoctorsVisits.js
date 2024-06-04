@@ -3,41 +3,61 @@ import FeatherIcon from 'feather-icons-react/build/FeatherIcon';
 import React, { useEffect, useState } from 'react'
 import { Dropdown } from 'react-bootstrap';
 import ReactPaginate from 'react-paginate';
-import { useSelector } from 'react-redux';
 import DoctorsVisitsTable from '../viewTables/DoctorsVisitsTable';
 import AddDoctorsVisit from '../addViews/AddDoctorsVisit';
 import { DOCTORSVISITS_URL } from '../../utils/constants';
 import useGetData from '../../hooks/useGetData';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
-import { selectDoctorsVisitCount } from '../../redux/features/DoctorsVisit/DoctorsVisitSlice';
+import { useNavigate, useParams } from 'react-router-dom';
+import ExportData from '../ExportData';
 
 function DoctorsVisits() {
+    const { pageNumber } = useParams();
+    const navigate = useNavigate();
     const [isOpen, setIsOpen] = useState(false);
     const [selectedItem, setSelectedItem] = useState("");
     const [selectedItemId, setSelectedItemId] = useState(null);
-    const doctorsVisitCount = useSelector(selectDoctorsVisitCount)
-    const [currentPage, setCurrentPage] = useState(0);  
+    const [currentPage, setCurrentPage] = useState(Number(pageNumber));
     const [usersPerPage, setUsersPerPage] = useState(Math.round((window.innerHeight / 100)));
-    const pageCount = Math.ceil(doctorsVisitCount/usersPerPage)
     const [userRole, setUserRole] = useState('');
+    const [toggleExport, setToggleExport] = useState(false);
+
+    const handleToggleExportModal = (value) => {
+        setToggleExport((prev) => value);
+      };
     const handleToggleCreateModal = (value) => {
       setIsOpen((prev) => value);
     };
+    const [searchCount,setSearchCount] = useState(null)
+    const [searchId,setSearchId] = useState(null)
+    const [searchTerms,setSearchTerms] = useState(null)
+  
+    const handleSearchPageCount = ({count,searchTerms,id}) =>{
+      setSearchCount(count)
+      setSearchTerms(searchTerms)
+      setSearchId(id)
+    }
     const {
       data: doctorsVisits,
       setData: setDoctorsVisits,
-      refreshData  
+      refreshData,
+      dataCount  
     } = useGetData(DOCTORSVISITS_URL,currentPage,usersPerPage);
-  useEffect(() => {
+    const pageCount = searchCount?Math.ceil(searchCount/usersPerPage) : Math.ceil(dataCount/usersPerPage)
+  
+    useEffect(() => {
     const storedData = JSON.parse(localStorage.getItem('role'));
     if (storedData) {
       setUserRole(storedData.Role);
     }
   }, []);
-    const handlePageClick = ({ selected: selectedPage }) => {
-       setCurrentPage(selectedPage);
-       //updateUsersCount();
-     };
+  //-------------------------PAGINATION---------------------------//  
+  useEffect(() => {
+    setCurrentPage(Number(pageNumber));
+  }, [pageNumber]);
+  const handlePageClick = ({ selected: selectedPage }) => {
+    navigate(`/doctorsVisits/page/${selectedPage+1}`);
+}
      const handleOpenModal = (user) => {
       setSelectedItemId(true);
       setSelectedItem((prev) => user);
@@ -53,6 +73,11 @@ function DoctorsVisits() {
       //-------------------
       return (
         <HelmetProvider>
+          <ExportData 
+      handleToggleExportModal = {handleToggleExportModal}
+      toggleExport={toggleExport}
+      section='doctorVisits'
+      />
         <div>
           <div>
     
@@ -109,6 +134,18 @@ function DoctorsVisits() {
 }
                   </div>
                   <div className="contact-options-wrap">
+                  <a
+                  className="btn btn-icon btn-flush-dark flush-soft-hover dropdown-toggle no-caret active"
+                  href="#"
+                  data-bs-toggle="dropdown"
+                >
+                  <span className="icon">
+                    <span className="feather-icon"
+                    onClick={handleToggleExportModal}>
+                      <FeatherIcon icon="download" />
+                    </span>
+                  </span>
+                </a>
                     <div className="dropdown-menu dropdown-menu-end">
                       <a className="dropdown-item active" href="contact.html">
                         <span className="feather-icon dropdown-icon">
@@ -164,22 +201,24 @@ function DoctorsVisits() {
                           doctorsVisits={doctorsVisits}
                           setDoctorsVisits={setDoctorsVisits}
                           refreshData={refreshData}
+                          handleSearchPageCount={(val)=>handleSearchPageCount(val)}
                         />
                         <ReactPaginate
-                                               previousLabel = {"Հետ"}    
-                                               nextLabel = {"Առաջ"}
-                                                pageCount = {pageCount}
-                                                onPageChange = {handlePageClick}
-                                                initialPage = {0}
-                                                containerClassName={"pagination"}
-                                                pageLinkClassName = {"page-link"}
-                                                pageClassName = {"page-item"}
-                                                previousLinkClassName={"page-link"}
-                                                nextLinkClassName={"page-link"}
-                                                disabledLinkClassName={"disabled"}
-                                                //activeLinkClassName={"active"}
-                                                activeClassName={"active"}
-                                                />
+                        previousLabel = {"Հետ"}    
+                        nextLabel = {"Առաջ"}
+                        pageCount = {pageCount}
+                        onPageChange = {handlePageClick}
+                        //initialPage = {Number(pageNumber)}
+                        containerClassName={"pagination"}
+                        pageLinkClassName = {"page-link"}
+                        pageClassName = {"page-item"}
+                        previousLinkClassName={"page-link"}
+                        nextLinkClassName={"page-link"}
+                        disabledLinkClassName={"disabled"}
+                        //activeLinkClassName={"active"}
+                        activeClassName={"active"}
+                        forcePage={currentPage - 1}
+											/>
                       </div>
                     </div>
                   </div>

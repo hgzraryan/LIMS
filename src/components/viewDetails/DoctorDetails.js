@@ -215,7 +215,7 @@ function DoctorDetails() {
                                 <i className="bi bi-calendar-event text-disabled me-2"></i>
                                 <span className="text-muted">Գրանցման ամսաթիվ:</span>
                               </span>
-                              <span className="ms-2">{moment.utc(doctorDetails?.joiningDate).format('DD-MM-YYYY HH:mm')}</span>
+                              <span className="ms-2">{doctorDetails?.joiningDate && moment.utc(doctorDetails?.joiningDate).format('DD-MM-YYYY HH:mm')}</span>
                             </li>
                             <li className="list-group-item border-0">
                             <span>
@@ -225,7 +225,7 @@ function DoctorDetails() {
                               </span>
                             </span>
                             <span className="ms-2">
-                            {moment.utc(doctorDetails?.updatedAt).format('DD-MM-YYYY HH:mm')}
+                            {doctorDetails?.updatedAt && moment.utc(doctorDetails?.updatedAt).format('DD-MM-YYYY HH:mm')}
                             </span>
                           </li>
                             <li className="list-group-item border-0">
@@ -233,7 +233,7 @@ function DoctorDetails() {
                                 <i className="bi bi-calendar-event text-disabled me-2"></i>
                                 <span className="text-muted">Ծննդյան ամսաթիվ:</span>
                               </span>
-                              <span className="ms-2">{moment.utc(doctorDetails?.dateOfBirth).format('DD-MM-YYYY')}</span>
+                              <span className="ms-2">{doctorDetails?.dateOfBirth && moment.utc(doctorDetails?.dateOfBirth).format('DD-MM-YYYY')}</span>
                             </li>
                             <li className="list-group-item border-0">
                               <span>

@@ -1,40 +1,48 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import FeatherIcon from 'feather-icons-react/build/FeatherIcon';
-import React, { useRef, useState } from 'react'
-import { useSelector } from 'react-redux';
+import React, { useEffect, useRef, useState } from 'react'
 import { MEDICALSERVICES_URL } from '../../utils/constants';
 import useGetData from '../../hooks/useGetData';
 import { Dropdown } from "react-bootstrap";
 import AddMedicalService from '../addViews/AddMedicalService';
 import ReactPaginate from "react-paginate";
 import MedicalServicesTable from '../viewTables/MedicalServicesTable';
-import { selectMedicalServicesCount } from '../../redux/features/medicalServices/medicalServicesSlice';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
+import { useNavigate, useParams } from 'react-router-dom';
 
 function MedicalServices() {
-    /*------------------ Create user Component --------------------*/
-    const handleToggleCreateModal = (value) => {
-      setIsOpen((prev) => value);
-    };
-    // const handleToggleCategoryCreateModal = (value) => {
-    //   setCategoryModalisOpen((prev) => value);
-    // };
-    const medicalServicesCount = useSelector(selectMedicalServicesCount)
-    const [selectedItem, setSelectedItem] = useState("");
-    const [selectedItemId, setSelectedItemId] = useState(null);
-    const [isOpen, setIsOpen] = useState(false);
-    //const [categoryModalisOpen, setCategoryModalisOpen] = useState(false);
-    const confirmResearchRef = useRef("");
-    
-    const [currentPage, setCurrentPage] = useState(0);  
-    const [usersPerPage, setUsersPerPage] = useState(Math.round((window.innerHeight / 100)));
-    const pageCount = Math.ceil(medicalServicesCount/usersPerPage)
+  const { pageNumber } = useParams();
+  const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(Number(pageNumber));
+  const [selectedItem, setSelectedItem] = useState("");
+  const [selectedItemId, setSelectedItemId] = useState(null);
+  const [isOpen, setIsOpen] = useState(false);
+  //const [categoryModalisOpen, setCategoryModalisOpen] = useState(false);
+  const confirmResearchRef = useRef("");
+  const [usersPerPage, setUsersPerPage] = useState(Math.round((window.innerHeight / 100)));
+  const [searchCount,setSearchCount] = useState(null)
+  const [searchId,setSearchId] = useState(null)
+  const [searchTerms,setSearchTerms] = useState(null)
   
-    const {
+  const handleSearchPageCount = ({count,searchTerms,id}) =>{
+    setSearchCount(count)
+    setSearchTerms(searchTerms)
+    setSearchId(id)
+  }
+  /*------------------ Create user Component --------------------*/
+  const handleToggleCreateModal = (value) => {
+    setIsOpen((prev) => value);
+  };
+  // const handleToggleCategoryCreateModal = (value) => {
+  //   setCategoryModalisOpen((prev) => value);
+  // };
+  const {
       data: medicalServices,
       setData: setMedicalServices,
-      refreshData
-    } = useGetData(MEDICALSERVICES_URL,currentPage,usersPerPage);
+      refreshData,
+      dataCount
+    } = useGetData(MEDICALSERVICES_URL,currentPage,usersPerPage,searchCount,null,searchId,searchTerms);
+    const pageCount = searchCount?Math.ceil(searchCount/usersPerPage) : Math.ceil(dataCount/usersPerPage)
     const handleOpenModal = (user) => {
       setSelectedItemId(true);
       setSelectedItem((prev) => user);
@@ -54,14 +62,14 @@ function MedicalServices() {
     //   "researchName",
     //   getResearches 
     // );
-     //-------------------------PAGINATION---------------------------//
-    
-   
-     const handlePageClick = ({ selected: selectedPage }) => {
-       setCurrentPage(selectedPage);
-       //updateUsersCount();
-   }
-     //--------------------------------------------------------------//
+      //-------------------------PAGINATION---------------------------//  
+ useEffect(() => {
+  setCurrentPage(Number(pageNumber));
+}, [pageNumber]);
+const handlePageClick = ({ selected: selectedPage }) => {
+  navigate(`/setup/medicalServices/page/${selectedPage+1}`);
+}
+//--------------------------------------------------------------//
     //-------------------------
   
     const refreshPage = () => {

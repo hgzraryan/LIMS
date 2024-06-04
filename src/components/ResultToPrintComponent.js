@@ -163,7 +163,7 @@ return (
 
                 <div className="d-flex ">
                   <p className="ms-2 fw-bold">{patient?.gender==='Male' ? 'Ար․':'Իգ'}</p>
-                  <p className="ms-2 fw-bold">{moment.utc(patient?.dateOfBirth).format('DD-MM-YYYY')},</p>
+                  <p className="ms-2 fw-bold">{patient?.dateOfBirth && moment.utc(patient?.dateOfBirth).format('DD-MM-YYYY')},</p>
                   <p className="ms-2 fw-bold">{patient?.age }</p>
                 </div>
               </div>
@@ -257,7 +257,7 @@ return (
                     fill="#000000"
                   />
                 </svg>
-                <p>{moment.utc(value?.createdAt).format('DD-MM-YYYY HH:mm')}</p>
+                <p>{value?.createdAt && moment.utc(value?.createdAt).format('DD-MM-YYYY HH:mm')}</p>
               </div>
               <div className="d-flex">
                 <svg
@@ -298,7 +298,7 @@ return (
                     fill="#000000"
                   />
                 </svg>
-                <p>{moment.utc(value?.diagnosisDate).format('DD-MM-YYYY HH:mm')}</p>
+                <p>{value?.diagnosisDate && moment.utc(value?.diagnosisDate).format('DD-MM-YYYY HH:mm')}</p>
               </div>
             </div>
           </div>
@@ -314,7 +314,7 @@ return (
             <div className="d-flex justify-content-center align-items-center mt-2">
               <p>
                 
-                Նմուշառված է՝ {moment.utc(value?.diagnosisDate).format('DD-MM-YYYY HH:mm')}
+                Նմուշառված է՝ {value?.diagnosisDate && moment.utc(value?.diagnosisDate).format('DD-MM-YYYY HH:mm')}
                 {/* <span className="ps-8"> Արտաքին նմուշ [] </span> */}
               </p>
             </div>

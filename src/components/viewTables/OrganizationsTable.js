@@ -45,11 +45,12 @@ function OrganizationsTable({
   const handleOrganizationsDetail = (organizationId) =>{
        navigate(`/organizations/${organizationId}`)
    };
-  const defaultColumn = useMemo(
+   const defaultColumn = React.useMemo(
     () => ({
       minWidth: 20,
       width: 20,
       maxWidth: 600,
+      Filter: ({ column: { id } }) => <></>,
     }),
     []
   );
@@ -64,9 +65,6 @@ function OrganizationsTable({
         accessor: "organizationId",
         sortable: true,
         width: 80,
-        Filter: ({ column: { id } }) => (
-          <ColumnFilter id={id} setData={setOrganizations} placeholder={'ID'}/>
-        ),
       },
       {
         Header: (event) => (
@@ -77,12 +75,6 @@ function OrganizationsTable({
         accessor: "name",
         sortable: true,
         width: 400,
-        Filter: ({ column: { id } }) => (
-          <ColumnFilter 
-          id={id} 
-          setData={setOrganizations} 
-          placeholder = "Անվանում"/>
-        ),
         Cell: ({ row }) => (
           <div
             onClick={()=>handleOrganizationsDetail(row.original.organizationId)}
@@ -105,13 +97,6 @@ function OrganizationsTable({
             {row.original?.contact?.email}
           </div>
         ),
-        Filter: ({ column: { id } })=>(
-          <ColumnFilter
-            id={id}
-            setData={setOrganizations}
-            placeholder = "Էլ․ հասցե"
-          />
-        ),
       },
       {
         Header: (event) => (
@@ -125,13 +110,6 @@ function OrganizationsTable({
           <div className="d-flex align-items-center">
             {row.original?.contactPerson?.phone}
           </div>
-        ),
-        Filter: ({ column: { id } })=>(
-          <ColumnFilter
-            id={id}
-            setData={setOrganizations}
-            placeholder = "Հեռախոս"
-          />
         ),
       },
       {
@@ -150,13 +128,6 @@ function OrganizationsTable({
             row.original?.type ==='Other'?'Այլ':''}
           </div>
         ),
-        Filter: ({ column: { id } })=>(
-          <ColumnFilter
-            id={id}
-            setData={setOrganizations}
-            placeholder = "Հեռախոս"
-          />
-        ),
       },
       {
         
@@ -168,16 +139,9 @@ function OrganizationsTable({
  
         accessor: "createdAt",
         width: 200,
-        Filter: ({ column: { id } }) => (
-          <ColumnFilter 
-          id={id} 
-          setData={setOrganizations}
-          placeholder = "Գրանցված է"
-          />
-        ),
         Cell: ({ row }) => (
           <div className="d-flex align-items-center">
-             {moment.utc(row.original?.createdAt).format('DD-MM-YYYY HH:mm')}
+             {row.original?.createdAt && moment.utc(row.original?.createdAt).format('DD-MM-YYYY HH:mm')}
           </div>
         ),
       },
@@ -190,13 +154,6 @@ function OrganizationsTable({
  
         accessor: "description",
         width: 200,
-        Filter: ({ column: { id } }) => (
-          <ColumnFilter 
-          id={id} 
-          setData={setOrganizations}
-          placeholder = "Նկարագիր"
-          />
-        ),
       },
       {
         Header: (event) => <div className="columnHeader">Գործողություններ</div>,
@@ -246,7 +203,6 @@ function OrganizationsTable({
         ),
         disableSortBy: true,
         width: 300,
-        Filter: ({ column: { id } }) => <></>,
       },
     ],
     []
@@ -322,9 +278,9 @@ function OrganizationsTable({
                        <div className="separator-full m-0"></div>
                        <div className="d-flex justify-content-between">  <span>Անվանում </span> <span>{modalInfo.name}</span></div>
                        <div className="separator-full m-0"></div>
-                       <div className="d-flex justify-content-between">  <span>Գրանցվել է </span> <span>{moment.utc(modalInfo.createdAt).format('DD-MM-YYYY HH:mm')}</span></div>
+                       <div className="d-flex justify-content-between">  <span>Գրանցվել է </span> <span>{modalInfo.createdAt && moment.utc(modalInfo.createdAt).format('DD-MM-YYYY HH:mm')}</span></div>
                        <div className="separator-full m-0"></div>
-                       <div className="d-flex justify-content-between">  <span>Վերջին թարմացում</span> <span>{moment.utc(modalInfo?.updatedAt).format('DD-MM-YYYY HH:mm')}</span></div>
+                       <div className="d-flex justify-content-between">  <span>Վերջին թարմացում</span> <span>{modalInfo?.updatedAt && moment.utc(modalInfo?.updatedAt).format('DD-MM-YYYY HH:mm')}</span></div>
                      <div className="separator-full m-0"></div>
                        <div className="d-flex justify-content-between">  <span>Հասցե </span> <span>{modalInfo.address?.city}, {modalInfo.address?.street}</span></div>
                        <div className="separator-full m-0"></div>
@@ -372,48 +328,50 @@ function OrganizationsTable({
       className="table nowrap w-100 mb-5 dataTable no-footer"
       {...getTableProps()}
     >
-      <thead>
+       <thead>
         {headerGroups.map((headerGroup) => (
           <tr {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map((column) => (
-              <th {...column.getHeaderProps(column.getSortByToggleProps())}>
-                <div>
-                  {column.id !== "selection" && (
-                    <>
-                      <div>
-                        {column.canFilter ? column.render("Filter") : null}
-                      </div>
- 
-                      <div
-                        style={{
-                          marginTop: "2px",
-                          display: "flex",
-                          justifyContent: "space-between",
-                          alignItems: "center",
-                        }}
-                      >
-                        <div>{column.render("Header")}</div>
- 
-                        <div style={{ paddingTop: "20px" }}>
-                          {column.isSorted ? (
-                            column.isSortedDesc ? (
-                              <span className="sorting_asc"></span>
-                            ) : (
-                              <span className="sorting_desc"></span>
-                            )
-                          ) : (
-                            <span className="sorting"></span>
-                          )}
+              <th  {...column.getHeaderProps(column.getSortByToggleProps())}>
+                    {column.id !== "selection" && (
+                  <div className="d-flex justify-content-between ">
+                      
+                        <div>
+                          {column.canFilter ? column.render("Filter") : null}
                         </div>
-                      </div>
-                    </>
-                  )}
-                </div>
-                <div
+                        <div
+                          style={{
+                            marginTop: "2px",
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                          }}
+                        >
+                          <div>{column.render("Header")}</div>
+                        </div>
+                        {column.id!=="patientId" && 
+                          <div style={{ paddingTop: "20px" }}>
+                            {column.isSorted ? (
+                              column.isSortedDesc ? (
+                                <span className="sorting_asc"></span>
+                              ) : (
+                                <span className="sorting_desc"></span>
+                              )
+                            ) : (
+                              <span className="sorting"></span>
+                            )}
+                          </div>
+                          }
+
+                        </div>
+                    )}
+                  <div
                   {...column.getResizerProps()}
-                  className={`resizer ${column.isResizing ? "isResizing" : ""}`}
-                />
-              </th>
+                  className={`resizer ${
+                    column.isResizing ? "isResizing" : ""
+                  }`}
+                  />
+                </th>
             ))}
           </tr>
         ))}

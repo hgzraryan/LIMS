@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import FeatherIcon from "feather-icons-react";
 import LoadingSpinner from "../LoadingSpinner";
 import ReactPaginate from "react-paginate";
@@ -9,27 +9,36 @@ import { Dropdown } from "react-bootstrap";
 import useDeleteData from "../../hooks/useDeleteData";
 import useGetData from "../../hooks/useGetData";
 import EquipmentsTable from "../viewTables/EquipmentsTable";
-import { useSelector } from "react-redux";
-import { selectEquipmentCount } from "../../redux/features/equipment/equipmentCountSlice";
 import { EQUIPMENTS_URL } from "../../utils/constants";
 import { Helmet, HelmetProvider } from 'react-helmet-async';
+import { useNavigate, useParams } from "react-router-dom";
 
 const Equipments = () => {
+  const { pageNumber } = useParams();
+  const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(Number(pageNumber));
   const [selectedItem, setSelectedItem] = useState("");
   const [selectedItemId, setSelectedItemId] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const confirmEquipmentsRef = useRef("");
-  const equipmentCount = useSelector(selectEquipmentCount)
-  const [currentPage, setCurrentPage] = useState(0);  
   const [usersPerPage, setUsersPerPage] = useState(Math.round((window.innerHeight / 100)));
-  const pageCount = Math.ceil(equipmentCount/usersPerPage)
+  const [searchCount,setSearchCount] = useState(null)
+  const [searchId,setSearchId] = useState(null)
+  const [searchTerms,setSearchTerms] = useState(null)
+
+  const handleSearchPageCount = ({count,searchTerms,id}) =>{
+    setSearchCount(count)
+    setSearchTerms(searchTerms)
+    setSearchId(id)
+  }
   const {
     data: equipments,
     setData: setEquipments,
     getData: getEquipments,
-    refreshData
-  } = useGetData(EQUIPMENTS_URL,currentPage,usersPerPage);
-
+    refreshData,
+    dataCount
+  } = useGetData(EQUIPMENTS_URL,currentPage,usersPerPage,searchCount,null,searchId,searchTerms);
+  const pageCount = searchCount?Math.ceil(searchCount/usersPerPage) : Math.ceil(dataCount/usersPerPage)
   const handleOpenModal = (data) => {
     setSelectedItemId(true);
     setSelectedItem((prev) => data);
@@ -52,12 +61,14 @@ const Equipments = () => {
     "equipmentName",
     getEquipments
   );
-   //-------------------------PAGINATION---------------------------//
-   const handlePageClick = ({ selected: selectedPage }) => {
-     setCurrentPage(selectedPage);
-     //updateUsersCount();
- }
-   //--------------------------------------------------------------//
+   //-------------------------PAGINATION---------------------------//  
+ useEffect(() => {
+  setCurrentPage(Number(pageNumber));
+}, [pageNumber]);
+const handlePageClick = ({ selected: selectedPage }) => {
+  navigate(`/setup/equipments/page/${selectedPage+1}`);
+}
+//--------------------------------------------------------------//
   //-------------------------
   const refreshPage = () => {
     let paglink = document.querySelectorAll(".page-item");
@@ -289,12 +300,12 @@ const Equipments = () => {
                         setEquipments={setEquipments}
                         refreshData={refreshData}
                         />
-                        <ReactPaginate
+                       <ReactPaginate
                         previousLabel = {"Հետ"}    
                         nextLabel = {"Առաջ"}
                         pageCount = {pageCount}
                         onPageChange = {handlePageClick}
-                        initialPage = {0}
+                        //initialPage = {Number(pageNumber)}
                         containerClassName={"pagination"}
                         pageLinkClassName = {"page-link"}
                         pageClassName = {"page-item"}
@@ -303,6 +314,7 @@ const Equipments = () => {
                         disabledLinkClassName={"disabled"}
                         //activeLinkClassName={"active"}
                         activeClassName={"active"}
+                        forcePage={currentPage - 1}
 											/>
                   </div>
                 </div>

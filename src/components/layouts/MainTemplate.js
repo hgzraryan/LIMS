@@ -30,12 +30,14 @@ import sideSetupSvg from '../../dist/svg/sideSetup.svg'
 import sideDiagnosticsSvg from '../../dist/svg/sideDiagnostics.svg'
 import packageJson from '../../../package.json';
 import { checkRefDoctorsCount } from "../../redux/features/refDoctors/refDoctorsCountSlice";
+import { PATIENTS_ROUTE } from "../../utils/constants";
 const MainTemplate = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const logout = useLogout();
     const axiosPrivate = useAxiosPrivate();
     const [userData,setUserData]=useState('')
+    const [smsCount,setSmsCount]=useState(0)
     //const {userId} = userData
     useEffect(() => {
       const storedData = JSON.parse(localStorage.getItem('userData'));
@@ -79,6 +81,21 @@ const MainTemplate = () => {
 	const reportsDropDownMenuClick = event => {
 		setReportsDropDownMenu(current => !current);
 	};
+  //--get sms balance count----------------------------------------------//
+  const handleSmsCount = async () => {
+    try {
+      const response = await axiosPrivate.get('/smsBalance');
+      setSmsCount(response.data.message?.AvailableFunds);
+    } catch (error) {
+      console.error('Failed to fetch SMS count:', error);
+    }
+  };
+  useEffect(() => {
+    const intervalId = setInterval(handleSmsCount, 3600000); 
+    handleSmsCount(); 
+    return () => clearInterval(intervalId); 
+}, []); 
+  //--------------------------------------------------------------------//
    //--------------------------------------
 	useEffect(() => {
         let isMounted = true;
@@ -135,20 +152,31 @@ const MainTemplate = () => {
             <div className="container-fluid">
               {/* Start Nav */}
               <div className="nav-start-wrap">
-                <button
+                {/* <button
                   className="btn btn-icon btn-rounded btn-flush-dark flush-soft-hover navbar-toggle d-xl-none"
                   onClick={mmenuClick}
                 >
                   <span className="icon">
-                    <span className="feather-icon">
+                    <span className="feather-icon"> */}
                       {/*<i data-feather="align-left"></i>*/}
-                      <i className="fas fa-align-left"></i>
+                      {/* <i className="fas fa-align-left"></i>
                     </span>
                   </span>
-                </button>
+                </button> */}
                 {/* Search */}
 
                 {/* /Search */}
+                <div>
+
+                  <p style={{
+                    fontSize:'16px',
+                    fontWeight:600,
+
+                  }}> SMS բալանս: <span style={{
+                    color:smsCount>0?'#4eafcb':'red'
+
+                  }}>{smsCount}</span ><span style={{fontSize:'14px'}}>դր․</span></p>
+                </div>
               </div>
               {/* /Start Nav */}
               {/* End Nav */}
@@ -454,7 +482,7 @@ const MainTemplate = () => {
                             ? "nav-link active"
                             : "nav-link"
                         }
-                        to="./patients"
+                        to='patients/page/1'
                         onClick={() => handleSubmenuClick("patients", "")}
                       >
                         <span className="nav-icon-wrap position-relative">
@@ -476,7 +504,7 @@ const MainTemplate = () => {
                             ? "nav-link active"
                             : "nav-link"
                         }
-                        to="./diagnostics"
+                        to="./diagnostics/page/1"
                         onClick={() => handleSubmenuClick("diagnostics", "")}
                       >
                         <span className="nav-icon-wrap">
@@ -493,7 +521,7 @@ const MainTemplate = () => {
                             ? "nav-link active"
                             : "nav-link"
                         }
-                        to="./doctorsVisits"
+                        to="./doctorsVisits/page/1"
                         onClick={() => handleSubmenuClick("doctorsVisits", "")}
                       >
                         <span className="nav-icon-wrap">
@@ -513,7 +541,7 @@ const MainTemplate = () => {
                             ? "nav-link active"
                             : "nav-link"
                         }
-                        to="./agents"
+                        to="./agents/page/1"
                         onClick={() => handleSubmenuClick("agents", "")}
                       >
                         <span className="nav-icon-wrap">
@@ -532,7 +560,7 @@ const MainTemplate = () => {
                             ? "nav-link active"
                             : "nav-link"
                         }
-                        to="./organizations"
+                        to="./organizations/page/1"
                         onClick={() => handleSubmenuClick("organizations", "")}
                       >
                         <span className="nav-icon-wrap">
@@ -552,7 +580,7 @@ const MainTemplate = () => {
                                     ? "nav-link active"
                                     : "nav-link"
                                 }
-                                to="/medInstitutions"
+                                to="/medInstitutions/page/1"
                                 onClick={() =>
                                   handleSubmenuClick(
                                     "settings",
@@ -607,7 +635,7 @@ const MainTemplate = () => {
                                     ? "nav-link active"
                                     : "nav-link"
                                 }
-                                to="./doctors/list"
+                                to="./doctors/list/page/1"
                                 onClick={() =>
                                   handleSubmenuClick(
                                     "doctors",
@@ -628,7 +656,7 @@ const MainTemplate = () => {
                                     ? "nav-link active"
                                     : "nav-link"
                                 }
-                                to="./doctors/refDoctors"
+                                to="./doctors/refDoctors/page/1"
                                 onClick={() =>
                                   handleSubmenuClick("doctors", "refDoctors")
                                 }
@@ -740,7 +768,7 @@ const MainTemplate = () => {
                             ? "nav-link active"
                             : "nav-link"
                         }
-                        to="/users"
+                        to="/users/page/1"
                         onClick={() => handleSubmenuClick("users", "")}
                       >
                         <span className="nav-icon-wrap position-relative">
