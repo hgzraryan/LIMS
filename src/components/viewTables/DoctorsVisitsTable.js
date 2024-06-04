@@ -83,31 +83,28 @@ function DoctorsVisitsTable({ doctorsVisits, setDoctorsVisits, refreshData,handl
         sortable: true,
         width: 80,
         // Filter: ({ column: { id } }) => (
-        //   <ColumnFilter id={id} setData={setDoctorsVisits} placeholder={"ID"} />
-        // ),
-        Filter: ({ column: { id } }) => (
-          <ColumnFilter id={id} 
-          setData={setDoctorsVisits} 
-          placeholder={"ID"}
-          getUrl = {DOCTORSVISITS_URL}
-          searchUrl = {
-            DOCTORSVISITS_URL
-            //DOCTORSVISITS__SEARCH_URL
-          } 
-          handleSearchPageCount={(val)=>handleSearchPageCount(val)}
-            filterData={filterData}
-            setFilterData={(newFilterData) => {
-              if(Object.values(newFilterData).length>1 || Object.values(newFilterData).length===0){
-                setFilterData(newFilterData)
-              }else{
-                setFilterData((prevFilterData) => {
-                  return { ...prevFilterData, ...newFilterData };
-                })
-              }
+        //   <ColumnFilter id={id} 
+        //   setData={setDoctorsVisits} 
+        //   placeholder={"ID"}
+        //   getUrl = {DOCTORSVISITS_URL}
+        //   searchUrl = {
+        //     DOCTORSVISITS_URL
+        //     //DOCTORSVISITS__SEARCH_URL
+        //   } 
+        //   handleSearchPageCount={(val)=>handleSearchPageCount(val)}
+        //     filterData={filterData}
+        //     setFilterData={(newFilterData) => {
+        //       if(Object.values(newFilterData).length>1 || Object.values(newFilterData).length===0){
+        //         setFilterData(newFilterData)
+        //       }else{
+        //         setFilterData((prevFilterData) => {
+        //           return { ...prevFilterData, ...newFilterData };
+        //         })
+        //       }
              
-            }}
-          />
-        ),
+        //     }}
+        //   />
+        // ),
         Cell: ({ row }) => (
           <>
             <div
@@ -466,8 +463,8 @@ function DoctorsVisitsTable({ doctorsVisits, setDoctorsVisits, refreshData,handl
                         </div>
                     )}
                   <div
-                  {...column.getResizerProps()}
-                  className={`resizer ${
+                    {...column.getResizerProps({onClick(ev){ev.stopPropagation()}})}
+                    className={`resizer ${
                     column.isResizing ? "isResizing" : ""
                   }`}
                   />

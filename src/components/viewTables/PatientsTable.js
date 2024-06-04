@@ -89,7 +89,7 @@ function PatientsTable({
                 setFilterData(newFilterData)
               }else{
                 setFilterData((prevFilterData) => {
-                  return {...newFilterData };
+                  return { ...prevFilterData, ...newFilterData };
                 })
               }
              
@@ -122,12 +122,11 @@ function PatientsTable({
             handleSearchPageCount={(val)=>handleSearchPageCount(val)}
             filterData={filterData}
             setFilterData={(newFilterData) => {
-              
               if(Object.values(newFilterData).length>1 || Object.values(newFilterData).length===0){
                 setFilterData(newFilterData)
               }else{
                 setFilterData((prevFilterData) => {
-                  return { ...newFilterData };
+                  return { ...prevFilterData, ...newFilterData };
                 })
               }
              
@@ -169,7 +168,7 @@ function PatientsTable({
                 setFilterData(newFilterData)
               }else{
                 setFilterData((prevFilterData) => {
-                  return { ...newFilterData };
+                  return { ...prevFilterData, ...newFilterData };
                 })
               }
              
@@ -199,12 +198,11 @@ function PatientsTable({
             handleSearchPageCount={(val)=>handleSearchPageCount(val)}
             filterData={filterData}
             setFilterData={(newFilterData) => {
-              
               if(Object.values(newFilterData).length>1 || Object.values(newFilterData).length===0){
                 setFilterData(newFilterData)
               }else{
                 setFilterData((prevFilterData) => {
-                  return {...newFilterData };
+                  return { ...prevFilterData, ...newFilterData };
                 })
               }
              
@@ -237,7 +235,7 @@ function PatientsTable({
                 setFilterData(newFilterData)
               }else{
                 setFilterData((prevFilterData) => {
-                  return {...newFilterData };
+                  return { ...prevFilterData, ...newFilterData };
                 })
               }
              
@@ -274,7 +272,7 @@ function PatientsTable({
                 setFilterData(newFilterData)
               }else{
                 setFilterData((prevFilterData) => {
-                  return { ...newFilterData };
+                  return { ...prevFilterData, ...newFilterData };
                 })
               }
              
@@ -376,7 +374,7 @@ function PatientsTable({
 
       },
     ],
-    [setPatients,Object.keys(filterData)[0],filterData,patients]
+    [setPatients,JSON.stringify(filterData),filterData,patients,handleSearchPageCount]
     );
      console.log(filterData)
     const {
@@ -536,7 +534,7 @@ function PatientsTable({
                         </div>
                     )}
                   <div
-                  {...column.getResizerProps()}
+                    {...column.getResizerProps({onClick(ev){ev.stopPropagation()}})}
                   className={`resizer ${
                     column.isResizing ? "isResizing" : ""
                   }`}

@@ -682,12 +682,12 @@ function DiagnosticsTable({
                           <div>{column.render("Header")}</div>
                         </div>
                         {column.id!=="patientId" && 
-                          <div style={{ paddingTop: "20px" }}>
+                          <div style={{ paddingTop: "20px" }} >
                             {column.isSorted ? (
                               column.isSortedDesc ? (
-                                <span className="sorting_asc"></span>
+                                <span className="sorting_asc" ></span>
                               ) : (
-                                <span className="sorting_desc"></span>
+                                <span className="sorting_desc" ></span>
                               )
                             ) : (
                               <span className="sorting"></span>
@@ -698,7 +698,7 @@ function DiagnosticsTable({
                         </div>
                     )}
                   <div
-                  {...column.getResizerProps()}
+                  {...column.getResizerProps({onClick(ev){ev.stopPropagation()}})}
                   className={`resizer ${
                     column.isResizing ? "isResizing" : ""
                   }`}

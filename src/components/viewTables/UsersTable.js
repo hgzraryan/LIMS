@@ -303,7 +303,7 @@ function UsersTable({
                       >
                         <div>{column.render("Header")}</div>
                       </div>
-                      {column.id !== "patientId" && (
+                      {column.id !== "patientId" && column.canSort &&(
                         <div style={{ paddingTop: "20px" }}>
                           {column.isSorted ? (
                             column.isSortedDesc ? (
@@ -319,7 +319,7 @@ function UsersTable({
                     </div>
                   )}
                   <div
-                    {...column.getResizerProps()}
+                    {...column.getResizerProps({onClick(ev){ev.stopPropagation()}})}
                     className={`resizer ${
                       column.isResizing ? "isResizing" : ""
                     }`}

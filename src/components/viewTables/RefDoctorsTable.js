@@ -349,8 +349,8 @@ function RefDoctorsTable({
                         </div>
                     )}
                   <div
-                  {...column.getResizerProps()}
-                  className={`resizer ${
+                    {...column.getResizerProps({onClick(ev){ev.stopPropagation()}})}
+                    className={`resizer ${
                     column.isResizing ? "isResizing" : ""
                   }`}
                   />

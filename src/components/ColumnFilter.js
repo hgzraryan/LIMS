@@ -35,7 +35,7 @@ export const ColumnFilter = ({
     
     const updateFilterdObject = {...filterData,[id]:searchTerms}
     for(let i in updateFilterdObject){
-      if(updateFilterdObject[i]==='')
+      if(!updateFilterdObject[i])
         delete updateFilterdObject[i]
     }
    // console.log(updateFilterdObject)
@@ -95,29 +95,28 @@ export const ColumnFilter = ({
 }
 const handleEmptySearch = async () =>{
   const controller = new AbortController();
-  //debugger
-  // if (toggleSearchModal && debouncedSearch==='') {
-  //   // const asd = {...filterData}
-  //   // delete asd[id]
-  //   // setFilterData(asd)
     
-  //   console.log("call full data")
-  //   //console.log("call full data",asd)
-  //   try { 
-  //     const response = await axiosPrivate.post(getUrl, {
-  //     signal: controller.signal,
-  //     page: 1,
-  //     onPage: usersPerPage,
-  //   });
-    
-    
-  //   setData(response.data.jsonString);            
-    
-    
-  // } catch (err) {
-  //   console.error(err);
-  // }
-  //setFilterData({"garnik":''})
+    console.log("call full data")
+    try { 
+      const response = await axiosPrivate.post(getUrl, {
+        signal: controller.signal,
+        page: 1,
+        onPage: usersPerPage,
+      })     
+        setKeyPressed(false)
+        setToggleSearchModal(false) 
+        handleSearchPageCount(
+          {
+            count:'',
+            id:'',
+            searchTerms:''
+          }
+        ) 
+        setData(response.data.jsonString); 
+        setFilterData({})
+  } catch (err) {
+    console.error(err);
+  }
 //}
 }
   useEffect(() => {
@@ -190,7 +189,7 @@ const handleEmptySearch = async () =>{
       isMounted = false;
       controller.abort();
     };
-  }, [debouncedSearch, id, toggleSearchModal, getUrl,searchUrl, usersPerPage, setData,]);
+  }, [debouncedSearch, id, toggleSearchModal, getUrl,searchUrl, usersPerPage, setData,keyPressed,handleSearchPageCount]);
   const handleSearchInputChange = (value) => {
 
 
