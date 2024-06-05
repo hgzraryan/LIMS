@@ -3,7 +3,7 @@ import useAxiosPrivate from "./useAxiosPrivate";
 import { useLocation, useNavigate } from "react-router-dom";
 import { PATIENTS__SEARCH_URL } from "../utils/constants";
 
-const useGetData = (url,currentPage,usersPerPage,searchCount=null,searchUrl=null,searchId=null,searchTerms=null) => {
+const useGetData = (url,currentPage,usersPerPage,searchCount=null,searchUrl=null,searchId=null,searchTerms=null,searchParams=null) => {
     const [data, setData] = useState([]);
     const [dataCount, setDataCount] = useState(null);
     const axiosPrivate = useAxiosPrivate();  
@@ -45,8 +45,8 @@ const useGetData = (url,currentPage,usersPerPage,searchCount=null,searchUrl=null
           const getData = async () => {
           try {
             const response = await axiosPrivate.post(searchUrl, {
-              params: { column: searchId, query: searchTerms},
-              page: currentPage+1,
+              params: searchParams,
+              page: currentPage===0?1:currentPage,
               onPage: usersPerPage,
               signal: controller.signal
             });

@@ -31,22 +31,22 @@ const Diagnostics = () => {
   const [searchCount,setSearchCount] = useState(null)
   const [searchId,setSearchId] = useState(null)
   const [searchTerms,setSearchTerms] = useState(null)
+  const [searchParams,setSearchParams] = useState(null)
   const [toggleExport, setToggleExport] = useState(false);
 
 const handleToggleExportModal = (value) => {
     setToggleExport((prev) => value);
   };
-  const handleSearchPageCount = ({count,searchTerms,id}) =>{
-    setSearchCount(count)
-    setSearchTerms(searchTerms)
-    setSearchId(id)
+  const handleSearchPageCount = (data) =>{
+    setSearchCount(data.count)
+    setSearchParams(data.params)
   }
   const {
     data: diagnostics,
     setData: setDiagnostics,
     refreshData,
     dataCount
-  } = useGetData(DIAGNOSTICS_URL,currentPage,usersPerPage,searchCount,DIAGNOSTICS__SEARCH_URL,searchId,searchTerms);
+  } = useGetData(DIAGNOSTICS_URL,currentPage,usersPerPage,searchCount,DIAGNOSTICS__SEARCH_URL,searchId,searchTerms,searchParams);
   const pageCount = searchCount?Math.ceil(searchCount/usersPerPage) : Math.ceil(dataCount/usersPerPage)
 
     //-------------------------PAGINATION---------------------------//  

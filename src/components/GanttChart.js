@@ -17,7 +17,7 @@ import {
   Toolbar,
   DayMarkers,
 } from "@syncfusion/ej2-react-gantt";
-import { projectNewData } from "./data";
+//import { projectNewData } from "./data";
 
 function GanttChart() {
   const taskFields = {
@@ -81,7 +81,7 @@ function GanttChart() {
           allowFiltering={true}
           allowSorting={true}
           allowResizing={true}
-          dataSource={projectNewData}
+          //dataSource={projectNewData}
           highlightWeekends={true}
           splitterSettings={splitterSettings}
           taskFields={taskFields}

@@ -30,55 +30,54 @@ import sideSetupSvg from '../../dist/svg/sideSetup.svg'
 import sideDiagnosticsSvg from '../../dist/svg/sideDiagnostics.svg'
 import packageJson from '../../../package.json';
 import { checkRefDoctorsCount } from "../../redux/features/refDoctors/refDoctorsCountSlice";
-import { PATIENTS_ROUTE } from "../../utils/constants";
 const MainTemplate = () => {
-    const navigate = useNavigate();
     const location = useLocation();
+    const navigate = useNavigate();
+    const dispatch = useDispatch()
     const logout = useLogout();
+    const patientsCount = useSelector(selectPatientsCount)
+    const usersCount = useSelector(selectUsersCount)
     const axiosPrivate = useAxiosPrivate();
     const [userData,setUserData]=useState('')
     const [smsCount,setSmsCount]=useState(0)
-    //const {userId} = userData
-    useEffect(() => {
-      const storedData = JSON.parse(localStorage.getItem('userData'));
-      if (storedData) {
-        setUserData(storedData);
-      }
-    }, []);
-    //-------------------
-    const dispatch = useDispatch()
-    const patientsCount = useSelector(selectPatientsCount)
-    const usersCount = useSelector(selectUsersCount)
+    const [menuIsActive, setMenuIsActive] = useState(false);
+    const [subMenuIsActive, setSubMenuIsActive] = useState(false );
+    const [openUserDD, setOpenUserDD] = useState(false);
+    const [openSideMenu, setOpenSideMenu] = useState(false);
+    const [doctorsDropDownMenu, setdoctorsDropDownMenu] = useState(true);
+    const [reportsDropDownMenu, setReportsDropDownMenu] = useState(true);
 
-    //-------------------
-    const handleUserPage = async(userId) =>{      
+    useEffect(() => {
+      const subMenuIsActiveData = JSON.parse(localStorage.getItem('subMenuSelect'));
+      const menuIsActiveData = JSON.parse(localStorage.getItem('menuSelect'));
+      const storedUserData = JSON.parse(localStorage.getItem('userData'));
+
+      storedUserData?setUserData(storedUserData):setUserData('')
+      menuIsActiveData?setMenuIsActive(menuIsActiveData):setMenuIsActive('')
+      subMenuIsActiveData?setSubMenuIsActive(subMenuIsActiveData):setSubMenuIsActive('')
+    }, []);
+
+  const handleUserPage = async(userId) =>{      
         navigate(`/users/${userId}`)
     }
     //-------------------
-    const [isActive, setIsActive] = useState(false);
-	const menuClick = event => {
-		setIsActive(current => !current);
+	const userMenuClick = () => {
+		setOpenUserDD(current => !current);
+	};	
+	const sideMenuClick = () => {
+		setOpenSideMenu(current => !current);
 	};
-	
-	const [misActive, msetIsActive] = useState(false);
-	const mmenuClick = event => {
-		msetIsActive(current => !current);
-	};
-	
-    //---------------------------------------------//
-	const [misActive1, msetIsActive1] = useState(false);
-	const [sisActive1, ssetIsActive1] = useState(false);
 
-    const handleSubmenuClick = (menu,subMenu) => {
-        ssetIsActive1(subMenu)
-        msetIsActive1(menu)
+  const handleSubmenuClick = (menu,subMenu) => {
+        setMenuIsActive(menu)
+        setSubMenuIsActive(subMenu)
+        localStorage.setItem("menuSelect", JSON.stringify(menu));
+        localStorage.setItem("subMenuSelect", JSON.stringify(subMenu));
     }
-	const [doctorsDropDownMenu, setdoctorsDropDownMenu] = useState(true);
-	const doctorsDropDownMenuClick = event => {
+	const doctorsDropDownMenuClick = () => {
 		setdoctorsDropDownMenu(current => !current);
 	};
-	const [reportsDropDownMenu, setReportsDropDownMenu] = useState(true);
-	const reportsDropDownMenuClick = event => {
+	const reportsDropDownMenuClick = () => {
 		setReportsDropDownMenu(current => !current);
 	};
   //--get sms balance count----------------------------------------------//
@@ -95,8 +94,7 @@ const MainTemplate = () => {
     handleSmsCount(); 
     return () => clearInterval(intervalId); 
 }, []); 
-  //--------------------------------------------------------------------//
-   //--------------------------------------
+
 	useEffect(() => {
         let isMounted = true;
         const controller = new AbortController();
@@ -129,6 +127,7 @@ const MainTemplate = () => {
             controller.abort();
         }
     }, [])
+
     const signOut = async () => {
         await logout();
         navigate('/login');
@@ -140,8 +139,8 @@ const MainTemplate = () => {
         <div
           className="hk-wrapper"
           data-layout="vertical"
-          data-layout-style={misActive ? "collapsed" : "default"}
-          data-hover={misActive ? "active" : ""}
+          data-layout-style={openSideMenu ? "collapsed" : "default"}
+          data-hover={openSideMenu ? "active" : ""}
           data-menu="light"
           data-footer="simple"
         >
@@ -180,7 +179,7 @@ const MainTemplate = () => {
               </div>
               {/* /Start Nav */}
               {/* End Nav */}
-              <div className="nav-end-wrap" onClick={menuClick}>
+              <div className="nav-end-wrap" onClick={userMenuClick}>
                 <ul className="navbar-nav flex-row">
                   {/*
                                 <li className="nav-item">
@@ -333,7 +332,7 @@ const MainTemplate = () => {
                       </a>
                       <div
                         className={
-                          isActive
+                          openUserDD
                             ? "dropdown-menu dropdown-menu-end show showSlow"
                             : "dropdown-menu dropdown-menu-end showSlow"
                         }
@@ -396,7 +395,7 @@ const MainTemplate = () => {
             {/* Brand */}
             <div className="menu-header">
               <span>
-                <a className="navbar-brand" href="/dashboard">
+                <a className="navbar-brand" href="/dashboard" onClick={() => handleSubmenuClick("", "")}>
                   <img
                     className="brand-img img-fluid"
                     src="/dist/img/icon.svg"
@@ -410,7 +409,7 @@ const MainTemplate = () => {
                 </a>
                 <button
                   className="btn btn-icon btn-rounded btn-flush-dark flush-soft-hover navbar-toggle"
-                  onClick={mmenuClick}
+                  onClick={sideMenuClick}
                 >
                   <span className="icon">
                     <span className="svg-icon fs-5">
@@ -451,7 +450,7 @@ const MainTemplate = () => {
                     <li className="nav-item">
                       <Link
                         className={
-                          misActive1 === "/" || location.pathname === "/"
+                          menuIsActive === "/" || location.pathname === "/"
                             ? "nav-link active"
                             : "nav-link"
                         }
@@ -477,7 +476,7 @@ const MainTemplate = () => {
                     <li className="nav-item">
                       <Link
                         className={
-                          misActive1 === "patients" ||
+                          menuIsActive === "patients" ||
                           location.pathname === "/patients"
                             ? "nav-link active"
                             : "nav-link"
@@ -499,7 +498,7 @@ const MainTemplate = () => {
                     <li className="nav-item">
                       <Link
                         className={
-                          misActive1 === "diagnostics" ||
+                          menuIsActive === "diagnostics" ||
                           location.pathname === "/diagnostics"
                             ? "nav-link active"
                             : "nav-link"
@@ -516,7 +515,7 @@ const MainTemplate = () => {
                       </Link>
                       <Link
                         className={
-                          misActive1 === "doctorsVisits" ||
+                          menuIsActive === "doctorsVisits" ||
                           location.pathname === "/doctorsVisits"
                             ? "nav-link active"
                             : "nav-link"
@@ -536,7 +535,7 @@ const MainTemplate = () => {
                     <li className="nav-item">
                       <Link
                         className={
-                          misActive1 === "agents" ||
+                          menuIsActive === "agents" ||
                           location.pathname === "/agents"
                             ? "nav-link active"
                             : "nav-link"
@@ -555,7 +554,7 @@ const MainTemplate = () => {
                     <li className="nav-item">
                       <Link
                         className={
-                          misActive1 === "organizations" ||
+                          menuIsActive === "organizations" ||
                           location.pathname === "/organizations"
                             ? "nav-link active"
                             : "nav-link"
@@ -574,7 +573,7 @@ const MainTemplate = () => {
                     <li className="nav-item">
                               <Link
                                 className={
-                                  sisActive1 === "medInstitutions" ||
+                                  subMenuIsActive === "medInstitutions" ||
                                   location.pathname ===
                                     "/medInstitutions"
                                     ? "nav-link active"
@@ -599,7 +598,7 @@ const MainTemplate = () => {
                     <li className="nav-item">
                       <a
                         className={
-                          misActive1 === "doctors"
+                          menuIsActive === "doctors"
                             ? "nav-link active"
                             : "nav-link"
                         }
@@ -629,7 +628,7 @@ const MainTemplate = () => {
                             <li className="nav-item">
                               <Link
                                 className={
-                                  sisActive1 === "list" ||
+                                  subMenuIsActive === "list" ||
                                   location.pathname ===
                                     "/doctors/list"
                                     ? "nav-link active"
@@ -651,7 +650,7 @@ const MainTemplate = () => {
                             <li className="nav-item">
                               <Link
                                 className={
-                                  sisActive1 === "refDoctors" ||
+                                  subMenuIsActive === "refDoctors" ||
                                   location.pathname === "/doctors/refDoctors"
                                     ? "nav-link active"
                                     : "nav-link"
@@ -669,7 +668,7 @@ const MainTemplate = () => {
                             {/* <li className="nav-item">
                               <Link
                                 className={
-                                  sisActive1 === "Զբաղվածություն" ||
+                                  subMenuIsActive === "Զբաղվածություն" ||
                                   location.pathname === "/doctors/employment"
                                     ? "nav-link active"
                                     : "nav-link"
@@ -692,7 +691,7 @@ const MainTemplate = () => {
                     <li className="nav-item">
                       <Link
                         className={
-                          misActive1 === "samples" ||
+                          menuIsActive === "samples" ||
                           location.pathname === "/samples"
                             ? "nav-link active"
                             : "nav-link"
@@ -711,7 +710,7 @@ const MainTemplate = () => {
                     <li className="nav-item">
                       <a
                         className={
-                          misActive1 === "reports"
+                          menuIsActive === "reports"
                             ? "nav-link active"
                             : "nav-link"
                         }
@@ -739,7 +738,7 @@ const MainTemplate = () => {
                             <li className="nav-item">
                               <Link
                                 className={
-                                  sisActive1 === "export" || 
+                                  subMenuIsActive === "export" || 
                                   location.pathname === "/reports/export"
                                     ? "nav-link active"
                                     : "nav-link"
@@ -763,7 +762,7 @@ const MainTemplate = () => {
                     <li className="nav-item">
                       <Link
                         className={
-                          misActive1 === "users" ||
+                          menuIsActive === "users" ||
                           location.pathname === "/users"
                             ? "nav-link active"
                             : "nav-link"
@@ -785,7 +784,7 @@ const MainTemplate = () => {
                     <li className="nav-item">
                       <Link
                         className={
-                          misActive1 === "setup"
+                          menuIsActive === "setup"
                             ? "nav-link active"
                             : "nav-link"
                         }

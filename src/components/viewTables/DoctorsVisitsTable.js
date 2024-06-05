@@ -24,7 +24,7 @@ import isActiveSvg from "../../dist/svg/isActive.svg";
 import posTerminalSvg from "../../dist/svg/posTerminal.svg";
 import CreatePayByPos from "../CreatePayByPos";
 import DoctorVisitsInfoModal from "../infoModals/DoctorVisitsInfoModal";
-import { DOCTORSVISITS_URL } from "../../utils/constants";
+import { DOCTORSVISITS_URL, DOCTORSVISITS__SEARCH_URL } from "../../utils/constants";
 
 function DoctorsVisitsTable({ doctorsVisits, setDoctorsVisits, refreshData,handleSearchPageCount }) {
   const navigate = useNavigate();
@@ -88,7 +88,7 @@ function DoctorsVisitsTable({ doctorsVisits, setDoctorsVisits, refreshData,handl
         //   placeholder={"ID"}
         //   getUrl = {DOCTORSVISITS_URL}
         //   searchUrl = {
-        //     DOCTORSVISITS_URL
+        //     DOCTORSVISITS__SEARCH_URL
         //     //DOCTORSVISITS__SEARCH_URL
         //   } 
         //   handleSearchPageCount={(val)=>handleSearchPageCount(val)}

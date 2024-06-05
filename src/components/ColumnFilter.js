@@ -3,199 +3,182 @@ import { axiosPrivate } from "../api/axios";
 import useDebounce from "../hooks/useDebounce";
 import FeatherIcon from "feather-icons-react/build/FeatherIcon";
 
-export const ColumnFilter = ({ 
+export const ColumnFilter = ({
   column,
   setData,
-  data, 
-  id, 
-  placeholder, 
-  getUrl='' ,
-  searchUrl='',
+  data,
+  id,
+  placeholder,
+  getUrl = "",
+  searchUrl = "",
   filterData,
   setFilterData,
-  handleSearchPageCount}) => {
-  const [searchTerms, setSearchTerms] = useState(filterData?.[id] ||null);
+  handleSearchPageCount,
+}) => {
+  const [searchTerms, setSearchTerms] = useState(filterData?.[id] || null);
   const [toggleSearchModal, setToggleSearchModal] = useState(false);
-  const [mainData, setMainData] = useState([]);
-  const [usersPerPage, setUsersPerPage] = useState(Math.round((window.innerHeight / 100)));
+  const [usersPerPage, setUsersPerPage] = useState(
+    Math.round(window.innerHeight / 100)
+  );
   const modalRef = useRef();
   const debouncedSearch = useDebounce(searchTerms, 1000);
   const [keyPressed, setKeyPressed] = useState(false);
-  // console.log('filterData',Object.values(filterData).some(value => !!value))
-  //console.log('filterData',filterData)
 
   const handleKeyDown = () => {
-    //debugger
     setKeyPressed(true);
   };
-  const handleSearch = async () =>{
-    const controller = new AbortController();
 
-    setFilterData({[id]:searchTerms})
+  const handleSearch = async () => {
+    const controller = new AbortController();
+    const updateFilterdObject = { ...filterData, [id]: searchTerms };
+    for (let i in updateFilterdObject) {
+      if (!updateFilterdObject[i]) delete updateFilterdObject[i];
+    }
+    const params = Object.keys(updateFilterdObject).map((key) => ({
+      column: key,
+      query: updateFilterdObject[key],
+    }));
+    console.log(params);
     
-    const updateFilterdObject = {...filterData,[id]:searchTerms}
-    for(let i in updateFilterdObject){
-      if(!updateFilterdObject[i])
-        delete updateFilterdObject[i]
-    }
-   // console.log(updateFilterdObject)
-    if(filterData && Object.values(filterData).some(value => !!value)){
-      const params  = Object.keys(updateFilterdObject).map((key) => ({
-        column: key,
-        query: updateFilterdObject[key]
-      }))
-      // console.log({params:params ,
-      //   page: 1,
-      //   onPage: usersPerPage,
-      //   signal: controller.signal})
-        try {
+    setFilterData(updateFilterdObject);
+    try {
       const response = await axiosPrivate.post(searchUrl, {
-        params:{column:id,query:searchTerms},
+        params: params,
         page: 1,
         onPage: usersPerPage,
-        signal: controller.signal
+        signal: controller.signal,
       });
       setData(response.data.jsonString);
-    } catch (err) {
-      console.error(err);
-    }
-     }else if (searchTerms.toString().trim() !== ''){
-      try {
-      const response = await axiosPrivate.post(searchUrl, {
-        params: { column: id, query: searchTerms},
-        page: 1,
-        onPage: usersPerPage,
-        signal: controller.signal
-      });
-      //console.log('get search data')
-      setData(response.data.jsonString);
-      setToggleSearchModal(false)  
       handleSearchPageCount(
         {
         count:response.data.count,
-        id:id,
-        searchTerms:searchTerms
+        params:params
       
-      })    
-    }catch (err) {
+      })  
+    } catch (err) {
       console.error(err);
-    }    
-  }
-  // else if (toggleSearchModal && !searchTerms==='') {
-  //   console.log("call full data")
-  //   setFilterData({[id]:''})
+    }
+  };
 
-  //   const response = await axiosPrivate.post(getUrl, {
-  //     signal: controller.signal,
-  //     page: 1,
-  //     onPage: usersPerPage,
-  //   });    
-  //     setData(response.data.jsonString) 
-  // }
-}
-const handleEmptySearch = async () =>{
-  const controller = new AbortController();
-    
-    console.log("call full data")
-    try { 
-      const response = await axiosPrivate.post(getUrl, {
-        signal: controller.signal,
-        page: 1,
-        onPage: usersPerPage,
-      })     
-        setKeyPressed(false)
-        setToggleSearchModal(false) 
+  const handleEmptySearch = async () => {
+    const controller = new AbortController();
+    setSearchTerms("");
+    const updateFilterdObject = { ...filterData, [id]: "" };
+    for (let i in updateFilterdObject) {
+      if (updateFilterdObject[i] === "") delete updateFilterdObject[i];
+    }
+    setFilterData(updateFilterdObject);
+    handleKeyDown(true);
+    const params = Object.keys(updateFilterdObject).map((key) => ({
+      column: key,
+      query: updateFilterdObject[key],
+    }));
+    console.log("handleEmptySearch", params);
+    if (params.length) {      
+      try {
+        const response = await axiosPrivate.post(searchUrl, {
+          params: params,
+          page: 1,
+          onPage: usersPerPage,
+          signal: controller.signal,
+        });
+        setData(response.data.jsonString);
         handleSearchPageCount(
           {
-            count:'',
-            id:'',
-            searchTerms:''
-          }
-        ) 
-        setData(response.data.jsonString); 
-        setFilterData({})
-  } catch (err) {
-    console.error(err);
-  }
-//}
-}
-  useEffect(() => {
-    let isMounted = true;
-    const controller = new AbortController();
-    const fetchData = async () => {
-      try {
-        // if (debouncedSearch.trim() !== '') {
-        //  setFilterData({[id]:debouncedSearch})
-        //   // const response = await axiosPrivate.post(searchUrl, {
-        //   //   params: { column: id, query: debouncedSearch},
-        //   //   page: 1,
-        //   //   onPage: usersPerPage,
-        //   //   signal: controller.signal
-        //   // });
-        //   // if (isMounted) {
-        //   //   setData(response.data.jsonString);
-        //   // }
-        // } 
-        // else 
-        // if (debouncedSearch.trim() !== '') {
-        //   console.log("call local data")
-        //   //setFilterData({[id]:''})
-        //   // const response = await axiosPrivate.post(getUrl, {
-        //   //   signal: controller.signal,
-        //   //   page: 1,
-        //   //   onPage: usersPerPage,
-        //   // });
-        //   // if (isMounted) {
-        //   //   setData(response.data.jsonString);            
-        //   // }
-        // }
-        //else 
-        if (toggleSearchModal && debouncedSearch==='' && keyPressed) {
-          // setFilterData({[id]:''})
-          // const asd = {...filterData}
-          // delete asd[id]
-          // setFilterData(asd)
-
-          // console.log("call full data")
-          // console.log("call full data",asd)
-         
-          const response = await axiosPrivate.post(getUrl, {
-            signal: controller.signal,
-            page: 1,
-            onPage: usersPerPage,
-          });
-          if (isMounted) {
-            setKeyPressed(false)
-            setToggleSearchModal(false) 
-            handleSearchPageCount(
-              {
-                count:'',
-                id:'',
-                searchTerms:''
-              }
-            )    
-
-            setData(response.data.jsonString);            
-          }
-        }
+          count:response.data.count,
+          id:id,
+          searchTerms:searchTerms
+        
+        })  
       } catch (err) {
         console.error(err);
       }
-    };
+    } else {
+      try {
+        const response = await axiosPrivate.post(getUrl, {
+          signal: controller.signal,
+          page: 1,
+          onPage: usersPerPage,
+        });
+        setKeyPressed(false);
+        setToggleSearchModal(false);
+        handleSearchPageCount({
+          count: "",
+          params:params
 
-    fetchData();
+        });
+        setData(response.data.jsonString);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  };
+  // useEffect(() => {
+  //   let isMounted = true;
+  //   const controller = new AbortController();
+  //   const fetchData = async () => {
+  //     try {
+  //       if(toggleSearchModal && debouncedSearch==='' && keyPressed){
+  //         const updateFilterdObject = {...filterData,[id]:''}
+  //         for(let i in updateFilterdObject){
+  //           if(updateFilterdObject[i]==='')
+  //             delete updateFilterdObject[i]
+  //         }
+  //         setFilterData(updateFilterdObject)
+  //         const params  = Object.keys(updateFilterdObject).map((key) => ({
+  //           column: key,
+  //           query: updateFilterdObject[key]
+  //         }))
+  //         console.log(params)
+  //          //   try {
+  //   //     const response = await axiosPrivate.post(searchUrl, {
+  //   //       params:{column:id,query:searchTerms},
+  //   //       page: 1,
+  //   //       onPage: usersPerPage,
+  //   //       signal: controller.signal
+  //   //     });
+  //   //   setData(response.data.jsonString);
+  //   // } catch (err) {
+  //   //   console.error(err);
+  //   // }
+  //       }
+  //       if (toggleSearchModal && debouncedSearch==='' && keyPressed && !Object.keys(filterData).length) {
 
-    return () => {
-      isMounted = false;
-      controller.abort();
-    };
-  }, [debouncedSearch, id, toggleSearchModal, getUrl,searchUrl, usersPerPage, setData,keyPressed,handleSearchPageCount]);
+  //         const response = await axiosPrivate.post(getUrl, {
+  //           signal: controller.signal,
+  //           page: 1,
+  //           onPage: usersPerPage,
+  //         });
+  //         if (isMounted) {
+  //           setKeyPressed(false)
+  //           setToggleSearchModal(false)
+  //           handleSearchPageCount(
+  //             {
+  //               count:'',
+  //               id:'',
+  //               searchTerms:''
+  //             }
+  //           )
+  //           setData(response.data.jsonString);
+  //         }
+  //       }
+  //     } catch (err) {
+  //       console.error(err);
+  //     }
+  //   };
+
+  //   fetchData();
+
+  //   return () => {
+  //     isMounted = false;
+  //     controller.abort();
+  //   };
+  // }, [debouncedSearch, id, toggleSearchModal, getUrl,searchUrl, usersPerPage, setData,keyPressed,handleSearchPageCount]);
+
   const handleSearchInputChange = (value) => {
-
-
     setSearchTerms(value);
     //setFilterData({[id]:debouncedSearch})
-  }
+  };
 
   const handleSearchClick = (e) => {
     e.stopPropagation();
@@ -210,12 +193,12 @@ const handleEmptySearch = async () =>{
 
   useEffect(() => {
     if (toggleSearchModal) {
-      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener("mousedown", handleClickOutside);
     } else {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     }
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [toggleSearchModal]);
 
@@ -225,10 +208,11 @@ const handleEmptySearch = async () =>{
         <span
           className="d-flex justify-content-center align-items-center"
           onClick={handleSearchClick}
-          style={{ 
-          backgroundColor:searchTerms ? '#4eafcb' : '', 
-          padding: '5px', 
-          borderRadius: '5px' }}
+          style={{
+            backgroundColor: searchTerms ? "#4eafcb" : "",
+            padding: "5px",
+            borderRadius: "5px",
+          }}
         >
           <FeatherIcon icon="search" width={15} height={15} />
         </span>
@@ -245,12 +229,12 @@ const handleEmptySearch = async () =>{
             }}
           >
             <input
-              type={id==="age" || id==="patientId"?"number":"search"}
+              type={id === "age" || id === "patientId" ? "number" : "search"}
               onClick={(e) => e.stopPropagation()}
-              onChange={(e) => {                
-                handleSearchInputChange(e.target.value)
+              onChange={(e) => {
+                handleSearchInputChange(e.target.value);
               }}
-              value={searchTerms || ''}
+              value={searchTerms || ""}
               onKeyDown={handleKeyDown}
               placeholder={placeholder ? placeholder : id}
               style={{
@@ -267,7 +251,7 @@ const handleEmptySearch = async () =>{
                 onClick={handleSearch}
                 style={{
                   backgroundColor: "#4eafcb",
-                  color:'#fff',
+                  color: "#fff",
                   margin: "5px",
                   borderRadius: "5px",
                   border: "none",
@@ -275,15 +259,14 @@ const handleEmptySearch = async () =>{
                 }}
                 disabled={!searchTerms}
               >
-               <FeatherIcon icon="search" width={15} height={15} /> Փնտրել
+                <FeatherIcon icon="search" width={15} height={15} /> Փնտրել
               </button>
               <button
                 className="btn__search"
                 onClick={() => {
                   //setToggleSearchModal(false);
-                  handleEmptySearch()
-                  setSearchTerms('')
-                  handleKeyDown()
+                  handleEmptySearch();
+
                   //handleSearchInputChange('');
                 }}
                 style={{
@@ -293,12 +276,13 @@ const handleEmptySearch = async () =>{
                   border: "none",
                   padding: "5px",
                 }}
+                //disabled={!searchTerms}
               >
                 Ջնջել
               </button>
               <button
                 className="btn__search"
-                onClick={(e)=>handleSearchClick(e)}
+                onClick={(e) => handleSearchClick(e)}
                 style={{
                   backgroundColor: "#f6f6f6",
                   margin: "5px",

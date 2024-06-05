@@ -82,7 +82,7 @@ export const PACKAGES_URL = "/customPackage";
 
 export const PATIENTS__SEARCH_URL = "/searchPatient";
 export const DIAGNOSTICS__SEARCH_URL = "/searchDiagnostics";
-export const DOCTORSVISITS__SEARCH_URL = "/searchDoctorVisit";
+export const DOCTORSVISITS__SEARCH_URL = "/searchDoctorsVisits";
 
 export const STATISTICS_URL = '/getStatistics/StackedBarChart'
 

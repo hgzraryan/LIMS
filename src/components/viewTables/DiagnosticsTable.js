@@ -52,6 +52,8 @@ function DiagnosticsTable({
   const [modalPrint, setModalPrint] = useState("");
   const [openPosModal, setOpenPosModal] = useState(false);
   const [filterData, setFilterData] = useState({});
+  const [filterDataJSON, setFilterDataJSON] = useState('');
+
   const handleOpenInfoModal = (data) => {
     setModalInfo((prev) => data);
   };
@@ -312,15 +314,10 @@ function DiagnosticsTable({
           handleSearchPageCount={(val)=>handleSearchPageCount(val)}
             filterData={filterData}
             setFilterData={(newFilterData) => {
-              if(Object.values(newFilterData).length>1 || Object.values(newFilterData).length===0){
-                setFilterData(newFilterData)
-              }else{
-                setFilterData((prevFilterData) => {
-                  return { ...prevFilterData, ...newFilterData };
-                })
-              }
-             
+                setFilterDataJSON(JSON.stringify({...filterData, ...newFilterData}))
+                setFilterData(newFilterData)   
             }}
+
           />
         ),
 
@@ -586,7 +583,7 @@ function DiagnosticsTable({
         Filter: ({ column: { id } }) => <></>,
       },
     ],
-    []
+    [diagnostics,setDiagnostics,filterDataJSON,filterData,handleSearchPageCount]
   );
   const {
     getTableProps,

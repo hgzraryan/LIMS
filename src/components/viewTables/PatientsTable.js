@@ -39,6 +39,7 @@ function PatientsTable({
   const [modalInfo, setModalInfo] = useState("");
   const [editRow, setEditRow] = useState(false);
   const [filterData, setFilterData] = useState({});
+  const [filterDataJSON, setFilterDataJSON] = useState('');
   //console.log(filterData)
   const handleOpenEditModal = (value) => {
       setEditRow((prev) => value);
@@ -82,22 +83,14 @@ function PatientsTable({
             placeholder={'ID'}
             getUrl={PATIENTS_URL}
             searchUrl={PATIENTS__SEARCH_URL}
-            handleSearchPageCount={(data)=>handleSearchPageCount(data)}
+            handleSearchPageCount={(val)=>handleSearchPageCount(val)}
             filterData={filterData}
             setFilterData={(newFilterData) => {
-              if(Object.values(newFilterData).length>1 || Object.values(newFilterData).length===0){
-                setFilterData(newFilterData)
-              }else{
-                setFilterData((prevFilterData) => {
-                  return { ...prevFilterData, ...newFilterData };
-                })
-              }
-             
+                setFilterDataJSON(JSON.stringify({...filterData, ...newFilterData}))
+                setFilterData(newFilterData)   
             }}
           />
-        ),
-        
-        
+        ),    
       },
       {
         Header: (event,) => (
@@ -122,14 +115,8 @@ function PatientsTable({
             handleSearchPageCount={(val)=>handleSearchPageCount(val)}
             filterData={filterData}
             setFilterData={(newFilterData) => {
-              if(Object.values(newFilterData).length>1 || Object.values(newFilterData).length===0){
-                setFilterData(newFilterData)
-              }else{
-                setFilterData((prevFilterData) => {
-                  return { ...prevFilterData, ...newFilterData };
-                })
-              }
-             
+                setFilterDataJSON(JSON.stringify({...filterData, ...newFilterData}))
+                setFilterData(newFilterData)   
             }}
 
           />
@@ -164,14 +151,8 @@ function PatientsTable({
             handleSearchPageCount={(val)=>handleSearchPageCount(val)}
             filterData={filterData}
             setFilterData={(newFilterData) => {
-              if(Object.values(newFilterData).length>1 || Object.values(newFilterData).length===0){
-                setFilterData(newFilterData)
-              }else{
-                setFilterData((prevFilterData) => {
-                  return { ...prevFilterData, ...newFilterData };
-                })
-              }
-             
+                setFilterDataJSON(JSON.stringify({ ...newFilterData}))
+                setFilterData(newFilterData)   
             }}
 
           />
@@ -198,15 +179,9 @@ function PatientsTable({
             handleSearchPageCount={(val)=>handleSearchPageCount(val)}
             filterData={filterData}
             setFilterData={(newFilterData) => {
-              if(Object.values(newFilterData).length>1 || Object.values(newFilterData).length===0){
-                setFilterData(newFilterData)
-              }else{
-                setFilterData((prevFilterData) => {
-                  return { ...prevFilterData, ...newFilterData };
-                })
-              }
-             
-            }}
+              setFilterDataJSON(JSON.stringify({...filterData, ...newFilterData}))
+              setFilterData(newFilterData)   
+          }}
           />
         ),
       },
@@ -231,15 +206,9 @@ function PatientsTable({
             handleSearchPageCount={(val)=>handleSearchPageCount(val)}
             filterData={filterData}
             setFilterData={(newFilterData) => {
-              if(Object.values(newFilterData).length>1 || Object.values(newFilterData).length===0){
-                setFilterData(newFilterData)
-              }else{
-                setFilterData((prevFilterData) => {
-                  return { ...prevFilterData, ...newFilterData };
-                })
-              }
-             
-            }}
+              setFilterDataJSON(JSON.stringify({...filterData, ...newFilterData}))
+              setFilterData(newFilterData)   
+          }}
           />
         ),
         Cell: ({ row }) => <div>{row.original?.contact?.email}</div>,
@@ -268,15 +237,9 @@ function PatientsTable({
             handleSearchPageCount={(val)=>handleSearchPageCount(val)}
             filterData={filterData}
             setFilterData={(newFilterData) => {
-              if(Object.values(newFilterData).length>1 || Object.values(newFilterData).length===0){
-                setFilterData(newFilterData)
-              }else{
-                setFilterData((prevFilterData) => {
-                  return { ...prevFilterData, ...newFilterData };
-                })
-              }
-             
-            }}
+              setFilterDataJSON(JSON.stringify({...filterData, ...newFilterData}))
+              setFilterData(newFilterData)   
+          }}
 
           />
         ),
@@ -374,7 +337,7 @@ function PatientsTable({
 
       },
     ],
-    [setPatients,JSON.stringify(filterData),filterData,patients,handleSearchPageCount]
+    [setPatients,filterDataJSON,filterData,patients,handleSearchPageCount]
     );
      console.log(filterData)
     const {

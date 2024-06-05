@@ -35,21 +35,20 @@ const Patients = () => {
   const [searchCount,setSearchCount] = useState(null)
   const [searchId,setSearchId] = useState(null)
   const [searchTerms,setSearchTerms] = useState(null)
-
+  const [searchParams,setSearchParams] = useState(null)
   const handleToggleExportModal = (value) => {
     setToggleExport((prev) => value);
   };
-  const handleSearchPageCount = ({count,searchTerms,id}) =>{
-    setSearchCount(count)
-    setSearchTerms(searchTerms)
-    setSearchId(id)
+  const handleSearchPageCount = (data) =>{
+    setSearchCount(data.count)
+    setSearchParams(data.params)
   }
     const {
       data: patients,
       setData: setPatients,
       refreshData,
       dataCount 
-    } = useGetData(PATIENTS_URL,currentPage,usersPerPage,searchCount,PATIENTS__SEARCH_URL,searchId,searchTerms);
+    } = useGetData(PATIENTS_URL,currentPage,usersPerPage,searchCount,PATIENTS__SEARCH_URL,searchId,searchTerms,searchParams);
   const pageCount = searchCount?Math.ceil(searchCount/usersPerPage) : Math.ceil(dataCount/usersPerPage)
   const handleToggleCreateModal = (value) => {
     setIsOpen((prev) => value);
