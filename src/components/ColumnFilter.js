@@ -38,7 +38,6 @@ export const ColumnFilter = ({
       column: key,
       query: updateFilterdObject[key],
     }));
-    console.log(params);
     
     setFilterData(updateFilterdObject);
     try {
@@ -73,7 +72,6 @@ export const ColumnFilter = ({
       column: key,
       query: updateFilterdObject[key],
     }));
-    console.log("handleEmptySearch", params);
     if (params.length) {      
       try {
         const response = await axiosPrivate.post(searchUrl, {
@@ -113,67 +111,69 @@ export const ColumnFilter = ({
       }
     }
   };
-  // useEffect(() => {
-  //   let isMounted = true;
-  //   const controller = new AbortController();
-  //   const fetchData = async () => {
-  //     try {
-  //       if(toggleSearchModal && debouncedSearch==='' && keyPressed){
-  //         const updateFilterdObject = {...filterData,[id]:''}
-  //         for(let i in updateFilterdObject){
-  //           if(updateFilterdObject[i]==='')
-  //             delete updateFilterdObject[i]
-  //         }
-  //         setFilterData(updateFilterdObject)
-  //         const params  = Object.keys(updateFilterdObject).map((key) => ({
-  //           column: key,
-  //           query: updateFilterdObject[key]
-  //         }))
-  //         console.log(params)
-  //          //   try {
-  //   //     const response = await axiosPrivate.post(searchUrl, {
-  //   //       params:{column:id,query:searchTerms},
-  //   //       page: 1,
-  //   //       onPage: usersPerPage,
-  //   //       signal: controller.signal
-  //   //     });
-  //   //   setData(response.data.jsonString);
-  //   // } catch (err) {
-  //   //   console.error(err);
-  //   // }
-  //       }
-  //       if (toggleSearchModal && debouncedSearch==='' && keyPressed && !Object.keys(filterData).length) {
+  useEffect(() => {
+    let isMounted = true;
+    const controller = new AbortController();
+  
+    const fetchData = async () => {
+      try {
+        if (toggleSearchModal && debouncedSearch === '' && keyPressed) {
+          const updatedFilteredObject = { ...filterData, [id]: '' };
+          for (let key in updatedFilteredObject) {
+            if (!updatedFilteredObject[key]) delete updatedFilteredObject[key];
+          }
+          const params = Object.keys(updatedFilteredObject).map((key) => ({
+            column: key,
+            query: updatedFilteredObject[key],
+          }));
+    
+          setFilterData(updatedFilteredObject);
+  
+          let response;
+          if (!params.length) {
+            response = await axiosPrivate.post(getUrl, {
+              signal: controller.signal,
+              page: 1,
+              onPage: usersPerPage,
+            });
+            setKeyPressed(false);
+            setToggleSearchModal(false);
+            handleSearchPageCount({
+              count: '',
+              id: '',
+              searchTerms: ''
+            });
+           
+          } else if (params.length) {
+            response = await axiosPrivate.post(searchUrl, {
+              params: params,
+              page: 1,
+              onPage: usersPerPage,
+              signal: controller.signal,
+            });
+            handleSearchPageCount({
+              count: response.data.count,
+              params: params
+            });
+           
+          }
+            //if(isMounted){
 
-  //         const response = await axiosPrivate.post(getUrl, {
-  //           signal: controller.signal,
-  //           page: 1,
-  //           onPage: usersPerPage,
-  //         });
-  //         if (isMounted) {
-  //           setKeyPressed(false)
-  //           setToggleSearchModal(false)
-  //           handleSearchPageCount(
-  //             {
-  //               count:'',
-  //               id:'',
-  //               searchTerms:''
-  //             }
-  //           )
-  //           setData(response.data.jsonString);
-  //         }
-  //       }
-  //     } catch (err) {
-  //       console.error(err);
-  //     }
-  //   };
-
-  //   fetchData();
-
-  //   return () => {
-  //     isMounted = false;
-  //     controller.abort();
-  //   };
-  // }, [debouncedSearch, id, toggleSearchModal, getUrl,searchUrl, usersPerPage, setData,keyPressed,handleSearchPageCount]);
+              setData(response.data.jsonString);
+           // }
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    };
+  
+    fetchData();
+  
+    return () => {
+      isMounted = false;
+      controller.abort();
+    };
+  }, [debouncedSearch]);
 
   const handleSearchInputChange = (value) => {
     setSearchTerms(value);

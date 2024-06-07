@@ -33,6 +33,7 @@ function DoctorsVisitsTable({ doctorsVisits, setDoctorsVisits, refreshData,handl
   const [modalPrint, setModalPrint] = useState("");
   const [openPosModal, setOpenPosModal] = useState(false);
   const [filterData, setFilterData] = useState({});
+  const [filterDataJSON, setFilterDataJSON] = useState('');
 
   const handlePosPay = (actionData) => {
     setOpenPosModal(actionData);
@@ -82,29 +83,25 @@ function DoctorsVisitsTable({ doctorsVisits, setDoctorsVisits, refreshData,handl
         accessor: "doctorsVisitId",
         sortable: true,
         width: 80,
-        // Filter: ({ column: { id } }) => (
-        //   <ColumnFilter id={id} 
-        //   setData={setDoctorsVisits} 
-        //   placeholder={"ID"}
-        //   getUrl = {DOCTORSVISITS_URL}
-        //   searchUrl = {
-        //     DOCTORSVISITS__SEARCH_URL
-        //     //DOCTORSVISITS__SEARCH_URL
-        //   } 
-        //   handleSearchPageCount={(val)=>handleSearchPageCount(val)}
-        //     filterData={filterData}
-        //     setFilterData={(newFilterData) => {
-        //       if(Object.values(newFilterData).length>1 || Object.values(newFilterData).length===0){
-        //         setFilterData(newFilterData)
-        //       }else{
-        //         setFilterData((prevFilterData) => {
-        //           return { ...prevFilterData, ...newFilterData };
-        //         })
-        //       }
-             
-        //     }}
-        //   />
-        // ),
+        Filter: ({ column: { id } }) => (
+          <ColumnFilter id={id} 
+          setData={setDoctorsVisits} 
+          placeholder={"ID"}
+          getUrl = {DOCTORSVISITS_URL}
+          searchUrl = {
+            DOCTORSVISITS__SEARCH_URL
+            //DOCTORSVISITS__SEARCH_URL
+          } 
+          handleSearchPageCount={(val)=>handleSearchPageCount(val)}
+          filterData={filterData}
+          setFilterData={(newFilterData) => {
+              setFilterDataJSON(JSON.stringify({...filterData, ...newFilterData}))
+              setFilterData(newFilterData)   
+          }}
+
+        
+          />
+        ),
         Cell: ({ row }) => (
           <>
             <div
@@ -357,7 +354,7 @@ function DoctorsVisitsTable({ doctorsVisits, setDoctorsVisits, refreshData,handl
         disableSortBy: true,
       },
     ],
-    []
+    [doctorsVisits,setDoctorsVisits,filterDataJSON,filterData,handleSearchPageCount]
   );
 
   const {

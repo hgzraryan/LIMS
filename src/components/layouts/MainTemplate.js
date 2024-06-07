@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import {  useNavigate, Link, Outlet, useLocation } from "react-router-dom";
+import {  useNavigate, Link, Outlet, useLocation, useParams } from "react-router-dom";
 import useLogout from "../../hooks/useLogout";
 import React, { Suspense, useState, useEffect } from "react";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
@@ -48,6 +48,7 @@ const MainTemplate = () => {
     const [reportsDropDownMenu, setReportsDropDownMenu] = useState(true);
 
     useEffect(() => {
+      localStorage.setItem("menuSelect", JSON.stringify(location.pathname.split('/')[1]));
       const subMenuIsActiveData = JSON.parse(localStorage.getItem('subMenuSelect'));
       const menuIsActiveData = JSON.parse(localStorage.getItem('menuSelect'));
       const storedUserData = JSON.parse(localStorage.getItem('userData'));
@@ -55,7 +56,8 @@ const MainTemplate = () => {
       storedUserData?setUserData(storedUserData):setUserData('')
       menuIsActiveData?setMenuIsActive(menuIsActiveData):setMenuIsActive('')
       subMenuIsActiveData?setSubMenuIsActive(subMenuIsActiveData):setSubMenuIsActive('')
-    }, []);
+    }, [location?.pathname]);
+
 
   const handleUserPage = async(userId) =>{      
         navigate(`/users/${userId}`)
@@ -71,8 +73,8 @@ const MainTemplate = () => {
   const handleSubmenuClick = (menu,subMenu) => {
         setMenuIsActive(menu)
         setSubMenuIsActive(subMenu)
-        localStorage.setItem("menuSelect", JSON.stringify(menu));
-        localStorage.setItem("subMenuSelect", JSON.stringify(subMenu));
+        // localStorage.setItem("menuSelect", JSON.stringify(menu));
+         localStorage.setItem("subMenuSelect", JSON.stringify(subMenu));
     }
 	const doctorsDropDownMenuClick = () => {
 		setdoctorsDropDownMenu(current => !current);
@@ -103,7 +105,6 @@ const MainTemplate = () => {
                 const response = await axiosPrivate.get('/allCount', {
                     signal: controller.signal
                 });
-
               isMounted && dispatch(checkAgentsCount(response.data?.agentsCount));
               isMounted && dispatch(checkDiagnosticsCount(response.data?.diagnosticsCount));
 				      isMounted && dispatch(checkDoctorCount(response.data?.doctorCount));

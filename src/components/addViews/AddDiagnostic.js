@@ -135,50 +135,36 @@ const onResearchSelect = (data) => {
   });
 
   useEffect(() => {
-    setTimeout(() => {
-      axiosPrivate
-        .get(PATIENTS_URL)
-        .then((resp) => {
-          setPatients(resp?.data?.jsonString);
-          setIsLoading(false);
-        })
-        .then((resp) => {
-          axiosPrivate.get(ORGANIZATIONS_URL).then((resp) => {
-            setOrganizations(resp?.data?.jsonString);
-            setIsLoading(false);
-          });
-        })
-        .then((resp) => {
-          axiosPrivate.get(AGENTS_URL).then((resp) => {
-            setAgents(resp?.data?.jsonString);
-            setIsLoading(false);
-          });
-        })
-        .then((resp) => {
-          axiosPrivate.get(RESEARCHLISTS_URL).then((resp) => {
-            setResearches(resp?.data?.jsonString);
-            setIsLoading(false);
-          });
-        })
-        .then((resp) => {
-          axiosPrivate.get(REFDOCTORS_URL).then((resp) => {
-            setRefDoctors(resp?.data?.jsonString);
-            setIsLoading(false);
-          });
-        })
-        .then((resp) => {
-          axiosPrivate.get(PACKAGES_URL).then((resp) => {
-            setPackages(resp?.data?.jsonString);
-            setIsLoading(false);
-          });
-        })
-        .catch((err) => {
-          console.log(err);
-          navigate("/login", { state: { from: location }, replace: true });
+    const fetchData = async () => {
+      try {
+        const patientsResp = await axiosPrivate.get(PATIENTS_URL);
+        setPatients(patientsResp?.data?.jsonString);
 
-        });
+        const organizationsResp = await axiosPrivate.get(ORGANIZATIONS_URL);
+        setOrganizations(organizationsResp?.data?.jsonString);
+
+        const agentsResp = await axiosPrivate.get(AGENTS_URL);
+        setAgents(agentsResp?.data?.jsonString);
+
+        const researchesResp = await axiosPrivate.get(RESEARCHLISTS_URL);
+        setResearches(researchesResp?.data?.jsonString);
+
+        const refDoctorsResp = await axiosPrivate.get(REFDOCTORS_URL);
+        setRefDoctors(refDoctorsResp?.data?.jsonString);
+
+        const packagesResp = await axiosPrivate.get(PACKAGES_URL);
+        setPackages(packagesResp?.data?.jsonString);
+
+        setIsLoading(false);
+      } catch (err) {
+        console.log(err);
+        navigate("/login", { state: { from: location }, replace: true });
+      }
+    };
+    setTimeout(() => {
+      fetchData();
     }, 500);
-  }, []);
+  }, [navigate]);
   const onDiagnosticClassSelect = (data) => {
     switch (data.value) {
       case "External":

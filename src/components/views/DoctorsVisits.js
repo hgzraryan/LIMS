@@ -76,7 +76,7 @@ function DoctorsVisits() {
           <ExportData 
       handleToggleExportModal = {handleToggleExportModal}
       toggleExport={toggleExport}
-      section='doctorVisits'
+      section='doctorsVisits'
       />
         <div>
           <div>

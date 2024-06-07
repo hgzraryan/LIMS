@@ -529,15 +529,18 @@ responseType:'blob'
                             </span>
                           </li>:''
                           }
+                          {diagnosticsDetails?.docs.length ? <>
                           <li className="list-group-item border-0">
                             <span>
                               <i className="bi bi-file-medical-fill text-disabled me-2"></i>
                               <span className="text-muted">Բժիշկ:</span>
                             </span>
                             <span className="ms-2">
-                               {diagnosticsDetails?.docs.map((el)=>el.doctorName+",") } 
+                               { diagnosticsDetails.docs.map((el)=>el.doctorName+",") } 
                             </span>
                           </li>
+                            </>:<></>
+                            }
                           <li className="list-group-item border-0">
                             <span>
                               <i className="bi bi-currency-dollar text-disabled me-2"></i>

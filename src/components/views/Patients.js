@@ -96,7 +96,7 @@ const Patients = () => {
       <ExportData 
       handleToggleExportModal = {handleToggleExportModal}
       toggleExport={toggleExport}
-      section='patient'
+      section='patients'
       />
     <div>
       <div>

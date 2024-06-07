@@ -155,7 +155,6 @@ function PatientEditModal({ patient, setEditRow, refreshData }) {
       };
 
       const updatedFields = deleteNullProperties(updatedPatient);
-      console.log(updatedFields);
       try {
         await axiosPrivate.put(
           PATIENTS_URL,
@@ -561,7 +560,6 @@ function PatientEditModal({ patient, setEditRow, refreshData }) {
                                           </span>
                                         )}
                                       </div>
-                                     { console.log(patient?.dateOfBirth)}
                                       <div>
                                         <CustomDateComponent
                                           name="dateOfBirth"

@@ -339,7 +339,6 @@ function PatientsTable({
     ],
     [setPatients,filterDataJSON,filterData,patients,handleSearchPageCount]
     );
-     console.log(filterData)
     const {
       getTableProps,
       getTableBodyProps,

@@ -30,6 +30,7 @@ import posTerminalSvg from "../../dist/svg/posTerminal.svg";
 import CreatePayByPos from "../CreatePayByPos";
 import DiagnosticsInfoModal from "../infoModals/DiagnosticsInfoModal";
 import { DIAGNOSTICS_URL, DIAGNOSTICS__SEARCH_URL } from "../../utils/constants";
+import DiagnosticsEditModal from "../EditViews/DiagnosticsEditModal";
 
 
 function DiagnosticsTable({
@@ -47,13 +48,16 @@ function DiagnosticsTable({
 }) {
   const navigate = useNavigate();
   const [selectedItem1, setSelectedItem1] = useState("");
-  const [editRow, setEditRow] = useState(false);
+  const [deactivateRow, setDeactivateRow] = useState(false);
   const [modalInfo, setModalInfo] = useState("");
   const [modalPrint, setModalPrint] = useState("");
   const [openPosModal, setOpenPosModal] = useState(false);
   const [filterData, setFilterData] = useState({});
   const [filterDataJSON, setFilterDataJSON] = useState('');
-
+  const [editRow, setEditRow] = useState(false);
+  const handleOpenEditModal = (value) => {
+    setEditRow((prev) => value);
+  };
   const handleOpenInfoModal = (data) => {
     setModalInfo((prev) => data);
   };
@@ -69,10 +73,10 @@ function DiagnosticsTable({
     setSelectedItem1("");
   };
   const handleOpenDeactivateModal = (value) => {
-    setEditRow((prev) => value);
+    setDeactivateRow((prev) => value);
   };
   const handleCloseDeactivateModal = () => {
-    setEditRow(false);
+    setDeactivateRow(false);
   };
   const handlePosPay = (diagnosticsId) => {
     setOpenPosModal(diagnosticsId);
@@ -96,7 +100,6 @@ function DiagnosticsTable({
     navigate(`/diagnostics/${diagnosticsId}`);
   };
   const handleClientDetails = async (rowData) => {
-    console.log(rowData)
     const { clientId } = rowData;
     const { clientType } = rowData;
     clientType === "patient"
@@ -546,7 +549,21 @@ function DiagnosticsTable({
                       </span>
                     </span>
                   </a>
-           
+                  <a
+                className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover"
+                data-bs-toggle="tooltip"
+                data-placement="top"
+                title="Edit"
+                href="#"
+                onClick={() => handleOpenEditModal(row.original)}
+
+              >
+                <span className="icon">
+                  <span className="feather-icon">
+                    <FeatherIcon icon="edit" />
+                  </span>
+                </span>
+              </a>
               
             
               {/*
@@ -620,10 +637,10 @@ function DiagnosticsTable({
 
   return (
     <>
-    {editRow && (
+    {deactivateRow && (
       <DiagnosticsDeactivate
         handleCloseDeactivateModal={handleCloseDeactivateModal}
-        rowData={editRow}
+        rowData={deactivateRow}
         refreshData={refreshData}
       />
     )}
@@ -652,6 +669,9 @@ function DiagnosticsTable({
       )}
       {modalPrint && (
         <ResearchesPrint modalPrint={modalPrint} setModalPrint={setModalPrint} />
+      )}
+      {editRow && (
+        <DiagnosticsEditModal diagnostics={editRow} setEditRow={setEditRow} refreshData={refreshData} />
       )}
       <table
         className="table nowrap w-100 mb-5 dataTable no-footer diagTable"

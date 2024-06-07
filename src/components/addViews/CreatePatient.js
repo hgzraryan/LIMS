@@ -206,7 +206,6 @@ function CreatePatient({
       progress: undefined,
       theme: "light",
     });
-    console.log(methods.formState.errors)
 
   const onSubmit = methods.handleSubmit(
     async ({
