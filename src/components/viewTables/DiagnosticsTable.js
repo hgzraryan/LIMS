@@ -31,6 +31,7 @@ import CreatePayByPos from "../CreatePayByPos";
 import DiagnosticsInfoModal from "../infoModals/DiagnosticsInfoModal";
 import { DIAGNOSTICS_URL, DIAGNOSTICS__SEARCH_URL } from "../../utils/constants";
 import DiagnosticsEditModal from "../EditViews/DiagnosticsEditModal";
+import emptyTable from "../../dist/svg/emptyTable.svg"
 
 
 function DiagnosticsTable({
@@ -637,7 +638,7 @@ function DiagnosticsTable({
 
   return (
     <>
-    {deactivateRow && (
+    {!!deactivateRow && (
       <DiagnosticsDeactivate
         handleCloseDeactivateModal={handleCloseDeactivateModal}
         rowData={deactivateRow}
@@ -661,16 +662,16 @@ function DiagnosticsTable({
       keyName={selectedItem.diagnosticsName}
       delId={selectedItem.diagnosticstId}
     />
-    {openPosModal && (
+    {!!openPosModal && (
       <CreatePayByPos actionData={openPosModal} handleClosePosPay={handleClosePosPay} refreshData={refreshData}/>         
     )}
-      {modalInfo && (
+      {!!modalInfo && (
         <DiagnosticsInfoModal modalInfo={modalInfo} setModalInfo={setModalInfo}/>
       )}
-      {modalPrint && (
+      {!!modalPrint && (
         <ResearchesPrint modalPrint={modalPrint} setModalPrint={setModalPrint} />
       )}
-      {editRow && (
+      {!!editRow && (
         <DiagnosticsEditModal diagnostics={editRow} setEditRow={setEditRow} refreshData={refreshData} />
       )}
       <table
@@ -726,7 +727,6 @@ function DiagnosticsTable({
         ))}
       </thead>
         {diagnostics?.length > 0 ? (
-          <>
           <tbody {...getTableBodyProps()}>
             {rows.map((row) => {
               prepareRow(row);
@@ -752,10 +752,18 @@ function DiagnosticsTable({
               );
             })}
           </tbody>
-            </>
-        ) : (
-          ""
-        )}
+         ):(
+          <tr class="table-placeholder">
+            <td class="table-cell" >
+              <div class="empty-normal">
+                <div class="empty-image d-flex justify-content-center align-items-center">
+                  <img src={emptyTable} alt='emptyTable'/>
+                </div>
+                <div class="empty-description d-flex justify-content-center align-items-center mb-2">Տվյալներ չկան</div>
+              </div>
+            </td>
+          </tr>
+         )}        
       </table>
     </>
   );

@@ -19,6 +19,7 @@ import "../../dist/css/data-table.css";
 import { useNavigate } from "react-router-dom";
 import UserDeactivateModal from "../EditViews/UserDeactivateModal";
 import UserEditModal from "../EditViews/UserEditModal";
+import emptyTable from "../../dist/svg/emptyTable.svg"
 
 function UsersTable({
   confirmRef,
@@ -272,13 +273,29 @@ function UsersTable({
   );
   return (
     <>
-      {editRow && (
+      {!!editRow && (
         <UserEditModal
           user={editRow}
           setEditRow={setEditRow}
           refreshData={refreshData}
         />
       )}
+      {!!disableRow && (
+        <UserDeactivateModal
+          handleCloseEditModal={handleCloseEditModal}
+          rowData={disableRow}
+          refreshData={refreshData}
+        />
+      )}
+      <ComponentToConfirm
+        handleCloseModal={handleCloseModal}
+        handleOpenModal={handleOpenModal}
+        handleDeleteItem={handleDeleteItem}
+        selectedItemId={selectedItemId}
+        confirmUserRef={confirmRef}
+        keyName={selectedItem.username}
+        delId={selectedItem.userId}
+      />
       <table
         {...getTableProps()}
         className="table nowrap w-100 mb-5 dataTable no-footer"
@@ -356,26 +373,19 @@ function UsersTable({
                 </tr>
               );
             })}
-            {disableRow && (
-              <UserDeactivateModal
-                handleCloseEditModal={handleCloseEditModal}
-                rowData={disableRow}
-                refreshData={refreshData}
-              />
-            )}
-            <ComponentToConfirm
-              handleCloseModal={handleCloseModal}
-              handleOpenModal={handleOpenModal}
-              handleDeleteItem={handleDeleteItem}
-              selectedItemId={selectedItemId}
-              confirmUserRef={confirmRef}
-              keyName={selectedItem.username}
-              delId={selectedItem.userId}
-            />
           </tbody>
-        ) : (
-          ""
-        )}
+         ):(
+          <tr class="table-placeholder">
+            <td class="table-cell" >
+              <div class="empty-normal">
+                <div class="empty-image d-flex justify-content-center align-items-center">
+                  <img src={emptyTable} alt='emptyTable'/>
+                </div>
+                <div class="empty-description d-flex justify-content-center align-items-center mb-2">Տվյալներ չկան</div>
+              </div>
+            </td>
+          </tr>
+         )}        
       </table>
     </>
   );

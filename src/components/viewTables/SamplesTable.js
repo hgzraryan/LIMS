@@ -5,6 +5,7 @@ import { Checkbox } from "../Checkbox";
 import FeatherIcon from "feather-icons-react/build/FeatherIcon";
 import { ColumnFilter } from "../ColumnFilter";
 import "../../dist/css/data-table.css";
+import emptyTable from "../../dist/svg/emptyTable.svg"
 
 function SamplesTable({selectedItem,
   selectedItemId,
@@ -262,8 +263,19 @@ function SamplesTable({selectedItem,
           );
         })}
       </tbody>
-     ):''}
-  </table>
+         ):(
+          <tr class="table-placeholder">
+            <td class="table-cell" >
+              <div class="empty-normal">
+                <div class="empty-image d-flex justify-content-center align-items-center">
+                  <img src={emptyTable} alt='emptyTable'/>
+                </div>
+                <div class="empty-description d-flex justify-content-center align-items-center mb-2">Տվյալներ չկան</div>
+              </div>
+            </td>
+          </tr>
+         )}        
+      </table>
   );
 }
 

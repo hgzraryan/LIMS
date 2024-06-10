@@ -20,9 +20,7 @@ import DefaultProfileImage from "../../../src/dist/img/Missing.svg";
 import PatientEditModal from "../EditViews/PatientEditModal";
 import moment from "moment";
 import { PATIENTS_URL, PATIENTS__SEARCH_URL } from "../../utils/constants";
-import { axiosPrivate } from "../../api/axios";
-import useAxiosPrivate from "../../hooks/useAxiosPrivate";
-import useDebounce from "../../hooks/useDebounce";
+import emptyTable from "../../dist/svg/emptyTable.svg"
 
 
 function PatientsTable({
@@ -377,8 +375,7 @@ function PatientsTable({
 
   return (
     <>
-    {
-      modalInfo && (
+    {!!modalInfo && (
         <Modal
       show={() => true}
       size="md"
@@ -449,11 +446,15 @@ function PatientsTable({
     </Modal>
       )
     }
-    {
-      editRow &&(
+    {!!editRow &&(
         <PatientEditModal patient={editRow} setEditRow={setEditRow} refreshData={refreshData}/>
       )
     }
+    <PatientInfo
+      selectedItem={selectedItem}
+      handleCloseModal={handleCloseModal}
+      researchState={researchState}
+    />
     <table
       className="table nowrap w-100 mb-5 dataTable no-footer"
       {...getTableProps()}
@@ -531,14 +532,20 @@ function PatientsTable({
             </tr>
           );
         })}
-        <PatientInfo
-          selectedItem={selectedItem}
-          handleCloseModal={handleCloseModal}
-          researchState={researchState}
-        />
       </tbody>
-       ):''}
-    </table>
+         ):(
+          <tr class="table-placeholder">
+            <td class="table-cell" >
+              <div class="empty-normal">
+                <div class="empty-image d-flex justify-content-center align-items-center">
+                  <img src={emptyTable} alt='emptyTable'/>
+                </div>
+                <div class="empty-description d-flex justify-content-center align-items-center mb-2">Տվյալներ չկան</div>
+              </div>
+            </td>
+          </tr>
+         )}        
+      </table>
       </>
   );
 }

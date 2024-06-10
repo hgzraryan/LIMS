@@ -12,6 +12,7 @@ import { Modal } from "react-bootstrap";
 import "../../dist/css/data-table.css";
 import EquipmentEditModal from "../EditViews/EquipmentEditModal";
 import moment from "moment";
+import emptyTable from "../../dist/svg/emptyTable.svg"
 
 function EquipmentsTable({
   confirmRef,
@@ -220,8 +221,7 @@ function EquipmentsTable({
   // console.log(selectedFlatRows);
   return (
     <>
-    {
-      modalInfo && (
+    {!!modalInfo && (
         <Modal
       show={() => true}
       size="md"
@@ -296,11 +296,19 @@ function EquipmentsTable({
     </Modal>
       )
     }
-    {
-      editRow &&(
+    {!!editRow &&(
         <EquipmentEditModal equipment={editRow} setEditRow={setEditRow} refreshData={refreshData}/>
       )
     }
+    <ComponentToConfirm
+            handleCloseModal={handleCloseModal}
+            handleOpenModal={handleOpenModal}
+            handleDeleteItem={handleDeleteItem}
+            selectedItemId={selectedItemId}
+            confirmUserRef={confirmRef}
+            keyName={selectedItem.equipmentName}
+            delId={selectedItem.equipmentId}
+          />
     <table  className="table nowrap w-100 mb-5 dataTable no-footer" {...getTableProps()} >
     <thead>
         {headerGroups.map((headerGroup) => (
@@ -362,18 +370,20 @@ function EquipmentsTable({
                 </tr>
               )
             })}
-             <ComponentToConfirm
-            handleCloseModal={handleCloseModal}
-            handleOpenModal={handleOpenModal}
-            handleDeleteItem={handleDeleteItem}
-            selectedItemId={selectedItemId}
-            confirmUserRef={confirmRef}
-            keyName={selectedItem.equipmentName}
-            delId={selectedItem.equipmentId}
-          />
-            </tbody>
-           ):''}
-    </table>
+             </tbody>
+         ):(
+          <tr class="table-placeholder">
+            <td class="table-cell" >
+              <div class="empty-normal">
+                <div class="empty-image d-flex justify-content-center align-items-center">
+                  <img src={emptyTable} alt='emptyTable'/>
+                </div>
+                <div class="empty-description d-flex justify-content-center align-items-center mb-2">Տվյալներ չկան</div>
+              </div>
+            </td>
+          </tr>
+         )}        
+      </table>
     
     </>
   );

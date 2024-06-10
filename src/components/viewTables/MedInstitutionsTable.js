@@ -18,7 +18,7 @@ import ComponentToConfirm from "../ComponentToConfirm";
 import "../../dist/css/data-table.css";
 import MedInstitutionEditModal from "../EditViews/MedInstitutionEditModal";
 import moment from "moment";
-
+import emptyTable from "../../dist/svg/emptyTable.svg"
 function MedInstitutionsTable({
   confirmRef,
   selectedItem,
@@ -225,12 +225,11 @@ function MedInstitutionsTable({
  // console.log(selectedFlatRows);
   return (
     <>
-     {
-      editRow &&(
+     {!!editRow &&(
         <MedInstitutionEditModal medInstitution={editRow} setEditRow={setEditRow} refreshData={refreshData}/>
       )
     }
-      {modalInfo && (
+      {!!modalInfo && (
         <Modal show={() => true} size="md" onHide={() => setModalInfo(false)}>
           <Modal.Header closeButton>
             <Modal.Title style={{ width: "100%", textAlign: "center" }}>
@@ -324,7 +323,15 @@ function MedInstitutionsTable({
           </Modal.Body>
         </Modal>
       )}
-
+      <ComponentToConfirm
+        handleCloseModal={handleCloseModal}
+        handleOpenModal={handleOpenModal}
+        handleDeleteItem={handleDeleteItem}
+        selectedItemId={selectedItemId}
+        confirmUserRef={confirmRef}
+        keyName={selectedItem.institutionName}
+        delId={selectedItem.medInstitutionsId}
+      />
       <table
         className="table nowrap w-100 mb-5 dataTable no-footer"
         {...getTableProps()}
@@ -397,18 +404,19 @@ function MedInstitutionsTable({
                 </tr>
               );
             })}
-            <ComponentToConfirm
-              handleCloseModal={handleCloseModal}
-              handleOpenModal={handleOpenModal}
-              handleDeleteItem={handleDeleteItem}
-              selectedItemId={selectedItemId}
-              confirmUserRef={confirmRef}
-              keyName={selectedItem.institutionName}
-              delId={selectedItem.medInstitutionsId}
-            />
           </tbody>
-         ):''}
-        
+         ):(
+          <tr class="table-placeholder">
+            <td class="table-cell" >
+              <div class="empty-normal">
+                <div class="empty-image d-flex justify-content-center align-items-center">
+                  <img src={emptyTable} alt='emptyTable'/>
+                </div>
+                <div class="empty-description d-flex justify-content-center align-items-center mb-2">Տվյալներ չկան</div>
+              </div>
+            </td>
+          </tr>
+         )}        
       </table>
     </>
   );

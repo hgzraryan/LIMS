@@ -3,7 +3,7 @@ import useAxiosPrivate from "./useAxiosPrivate";
 import { useLocation, useNavigate } from "react-router-dom";
 import { PATIENTS__SEARCH_URL } from "../utils/constants";
 
-const useGetData = (url,currentPage,usersPerPage,searchCount=null,searchUrl=null,searchId=null,searchTerms=null,searchParams=null) => {
+const useGetData = (url,currentPage,usersPerPage,searchCount=null,searchUrl=null,searchParams=null) => {
     const [data, setData] = useState([]);
     const [dataCount, setDataCount] = useState(null);
     const axiosPrivate = useAxiosPrivate();  

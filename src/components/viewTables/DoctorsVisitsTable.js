@@ -25,6 +25,7 @@ import posTerminalSvg from "../../dist/svg/posTerminal.svg";
 import CreatePayByPos from "../CreatePayByPos";
 import DoctorVisitsInfoModal from "../infoModals/DoctorVisitsInfoModal";
 import { DOCTORSVISITS_URL, DOCTORSVISITS__SEARCH_URL } from "../../utils/constants";
+import emptyTable from "../../dist/svg/emptyTable.svg"
 
 function DoctorsVisitsTable({ doctorsVisits, setDoctorsVisits, refreshData,handleSearchPageCount }) {
   const navigate = useNavigate();
@@ -392,27 +393,27 @@ function DoctorsVisitsTable({ doctorsVisits, setDoctorsVisits, refreshData,handl
   // console.log(selectedFlatRows);
   return (
     <>
-      {openPosModal && (
+      {!!openPosModal && (
         <CreatePayByPos
           actionData={openPosModal}
           handleClosePosPay={handleClosePosPay}
           refreshData={refreshData}
         />
       )}
-      {DisableRowData && (
+      {!!DisableRowData && (
         <DoctorVisitDeactivate
           handleCloseDeactivateModal={handleCloseDeactivateModal}
           rowData={DisableRowData}
           refreshData={refreshData}
         />
       )}
-      {modalPrint && (
+      {!!modalPrint && (
         <DoctorVisitsPrint
           modalPrint={modalPrint}
           setModalPrint={setModalPrint}
         />
       )}
-      {modalInfo && (
+      {!!modalInfo && (
         <DoctorVisitsInfoModal
           modalInfo={modalInfo}
           setModalInfo={setModalInfo}
@@ -471,7 +472,6 @@ function DoctorsVisitsTable({ doctorsVisits, setDoctorsVisits, refreshData,handl
         ))}
       </thead>
         {doctorsVisits?.length > 0 ? (
-          <>
             <tbody {...getTableBodyProps()}>
               {rows.map((row) => {
                 prepareRow(row);
@@ -496,11 +496,19 @@ function DoctorsVisitsTable({ doctorsVisits, setDoctorsVisits, refreshData,handl
                   </tr>
                 );
               })}
-            </tbody>
-          </>
-        ) : (
-          ""
-        )}
+             </tbody>
+         ):(
+          <tr class="table-placeholder">
+            <td class="table-cell" >
+              <div class="empty-normal">
+                <div class="empty-image d-flex justify-content-center align-items-center">
+                  <img src={emptyTable} alt='emptyTable'/>
+                </div>
+                <div class="empty-description d-flex justify-content-center align-items-center mb-2">Տվյալներ չկան</div>
+              </div>
+            </td>
+          </tr>
+         )}        
       </table>
     </>
   );

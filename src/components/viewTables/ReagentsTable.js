@@ -16,23 +16,24 @@ import { BiSolidInfoCircle } from "react-icons/bi";
 import { Modal } from "react-bootstrap";
 import reagentSvg from "../../../src/dist/svg/reagent.svg";
 import "../../dist/css/data-table.css";
+import emptyTable from "../../dist/svg/emptyTable.svg"
 
-const customReagentsData = [
-  {
-    name:"Arginine",
-    price:265000,
-    currency:'AMD',
-    unit:1,
-    unit_type:'Box',
-    vendor:'DDD',
-    usage:'Body build protein',
-    expdate:'2027-06-15',
-    description:'can be used orally and topically',
-    norma_female:'72.4 ± 6.7 μmol/L  ',
-    norma_male:'81.6 ± 7.3 mmol/L',
-    norma_both:'113.7 ± 19.8 μmol/L',
-  }
-]
+// const customReagentsData = [
+//   {
+//     name:"Arginine",
+//     price:265000,
+//     currency:'AMD',
+//     unit:1,
+//     unit_type:'Box',
+//     vendor:'DDD',
+//     usage:'Body build protein',
+//     expdate:'2027-06-15',
+//     description:'can be used orally and topically',
+//     norma_female:'72.4 ± 6.7 μmol/L  ',
+//     norma_male:'81.6 ± 7.3 mmol/L',
+//     norma_both:'113.7 ± 19.8 μmol/L',
+//   }
+// ]
 function ReagentsTable({
   confirmRef,
   selectedItem,
@@ -249,8 +250,8 @@ function ReagentsTable({
   } = useTable(
     {
       columns,
-      // data: reagents,
-      data: customReagentsData,
+       data: reagents,
+      //data: customReagentsData,
       defaultColumn,
     },
     useFilters,
@@ -274,8 +275,7 @@ function ReagentsTable({
   // console.log(selectedFlatRows);
   return (
     <>
-    {
-      modalInfo && (
+    {!!modalInfo && (
         <Modal
       show={() => true}
       size="md"
@@ -344,6 +344,15 @@ function ReagentsTable({
     </Modal>
       )
     }
+    <ComponentToConfirm
+      handleCloseModal={handleCloseModal}
+      handleOpenModal={handleOpenModal}
+      handleDeleteItem={handleDeleteItem}
+      selectedItemId={selectedItemId}
+      confirmUserRef={confirmRef}
+      keyName={selectedItem.name}
+      delId={selectedItem.reagentId}
+    />
     <table
       className="table nowrap w-100 mb-5 dataTable no-footer"
       {...getTableProps()}
@@ -410,18 +419,20 @@ function ReagentsTable({
               </tr>
             );
           })}
-          <ComponentToConfirm
-            handleCloseModal={handleCloseModal}
-            handleOpenModal={handleOpenModal}
-            handleDeleteItem={handleDeleteItem}
-            selectedItemId={selectedItemId}
-            confirmUserRef={confirmRef}
-            keyName={selectedItem.name}
-            delId={selectedItem.reagentId}
-          />
-        </tbody>
-       ):''}
-    </table>
+           </tbody>
+         ):(
+          <tr class="table-placeholder">
+            <td class="table-cell" >
+              <div class="empty-normal">
+                <div class="empty-image d-flex justify-content-center align-items-center">
+                  <img src={emptyTable} alt='emptyTable'/>
+                </div>
+                <div class="empty-description d-flex justify-content-center align-items-center mb-2">Տվյալներ չկան</div>
+              </div>
+            </td>
+          </tr>
+         )}        
+      </table>
     </>
 
   );

@@ -48,7 +48,7 @@ const Patients = () => {
       setData: setPatients,
       refreshData,
       dataCount 
-    } = useGetData(PATIENTS_URL,currentPage,usersPerPage,searchCount,PATIENTS__SEARCH_URL,searchId,searchTerms,searchParams);
+    } = useGetData(PATIENTS_URL,currentPage,usersPerPage,searchCount,PATIENTS__SEARCH_URL,searchParams);
   const pageCount = searchCount?Math.ceil(searchCount/usersPerPage) : Math.ceil(dataCount/usersPerPage)
   const handleToggleCreateModal = (value) => {
     setIsOpen((prev) => value);

@@ -10,6 +10,7 @@ import FeatherIcon from "feather-icons-react/build/FeatherIcon";
 import { BiSolidInfoCircle } from 'react-icons/bi';
 import PackagesSvg  from '../../dist/svg/packages.svg'
 import "../../dist/css/data-table.css";
+import emptyTable from "../../dist/svg/emptyTable.svg"
 
 
 function PackagesTable({
@@ -192,8 +193,7 @@ const {
 );
   return (
     <>
-    {
-     modalInfo && (
+    {!!modalInfo && (
        <Modal
      show={() => true}
      size="xl"
@@ -271,6 +271,15 @@ const {
        <ResearchListEditModal researchList={editRow} setEditRow={setEditRow} refreshData={refreshData}/>
      )
    } */}
+            <ComponentToConfirm
+           handleCloseModal={handleCloseModal}
+           handleOpenModal={handleOpenModal}
+           handleDeleteItem={handleDeleteItem}
+           selectedItemId={selectedItemId}
+           confirmUserRef={confirmRef}
+           keyName={selectedItem.researchName}
+           delId={selectedItem.researchListId}
+           />
    <table  className="table nowrap w-100 mb-5 dataTable no-footer" {...getTableProps()} >
    <thead>
         {headerGroups.map((headerGroup) => (
@@ -332,18 +341,20 @@ const {
                </tr>
              )
            })}
-            <ComponentToConfirm
-           handleCloseModal={handleCloseModal}
-           handleOpenModal={handleOpenModal}
-           handleDeleteItem={handleDeleteItem}
-           selectedItemId={selectedItemId}
-           confirmUserRef={confirmRef}
-           keyName={selectedItem.researchName}
-           delId={selectedItem.researchListId}
-           />
-           </tbody>
-          ):''}
-   </table>
+          </tbody>
+         ):(
+          <tr class="table-placeholder">
+            <td class="table-cell" >
+              <div class="empty-normal">
+                <div class="empty-image d-flex justify-content-center align-items-center">
+                  <img src={emptyTable} alt='emptyTable'/>
+                </div>
+                <div class="empty-description d-flex justify-content-center align-items-center mb-2">Տվյալներ չկան</div>
+              </div>
+            </td>
+          </tr>
+         )}        
+      </table>
          </>
   )
 }

@@ -18,6 +18,7 @@ import MissingAvatar from "../../dist/img/Missing.svg";
 import { useNavigate } from "react-router-dom";
 import "../../dist/css/data-table.css";
 import DoctorEditModal from "../EditViews/DoctorEditModal";
+import emptyTable from "../../dist/svg/emptyTable.svg"
 
 function DoctorsTable({
   confirmRef,
@@ -225,11 +226,19 @@ function DoctorsTable({
 
   return (
     <>
- {
-      editRow &&(
+ {!!editRow &&(
         <DoctorEditModal doctor={editRow} setEditRow={setEditRow} refreshData={refreshData}/>
       )
     }
+    <ComponentToConfirm
+      handleCloseModal={handleCloseModal}
+      handleOpenModal={handleOpenModal}
+      handleDeleteItem={handleDeleteItem}
+      selectedItemId={selectedItemId}
+      confirmUserRef={confirmRef}
+      keyName={selectedItem.doctorName}
+      delId={selectedItem.doctorId}
+    />
         <table
           className="table nowrap w-100 mb-5 dataTable no-footer"
           {...getTableProps()}
@@ -305,18 +314,20 @@ function DoctorsTable({
                   </tr>
                 );
               })}
-              <ComponentToConfirm
-                handleCloseModal={handleCloseModal}
-                handleOpenModal={handleOpenModal}
-                handleDeleteItem={handleDeleteItem}
-                selectedItemId={selectedItemId}
-                confirmUserRef={confirmRef}
-                keyName={selectedItem.doctorName}
-                delId={selectedItem.doctorId}
-              />
             </tbody>
-          ):''}
-        </table>
+         ):(
+          <tr class="table-placeholder">
+            <td class="table-cell" >
+              <div class="empty-normal">
+                <div class="empty-image d-flex justify-content-center align-items-center">
+                  <img src={emptyTable} alt='emptyTable'/>
+                </div>
+                <div class="empty-description d-flex justify-content-center align-items-center mb-2">Տվյալներ չկան</div>
+              </div>
+            </td>
+          </tr>
+         )}        
+      </table>
     </>
   );
 }
