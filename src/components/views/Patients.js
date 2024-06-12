@@ -31,10 +31,7 @@ const Patients = () => {
   const [selectedItem, setSelectedItem] = useState("");
   const [usersPerPage, setUsersPerPage] = useState(Math.round((window.innerHeight / 100)));
   const [researches, setResearches] = useState([]);
-  const [exportData, setExportData] = useState([]);
   const [searchCount,setSearchCount] = useState(null)
-  const [searchId,setSearchId] = useState(null)
-  const [searchTerms,setSearchTerms] = useState(null)
   const [searchParams,setSearchParams] = useState(null)
   const handleToggleExportModal = (value) => {
     setToggleExport((prev) => value);

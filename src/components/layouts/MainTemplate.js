@@ -152,18 +152,18 @@ const MainTemplate = () => {
             <div className="container-fluid">
               {/* Start Nav */}
               <div className="nav-start-wrap">
-                {/* <button
+                 <button
                   className="btn btn-icon btn-rounded btn-flush-dark flush-soft-hover navbar-toggle d-xl-none"
-                  onClick={mmenuClick}
+                  onClick={sideMenuClick}
                 >
                   <span className="icon">
-                    <span className="feather-icon"> */}
+                    <span className="feather-icon"> 
                       {/*<i data-feather="align-left"></i>*/}
-                      {/* <i className="fas fa-align-left"></i>
+                       <i className="fas fa-align-left"></i>
                     </span>
                   </span>
-                </button> */}
-                {/* Search */}
+                </button> 
+                {/* Search 
 
                 {/* /Search */}
                 <div>
