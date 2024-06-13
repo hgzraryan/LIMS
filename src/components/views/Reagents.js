@@ -42,7 +42,7 @@ const Reagents = () => {
     refreshData,
     dataCount
   } = useGetData(REAGENTS_URL,currentPage,usersPerPage,searchCount,null,searchId,searchTerms);
-  const pageCount = searchCount?Math.ceil(searchCount/usersPerPage) : Math.ceil(dataCount/usersPerPage)
+  const pageCount = searchCount?Math.ceil(searchCount/usersPerPage) :searchCount===0? 0:Math.ceil(dataCount/usersPerPage)
 
   const handleOpenModal = (user) => {
     setSelectedItemId(true);

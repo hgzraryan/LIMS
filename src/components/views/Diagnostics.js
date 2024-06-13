@@ -47,7 +47,7 @@ const handleToggleExportModal = (value) => {
     refreshData,
     dataCount
   } = useGetData(DIAGNOSTICS_URL,currentPage,usersPerPage,searchCount,DIAGNOSTICS__SEARCH_URL,searchParams);
-  const pageCount = searchCount?Math.ceil(searchCount/usersPerPage) : Math.ceil(dataCount/usersPerPage)
+  const pageCount = searchCount?Math.ceil(searchCount/usersPerPage) :searchCount===0? 0:Math.ceil(dataCount/usersPerPage)
 
     //-------------------------PAGINATION---------------------------//  
     useEffect(() => {

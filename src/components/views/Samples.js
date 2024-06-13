@@ -13,7 +13,7 @@ function Samples() {
   const [selectedItemId, setSelectedItemId] = useState(null);
   const [currentPage, setCurrentPage] = useState(0);  
   const [usersPerPage, setUsersPerPage] = useState(Math.round((window.innerHeight / 100)));
-  //const pageCount = Math.ceil(dataCount/usersPerPage)
+  //const pageCount = searchCount?Math.ceil(searchCount/usersPerPage) :searchCount===0? 0:Math.ceil(dataCount/usersPerPage)
   // const {
   //   data: samples,
   //   setData: setSamples,

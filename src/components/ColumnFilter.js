@@ -210,6 +210,7 @@ export const ColumnFilter = ({
           onClick={handleSearchClick}
           style={{
             backgroundColor: searchTerms ? "#4eafcb" : "",
+            color:searchTerms ? "#fff" : "#000",
             padding: "5px",
             borderRadius: "5px",
           }}

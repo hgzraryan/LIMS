@@ -22,7 +22,7 @@ const setupData = [
 
     },
     {
-        name:'Զաղչի քարտեր',
+        name:'Զեղչի քարտեր',
         icon:discount,
         pathname:'setup/discountCards'
     },
