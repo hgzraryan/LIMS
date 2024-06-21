@@ -148,6 +148,7 @@ const MainTemplate = () => {
           {/* Top Navbar */}
 
           {/* /Top Navbar */}
+          
           <nav className="hk-navbar navbar navbar-expand-xl navbar-light fixed-top">
             <div className="container-fluid">
               {/* Start Nav */}
@@ -392,6 +393,7 @@ const MainTemplate = () => {
             </div>
           </nav>
           {/* Vertical Nav */}
+       
           <div className="hk-menu">
             {/* Brand */}
             <div className="menu-header">
@@ -811,7 +813,7 @@ const MainTemplate = () => {
           {/* /Vertical Nav */}
 
           {/* Chat Popup */}
-          <div className="hk-chatbot-popup">
+          {/* <div className="hk-chatbot-popup">
             <header>
               <div className="chatbot-head-top">
                 <a
@@ -1079,7 +1081,7 @@ const MainTemplate = () => {
                 </a>
               </div>
             </footer>
-          </div>
+          </div> */}
           {/*
                 <a href="#" className="btn btn-icon btn-floating btn-primary btn-lg btn-rounded btn-popup-open">
                     <span className="icon">
@@ -1087,11 +1089,11 @@ const MainTemplate = () => {
                     </span>
                 </a>
                 */}
-          <div className="chat-popover shadow-xl">
+          {/* <div className="chat-popover shadow-xl">
             <p>
               Try Jampack Chat for free and connect with your customers now!
             </p>
-          </div>
+          </div> */}
           {/* /Chat Popup */}
 
           {/* Main Content */}

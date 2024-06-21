@@ -66,7 +66,7 @@ const Prices = () => {
 
   return (
     <div>
-      <div className="contactapp-wrap">
+      <div className="contactapp-wrap" style={{height:'100%'}}>
         <div className="contactapp-content">
           <div className="contactapp-detail-wrap ">
             <header className="contact-header">
@@ -153,7 +153,7 @@ const Prices = () => {
                 <div className="contact-list-view">
                   <div
                     id="scrollableDiv"
-                    style={{ height: "80vh", overflow: "auto" }}
+                    //style={{ height: "80vh", overflow: "auto" }}
                   >
                       <PricesTable
                         confirmRef={confirmPriceRef}

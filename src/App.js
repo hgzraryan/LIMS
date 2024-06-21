@@ -39,8 +39,9 @@ SETUP_ROUTE,
 MEDICALSERVICES_ROUTE,
 PACKAGES_ROUTE,
 ROLES,
-REPORTSEXPORT_ROUTE} from '../src/utils/constants' 
-import { lazy, Suspense } from "react";
+REPORTSEXPORT_ROUTE,
+DOCTOR_PATIENTS_ID_ROUTE} from '../src/utils/constants' 
+import { lazy, Suspense, useEffect, useState } from "react";
 import Support from "./components/views/Support";
 import DoctorsTemplete from "./components/layouts/DoctorsTemplete";
 import DoctorsEmployment from "./components/views/DoctorsEmployment";
@@ -86,8 +87,21 @@ import DoctorsEmployment from "./components/views/DoctorsEmployment";
  const DoctorsPatients = lazy(()=>  import("./components/views/DoctorsPatients"));
  const Setup = lazy(()=>  import("./components/views/Setup"));
  const ReportsExport = lazy(()=>  import("./components/views/ReportsExport"));
- 
+
+
 function App() {
+  const [userLoginData,setuserLoginData] = useState('')
+  
+  useEffect(() => {
+    const userLoginData1 = JSON.parse(localStorage.getItem('userData'));
+    if (userLoginData1) {
+      // const currentUser={
+      //   ...userLoginData1,
+      //   //Roles:[9578]
+      // }
+      setuserLoginData(userLoginData1)
+    }
+  }, []);
   return (
       <Suspense fallback={<h1>Loading...</h1>}>
     <Routes>
@@ -115,7 +129,30 @@ function App() {
           <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
               
           </Route>
-  <Route path="/" element={<MainTemplate />}>
+          {userLoginData?.Roles && userLoginData?.Roles.includes(ROLES.Doctor)
+          ?<Route path="/" element={<DoctorsTemplete />}>
+            <Route index path={HOME_ROUTE} element={<Home />} />
+            <Route index path={SUPPORT_URL} element={<Support />} />
+
+            <Route index path="/" element={<DoctorsVisits />} />
+          <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
+            <Route path={DOCTORSVISITS_ROUTE} element={<DoctorsVisits />} />
+            <Route path={DOCTORSVISITS_ID_ROUTE} element={<DoctorsVisitsDetails/>} />
+            <Route path={DOCTORS_ID_ROUTE} element={<DoctorDetails/>} />
+            <Route  path={SAMPLES_ROUTE} element={<Samples />} />
+          </Route>
+              <Route path={DOCTOR_PATIENTS_ID_ROUTE} element={<PatientDetails/>} />
+              <Route
+                path={RESEARCH_LISTS_ROUTE}
+                element={<ResearchLists />}
+              />
+                         <Route path={DIAGNOSTICS_ID_ROUTE} element={<DiagnosticsDetails/>} />
+                         <Route path={MISSING_ROUTE} element={<Missing />} />
+
+
+            {/* catch all */}
+          </Route>
+          :<Route path="/" element={<MainTemplate />}>
             <Route index path={HOME_ROUTE} element={<Home />} />
             <Route index path={SUPPORT_URL} element={<Support />} />
 
@@ -177,7 +214,7 @@ function App() {
 
             {/* catch all */}
             <Route path={MISSING_ROUTE} element={<Missing />} />
-          </Route>
+          </Route>}
         </Route>
       </Route>
     </Routes>

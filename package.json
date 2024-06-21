@@ -1,7 +1,7 @@
 {
   "name": "LIMS_VTEAM_CLIENT",
   "version": "0.1.0",
-  "revision": "050624",
+  "revision": "220624",
   "private": true,
   "dependencies": {
     "@coreui/coreui": "^4.2.6",
@@ -17,7 +17,6 @@
     "@mui/icons-material": "^5.11.16",
     "@mui/material": "^5.14.7",
     "@reduxjs/toolkit": "^1.9.5",
-    "@syncfusion/ej2-react-gantt": "^25.1.35",
     "@tinymce/tinymce-react": "^4.3.0",
     "@types/react-big-calendar": "^1.8.9",
     "axios": "^0.24.0",

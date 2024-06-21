@@ -146,7 +146,7 @@ responseType:'blob'
         setFile(selectedFile);
         setFileName(selectedFile.name); // Update file name
       } else {
-        alert("Please select a PDF or TXT file.");
+        alert("Խնդրում եմ ընտրեք PDF կամ TXT  ֆայլ։");
       }
     }
   };
@@ -164,7 +164,7 @@ responseType:'blob'
         setFile(droppedFile);
         setFileName(droppedFile.name); // Update file name
       } else {
-        alert("Please drop a PDF or TXT file.");
+        alert("Խնդրում եմ ընտրեք PDF կամ TXT  ֆայլ։");
       }
     }
   };
@@ -196,7 +196,7 @@ responseType:'blob'
         console.log(err);
       });
     } else {
-      alert("Please select a file to upload.");
+      alert("Խնդրում եմ ընտրեք ֆայլը։");
     }
   };
   const handleSendSMS =  (e) => {    
@@ -776,13 +776,13 @@ responseType:'blob'
                         <div className="d-flex justify-content-center">
                           <div className="upload-logo">
                             <div
-                              className="dropify-wrapper"
+                              className="dropify-wrapper"                              
+                            >
+                              <div className="dropify-message d-flex justify-content-center  align-items-center flex-column"
                               onClick={(e) => {
                                 e.stopPropagation()
                                 fileInputRef?.current.click()}}
-                              style={{ cursor: "pointer" }}
-                            >
-                              <div className="dropify-message d-flex justify-content-center  align-items-center flex-column">
+                              style={{ cursor: "pointer" }}>
                                 <span
                                   className="file-icon d-flex justify-content-center  align-items-center"
                                   style={{ width: "32px", height: "32px" }}
@@ -795,7 +795,7 @@ responseType:'blob'
                                   className="dropify-error"
                                   style={{ display: "none" }}
                                 >
-                                  Ooops, something wrong appended.
+                                  Ինչ որ բան այն չէ.
                                 </p>
                               </div>
                               <div
@@ -819,6 +819,7 @@ responseType:'blob'
                                 <button
                                   className="btn btn-primary"
                                   type="submit"
+                                  disabled={!file}
                                   onClick={(e) => {
                                     e.stopPropagation();
                                     handleSubmit(e);
@@ -856,8 +857,10 @@ responseType:'blob'
                             </div>
                           </div>
                         </div>
+<div style={{display:'flex',justifyContent:'center'}}>
 
-                        {fileName && <span>{" " + fileName}</span>}
+                        {fileName && <span style={{color:'rgb(255, 98, 28,.8)',fontWeight:'500',margin:'.5rem'}}>{" " + fileName}</span>}
+</div>
                       </div>
                     </div>
 

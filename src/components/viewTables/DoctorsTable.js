@@ -148,7 +148,7 @@ function DoctorsTable({
           </>
         ),
         accessor: "actions",
-        width: 300,
+        width: 150,
         Cell: ({ row }) => (
           <div className="d-flex align-items-center">
             <div className="d-flex">

@@ -93,7 +93,7 @@ const Agents = () => {
     <link rel="icon" type="image/x-icon" href="../dist/img/favicon.ico"></link>
     </Helmet>
       </div>
-      <div className="contactapp-wrap">
+      <div className="contactapp-wrap" style={{height:'100%'}}>
         <div className="contactapp-content">
           <div className="contactapp-detail-wrap w-100">
             <header className="contact-header">
@@ -179,7 +179,7 @@ const Agents = () => {
                 <div className="contact-list-view">
                   <div
                     id="scrollableDiv"
-                    style={{ height: "80vh", overflow: "auto" }}
+                    style={{overflow: "auto" }}
                   >
                       <AgentsTable
                         confirmRef={confirmAgentsRef}

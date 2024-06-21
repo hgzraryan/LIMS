@@ -187,9 +187,13 @@ body {
   font-size: var(--bs-body-font-size);
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: transparent;
-  overflow-x: hidden;
+  height: 100%;
   
 }
+/****************************/
+/** hide scrolbar **/
+::-webkit-scrollbar {display:none;}
+/****************************/
 
 .main-font, .jq-toast-wrap .jq-toast-single, .jq-toast-wrap .jq-toast-single .jq-toast-heading, .infowindow-wrap .infowindow-header, .infowindow-wrap .infowindow-body {
   font-family: var(--bs-body-font-family);

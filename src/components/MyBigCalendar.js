@@ -56,18 +56,19 @@ const localizer = momentLocalizer(moment);
       console.log(selectedEvent)
       console.log(newEvent)
       setEvents([...events, newEvent]); 
-      // try {
-      //   const response = await axiosPrivate.post(`/createEvent`, newEvent);
-      //   const createdEvent = response.data;
-      //   setEvents([...events, createdEvent]);
-      //   setEvents([...events, newEvent]); 
 
-      //   console.log(newEvent)
-      //   setShowModal(false);
-      // } catch (error) {
-      //   console.error("Error creating event:", error);
-      //  // navigate("/login", { state: { from: location }, replace: true });
-      // }
+      try {
+        const response = await axiosPrivate.post(`/createEvent`, {id:doctorId,newEvent});
+        const createdEvent = response.data;
+        setEvents([...events, createdEvent]);
+        setEvents([...events, newEvent]); 
+
+        console.log(newEvent)
+        setShowModal(false);
+      } catch (error) {
+        console.error("Error creating event:", error);
+       // navigate("/login", { state: { from: location }, replace: true });
+      }
     };
     const handleDayClick = (slotInfo) => {
       setNewEventStart(slotInfo.start);
@@ -140,6 +141,7 @@ console.log(slotInfo)
         },
       };
     };
+    console.log(events)
   return (
     <div className="calendar-container">
       <Calendar

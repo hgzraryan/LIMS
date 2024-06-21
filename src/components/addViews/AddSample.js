@@ -434,7 +434,7 @@ function Sample() {
           </div>
         </nav>
         <div className="hk-pg-wrapper">
-          <div className="contactapp-wrap" style={{ margin: "3rem" }}>
+          <div className="contactapp-wrap" style={{height:'100%',margin: "3rem"}}>
             <div className="contactapp-detail-wrap w-100">
               <header className="contact-header">
                 <div className="d-flex align-items-center justify-content-center w-100">
@@ -446,7 +446,7 @@ function Sample() {
                   <div className="contact-list-view d-flex justify-content-center align-items-center">
                     <div
                       id="scrollableDiv"
-                      style={{ height: "80vh", width: "100%" }}
+                      style={{overflow: "auto" }}
                     >
                       <div className="d-flex justify-content-center align-items-center ">
                         <form

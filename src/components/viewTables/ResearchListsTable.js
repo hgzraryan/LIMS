@@ -388,7 +388,7 @@ function ResearchListsTable({
    keyName={selectedItem.researchName}
    delId={selectedItem.researchListId}
    />
-    <table  className="table nowrap w-100 mb-5 dataTable no-footer" {...getTableProps()} >
+    <table  className="table nowrap w-100 mb-5 dataTable no-footer" {...getTableProps()}  >
     <thead>
         {headerGroups.map((headerGroup) => (
           <tr {...headerGroup.getHeaderGroupProps()}>

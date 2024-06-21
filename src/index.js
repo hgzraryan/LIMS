@@ -16,10 +16,6 @@ import './dist/css/style.css';
 
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { registerLicense } from '@syncfusion/ej2-base';
-
-// Set Syncfusion license key
-registerLicense(process.env.REACT_APP_SYNCFUSION_KEY);
 
 const root =createRoot(document.getElementById('root'))
 root.render(

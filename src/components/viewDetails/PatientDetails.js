@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState, useMemo, useEffect, Suspense } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import React, { useState, useMemo, useEffect, Suspense, useRef } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import {
   useBlockLayout,
   useFilters,
@@ -24,6 +24,7 @@ import moment from "moment";
 function PatientDetails() {
   const axiosPrivate = useAxiosPrivate()
   const navigate = useNavigate();
+  const location = useLocation();
   const { id } = useParams();
   const [isOpen, setIsOpen] = useState(false);
   const [research, setResearch] = useState([]);
@@ -33,6 +34,11 @@ function PatientDetails() {
   const [isLoading, setIsLoading] = useState(true);
   const [activeLink, setActiveLink] = useState('tab_summery'); 
   const [pageTab, setPageTab] = useState('tab_summery')
+  const checkIfDoctorRef = useRef()
+  useEffect(()=>{
+    checkIfDoctorRef.current = location.pathname?.includes('doctorarea')
+
+  },[])
   const handleDiagnosticssDetails = async (diagnosticsId) => {
     try {
       //const response = await axiosPrivate.get(`/diagnostics/${id}`, );
@@ -70,31 +76,55 @@ function PatientDetails() {
     setActiveLink(linkId);
     setPageTab(linkId)
   };
+  console.log(location)
   useEffect(() => {
+
+    const fetchData = async () => {
+      try {
+        const patientsResp = await axiosPrivate.get(checkIfDoctorRef.current?`/patients/doctorarea/${id}`:`/patients/${id}`);
+        setPatientDetails((prev) => patientsResp?.data?.jsonString);
+
+        const patientDiagnosticsResp = await axiosPrivate.get(checkIfDoctorRef.current?`/getDiagnosticsByCid/doctorarea/${id}/patient`:`/getDiagnosticsByCid/${id}/patient`);
+        setPatientDiagnostics((prev) => patientDiagnosticsResp.data);
+
+        const patientVisitsResp = await axiosPrivate.get(checkIfDoctorRef.current?`/getVisitsByid/patient/doctorarea/${id}`:`/getVisitsByid/patient/${id}`);
+        setPatientVisits(patientVisitsResp.data);
+
+        setIsLoading(false);
+      } catch (err) {
+        console.log(err);
+        navigate("/login", { state: { from: location }, replace: true });
+      }
+    };
     setTimeout(() => {
-      axiosPrivate
-        .get(`/patients/${id}`)
-        .then((resp) => {
-          setPatientDetails((prev) => resp?.data?.jsonString);
-          setIsLoading(false);
-        })        
-        .then((resp) => {
-          axiosPrivate.get(`/getDiagnosticsByCid/${id}/patient`).then((resp) => {
-            setPatientDiagnostics((prev) => resp.data);
-            setIsLoading(false);
-          });
-        })
-        .then((resp) => {
-           axiosPrivate.get(`/getVisitsByid/patient/${id}`).then((resp) => {
-            setPatientVisits(resp.data);
-            setIsLoading(false);
-          });
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      fetchData();
     }, 500);
-  }, []);
+  }, [navigate]);
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     axiosPrivate
+  //       .get(`/patients/${id}`)
+  //       .then((resp) => {
+  //         setPatientDetails((prev) => resp?.data?.jsonString);
+  //         setIsLoading(false);
+  //       })        
+  //       .then((resp) => {
+  //         axiosPrivate.get(`/getDiagnosticsByCid/${id}/patient`).then((resp) => {
+  //           setPatientDiagnostics((prev) => resp.data);
+  //           setIsLoading(false);
+  //         });
+  //       })
+  //       .then((resp) => {
+  //          axiosPrivate.get(`/getVisitsByid/patient/${id}`).then((resp) => {
+  //           setPatientVisits(resp.data);
+  //           setIsLoading(false);
+  //         });
+  //       })
+  //       .catch((err) => {
+  //         console.log(err);
+  //       });
+  //   }, 500);
+  // }, []);
 
   const columns = useMemo(
     () => [
