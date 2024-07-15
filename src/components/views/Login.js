@@ -56,6 +56,7 @@ const Login = () => {
             const userId = decodedJWT.UserInfo.userId;
 
             localStorage.setItem("userData", JSON.stringify(response?.data?.authUserData));
+            localStorage.setItem("userRoles", JSON.stringify(roles));
             console.log('roles',roles);
 
             setAuth({ user, pwd, roles, isActive, accessToken, userId });

@@ -172,7 +172,6 @@ function App() {
             <Route path={ORGANIZATIONS_ROUTE} element={<Organizations />} />
             <Route path={ORGANIZATIONS_ID_ROUTE} element={<OrganizationDetails />} />
 
-            <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
               <Route path={PATIENTS_ROUTE} element={<Patients />} />
               
               <Route path={PATIENTS_ID_ROUTE} element={<PatientDetails/>} />
@@ -198,7 +197,7 @@ function App() {
               <Route path={REFDOCTORS_ROUTE} element={<RefDoctors />} />
               <Route path={MEDINSTITUTIONS_ROUTE} element={<MedInstitutions />} />
               <Route path={REPORTSEXPORT_ROUTE} element={<ReportsExport />} />
-            </Route>
+          
 
             <Route element={<RequireAuth allowedRoles={[ROLES.Editor]} />}>
               <Route path={EDITOR_ROUTE} element={<Editor />} />

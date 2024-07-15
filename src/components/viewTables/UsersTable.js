@@ -20,6 +20,7 @@ import { useNavigate } from "react-router-dom";
 import UserDeactivateModal from "../EditViews/UserDeactivateModal";
 import UserEditModal from "../EditViews/UserEditModal";
 import emptyTable from "../../dist/svg/emptyTable.svg"
+import { ROLES } from "../../utils/constants";
 
 function UsersTable({
   confirmRef,
@@ -35,7 +36,8 @@ function UsersTable({
   const navigate = useNavigate();
   const [disableRow, setDisableRow] = useState(false);
   const [editRow, setEditRow] = useState(false);
-
+  const storedUserRoles = JSON.parse(localStorage.getItem('userRoles'));
+  const [superAdmin,setSuperAdmin]=useState(storedUserRoles.includes(ROLES?.SuperAdmin))
   const handleOpenEditModal = (value) => {
     setEditRow((prev) => value);
   };
@@ -59,6 +61,8 @@ function UsersTable({
         return "badge badge-soft-yellow my-1  me-2";
       case "Doctor":
         return "badge badge-soft-blue my-1  me-2";
+      case "SuperAdmin":
+        return "badge badge-soft-neon my-1  me-2";
 
       default:
         break;
@@ -92,15 +96,18 @@ function UsersTable({
         ),
         width: 65,
         disableSortBy: true,
-        Filter: ({ column: { id } }) => <></>,
       },
       {
-        Header: "ID",
+        Header: (event) => (
+         
+            <div style={{display:'flex',justifyContent:'center',alignItems:'center'}}><p>ID</p></div>
+         
+        ),
         accessor: "userId",
         disableSortBy: true,
         filterable: false,
         show: false,
-        width: 80,
+        width: 82,
       },
       {
         Header: (event) => (
@@ -160,6 +167,8 @@ function UsersTable({
                 ? "Հաստատող"
                 : role === "Admin"
                 ? "Ադմին"
+                : role === "SuperAdmin"
+                ? "Համ․ ադմին"
                 : "Unknown Role"}
             </span>
           )),
@@ -229,6 +238,23 @@ function UsersTable({
                   </span>
                 </span>
               </a>
+              {!!superAdmin &&
+              <a
+              className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover del-button"
+              data-bs-toggle="tooltip"
+              onClick={() => handleOpenModal(row.original)}
+              data-placement="top"
+              title=""
+              data-bs-original-title="Delete"
+              href="#"
+              >
+                <span className="icon">
+                  <span className="feather-icon">
+                    <FeatherIcon icon="trash" />
+                  </span>
+                </span>
+              </a>
+              }
             </div>
           </div>
         ),
@@ -307,20 +333,21 @@ function UsersTable({
                 <th {...column.getHeaderProps(column.getSortByToggleProps())}>
                   {column.id !== "selection" && (
                     <div className="d-flex justify-content-between ">
-                      <div>
-                        {column.canFilter ? column.render("Filter") : null}
-                      </div>
+                      {column.canFilter ?
+                      <>
+                        {column.render("Filter") }
+                      </>:null}
                       <div
                         style={{
                           marginTop: "2px",
                           display: "flex",
-                          justifyContent: "space-between",
+                          justifyContent: "center",
                           alignItems: "center",
                         }}
                       >
                         <div>{column.render("Header")}</div>
                       </div>
-                      {column.id !== "patientId" && column.canSort &&(
+                      {column.id !== "userId" && column.canSort &&(
                         <div style={{ paddingTop: "20px" }}>
                           {column.isSorted ? (
                             column.isSortedDesc ? (

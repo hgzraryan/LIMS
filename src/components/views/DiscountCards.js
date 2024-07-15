@@ -35,7 +35,7 @@ import {
 } from "../../utils/inputValidations";
 import { Input } from "../Input";
 import CustomDateTimeComponent from "../CustomDateTimeComponent";
-import { DISCOUNTS_URL, REGISTER_DISCOUNT } from "../../utils/constants";
+import { DISCOUNTS_URL, REGISTER_DISCOUNT, ROLES } from "../../utils/constants";
 import LoadingSpinner from "../LoadingSpinner";
 
 const GET_RESEARCHES = "/researchLists";
@@ -65,6 +65,8 @@ export default function DiscountCards() {
   const [errMsg, setErrMsg] = useState("");
   const [activeLink, setActiveLink] = useState("tab_global");
   const [pageTab, setPageTab] = useState("tab_global");
+  const storedUserRoles = JSON.parse(localStorage.getItem('userRoles'));
+  const [superAdmin,setSuperAdmin]=useState(storedUserRoles.includes(ROLES?.SuperAdmin))
   const handleLinkClick = (linkId) => {
     setActiveLink(linkId);
     setPageTab(linkId);
@@ -351,6 +353,7 @@ export default function DiscountCards() {
                                 <div className="card" >
                                   <div className="card-body">
                                     <div className="d-flex justify-content-between flex-column" >
+                                      {!!superAdmin &&
                                       <div className=" setDiscount_section" style={{display:'flex',gap:'30px',marginBottom:'16px'}}>
                                       <div className="colomns_wrapper">
                                         <div className="first_column">
@@ -365,7 +368,7 @@ export default function DiscountCards() {
                                               <label
                                                 className="form-label"
                                                 htmlFor="startDate"
-                                              >
+                                                >
                                                 Զեղչի սկիզբ
                                               </label>                                              
                                                  {(methods.formState.errors.startDate & !methods.formState.errors.notValidVisitDate?.message) ? (
@@ -374,7 +377,7 @@ export default function DiscountCards() {
                                   {methods.formState.errors.notValidVisitDate?.message && (
                                    
                                     <span className="error text-red"><span><img src={ErrorSvg} alt="errorSvg"/></span> Սխալ ձևաչափ</span>
-                                    )}
+                                  )}
                                             </div>
                                             <div>
                                               <CustomDateTimeComponent
@@ -382,8 +385,8 @@ export default function DiscountCards() {
                                                 control={methods.control}
                                                 required={true}
                                                 methods={methods}
-
-                                              />
+                                                
+                                                />
                                             </div>
                                           </div>
                                           <div className="form-group">
@@ -391,7 +394,7 @@ export default function DiscountCards() {
                                               <label
                                                 className="form-label"
                                                 htmlFor="endDate"
-                                              >
+                                                >
                                                 Զեղչի ավարտ
                                               </label>
                                               {(methods.formState.errors.endDate & !methods.formState.errors.notValidVisitDate?.message) ? (
@@ -408,7 +411,7 @@ export default function DiscountCards() {
                                                 control={methods.control}
                                                 required={true}
                                                 methods={methods}
-                                              />
+                                                />
                                             </div>
                                           </div>
                                         </div>
@@ -427,6 +430,7 @@ export default function DiscountCards() {
                                     </button>
                                       </div>
                                       </div>
+                                        }
                                         <div className="showDiscounts_section" style={{display:'flex',marginBottom:'5px',flexWrap:'wrap'}}>                                    
                                       <Suspense fallback={<LoadingSpinner />}>
                                       {isLoading ? (
@@ -468,7 +472,7 @@ export default function DiscountCards() {
                                         </div>
                                       </div>
                                   <div className="d-flex justify-content-center align-items-center gap-2 m-2">
-                                    
+                                  {!!superAdmin &&
                                     <button
                                       type="button"
                                       className="btn btn-secondary"
@@ -476,6 +480,7 @@ export default function DiscountCards() {
                                       >
                                       Չեղարկել
                                     </button>
+                                          }
                                   </div>
                                   </div>
                                          ) }):'' }

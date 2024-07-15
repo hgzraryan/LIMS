@@ -97,4 +97,5 @@ export const ROLES = {
     Admin: 5150,
     Sampler: 1212,
     Doctor:9578,
+    SuperAdmin:5050
   };

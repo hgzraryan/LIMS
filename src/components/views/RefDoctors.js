@@ -10,6 +10,7 @@ import useGetData from '../../hooks/useGetData';
 import useDeleteData from '../../hooks/useDeleteData';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { useNavigate, useParams } from 'react-router-dom';
+import ExportData from '../ExportData';
 
 function RefDoctors() {
     const { pageNumber } = useParams();
@@ -23,7 +24,11 @@ function RefDoctors() {
     const [searchCount,setSearchCount] = useState(null)
     const [searchId,setSearchId] = useState(null)
     const [searchTerms,setSearchTerms] = useState(null)
-  
+    const [toggleExport, setToggleExport] = useState(false);
+
+ const handleToggleExportModal = (value) => {
+    setToggleExport((prev) => value);
+  };
     const handleSearchPageCount = ({count,searchTerms,id}) =>{
       setSearchCount(count)
       setSearchTerms(searchTerms)
@@ -75,6 +80,12 @@ function RefDoctors() {
       };
   return (
     <HelmetProvider>
+         <ExportData 
+      handleToggleExportModal = {handleToggleExportModal}
+      toggleExport={toggleExport}
+      section='refDoctors'
+      refDoctors={refDoctors}
+      />
     <div>
       <div>
 
@@ -127,6 +138,18 @@ function RefDoctors() {
                 </div>
               </div>
               <div className="contact-options-wrap">
+              <a
+                  className="btn btn-icon btn-flush-dark flush-soft-hover dropdown-toggle no-caret active"
+                  href="#"
+                  data-bs-toggle="dropdown"
+                >
+                  <span className="icon">
+                    <span className="feather-icon"
+                    onClick={handleToggleExportModal}>
+                      <FeatherIcon icon="download" />
+                    </span>
+                  </span>
+                </a>
                 <div className="dropdown-menu dropdown-menu-end">
                   <a className="dropdown-item active" href="contact.html">
                     <span className="feather-icon dropdown-icon">

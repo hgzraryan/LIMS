@@ -12,6 +12,7 @@ import { Modal } from "react-bootstrap";
 import ResearchListEditModal from "../EditViews/ResearchListEditModal";
 import moment from "moment";
 import emptyTable from "../../dist/svg/emptyTable.svg"
+import { ROLES } from "../../utils/constants";
 
 function ResearchListsTable({
   confirmRef,
@@ -26,7 +27,8 @@ function ResearchListsTable({
 }) {
   const [modalInfo, setModalInfo] = useState("");
   const [editRow, setEditRow] = useState(false);
-
+  const storedUserRoles = JSON.parse(localStorage.getItem('userRoles'));
+  const [superAdmin,setSuperAdmin]=useState(storedUserRoles.includes(ROLES?.SuperAdmin))
   const handleOpenEditModal = (value) => {
       setEditRow((prev) => value);
     };
@@ -54,27 +56,27 @@ function ResearchListsTable({
         sortable: true,
         width:80,
       },
-      {
-        Header: (event) => (
-          <>            
-            <div className="columnHeader">Ներքին կոդ</div>
-          </>
-        ),
-        accessor: "localCode",
-        sortable: true,
-        width:150,
-      },
-      {
-        Header: (event) => (
-          <>
+      // {
+      //   Header: (event) => (
+      //     <>            
+      //       <div className="columnHeader">Ներքին կոդ</div>
+      //     </>
+      //   ),
+      //   accessor: "localCode",
+      //   sortable: true,
+      //   width:130,
+      // },
+      // {
+      //   Header: (event) => (
+      //     <>
             
-            <div className="columnHeader">ԲԳԿ ԿՈԴ</div>
-          </>
-        ),
-        accessor: "partnerCode",
-        disableSortBy: true,
-        width:150,
-      },
+      //       <div className="columnHeader">ԲԳԿ ԿՈԴ</div>
+      //     </>
+      //   ),
+      //   accessor: "partnerCode",
+      //   disableSortBy: true,
+      //   width:130,
+      // },
       {
         Header: (event) => (
           <>
@@ -86,27 +88,27 @@ function ResearchListsTable({
         sortable: true,
         width:300,
       },
-      {
-        Header: (event) => (
-          <>
+      // {
+      //   Header: (event) => (
+      //     <>
             
-            <div className="columnHeader">Լաբ. / Ծառ.</div>
-          </>
-        ),
-        accessor: "laboratoryService",
-        sortable: true,
-        width:200,
-      },
-      {
-        Header: (event) => (
-          <>
+      //       <div className="columnHeader">Լաբ. / Ծառ.</div>
+      //     </>
+      //   ),
+      //   accessor: "laboratoryService",
+      //   sortable: true,
+      //   width:200,
+      // },
+      // {
+      //   Header: (event) => (
+      //     <>
             
-            <div className="columnHeader">Դասկարգի անվ․</div>
-          </>
-        ),
-        accessor: "categoryName",
-        width:200,
-      },
+      //       <div className="columnHeader">Դասկարգի անվ․</div>
+      //     </>
+      //   ),
+      //   accessor: "categoryName",
+      //   width:200,
+      // },
       {
         Header: (event) => (
           <>            
@@ -123,7 +125,7 @@ function ResearchListsTable({
           </>
         ),
         accessor: "shortName",
-        width:170,
+        width:150,
       },
       {
         Header: (event) => (
@@ -135,26 +137,26 @@ function ResearchListsTable({
         accessor: "price",
         width:100,
       },
-      {
-        Header: (event) => (
-          <>
+      // {
+      //   Header: (event) => (
+      //     <>
             
-            <div className="columnHeader">Առքի գին</div>
-          </>
-        ),
-        accessor: "purchasePrice",
-        width:150,
-      },
-      {
-        Header: (event) => (
-          <>
+      //       <div className="columnHeader">Առքի գին</div>
+      //     </>
+      //   ),
+      //   accessor: "purchasePrice",
+      //   width:150,
+      // },
+      // {
+      //   Header: (event) => (
+      //     <>
             
-            <div className="columnHeader">Հրապ․ առավել. ժամկետ</div>
-          </>
-        ),
-        accessor: "deliveryTimeLimit",
-        width:200,
-      },
+      //       <div className="columnHeader">Հրապ․ առավել. ժամկետ</div>
+      //     </>
+      //   ),
+      //   accessor: "deliveryTimeLimit",
+      //   width:200,
+      // },
       {
         Header: (event) => (
           <>
@@ -165,46 +167,46 @@ function ResearchListsTable({
         accessor: "biomaterial",
         width:200,
       },
-      {
-        Header: (event) => (
-          <>
+      // {
+      //   Header: (event) => (
+      //     <>
             
-            <div className="columnHeader">Սրվակ</div>
-          </>
-        ),
-        accessor: "vial",
-        width:100,
-      }, 
-      {
-        Header: (event) => (
-          <>
+      //       <div className="columnHeader">Սրվակ</div>
+      //     </>
+      //   ),
+      //   accessor: "vial",
+      //   width:100,
+      // }, 
+      // {
+      //   Header: (event) => (
+      //     <>
             
-            <div className="columnHeader">Նմուշ․ ժամկետը</div>
-          </>
-        ),
-        accessor: "samplingPeriod",
-        width:200,
-      },
-      {
-        Header: (event) => (
-          <>
+      //       <div className="columnHeader">Նմուշ․ ժամկետը</div>
+      //     </>
+      //   ),
+      //   accessor: "samplingPeriod",
+      //   width:200,
+      // },
+      // {
+      //   Header: (event) => (
+      //     <>
             
-            <div className="columnHeader">Հետ․ Նախապատրաստում</div>
-          </>
-        ),
-        accessor: "researchPrepSub",
-        width:250,
-      },
-      {
-        Header: (event) => (
-          <>
+      //       <div className="columnHeader">Հետ․ Նախապատրաստում</div>
+      //     </>
+      //   ),
+      //   accessor: "researchPrepSub",
+      //   width:250,
+      // },
+      // {
+      //   Header: (event) => (
+      //     <>
             
-            <div className="columnHeader">Դասակարգ</div>
-          </>
-        ),
-        accessor: "category",
-        width:150,
-      },
+      //       <div className="columnHeader">Դասակարգ</div>
+      //     </>
+      //   ),
+      //   accessor: "category",
+      //   width:150,
+      // },
      
       {
         Header: (event) => (
@@ -214,6 +216,17 @@ function ResearchListsTable({
           </>
         ),
         accessor: "class",
+        Cell: ({ row }) => (
+          <div className="d-flex justify-content-center align-items-center">
+            {row.original?.class === "Internal"
+              ? "Ներքին"
+              : row.original?.class === "External"
+              ? "Արտաքին"
+              : row.original?.class === "Other"
+              ? "Այլ"
+              : ""}
+          </div>
+        ),
         width:200,
       },
       {
@@ -247,6 +260,7 @@ function ResearchListsTable({
                   </span>
                 </span>
               </a>
+              {!!superAdmin &&
               <a
                 className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover del-button"
                 data-bs-toggle="tooltip"
@@ -262,6 +276,7 @@ function ResearchListsTable({
                   </span>
                 </span>
               </a>
+      }
             </div>
           </div>
         ),
@@ -336,19 +351,37 @@ function ResearchListsTable({
                   <div className="w-100">
                        <div className="d-flex justify-content-between">  <span> ID </span> <span>{modalInfo.researchListId}</span></div>
                        <div className="separator-full m-0"></div>
+                       <div className="d-flex justify-content-between">  <span> Ներքին կոդ </span> <span>{modalInfo.localCode}</span></div>
+                       <div className="separator-full m-0"></div>
+                       <div className="d-flex justify-content-between">  <span> ԲԳԿ ԿՈԴ </span> <span>{modalInfo.partnerCode}</span></div>
+                       <div className="separator-full m-0"></div>
                        <div className="d-flex justify-content-between">  <span> Հապավում </span> <span>{modalInfo.shortName}</span></div>
-                       <div className="separator-full m-0"></div>
-                       <div className="d-flex justify-content-between">  <span>Անվանում</span> <span>{modalInfo.researchName}</span></div>
-                       <div className="separator-full m-0"></div>
-                       <div className="d-flex justify-content-between">  <span>Նորմա </span> <span>{modalInfo.referenceRange}</span></div>
                        <div className="separator-full m-0"></div>
                        <div className="d-flex justify-content-between">  <span>Դասակարգ</span> <span>{modalInfo.category}</span></div>
                        <div className="separator-full m-0"></div>
-                       <div className="d-flex justify-content-between">  <span>Չափման միավոր</span> <span>{modalInfo.units}</span></div>
+                       <div className="d-flex justify-content-between">  <span>Դասակարգի անվանում</span> <span>{modalInfo.categoryName}</span></div>
                        <div className="separator-full m-0"></div>
-                       <div className="d-flex justify-content-between">  <span>Արժույթ</span> <span>{modalInfo.currencyCode}</span></div>
+                       <div className="d-flex justify-content-between">  <span>Տեսակ</span> <span>{modalInfo.class==='Internal'?'Ներքին':modalInfo.class==='External'?'Արտաքին':'Այլ'}</span></div>
                        <div className="separator-full m-0"></div>
-                       <div className="d-flex justify-content-between">  <span>Արժեք </span> <span>{modalInfo.researchesPrice}</span></div>
+                       <div className="d-flex justify-content-between">  <span>Անվանում</span> <span>{modalInfo.researchName}</span></div>
+                       <div className="separator-full m-0"></div>
+                       <div className="d-flex justify-content-between">  <span>Ծառայության անվանում</span> <span>{modalInfo.serviceName}</span></div>
+                       <div className="separator-full m-0"></div>
+                       <div className="d-flex justify-content-between">  <span>Առաքման ժամկետ </span> <span>{modalInfo.deliveryTimeLimit}</span></div>
+                       <div className="separator-full m-0"></div>
+                       <div className="d-flex justify-content-between">  <span>Լաբորատոր ծառայություն</span> <span>{modalInfo.laboratoryService}</span></div>
+                       <div className="separator-full m-0"></div>
+                       <div className="d-flex justify-content-between">  <span>Սրվակ</span> <span>{modalInfo.vial}</span></div>
+                       <div className="separator-full m-0"></div>
+                       <div className="d-flex justify-content-between">  <span>Կենսանյութ</span> <span>{modalInfo.biomaterial}</span></div>
+                       <div className="separator-full m-0"></div>
+                       <div className="d-flex justify-content-between">  <span>Առքի գին</span> <span>{modalInfo.purchasePrice}</span></div>
+                       <div className="separator-full m-0"></div>
+                       <div className="d-flex justify-content-between">  <span>Արժեք </span> <span>{modalInfo.price}</span></div>
+                       <div className="separator-full m-0"></div>                  
+                       <div className="d-flex justify-content-between">  <span>Նմուշառման ժամկետ </span> <span>{modalInfo.samplingPeriod}</span></div>
+                       <div className="separator-full m-0"></div>                  
+                       <div className="d-flex justify-content-between">  <span>Նախապատրաստում </span> <span>{modalInfo.researchPrepSub}</span></div>
                        <div className="separator-full m-0"></div>                  
                        <div className="d-flex justify-content-between">  <span>Գրանցված է </span> <span>{modalInfo.createdAt && moment.utc(modalInfo.createdAt).format('DD-MM-YYYY HH:mm')}</span></div>
                        <div className="separator-full m-0"></div>   

@@ -35,6 +35,7 @@ const roleState = [
     { label:'Օգտատեր',name: "User", value: 2001 },
     { label:'Նմուշառող',name: "Sampler", value: 1212 },
     { label:'Բժիշկ',name: "Doctor", value: 9578 },  
+    { label:'Համակարգի ադմինիստրատոր',name: "SuperAdmin", value: 5050 },  
   ]
 function CreateUser({ setIsOpen,refreshData }) {
   const [errMsg, setErrMsg] = useState("");

@@ -32,6 +32,7 @@ import DiagnosticsInfoModal from "../infoModals/DiagnosticsInfoModal";
 import { DIAGNOSTICS_URL, DIAGNOSTICS__SEARCH_URL } from "../../utils/constants";
 import DiagnosticsEditModal from "../EditViews/DiagnosticsEditModal";
 import emptyTable from "../../dist/svg/emptyTable.svg"
+import sonographyIcon from "../../dist/svg/ultrasonography.png"
 
 
 function DiagnosticsTable({
@@ -326,16 +327,21 @@ function DiagnosticsTable({
         ),
 
         Cell: ({ row }) => (
-          <>
             <div
               onClick={() =>
                 handleDiagnosticsDetails(row.original.diagnosticsId)
               }
-              style={{ cursor: "pointer", textDecoration: "underline" }}
+              style={{display:'flex', cursor: "pointer", textDecoration: "underline" ,gap:'5px'}}
             >
+              <div>
+
               {row.original.diagnosticsId}
+              </div>
+              <div>
+              {!row.original?.init?.sono &&
+                <img src={sonographyIcon} alt="sonographyIcon" width={'20px'} height={'20px'} />}
             </div>
-          </>
+            </div>
         ),
       },
       {
@@ -396,6 +402,7 @@ function DiagnosticsTable({
             {row.original?.diagStatus === "Active" && (
               <div className="d-flex justify-content-center align-items-center">
                 {/* <div className="pe-2">{row.original.statusBoard.length}</div> */}
+                
                 <MdViewKanban
                   cursor={"pointer"}
                   size={"1.5rem"}

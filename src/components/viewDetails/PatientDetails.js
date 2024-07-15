@@ -61,7 +61,7 @@ function PatientDetails() {
      
  };
 
-  const pageCount = 1;
+  //const pageCount = 1;
   //const pageCount = Math.ceil(useersCount/usersPerPage)
   const handleOpenDiagModal = (data) => {
     setIsOpen(true);
@@ -76,7 +76,6 @@ function PatientDetails() {
     setActiveLink(linkId);
     setPageTab(linkId)
   };
-  console.log(location)
   useEffect(() => {
 
     const fetchData = async () => {

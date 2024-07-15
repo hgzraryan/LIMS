@@ -23,7 +23,7 @@ import {
 import { toast } from "react-toastify";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import LoadingSpinner from "../LoadingSpinner";
-import { RESEARCHLISTS_URL } from "../../utils/constants";
+import { RESEARCHLISTS_URL, ROLES } from "../../utils/constants";
 import { deleteNullProperties } from "../../utils/helper";
 import { Editor } from "@tinymce/tinymce-react";
 
@@ -36,6 +36,8 @@ function ResearchListEditModal({ researchList, setEditRow, refreshData }) {
   const [isLoading, setIsLoading] = useState(false);
   const axiosPrivate = useAxiosPrivate();
   const editorRef = useRef(null);
+  const storedUserRoles = JSON.parse(localStorage.getItem('userRoles'));
+  const [superAdmin,setSuperAdmin]=useState(storedUserRoles.includes(ROLES?.SuperAdmin))
 
   const methods = useForm({
     mode: "onChange",
@@ -336,12 +338,14 @@ function ResearchListEditModal({ researchList, setEditRow, refreshData }) {
                                       defaultValue={researchList?.purchasePrice}
                                     />
                                   </div>
+                                  {!!superAdmin && 
                                   <div className="col-sm-6">
                                     <Input
                                       {...price_validation}
                                       defaultValue={researchList?.price}
-                                    />
+                                      />
                                   </div>
+                                    }
                                   {/* <div className="col-sm-6">
                               <label htmlFor="price"className="mb-2">Արժեք</label>
                               <div className="form-control d-flex ">
