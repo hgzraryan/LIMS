@@ -61,26 +61,26 @@ function ExportData({handleToggleExportModal,toggleExport,section,refDoctors=[]}
         }
         const updatedFields = deleteNullProperties(newReportDates);
 
-        console.log(updatedFields)
-        console.log(refDoctor)
+        // console.log(updatedFields)
+        // console.log(refDoctor)
 
-        // try {
-        //     const response = await axiosPrivate.post(`/reportExport/${section}`,updatedFields)
-        // //     const response = await axiosPrivate.post('/reportExport', newReport, {
-        // //     headers: { "Content-Type": "application/json" },
-        // //     withCredentials: true,
-        // //   });
-        //   setExportData(response?.data?.jsonString);
-        //   setIsLoading(false);
-        //   setActive(false);
+        try {
+            const response = await axiosPrivate.post(`/reportExport/${section}`,updatedFields)
+        //     const response = await axiosPrivate.post('/reportExport', newReport, {
+        //     headers: { "Content-Type": "application/json" },
+        //     withCredentials: true,
+        //   });
+          setExportData(response?.data?.jsonString);
+          setIsLoading(false);
+          setActive(false);
  
-        // } catch (err) {
-        //   if (!err?.response) {
-        //     setErrMsg("No Server Response");
-        //   }  else {
-        //     setErrMsg(" Failed");
-        //   }
-        // }
+        } catch (err) {
+          if (!err?.response) {
+            setErrMsg("No Server Response");
+          }  else {
+            setErrMsg(" Failed");
+          }
+        }
       }); 
       const findResearches = (statusBoard) => {
         return statusBoard.flatMap(elem => elem.researches.map(research => research.name));
@@ -142,7 +142,13 @@ function ExportData({handleToggleExportModal,toggleExport,section,refDoctors=[]}
             clientGender:el.clientGender==="Male"?'Արական':el.clientGender==="Female"?'իգական':''
             
         }));
-    }
+    }else if(section === 'notifications'){
+      exportData = exportData.map(el => ({      
+          ...el,
+          createdAt:moment(el.createdAt).format('DD-MM-YYYY HH:mm'),
+          updatedAt:moment(el.updatedAt).format('DD-MM-YYYY HH:mm'),          
+      }));
+  }
         const workBook = utils.book_new()
         const workSheet = utils.json_to_sheet(exportData)
         utils.book_append_sheet(workBook,workSheet,exportName)

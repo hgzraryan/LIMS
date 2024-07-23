@@ -85,10 +85,6 @@ function ResearchesPrint({ modalPrint, setModalPrint }) {
         Header: "ID",
         accessor: "id",
       },
-      // {
-      //   Header: "Հետազոտություն",
-      //   accessor: "research",
-      // },
       {
         Header: "Հետազոտություն",
         accessor: "name",
@@ -100,9 +96,22 @@ function ResearchesPrint({ modalPrint, setModalPrint }) {
     ],
     []
   );
+  const columnsExt = React.useMemo(
+    () => [
+      {
+        Header: "ID",
+        accessor: "id",
+      },
+      {
+        Header: "Հետազոտություն",
+        accessor: "name",
+      },
+    ],
+    []
+  );
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({
-      columns,
+      columns:modalPrint?.class==="External"?columnsExt:columns,
       data: statusBoard[1].researches || [],
     });
   return (
@@ -351,14 +360,11 @@ function ResearchesPrint({ modalPrint, setModalPrint }) {
                             {" "+currentClient?.age}
                           </span>
                         </li>
-                        <li>
-                          Հեռախոս:
-                          <span
-                            style={{ fontWeight: "bold", fontSize: "1.1rem" }}
-                          >
-                            {" "+currentClient?.contact?.phone}
-                          </span>
-                        </li>
+                        {console.log(currentClient)}
+                        {modalPrint?.class!=="External"
+              ?<li >Հեռախոս: <span style={{fontWeight:'bold',fontSize:'1.1rem'}}>{" "+currentClient?.contact?.phone}</span></li>
+              :null
+              }
                         <li>
                           Տրման ամսաթիվ:
                           <span
@@ -430,7 +436,9 @@ function ResearchesPrint({ modalPrint, setModalPrint }) {
                     </div>}
                     </div>
                   </section>
-                  <section className="container">
+                  {
+                    modalPrint?.class!=="External"
+                    ?<section className="container">
                     <div className="total d-flex flex-column align-items-end">
                       {modalPrint.totalPrice < modalPrint.originalPrice ?(
                           <p style={{ marginRight: "6px" }}>Զեղչ {modalPrint?.originalPrice-modalPrint?.totalPrice}դր․</p>
@@ -442,6 +450,8 @@ function ResearchesPrint({ modalPrint, setModalPrint }) {
                       </p>
                     </div>
                   </section>
+                  :null
+              }
                 </>
               )}
             </Suspense>

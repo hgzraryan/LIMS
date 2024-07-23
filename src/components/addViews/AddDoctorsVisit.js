@@ -113,7 +113,6 @@ function AddDoctorsVisit({
         theme: "light",
       });
 
-      console.log(methods.formState.errors)
       const onSubmit = methods.handleSubmit(async ({client,
         doctor,
         visitDate,medicalServices}) => {
@@ -125,7 +124,7 @@ function AddDoctorsVisit({
             visitDate:visitDate?moment(visitDate).format('YYYY-MM-DD HH:mm'):null,          
         }
         try {
-          await axiosPrivate.post(REGISTER_DOCTORSVISITS, newDoctorsVisit, {
+          const response = await axiosPrivate.post(REGISTER_DOCTORSVISITS, newDoctorsVisit, {
             headers: { "Content-Type": "application/json" },
             withCredentials: true,
           });
@@ -136,8 +135,8 @@ function AddDoctorsVisit({
             `Բժշկի այցելությունը ավելացված է`
           );
            // Send notification if enableSMS is checked
-  if (!!enableSMS) {
-    await axiosPrivate.post('/sendNotification', { patientId: client?.value, type:'sms',notify:'visit' }, {
+    if (!!enableSMS && response?.data?.doctorVisitId) {
+    await axiosPrivate.post('/sendNotification', { patientId: client?.value, type:'sms',notify:'visit',doctorVisitId:response?.data?.doctorVisitId }, {
       headers: { "Content-Type": "application/json" },
       withCredentials: true,
     });

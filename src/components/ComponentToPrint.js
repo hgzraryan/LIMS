@@ -29,6 +29,19 @@ export const ComponentToPrint = forwardRef(({ value,currentClient }, ref) => {
     ],
     []
   );
+  const columnsExt = React.useMemo(
+    () => [
+      {
+        Header: "ID",
+        accessor: "id",
+      },
+      {
+        Header: "Հետազոտություն",
+        accessor: "name",
+      },
+    ],
+    []
+  );
 
 
   //-----------------------barcode ------------------
@@ -48,7 +61,7 @@ const { inputRef } = Barcode({
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({
-      columns,
+      columns:value?.class==="External"?columnsExt:columns,
       data: value.statusBoard[1].researches || [],
     });
   return (
@@ -144,7 +157,10 @@ const { inputRef } = Barcode({
               <li >Սեռ: <span style={{fontWeight:'bold',fontSize:'1.1rem'}}>{(currentClient?.gender==='Male')?' Արական':' Իգական'}</span></li>
               <li >Ծննդյան ամսաթիվ: <span style={{fontWeight:'bold',fontSize:'1.1rem'}}>{currentClient?.dateOfBirth && (" "+moment.utc(currentClient?.dateOfBirth).format('DD-MM-YYYY'))}</span></li>
               <li >Տարիք: <span style={{fontWeight:'bold',fontSize:'1.1rem'}}>{" "+currentClient?.age}</span></li>
-              <li >Հեռախոս: <span style={{fontWeight:'bold',fontSize:'1.1rem'}}>{" "+currentClient?.contact?.phone}</span></li>
+              {value?.class!=="External"
+              ?<li >Հեռախոս: <span style={{fontWeight:'bold',fontSize:'1.1rem'}}>{" "+currentClient?.contact?.phone}</span></li>
+              :null
+              }
               <li >Տրման ամսաթիվ: <span style={{fontWeight:'bold',fontSize:'1.1rem'}}>{value?.createdAt && (" "+moment.utc(value?.createdAt).format('DD-MM-YYYY HH:mm'))}</span></li>
               {/* <li>
                 Անուն Ազգանուն: `${value.firstName} ${value.lastName} `
@@ -213,7 +229,9 @@ const { inputRef } = Barcode({
             </table>
           </div>
         </section>
-        <section className="research_container">
+        {
+                    value?.class!=="External"
+                    ?<section className="research_container">
         <div className="total d-flex flex-column align-items-end">
                       {value?.totalPrice < value?.originalPrice ?(
                           <p style={{ marginRight: "6px" }}>Զեղչ {value?.originalPrice-value?.totalPrice}դր․</p>
@@ -226,6 +244,7 @@ const { inputRef } = Barcode({
                       </p>
                     </div>
         </section>
+        :null}
       </main>
     </div>
   );

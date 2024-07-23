@@ -40,11 +40,13 @@ MEDICALSERVICES_ROUTE,
 PACKAGES_ROUTE,
 ROLES,
 REPORTSEXPORT_ROUTE,
-DOCTOR_PATIENTS_ID_ROUTE} from '../src/utils/constants' 
+DOCTOR_PATIENTS_ID_ROUTE,
+NOTIFICATIONS_ROUTE} from '../src/utils/constants' 
 import { lazy, Suspense, useEffect, useState } from "react";
 import Support from "./components/views/Support";
 import DoctorsTemplete from "./components/layouts/DoctorsTemplete";
 import DoctorsEmployment from "./components/views/DoctorsEmployment";
+import Notifications from "./components/views/Notifications";
 
  const Register = lazy(()=>  import("./components/Register"));
  const Login = lazy(()=>  import("./components//views/Login"));
@@ -197,6 +199,7 @@ function App() {
               <Route path={REFDOCTORS_ROUTE} element={<RefDoctors />} />
               <Route path={MEDINSTITUTIONS_ROUTE} element={<MedInstitutions />} />
               <Route path={REPORTSEXPORT_ROUTE} element={<ReportsExport />} />
+              <Route path={NOTIFICATIONS_ROUTE} element={<Notifications />} />
           
 
             <Route element={<RequireAuth allowedRoles={[ROLES.Editor]} />}>

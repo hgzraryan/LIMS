@@ -38,6 +38,7 @@ export const DIAGNOSTICS_ID_ROUTE = 'diagnostics/:id'
 export const MISSING_ROUTE = '*'
 export const PACKAGES_ROUTE = 'setup/packages/page/:pageNumber'
 export const REPORTSEXPORT_ROUTE = 'reports/export'
+export const NOTIFICATIONS_ROUTE = 'setup/notifications/page/:pageNumber'
 
 export const DOCTORSTAMPLETE_ROUTE = 'doctorsTemplete'
 export const DOCTORSPATIENT_ID_ROUTE = 'doctorsPatients/:id'
@@ -78,8 +79,9 @@ export const ORGANIZATIONS_URL = "/organizations";
 export const REAGENTS_URL = "/reagentList";
 export const EQUIPMENTS_URL = "/equipmentList";
 export const SUPPORT_URL = "/support";
-export const DOCTORSVISITS_URL = '/doctorsVisits'
+export const DOCTORSVISITS_URL = '/doctorsVisits';
 export const PACKAGES_URL = "/customPackage";
+export const NOTIFICATIONS_URL = "/notifications";
 
 export const PATIENTS__SEARCH_URL = "/searchPatient";
 export const DIAGNOSTICS__SEARCH_URL = "/searchDiagnostics";

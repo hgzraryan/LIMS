@@ -29,7 +29,7 @@ const setupData = [
     {
         name:'Ծանուցումներ',
         icon:notifications,
-        pathname:''
+        pathname:'setup/notifications/page/1'
 
     },
     {
