@@ -338,8 +338,8 @@ function DiagnosticsTable({
               {row.original.diagnosticsId}
               </div>
               <div>
-              {!row.original?.init?.sono &&
-                <img src={sonographyIcon} alt="sonographyIcon" width={'20px'} height={'20px'} />}
+              {/* {!row.original?.init?.sono &&
+                <img src={sonographyIcon} alt="sonographyIcon" width={'20px'} height={'20px'} />} */}
             </div>
             </div>
         ),

@@ -10,7 +10,7 @@ import BarcodeComp from "./BarcodeComp";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import moment from "moment";
 
-export const ComponentToPrint = forwardRef(({ value,currentClient }, ref) => {
+export const ComponentToPrint = forwardRef(({ value,currentClient,externalChecked }, ref) => {
 
   const columns = React.useMemo(
     () => [
@@ -61,7 +61,7 @@ const { inputRef } = Barcode({
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({
-      columns:value?.class==="External"?columnsExt:columns,
+      columns:!!externalChecked?columnsExt:columns,
       data: value.statusBoard[1].researches || [],
     });
   return (
@@ -157,9 +157,9 @@ const { inputRef } = Barcode({
               <li >Սեռ: <span style={{fontWeight:'bold',fontSize:'1.1rem'}}>{(currentClient?.gender==='Male')?' Արական':' Իգական'}</span></li>
               <li >Ծննդյան ամսաթիվ: <span style={{fontWeight:'bold',fontSize:'1.1rem'}}>{currentClient?.dateOfBirth && (" "+moment.utc(currentClient?.dateOfBirth).format('DD-MM-YYYY'))}</span></li>
               <li >Տարիք: <span style={{fontWeight:'bold',fontSize:'1.1rem'}}>{" "+currentClient?.age}</span></li>
-              {value?.class!=="External"
-              ?<li >Հեռախոս: <span style={{fontWeight:'bold',fontSize:'1.1rem'}}>{" "+currentClient?.contact?.phone}</span></li>
-              :null
+              {!!externalChecked
+              ?null
+              :<li >Հեռախոս: <span style={{fontWeight:'bold',fontSize:'1.1rem'}}>{" "+currentClient?.contact?.phone}</span></li>
               }
               <li >Տրման ամսաթիվ: <span style={{fontWeight:'bold',fontSize:'1.1rem'}}>{value?.createdAt && (" "+moment.utc(value?.createdAt).format('DD-MM-YYYY HH:mm'))}</span></li>
               {/* <li>
@@ -230,8 +230,9 @@ const { inputRef } = Barcode({
           </div>
         </section>
         {
-                    value?.class!=="External"
-                    ?<section className="research_container">
+                    !!externalChecked
+                    ?null
+        :<section className="research_container">
         <div className="total d-flex flex-column align-items-end">
                       {value?.totalPrice < value?.originalPrice ?(
                           <p style={{ marginRight: "6px" }}>Զեղչ {value?.originalPrice-value?.totalPrice}դր․</p>
@@ -243,8 +244,7 @@ const { inputRef } = Barcode({
                         {" " + value?.totalPrice}դր
                       </p>
                     </div>
-        </section>
-        :null}
+        </section>}
       </main>
     </div>
   );

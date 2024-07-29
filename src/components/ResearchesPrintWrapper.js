@@ -4,7 +4,7 @@ import { ComponentToPrint } from './ComponentToPrint';
 import ReactToPrint from 'react-to-print';
 import {ComponentToPrintVisit} from './ComponentToPrintVisit';
 
-function ResearchesPrintWrapper({ value,currentClient }) {
+function ResearchesPrintWrapper({ value,currentClient,externalChecked=false }) {
     let componentRef = useRef(null); // 2.
     return (
       <div style={{ display: "flex" }}>
@@ -22,7 +22,7 @@ function ResearchesPrintWrapper({ value,currentClient }) {
         />
         <div style={{ display: "none" }}>
          {value?.diagnosticsId 
-         ?<ComponentToPrint ref={componentRef} value={value} currentClient={currentClient} />
+         ?<ComponentToPrint ref={componentRef} value={value} currentClient={currentClient} externalChecked={externalChecked}/>
          :value?.doctorsVisitId
          ?<ComponentToPrintVisit ref={componentRef} value={value}  />
          :''

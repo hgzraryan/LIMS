@@ -17,6 +17,7 @@ function ResearchesPrint({ modalPrint, setModalPrint }) {
   const { clientType } = modalPrint;
   const { statusBoard } = modalPrint;
   const componentRef = useRef();
+  const [checked, setChecked] = useState(false);
 
   const getPatientData = async () => {
     try {
@@ -467,9 +468,16 @@ function ResearchesPrint({ modalPrint, setModalPrint }) {
             marginTop: "2rem",
           }}
         >
+          {/* checkbox for external type of diagnostics */}
+          <div style={{display:'flex',justifyContent:'center',alignItems:'center'}}>
+          <input type="checkbox" onChange={() => setChecked((state) => !state)} style={{ transform: "scale(1.5)",accentColor:'#4eafcb'}} />
+          <label style={{margin:'0 10px'}}>Առանց անձնական տվյալների</label>
+          </div>
+
           <ResearchesPrintWrapper
             value={modalPrint}
             currentClient={currentClient}
+            externalChecked={checked}
           />
           <button
             type="button"

@@ -274,7 +274,7 @@ function PatientsTable({
                 </span>
               </a>
             </div>            
-            <div className="dropdown">
+            {/* <div className="dropdown">
               <button
                 className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover dropdown-toggle no-caret"
                 aria-expanded="false"
@@ -325,7 +325,7 @@ function PatientsTable({
                   Human Resource
                 </a>
               </div>
-            </div>
+            </div> */}
           </div>
         ),
         accessor: "options",

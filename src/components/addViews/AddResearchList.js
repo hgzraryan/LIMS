@@ -35,12 +35,33 @@ const researchListClassState = [
 function AddResearchList({ handleToggleCreateModal, refreshData }) {
     const [errMsg, setErrMsg] = useState("");
     const [currency, setCurrency] = useState("AMD");
+    const [researchType, setResearchType] = useState("");
+    const [externalType, setExternalType] = useState("");
     const [amount, setAmount] = useState("");
     const editorRef = useRef(null);
     const axiosPrivate = useAxiosPrivate();
 
     const handleCurrencyChange = (e) => {
       setCurrency(prev=>e.target.value)
+ }
+    const handleResearchType = (data) => {
+      console.log(data)
+      switch (data.value) {
+        case "External":
+          setResearchType(data.value);
+          setExternalType(true);
+          break;
+        case "Internal":
+          setResearchType(data.value);
+          setExternalType(false);
+          break;
+        case "Other":
+          setResearchType(data.value);
+          setExternalType(false);
+          break;
+        default:
+          break;
+      }
  }
  const handleAmountChange = (e) => {
   setAmount(prev=>e.target.value)
@@ -99,7 +120,7 @@ function AddResearchList({ handleToggleCreateModal, refreshData }) {
         samplingPeriod:samplingPeriod,
         researchPrepSub:researchPrepSub,
         category:category,
-        class: researchType?.value,
+        class: researchType,
         additional: editorRef.current.getContent({ format: "text" }),
         //currency:currency,
       }; 
@@ -224,7 +245,7 @@ function AddResearchList({ handleToggleCreateModal, refreshData }) {
                                 <Input {...localCode_validation} />
                               </div>
                               <div className="col-sm-6">
-                                <Input {...partnerCode_validation} />
+                                <Input {...partnerCode_validation} validation={{required:externalType? {value:true,message: "պարտադիր"}:{value:false}}}/>
                               </div>
                             </div>
                             <div className="row gx-3">
@@ -257,6 +278,14 @@ function AddResearchList({ handleToggleCreateModal, refreshData }) {
                                           {...field}
                                           options={researchListClassState}
                                           placeholder={"Ընտրել"}
+                                          onChange={(val) => {
+                                            field.onChange(val.value);
+                                            handleResearchType(val);
+                                          }}
+                                          value={researchListClassState.find(
+                                            (option) =>
+                                              option.value === researchType
+                                          )}
                                         />
                                       )}
                                     />

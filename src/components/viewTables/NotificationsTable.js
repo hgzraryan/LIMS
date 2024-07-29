@@ -8,7 +8,6 @@ import cancellSvg from '../../dist/svg/cancelled.svg'
 import smsSvg from '../../dist/svg/sms.svg'
 import emailSvg from '../../dist/svg/email.svg'
 function NotificationsTable({notifications}) {
-    console.log(notifications)
     const columns = useMemo(
         () => [
           {
