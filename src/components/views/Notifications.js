@@ -8,17 +8,19 @@ import ExportData from "../ExportData";
 import { useNavigate, useParams } from 'react-router-dom';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import useGetData from '../../hooks/useGetData';
-import { NOTIFICATIONS_URL, PACKAGES_URL } from '../../utils/constants';
+import { NOTIFICATIONS_URL, RESEARCHLISTS_URL } from '../../utils/constants';
 import NotificationsTable from '../viewTables/NotificationsTable';
 
 function Notifications() {
     const { pageNumber } = useParams();
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(Number(pageNumber));
-  const axiosPrivate = useAxiosPrivate();
-  const [isOpen, setIsOpen] = useState(false);
   const [toggleExport, setToggleExport] = useState(false);
   const [usersPerPage, setUsersPerPage] = useState(Math.round((window.innerHeight / 100)));
+  const [searchCount,setSearchCount] = useState(null)
+  const [searchId,setSearchId] = useState(null)
+  const [searchTerms,setSearchTerms] = useState(null)
+
   const handleToggleExportModal = (value) => {
     setToggleExport((prev) => value);
   };
@@ -27,22 +29,23 @@ function Notifications() {
     setData: setNotifications,
     refreshData,
     dataCount 
-  } = useGetData(NOTIFICATIONS_URL,currentPage,usersPerPage);
-const pageCount = Math.ceil(dataCount/usersPerPage)
-const handleToggleCreateModal = (value) => {
-  setIsOpen((prev) => value);
-};
+  } = useGetData(NOTIFICATIONS_URL,currentPage,usersPerPage,searchCount,null,searchId,searchTerms);
+   //-------------------------PAGINATION---------------------------//  
+  const pageCount = searchCount?Math.ceil(searchCount/usersPerPage) :searchCount===0? 0:Math.ceil(dataCount/usersPerPage)
+  useEffect(() => {
+    setCurrentPage(Number(pageNumber));
+  }, [pageNumber]);
 const handlePageClick = ({ selected: selectedPage }) => {
-    navigate(`/notifications/page/${selectedPage+1}`);
+  console.log(selectedPage)
+    navigate(`/setup/notifications/page/${selectedPage+1}`);
 }
     //--------------------------------------------------------------//
   
     const refreshPage = () => {
-        let paglink = document.querySelectorAll(".page-item");
-        paglink[0]?.firstChild.click();
-        refreshData()
-      };
-      //-------------------
+      refreshData()
+      let paglink = document.querySelectorAll(".page-item");
+      paglink[0]?.firstChild.click();
+    };
   return (
     <HelmetProvider>
     <ExportData 
