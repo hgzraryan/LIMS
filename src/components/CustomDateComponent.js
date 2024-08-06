@@ -5,7 +5,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment';
 import { calculateAge } from '../utils/helper';
 
-function CustomDateComponent({ control, name,required='true',defaultValue='',setIsChild=false })  {
+function CustomDateComponent({ control, name,required='true',defaultValue='',setIsChild=false,maxDate='' })  {
     const {
       field,
       fieldState: { invalid, isTouched, isDirty },
@@ -21,7 +21,7 @@ function CustomDateComponent({ control, name,required='true',defaultValue='',set
       field.onChange(date);
       if(setIsChild){
         if(calculateAge(date)<18) {
-          console.log(calculateAge(date))
+         // console.log(calculateAge(date))
           setIsChild(true)
         }else if(calculateAge(date)>18){
           setIsChild(false)
@@ -41,6 +41,7 @@ function CustomDateComponent({ control, name,required='true',defaultValue='',set
        placeholderText="Ընտրեք ամսաթիվը" 
        className='form-control'
        popperPlacement="auto"
+       maxDate={new Date(maxDate)}
        //popperContainer={({ children }) => <div>{children}</div>} // Custom container
 
        />

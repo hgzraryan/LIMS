@@ -25,14 +25,20 @@ const Patients = () => {
   const [currentPage, setCurrentPage] = useState(Number(pageNumber));
   const axiosPrivate = useAxiosPrivate();
   const [isLoading, setIsLoading] = useState(false);
-
+  const [errMsg, setErrMsg] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  const [isOpenQuick, setIsOpenQuick] = useState(false);
   const [toggleExport, setToggleExport] = useState(false);
   const [selectedItem, setSelectedItem] = useState("");
   const [usersPerPage, setUsersPerPage] = useState(Math.round((window.innerHeight / 100)));
   const [researches, setResearches] = useState([]);
   const [searchCount,setSearchCount] = useState(null)
   const [searchParams,setSearchParams] = useState(null)
+  const [exportData, setExportData] = useState([]);
+
+  const handleToggleQuickExportModal = (value) => {
+    topPatients()
+  };
   const handleToggleExportModal = (value) => {
     setToggleExport((prev) => value);
   };
@@ -79,6 +85,31 @@ const Patients = () => {
         });
     }, 500);
   }, []);
+  const topPatients = async () =>{
+
+    try {
+      const response = await axiosPrivate.get(`/quickReports/topOfPatient`)
+  //     const response = await axiosPrivate.post('/reportExport', newReport, {
+  //     headers: { "Content-Type": "application/json" },
+  //     withCredentials: true,
+  //   });
+    setExportData(response?.data?.jsonString);
+    // setIsLoading(false);
+    // setActive(false);
+
+    } catch (err) {
+      if (!err?.response) {
+      setErrMsg("No Server Response");
+    }  else {
+      setErrMsg(" Failed");
+    }
+  }
+  console.log("asdsads",exportData)
+  const workBook = utils.book_new()
+  const workSheet = utils.json_to_sheet(exportData)
+  utils.book_append_sheet(workBook,workSheet,'quickReport')
+  writeFile(workBook,`quickReport ${moment(new Date()).format('DD-MM-YYYY')}.xlsx`)
+}
     //--------------------------------------------------------------//
   
   const refreshPage = () => {
@@ -90,6 +121,11 @@ const Patients = () => {
 
   return (
     <HelmetProvider>
+      <ExportData 
+      handleToggleExportModal = {handleToggleExportModal}
+      toggleExport={toggleExport}
+      section='patientsData'
+      />
       <ExportData 
       handleToggleExportModal = {handleToggleExportModal}
       toggleExport={toggleExport}
@@ -158,6 +194,18 @@ const Patients = () => {
                 </div>
               </div>
               <div className="contact-options-wrap">
+                <a
+                  className="btn btn-icon btn-flush-dark flush-soft-hover dropdown-toggle no-caret active"
+                  href="#"
+                  data-bs-toggle="dropdown"
+                >
+                  <span className="icon">
+                    <span className="feather-icon"
+                    onClick={topPatients}>
+                      <FeatherIcon icon="database" />
+                    </span>
+                  </span>
+                </a>
                 <a
                   className="btn btn-icon btn-flush-dark flush-soft-hover dropdown-toggle no-caret active"
                   href="#"

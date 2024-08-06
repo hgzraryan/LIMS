@@ -20,7 +20,7 @@ const useDeleteData = (url,itemRef,selectedItem,setSelectedItemId,items,setItems
     }
   };
   const handleDeleteItem = async (delid) => {
-    if (selectedItem[name]?.trim() === itemRef.current?.trim()) {
+    if (!!selectedItem[name].length && !!itemRef?.current.length && selectedItem[name]?.trim() === itemRef?.current?.trim()) {
       try {
         const response = await axiosPrivate.delete(url, {
           data: { id: delid },
@@ -41,8 +41,18 @@ const useDeleteData = (url,itemRef,selectedItem,setSelectedItemId,items,setItems
         console.error(err);
         //navigate('/login', { state: { from: location }, replace: true });
       }
+    } else if(!itemRef?.current.length) {
+      Swal.fire(
+        {
+          confirmButtonColor: '#f44336',
+          text:"Մուտքագրեք անհրաճեշտ տվյալները "
+        });
     } else {
-      Swal.fire("Write right name");
+      Swal.fire(
+        {
+          confirmButtonColor: '#f44336',
+          text:"Մուտքագրեք ճիշտ տվյալները "
+        });
     }
   };
   return {handleDeleteItem,updateUsersCount};

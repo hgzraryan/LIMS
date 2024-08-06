@@ -220,7 +220,7 @@ function ExportData({handleToggleExportModal,toggleExport,section,refDoctors=[]}
                                     )}
                                     </div>
                                 <div>                                  
-                                   <CustomDateComponent name="startDate" control={methods.control}/>
+                                   <CustomDateComponent name="startDate" control={methods.control} />
                                 </div>
                               </div>
                             </div>
@@ -238,7 +238,7 @@ function ExportData({handleToggleExportModal,toggleExport,section,refDoctors=[]}
                                     )}
                                     </div>
                                 <div>                                  
-                                   <CustomDateComponent name="endDate" control={methods.control}/>
+                                   <CustomDateComponent name="endDate" control={methods.control} maxDate={moment(new Date()).format('MM-DD-YYYY')}/>
                                 </div>
                               </div>
                             </div>
