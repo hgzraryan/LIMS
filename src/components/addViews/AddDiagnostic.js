@@ -227,7 +227,6 @@ const onResearchSelect = (data) => {
       // packages:data?.package.map((el) => el.value)
     };
 
-    console.log(newDiagnose);
     const updatedData = deleteNullProperties(newDiagnose)
 
     try {

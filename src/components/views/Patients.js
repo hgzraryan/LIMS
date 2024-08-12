@@ -36,9 +36,6 @@ const Patients = () => {
   const [searchParams,setSearchParams] = useState(null)
   const [exportData, setExportData] = useState([]);
 
-  const handleToggleQuickExportModal = (value) => {
-    topPatients()
-  };
   const handleToggleExportModal = (value) => {
     setToggleExport((prev) => value);
   };
@@ -86,16 +83,10 @@ const Patients = () => {
     }, 500);
   }, []);
   const topPatients = async () =>{
-
     try {
       const response = await axiosPrivate.get(`/quickReports/topOfPatient`)
-  //     const response = await axiosPrivate.post('/reportExport', newReport, {
-  //     headers: { "Content-Type": "application/json" },
-  //     withCredentials: true,
-  //   });
     setExportData(response?.data?.jsonString);
     // setIsLoading(false);
-    // setActive(false);
 
     } catch (err) {
       if (!err?.response) {
@@ -104,7 +95,6 @@ const Patients = () => {
       setErrMsg(" Failed");
     }
   }
-  console.log("asdsads",exportData)
   const workBook = utils.book_new()
   const workSheet = utils.json_to_sheet(exportData)
   utils.book_append_sheet(workBook,workSheet,'quickReport')
@@ -121,11 +111,6 @@ const Patients = () => {
 
   return (
     <HelmetProvider>
-      <ExportData 
-      handleToggleExportModal = {handleToggleExportModal}
-      toggleExport={toggleExport}
-      section='patientsData'
-      />
       <ExportData 
       handleToggleExportModal = {handleToggleExportModal}
       toggleExport={toggleExport}

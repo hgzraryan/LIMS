@@ -71,13 +71,23 @@ function DiagnosticsInfoModal({modalInfo,setModalInfo}) {
                 <div className="d-flex justify-content-between">
                   {" "}
                   <span>ներքին հետ․ կարգավիճակ </span>{" "}
-                  <span>{modalInfo.internalStatus}</span>
+                  <span>{
+                  modalInfo.internalStatus==='Approval'?"Ընդունված"
+                  :modalInfo.internalStatus==='Delayed'?"Հետաձգված"
+                  :modalInfo.internalStatus==='Generated'?"Ստեղծված"
+                  :modalInfo.internalStatus==='Other'?"Other":''
+                }</span>
                 </div>
                 <div className="separator-full m-0"></div>
                 <div className="d-flex justify-content-between">
                   {" "}
                   <span>Արտաքին հետ․ կարգավիճակ </span>{" "}
-                  <span>{modalInfo.externalStatus}</span>
+                  <span>{
+                     modalInfo.externalStatus==='Approval'?"Ընդունված"
+                     :modalInfo.externalStatus==='Delayed'?"Հետաձգված"
+                     :modalInfo.externalStatus==='Generated'?"Ստեղծված"
+                     :modalInfo.externalStatus==='Other'?"Other":''
+                    }</span>
                 </div>
                 <div className="separator-full m-0"></div>
                 <div className="d-flex justify-content-between">

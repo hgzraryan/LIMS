@@ -2,7 +2,6 @@ import React, { Suspense, useState } from 'react'
 import { Modal } from "react-bootstrap";
 import FeatherIcon from "feather-icons-react";
 import { Controller, Form, FormProvider, useForm} from "react-hook-form";
-import CustomDateTimeComponent from './CustomDateTimeComponent';
 import ErrorSvg from "../dist/svg/error.svg";
 import LoadingSpinner from './LoadingSpinner';
 import Select from "react-select";
@@ -52,7 +51,6 @@ function ExportData({handleToggleExportModal,toggleExport,section,refDoctors=[]}
         mode: "onChange",
       });
       
-      const { trigger } = useForm();
       const onSubmit = methods.handleSubmit(async ({startDate,endDate,refDoctor}) => {
         const newReportDates = {        
             startDate:startDate?moment(startDate).format('YYYY-MM-DD'):null,
@@ -148,6 +146,12 @@ function ExportData({handleToggleExportModal,toggleExport,section,refDoctors=[]}
           createdAt:moment(el.createdAt).format('DD-MM-YYYY HH:mm'),
           updatedAt:moment(el.updatedAt).format('DD-MM-YYYY HH:mm'),          
       }));
+    }else if(section === 'researchList'){
+      exportData = exportData.map(el => ({      
+          ...el,
+          createdAt:moment(el.createdAt).format('DD-MM-YYYY HH:mm'),
+          updatedAt:moment(el.updatedAt).format('DD-MM-YYYY HH:mm'),          
+      }));
   }
         const workBook = utils.book_new()
         const workSheet = utils.json_to_sheet(exportData)
@@ -182,6 +186,8 @@ function ExportData({handleToggleExportModal,toggleExport,section,refDoctors=[]}
                         autoComplete="off"
                         className="container"
                       >
+                        {section !== 'researchList'?
+                        <>
                         <div className="card">
                           <div className="card-header">
                             <a href="#">Տվյալներ</a>
@@ -309,7 +315,6 @@ function ExportData({handleToggleExportModal,toggleExport,section,refDoctors=[]}
                               <div className="separator-full"></div> 
                               
                               <div className="modal-footer align-items-center">
-                        
                           <button
                             type="button"
                             className="btn btn-secondary"
@@ -337,6 +342,36 @@ function ExportData({handleToggleExportModal,toggleExport,section,refDoctors=[]}
                           CSV
                         </CSVLink>
                         </div>
+                                </>
+                                : <div className="d-flex justify-content-sm-between  align-items-center">
+                                <button
+                                  type="button"
+                                  className="btn btn-secondary"
+                                  style={{backgroundColor:"#4eafcb",border:'none'}}
+                                  onClick={onSubmit}
+                                >
+                                  Ստեղծել
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={()=>handleExportDiagnostics(section,exportData)}
+                                  className="btn btn-primary"
+                                  data-bs-dismiss="modal"
+                                  disabled={active}
+                                >
+                                  XMLS
+                                </button>
+                                <CSVLink
+                                data={exportData}
+                                filename={"my-file.csv"}
+                                className={`btn btn-primary ${active ? 'disabled' : ''}`}
+      
+                                target="_blank"
+                              >
+                                CSV
+                              </CSVLink>
+                              </div>
+                        }
                       </Form>
                     </div>
                   </div>

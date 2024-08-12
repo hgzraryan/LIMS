@@ -407,7 +407,7 @@ function PatientsTable({
                   <div className="w-100">
                        <div className="d-flex justify-content-between">  <span>ID </span> <span>{modalInfo.patientId}</span></div>
                        <div className="separator-full m-0"></div>
-                       <div className="d-flex justify-content-between">  <span>Անուն Ազգանուն Հայրանուն </span> <span>{modalInfo.lastName} {modalInfo.firstName} {modalInfo.midName}</span></div>
+                       <div className="d-flex justify-content-between">  <span>ԱԱՀ </span> <span>{modalInfo.lastName} {modalInfo.firstName} {modalInfo.midName}</span></div>
                        <div className="separator-full m-0"></div>
                        <div className="d-flex justify-content-between">  <span>Ծննդյան ամսաթիվ </span> <span>{modalInfo.dateOfBirth && moment.utc(modalInfo.dateOfBirth).format('DD-MM-YYYY')}</span></div>
                        <div className="separator-full m-0"></div>

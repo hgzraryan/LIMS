@@ -13,6 +13,7 @@ import AddCategory from "../addViews/AddCategory";
 import { RESEARCHLISTS_URL } from "../../utils/constants";
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { useNavigate, useParams } from "react-router-dom";
+import ExportData from "../ExportData";
 
 const ResearchLists = () => {
   const { pageNumber } = useParams();
@@ -28,7 +29,11 @@ const ResearchLists = () => {
   const [searchCount,setSearchCount] = useState(null)
   const [searchId,setSearchId] = useState(null)
   const [searchTerms,setSearchTerms] = useState(null)
+  const [toggleExport, setToggleExport] = useState(false);
 
+ const handleToggleExportModal = (value) => {
+    setToggleExport((prev) => value);
+  };
   const handleSearchPageCount = ({count,searchTerms,id}) =>{
     setSearchCount(count)
     setSearchTerms(searchTerms)
@@ -93,6 +98,11 @@ const handlePageClick = ({ selected: selectedPage }) => {
   };
   return (
     <HelmetProvider>
+      <ExportData 
+      handleToggleExportModal = {handleToggleExportModal}
+      toggleExport={toggleExport}
+      section='researchList'
+      />
         <div>
           <div>
     
@@ -168,6 +178,18 @@ const handlePageClick = ({ selected: selectedPage }) => {
                 }
               </div>
               <div className="contact-options-wrap">
+              <a
+                  className="btn btn-icon btn-flush-dark flush-soft-hover dropdown-toggle no-caret active"
+                  href="#"
+                  data-bs-toggle="dropdown"
+                >
+                  <span className="icon">
+                    <span className="feather-icon"
+                    onClick={handleToggleExportModal}>
+                      <FeatherIcon icon="download" />
+                    </span>
+                  </span>
+                </a>
                 <a
                   className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover no-caret d-sm-inline-block d-none"
                   href="#"
