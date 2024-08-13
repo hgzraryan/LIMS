@@ -34,7 +34,7 @@ const Patients = () => {
   const [researches, setResearches] = useState([]);
   const [searchCount,setSearchCount] = useState(null)
   const [searchParams,setSearchParams] = useState(null)
-  const [exportData, setExportData] = useState([]);
+  //const [exportData, setExportData] = useState([]);
 
   const handleToggleExportModal = (value) => {
     setToggleExport((prev) => value);
@@ -83,9 +83,10 @@ const Patients = () => {
     }, 500);
   }, []);
   const topPatients = async () =>{
+    let exportData=[]
     try {
       const response = await axiosPrivate.get(`/quickReports/topOfPatient`)
-    setExportData(response?.data?.jsonString);
+      exportData = response?.data?.jsonString
     // setIsLoading(false);
 
     } catch (err) {
