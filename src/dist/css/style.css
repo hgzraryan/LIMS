@@ -91203,3 +91203,6 @@ td{
     flex-direction: row-reverse;
   }
 }
+.form-control.custom-datepicker{
+  min-width: 250px;
+  }

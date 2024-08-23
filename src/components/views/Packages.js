@@ -10,6 +10,7 @@ import { PACKAGES_URL } from '../../utils/constants';
 import PackagesTable from '../viewTables/PackagesTable';
 import useDeleteData from '../../hooks/useDeleteData';
 import { useNavigate, useParams } from 'react-router-dom';
+import useRefreshData from '../../hooks/useRefreshData';
 
 function Packages() {
   const { pageNumber } = useParams();
@@ -32,10 +33,14 @@ function Packages() {
     const {
       data: packages,
       setData: setPackages,
-      refreshData,
+      //refreshData,
       dataCount
     } = useGetData(PACKAGES_URL,currentPage,usersPerPage,searchCount,null,searchId,searchTerms);
     const pageCount = searchCount?Math.ceil(searchCount/usersPerPage) :searchCount===0? 0:Math.ceil(dataCount/usersPerPage)
+    const { refreshData,data } = useRefreshData(PACKAGES_URL, usersPerPage);
+    useEffect(()=>{
+      setPackages(data)
+      },[data])
     const handleToggleCreateModal = (value) => {
         setIsOpen((prev) => value);
       };
@@ -48,7 +53,7 @@ function Packages() {
     //     researchList,
     //     setResearches,
     //     "researchName",
-    //     getResearches 
+    //     refreshData 
     //   );
     const handleOpenModal = (user) => {
         setSelectedItemId(true);

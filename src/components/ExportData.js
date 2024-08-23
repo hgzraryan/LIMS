@@ -15,11 +15,16 @@ import makeAnimated from "react-select/animated";
 
 function ExportData({handleToggleExportModal,toggleExport,section,refDoctors=[]}) {
     const [isLoading, setIsLoading] = useState(false);
+    const [isDone, setIsDone] = useState(false);
     const [errMsg, setErrMsg] = useState("");
     const [active, setActive] = useState(true);
+    const [dateChanged, setDateChaged] = useState(false);
     const [exportData, setExportData] = useState([]);
     const axiosPrivate = useAxiosPrivate();
     const animatedComponents = makeAnimated();
+    const handleDateChanged = (date) => {
+      setDateChaged(true)
+    }
     const colourStyles = {
       control: (styles, { isFocused, isSelected }) => ({
         ...styles,
@@ -51,18 +56,18 @@ function ExportData({handleToggleExportModal,toggleExport,section,refDoctors=[]}
         mode: "onChange",
       });
       
-      const onSubmit = methods.handleSubmit(async ({startDate,endDate,refDoctor}) => {
+      const onSubmit = methods.handleSubmit(async ({dates,refDoctor}) => {
         const newReportDates = {        
-            startDate:startDate?moment(startDate).format('YYYY-MM-DD'):null,
-            endDate:endDate?moment(endDate).format('YYYY-MM-DD'):null,  
-            refDoctor:refDoctor?refDoctor.map((el) => el.id):null  
+          startDate:dates.startDate?moment(dates.startDate).format('YYYY-MM-DD'):null,
+          endDate:dates.endDate?moment(dates.endDate).format('YYYY-MM-DD'):null,  
+          refDoctor:refDoctor?refDoctor.map((el) => el.id):null  
         }
         const updatedFields = deleteNullProperties(newReportDates);
-
         // console.log(updatedFields)
         // console.log(refDoctor)
-
+        
         try {
+          setIsLoading(true);
             const response = await axiosPrivate.post(`/reportExport/${section}`,updatedFields)
         //     const response = await axiosPrivate.post('/reportExport', newReport, {
         //     headers: { "Content-Type": "application/json" },
@@ -71,6 +76,11 @@ function ExportData({handleToggleExportModal,toggleExport,section,refDoctors=[]}
           setExportData(response?.data?.jsonString);
           setIsLoading(false);
           setActive(false);
+          setIsDone(true)
+          setTimeout(()=>{
+            setIsDone(false)
+
+          },5000)
  
         } catch (err) {
           if (!err?.response) {
@@ -86,6 +96,7 @@ function ExportData({handleToggleExportModal,toggleExport,section,refDoctors=[]}
       const handleExportDiagnostics = (exportName,exportData)=>{
         if(section === 'diagnostics'){
             const formatedData=exportData.map((el)=>{
+              console.log(el)
                 return {
                     ...el,
                     researchList: findResearches(el.statusBoard)
@@ -97,7 +108,7 @@ function ExportData({handleToggleExportModal,toggleExport,section,refDoctors=[]}
           createdAt:moment(item.createdAt).format('DD-MM-YYYY HH:mm'),
           generationDate:moment(item.generationDate).format('DD-MM-YYYY HH:mm'),
           updatedAt:moment(item.updatedAt).format('DD-MM-YYYY HH:mm'),
-          clientDob:moment(item.generationDate).format('DD-MM-YYYY'),
+          clientDob:moment(item.clientDob).format('DD-MM-YYYY'),
           clientGender:item.clientGender==="Male"?'Արական':item.clientGender==="Female"?'իգական':'',
           diagStatus:item.diagStatus==="Active"?'Ակտիվ':item.diagStatus==="Cancelled"?'Չեղարկված':'',
           class:item.class==="Internal"?'Ներքին':item.class==="External"?'Արտաքին':'',
@@ -170,10 +181,7 @@ function ExportData({handleToggleExportModal,toggleExport,section,refDoctors=[]}
               Ներբեռնել տվյալներ
             </Modal.Title>
           </Modal.Header>
-          <Suspense fallback={<LoadingSpinner />}>
-          {isLoading ? (
-            <LoadingSpinner />
-          ) : (
+         
           <Modal.Body>
             <FormProvider {...methods}>
               <div className="contact-body contact-detail-body">
@@ -188,9 +196,9 @@ function ExportData({handleToggleExportModal,toggleExport,section,refDoctors=[]}
                       >
                         {section !== 'researchList'?
                         <>
-                        <div className="card">
-                          <div className="card-header">
-                            <a href="#">Տվյալներ</a>
+                        <div className="card" style={{minHeight:'300px'}}>
+                        <div className="card-header">
+                            <a href="#">Նշեք ժամանակահատվածը</a>
                             <button
                               className="btn btn-xs btn-icon btn-rounded btn-light"
                               data-bs-toggle="tooltip"
@@ -210,9 +218,9 @@ function ExportData({handleToggleExportModal,toggleExport,section,refDoctors=[]}
                             </button>
                           </div>
                           <div className="card-body">
-                            <div className="modal-body">
+                            <div className="modal-body ">
                               <div className="row gx-3">
-                              <div className="col-sm-6">
+                              {/* <div className="col-sm-6">
                               <div className="form-group">
                               <div className="d-flex justify-content-between me-2">
                                 <label
@@ -226,25 +234,25 @@ function ExportData({handleToggleExportModal,toggleExport,section,refDoctors=[]}
                                     )}
                                     </div>
                                 <div>                                  
-                                   <CustomDateComponent name="startDate" control={methods.control} />
+                                   <CustomDateComponent name="startDate" control={methods.control} maxDate={moment(new Date()).format('MM-DD-YYYY')}/>
                                 </div>
                               </div>
-                            </div>
-                            <div className="col-sm-6">
+                            </div> */}
+                            <div className="col-sm-12">
                               <div className="form-group">
                               <div className="d-flex justify-content-between me-2">
                                 <label
                                   className="form-label"
-                                  htmlFor="endDate"
+                                  htmlFor="dates"
                                   >
-                                  Ավարտ
+                                  {/* Ընտրել */}
                                 </label>
-                                  {methods.formState.errors.endDate && (
+                                  {methods.formState.errors.dates && (
                                     <span className="error text-red"><span><img src={ErrorSvg} alt="errorSvg"/></span> պարտադիր</span>
                                     )}
                                     </div>
-                                <div>                                  
-                                   <CustomDateComponent name="endDate" control={methods.control} maxDate={moment(new Date()).format('MM-DD-YYYY')}/>
+                                <div className='d-flex justify-content-center align-items-center'>                                  
+                                   <CustomDateComponent name="dates" handleDateChanged={handleDateChanged} control={methods.control} maxDate={moment(new Date()).format('MM-DD-YYYY')}/>
                                 </div>
                               </div>
                             </div>
@@ -308,7 +316,14 @@ function ExportData({handleToggleExportModal,toggleExport,section,refDoctors=[]}
                               </>
                               }
                               </div>
-                              
+                              <div className='d-flex justify-content-center align-items-center'>
+
+                          {isLoading && <LoadingSpinner/>}
+                          {isDone && 
+                            <FeatherIcon icon='check' color='rgb(78, 175, 203)' size={58}/>
+                            
+                            }
+                            </div>
                               </div>
                               </div>
                               </div>
@@ -317,7 +332,7 @@ function ExportData({handleToggleExportModal,toggleExport,section,refDoctors=[]}
                               <div className="modal-footer align-items-center">
                           <button
                             type="button"
-                            className="btn btn-secondary"
+                            className={`btn btn-primary ${!dateChanged ? 'disabled' : ''}`}
                             style={{backgroundColor:"#4eafcb",border:'none'}}
                             onClick={onSubmit}
                           >
@@ -355,9 +370,8 @@ function ExportData({handleToggleExportModal,toggleExport,section,refDoctors=[]}
                                 <button
                                   type="button"
                                   onClick={()=>handleExportDiagnostics(section,exportData)}
-                                  className="btn btn-primary"
+                                  className={`btn btn-primary ${active ? 'disabled' : ''}`}
                                   data-bs-dismiss="modal"
-                                  disabled={active}
                                 >
                                   XMLS
                                 </button>
@@ -379,8 +393,6 @@ function ExportData({handleToggleExportModal,toggleExport,section,refDoctors=[]}
               </div>
             </FormProvider>
           </Modal.Body>
-            )}
-            </Suspense>
         </Modal>
   )
 }

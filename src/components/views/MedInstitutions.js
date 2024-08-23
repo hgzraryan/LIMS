@@ -10,6 +10,7 @@ import useDeleteData from '../../hooks/useDeleteData';
 import useGetData from '../../hooks/useGetData';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { useNavigate, useParams } from 'react-router-dom';
+import useRefreshData from '../../hooks/useRefreshData';
 
 
 function MedInstitutions() {
@@ -33,11 +34,14 @@ function MedInstitutions() {
     const {
       data: medInstitutions,
       setData: setMedInstitutions,
-      getData: getMedInstitutions,
-      refreshData,
+      //refreshData,
       dataCount
     } = useGetData(MEDINSTITUTIONS_URL,currentPage,usersPerPage,searchCount,null,searchId,searchTerms);
     const pageCount = searchCount?Math.ceil(searchCount/usersPerPage) :searchCount===0? 0:Math.ceil(dataCount/usersPerPage)
+    const { refreshData,data } = useRefreshData(MEDINSTITUTIONS_URL, usersPerPage);
+    useEffect(()=>{
+      setMedInstitutions(data)
+      },[data])
     const handleToggleCreateModal = (value) => {
       setIsOpen((prev) => value);
     };
@@ -50,7 +54,7 @@ function MedInstitutions() {
       medInstitutions,
       setMedInstitutions,
       'institutionName',
-      getMedInstitutions
+      refreshData
     );
     const handleCloseModal = () => {
       setSelectedItemId(null);

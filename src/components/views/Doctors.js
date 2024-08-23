@@ -12,6 +12,7 @@ import { selectDoctorCount } from "../../redux/features/doctor/doctorCountSlice"
 import { DOCTORS_URL } from "../../utils/constants";
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { useNavigate, useParams } from "react-router-dom";
+import useRefreshData from "../../hooks/useRefreshData";
 
 function Doctors() {
   const { pageNumber } = useParams();
@@ -34,12 +35,14 @@ function Doctors() {
   const {
     data: doctors,
     setData: setDoctors,
-    getData: getDoctors,
-    refreshData,
+    //refreshData,
     dataCount
   } = useGetData(DOCTORS_URL,currentPage,usersPerPage,searchCount,null,searchId,searchTerms);
   const pageCount = searchCount?Math.ceil(searchCount/usersPerPage) :searchCount===0? 0:Math.ceil(dataCount/usersPerPage)
-
+  const { refreshData,data } = useRefreshData(DOCTORS_URL, usersPerPage);
+  useEffect(()=>{
+    setDoctors(data)
+    },[data])
   const handleOpenModal = (doctor) => {
     setSelectedItemId(true);
     setSelectedItem((prev) => doctor);
@@ -69,7 +72,7 @@ function Doctors() {
     doctors,
     setDoctors,
     "doctorName",
-    getDoctors 
+    refreshData 
   );
   //-------------------------
 

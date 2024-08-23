@@ -14,6 +14,7 @@ import { selectReagentsCount } from "../../redux/features/reagents/reagentsCount
 import { REAGENTS_URL } from "../../utils/constants";
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { useNavigate, useParams } from "react-router-dom";
+import useRefreshData from "../../hooks/useRefreshData";
 
 const Reagents = () => {
   const { pageNumber } = useParams();
@@ -38,11 +39,14 @@ const Reagents = () => {
   const {
     data: reagents,
     setData: setReagents,
-    getData: getReagents,
-    refreshData,
+    //refreshData,
     dataCount
   } = useGetData(REAGENTS_URL,currentPage,usersPerPage,searchCount,null,searchId,searchTerms);
   const pageCount = searchCount?Math.ceil(searchCount/usersPerPage) :searchCount===0? 0:Math.ceil(dataCount/usersPerPage)
+  const { refreshData,data } = useRefreshData(REAGENTS_URL, usersPerPage);
+  useEffect(()=>{
+    setReagents(data)
+    },[data])
 
   const handleOpenModal = (user) => {
     setSelectedItemId(true);
@@ -64,7 +68,7 @@ const Reagents = () => {
     reagents,
     setReagents,
     'name',
-    getReagents
+    refreshData
   );
    //-------------------------PAGINATION---------------------------//  
  useEffect(() => {
@@ -187,7 +191,7 @@ const handlePageClick = ({ selected: selectedPage }) => {
                         handleCloseModal={handleCloseModal}
                         reagents={reagents}
                         setReagents={setReagents}
-                        getReagents={getReagents}
+                        getReagents={refreshData}
                         refreshData={refreshData}
 
                       />

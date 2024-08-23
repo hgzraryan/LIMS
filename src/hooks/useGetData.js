@@ -64,38 +64,40 @@ const useGetData = (url,currentPage,usersPerPage,searchCount=null,searchUrl=null
           isMounted = false;
           controller.abort();
         };
-      }, [url,currentPage]);
+      }, [url,currentPage,searchCount,searchParams]);
 
-      const getData = async () => {
-          try {
-            const response = await axiosPrivate.get(url);
-            setTimeout(() => {             
+      // const getData = async () => {
+      //     try {
+      //       const response = await axiosPrivate.get(url);
+      //       setTimeout(() => {             
               
-                  setData((prevUsers) => response.data.jsonString);
-                 // setCurrentPage((prev) => prev = 1);
+      //             setData((prevUsers) => response.data.jsonString);
+      //            // setCurrentPage((prev) => prev = 1);
               
-            }, 500);
-          } catch (err) {
-            console.error(err);
-            //navigate("/login", { state: { from: location }, replace: true });
-          }
-        };
-        const refreshData = async () => {
-          try {
-            const controller = new AbortController();
-            const response = await axiosPrivate.post(url, {
-              signal: controller.signal,
-              page: 1,
-              onPage: usersPerPage,
-            });
-            setData(response.data.jsonString);
-          } catch (err) {
-            console.error(err);
-            if (err.name !== "AbortError") {
-              navigate("/login", { state: { from: location }, replace: true });
-            }
-          }
-        };
+      //       }, 500);
+      //     } catch (err) {
+      //       console.error(err);
+      //       //navigate("/login", { state: { from: location }, replace: true });
+      //     }
+      //   };
+        // const refreshData = async () => {
+        //   try {
+        //     const controller = new AbortController();
+        //     const response = await axiosPrivate.post(url, {
+        //       signal: controller.signal,
+        //       params: {
+        //         page: 1,
+        //         onPage: usersPerPage,
+        //       },
+        //     });
+        //     setData(response.data.jsonArray);
+        //   } catch (err) {
+        //     console.error(err);
+        //     if (err.name !== "AbortError") {
+        //       navigate("/login", { state: { from: location }, replace: true });
+        //     }
+        //   }
+        // };
     
 
       // const checkData = async () => {
@@ -125,9 +127,7 @@ const useGetData = (url,currentPage,usersPerPage,searchCount=null,searchUrl=null
       return {
         data,
         setData,
-        getData,
         dataCount,
-        refreshData
     }
 }
 export default useGetData;

@@ -14,6 +14,7 @@ import { Helmet, HelmetProvider } from 'react-helmet-async';
 import AddUserRole from "../addViews/AddUserRole";
 import { USERS_URL } from "../../utils/constants";
 import { useNavigate, useParams } from "react-router-dom";
+import useRefreshData from "../../hooks/useRefreshData";
 
 const Users = () => {
   const { pageNumber } = useParams();
@@ -37,13 +38,13 @@ const Users = () => {
   const {
     data: users,
     setData: setUsers,
-    // hasMore,
-    // checkData,
-    getData: getUsers,
-    refreshData,
     dataCount
   } = useGetData(USERS_URL,currentPage,usersPerPage,searchCount,null,searchId,searchTerms);
   const pageCount = searchCount?Math.ceil(searchCount/usersPerPage) :searchCount===0? 0:Math.ceil(dataCount/usersPerPage)
+  const { refreshData,data } = useRefreshData(USERS_URL, usersPerPage);
+  useEffect(()=>{
+    setUsers(data)
+    },[data])
   //-------------------
   
   const { handleDeleteItem,updateUsersCount } = useDeleteData(
@@ -54,6 +55,7 @@ const Users = () => {
     users,
     setUsers,
     "username",
+    refreshData
     
   );
   
@@ -134,7 +136,7 @@ const Users = () => {
                    {isOpenRole && (
                     <AddUserRole
                     setIsOpenRole={setIsOpenRole}
-                      getUsers={() => getUsers()}
+                      getUsers={() => refreshData()}
                       updateUsersCount={updateUsersCount}
                     />)}
                   {/*
@@ -252,7 +254,7 @@ const Users = () => {
                         handleCloseModal={handleCloseModal}
                         users={users}
                         setUsers={setUsers}
-                        getUsers={getUsers}
+                        getUsers={refreshData}
                         refreshData={refreshData}
                       />
                      <ReactPaginate

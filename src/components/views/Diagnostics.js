@@ -16,6 +16,7 @@ import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { useNavigate, useParams } from "react-router-dom";
 import ExportData from "../ExportData";
+import useRefreshData from "../../hooks/useRefreshData";
 
 const Diagnostics = () => {
   const { pageNumber } = useParams();
@@ -44,11 +45,14 @@ const handleToggleExportModal = (value) => {
   const {
     data: diagnostics,
     setData: setDiagnostics,
-    refreshData,
+    //refreshData,
     dataCount
   } = useGetData(DIAGNOSTICS_URL,currentPage,usersPerPage,searchCount,DIAGNOSTICS__SEARCH_URL,searchParams);
   const pageCount = searchCount?Math.ceil(searchCount/usersPerPage) :searchCount===0? 0:Math.ceil(dataCount/usersPerPage)
-
+  const { refreshData,data } = useRefreshData(DIAGNOSTICS_URL, usersPerPage);
+  useEffect(()=>{
+    setDiagnostics(data)
+    },[data])
     //-------------------------PAGINATION---------------------------//  
     useEffect(() => {
       setCurrentPage(Number(pageNumber));

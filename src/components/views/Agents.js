@@ -14,6 +14,7 @@ import { selectAgentsCount } from "../../redux/features/agents/agentsCountSlice"
 import { AGENTS_URL } from "../../utils/constants";
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { useNavigate, useParams } from "react-router-dom";
+import useRefreshData from "../../hooks/useRefreshData";
 
 const Agents = () => {
   const { pageNumber } = useParams();
@@ -37,12 +38,14 @@ const Agents = () => {
   const {
     data: agents,
     setData: setAgents,
-    getData: getAgents,
-    refreshData,
+    //refreshData,
     dataCount
   } = useGetData(AGENTS_URL,currentPage,usersPerPage,searchCount,null,searchId,searchTerms)
   const pageCount = searchCount?Math.ceil(searchCount/usersPerPage) :searchCount===0? 0:Math.ceil(dataCount/usersPerPage)
-
+  const { refreshData,data } = useRefreshData(AGENTS_URL, usersPerPage);
+useEffect(()=>{
+setAgents(data)
+},[data])
   const handleOpenModal = (user) => {
     setSelectedItemId(true);
     setSelectedItem((prev) => user);
@@ -64,7 +67,7 @@ const Agents = () => {
     agents,
     setAgents,
     "name",
-    getAgents 
+    refreshData 
   );
      //-------------------------PAGINATION---------------------------//  
      useEffect(() => {

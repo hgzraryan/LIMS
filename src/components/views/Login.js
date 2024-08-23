@@ -10,6 +10,7 @@ import { Helmet, HelmetProvider } from 'react-helmet-async';
 
 import axios from '../../api/axios';
 import useLogout from '../../hooks/useLogout';
+import { ROLES } from '../../utils/constants';
 const LOGIN_URL = '/auth';
 const Login = () => {
     const logout=useLogout();
@@ -48,13 +49,12 @@ const Login = () => {
                     withCredentials: true
                 }
             );
-
             const accessToken = response?.data?.accessToken;
             const decodedJWT = jwt(accessToken);
             const roles = decodedJWT.UserInfo.roles;
             const isActive = decodedJWT.UserInfo.isActive;
             const userId = decodedJWT.UserInfo.userId;
-
+console.log(response)
             localStorage.setItem("userData", JSON.stringify(response?.data?.authUserData));
             localStorage.setItem("userRoles", JSON.stringify(roles));
             console.log('roles',roles);
@@ -78,8 +78,8 @@ const Login = () => {
             }else if(roles.includes(9578)){
                 navigate('/doctorsTemplete');
               } else{
-                  navigate('/', { replace: true });
-              }
+                navigate(from, { replace: true });
+            }
         } catch (err) {
             if (!err?.response) {
                 

@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 
-import React, { useState} from "react";
+import React, { useEffect, useState} from "react";
 import FeatherIcon from "feather-icons-react";
 import { Dropdown } from "react-bootstrap";
 import { Helmet, HelmetProvider } from 'react-helmet-async';
@@ -8,6 +8,7 @@ import ReactPaginate from "react-paginate";
 import useGetData from "../../hooks/useGetData";
 import { DOCTORSPATIENTS_URL } from "../../utils/constants";
 import DoctorsPatientsTable from "../viewTables/DoctorsPatientsTable";
+import useRefreshData from "../../hooks/useRefreshData";
 
 function DoctorsPatients() {
     //const patientsCount = useSelector(selectPatientsCount)
@@ -21,11 +22,13 @@ function DoctorsPatients() {
       const {
         data: patients,
         setData: setPatients,
-        getData: getPatients,
-        refreshData,
+        //refreshData,
         dataCount
       } = useGetData(DOCTORSPATIENTS_URL,currentPage,usersPerPage);
-  
+      const { refreshData,data } = useRefreshData(DOCTORSPATIENTS_URL, usersPerPage);
+      useEffect(()=>{
+        setPatients(data)
+        },[data])
     const handleToggleCreateModal = (value) => {
       setIsOpen((prev) => value);
     };

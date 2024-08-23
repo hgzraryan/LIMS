@@ -11,6 +11,7 @@ import useDeleteData from '../../hooks/useDeleteData';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { useNavigate, useParams } from 'react-router-dom';
 import ExportData from '../ExportData';
+import useRefreshData from '../../hooks/useRefreshData';
 
 function RefDoctors() {
     const { pageNumber } = useParams();
@@ -37,12 +38,14 @@ function RefDoctors() {
      const {
        data: refDoctors,
        setData: setRefDoctors,
-       getData: getRefDoctors,
-       refreshData,
+       //refreshData,
        dataCount
       } = useGetData(REFDOCTORS_URL,currentPage,usersPerPage,searchCount,null,searchId,searchTerms);
       const pageCount = searchCount?Math.ceil(searchCount/usersPerPage) :searchCount===0? 0:Math.ceil(dataCount/usersPerPage)
-      
+      const { refreshData,data } = useRefreshData(REFDOCTORS_URL, usersPerPage);
+      useEffect(()=>{
+        setRefDoctors(data)
+        },[data])
       const handleCloseModal = () => {
       setSelectedItemId(null);
     };
@@ -59,7 +62,7 @@ function RefDoctors() {
       refDoctors,
       setRefDoctors,
       'doctorName',
-      getRefDoctors
+      refreshData
     );
     const handleOpenModal = (user) => {
         setSelectedItemId(true);

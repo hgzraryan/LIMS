@@ -60,7 +60,7 @@ function DoctorDetails() {
       try {
         const response = await axiosPrivate.get(`/doctors/${id}`);
         setIsLoading(false);
-        setDoctorDetails((prevUsers) => response.data);
+        setDoctorDetails((prevUsers) => response.data?.jsonString);
         // setCurrentPage((prev) => prev = 1);
       } catch (err) {
         console.error(err);
@@ -69,7 +69,6 @@ function DoctorDetails() {
     };
     getData();
   }, []);
-
 
 
   return (

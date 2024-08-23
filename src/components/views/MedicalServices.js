@@ -9,6 +9,7 @@ import ReactPaginate from "react-paginate";
 import MedicalServicesTable from '../viewTables/MedicalServicesTable';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { useNavigate, useParams } from 'react-router-dom';
+import useRefreshData from '../../hooks/useRefreshData';
 
 function MedicalServices() {
   const { pageNumber } = useParams();
@@ -39,10 +40,14 @@ function MedicalServices() {
   const {
       data: medicalServices,
       setData: setMedicalServices,
-      refreshData,
+      //refreshData,
       dataCount
     } = useGetData(MEDICALSERVICES_URL,currentPage,usersPerPage,searchCount,null,searchId,searchTerms);
     const pageCount = searchCount?Math.ceil(searchCount/usersPerPage) :searchCount===0? 0:Math.ceil(dataCount/usersPerPage)
+    const { refreshData,data } = useRefreshData(MEDICALSERVICES_URL, usersPerPage);
+    useEffect(()=>{
+      setMedicalServices(data)
+      },[data])
     const handleOpenModal = (user) => {
       setSelectedItemId(true);
       setSelectedItem((prev) => user);
@@ -60,7 +65,7 @@ function MedicalServices() {
     //   researchList,
     //   setResearches,
     //   "researchName",
-    //   getResearches 
+    //   refreshData 
     // );
       //-------------------------PAGINATION---------------------------//  
  useEffect(() => {

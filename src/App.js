@@ -137,12 +137,10 @@ function App() {
             <Route index path={SUPPORT_URL} element={<Support />} />
 
             <Route index path="/" element={<DoctorsVisits />} />
-          <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
             <Route path={DOCTORSVISITS_ROUTE} element={<DoctorsVisits />} />
             <Route path={DOCTORSVISITS_ID_ROUTE} element={<DoctorsVisitsDetails/>} />
             <Route path={DOCTORS_ID_ROUTE} element={<DoctorDetails/>} />
             <Route  path={SAMPLES_ROUTE} element={<Samples />} />
-          </Route>
               <Route path={DOCTOR_PATIENTS_ID_ROUTE} element={<PatientDetails/>} />
               <Route
                 path={RESEARCH_LISTS_ROUTE}

@@ -14,6 +14,7 @@ import { RESEARCHLISTS_URL } from "../../utils/constants";
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { useNavigate, useParams } from "react-router-dom";
 import ExportData from "../ExportData";
+import useRefreshData from "../../hooks/useRefreshData";
 
 const ResearchLists = () => {
   const { pageNumber } = useParams();
@@ -56,12 +57,14 @@ const ResearchLists = () => {
   const {
     data: researchList,
     setData: setResearches,
-    getData: getResearches,
-    refreshData,
+    //refreshData,
     dataCount
   } = useGetData(RESEARCHLISTS_URL,currentPage,usersPerPage,searchCount,null,searchId,searchTerms);
   const pageCount = searchCount?Math.ceil(searchCount/usersPerPage) :searchCount===0? 0:Math.ceil(dataCount/usersPerPage)
-  
+  const { refreshData,data } = useRefreshData(RESEARCHLISTS_URL, usersPerPage);
+  useEffect(()=>{
+    setResearches(data)
+    },[data])
   const handleOpenModal = (user) => {
     setSelectedItemId(true);
     setSelectedItem((prev) => user);
@@ -79,7 +82,7 @@ const ResearchLists = () => {
     researchList,
     setResearches,
     "researchName",
-    getResearches 
+    refreshData 
   );
  //-------------------------PAGINATION---------------------------//  
  useEffect(() => {
@@ -169,7 +172,7 @@ const handlePageClick = ({ selected: selectedPage }) => {
                   {categoryModalisOpen && (
                     <AddCategory
                     handleToggleCategoryCreateModal={handleToggleCategoryCreateModal}
-                    getResearches={() => getResearches()}
+                    getResearches={() => refreshData()}
                     researchState={researchList}
 
                     />

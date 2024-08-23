@@ -14,6 +14,7 @@ import { useSelector } from "react-redux";
 import { selectOrganisationCount } from "../../redux/features/organisation/organisationCountSlice";
 import { ORGANIZATIONS_URL } from "../../utils/constants";
 import { useNavigate, useParams } from "react-router-dom";
+import useRefreshData from "../../hooks/useRefreshData";
 
 const Organizations = () => {
   const { pageNumber } = useParams();
@@ -37,11 +38,14 @@ const Organizations = () => {
   const {
     data: organizations,
     setData: setOrganizations,
-    getData: getOrganizations,
-    refreshData,
+    //refreshData,
     dataCount
   } = useGetData(ORGANIZATIONS_URL,currentPage,usersPerPage,searchCount,null,searchId,searchTerms)
   const pageCount = searchCount?Math.ceil(searchCount/usersPerPage) :searchCount===0? 0:Math.ceil(dataCount/usersPerPage)
+  const { refreshData,data } = useRefreshData(ORGANIZATIONS_URL, usersPerPage);
+  useEffect(()=>{
+    setOrganizations(data)
+    },[data])
   const handleOpenModal = (user) => {
     setSelectedItemId(true);
     setSelectedItem((prev) => user);
@@ -62,7 +66,7 @@ const Organizations = () => {
     organizations,
     setOrganizations,
     "name",
-    getOrganizations
+    refreshData
   );
   //-------------------------
 

@@ -5,6 +5,8 @@ import LoadingSpinner from "../LoadingSpinner";
 import Loading from "../Loading";
 import CreatePatient from "../addViews/CreatePatient";
 import { Dropdown } from "react-bootstrap";
+import Spinner from 'react-bootstrap/Spinner';
+
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import useGetData from "../../hooks/useGetData";
 import PatientsTable from "../viewTables/PatientsTable";
@@ -18,6 +20,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import {utils, writeFile} from 'xlsx';
 import moment from 'moment';
 import ExportData from "../ExportData";
+import useRefreshData from "../../hooks/useRefreshData";
 
 const Patients = () => {
   const { pageNumber } = useParams();
@@ -34,6 +37,7 @@ const Patients = () => {
   const [researches, setResearches] = useState([]);
   const [searchCount,setSearchCount] = useState(null)
   const [searchParams,setSearchParams] = useState(null)
+  const [loading,setLoading] = useState(false)
   //const [exportData, setExportData] = useState([]);
 
   const handleToggleExportModal = (value) => {
@@ -46,13 +50,18 @@ const Patients = () => {
     const {
       data: patients,
       setData: setPatients,
-      refreshData,
+      //refreshData,
       dataCount 
     } = useGetData(PATIENTS_URL,currentPage,usersPerPage,searchCount,PATIENTS__SEARCH_URL,searchParams);
   const pageCount = searchCount?Math.ceil(searchCount/usersPerPage) :searchCount===0? 0:Math.ceil(dataCount/usersPerPage)
+  const { refreshData,data } = useRefreshData(PATIENTS_URL, usersPerPage);
+  useEffect(()=>{
+    setPatients(data)
+    },[data])
   const handleToggleCreateModal = (value) => {
     setIsOpen((prev) => value);
   };
+
   //-------------------------
   const handleOpenModal = (user) => {
     setSelectedItem((prev) => user);
@@ -83,11 +92,12 @@ const Patients = () => {
     }, 500);
   }, []);
   const topPatients = async () =>{
+    setLoading(true)
     let exportData=[]
     try {
       const response = await axiosPrivate.get(`/quickReports/topOfPatient`)
       exportData = response?.data?.jsonString
-    // setIsLoading(false);
+     setLoading(false);
 
     } catch (err) {
       if (!err?.response) {
@@ -186,10 +196,17 @@ const Patients = () => {
                   data-bs-toggle="dropdown"
                 >
                   <span className="icon">
-                    <span className="feather-icon"
+                    {!!loading
+                    ?<Spinner animation="border" variant="info" size="sm" />
+                    : <span className="feather-icon"
                     onClick={topPatients}>
                       <FeatherIcon icon="database" />
-                    </span>
+                    </span>}
+                  
+                  {/* <span className="feather-icon"
+                    onClick={topPatients}>
+                      <FeatherIcon icon="database" />
+                    </span> */}
                   </span>
                 </a>
                 <a

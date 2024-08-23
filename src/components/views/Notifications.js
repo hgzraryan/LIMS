@@ -10,6 +10,7 @@ import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import useGetData from '../../hooks/useGetData';
 import { NOTIFICATIONS_URL, RESEARCHLISTS_URL } from '../../utils/constants';
 import NotificationsTable from '../viewTables/NotificationsTable';
+import useRefreshData from '../../hooks/useRefreshData';
 
 function Notifications() {
     const { pageNumber } = useParams();
@@ -27,9 +28,13 @@ function Notifications() {
   const {
     data: notifications,
     setData: setNotifications,
-    refreshData,
+    //refreshData,
     dataCount 
   } = useGetData(NOTIFICATIONS_URL,currentPage,usersPerPage,searchCount,null,searchId,searchTerms);
+  const { refreshData,data } = useRefreshData(NOTIFICATIONS_URL, usersPerPage);
+  useEffect(()=>{
+    setNotifications(data)
+    },[data])
    //-------------------------PAGINATION---------------------------//  
   const pageCount = searchCount?Math.ceil(searchCount/usersPerPage) :searchCount===0? 0:Math.ceil(dataCount/usersPerPage)
   useEffect(() => {

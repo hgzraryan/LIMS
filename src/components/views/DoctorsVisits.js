@@ -10,6 +10,7 @@ import useGetData from '../../hooks/useGetData';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { useNavigate, useParams } from 'react-router-dom';
 import ExportData from '../ExportData';
+import useRefreshData from '../../hooks/useRefreshData';
 
 function DoctorsVisits() {
     const { pageNumber } = useParams();
@@ -40,11 +41,14 @@ function DoctorsVisits() {
     const {
       data: doctorsVisits,
       setData: setDoctorsVisits,
-      refreshData,
+      //refreshData,
       dataCount  
     } = useGetData(DOCTORSVISITS_URL,currentPage,usersPerPage);
     const pageCount = searchCount?Math.ceil(searchCount/usersPerPage) :searchCount===0? 0:Math.ceil(dataCount/usersPerPage)
-  
+    const { refreshData ,data} = useRefreshData(DOCTORSVISITS_URL, usersPerPage);
+    useEffect(()=>{
+      setDoctorsVisits(data)
+      },[data])
     useEffect(() => {
     const storedData = JSON.parse(localStorage.getItem('role'));
     if (storedData) {

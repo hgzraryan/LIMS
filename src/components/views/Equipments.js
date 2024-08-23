@@ -12,6 +12,7 @@ import EquipmentsTable from "../viewTables/EquipmentsTable";
 import { EQUIPMENTS_URL } from "../../utils/constants";
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { useNavigate, useParams } from "react-router-dom";
+import useRefreshData from "../../hooks/useRefreshData";
 
 const Equipments = () => {
   const { pageNumber } = useParams();
@@ -34,11 +35,14 @@ const Equipments = () => {
   const {
     data: equipments,
     setData: setEquipments,
-    getData: getEquipments,
-    refreshData,
+    //refreshData,
     dataCount
   } = useGetData(EQUIPMENTS_URL,currentPage,usersPerPage,searchCount,null,searchId,searchTerms);
   const pageCount = searchCount?Math.ceil(searchCount/usersPerPage) :searchCount===0? 0:Math.ceil(dataCount/usersPerPage)
+  const { refreshData,data } = useRefreshData(EQUIPMENTS_URL, usersPerPage);
+  useEffect(()=>{
+    setEquipments(data)
+    },[data])
   const handleOpenModal = (data) => {
     setSelectedItemId(true);
     setSelectedItem((prev) => data);
@@ -59,7 +63,7 @@ const Equipments = () => {
     equipments,
     setEquipments,
     "equipmentName",
-    getEquipments
+    refreshData
   );
    //-------------------------PAGINATION---------------------------//  
  useEffect(() => {
