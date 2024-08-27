@@ -104,7 +104,7 @@ function ExportData({handleToggleExportModal,toggleExport,section,refDoctors=[]}
             })            
             exportData = formatedData.map(item => ({
           ...item,
-          researchList: item.researchList.join(', '),
+          researchList: item.researchList.join(',\n '),
           createdAt:moment(item.createdAt).format('DD-MM-YYYY HH:mm'),
           generationDate:moment(item.generationDate).format('DD-MM-YYYY HH:mm'),
           updatedAt:moment(item.updatedAt).format('DD-MM-YYYY HH:mm'),
@@ -118,7 +118,49 @@ function ExportData({handleToggleExportModal,toggleExport,section,refDoctors=[]}
           paymentDate:item?.paymentDate?moment(item?.paymentDate).format('DD-MM-YYYY HH:mm'):null,
           diagnosisDate:item?.diagnosisDate?moment(item?.diagnosisDate).format('DD-MM-YYYY HH:mm'):null,
         }));
-
+      //   exportData = formatedData.map((item, index) => {
+      //     // Create a new object with the formatted fields
+      //     const formattedItem = {
+      //         ...item,
+      //         createdAt: moment(item.createdAt).format('DD-MM-YYYY HH:mm'),
+      //         generationDate: moment(item.generationDate).format('DD-MM-YYYY HH:mm'),
+      //         updatedAt: moment(item.updatedAt).format('DD-MM-YYYY HH:mm'),
+      //         clientDob: moment(item.clientDob).format('DD-MM-YYYY'),
+      //         clientGender: item.clientGender === "Male" ? 'Արական' : item.clientGender === "Female" ? 'Իգական' : '',
+      //         diagStatus: item.diagStatus === "Active" ? 'Ակտիվ' : item.diagStatus === "Cancelled" ? 'Չեղարկված' : '',
+      //         class: item.class === "Internal" ? 'Ներքին' : item.class === "External" ? 'Արտաքին' : '',
+      //         internalStatus: item?.internalStatus === "Approval" ? 'Ընդունված' :
+      //                         item?.internalStatus === "Delayed" ? "Հետաձգված" :
+      //                         item?.internalStatus === "Generated" ? "Ստեղծված" :
+      //                         item?.internalStatus === "Other" ? "Այլ" : null,
+      //         externalStatus: item?.externalStatus === "Approval" ? 'Ընդունված' :
+      //                         item?.externalStatus === "Delayed" ? "Հետաձգված" :
+      //                         item?.externalStatus === "Generated" ? "Ստեղծված" :
+      //                         item?.externalStatus === "Other" ? "Այլ" : null,
+      //         clientType: item.clientType === "patient" ? 'Այցելու' : item.clientType === "organization" ? 'Պատվիրատու' : '',
+      //         paymentDate: item?.paymentDate ? moment(item?.paymentDate).format('DD-MM-YYYY HH:mm') : null,
+      //         diagnosisDate: item?.diagnosisDate ? moment(item?.diagnosisDate).format('DD-MM-YYYY HH:mm') : null
+      //     };
+  
+      //     // Add additional properties if researchList length is more than one
+      //     if (item.researchList && item.researchList.length > 1) {
+      //         item.researchList.forEach((el, idx) => {
+      //             formattedItem[`researchList${idx}`] = el;
+      //         });
+      //     } else {
+      //         formattedItem.researchList = item.researchList[0];
+      //     }
+  
+      //     // Sort keys
+      //     const sortedKeys = Object.keys(formattedItem).sort();
+      //     const sortedItem = {};
+      //     sortedKeys.forEach(key => {
+      //         sortedItem[key] = formattedItem[key];
+      //     });
+  
+      //     return sortedItem;
+      // });
+  
     }else if(section === 'patients'){
         exportData = exportData.map(el => ({ 
             firstName:el.firstName,
