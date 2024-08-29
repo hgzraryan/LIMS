@@ -27,7 +27,7 @@ function CustomDateTimeComponent({methods, control, name,required='true',default
 
             return;
         }
-console.log(inputValue)
+// S.log(inputValue)
         // If input value passes regex test, update the field value
         // field.onChange(inputValue);
          methods.clearErrors('notValidVisitDate', ''); // Clear the error when the input value is valid

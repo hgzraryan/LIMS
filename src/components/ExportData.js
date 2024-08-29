@@ -19,12 +19,16 @@ function ExportData({handleToggleExportModal,toggleExport,section,refDoctors=[]}
     const [errMsg, setErrMsg] = useState("");
     const [active, setActive] = useState(true);
     const [dateChanged, setDateChaged] = useState(false);
-    const [exportData, setExportData] = useState([]);
+    const [diagExport, setDiagExport] = useState(false);
+    const [exportData, setExportData] = useState('');
     const axiosPrivate = useAxiosPrivate();
     const animatedComponents = makeAnimated();
     const handleDateChanged = (date) => {
       setDateChaged(true)
     }
+    const onDiagExportSelect = (event) => {
+      setDiagExport(prev=>event.target.value)
+    };
     const colourStyles = {
       control: (styles, { isFocused, isSelected }) => ({
         ...styles,
@@ -68,7 +72,10 @@ function ExportData({handleToggleExportModal,toggleExport,section,refDoctors=[]}
         
         try {
           setIsLoading(true);
-            const response = await axiosPrivate.post(`/reportExport/${section}`,updatedFields)
+            const response = await axiosPrivate.post(`/reportExport/${diagExport==='diagnostics'
+              ?section
+              :diagExport==='researches'
+              ?section+'Researches':section}`,updatedFields)
         //     const response = await axiosPrivate.post('/reportExport', newReport, {
         //     headers: { "Content-Type": "application/json" },
         //     withCredentials: true,
@@ -91,10 +98,10 @@ function ExportData({handleToggleExportModal,toggleExport,section,refDoctors=[]}
         }
       }); 
       const findResearches = (statusBoard) => {
-        return statusBoard.flatMap(elem => elem.researches.map(research => research.name));
+        return statusBoard?.flatMap(elem => elem.researches.map(research => research.name));
       }
       const handleExportDiagnostics = (exportName,exportData)=>{
-        if(section === 'diagnostics'){
+        if(section === 'diagnostics' && diagExport==='diagnostics'){
             const formatedData=exportData.map((el)=>{
               console.log(el)
                 return {
@@ -182,7 +189,14 @@ function ExportData({handleToggleExportModal,toggleExport,section,refDoctors=[]}
             zipCode:el.contact.address.zipCode
             
         }));
-    }else if(section === 'doctorVisits'){
+    }else if(section === 'diagnostics' && diagExport==='researches'){
+      exportData = exportData.map(el => ({ 
+        id:el._id,
+        count:el.count,
+        researchName:el.researchName
+          
+      }));
+  }else if(section === 'doctorVisits'){
         exportData = exportData.map(el => ({      
             ...el,
             clientDob:moment(el.clientDob).format('DD-MM-YYYY'),
@@ -298,6 +312,56 @@ function ExportData({handleToggleExportModal,toggleExport,section,refDoctors=[]}
                                 </div>
                               </div>
                             </div>
+                             {section==='diagnostics' &&
+
+                            <div className="row gx-3">
+                          <div className="col-sm-6">
+                              <div className="d-flex justify-content-between me-2">
+                               
+                                {methods.formState.errors.gender && (
+                                  <span className="error text-red">
+                                    <span>
+                                      <img src={ErrorSvg} alt="errorSvg" />
+                                    </span>{" "}
+                                    պարտադիր
+                                  </span>
+                                )}
+                              </div>
+                              <div className="d-flex align-items-center">
+  <div className="form-check form-check-inline">
+    <input
+      className="form-check-input"
+      type="radio"
+      id="researches"
+      value="researches"  // Set value to "researches"
+      onClick={onDiagExportSelect}  // Use the event directly
+      {...methods.register("diagExport", {
+        required: true,
+      })}
+    />
+    <label className="form-check-label" htmlFor="researches">
+      Հետազոտություններ
+    </label>
+  </div>
+  <div className="form-check form-check-inline">
+    <input
+      className="form-check-input"
+      type="radio"
+      id="diagnostics"
+      value="diagnostics"  // Set value to "diagnostics"
+      onClick={onDiagExportSelect}  // Use the event directly
+      {...methods.register("diagExport", {
+        required: true,
+      })}
+    />
+    <label className="form-check-label" htmlFor="diagnostics">
+      Ախտորոշումներ
+    </label>
+                                </div>
+                              </div>
+                            </div>
+                            </div>
+                            }                            
                             {!!refDoctors.length && 
                             <>
                             <div className="col-sm-12">
