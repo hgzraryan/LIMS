@@ -5,13 +5,13 @@ import { Controller, Form, FormProvider, useForm} from "react-hook-form";
 import ErrorSvg from "../dist/svg/error.svg";
 import LoadingSpinner from './LoadingSpinner';
 import Select from "react-select";
-import CustomDateComponent from './CustomDateComponent';
 import moment from 'moment';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
 import {utils, writeFile} from 'xlsx';
 import { CSVLink } from "react-csv";
 import { deleteNullProperties } from '../utils/helper';
 import makeAnimated from "react-select/animated";
+import CustomExportDateComponent from './CustomExportDateComponent';
 
 function ExportData({handleToggleExportModal,toggleExport,section,refDoctors=[]}) {
     const [isLoading, setIsLoading] = useState(false);
@@ -76,10 +76,6 @@ function ExportData({handleToggleExportModal,toggleExport,section,refDoctors=[]}
               ?section
               :diagExport==='researches'
               ?section+'Researches':section}`,updatedFields)
-        //     const response = await axiosPrivate.post('/reportExport', newReport, {
-        //     headers: { "Content-Type": "application/json" },
-        //     withCredentials: true,
-        //   });
           setExportData(response?.data?.jsonString);
           setIsLoading(false);
           setActive(false);
@@ -102,15 +98,19 @@ function ExportData({handleToggleExportModal,toggleExport,section,refDoctors=[]}
       }
       const handleExportDiagnostics = (exportName,exportData)=>{
         if(section === 'diagnostics' && diagExport==='diagnostics'){
+          console.log(exportData)
             const formatedData=exportData.map((el)=>{
+              
               console.log(el)
                 return {
                     ...el,
                     researchList: findResearches(el.statusBoard)
                 }
-            })            
+            })    
+            console.log(formatedData)        
             exportData = formatedData.map(item => ({
           ...item,
+          diagnosticsId:item.diagnosticsId,
           researchList: item.researchList.join(',\n '),
           createdAt:moment(item.createdAt).format('DD-MM-YYYY HH:mm'),
           generationDate:moment(item.generationDate).format('DD-MM-YYYY HH:mm'),
@@ -124,6 +124,7 @@ function ExportData({handleToggleExportModal,toggleExport,section,refDoctors=[]}
           clientType:item.clientType==="patient"?'Այցելու':item.clientType==="organization"?'Պատվիրատու':'',
           paymentDate:item?.paymentDate?moment(item?.paymentDate).format('DD-MM-YYYY HH:mm'):null,
           diagnosisDate:item?.diagnosisDate?moment(item?.diagnosisDate).format('DD-MM-YYYY HH:mm'):null,
+          statusBoard:null
         }));
       //   exportData = formatedData.map((item, index) => {
       //     // Create a new object with the formatted fields
@@ -308,7 +309,7 @@ function ExportData({handleToggleExportModal,toggleExport,section,refDoctors=[]}
                                     )}
                                     </div>
                                 <div className='d-flex justify-content-center align-items-center'>                                  
-                                   <CustomDateComponent name="dates" handleDateChanged={handleDateChanged} control={methods.control} maxDate={moment(new Date()).format('MM-DD-YYYY')}/>
+                                   <CustomExportDateComponent name="dates" handleDateChanged={handleDateChanged} control={methods.control} maxDate={moment(new Date()).format('MM-DD-YYYY')}/>
                                 </div>
                               </div>
                             </div>

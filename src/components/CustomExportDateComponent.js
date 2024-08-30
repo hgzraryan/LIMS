@@ -1,11 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useController } from 'react-hook-form'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import moment from 'moment';
 import { calculateAge } from '../utils/helper';
 
-function CustomDateComponent({ control, name,required='true',defaultValue='',setIsChild=false })  {
+function CustomDateComponent({ control, name,required='true',defaultValue='',setIsChild=false,maxDate='',handleDateChanged='' })  {
+  const [startDate, setStartDate] = useState();
+  const [endDate, setEndDate] = useState(null);
     const {
       field,
       fieldState: { invalid, isTouched, isDirty },
@@ -18,10 +19,15 @@ function CustomDateComponent({ control, name,required='true',defaultValue='',set
 
     });
     const handleDateChange = (date) => {
-      field.onChange(date);
+      handleDateChanged()
+      const [start, end] = date;
+console.log(date)
+      field.onChange({ startDate: start, endDate: end });
+      setStartDate(start);
+      setEndDate(end);
       if(setIsChild){
         if(calculateAge(date)<18) {
-          console.log(calculateAge(date))
+         // console.log(calculateAge(date))
           setIsChild(true)
         }else if(calculateAge(date)>18){
           setIsChild(false)
@@ -33,13 +39,22 @@ function CustomDateComponent({ control, name,required='true',defaultValue='',set
        showYearDropdown
        yearDropdownItemNumber={100}
        scrollableYearDropdown
+       //onChange={handleDateChange}
        onChange={handleDateChange}
+
        dateFormat={"yyyy-MM-dd"}
-       selected={field.value}
+       selected={startDate}
+       selectsRange
+       startDate={startDate}
+       endDate={endDate}
        isClearable
        required
        placeholderText="Ընտրեք ամսաթիվը" 
-       className='form-control'
+       className='form-control custom-datepicker'
+       popperPlacement="auto"
+       maxDate={new Date(maxDate)}
+       //popperContainer={({ children }) => <div>{children}</div>} // Custom container
+
        />
     )
 }
