@@ -452,7 +452,7 @@ function ExportData({handleToggleExportModal,toggleExport,section,refDoctors=[]}
                             data-bs-dismiss="modal"
                             disabled={active}
                           >
-                            XMLS
+                            XLSX
                           </button>
                           <CSVLink
                           data={exportData}
@@ -480,7 +480,7 @@ function ExportData({handleToggleExportModal,toggleExport,section,refDoctors=[]}
                                   className={`btn btn-primary ${active ? 'disabled' : ''}`}
                                   data-bs-dismiss="modal"
                                 >
-                                  XMLS
+                                  XLSX
                                 </button>
                                 <CSVLink
                                 data={exportData}

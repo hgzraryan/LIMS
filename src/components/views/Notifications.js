@@ -31,7 +31,7 @@ function Notifications() {
     //refreshData,
     dataCount 
   } = useGetData(NOTIFICATIONS_URL,currentPage,usersPerPage,searchCount,null,searchId,searchTerms);
-  const { refreshData,data } = useRefreshData(NOTIFICATIONS_URL, usersPerPage);
+  const { refreshData,data } = useRefreshData(NOTIFICATIONS_URL, usersPerPage,pageNumber);
   useEffect(()=>{
     setNotifications(data)
     },[data])

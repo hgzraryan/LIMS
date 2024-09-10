@@ -152,7 +152,7 @@ function PackagesTable({
     >
       <Modal.Header closeButton>
         <Modal.Title style={{ width: "100%", textAlign: "center" }}>
-          Ավելացնել նոր ախտորոշում
+          Ավելացնել նոր փաթեթ
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
@@ -173,7 +173,7 @@ function PackagesTable({
                       >
                         <div className="card">
                           <div className="card-header">
-                            <a href="#">Ախտորոշման տվյալներ</a>
+                            <a href="#">Փաթեթի տվյալներ</a>
                             <button
                               className="btn btn-xs btn-icon btn-rounded btn-light"
                               data-bs-toggle="tooltip"

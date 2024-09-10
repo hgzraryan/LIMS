@@ -28,6 +28,10 @@ function CustomDateComponent({ control, name,required='true',defaultValue='',set
         }
       }
     };
+    const preventTyping = (e) => {
+      e.preventDefault(); // Prevent any typing into the field
+    };
+
     return (
       <DatePicker
        showYearDropdown
@@ -38,6 +42,7 @@ function CustomDateComponent({ control, name,required='true',defaultValue='',set
        selected={field.value}
        isClearable
        required
+       onKeyDown={preventTyping} // Prevent typing in the input field
        placeholderText="Ընտրեք ամսաթիվը" 
        className='form-control'
        />

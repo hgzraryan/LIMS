@@ -45,7 +45,7 @@ function DoctorsVisits() {
       dataCount  
     } = useGetData(DOCTORSVISITS_URL,currentPage,usersPerPage);
     const pageCount = searchCount?Math.ceil(searchCount/usersPerPage) :searchCount===0? 0:Math.ceil(dataCount/usersPerPage)
-    const { refreshData ,data} = useRefreshData(DOCTORSVISITS_URL, usersPerPage);
+    const { refreshData ,data} = useRefreshData(DOCTORSVISITS_URL, usersPerPage,pageNumber);
     useEffect(()=>{
       setDoctorsVisits(data)
       },[data])

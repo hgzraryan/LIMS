@@ -388,7 +388,7 @@ function UsersTable({
                               ? undefined
                               : { cursor: "pointer" },
                           onClick:
-                            cell.column?.id === "actions"
+                            cell.column?.id === "actions" ||  cell.column?.id ==="selection"
                               ? undefined
                               : () => handleUserPage(row.original?.userId),
                         })}

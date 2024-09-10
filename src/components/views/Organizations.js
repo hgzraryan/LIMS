@@ -42,7 +42,7 @@ const Organizations = () => {
     dataCount
   } = useGetData(ORGANIZATIONS_URL,currentPage,usersPerPage,searchCount,null,searchId,searchTerms)
   const pageCount = searchCount?Math.ceil(searchCount/usersPerPage) :searchCount===0? 0:Math.ceil(dataCount/usersPerPage)
-  const { refreshData,data } = useRefreshData(ORGANIZATIONS_URL, usersPerPage);
+  const { refreshData,data } = useRefreshData(ORGANIZATIONS_URL, usersPerPage,pageNumber);
   useEffect(()=>{
     setOrganizations(data)
     },[data])

@@ -1,15 +1,15 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect, useState, useRef, Suspense } from "react";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch} from "react-redux";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 //import emptyCard from "../../dist/img/discount-bg.png";
 import emptyCard from "../../dist/img/discount_testImg.png";
 import emptydiscountBG from "../../dist/img/discountBgC.jpg";
+import silverCard from "../../dist/img/Blue.png";
+import goldCard from "../../dist/img/Gold.png";
 import {
   createDiscount,
-  selectUniqResearches,
-  selectResearches,
   savedUniqDiscounts,
   reserchesList,
 } from "../../redux/features/researches/researchesSlice";
@@ -18,8 +18,6 @@ import {
   disUniqValue,
   deleteDisValue,
   deleteDisUniqValue,
-  selectdiscountValue,
-  selectdiscounUniqValue,
 } from "../../redux/features/discounts/discountValueSlice";
 import "../../dist/css/style.css";
 import { toast } from "react-toastify";
@@ -31,12 +29,14 @@ import makeAnimated from "react-select/animated";
 import {
   desc_validation,
   discount_validation,
-  name_validation,
 } from "../../utils/inputValidations";
 import { Input } from "../Input";
 import CustomDateTimeComponent from "../CustomDateTimeComponent";
 import { DISCOUNTS_URL, REGISTER_DISCOUNT, ROLES } from "../../utils/constants";
 import LoadingSpinner from "../LoadingSpinner";
+import { deleteNullProperties } from "../../utils/helper";
+import DiscountModal from "../DiscountModal";
+import moment from "moment";
 
 const GET_RESEARCHES = "/researchLists";
 
@@ -53,11 +53,6 @@ export default function DiscountCards() {
   const formRef = useRef("");
   const formRefInd = useRef("");
   const multiselectRef = useRef(null);
-  const getResearchState = useSelector(selectResearches);
-  const getDiscountValue = useSelector(selectdiscountValue);
-  const getUniqDiscountValue = useSelector(selectdiscounUniqValue);
-  const getUniqDiscountResearches = useSelector(selectUniqResearches);
-  const animatedComponents = makeAnimated();
 
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
@@ -67,6 +62,7 @@ export default function DiscountCards() {
   const [pageTab, setPageTab] = useState("tab_global");
   const storedUserRoles = JSON.parse(localStorage.getItem('userRoles'));
   const [superAdmin,setSuperAdmin]=useState(storedUserRoles.includes(ROLES?.SuperAdmin))
+  
   const handleLinkClick = (linkId) => {
     setActiveLink(linkId);
     setPageTab(linkId);
@@ -150,31 +146,23 @@ export default function DiscountCards() {
         percentage: discount,
         description: description,
         discountStart: startDate
-          ? new Date(
-              startDate.getTime() - startDate.getTimezoneOffset() * 60000
-            )
-              .toISOString()
-              .replace("T", " ")
-              .replace(/\.\d{3}Z/, "")
-              .split(":")
-              .slice(0, -1)
-              .join(":")
-          : null,
-
+          ? moment(startDate)
+              .utcOffset(startDate.getTimezoneOffset() / -60) // Correctly apply timezone offset
+              .format('YYYY-MM-DD HH:mm') // Format directly with moment
+          : moment().format('YYYY-MM-DD HH:mm'), // Format current date with moment
+      
         discountEnd: endDate
-          ? new Date(endDate.getTime() - endDate.getTimezoneOffset() * 60000)
-              .toISOString()
-              .replace("T", " ")
-              .replace(/\.\d{3}Z/, "")
-              .split(":")
-              .slice(0, -1)
-              .join(":")
+          ? moment(endDate)
+              .utcOffset(endDate.getTimezoneOffset() / -60)
+              .format('YYYY-MM-DD HH:mm')
           : null,
       };
 
       console.log(newDiscountData);
+      const formatedDiscountCard= deleteNullProperties(newDiscountData)
+
       axiosPrivate
-      .post(REGISTER_DISCOUNT, newDiscountData, {
+      .post(REGISTER_DISCOUNT, formatedDiscountCard, {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
       })
@@ -283,6 +271,7 @@ export default function DiscountCards() {
     paglink[0].firstChild.click();
   };
   return (
+    <>
     <div className="hk-pg-body py-0 " >
       <div className="taskboardapp-wrap"  style={{ height: '100%' }}>
         <div className="taskboardapp-content p-2">
@@ -298,7 +287,7 @@ export default function DiscountCards() {
                       activeLink === "tab_global" ? "active" : ""
                     }`}
                     onClick={() => handleLinkClick("tab_global")}
-                  >
+                    >
                     <span className="nav-link-text">Ընդհանուր</span>
                   </a>
                 </li>
@@ -310,7 +299,7 @@ export default function DiscountCards() {
                       activeLink === "tab_researches" ? "active" : ""
                     }`}
                     onClick={() => handleLinkClick("tab_researches")}
-                  >
+                    >
                     <span className="nav-link-text">Հետազոտություններ</span>
                   </a>
                 </li>
@@ -322,7 +311,7 @@ export default function DiscountCards() {
                       activeLink === "tab_patients" ? "active" : ""
                     }`}
                     onClick={() => handleLinkClick("tab_patients")}
-                  >
+                    >
                     <span className="nav-link-text badge-on-text">
                       Հաճախորդներ
                     </span>
@@ -338,7 +327,7 @@ export default function DiscountCards() {
                   <div
                     className="common_discount_container "
                     style={{ padding: "1rem" }}
-                  >
+                    >
                     <FormProvider {...methods}>
                       <div className="contact-body contact-detail-body">
                         <div data-simplebar className="nicescroll-bar">
@@ -349,7 +338,7 @@ export default function DiscountCards() {
                                 noValidate
                                 autoComplete="off"
                                 className="containern"
-                              >
+                                >
                                 <div className="card" >
                                   <div className="card-body">
                                     <div className="d-flex justify-content-between flex-column" >
@@ -372,8 +361,8 @@ export default function DiscountCards() {
                                                 Զեղչի սկիզբ
                                               </label>                                              
                                                  {(methods.formState.errors.startDate & !methods.formState.errors.notValidVisitDate?.message) ? (
-                                    <span className="error text-red"><span><img src={ErrorSvg} alt="errorSvg"/></span> պարտադիր</span>
-                                    ):''}
+                                                   <span className="error text-red"><span><img src={ErrorSvg} alt="errorSvg"/></span> պարտադիր</span>
+                                                  ):''}
                                   {methods.formState.errors.notValidVisitDate?.message && (
                                    
                                     <span className="error text-red"><span><img src={ErrorSvg} alt="errorSvg"/></span> Սխալ ձևաչափ</span>
@@ -383,10 +372,10 @@ export default function DiscountCards() {
                                               <CustomDateTimeComponent
                                                 name="startDate"
                                                 control={methods.control}
-                                                required={true}
+                                                required={false}
                                                 methods={methods}
-                                                
-                                                />
+                                                defaultValue={ moment().toDate()}
+                                                  />
                                             </div>
                                           </div>
                                           <div className="form-group">
@@ -399,17 +388,17 @@ export default function DiscountCards() {
                                               </label>
                                               {(methods.formState.errors.endDate & !methods.formState.errors.notValidVisitDate?.message) ? (
                                     <span className="error text-red"><span><img src={ErrorSvg} alt="errorSvg"/></span> պարտադիր</span>
-                                    ):''}
+                                  ):''}
                                   {methods.formState.errors.notValidVisitDate?.message && (
                                    
                                     <span className="error text-red"><span><img src={ErrorSvg} alt="errorSvg"/></span> Սխալ ձևաչափ</span>
-                                    )}
+                                  )}
                                             </div>
                                             <div>
                                               <CustomDateTimeComponent
                                                 name="endDate"
                                                 control={methods.control}
-                                                required={true}
+                                                required={false}
                                                 methods={methods}
                                                 />
                                             </div>
@@ -448,36 +437,42 @@ export default function DiscountCards() {
                                       <div className="third_column d-flex justify-content-center align-items-center">
                                         <div className="new_discount-box d-flex justify-content-center align-items-center">
                                           <img
-                                            src={emptydiscountBG}
+                                            src={+el?.percentage<50?silverCard:goldCard}
                                             className="new_box-image"
                                             alt="emptyCard"
                                             style={{objectFit:'cover',maxHeight:'150px'}}
                                             />
                                           <div className="new_box-content ">
-                                            <p >
+                                            <div className="d-flex flex-row ">
+
+                                            <p  style={{fontStyle:'italic', fontSize:'40px',marginTop:0,paddingTop:0,   margin:'0 0 25px -10px'}}>
                                               {" "}
-                                              Ակտիվ զեղչ : {el?.percentage} %
+                                               {el?.percentage}%
                                             </p>
-                                            <p >
+                                            </div>
+                                            <div style={{lineHeight:'16px'}}>
+
+                                            <p  style={{fontStyle:'italic',color:'linear-gradient(135deg, #000000, #ffffff)',fontSize:'14px'}}>
                                               Սկիզբ : {el.discountStart}
                                             </p>
-                                            <p >
+                                            <p  style={{fontStyle:'italic',color:'white',fontSize:'14px'}}>
                                               Ավարտ : {el.discountEnd}
                                             </p>
-                                            <p >
+                                            <p  style={{fontStyle:'italic',color:'white',fontSize:'14px'}}>
                                               {" "}
                                               Նկարագիր : {el.description}
                                             </p>
+                                            </div>
                                           </div>
                                         </div>
                                       </div>
                                   <div className="d-flex justify-content-center align-items-center gap-2 m-2">
                                   {!!superAdmin &&
                                     <button
-                                      type="button"
-                                      className="btn btn-secondary"
-                                      onClick={(e) => handleCancelDiscount(el?.discountId)}
-                                      >
+                                    type="button"
+                                    className="btn btn-secondary"
+                                    onClick={(e) => handleCancelDiscount(el?.discountId)}
+                                    >
                                       Չեղարկել
                                     </button>
                                           }
@@ -518,5 +513,6 @@ export default function DiscountCards() {
         </div>
       </div>
     </div>
+            </>
   );
 }

@@ -33,6 +33,7 @@ import { DIAGNOSTICS_URL, DIAGNOSTICS__SEARCH_URL } from "../../utils/constants"
 import DiagnosticsEditModal from "../EditViews/DiagnosticsEditModal";
 import emptyTable from "../../dist/svg/emptyTable.svg"
 import sonographyIcon from "../../dist/svg/ultrasonography.png"
+import DiscountModal from "../DiscountModal";
 
 
 function DiagnosticsTable({
@@ -45,10 +46,12 @@ function DiagnosticsTable({
   selectedItemId,
   selectedItem,
   refreshData,
+  dataCount,
   handleSearchPageCount
 
 }) {
   const navigate = useNavigate();
+  const [noData, setNoData] = useState(false);
   const [selectedItem1, setSelectedItem1] = useState("");
   const [deactivateRow, setDeactivateRow] = useState(false);
   const [modalInfo, setModalInfo] = useState("");
@@ -57,8 +60,13 @@ function DiagnosticsTable({
   const [filterData, setFilterData] = useState({});
   const [filterDataJSON, setFilterDataJSON] = useState('');
   const [editRow, setEditRow] = useState(false);
+  const [discount, setDiscount] = useState(false);
   const handleOpenEditModal = (value) => {
     setEditRow((prev) => value);
+  };
+  const handleOpenDiscountModal = (value) => {
+    console.log(value)
+    setDiscount((prev) => value);
   };
   const handleOpenInfoModal = (data) => {
     setModalInfo((prev) => data);
@@ -599,6 +607,24 @@ function DiagnosticsTable({
                 <img title="POS" style={{cursor:'pointer'}} width='20xp' height='20px' src={posTerminalSvg} alt='posTerminalSvg' onClick={()=>handlePosPay(row.original)}/>
                 </div>:''                  
                 }
+                  {!(row.original?.totalPayed )   ?
+                   <a
+                className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover"
+                data-bs-toggle="tooltip"
+                data-placement="top"
+                title="Edit"
+                href="#"
+                onClick={() => handleOpenDiscountModal(row.original)}
+
+              >
+                <span className="icon">
+                  <span className="feather-icon">
+                    <FeatherIcon icon="percent" />
+                  </span>
+                </span>
+              </a>
+              :''                  
+            }
                 </>
                 )}
           </div>
@@ -681,6 +707,9 @@ function DiagnosticsTable({
       {!!editRow && (
         <DiagnosticsEditModal diagnostics={editRow} setEditRow={setEditRow} refreshData={refreshData} />
       )}
+        {!!discount &&  (
+      <DiscountModal diagData={discount} setDiagData={setDiscount} refreshData={refreshData} />
+    )}
       <table
         className="table nowrap w-100 mb-5 dataTable no-footer diagTable"
         {...getTableProps()}
@@ -770,7 +799,8 @@ function DiagnosticsTable({
               </div>
             </td>
           </tr>
-         )}        
+         )}     
+         {console.log(dataCount)  } 
       </table>
     </>
   );

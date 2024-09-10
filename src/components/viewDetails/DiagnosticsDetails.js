@@ -13,6 +13,7 @@ import FileDownload from "js-file-download";
 import moment from "moment";
 import ResultData from "../ResultData";
 import { Modal } from "react-bootstrap";
+import { ROLES } from "../../utils/constants";
 
 function DiagnosticsDetails() {
   const axiosPrivate = useAxiosPrivate();
@@ -28,7 +29,9 @@ function DiagnosticsDetails() {
   const [smsCount, setSmsCount] = useState(0);
 
   const [activeLink, setActiveLink] = useState("tab_summery");
-  const [pageTab, setPageTab] = useState("tab_summery");
+  const [pageTab, setPageTab] = useState("tab_summery");  
+  const storedUserRoles = JSON.parse(localStorage.getItem('userRoles'));
+  const [superAdmin,setSuperAdmin]=useState(storedUserRoles.includes(ROLES?.SuperAdmin))
   const handleOpenResultModal = (data) => {
     setModalResult((prev) => data);
   };
@@ -198,6 +201,24 @@ responseType:'blob'
     } else {
       alert("Խնդրում եմ ընտրեք ֆայլը։");
     }
+  };
+  const handleDelete = async (dataId) => {   
+
+    const getData = async () => {
+      try {
+        const response = await axiosPrivate.post('deleteFile', {
+          diagnosticsId:diagnosticsDetails?.diagnosticsId,
+          fileId: dataId
+        });
+        //console.log('get search data')
+        setDownloadFiles(response.data.jsonString);
+        //setToggleSearchModal(false)  
+        //handleSearchPageCount(response.data.count)    
+      }catch (err) {
+        console.error(err);
+      }  
+    }; 
+    getData()
   };
   const handleSendSMS =  (e) => {    
       axiosPrivate.post('/sendNotification', { 
@@ -892,7 +913,7 @@ responseType:'blob'
                     <p
                       style={{ cursor: "pointer" }}
                       onClick={(e) => handleDownload(el)}
-                    >
+                      >
                       {el?.fileName}
                     </p>
                   </div>
@@ -900,6 +921,9 @@ responseType:'blob'
                     {formatBytes(el.size)}
                   </div>
                 </div>
+                {!!superAdmin ?
+                      <span style={{cursor:'pointer', marginLeft:'5px'}} onClick={(e)=>handleDelete(el.fileId)}><FeatherIcon  icon='x-circle'/></span>
+                    :<></>}
               </div>
             </div>
           </div>

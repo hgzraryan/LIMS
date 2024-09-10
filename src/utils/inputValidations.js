@@ -186,7 +186,7 @@ export const payment_validation = {
     },
     pattern: {
       value:
-        /^(?!.*-)\d+$/,
+        /^\d{1,10}(?:.\d+)?$/,
       message: "Սխալ ձևաչափ",
     },
     maxLength: {

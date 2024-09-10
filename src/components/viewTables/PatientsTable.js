@@ -520,7 +520,7 @@ function PatientsTable({
                     ? undefined
                     : { cursor:'pointer' },
                       onClick:
-                        cell.column?.id === "options"
+                        cell.column?.id === "options"  ||  cell.column?.id ==="selection"
                           ? undefined
                           : () => handlePatientsDetail(row.original?.patientId), 
                     })}

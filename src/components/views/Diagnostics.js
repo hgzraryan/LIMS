@@ -49,7 +49,7 @@ const handleToggleExportModal = (value) => {
     dataCount
   } = useGetData(DIAGNOSTICS_URL,currentPage,usersPerPage,searchCount,DIAGNOSTICS__SEARCH_URL,searchParams);
   const pageCount = searchCount?Math.ceil(searchCount/usersPerPage) :searchCount===0? 0:Math.ceil(dataCount/usersPerPage)
-  const { refreshData,data } = useRefreshData(DIAGNOSTICS_URL, usersPerPage);
+  const { refreshData,data } = useRefreshData(DIAGNOSTICS_URL, usersPerPage,pageNumber);
   useEffect(()=>{
     setDiagnostics(data)
     },[data])
@@ -229,6 +229,7 @@ const handleToggleExportModal = (value) => {
                         handleCloseModal={handleCloseModal}
                         handleOpenModal={handleOpenModal}
                         refreshData={refreshData}
+                        dataCount={dataCount}
                         handleSearchPageCount={(val)=>handleSearchPageCount(val)}
 
                       />

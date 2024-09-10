@@ -43,7 +43,7 @@ const Reagents = () => {
     dataCount
   } = useGetData(REAGENTS_URL,currentPage,usersPerPage,searchCount,null,searchId,searchTerms);
   const pageCount = searchCount?Math.ceil(searchCount/usersPerPage) :searchCount===0? 0:Math.ceil(dataCount/usersPerPage)
-  const { refreshData,data } = useRefreshData(REAGENTS_URL, usersPerPage);
+  const { refreshData,data } = useRefreshData(REAGENTS_URL, usersPerPage,pageNumber);
   useEffect(()=>{
     setReagents(data)
     },[data])

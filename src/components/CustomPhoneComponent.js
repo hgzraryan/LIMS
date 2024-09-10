@@ -24,6 +24,7 @@ function CustomPhoneComponent({ control, name,required=true,defaultValue='' })  
       autoComplete="off"
       defaultCountry="AM"
       className='form-control'
+      limitMaxLength
       
     />
     )

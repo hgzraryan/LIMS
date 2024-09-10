@@ -3,6 +3,7 @@ import { useController } from 'react-hook-form'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { calculateAge } from '../utils/helper';
+import moment from 'moment';
 
 function CustomDateComponent({ control, name,required='true',defaultValue='',setIsChild=false,maxDate='',handleDateChanged='' })  {
   const [startDate, setStartDate] = useState();
@@ -22,7 +23,7 @@ function CustomDateComponent({ control, name,required='true',defaultValue='',set
       handleDateChanged()
       const [start, end] = date;
 console.log(date)
-      field.onChange({ startDate: start, endDate: end });
+      field.onChange({ startDate: start, endDate: end?end:moment(new Date()).format('YYYY-MM-DD') });
       setStartDate(start);
       setEndDate(end);
       if(setIsChild){
@@ -34,14 +35,15 @@ console.log(date)
         }
       }
     };
+    const preventTyping = (e) => {
+      e.preventDefault(); // Prevent any typing into the field
+    };
     return (
       <DatePicker
        showYearDropdown
        yearDropdownItemNumber={100}
        scrollableYearDropdown
-       //onChange={handleDateChange}
        onChange={handleDateChange}
-
        dateFormat={"yyyy-MM-dd"}
        selected={startDate}
        selectsRange
@@ -49,6 +51,7 @@ console.log(date)
        endDate={endDate}
        isClearable
        required
+       onKeyDown={preventTyping} // Prevent typing in the input field
        placeholderText="Ընտրեք ամսաթիվը" 
        className='form-control custom-datepicker'
        popperPlacement="auto"

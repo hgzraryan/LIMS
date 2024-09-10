@@ -54,7 +54,7 @@ const Patients = () => {
       dataCount 
     } = useGetData(PATIENTS_URL,currentPage,usersPerPage,searchCount,PATIENTS__SEARCH_URL,searchParams);
   const pageCount = searchCount?Math.ceil(searchCount/usersPerPage) :searchCount===0? 0:Math.ceil(dataCount/usersPerPage)
-  const { refreshData,data } = useRefreshData(PATIENTS_URL, usersPerPage);
+  const { refreshData,data } = useRefreshData(PATIENTS_URL, usersPerPage,pageNumber);
   useEffect(()=>{
     setPatients(data)
     },[data])
