@@ -39,7 +39,8 @@ const Agents = () => {
     data: agents,
     setData: setAgents,
     //refreshData,
-    dataCount
+    dataCount,
+    dataReceived
   } = useGetData(AGENTS_URL,currentPage,usersPerPage,searchCount,null,searchId,searchTerms)
   const pageCount = searchCount?Math.ceil(searchCount/usersPerPage) :searchCount===0? 0:Math.ceil(dataCount/usersPerPage)
   const { refreshData,data } = useRefreshData(AGENTS_URL, usersPerPage,pageNumber);
@@ -195,6 +196,7 @@ setAgents(data)
                         setAgents={setAgents}
                         refreshData={refreshData}
                         handleSearchPageCount={(data)=>handleSearchPageCount(data)}
+                        dataReceived={dataReceived}
 
                       />
                         <ReactPaginate

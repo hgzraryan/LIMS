@@ -28,7 +28,7 @@ function Notifications() {
   const {
     data: notifications,
     setData: setNotifications,
-    //refreshData,
+    dataReceived,
     dataCount 
   } = useGetData(NOTIFICATIONS_URL,currentPage,usersPerPage,searchCount,null,searchId,searchTerms);
   const { refreshData,data } = useRefreshData(NOTIFICATIONS_URL, usersPerPage,pageNumber);
@@ -156,6 +156,7 @@ const handlePageClick = ({ selected: selectedPage }) => {
                 //   patients={patients}
                 //   setPatients={setPatients}
                   refreshData={refreshData}
+                  dataReceived={dataReceived}
                   />
                     <ReactPaginate
                       previousLabel = {"Հետ"}    

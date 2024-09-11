@@ -24,6 +24,7 @@ function ResearchListsTable({
   researches,
   setResearches,
   refreshData,
+  dataReceived
 }) {
   const [modalInfo, setModalInfo] = useState("");
   const [editRow, setEditRow] = useState(false);
@@ -483,7 +484,7 @@ function ResearchListsTable({
               )
             })}
             </tbody>
-         ):(
+         ):dataReceived?(
           <tr class="table-placeholder">
             <td class="table-cell" >
               <div class="empty-normal">
@@ -494,7 +495,7 @@ function ResearchListsTable({
               </div>
             </td>
           </tr>
-         )}        
+         ):<></>}        
       </table>
           </>
   );

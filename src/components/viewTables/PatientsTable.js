@@ -31,7 +31,8 @@ function PatientsTable({
   patients,
   setPatients,
   refreshData,
-  handleSearchPageCount
+  handleSearchPageCount,
+  dataReceived
 }) {
   const navigate = useNavigate();
   const [modalInfo, setModalInfo] = useState("");
@@ -533,7 +534,7 @@ function PatientsTable({
           );
         })}
       </tbody>
-         ):(
+         ):dataReceived?(
           <tr class="table-placeholder">
             <td class="table-cell" >
               <div class="empty-normal">
@@ -544,7 +545,7 @@ function PatientsTable({
               </div>
             </td>
           </tr>
-         )}        
+         ):<></>}        
       </table>
       </>
   );

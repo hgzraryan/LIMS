@@ -1,20 +1,16 @@
 import React, { Suspense, useState, useEffect, useRef } from "react";
-import { Form, FormProvider, useForm, Controller } from "react-hook-form";
-import ErrorSvg from "./../dist/svg/error.svg";
+import { Form, FormProvider, useForm } from "react-hook-form";
 import { Modal } from "react-bootstrap";
-import { Input } from "./Input";
 import { toast } from "react-toastify";
 import useAxiosPrivate from "./../hooks/useAxiosPrivate";
 import LoadingSpinner from "./LoadingSpinner";
-import { deleteNullProperties } from "./../utils/helper";
-import { Editor } from "@tinymce/tinymce-react";
-import FeatherIcon from "feather-icons-react/build/FeatherIcon";
 
 import { useLocation, useNavigate } from "react-router-dom";
-import { DISCOUNTS_URL, REGISTER_AGENT, ROLES } from "../utils/constants";
-import emptydiscountBG from "./../dist/img/discountBgC.jpg";
-import goldCard from "./../dist/img/Gold.png";
-import silverCard from "./../dist/img/Blue.png";
+import { DISCOUNTS_URL} from "../utils/constants";
+import blueCard from "../dist/img/Blue.png";
+import goldCard from "../dist/img/Gold.png";
+import greenCard from "../dist/img/Green.png";
+import silverCard from "../dist/img/Silver.png";
 
 function DiscountModal({ diagData,setDiagData,refreshData}) {
     
@@ -135,7 +131,7 @@ console.log(discounts)
       <LoadingSpinner />
     </div>
   ) : (
-    <>
+    <div className="d-flex justify-content-center align-items-center">
       {discounts.length > 0 ? (
         discounts.map((el) => {
           return (
@@ -144,12 +140,20 @@ console.log(discounts)
                  <div onClick={() => handleDiscountPercent(el?.discountId)}
                 style={{border:imgBlur===el.discountId?'4px double #4eafcb':'',}}
                  className="new_discount-box d-flex justify-content-center align-items-center">
-                   <img
-                     src={+el?.percentage<50?silverCard:goldCard}
-                     className="new_box-image"
-                     alt="emptyCard"
-                     style={{objectFit:'cover',maxHeight:'150px'}}
-                     />
+                         <img
+                                            src={
+                                              +el?.percentage<=10
+                                              ?blueCard
+                                              :+el?.percentage>10 && +el?.percentage<=20
+                                              ?greenCard
+                                              :+el?.percentage>20 && +el?.percentage<=50
+                                              ?silverCard
+                                              :+el?.percentage>50
+                                              ?goldCard:''}
+                                            className="new_box-image"
+                                            alt="emptyCard"
+                                            style={{objectFit:'cover',maxHeight:'150px'}}
+                                            />
                    <div className="new_box-content ">
                      <div className="d-flex flex-row ">
 
@@ -180,7 +184,7 @@ console.log(discounts)
       ) : (
         ''
       )}
-    </>
+    </div>
   )}
 </div>
                             </div>

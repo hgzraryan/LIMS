@@ -32,6 +32,7 @@ function UsersTable({
   users,
   setUsers,
   refreshData,
+  dataReceived
 }) {
   const navigate = useNavigate();
   const [disableRow, setDisableRow] = useState(false);
@@ -401,7 +402,7 @@ function UsersTable({
               );
             })}
           </tbody>
-         ):(
+         ):dataReceived?(
           <tr class="table-placeholder">
             <td class="table-cell" >
               <div class="empty-normal">
@@ -412,7 +413,7 @@ function UsersTable({
               </div>
             </td>
           </tr>
-         )}        
+         ):<></>}            
       </table>
     </>
   );

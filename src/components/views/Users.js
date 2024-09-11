@@ -38,7 +38,8 @@ const Users = () => {
   const {
     data: users,
     setData: setUsers,
-    dataCount
+    dataCount,
+    dataReceived
   } = useGetData(USERS_URL,currentPage,usersPerPage,searchCount,null,searchId,searchTerms);
   const pageCount = searchCount?Math.ceil(searchCount/usersPerPage) :searchCount===0? 0:Math.ceil(dataCount/usersPerPage)
   const { refreshData,data } = useRefreshData(USERS_URL, usersPerPage,pageNumber);
@@ -256,6 +257,7 @@ const Users = () => {
                         setUsers={setUsers}
                         getUsers={refreshData}
                         refreshData={refreshData}
+                        dataReceived={dataReceived}
                       />
                      <ReactPaginate
                         previousLabel = {"Հետ"}    

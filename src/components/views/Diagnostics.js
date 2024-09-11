@@ -45,7 +45,7 @@ const handleToggleExportModal = (value) => {
   const {
     data: diagnostics,
     setData: setDiagnostics,
-    //refreshData,
+    dataReceived,
     dataCount
   } = useGetData(DIAGNOSTICS_URL,currentPage,usersPerPage,searchCount,DIAGNOSTICS__SEARCH_URL,searchParams);
   const pageCount = searchCount?Math.ceil(searchCount/usersPerPage) :searchCount===0? 0:Math.ceil(dataCount/usersPerPage)
@@ -231,6 +231,7 @@ const handleToggleExportModal = (value) => {
                         refreshData={refreshData}
                         dataCount={dataCount}
                         handleSearchPageCount={(val)=>handleSearchPageCount(val)}
+                        dataReceived={dataReceived}
 
                       />
                       <ReactPaginate

@@ -2,12 +2,12 @@ import React from "react";
 import { Modal } from "react-bootstrap";
 
 const ComponentToConfirm = ({
-  confirmUserRef,
-  handleCloseModal,
-  handleDeleteItem,
-  selectedItemId,
-  keyName,
-  delId
+  confirmUserRef='',
+  handleCloseModal='',
+  handleDeleteItem='',
+  selectedItemId='',
+  keyName='',
+  delId=''
 }) => {
   return (
     <Modal show={selectedItemId !== null} size="xl" onHide={handleCloseModal}>

@@ -22,7 +22,7 @@ function DoctorsPatients() {
       const {
         data: patients,
         setData: setPatients,
-        //refreshData,
+        dataReceived,
         dataCount
       } = useGetData(DOCTORSPATIENTS_URL,currentPage,usersPerPage);
       const { refreshData,data } = useRefreshData(DOCTORSPATIENTS_URL, usersPerPage);

@@ -28,7 +28,8 @@ function MedInstitutionsTable({
   handleCloseModal,
   medInstitutions,
   setMedInstitutions,
-  refreshData
+  refreshData,
+  dataReceived
 }) {
   const [modalInfo, setModalInfo] = useState("");
   const [editRow, setEditRow] = useState(false);
@@ -405,7 +406,7 @@ function MedInstitutionsTable({
               );
             })}
           </tbody>
-         ):(
+        ):dataReceived?(
           <tr class="table-placeholder">
             <td class="table-cell" >
               <div class="empty-normal">
@@ -416,7 +417,7 @@ function MedInstitutionsTable({
               </div>
             </td>
           </tr>
-         )}        
+         ):<></>}         
       </table>
     </>
   );

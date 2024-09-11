@@ -41,7 +41,7 @@ function DoctorsVisits() {
     const {
       data: doctorsVisits,
       setData: setDoctorsVisits,
-      //refreshData,
+      dataReceived,
       dataCount  
     } = useGetData(DOCTORSVISITS_URL,currentPage,usersPerPage);
     const pageCount = searchCount?Math.ceil(searchCount/usersPerPage) :searchCount===0? 0:Math.ceil(dataCount/usersPerPage)
@@ -206,6 +206,7 @@ function DoctorsVisits() {
                           setDoctorsVisits={setDoctorsVisits}
                           refreshData={refreshData}
                           handleSearchPageCount={(val)=>handleSearchPageCount(val)}
+                          dataReceived={dataReceived}
                         />
                         <ReactPaginate
                         previousLabel = {"Հետ"}    

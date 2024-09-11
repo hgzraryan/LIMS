@@ -27,7 +27,8 @@ import DoctorVisitsInfoModal from "../infoModals/DoctorVisitsInfoModal";
 import { DOCTORSVISITS_URL, DOCTORSVISITS__SEARCH_URL } from "../../utils/constants";
 import emptyTable from "../../dist/svg/emptyTable.svg"
 
-function DoctorsVisitsTable({ doctorsVisits, setDoctorsVisits, refreshData,handleSearchPageCount }) {
+function DoctorsVisitsTable({ doctorsVisits, setDoctorsVisits, refreshData,handleSearchPageCount,
+  dataReceived }) {
   const navigate = useNavigate();
   const [modalInfo, setModalInfo] = useState("");
   const [DisableRowData, setDisableRowData] = useState(false);
@@ -497,7 +498,7 @@ function DoctorsVisitsTable({ doctorsVisits, setDoctorsVisits, refreshData,handl
                 );
               })}
              </tbody>
-         ):(
+         ):dataReceived?(
           <tr class="table-placeholder">
             <td class="table-cell" >
               <div class="empty-normal">
@@ -508,7 +509,7 @@ function DoctorsVisitsTable({ doctorsVisits, setDoctorsVisits, refreshData,handl
               </div>
             </td>
           </tr>
-         )}        
+         ):<></>}        
       </table>
     </>
   );

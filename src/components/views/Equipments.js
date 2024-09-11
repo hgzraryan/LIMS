@@ -35,7 +35,7 @@ const Equipments = () => {
   const {
     data: equipments,
     setData: setEquipments,
-    //refreshData,
+    dataReceived,
     dataCount
   } = useGetData(EQUIPMENTS_URL,currentPage,usersPerPage,searchCount,null,searchId,searchTerms);
   const pageCount = searchCount?Math.ceil(searchCount/usersPerPage) :searchCount===0? 0:Math.ceil(dataCount/usersPerPage)
@@ -169,6 +169,7 @@ const handlePageClick = ({ selected: selectedPage }) => {
                         equipments={equipments}
                         setEquipments={setEquipments}
                         refreshData={refreshData}
+                        dataReceived={dataReceived}
                         />
                        <ReactPaginate
                         previousLabel = {"Հետ"}    

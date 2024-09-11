@@ -29,7 +29,7 @@ import isActiveSvg from "../../dist/svg/isActive.svg";
 import posTerminalSvg from "../../dist/svg/posTerminal.svg";
 import CreatePayByPos from "../CreatePayByPos";
 import DiagnosticsInfoModal from "../infoModals/DiagnosticsInfoModal";
-import { DIAGNOSTICS_URL, DIAGNOSTICS__SEARCH_URL } from "../../utils/constants";
+import { DIAGNOSTICS_URL, DIAGNOSTICS__SEARCH_URL, ROLES } from "../../utils/constants";
 import DiagnosticsEditModal from "../EditViews/DiagnosticsEditModal";
 import emptyTable from "../../dist/svg/emptyTable.svg"
 import sonographyIcon from "../../dist/svg/ultrasonography.png"
@@ -47,7 +47,8 @@ function DiagnosticsTable({
   selectedItem,
   refreshData,
   dataCount,
-  handleSearchPageCount
+  handleSearchPageCount,
+  dataReceived
 
 }) {
   const navigate = useNavigate();
@@ -61,6 +62,9 @@ function DiagnosticsTable({
   const [filterDataJSON, setFilterDataJSON] = useState('');
   const [editRow, setEditRow] = useState(false);
   const [discount, setDiscount] = useState(false);
+  
+  const storedUserRoles = JSON.parse(localStorage.getItem('userRoles'));
+  const [superAdmin,setSuperAdmin]=useState(storedUserRoles.includes(ROLES?.SuperAdmin))
   const handleOpenEditModal = (value) => {
     setEditRow((prev) => value);
   };
@@ -68,7 +72,8 @@ function DiagnosticsTable({
     console.log(value)
     setDiscount((prev) => value);
   };
-  const handleOpenInfoModal = (data) => {
+  const handleOpenInfoModal = (e,data) => {
+    e.stopPropagation()
     setModalInfo((prev) => data);
   };
  
@@ -88,7 +93,8 @@ function DiagnosticsTable({
   const handleCloseDeactivateModal = () => {
     setDeactivateRow(false);
   };
-  const handlePosPay = (diagnosticsId) => {
+  const handlePosPay = (e,diagnosticsId) => {
+    e.stopPropagation()
     setOpenPosModal(diagnosticsId);
   };
   const handleClosePosPay = () => {
@@ -483,7 +489,7 @@ function DiagnosticsTable({
       {
         Header: "Տեսակ",
         accessor: "class",
-        width: 180,
+        width: 150,
         // Filter: ({ column: { id } }) => (
         //   <ColumnFilter 
         //   id={id} 
@@ -537,16 +543,25 @@ function DiagnosticsTable({
               </a>
 
               </div>
-
-              <div className="d-flex">
-
+              <a
+                    className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover"
+                    data-bs-toggle="tooltip"
+                    data-placement="top"
+                    title="Print"
+                    href="#"
+                    onClick={() => handleOpenPrintModal(row.original)}
+                  >
+                    <span className="icon">
+                 
               <BiSolidInfoCircle
                 cursor={"pointer"}
                 size={"1.5rem"}
                 title="info"
-                onClick={() => handleOpenInfoModal(row.original)}
+                color="gray"
+                onClick={(e) => handleOpenInfoModal(e,row.original)}
               />
-            </div>
+                    </span>
+                  </a>
 
             {row.original?.diagStatus === "Active" && (
                 <>
@@ -582,6 +597,43 @@ function DiagnosticsTable({
               </a>
               
             
+              {!(row.original?.totalPrice <= row.original?.totalPayed )   ?
+                  < >  
+                   <a
+                     className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover"
+                     data-bs-toggle="tooltip"
+                  data-placement="top"
+                  title="Զեղչ"
+                  href="#"
+                  onClick={() => handleOpenDiscountModal(row.original)}
+  
+                >
+                  <span className="icon me-">
+                    <span className="feather-icon">
+                  <img title="POS" style={{cursor:'pointer'}} width='20xp' height='20px' src={posTerminalSvg} alt='posTerminalSvg' onClick={(e)=>handlePosPay(e,row.original)}/>
+                    </span>
+                  </span>
+                </a>            
+                  </>:''                  
+                  }
+                    {!row.original?.totalPayed && !!superAdmin  ?
+                     <a
+                     className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover"
+                     data-bs-toggle="tooltip"
+                  data-placement="top"
+                  title="Discount"
+                  href="#"
+                  onClick={() => handleOpenDiscountModal(row.original)}
+  
+                >
+                  <span className="icon me-">
+                    <span className="feather-icon">
+                      <FeatherIcon icon="percent" />
+                    </span>
+                  </span>
+                </a>
+                :''                  
+              }
               {/*
               //TODO Delete diagnostics option
               {!row.original.patientId && (
@@ -602,35 +654,12 @@ function DiagnosticsTable({
                 </a>
               )} */}
             </div>
-            {!(row.original?.totalPrice <= row.original?.totalPayed )   ?
-                <div className="d-flex">              
-                <img title="POS" style={{cursor:'pointer'}} width='20xp' height='20px' src={posTerminalSvg} alt='posTerminalSvg' onClick={()=>handlePosPay(row.original)}/>
-                </div>:''                  
-                }
-                  {!(row.original?.totalPayed )   ?
-                   <a
-                className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover"
-                data-bs-toggle="tooltip"
-                data-placement="top"
-                title="Edit"
-                href="#"
-                onClick={() => handleOpenDiscountModal(row.original)}
-
-              >
-                <span className="icon">
-                  <span className="feather-icon">
-                    <FeatherIcon icon="percent" />
-                  </span>
-                </span>
-              </a>
-              :''                  
-            }
                 </>
                 )}
           </div>
         ),
         disableSortBy: true,
-        width: 200,
+        width: 250,
         Filter: ({ column: { id } }) => <></>,
       },
     ],
@@ -788,7 +817,7 @@ function DiagnosticsTable({
               );
             })}
           </tbody>
-         ):(
+        ):dataReceived?(
           <tr class="table-placeholder">
             <td class="table-cell" >
               <div class="empty-normal">
@@ -799,8 +828,7 @@ function DiagnosticsTable({
               </div>
             </td>
           </tr>
-         )}     
-         {console.log(dataCount)  } 
+         ):<></>}       
       </table>
     </>
   );

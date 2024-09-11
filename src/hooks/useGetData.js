@@ -6,6 +6,7 @@ import { PATIENTS__SEARCH_URL } from "../utils/constants";
 const useGetData = (url,currentPage,usersPerPage,searchCount=null,searchUrl=null,searchParams=null) => {
     const [data, setData] = useState([]);
     const [dataCount, setDataCount] = useState(null);
+    const [dataReceived, setDataReceived] = useState(false);
     const axiosPrivate = useAxiosPrivate();  
     const navigate = useNavigate();  
     const location = useLocation();    
@@ -32,6 +33,7 @@ const useGetData = (url,currentPage,usersPerPage,searchCount=null,searchUrl=null
             isMounted &&
               setData((prevUsers) => response.data.jsonString);
               setDataCount(response.data.count)
+              setDataReceived(true)
               //setCurrentPage((prev) => prev + 1);
             } catch (err) {
               console.error(err);
@@ -52,6 +54,7 @@ const useGetData = (url,currentPage,usersPerPage,searchCount=null,searchUrl=null
             });
             //console.log('get search data')
             setData(response.data.jsonString);
+            setDataReceived(true)
             //setToggleSearchModal(false)  
             //handleSearchPageCount(response.data.count)    
           }catch (err) {
@@ -128,6 +131,8 @@ const useGetData = (url,currentPage,usersPerPage,searchCount=null,searchUrl=null
         data,
         setData,
         dataCount,
+        dataReceived
+
     }
 }
 export default useGetData;

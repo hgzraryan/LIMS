@@ -39,7 +39,7 @@ const Reagents = () => {
   const {
     data: reagents,
     setData: setReagents,
-    //refreshData,
+    dataReceived,
     dataCount
   } = useGetData(REAGENTS_URL,currentPage,usersPerPage,searchCount,null,searchId,searchTerms);
   const pageCount = searchCount?Math.ceil(searchCount/usersPerPage) :searchCount===0? 0:Math.ceil(dataCount/usersPerPage)
@@ -193,6 +193,7 @@ const handlePageClick = ({ selected: selectedPage }) => {
                         setReagents={setReagents}
                         getReagents={refreshData}
                         refreshData={refreshData}
+                        dataReceived={dataReceived}
 
                       />
                        <ReactPaginate

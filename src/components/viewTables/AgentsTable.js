@@ -21,7 +21,8 @@ function AgentsTable({
   handleCloseModal,
   agents,
   setAgents,
-  refreshData
+  refreshData,
+  dataReceived
 }) {
   const [editRow, setEditRow] = useState(false);
   const [modalInfo, setModalInfo] = useState(false);
@@ -310,18 +311,18 @@ function AgentsTable({
               )
             })}
           </tbody>
-         ):(
-          <tr class="table-placeholder">
-            <td class="table-cell" >
-              <div class="empty-normal">
-                <div class="empty-image d-flex justify-content-center align-items-center">
-                  <img src={emptyTable} alt='emptyTable'/>
+          ):dataReceived?(
+            <tr class="table-placeholder">
+              <td class="table-cell" >
+                <div class="empty-normal">
+                  <div class="empty-image d-flex justify-content-center align-items-center">
+                    <img src={emptyTable} alt='emptyTable'/>
+                  </div>
+                  <div class="empty-description d-flex justify-content-center align-items-center mb-2">Տվյալներ չկան</div>
                 </div>
-                <div class="empty-description d-flex justify-content-center align-items-center mb-2">Տվյալներ չկան</div>
-              </div>
-            </td>
-          </tr>
-         )}        
+              </td>
+            </tr>
+           ):<></>}         
       </table>
     </>
   );

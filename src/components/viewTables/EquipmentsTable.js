@@ -24,6 +24,7 @@ function EquipmentsTable({
   equipments,
   setEquipments,
   refreshData,
+  dataReceived
 }) {
   const [modalInfo, setModalInfo] = useState("");
   const [editRow, setEditRow] = useState(false);
@@ -371,7 +372,7 @@ function EquipmentsTable({
               )
             })}
              </tbody>
-         ):(
+         ):dataReceived?(
           <tr class="table-placeholder">
             <td class="table-cell" >
               <div class="empty-normal">
@@ -382,7 +383,7 @@ function EquipmentsTable({
               </div>
             </td>
           </tr>
-         )}        
+         ):<></>}           
       </table>
     
     </>

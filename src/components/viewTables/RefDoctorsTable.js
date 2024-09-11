@@ -29,7 +29,8 @@ function RefDoctorsTable({
   handleCloseModal,
   refDoctors,
   setRefDoctors,
-  refreshData
+  refreshData,
+  dataReceived
 }) {
   const [modalInfo, setModalInfo] = useState("");
   const [editRow, setEditRow] = useState(false);
@@ -388,7 +389,7 @@ function RefDoctorsTable({
               );
             })}
           </tbody>
-         ):(
+         ):dataReceived?(
           <tr class="table-placeholder">
             <td class="table-cell" >
               <div class="empty-normal">
@@ -399,7 +400,7 @@ function RefDoctorsTable({
               </div>
             </td>
           </tr>
-         )}        
+         ):<></>}         
       </table>
     </>
   );

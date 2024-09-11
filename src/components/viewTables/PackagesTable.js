@@ -23,6 +23,7 @@ function PackagesTable({
   packages,
   setPackages,
   refreshData,
+  dataReceived
 }) {
   //const [packages, setPackages] = useState(customData);
   const [modalInfo, setModalInfo] = useState("");
@@ -342,18 +343,18 @@ const {
              )
            })}
           </tbody>
-         ):(
-          <tr class="table-placeholder">
-            <td class="table-cell" >
-              <div class="empty-normal">
-                <div class="empty-image d-flex justify-content-center align-items-center">
-                  <img src={emptyTable} alt='emptyTable'/>
-                </div>
-                <div class="empty-description d-flex justify-content-center align-items-center mb-2">Տվյալներ չկան</div>
+       ):dataReceived?(
+        <tr class="table-placeholder">
+          <td class="table-cell" >
+            <div class="empty-normal">
+              <div class="empty-image d-flex justify-content-center align-items-center">
+                <img src={emptyTable} alt='emptyTable'/>
               </div>
-            </td>
-          </tr>
-         )}        
+              <div class="empty-description d-flex justify-content-center align-items-center mb-2">Տվյալներ չկան</div>
+            </div>
+          </td>
+        </tr>
+       ):<></>}          
       </table>
          </>
   )

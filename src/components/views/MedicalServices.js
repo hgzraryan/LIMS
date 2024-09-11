@@ -40,7 +40,7 @@ function MedicalServices() {
   const {
       data: medicalServices,
       setData: setMedicalServices,
-      //refreshData,
+      dataReceived,
       dataCount
     } = useGetData(MEDICALSERVICES_URL,currentPage,usersPerPage,searchCount,null,searchId,searchTerms);
     const pageCount = searchCount?Math.ceil(searchCount/usersPerPage) :searchCount===0? 0:Math.ceil(dataCount/usersPerPage)
@@ -190,6 +190,7 @@ const handlePageClick = ({ selected: selectedPage }) => {
                           researches={medicalServices}
                           setResearches={setMedicalServices}
                           refreshData={refreshData}
+                          dataReceived={dataReceived}
                           />
                         <ReactPaginate
                           previousLabel = {"Հետ"}    

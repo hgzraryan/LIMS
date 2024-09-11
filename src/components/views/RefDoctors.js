@@ -38,7 +38,7 @@ function RefDoctors() {
      const {
        data: refDoctors,
        setData: setRefDoctors,
-       //refreshData,
+       dataReceived,
        dataCount
       } = useGetData(REFDOCTORS_URL,currentPage,usersPerPage,searchCount,null,searchId,searchTerms);
       const pageCount = searchCount?Math.ceil(searchCount/usersPerPage) :searchCount===0? 0:Math.ceil(dataCount/usersPerPage)
@@ -208,6 +208,7 @@ function RefDoctors() {
                         refDoctors={refDoctors}
                         setRefDoctors={setRefDoctors}
                         refreshData={refreshData}
+                        dataReceived={dataReceived}
                       />
                       <ReactPaginate
                         previousLabel = {"Հետ"}    

@@ -3,12 +3,27 @@ import Swal from "sweetalert2";
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { checkUsersCount } from "../redux/features/users/usersCountSlice";
+import { toast } from "react-toastify";
 
 const useDeleteData = (url,itemRef,selectedItem,setSelectedItemId,items,setItems,name,getData) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
   const axiosPrivate = useAxiosPrivate();
+  
+  const notify = (text) =>
+    toast.error(text, {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+
+
   const updateUsersCount = async () => {
     try {
       const response = await axiosPrivate.get("/allCount");
@@ -26,7 +41,10 @@ const useDeleteData = (url,itemRef,selectedItem,setSelectedItemId,items,setItems
           data: { id: delid },
         });
         setSelectedItemId(null); // Close the modal after deletion
-        Swal.fire(`Տվյալները ջնջված են`);
+        notify(
+          `Տվյալները ջնջված են`
+        );
+        //Swal.fire(`Տվյալները ջնջված են`);
         //Swal.fire(`${response.data[name]} has been deleted`);
         // const updatedItems = items.filter((data) => data._id !== delid);
         // setItems(updatedItems);

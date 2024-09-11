@@ -29,7 +29,8 @@ function DoctorsTable({
   handleCloseModal,
   doctors,
   setDoctors,
-  refreshData
+  refreshData,
+  dataReceived
 }) {
   const navigate = useNavigate();
   const [imageUrl, setImageUrl] = useState(MissingAvatar);
@@ -315,7 +316,7 @@ function DoctorsTable({
                 );
               })}
             </tbody>
-         ):(
+        ):dataReceived?(
           <tr class="table-placeholder">
             <td class="table-cell" >
               <div class="empty-normal">
@@ -326,7 +327,7 @@ function DoctorsTable({
               </div>
             </td>
           </tr>
-         )}        
+         ):<></>}        
       </table>
     </>
   );

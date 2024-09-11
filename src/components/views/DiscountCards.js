@@ -3,11 +3,10 @@ import React, { useEffect, useState, useRef, Suspense } from "react";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { useDispatch} from "react-redux";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
-//import emptyCard from "../../dist/img/discount-bg.png";
-import emptyCard from "../../dist/img/discount_testImg.png";
-import emptydiscountBG from "../../dist/img/discountBgC.jpg";
-import silverCard from "../../dist/img/Blue.png";
+import blueCard from "../../dist/img/Blue.png";
 import goldCard from "../../dist/img/Gold.png";
+import greenCard from "../../dist/img/Green.png";
+import silverCard from "../../dist/img/Silver.png";
 import {
   createDiscount,
   savedUniqDiscounts,
@@ -437,7 +436,15 @@ export default function DiscountCards() {
                                       <div className="third_column d-flex justify-content-center align-items-center">
                                         <div className="new_discount-box d-flex justify-content-center align-items-center">
                                           <img
-                                            src={+el?.percentage<50?silverCard:goldCard}
+                                            src={
+                                              +el?.percentage<=10
+                                              ?blueCard
+                                              :+el?.percentage>10 && +el?.percentage<=20
+                                              ?greenCard
+                                              :+el?.percentage>20 && +el?.percentage<=50
+                                              ?silverCard
+                                              :+el?.percentage>50
+                                              ?goldCard:''}
                                             className="new_box-image"
                                             alt="emptyCard"
                                             style={{objectFit:'cover',maxHeight:'150px'}}

@@ -44,6 +44,7 @@ function ReagentsTable({
   reagents,
   setReagents,
   getReagents,
+  dataReceived
 }) {
   const [modalInfo, setModalInfo] = useState("");
   const handleOpenInfoModal = (user) => {
@@ -420,7 +421,7 @@ function ReagentsTable({
             );
           })}
            </tbody>
-         ):(
+         ):dataReceived?(
           <tr class="table-placeholder">
             <td class="table-cell" >
               <div class="empty-normal">
@@ -431,7 +432,7 @@ function ReagentsTable({
               </div>
             </td>
           </tr>
-         )}        
+         ):<></>}              
       </table>
     </>
 

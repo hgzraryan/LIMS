@@ -526,8 +526,8 @@ export const fullName_validation = {
       message: "պարտադիր",
     },
     maxLength: {
-      value: 30,
-      message: "30 characters max",
+      value: 50,
+      message: "Առավելագույնը 50 տառ",
     },
   },
 };

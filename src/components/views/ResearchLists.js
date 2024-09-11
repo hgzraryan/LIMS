@@ -57,7 +57,7 @@ const ResearchLists = () => {
   const {
     data: researchList,
     setData: setResearches,
-    //refreshData,
+    dataReceived,
     dataCount
   } = useGetData(RESEARCHLISTS_URL,currentPage,usersPerPage,searchCount,null,searchId,searchTerms);
   const pageCount = searchCount?Math.ceil(searchCount/usersPerPage) :searchCount===0? 0:Math.ceil(dataCount/usersPerPage)
@@ -227,6 +227,7 @@ const handlePageClick = ({ selected: selectedPage }) => {
                         researches={researchList}
                         setResearches={setResearches}
                         refreshData={refreshData}
+                        dataReceived={dataReceived}
                       />
                       <ReactPaginate
                         previousLabel = {"Հետ"}    

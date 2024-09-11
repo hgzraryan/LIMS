@@ -34,7 +34,7 @@ function MedInstitutions() {
     const {
       data: medInstitutions,
       setData: setMedInstitutions,
-      //refreshData,
+      dataReceived,
       dataCount
     } = useGetData(MEDINSTITUTIONS_URL,currentPage,usersPerPage,searchCount,null,searchId,searchTerms);
     const pageCount = searchCount?Math.ceil(searchCount/usersPerPage) :searchCount===0? 0:Math.ceil(dataCount/usersPerPage)
@@ -184,6 +184,7 @@ function MedInstitutions() {
                         medInstitutions={medInstitutions}
                         setMedInstitutions={setMedInstitutions}
                         refreshData={refreshData}
+                        dataReceived={dataReceived}
                       />
                      <ReactPaginate
                         previousLabel = {"Հետ"}    

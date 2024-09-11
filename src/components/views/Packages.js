@@ -33,7 +33,7 @@ function Packages() {
     const {
       data: packages,
       setData: setPackages,
-      //refreshData,
+      dataReceived,
       dataCount
     } = useGetData(PACKAGES_URL,currentPage,usersPerPage,searchCount,null,searchId,searchTerms);
     const pageCount = searchCount?Math.ceil(searchCount/usersPerPage) :searchCount===0? 0:Math.ceil(dataCount/usersPerPage)
@@ -171,6 +171,7 @@ const handlePageClick = ({ selected: selectedPage }) => {
                     packages={packages}
                     setPackages={setPackages}
                     refreshData={refreshData}
+                    dataReceived={dataReceived}
                   />
                  <ReactPaginate
                         previousLabel = {"Հետ"}    

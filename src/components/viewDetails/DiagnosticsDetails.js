@@ -14,6 +14,8 @@ import moment from "moment";
 import ResultData from "../ResultData";
 import { Modal } from "react-bootstrap";
 import { ROLES } from "../../utils/constants";
+import ComponentToConfirm from "../ComponentToConfirm";
+import FileDeleteModal from "../FileDeleteModal";
 
 function DiagnosticsDetails() {
   const axiosPrivate = useAxiosPrivate();
@@ -23,6 +25,8 @@ function DiagnosticsDetails() {
   const [isLoading, setIsLoading] = useState(true);
   const [file, setFile] = useState(null); // State to hold the uploaded file
   const [fileName, setFileName] = useState(""); // State to hold the file name
+  const [deleteFileId, setDeleteFileId] = useState(""); // State to hold the file name
+  const [deleteFileName, setDeleteFileName] = useState(""); // State to hold the file name
   const [downloadFiles, setDownloadFiles] = useState(""); // State to hold the file name
   const fileInputRef = useRef(null);
   const [modalResult, setModalResult] = useState("");
@@ -32,6 +36,8 @@ function DiagnosticsDetails() {
   const [pageTab, setPageTab] = useState("tab_summery");  
   const storedUserRoles = JSON.parse(localStorage.getItem('userRoles'));
   const [superAdmin,setSuperAdmin]=useState(storedUserRoles.includes(ROLES?.SuperAdmin))
+
+  
   const handleOpenResultModal = (data) => {
     setModalResult((prev) => data);
   };
@@ -202,23 +208,24 @@ responseType:'blob'
       alert("Խնդրում եմ ընտրեք ֆայլը։");
     }
   };
-  const handleDelete = async (dataId) => {   
-
-    const getData = async () => {
-      try {
-        const response = await axiosPrivate.post('deleteFile', {
-          diagnosticsId:diagnosticsDetails?.diagnosticsId,
-          fileId: dataId
-        });
-        //console.log('get search data')
-        setDownloadFiles(response.data.jsonString);
-        //setToggleSearchModal(false)  
-        //handleSearchPageCount(response.data.count)    
-      }catch (err) {
-        console.error(err);
-      }  
-    }; 
-    getData()
+  const openDeleteModal = async (el) => {   
+    setDeleteFileId(el?.fileId)
+    setDeleteFileName(el.fileName)
+    // const getData = async () => {
+    //   try {
+    //     const response = await axiosPrivate.post('deleteFile', {
+    //       diagnosticsId:diagnosticsDetails?.diagnosticsId,
+    //       fileId: dataId
+    //     });
+    //     //console.log('get search data')
+    //     setDownloadFiles(response.data.jsonString);
+    //     //setToggleSearchModal(false)  
+    //     //handleSearchPageCount(response.data.count)    
+    //   }catch (err) {
+    //     console.error(err);
+    //   }  
+    // }; 
+    // getData()
   };
   const handleSendSMS =  (e) => {    
       axiosPrivate.post('/sendNotification', { 
@@ -251,8 +258,25 @@ responseType:'blob'
       }) 
      
   }
+  const handleCloseModal = () => {
+    setDeleteFileId(false);
+  };
+const handleOpenModal = () => {
+  setDeleteFileId(true);
+    };
   return (
     <>
+    {deleteFileId &&
+   <FileDeleteModal 
+   deleteFileId={deleteFileId} 
+   handleCloseModal={handleCloseModal} 
+   openDeleteModal={openDeleteModal}
+    keyName={deleteFileName}
+    diagnosticsId= {diagnosticsDetails?.diagnosticsId}
+    setDownloadFiles={setDownloadFiles}
+    downloadFiles={downloadFiles}
+    />
+      }
     {modalResult && (
         <Modal show={() => true} size="xl" onHide={() => setModalResult(false)}>
           <Modal.Header closeButton>
@@ -717,7 +741,8 @@ responseType:'blob'
                           </>)
                         :''   
                         }                    
-                          </div>                       
+                          </div>   
+                          {(diagnosticsDetails && diagnosticsDetails?.statusBoard?.[4]?.researches?.length)?                    
                         <div className="card-body">
                           <div className="ms-10 me-10">
                           <p className="fw-bold">Պատասխանների հանձնման փուլ </p>
@@ -765,12 +790,13 @@ responseType:'blob'
                             </table>
                           </div>
                         </div>
+                        :<></>}
                         <div className="card-footer justify-content-between">
                           <div className="d-flex justify-content-between w-100">
-                            <p>Ուղարկել արդյունքները</p>
+                            {/* <p>Տեսնել արդյունքները</p> */}
                           <button 
                           className="btn btn-primary"
-                          onClick={()=>handleOpenResultModal(diagnosticsDetails)}>Ուղարկել</button></div>
+                          onClick={()=>handleOpenResultModal(diagnosticsDetails)}>Ավելին</button></div>
                       </div>
                           </div>
                     </div>
@@ -922,7 +948,7 @@ responseType:'blob'
                   </div>
                 </div>
                 {!!superAdmin ?
-                      <span style={{cursor:'pointer', marginLeft:'5px'}} onClick={(e)=>handleDelete(el.fileId)}><FeatherIcon  icon='x-circle'/></span>
+                      <span style={{cursor:'pointer', marginLeft:'5px'}} onClick={(e)=>openDeleteModal(el)}><FeatherIcon  icon='x-circle'/></span>
                     :<></>}
               </div>
             </div>
