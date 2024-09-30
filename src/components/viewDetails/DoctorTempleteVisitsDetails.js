@@ -7,7 +7,7 @@ import profileBgImg from "../../dist/img/profile-bg.jpg";
 import FileDownload from "js-file-download";
 import moment from 'moment';
 
-function DoctorsVisitsDetails() {
+function DoctorTempleteVisitsDetails() {
   const navigate = useNavigate()
   const location = useLocation();
     const axiosPrivate = useAxiosPrivate();
@@ -446,4 +446,4 @@ function DoctorsVisitsDetails() {
     );
 }
 
-export default DoctorsVisitsDetails
+export default DoctorTempleteVisitsDetails

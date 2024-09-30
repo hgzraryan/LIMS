@@ -10,6 +10,10 @@ import LoadingSpinner from "../LoadingSpinner";
 import userSamplePhoto from "../../dist/img/Missing.svg";
 import profileBgImg from "../../dist/img/profile-bg.jpg";
 import moment from "moment";
+import UserEditModal from "../EditViews/UserEditModal";
+import resetPassSVG from "../../dist/svg/resetPass.svg";
+import ResetPasswordModal from "../views/ResetPasswordModal";
+import { ROLES } from "../../utils/constants";
 
 function UserDetails() {
   const axiosPrivate = useAxiosPrivate()
@@ -20,27 +24,54 @@ function UserDetails() {
 
   const [activeLink, setActiveLink] = useState('tab_summery'); 
   const [pageTab, setPageTab] = useState('tab_summery')
+  const [editRow, setEditRow] = useState(false);
+  const [resetPassword, setResetPassword] = useState(false);
+  
+  const storedUserRoles = JSON.parse(localStorage.getItem('userRoles'));
+  const storedUser = JSON.parse(localStorage.getItem('userData'));
+  const [superAdmin,setSuperAdmin]=useState(storedUserRoles.includes(ROLES?.SuperAdmin))
+  const handleOpenEditModal = (value) => {
+     setEditRow((prev) => value);
+   };
+  const handleOpenResetPassModal = (value) => {
+    setResetPassword((prev) => value);
+   };
   const handleLinkClick = (linkId) => {
     setActiveLink(linkId);
     setPageTab(linkId)
   };
+  const getData = async () => {
+    try {
+      const response = await axiosPrivate.get(`/users/${id}`);
+      setIsLoading(false);
+      setUserDetails((prevUsers) => response.data);
+      // setCurrentPage((prev) => prev = 1);
+    } catch (err) {
+      console.error(err);
+      //navigate("/login", { state: { from: location }, replace: true });
+    }
+  };
   useEffect(() => {
-    const getData = async () => {
-      try {
-        const response = await axiosPrivate.get(`/users/${id}`);
-        setIsLoading(false);
-        setUserDetails((prevUsers) => response.data);
-        // setCurrentPage((prev) => prev = 1);
-      } catch (err) {
-        console.error(err);
-        //navigate("/login", { state: { from: location }, replace: true });
-      }
-    };
+  
     getData();
   }, []);
 
   return (
     <>
+      {!!editRow && (
+        <UserEditModal
+          user={editRow}
+          setEditRow={setEditRow}
+          getData={getData}
+        />
+      )}
+      {!!resetPassword && (
+        <ResetPasswordModal
+        id={userDetails?.userId}
+        resetPassword={resetPassword}
+        setResetPassword={setResetPassword}
+        />
+      )}
     <Suspense fallback={<LoadingSpinner />}>
         {isLoading ? (
           <LoadingSpinner />
@@ -69,13 +100,52 @@ function UserDetails() {
                       {userDetails?.lastname +
                         " " +
                         userDetails?.firstname}
-                      <i
+                         <a
+                className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover"
+                data-bs-toggle="tooltip"
+                data-placement="top"
+                title="Edit"
+                href="#"
+                onClick={() => handleOpenEditModal(userDetails)}
+              >
+                <span className="icon">
+                  <span className="feather-icon">
+                    <FeatherIcon icon="edit" />
+                  </span>
+             
+                </span>
+              </a>
+              {/* password can be changed only by current useror superAdmin */}
+              {(superAdmin || storedUser?.userId === userDetails.userId) &&
+                         <a
+                         className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover"
+                         data-bs-toggle="tooltip"
+                         data-placement="top"
+                         title="Edit"
+                         href="#"
+                         onClick={() => handleOpenResetPassModal(userDetails)}
+                         >
+                <span className="icon">
+                  <span className="feather-icon">
+                  <img
+                src={resetPassSVG}
+                width="20px"
+                height="20px"
+                alt="resetPassSVG"
+                className="me-2"
+                />
+                  </span>
+             
+                </span>
+              </a>
+              }
+                      {/* <i
                         className="bi-check-circle-fill fs-6 text-blue"
                         data-bs-toggle="tooltip"
                         data-bs-placement="top"
                         title=""
                         data-bs-original-title="Top endorsed"
-                      ></i>
+                      ></i> */}
                     </h4>
 
                     <ul className="list-inline fs-7 mt-2 mb-0">
@@ -370,158 +440,6 @@ function UserDetails() {
           </div>
         )}
       </Suspense>
-    {/* <Suspense fallback={<LoadingSpinner />}>
-      {isLoading ? (
-        <LoadingSpinner />
-      ) : (
-      <section
-        className="d-flex  flex-column "
-        style={{ backgroundColor: "#e2f4ff",height:'95vh'  }}
-      >
-        <article
-          className="main "
-          style={{
-            backgroundColor: "white",
-            margin: "30px 30px 30px 30px ",
-            borderRadius: "30px",
-            padding: "20px",
-            flex:'3',
-            display:'flex'
-          }}
-        >
-          
-      <div>
-      <img
-                src={userSamplePhoto}
-                alt="doctorPhoto"
-                style={{
-                  borderRadius: "30px 0 0 30px",
-                  height: "250px",
-                  width: "250px",
-                }}
-              />
-      </div>
-      <div style={{marginLeft:'20px'}}>
-        <h1 style={{ fontSize: "2.5rem", color: "#4eafcb"}}>
-            Սեդրակ Կարապետյան
-        </h1>
-        <h6 style={{ opacity:'0.3',marginBottom:0 }}>Էլ․ հասցե</h6>
-        <p style={{marginBottom:'1rem' }}>Seto@geil.com</p>
-        <h6 style={{ opacity:'0.3',marginBottom:0 }}>Հեռախոս</h6>
-        <p style={{marginBottom:'1rem' }}>+37485965214</p>
-        <h6 style={{ opacity:'0.3',marginBottom:0 }}>Հասցե</h6>
-        <p style={{marginBottom:'1rem' }}>ք․ Երևան, Նալբանդյան 25-12</p>
-      </div>
-         
-        </article>
-        <article
-          className="main "
-          style={{
-            backgroundColor: "white",
-            margin: "0 30px 30px 30px ",
-            borderRadius: "30px",
-            padding: "20px",
-            flex:'3',
-            display:'flex'
-          }}
-        >
-          <div className="d-flex flex-column justify-content-end" >
-                <p>Նույնականացման համար:</p>
-                <div className="separator-full m-0"></div>                  
-
-                <p>Ծնվել է:</p>
-                <div className="separator-full m-0"></div>   
-
-                <p>Սեռ:</p>
-                <div className="separator-full m-0"></div> 
-
-                <p>Ընտանեկան կարգավիճակ:</p>
-                <div className="separator-full m-0"></div>                  
-
-                <p>Գրանցման ամսաթիվ:</p>
-                <div className="separator-full m-0"></div> 
-
-                <p>Պաշտոն:</p>
-                <div className="separator-full m-0"></div>
-
-                <p>Դեր:</p>
-                <div className="separator-full m-0"></div>                  
-
-
-
-                <p>Լրացուցիչ կոնտակտ:</p>
-                <div className="separator-full m-0"></div>                  
-
-                <p>Լրացուցիչ կոնտակտի հեռախոս:</p>
-                <div className="separator-full m-0"></div>                  
-
-                <p>Ծածկանուն:</p>
-                <div className="separator-full m-0"></div>  
-                
-                <p>կարգավիճակ:</p>
-                <div className="separator-full m-0"></div>                  
-
-              </div>
-              <div className="ms-3">
-                <p>{userDetails.userId || '1526'} </p>
-                <div className="separator-full m-0"></div>                  
-
-                <p>{userDetails.dateOfBirth || '1985-03-25'}</p>
-                <div className="separator-full m-0"></div>                    
-
-                <p>{userDetails.gender || `Ար`}</p>
-                <div className="separator-full m-0"></div>   
-
-                <p>{userDetails.maritalStatus || 'Չամուսնացած'}</p>
-                <div className="separator-full m-0"></div>   
-                               
-                <p>{userDetails.createdAt || '2024-01-25'}</p>
-                <div className="separator-full m-0"></div>  
-                                
-                <p>{userDetails.position || 'Բժիշկ'}</p>
-                <div className="separator-full m-0"></div>  
-
-                <p>
-                {['Admin','User'].map((el)=>{
-                    return<span>{el}, </span>
-                })}
-                </p>                
-                <div className="separator-full m-0"></div> 
-                <p>{userDetails?.emergencyContactName || 'Հրայր Պետրոսյան'}</p>
-                <div className="separator-full m-0"></div>                  
-
-                <p>{userDetails?.emergencyContactNumber || '+37485632220'}</p>
-                <div className="separator-full m-0"></div>                  
-
-                <p>{userDetails.username || 'user1526'}</p>
-                <div className="separator-full m-0"></div> 
-
-                <p>{userDetails.isActive || 'Ակտիվ'}</p>
-                <div className="separator-full m-0"></div>                  
-
-            
-              </div> 
-      
-         
-        </article>
-        <article
-          className="main "
-          style={{
-            backgroundColor: "white",
-            margin: "0 30px 30px 30px ",
-            borderRadius: "30px",
-            padding: "20px",
-            flex:'2'
-          }}
-        >
-            <h4>Կենսագրություն</h4>
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Non id iure quaerat, in beatae nostrum excepturi tenetur ducimus, nemo minus iusto accusantium enim vitae dolor quos numquam quod quisquam adipisci. Ratione nemo quidem facilis perferendis quae explicabo, eum quas neque! Optio repudiandae mollitia natus debitis?
-      
-         
-        </article>
-      </section>  
-    )}
-    </Suspense> */}
     </>
   )
 }

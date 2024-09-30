@@ -277,24 +277,6 @@ function ExportData({handleToggleExportModal,toggleExport,section,refDoctors=[]}
                           <div className="card-body">
                             <div className="modal-body ">
                               <div className="row gx-3">
-                              {/* <div className="col-sm-6">
-                              <div className="form-group">
-                              <div className="d-flex justify-content-between me-2">
-                                <label
-                                  className="form-label"
-                                  htmlFor="startDate"
-                                  >
-                                  Սկիզբ
-                                </label>
-                                  {methods.formState.errors.startDate && (
-                                    <span className="error text-red"><span><img src={ErrorSvg} alt="errorSvg"/></span> պարտադիր</span>
-                                    )}
-                                    </div>
-                                <div>                                  
-                                   <CustomDateComponent name="startDate" control={methods.control} maxDate={moment(new Date()).format('MM-DD-YYYY')}/>
-                                </div>
-                              </div>
-                            </div> */}
                             <div className="col-sm-12">
                               <div className="form-group">
                               <div className="d-flex justify-content-between me-2">

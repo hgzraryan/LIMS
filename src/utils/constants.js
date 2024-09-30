@@ -40,11 +40,16 @@ export const PACKAGES_ROUTE = 'setup/packages/page/:pageNumber'
 export const REPORTSEXPORT_ROUTE = 'reports/export'
 export const NOTIFICATIONS_ROUTE = 'setup/notifications/page/:pageNumber'
 
+export const DOCTORTEMPLETE_VISITS_ID_ROUTE = 'doctorsTemplete/doctorsVisits/:id'
+export const DOCTORTEMPLETE_DIAGNOSTICS = '/doctorsTemplete/diagnostics/page/:pageNumber'
+export const DOCTORTEMPLETE_DIAGNOSTICS_ID_ROUTE = 'doctorsTemplete/diagnostics/:id'
+export const DOCTORTEMPLETE_VISITS = '/doctorsTemplete/doctorsVisits/page/:pageNumber'
 export const DOCTORSTAMPLETE_ROUTE = 'doctorsTemplete'
 export const DOCTORSPATIENT_ID_ROUTE = 'doctorsPatients/:id'
 export const DOCTORSPATIENTS_URL = "/patients/:doctorId";
 export const DOCTORS_PATIENTS = 'doctorsPatients'
 export const DOCTORS_PATIENTS_ID_ROUTE = 'doctorsPatients/:id'
+export const DOCTORTEMPLETE_CALENDAR_ROUTE = 'doctorsTemplete/calendar'
 
 export const REGISTER_DOCTORS_PATIENT = "/registerDoctorsPatient";
 export const REGISTER_DIAGNOSTICS = "/registerDiagnostics";
@@ -88,6 +93,7 @@ export const DIAGNOSTICS__SEARCH_URL = "/searchDiagnostics";
 export const DOCTORSVISITS__SEARCH_URL = "/searchDoctorsVisits";
 
 export const STATISTICS_URL = '/getStatistics/StackedBarChart'
+export const TRANSFERFUNDS_URL = '/transferFunds'
 
 export const CREATE_POS_PAY = '/posPayment'
 

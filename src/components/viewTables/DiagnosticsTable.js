@@ -34,6 +34,7 @@ import DiagnosticsEditModal from "../EditViews/DiagnosticsEditModal";
 import emptyTable from "../../dist/svg/emptyTable.svg"
 import sonographyIcon from "../../dist/svg/ultrasonography.png"
 import DiscountModal from "../DiscountModal";
+import DiagTransferModal from "../DiagTransferModal";
 
 
 function DiagnosticsTable({
@@ -62,9 +63,15 @@ function DiagnosticsTable({
   const [filterDataJSON, setFilterDataJSON] = useState('');
   const [editRow, setEditRow] = useState(false);
   const [discount, setDiscount] = useState(false);
+  const [transfer, setTransfer] = useState(false);
   
   const storedUserRoles = JSON.parse(localStorage.getItem('userRoles'));
-  const [superAdmin,setSuperAdmin]=useState(storedUserRoles.includes(ROLES?.SuperAdmin))
+  const [superAdmin,setSuperAdmin]=useState(storedUserRoles?.includes(ROLES?.SuperAdmin)||[])
+
+  const handleOpenTransferModal = (e,value) => {
+    e.stopPropagation()
+    setTransfer((prev) => value);
+  };
   const handleOpenEditModal = (value) => {
     setEditRow((prev) => value);
   };
@@ -341,6 +348,7 @@ function DiagnosticsTable({
         ),
 
         Cell: ({ row }) => (
+          
             <div
               onClick={() =>
                 handleDiagnosticsDetails(row.original.diagnosticsId)
@@ -410,7 +418,7 @@ function DiagnosticsTable({
         Header: "Հետազոտություններ",
         accessor: "researchList",
         disableSortBy: true,
-        width: 200,
+        width: 180,
         Cell: ({ row }) => (
           <>
             {row.original?.diagStatus === "Active" && (
@@ -617,21 +625,45 @@ function DiagnosticsTable({
                   </>:''                  
                   }
                     {!row.original?.totalPayed && !!superAdmin  ?
+                    <>
                      <a
                      className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover"
                      data-bs-toggle="tooltip"
-                  data-placement="top"
-                  title="Discount"
-                  href="#"
-                  onClick={() => handleOpenDiscountModal(row.original)}
-  
-                >
+                     data-placement="top"
+                     title="Discount"
+                     href="#"
+                     onClick={() => handleOpenDiscountModal(row.original)}
+                     
+                     >
                   <span className="icon me-">
                     <span className="feather-icon">
                       <FeatherIcon icon="percent" />
                     </span>
                   </span>
                 </a>
+                   
+                  </>
+                :''                  
+              }
+                    {!!row.original?.totalPayed && !!superAdmin ?
+                    <>
+                    
+                     <a
+                     className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover"
+                     data-bs-toggle="tooltip"
+                     data-placement="top"
+                     title="Transfer"
+                     href="#"
+                     onClick={(e) => handleOpenTransferModal(e,row.original)}
+                     
+                     >
+                  <span className="icon me-">
+                    <span className="feather-icon">
+                      <FeatherIcon icon="repeat" />
+                    </span>
+                  </span>
+                </a>
+                  </>
                 :''                  
               }
               {/*
@@ -659,7 +691,7 @@ function DiagnosticsTable({
           </div>
         ),
         disableSortBy: true,
-        width: 250,
+        width: 270,
         Filter: ({ column: { id } }) => <></>,
       },
     ],
@@ -738,6 +770,9 @@ function DiagnosticsTable({
       )}
         {!!discount &&  (
       <DiscountModal diagData={discount} setDiagData={setDiscount} refreshData={refreshData} />
+    )}
+        {!!transfer &&  (
+      <DiagTransferModal transfer={transfer} setTransfer={setTransfer} refreshData={refreshData} />
     )}
       <table
         className="table nowrap w-100 mb-5 dataTable no-footer diagTable"

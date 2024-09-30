@@ -210,7 +210,7 @@ responseType:'blob'
   };
   const openDeleteModal = async (el) => {   
     setDeleteFileId(el?.fileId)
-    setDeleteFileName(el.fileName)
+    setDeleteFileName(el?.fileName)
     // const getData = async () => {
     //   try {
     //     const response = await axiosPrivate.post('deleteFile', {
@@ -581,7 +581,7 @@ const handleOpenModal = () => {
                               <span className="text-muted">Բժիշկ:</span>
                             </span>
                             <span className="ms-2">
-                               { diagnosticsDetails.docs.map((el)=>el.doctorName+",") } 
+                               { diagnosticsDetails.docs.map((el)=>el?.doctorName+",") } 
                             </span>
                           </li>
                             </>:<></>
@@ -699,7 +699,7 @@ const handleOpenModal = () => {
                               <ol>
                         {diagnosticsDetails?.statusBoard?.[1]?.researches?.map((el,id)=>{
                           return ( 
-                              <li key={el.id}>{el.name}</li>
+                              <li key={el?.id}>{el?.name}</li>
                             )
                           })}
                           </ol>
@@ -716,7 +716,7 @@ const handleOpenModal = () => {
                             <ol>
                         {diagnosticsDetails?.statusBoard?.[2]?.researches?.map((el,id)=>{
                           return ( 
-                              <li key={el.id}>{el.name}</li>
+                              <li key={el?.id}>{el?.name}</li>
                             )
                           })}
                           </ol>
@@ -734,7 +734,7 @@ const handleOpenModal = () => {
                             <ol>
                         {diagnosticsDetails?.statusBoard?.[3]?.researches?.map((el,id)=>{
                           return ( 
-                              <li key={el.id}>{el.name}</li>
+                              <li key={el?.id}>{el?.name}</li>
                             )
                           })}
                           </ol>
@@ -923,7 +923,7 @@ const handleOpenModal = () => {
   <div className="row gx-3 row-cols-xxl-5 row-cols-xl-4 row-cols-lg-3 row-cols-md-2 row-cols-1 m-1 ">
     {downloadFiles.length > 0 ? (
       downloadFiles.map((el) => (
-        <div className="col" key={el.fileId}>
+        <div className="col" key={el?.fileId}>
           <div className="card file-compact-card card-border">
             <div className="card-body d-flex justify-content-between">
               <div className="media fmapp-info-trigger">
@@ -944,7 +944,7 @@ const handleOpenModal = () => {
                     </p>
                   </div>
                   <div className="text-truncate fs-8 mb-2">
-                    {formatBytes(el.size)}
+                    {formatBytes(el?.size)}
                   </div>
                 </div>
                 {!!superAdmin ?

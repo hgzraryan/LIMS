@@ -85,10 +85,6 @@ function CreatePatient({
   refreshData,
   researchState
 }) {
-  const navigate = useNavigate()
-
-  const location = useLocation();
-
   const [medicalServices, setMedicalServices] = useState([]);
   const [patients, setPatients] = useState([]);
   const [addDiagnostic, setAddDiagnostic] = useState(false);
@@ -596,6 +592,8 @@ console.log(referrer === 'other')
                                     name="dateOfBirth"
                                     control={methods.control}
                                     setIsChild={setIsChild}
+                                    maxDate={new Date()}
+                                    ignoreTyping={false}
                                   />
                                 </div>
                               </div>

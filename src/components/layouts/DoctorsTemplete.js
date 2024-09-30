@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation,Outlet } from "react-router-dom";
 import useLogout from "../../hooks/useLogout";
-import React, {  useEffect, useRef, useMemo, useState } from "react";
+import React, {  useEffect, useRef, useMemo, useState,Suspense } from "react";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { useSelector } from "react-redux";
 import { selectUserLoginData } from "../../redux/features/users/userLoginDataSlice";
@@ -34,6 +34,7 @@ import organizationsSvg from "../../dist/svg/organizationsSvg.svg";
 import { MdViewKanban } from "react-icons/md";
 
 import patientSvg from "../../dist/svg/patientSvg.svg";
+import LoadingSpinner from "../LoadingSpinner";
 
 // import 'react-big-calendar/lib/sass/styles';
 // import 'react-big-calendar/lib/addons/dragAndDrop/styles';
@@ -96,9 +97,9 @@ const DoctorsTemplete = () => {
             //--------------------------------------------------------------------------------------
             //----------------------get diagnostics----------------------------------------------------------------
 
-            //const diagnosticsResp = await axiosPrivate.get(`getVisitsByid/doctor/25`);
-            //setDiagnostics(patientsResp?.data?.jsonString);
-            //console.log(diagnosticsResp)
+            const diagnosticsResp = await axiosPrivate.get(`getDiagnosticsByDid/doctor/${storedData?.doctorId}`);
+            setDiagnostics(diagnosticsResp?.data?.jsonString);
+            console.log(diagnosticsResp)
             //--------------------------------------------------------------------------------------
 
 
@@ -119,7 +120,21 @@ const DoctorsTemplete = () => {
   const handlePatientsDetails = async (patientId) => {  
     navigate(`/patients/${patientId}`)
 };
-  const handleLinkClick = (linkId) => {
+  const handleVisitsClick = (linkId) => {
+    navigate(`/doctorsTemplete/doctorsVisits/page/1`)
+
+    setActiveLink(linkId); 
+    setPageTab(linkId)
+  };
+  const handleDiagsClick = (linkId) => {
+    navigate(`/doctorsTemplete/diagnostics/page/1`)
+
+    setActiveLink(linkId); 
+    setPageTab(linkId)
+  };
+  const handleCalendarClick = (linkId) => {
+    navigate(`/doctorsTemplete/calendar`)
+
     setActiveLink(linkId); 
     setPageTab(linkId)
   };
@@ -214,7 +229,7 @@ const DoctorsTemplete = () => {
     navigate(`/patients/doctorarea/${patientId}`);
   };
   const handleVisitsDetail = async (patientId) => {
-    navigate(`/doctorsVisits/${patientId}`);
+    navigate(`/doctorsTemplete/doctorsVisits/${patientId}`);
   };
   const handleOpenInfoModal = (data) => {
     setModalInfo((prev) => data);
@@ -1123,7 +1138,7 @@ const DoctorsTemplete = () => {
                     </div>
                     <div className="contact-more-info">
                       <ul className="nav nav-tabs nav-line nav-icon nav-light">
-                        <li className="nav-item">
+                        {/* <li className="nav-item">
                           <a
                             className={`nav-link ${activeLink === 'tab_summery' ? 'active' : ''}`}
                             onClick={() => handleLinkClick('tab_summery')}
@@ -1138,12 +1153,12 @@ const DoctorsTemplete = () => {
                             </span>
                             <span className="nav-link-text">Գլխավոր</span>
                           </a>
-                        </li>
+                        </li> */}
                         <li className="nav-item">
                           <a 
                           data-bs-toggle="tab" href="#"
                           className={`nav-link ${activeLink === 'tab_doctorVisits' ? 'active' : ''}`}
-                          onClick={() => handleLinkClick('tab_doctorVisits')}
+                          onClick={() => handleVisitsClick('tab_doctorVisits')}
                           >
                             <span className="nav-icon-wrap">
                               <span className="feather-icon">
@@ -1157,7 +1172,7 @@ const DoctorsTemplete = () => {
                           <a 
                           data-bs-toggle="tab" href="#"
                           className={`nav-link ${activeLink === 'tab_diagnostics' ? 'active' : ''}`}
-                          onClick={() => handleLinkClick('tab_diagnostics')}
+                          onClick={() => handleDiagsClick('tab_diagnostics')}
                           >
                             <span className="nav-icon-wrap">
                               <span className="feather-icon">
@@ -1170,7 +1185,7 @@ const DoctorsTemplete = () => {
                         <li className="nav-item">
                           <a 
                           className={`nav-link ${activeLink === 'tab_calendar' ? 'active' : ''}`}
-                          onClick={() => handleLinkClick('tab_calendar')}
+                          onClick={() => handleCalendarClick('tab_calendar')}
                            data-bs-toggle="tab" 
                            href="#">
                             <span className="nav-icon-wrap">
@@ -1182,15 +1197,15 @@ const DoctorsTemplete = () => {
                           </a>
                         </li>
                       </ul>
-                      <div className="tab-content mt-7">
+                      <div className="tab-content">
                         <div
                           className="tab-pane fade show active"
                           id="tab_summery"
                         >
                         </div>
                       </div>
-                      <div className="activity-wrap mt-7">
-                        {
+                      <div className="activity-wrap">
+                        {/* {
                           pageTab ==='tab_summery' &&
 
                         <div class="work">
@@ -1204,25 +1219,31 @@ const DoctorsTemplete = () => {
                             </ul>
                           </div>
                         </div>
-                        }
-                        {
+                        } */}
+                        {/* {
                           pageTab ==='tab_doctorVisits' &&
                           <CustomTable data={doctorsVisits} column={doctorsVisitColumns}/>
 
-                        }
-                        {
+                        } */}
+                        {/* {
                           pageTab ==='tab_diagnostics' &&
-                          <CustomTable data={customData} column={diagnosticsColumns}/>
-                        }
-                        {
+                          <CustomTable data={diagnostics} column={diagnosticsColumns}/>
+                        } */}
+                        {/* {
                           pageTab ==='tab_calendar' &&
 
                           <div className="App">
                           <div style={{ height: 500 }}>
-                            <MyBigCalendar doctorId={userData?.userId}/>
+                            <MyBigCalendar doctorId={userData?.doctorId}/>
                           </div>
                         </div>
-                        }
+                        } */}
+                        <div className="hk-pg-wrapper pt-0">
+            {/*<div className="container-xxl">*/}
+            <Suspense fallback={<LoadingSpinner/>}>
+              <Outlet />
+            </Suspense>
+          </div>
                       </div>
                     </div>
                   </div>

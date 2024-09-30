@@ -20,7 +20,8 @@ import emailSvg from "../../dist/svg/emailSvg.svg";
 import LoadingSpinner from "../LoadingSpinner";
 import profileBgImg from "../../dist/img/profile-bg.jpg";
 import moment from "moment";
-
+// import {generateToken,messaging} from '../firbase'
+// import {onMessage} from "firebase/messaging"
 function PatientDetails() {
   const axiosPrivate = useAxiosPrivate()
   const navigate = useNavigate();
@@ -39,6 +40,13 @@ function PatientDetails() {
     checkIfDoctorRef.current = location.pathname?.includes('doctorarea')
 
   },[])
+  
+//   useEffect(()=>{
+// generateToken()
+// onMessage(messaging,(payload)=>{
+//   console.log(payload)
+// })
+//   },[])
   const handleDiagnosticssDetails = async (diagnosticsId) => {
     try {
       //const response = await axiosPrivate.get(`/diagnostics/${id}`, );

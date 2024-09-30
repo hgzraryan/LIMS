@@ -38,7 +38,7 @@ const roleState = [
   { label:'Նմուշառող',name: "Sampler", value: 1212 },
   { label:'Բժիշկ',name: "Doctor", value: 9578 },  
 ]
-function UserEditModal({ user, setEditRow, refreshData }) {
+function UserEditModal({ user, setEditRow, getData }) {
   const [errMsg, setErrMsg] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const axiosPrivate = useAxiosPrivate();
@@ -207,7 +207,8 @@ function UserEditModal({ user, setEditRow, refreshData }) {
         );
 
         setEditRow(false);
-        refreshData();
+        //window.location.reload();
+        getData();
         //notify(`${newUser.firstname} ${newUser.lastname} աշխատակիցը ավելացված է`)
       }
       catch (err) {

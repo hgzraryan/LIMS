@@ -205,7 +205,7 @@ function UsersTable({
         Cell: ({ row }) => (
           <div className="d-flex align-items-center">
             <div className="d-flex">
-              <a
+              {/* <a
                 className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover"
                 data-bs-toggle="tooltip"
                 data-placement="top"
@@ -218,7 +218,7 @@ function UsersTable({
                     <FeatherIcon icon="edit" />
                   </span>
                 </span>
-              </a>
+              </a> */}
               <a
                 className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover del-button"
                 data-bs-toggle="tooltip"
@@ -300,13 +300,13 @@ function UsersTable({
   );
   return (
     <>
-      {!!editRow && (
+      {/* {!!editRow && (
         <UserEditModal
           user={editRow}
           setEditRow={setEditRow}
           refreshData={refreshData}
         />
-      )}
+      )} */}
       {!!disableRow && (
         <UserDeactivateModal
           handleCloseEditModal={handleCloseEditModal}

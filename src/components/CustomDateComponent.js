@@ -5,7 +5,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment';
 import { calculateAge } from '../utils/helper';
 
-function CustomDateComponent({ control, name,required='true',defaultValue='',setIsChild=false })  {
+function CustomDateComponent({ control, name,required='true',defaultValue='',setIsChild=false ,maxDate='',ignoreTyping=true})  {
     const {
       field,
       fieldState: { invalid, isTouched, isDirty },
@@ -29,22 +29,28 @@ function CustomDateComponent({ control, name,required='true',defaultValue='',set
       }
     };
     const preventTyping = (e) => {
-      e.preventDefault(); // Prevent any typing into the field
+      if(ignoreTyping){
+        e.preventDefault(); // Prevent any typing into the field
+      }else{
+        return
+      }
+
     };
 
     return (
       <DatePicker
-       showYearDropdown
-       yearDropdownItemNumber={100}
-       scrollableYearDropdown
-       onChange={handleDateChange}
-       dateFormat={"yyyy-MM-dd"}
-       selected={field.value}
-       isClearable
-       required
-       onKeyDown={preventTyping} // Prevent typing in the input field
-       placeholderText="Ընտրեք ամսաթիվը" 
-       className='form-control'
+      showYearDropdown
+      yearDropdownItemNumber={100}
+      scrollableYearDropdown
+      onChange={handleDateChange}
+      dateFormat={"yyyy-MM-dd"}
+      selected={field.value}
+      isClearable
+      required
+      maxDate={maxDate}
+      onKeyDown={preventTyping} // Prevent typing in the input field
+      placeholderText="Ընտրեք ամսաթիվը" 
+      className='form-control'
        />
     )
 }

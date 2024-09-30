@@ -41,7 +41,11 @@ PACKAGES_ROUTE,
 ROLES,
 REPORTSEXPORT_ROUTE,
 DOCTOR_PATIENTS_ID_ROUTE,
-NOTIFICATIONS_ROUTE} from '../src/utils/constants' 
+NOTIFICATIONS_ROUTE,
+DOCTORTEMPLETE_VISITS_ID_ROUTE,
+DOCTORTEMPLETE_VISITS,
+DOCTORTEMPLETE_DIAGNOSTICS_ID_ROUTE,
+DOCTORTEMPLETE_DIAGNOSTICS} from '../src/utils/constants' 
 import { lazy, Suspense, useEffect, useState } from "react";
 import Support from "./components/views/Support";
 import DoctorsTemplete from "./components/layouts/DoctorsTemplete";
@@ -78,6 +82,10 @@ import Notifications from "./components/views/Notifications";
  const DiagnosticsDetails = lazy(()=>  import("./components/viewDetails/DiagnosticsDetails"));
  const DoctorsVisits = lazy(()=>  import("./components/views/DoctorsVisits"));
  const DoctorsVisitsDetails = lazy(()=>  import("./components/viewDetails/DoctorsVisitsDetails"));
+ const DoctorTempleteVisitsDetails = lazy(()=>  import("./components/viewDetails/DoctorTempleteVisitsDetails"));
+ const CurrentDoctorVisits = lazy(()=>  import("./components/doctorViews/CurrentDoctorVisits"));
+ const CurrentDoctorDiagnostics = lazy(()=>  import("./components/doctorViews/CurrentDoctorDiags"));
+ const Doctors_Visits_Details_Templete = lazy(()=>  import("./components/viewDetails/DoctorsVisitsDetails"));
  const Doctors = lazy(()=>  import("./components/views/Doctors"));
  const DoctorDetails = lazy(()=>  import("./components/viewDetails/DoctorDetails"));
  const RefDoctors = lazy(()=>  import("./components/views/RefDoctors"));
@@ -89,13 +97,14 @@ import Notifications from "./components/views/Notifications";
  const DoctorsPatients = lazy(()=>  import("./components/views/DoctorsPatients"));
  const Setup = lazy(()=>  import("./components/views/Setup"));
  const ReportsExport = lazy(()=>  import("./components/views/ReportsExport"));
+ const MyBigCalendar = lazy(()=>  import("./components/MyBigCalendar"));
 
 
 function App() {
   const [userLoginData,setuserLoginData] = useState('')
   
   useEffect(() => {
-    const userLoginData1 = JSON.parse(localStorage.getItem('userData'));
+    const userLoginData1 = JSON.parse(localStorage.getItem('userRoles'));
     if (userLoginData1) {
       // const currentUser={
       //   ...userLoginData1,
@@ -104,6 +113,8 @@ function App() {
       setuserLoginData(userLoginData1)
     }
   }, []);
+  // console.log(userLoginData)
+  // console.log(userLoginData?.includes(ROLES.Doctor))
   return (
       <Suspense fallback={<h1>Loading...</h1>}>
     <Routes>
@@ -120,39 +131,9 @@ function App() {
           <Route element={<RequireAuth allowedRoles={[ROLES.Sampler]} />}>
             <Route  path={ADD_SAMPLE_ROUTE} element={<AddSample />} />
           </Route>
-          <Route element={<RequireAuth allowedRoles={[ROLES.Doctor]} />}>
-        <Route path={DOCTORSTAMPLETE_ROUTE} element={<DoctorsTemplete />} />
-
-          </Route>
-
-          <Route element={<RequireAuth allowedRoles={[ROLES.Sampler, ROLES.Admin]} />}>
-          </Route>
-
-          <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
-              
-          </Route>
-          {userLoginData?.Roles && userLoginData?.Roles.includes(ROLES.Doctor)
-          ?<Route path="/" element={<DoctorsTemplete />}>
-            <Route index path={HOME_ROUTE} element={<Home />} />
-            <Route index path={SUPPORT_URL} element={<Support />} />
-
-            <Route index path="/" element={<DoctorsVisits />} />
-            <Route path={DOCTORSVISITS_ROUTE} element={<DoctorsVisits />} />
-            <Route path={DOCTORSVISITS_ID_ROUTE} element={<DoctorsVisitsDetails/>} />
-            <Route path={DOCTORS_ID_ROUTE} element={<DoctorDetails/>} />
-            <Route  path={SAMPLES_ROUTE} element={<Samples />} />
-              <Route path={DOCTOR_PATIENTS_ID_ROUTE} element={<PatientDetails/>} />
-              <Route
-                path={RESEARCH_LISTS_ROUTE}
-                element={<ResearchLists />}
-              />
-                         <Route path={DIAGNOSTICS_ID_ROUTE} element={<DiagnosticsDetails/>} />
-                         <Route path={MISSING_ROUTE} element={<Missing />} />
-
-
-            {/* catch all */}
-          </Route>
-          :<Route path="/" element={<MainTemplate />}>
+         
+          <Route element={<RequireAuth allowedRoles={[ROLES.Admin,ROLES.SuperAdmin]} />}>
+          <Route path="/" element={<MainTemplate />}>
             <Route index path={HOME_ROUTE} element={<Home />} />
             <Route index path={SUPPORT_URL} element={<Support />} />
 
@@ -164,7 +145,6 @@ function App() {
             <Route path={DOCTORSVISITS_ID_ROUTE} element={<DoctorsVisitsDetails/>} />
             <Route path={DOCTORS_ID_ROUTE} element={<DoctorDetails/>} />
             <Route  path={SAMPLES_ROUTE} element={<Samples />} />
-          
 
             <Route path={DOCTORS_ROUTE} element={<Doctors />} />
             <Route path={DOCTORS_EMPLOYMENT_ROUTE} element={<DoctorsEmployment/>} />
@@ -214,7 +194,49 @@ function App() {
 
             {/* catch all */}
             <Route path={MISSING_ROUTE} element={<Missing />} />
-          </Route>}
+          </Route>
+          </Route>
+          <Route element={<RequireAuth allowedRoles={[ROLES.Doctor]} />}>
+          <Route path="/" element={<DoctorsTemplete />}>
+            {/* <Route path={DOCTORTEMPLETE_VISITS_ID_ROUTE} element={<DoctorsVisitsDetails/>} /> */}
+            <Route path={DOCTORTEMPLETE_VISITS} element={<CurrentDoctorVisits/>} />
+            {/* <Route path={DOCTORTEMPLETE_DIAGNOSTICS_ID_ROUTE} element={<DoctorsVisitsDetails/>} /> */}
+            <Route path={DOCTORTEMPLETE_DIAGNOSTICS} element={<CurrentDoctorDiagnostics/>} />
+            <Route path={DOCTORTEMPLETE_DIAGNOSTICS_ID_ROUTE} element={<DiagnosticsDetails/>} />
+            <Route index path={HOME_ROUTE} element={<Home />} />
+            <Route index path={SUPPORT_URL} element={<Support />} />
+
+            {/* <Route path={DOCTORSVISITS_ID_ROUTE} element={<DoctorsVisitsDetails/>} /> */}
+
+
+           {/* <Route path={PATIENTS_ID_ROUTE} element={<PatientDetails/>} /> */}
+            {/* <Route path={DOCTORSVISITS_ID_ROUTE} element={<DoctorsVisitsDetails/>} />  */}
+            <Route path={DOCTORSVISITS_ID_ROUTE} element={<DoctorTempleteVisitsDetails/>} />
+            <Route path={'doctorsTemplete/calendar'} element={<MyBigCalendar/>} />
+
+            {/* <Route index path="/" element={<DoctorsVisits />} />
+            <Route path={DOCTORSVISITS_ROUTE} element={<DoctorsVisits />} />
+            <Route path={DOCTORSVISITS_ID_ROUTE} element={<DoctorsVisitsDetails/>} />
+            <Route path={DOCTORS_ID_ROUTE} element={<DoctorDetails/>} />
+            <Route  path={SAMPLES_ROUTE} element={<Samples />} />
+              <Route path={DOCTOR_PATIENTS_ID_ROUTE} element={<PatientDetails/>} />
+              <Route
+                path={RESEARCH_LISTS_ROUTE}
+                element={<ResearchLists />}
+              /> */}
+                         <Route path={DIAGNOSTICS_ID_ROUTE} element={<DiagnosticsDetails/>} />
+                         <Route path={MISSING_ROUTE} element={<Missing />} />
+
+
+            {/* catch all */}
+          </Route>
+          </Route>
+
+          <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
+              
+          </Route>
+         
+         
         </Route>
       </Route>
     </Routes>

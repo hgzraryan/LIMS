@@ -501,7 +501,7 @@ function Sample() {
                                     return (
                                       <div
                                         key={groupId}
-                                        className="d-flex flex-column m-3"
+                                        className="d-flex flex-column"
                                         style={{
                                           border: "2px solid gray",
                                           borderRadius: "10px",

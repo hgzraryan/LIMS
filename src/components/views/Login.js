@@ -38,95 +38,182 @@ const Login = () => {
         setErrMsg('');
     }, [user, pwd])
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+//     const handleSubmit = async (e) => {
+//         e.preventDefault();
 
-        try {
-            const response = await axios.post(LOGIN_URL,
-                JSON.stringify({ user, pwd }),
-                {
-                    headers: { 'Content-Type': 'application/json' },
-                    withCredentials: true
-                }
-            );
-            const accessToken = response?.data?.accessToken;
-            const decodedJWT = jwt(accessToken);
-            const roles = decodedJWT.UserInfo.roles;
-            const isActive = decodedJWT.UserInfo.isActive;
-            const userId = decodedJWT.UserInfo.userId;
-console.log(response)
-            localStorage.setItem("userData", JSON.stringify(response?.data?.authUserData));
-            localStorage.setItem("userRoles", JSON.stringify(roles));
-            console.log('roles',roles);
+//         try {
+//             const response = await axios.post(LOGIN_URL,
+//                 JSON.stringify({ user, pwd }),
+//                 {
+//                     headers: { 'Content-Type': 'application/json' },
+//                     withCredentials: true
+//                 }
+//             );
+//             const accessToken = response?.data?.accessToken;
+//             const decodedJWT = jwt(accessToken);
+//             const roles = decodedJWT.UserInfo.roles;
+//             const isActive = decodedJWT.UserInfo.isActive;
+//             const userId = decodedJWT.UserInfo.userId;
+// console.log(response)
+//             localStorage.setItem("userData", JSON.stringify(response?.data?.authUserData));
+//             localStorage.setItem("userRoles", JSON.stringify(roles));
+//             console.log('roles',roles);
+//             setAuth({ user, pwd, roles, isActive, accessToken, userId });
+//             resetUser();
+//             setPwd('');  
+//             if (response?.data?.authUserData?.isactive === 0) {
+//                 logout();
+//                 navigate('/login');
+//                 Swal.fire({  
+//                     icon: 'error',  
+//                     title: 'Օգտահաշիվը ապաակտիվացված է !',  
+//                     text: 'Ձեր օգտահաշիվը ապաակտիվացված է !', 
+//                     //footer: '<a href>Why do I have this issue?</a>'  
+//                 });  
+//                           }
+//             if (roles.includes(1212)) {
+//                 navigate('/addsample');
 
-            setAuth({ user, pwd, roles, isActive, accessToken, userId });
-            resetUser();
-            setPwd('');  
-            if (response?.data?.authUserData?.isactive === 0) {
-                logout();
-                navigate('/login');
-                Swal.fire({  
-                    icon: 'error',  
-                    title: 'Օգտահաշիվը ապաակտիվացված է !',  
-                    text: 'Ձեր օգտահաշիվը ապաակտիվացված է !', 
-                    //footer: '<a href>Why do I have this issue?</a>'  
-                });  
-                          }
-            if (roles.includes(1212)) {
-                navigate('/addsample');
+//             }else if(roles.includes(9578)){
+//                 navigate('/doctorsTemplete');
+//               } else if(!roles.includes(9578)){
+//                 navigate('/mainTemplete');
+//               }else{
+//                 navigate(from, { replace: true });
+//             }
+//         } catch (err) {
+//             if (!err?.response) {
+                
+//                 Swal.fire({  
+//                     icon: 'error',  
+//                     title: 'Հանգույցից պատասխան չկա',  
+//                     text: 'Հանգույցից պատասխան չկա',   
+//                     //footer: '<a href>Why do I have this issue?</a>'  
+//                 });  
+                
+//                 setErrMsg('No Server Response');
+//             } else if (err.response?.status === 400) {
 
-            }else if(roles.includes(9578)){
-                navigate('/doctorsTemplete');
-              } else{
-                navigate(from, { replace: true });
+//                 Swal.fire({  
+//                     icon: 'error',  
+//                     title: 'Մուտքային տվյալները սխալ են!',  
+//                     text: 'Մուտքային տվյալները սխալ են!', 
+//                     //footer: '<a href>Why do I have this issue?</a>'  
+//                 });  
+
+//                 setErrMsg('Missing Username or Password');
+//             } else if (err.response?.status === 401) {
+                
+//                 Swal.fire({  
+//                     icon: 'error',  
+//                     title: 'Չհավաստագրված մուտք!',  
+//                     text: 'Չհավաստագրված մուտք!',  
+//                     //footer: '<a href>Why do I have this issue?</a>'  
+//                 });  
+
+//                 setErrMsg('Unauthorized');
+//             } else {
+
+//                 Swal.fire({  
+//                     icon: 'error',  
+//                     title: 'Մուտքը չհաջողվեց!',  
+//                     text: 'Մուտքը չհաջողվեց!', 
+//                     //footer: '<a href>Why do I have this issue?</a>'  
+//                 });  
+
+//                 setErrMsg('Login Failed');
+//             }
+//             errRef.current?.focus();
+//         }
+//     }
+const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+        const response = await axios.post(LOGIN_URL,
+            JSON.stringify({ user, pwd }),
+            {
+                headers: { 'Content-Type': 'application/json' },
+                withCredentials: true
             }
-        } catch (err) {
-            if (!err?.response) {
-                
-                Swal.fire({  
-                    icon: 'error',  
-                    title: 'Հանգույցից պատասխան չկա',  
-                    text: 'Հանգույցից պատասխան չկա',   
-                    //footer: '<a href>Why do I have this issue?</a>'  
-                });  
-                
-                setErrMsg('No Server Response');
-            } else if (err.response?.status === 400) {
+        );
+        
+        const accessToken = response?.data?.accessToken;
+        const decodedJWT = jwt(accessToken);
+        const roles = decodedJWT.UserInfo.roles;
+        const isActive = decodedJWT.UserInfo.isActive;
+        const userId = decodedJWT.UserInfo.userId;
 
-                Swal.fire({  
-                    icon: 'error',  
-                    title: 'Մուտքային տվյալները սխալ են!',  
-                    text: 'Մուտքային տվյալները սխալ են!', 
-                    //footer: '<a href>Why do I have this issue?</a>'  
-                });  
+        // Clear localStorage before storing new data
+        localStorage.removeItem("userData");
+        localStorage.removeItem("userRoles");
 
-                setErrMsg('Missing Username or Password');
-            } else if (err.response?.status === 401) {
-                
-                Swal.fire({  
-                    icon: 'error',  
-                    title: 'Չհավաստագրված մուտք!',  
-                    text: 'Չհավաստագրված մուտք!',  
-                    //footer: '<a href>Why do I have this issue?</a>'  
-                });  
+        localStorage.setItem("userData", JSON.stringify(response?.data?.authUserData));
+        localStorage.setItem("userRoles", JSON.stringify(roles));
 
-                setErrMsg('Unauthorized');
-            } else {
+        setAuth({ user, pwd, roles, isActive, accessToken, userId });
+        resetUser();
+        setPwd('');
 
-                Swal.fire({  
-                    icon: 'error',  
-                    title: 'Մուտքը չհաջողվեց!',  
-                    text: 'Մուտքը չհաջողվեց!', 
-                    //footer: '<a href>Why do I have this issue?</a>'  
-                });  
-
-                setErrMsg('Login Failed');
-            }
-            errRef.current?.focus();
+        // Handle inactive user case
+        if (response?.data?.authUserData?.isactive === 0) {
+            logout();
+            navigate('/login');
+            Swal.fire({
+                icon: 'error',
+                title: 'Օգտահաշիվը ապաակտիվացված է !',
+                text: 'Ձեր օգտահաշիվը ապաակտիվացված է !',
+            });
+            return;
         }
+//debugger
+      // Role-based navigation
+if (roles.includes(ROLES.Sampler)) {
+    navigate('/addsample');
+} else if (roles.includes(ROLES.Doctor)) {
+    navigate('/doctorsTemplete/calendar'); // Navigate to doctor pages
+} else if (roles.includes(ROLES.SuperAdmin)) {
+    navigate('/dashboard');   // Example for admin page
+} else {
+    navigate(from, { replace: true }); // Fallback for other roles or if none match
+}
+
+    } catch (err) {
+        handleLoginError(err);
     }
-
-
+};
+const handleLoginError = (err) => {
+    if (!err?.response) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Հանգույցից պատասխան չկա',
+            text: 'Հանգույցից պատասխան չկա',
+        });
+        setErrMsg('No Server Response');
+    } else if (err.response?.status === 400) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Մուտքային տվյալները սխալ են!',
+            text: 'Մուտքային տվյալները սխալ են!',
+        });
+        setErrMsg('Missing Username or Password');
+    } else if (err.response?.status === 401) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Չհավաստագրված մուտք!',
+            text: 'Չհավաստագրված մուտք!',
+        });
+        setErrMsg('Unauthorized');
+    } else {
+        Swal.fire({
+            icon: 'error',
+            title: 'Մուտքը չհաջողվեց!',
+            text: 'Մուտքը չհաջողվեց!',
+        });
+        setErrMsg('Login Failed');
+    }
+    errRef.current?.focus();
+};
     const togglePersist = () => {
         setPersist(prev => !prev);
     }

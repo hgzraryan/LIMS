@@ -29,6 +29,8 @@ const localizer = momentLocalizer(moment);
       moment.tz.setDefault('Armenia/Yerevan');
      // fetchData()
     }, []);
+
+    
     const fetchData = async () => {
       try {
         const response = await axiosPrivate.get('/bigCalendar');
@@ -143,7 +145,7 @@ console.log(slotInfo)
     };
     console.log(events)
   return (
-    <div className="calendar-container">
+    <div className="calendar-container " style={{ height: 500 }}>
       <Calendar
         popup
         selectable

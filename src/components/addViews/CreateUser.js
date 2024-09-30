@@ -13,7 +13,6 @@ import {
   city_validation,
   street_validation,
   zipCode_validation,
-  additional_validation,
   emergencyContactName_validation,
 } from "../../utils/inputValidations";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
@@ -490,7 +489,7 @@ function CreateUser({ setIsOpen,refreshData }) {
                                     )}
                                     </div>
                                 <div>                                  
-                                   <CustomDateComponent name="dateOfBirth" control={methods.control}/>
+                                   <CustomDateComponent name="dateOfBirth" control={methods.control} maxDate={new Date()}/>
                                 </div>
                               </div>
                             </div>

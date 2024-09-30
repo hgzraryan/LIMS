@@ -90,7 +90,7 @@ export const password_validation = {
     },
     minLength: {
       value: 6,
-      message: "min 6 characters",
+      message: "նվազագույնը 6 սիմվոլ",
     },
   },
 };
@@ -1212,4 +1212,53 @@ export const discount_validation = {
       message: "200 characters max",
     },
   },
+};
+export const moneyTransfer_validation = {
+  name: "moneyTransfer",
+  label: "Փոխանցվող գումար",
+  multiline: true,
+  id: "moneyTransfer",
+  type: "number",
+
+  placeholder: "Գումար",
+  validation: {
+    required: {
+      value: true,
+      message: "պարտադիր",
+    },
+    maxLength: {
+      value: 200,
+      message: "200 characters max",
+    },
+  },
+};
+export const paymentPurpose_validation = {
+  name: "paymentPurpose",
+  label: "Վճարման նպատակը",
+  multiline: true,
+  id: "paymentPurpose",
+  placeholder: "Վճարման նպատակը",
+  validation: {
+    required: {
+      value: true,
+      message: "պարտադիր",
+    },
+    maxLength: {
+      value: 200,
+      message: "200 characters max",
+    },
+  },
+};
+
+
+export const newPassword_validation = {
+  required: 'New password is required',
+  minLength: {
+    value: 6,
+    message: "նվազագույնը 6 սիմվոլ",
+  },
+};
+
+export const confirmPassword_validation = {
+  required: 'Կրկնեք գաղտնաբառը',
 };
