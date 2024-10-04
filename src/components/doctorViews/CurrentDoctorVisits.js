@@ -12,6 +12,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import ExportData from '../ExportData';
 import useRefreshData from '../../hooks/useRefreshData';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
+import CurrentDoctorsVisitsTable from '../viewTables/CurrentDoctorsVisitsTable';
 
 function CurrentDoctorVisits() {
     const { pageNumber } = useParams();
@@ -221,7 +222,7 @@ function CurrentDoctorVisits() {
                         id="scrollableDiv"
                         style={{overflow: "auto" }}
                       >
-                        <DoctorsVisitsTable
+                        <CurrentDoctorsVisitsTable
                           //confirmRef={confirmDoctorsRef}
                           selectedItem={selectedItem}
                           selectedItemId={selectedItemId}

@@ -289,7 +289,7 @@ function AddDoctorsVisit({
                                           )}
                                           options={doctors.map((item) => ({
                                               value: item.doctorName,
-                                              label: item.doctorName,
+                                              label: `${item?.doctorId}.${item.doctorName}`,
                                               id: item.doctorId,
                                             }))
                                           }

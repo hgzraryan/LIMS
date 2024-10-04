@@ -48,7 +48,7 @@ export const DOCTORSTAMPLETE_ROUTE = 'doctorsTemplete'
 export const DOCTORSPATIENT_ID_ROUTE = 'doctorsPatients/:id'
 export const DOCTORSPATIENTS_URL = "/patients/:doctorId";
 export const DOCTORS_PATIENTS = 'doctorsPatients'
-export const DOCTORS_PATIENTS_ID_ROUTE = 'doctorsPatients/:id'
+export const DOCTORTEMPLETE_PATIENTS_ID_ROUTE = 'doctorsTemplete/patients/:id'
 export const DOCTORTEMPLETE_CALENDAR_ROUTE = 'doctorsTemplete/calendar'
 
 export const REGISTER_DOCTORS_PATIENT = "/registerDoctorsPatient";

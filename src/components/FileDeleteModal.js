@@ -11,7 +11,7 @@ function FileDeleteModal({deleteFileId,keyName,handleCloseModal,setDownloadFiles
 
     const handleDelete = async () => { 
         console.log(confirmRef)  
-        if(keyName===confirmRef.current)    {
+        if(confirmRef.current==='remove')    {
             try {
                 const response = await axiosPrivate.delete('delExtResult', {
                     data: { fileId: deleteFileId },
@@ -65,7 +65,7 @@ function FileDeleteModal({deleteFileId,keyName,handleCloseModal,setDownloadFiles
                                 className="form-label"
                                 htmlFor="confirmUser"
                               >
-                                Հեռացման համար խնդրում ենք մուտքագրել "{keyName}" տեքստը
+                                Հեռացման համար խնդրում ենք մուտքագրել "remove" տեքստը
                               </label>
                               <input
                                 ref={confirmRef}

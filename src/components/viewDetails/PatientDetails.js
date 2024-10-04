@@ -107,31 +107,6 @@ function PatientDetails() {
       fetchData();
     }, 500);
   }, [navigate]);
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     axiosPrivate
-  //       .get(`/patients/${id}`)
-  //       .then((resp) => {
-  //         setPatientDetails((prev) => resp?.data?.jsonString);
-  //         setIsLoading(false);
-  //       })        
-  //       .then((resp) => {
-  //         axiosPrivate.get(`/getDiagnosticsByCid/${id}/patient`).then((resp) => {
-  //           setPatientDiagnostics((prev) => resp.data);
-  //           setIsLoading(false);
-  //         });
-  //       })
-  //       .then((resp) => {
-  //          axiosPrivate.get(`/getVisitsByid/patient/${id}`).then((resp) => {
-  //           setPatientVisits(resp.data);
-  //           setIsLoading(false);
-  //         });
-  //       })
-  //       .catch((err) => {
-  //         console.log(err);
-  //       });
-  //   }, 500);
-  // }, []);
 
   const columns = useMemo(
     () => [

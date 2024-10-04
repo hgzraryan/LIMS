@@ -1,22 +1,11 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState, useRef, useEffect } from "react";
-import FeatherIcon from "feather-icons-react";
-import Loading from "../Loading";
-import { Dropdown } from "react-bootstrap";
-import useGetData from "../../hooks/useGetData";
-import useDeleteData from "../../hooks/useDeleteData";
-import DiagnosticsTable from "../viewTables/DiagnosticsTable";
 import ReactPaginate from "react-paginate";
-import { useSelector } from "react-redux";
-
-import AddDiagnostic from "../addViews/AddDiagnostic";
-import { selectDiagnosticsCount} from "../../redux/features/diagnostics/diagnosticsCountSlice";
-import { DIAGNOSTICS_URL, DIAGNOSTICS__SEARCH_URL, DOCTORS_URL } from "../../utils/constants";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import ExportData from "../ExportData";
-import useRefreshData from "../../hooks/useRefreshData";
+import CurrentDoctorsDiagsTable from "../viewTables/CurrentDoctorsDiagsTable";
 
 const CurrentDoctorDiags = () => {
   const { pageNumber } = useParams();
@@ -24,10 +13,8 @@ const CurrentDoctorDiags = () => {
   const [currentPage, setCurrentPage] = useState(Number(pageNumber));
   const [selectedItem, setSelectedItem] = useState("");
   const [selectedItemId, setSelectedItemId] = useState(null);
-  const [isOpen, setIsOpen] = useState(false);
   const confirmDiagnosticRef = useRef("");
   const [usersPerPage, setUsersPerPage] = useState(Math.round((window.innerHeight / 100)));
-  const [doctors,setDoctors] = useState([]);
   const axiosPrivate =useAxiosPrivate()
   const [searchCount,setSearchCount] = useState(null)
   const [searchId,setSearchId] = useState(null)
@@ -48,12 +35,6 @@ const handleToggleExportModal = (value) => {
     setSearchCount(data.count)
     setSearchParams(data.params)
   }
-//   const {
-//     data: diagnostics,
-//     setData: setDiagnostics,
-//     dataReceived,
-//     dataCount
-//   } = useGetData(DIAGNOSTICS_URL,currentPage,usersPerPage,searchCount,DIAGNOSTICS__SEARCH_URL,searchParams);
 const pageCount = Math.ceil(dataCount/usersPerPage)
 useEffect(() => {
     let isMounted = true;
@@ -127,15 +108,6 @@ if(!searchCount){
   }
    //--------------------------------------------------------------//
 
-  useEffect(()=>{
-    setTimeout(() => {      
-      axiosPrivate.get(DOCTORS_URL).then((resp)=>{
-        setDoctors(prev=>resp?.data?.jsonString)
-     }).catch((err)=>{
-       console.log(err)
-     })
-    }, 2000);
- },[])
   const handleOpenModal = (user) => {
     setSelectedItemId(true);
     setSelectedItem((prev) => user);
@@ -144,11 +116,6 @@ if(!searchCount){
     setSelectedItemId(null);
   };
   /*------------------------------------------------*/
-
-
-
-
-
   const refreshPage = () => {
     let paglink = document.querySelectorAll(".page-item");
     paglink[0]?.firstChild.click();
@@ -181,7 +148,7 @@ if(!searchCount){
                     style={{overflow: "auto" }}
                   >
                      
-                      <DiagnosticsTable
+                      <CurrentDoctorsDiagsTable
                         confirmRef={confirmDiagnosticRef}
                         selectedItem={selectedItem}
                         selectedItemId={selectedItemId}

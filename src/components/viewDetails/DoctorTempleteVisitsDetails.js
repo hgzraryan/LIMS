@@ -7,6 +7,7 @@ import profileBgImg from "../../dist/img/profile-bg.jpg";
 import FileDownload from "js-file-download";
 import moment from 'moment';
 
+
 function DoctorTempleteVisitsDetails() {
   const navigate = useNavigate()
   const location = useLocation();

@@ -5,7 +5,6 @@ function ProgressBar({ totalPrice, totalPayed }) {
     setProgress(Number(totalPayed / (totalPrice / 100)));
   }, [totalPayed, totalPrice]);
   const getColor = () => {
-    console.log(progress)
     if (progress > 100) {
       return "rgb(255, 50, 50,.8)";
     } else if (progress === 100 || totalPayed === totalPrice) {

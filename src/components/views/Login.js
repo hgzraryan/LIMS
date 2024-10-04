@@ -172,7 +172,7 @@ if (roles.includes(ROLES.Sampler)) {
     navigate('/addsample');
 } else if (roles.includes(ROLES.Doctor)) {
     navigate('/doctorsTemplete/calendar'); // Navigate to doctor pages
-} else if (roles.includes(ROLES.SuperAdmin)) {
+} else if (roles.includes(ROLES.SuperAdmin) || roles.includes(ROLES.Admin)) {
     navigate('/dashboard');   // Example for admin page
 } else {
     navigate(from, { replace: true }); // Fallback for other roles or if none match

@@ -45,7 +45,8 @@ NOTIFICATIONS_ROUTE,
 DOCTORTEMPLETE_VISITS_ID_ROUTE,
 DOCTORTEMPLETE_VISITS,
 DOCTORTEMPLETE_DIAGNOSTICS_ID_ROUTE,
-DOCTORTEMPLETE_DIAGNOSTICS} from '../src/utils/constants' 
+DOCTORTEMPLETE_DIAGNOSTICS,
+DOCTORTEMPLETE_PATIENTS_ID_ROUTE} from '../src/utils/constants' 
 import { lazy, Suspense, useEffect, useState } from "react";
 import Support from "./components/views/Support";
 import DoctorsTemplete from "./components/layouts/DoctorsTemplete";
@@ -80,6 +81,7 @@ import Notifications from "./components/views/Notifications";
  const Packages = lazy(()=>  import("./components/views/Packages"));
  const Diagnostics = lazy(()=>  import("./components/views/Diagnostics"));
  const DiagnosticsDetails = lazy(()=>  import("./components/viewDetails/DiagnosticsDetails"));
+ const DoctorTempleteDiagsDetails = lazy(()=>  import("./components/viewDetails/DoctorTempleteDiagsDetails"));
  const DoctorsVisits = lazy(()=>  import("./components/views/DoctorsVisits"));
  const DoctorsVisitsDetails = lazy(()=>  import("./components/viewDetails/DoctorsVisitsDetails"));
  const DoctorTempleteVisitsDetails = lazy(()=>  import("./components/viewDetails/DoctorTempleteVisitsDetails"));
@@ -91,6 +93,7 @@ import Notifications from "./components/views/Notifications";
  const RefDoctors = lazy(()=>  import("./components/views/RefDoctors"));
  const MedInstitutions = lazy(()=>  import("./components/views/MedInstitutions"));
  const PatientDetails = lazy(()=>  import("./components/viewDetails/PatientDetails"));
+ const DoctorTempletePatientsDetails = lazy(()=>  import("./components/viewDetails/DoctorTempletePatientsDetails"));
  const AddSample = lazy(()=>  import("./components/addViews/AddSample"));
  const Samples = lazy(()=>  import("./components/views/Samples"));
  const MedicalServices = lazy(()=>  import("./components/views/MedicalServices"));
@@ -125,6 +128,7 @@ function App() {
         <Route path={REGISTER_ROUTE} element={<Register />} />
         <Route path={LINKPAGE_ROUTE} element={<LinkPage />} />
         <Route path={UNAUTHORIZED_ROUTE} element={<Unauthorized />} />
+        <Route index path={SUPPORT_URL} element={<Support />} />
 
         {/* we want to protect these routes */}
         <Route element={<PersistLogin />}>
@@ -135,7 +139,6 @@ function App() {
           <Route element={<RequireAuth allowedRoles={[ROLES.Admin,ROLES.SuperAdmin]} />}>
           <Route path="/" element={<MainTemplate />}>
             <Route index path={HOME_ROUTE} element={<Home />} />
-            <Route index path={SUPPORT_URL} element={<Support />} />
 
             <Route index path="/" element={<Home />} />
           
@@ -198,20 +201,19 @@ function App() {
           </Route>
           <Route element={<RequireAuth allowedRoles={[ROLES.Doctor]} />}>
           <Route path="/" element={<DoctorsTemplete />}>
-            {/* <Route path={DOCTORTEMPLETE_VISITS_ID_ROUTE} element={<DoctorsVisitsDetails/>} /> */}
             <Route path={DOCTORTEMPLETE_VISITS} element={<CurrentDoctorVisits/>} />
-            {/* <Route path={DOCTORTEMPLETE_DIAGNOSTICS_ID_ROUTE} element={<DoctorsVisitsDetails/>} /> */}
+            <Route path={DOCTORTEMPLETE_VISITS_ID_ROUTE} element={<DoctorTempleteVisitsDetails/>} />
             <Route path={DOCTORTEMPLETE_DIAGNOSTICS} element={<CurrentDoctorDiagnostics/>} />
-            <Route path={DOCTORTEMPLETE_DIAGNOSTICS_ID_ROUTE} element={<DiagnosticsDetails/>} />
+            <Route path={DOCTORTEMPLETE_DIAGNOSTICS_ID_ROUTE} element={<DoctorTempleteDiagsDetails/>} />
             <Route index path={HOME_ROUTE} element={<Home />} />
             <Route index path={SUPPORT_URL} element={<Support />} />
+            <Route path={DOCTORTEMPLETE_PATIENTS_ID_ROUTE} element={<DoctorTempletePatientsDetails/>} />
 
             {/* <Route path={DOCTORSVISITS_ID_ROUTE} element={<DoctorsVisitsDetails/>} /> */}
 
 
            {/* <Route path={PATIENTS_ID_ROUTE} element={<PatientDetails/>} /> */}
             {/* <Route path={DOCTORSVISITS_ID_ROUTE} element={<DoctorsVisitsDetails/>} />  */}
-            <Route path={DOCTORSVISITS_ID_ROUTE} element={<DoctorTempleteVisitsDetails/>} />
             <Route path={'doctorsTemplete/calendar'} element={<MyBigCalendar/>} />
 
             {/* <Route index path="/" element={<DoctorsVisits />} />
