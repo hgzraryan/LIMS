@@ -173,10 +173,15 @@ const MainTemplate = () => {
                     fontSize:'16px',
                     fontWeight:600,
 
-                  }}> SMS բալանս: <span style={{
-                    color:smsCount>0?'#4eafcb':'red'
-
-                  }}>{smsCount}</span ><span style={{fontSize:'14px'}}>դր․</span></p>
+                  }}> SMS բալանս: <span style={
+                    {
+                    color:smsCount<10000 
+                    ?'#ff621cd9'
+                    :smsCount===0 || smsCount<5000 
+                    ?'red'
+                    :'#4eafcb'
+                    }
+                  }>{smsCount}</span ><span style={{fontSize:'14px'}}> դր․</span></p>
                 </div>
               </div>
               {/* /Start Nav */}
