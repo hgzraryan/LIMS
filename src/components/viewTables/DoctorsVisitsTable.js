@@ -26,6 +26,7 @@ import CreatePayByPos from "../CreatePayByPos";
 import DoctorVisitsInfoModal from "../infoModals/DoctorVisitsInfoModal";
 import { DOCTORSVISITS_URL, DOCTORSVISITS__SEARCH_URL } from "../../utils/constants";
 import emptyTable from "../../dist/svg/emptyTable.svg"
+import DoctorVisitEditModal from "../EditViews/DoctorVisitEditModal";
 
 function DoctorsVisitsTable({ doctorsVisits, setDoctorsVisits, refreshData,handleSearchPageCount,
   dataReceived }) {
@@ -36,7 +37,11 @@ function DoctorsVisitsTable({ doctorsVisits, setDoctorsVisits, refreshData,handl
   const [openPosModal, setOpenPosModal] = useState(false);
   const [filterData, setFilterData] = useState({});
   const [filterDataJSON, setFilterDataJSON] = useState('');
+  const [editRow, setEditRow] = useState(false);
 
+ const handleOpenEditModal = (value) => {
+    setEditRow((prev) => value);
+  };
   const handlePosPay = (actionData) => {
     setOpenPosModal(actionData);
   };
@@ -294,6 +299,21 @@ function DoctorsVisitsTable({ doctorsVisits, setDoctorsVisits, refreshData,handl
                   </span>
                 </span>
               </a>
+              <a
+                className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover"
+                data-bs-toggle="tooltip"
+                data-placement="top"
+                title="Edit"
+                href="#"
+                onClick={() => handleOpenEditModal(row.original)}
+
+              >
+                <span className="icon">
+                  <span className="feather-icon">
+                    <FeatherIcon icon="edit" />
+                  </span>
+                </span>
+              </a>
             </div>
             <div className="d-flex">
               <BiSolidInfoCircle
@@ -301,6 +321,7 @@ function DoctorsVisitsTable({ doctorsVisits, setDoctorsVisits, refreshData,handl
                 size={"1.5rem"}
                 onClick={() => handleOpenInfoModal(row.original)}
               />
+             
             </div>
             {/* <div className="d-flex">
                 <a
@@ -419,6 +440,12 @@ function DoctorsVisitsTable({ doctorsVisits, setDoctorsVisits, refreshData,handl
           modalInfo={modalInfo}
           setModalInfo={setModalInfo}
         />
+      )}
+       {!!editRow && (
+        <DoctorVisitEditModal 
+        doctorVisits={editRow} 
+        setEditRow={setEditRow} 
+        refreshData={refreshData} />
       )}
       <table
         className="table nowrap w-100 mb-5 dataTable no-footer diagTable"
