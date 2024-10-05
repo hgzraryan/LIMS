@@ -233,7 +233,7 @@ const notify = (text) =>
                                             value: res.diagnosticsId,
                                             label: `${res?.diagnosticsId} - ${res?.clientFirstName} ${res?.clientLastName} ${res?.clientMidName}`,
                                           }))}
-                                          placeholder={"Ախտորոշումներ"}
+                                          placeholder={"Մուտքագրվող"}
                                         />
                                       )}
                                     />
