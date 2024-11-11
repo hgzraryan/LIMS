@@ -66,7 +66,7 @@ function DiagnosticsTable({
   const [transfer, setTransfer] = useState(false);
   
   const storedUserRoles = JSON.parse(localStorage.getItem('userRoles'));
-  const [superAdmin,setSuperAdmin]=useState(storedUserRoles?.includes(ROLES?.SuperAdmin)||[])
+  const [superAdmin,setSuperAdmin]=useState(storedUserRoles?.includes(ROLES?.SuperAdmin))
 
   const handleOpenTransferModal = (e,value) => {
     e.stopPropagation()
@@ -240,6 +240,11 @@ function DiagnosticsTable({
   //   </div>
   //   )
   // }
+  
+    console.log(superAdmin)
+  
+    
+   
   const CheckboxFilter = ({ column: { filterValue, setFilter, preFilteredRows, id } }) => {
     const [toggleFilterModal, setToggleFilterModal] = useState(false);
     const modalRef = useRef();
@@ -624,7 +629,7 @@ function DiagnosticsTable({
                 </a>            
                   </>:''                  
                   }
-                    {!row.original?.totalPayed && !!superAdmin  ?
+                    {!row.original?.totalPayed && !!superAdmin ?
                     <>
                      <a
                      className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover"
@@ -645,7 +650,8 @@ function DiagnosticsTable({
                   </>
                 :''                  
               }
-                    {!!row.original?.totalPayed && !!superAdmin ?
+             
+                    {(!!row.original?.totalPayed && !!superAdmin  ) ?
                     <>
                     
                      <a

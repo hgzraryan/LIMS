@@ -34,7 +34,7 @@ function ResetPasswordModal({ resetPassword, setResetPassword,id }) {
         //console.log('Password Reset Data:', data);
         // Handle password reset logic
         try {
-                  const resp = await axiosPrivate.post('changeUserPassword', 
+                  const resp = await axiosPrivate.post('/changeUserPassword', 
                     {
                         confirmNewPassword,
                         newPassword,

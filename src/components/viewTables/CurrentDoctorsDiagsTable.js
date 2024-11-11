@@ -65,7 +65,7 @@ function CurrentDoctorsDiagsTable({
     const [transfer, setTransfer] = useState(false);
     
     const storedUserRoles = JSON.parse(localStorage.getItem('userRoles'));
-    const [superAdmin,setSuperAdmin]=useState(storedUserRoles?.includes(ROLES?.SuperAdmin)||[])
+    const [superAdmin,setSuperAdmin]=useState(storedUserRoles?.includes(ROLES?.SuperAdmin))
   
     const handleOpenTransferModal = (e,value) => {
       e.stopPropagation()

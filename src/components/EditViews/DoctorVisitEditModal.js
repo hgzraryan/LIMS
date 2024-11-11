@@ -291,7 +291,9 @@ function DoctorVisitEditModal({
                                 apiKey={process.env.REACT_APP_EDITOR_KEY}
                                 onInit={(evt, editor) =>
                                   (editorRef.current = editor)
-                                }                                
+                                }  
+                                initialValue={doctorVisits?.additionalData}
+                              
                                 init={{
                                   height:300,
                                   plugins:"anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount pagembed linkchecker",
