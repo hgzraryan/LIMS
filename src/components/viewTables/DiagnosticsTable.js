@@ -539,7 +539,6 @@ function DiagnosticsTable({
         accessor: "actions",
         Cell: ({ row }) => (
           <div className="d-flex align-items-center">
-            <div className="d-flex">
             <a
                 className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover"
                 data-bs-toggle="tooltip"
@@ -554,8 +553,6 @@ function DiagnosticsTable({
                   </span>
                 </span>
               </a>
-
-              </div>
               <a
                     className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover"
                     data-bs-toggle="tooltip"
@@ -578,7 +575,6 @@ function DiagnosticsTable({
 
             {row.original?.diagStatus === "Active" && (
                 <>
-            <div className="d-flex">
                   <a
                     className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover"
                     data-bs-toggle="tooltip"
@@ -612,21 +608,21 @@ function DiagnosticsTable({
             
               {!(row.original?.totalPrice <= row.original?.totalPayed )   ?
                   < >  
-                   <a
+                <a
                      className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover"
                      data-bs-toggle="tooltip"
                   data-placement="top"
-                  title="Զեղչ"
+                  title="POS"
                   href="#"
-                  onClick={() => handleOpenDiscountModal(row.original)}
+                  onClick={(e)=>handlePosPay(e,row.original)}
   
-                >
-                  <span className="icon me-">
+                >          
+                  <span className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover">
                     <span className="feather-icon">
-                  <img title="POS" style={{cursor:'pointer'}} width='20xp' height='20px' src={posTerminalSvg} alt='posTerminalSvg' onClick={(e)=>handlePosPay(e,row.original)}/>
+                  <img  style={{cursor:'pointer'}} width='20xp' height='20px' src={posTerminalSvg} alt='posTerminalSvg' />
                     </span>
                   </span>
-                </a>            
+                  </a>  
                   </>:''                  
                   }
                     {!row.original?.totalPayed && !!superAdmin ?
@@ -691,7 +687,6 @@ function DiagnosticsTable({
                 </span>
                 </a>
               )} */}
-            </div>
                 </>
                 )}
           </div>
