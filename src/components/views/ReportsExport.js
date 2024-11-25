@@ -35,7 +35,7 @@ function ReportsExport() {
       }, 500);
     }, []);
     const findResearches = (statusBoard) => {
-      return statusBoard.flatMap(elem => elem.researches.map(research => research.name));
+      return statusBoard.flatMap(elem => elem.researches.map(research => research?.name));
     }
     const handleExportDiagnostics = (exportName,exportData)=>{
         const formatedData=exportData.map((el)=>{

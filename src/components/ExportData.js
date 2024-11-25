@@ -94,7 +94,7 @@ function ExportData({handleToggleExportModal,toggleExport,section,refDoctors=[]}
         }
       }); 
       const findResearches = (statusBoard) => {
-        return statusBoard?.flatMap(elem => elem.researches.map(research => research.name));
+        return statusBoard?.flatMap(elem => elem.researches.map(research => research?.name));
       }
       const handleExportDiagnostics = (exportName,exportData)=>{
         if(section === 'diagnostics' && diagExport==='diagnostics'){
