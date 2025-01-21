@@ -62,7 +62,7 @@ function DiagnosticsTable({
   const [filterData, setFilterData] = useState({});
   const [filterDataJSON, setFilterDataJSON] = useState('');
   const [editRow, setEditRow] = useState(false);
-  const [discount, setDiscount] = useState(false);
+  const [discountData, setDiscountData] = useState(false);
   const [transfer, setTransfer] = useState(false);
   
   const storedUserRoles = JSON.parse(localStorage.getItem('userRoles'));
@@ -77,7 +77,7 @@ function DiagnosticsTable({
   };
   const handleOpenDiscountModal = (value) => {
     console.log(value)
-    setDiscount((prev) => value);
+    setDiscountData((prev) => value);
   };
   const handleOpenInfoModal = (e,data) => {
     e.stopPropagation()
@@ -769,8 +769,8 @@ function DiagnosticsTable({
       {!!editRow && (
         <DiagnosticsEditModal diagnostics={editRow} setEditRow={setEditRow} refreshData={refreshData} />
       )}
-        {!!discount &&  (
-      <DiscountModal diagData={discount} setDiagData={setDiscount} refreshData={refreshData} />
+        {!!discountData &&  (
+      <DiscountModal discountData={discountData} setDiscountData={setDiscountData} refreshData={refreshData} />
     )}
         {!!transfer &&  (
       <DiagTransferModal transfer={transfer} setTransfer={setTransfer} refreshData={refreshData} />

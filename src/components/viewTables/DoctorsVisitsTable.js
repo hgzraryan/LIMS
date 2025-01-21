@@ -24,9 +24,10 @@ import isActiveSvg from "../../dist/svg/isActive.svg";
 import posTerminalSvg from "../../dist/svg/posTerminal.svg";
 import CreatePayByPos from "../CreatePayByPos";
 import DoctorVisitsInfoModal from "../infoModals/DoctorVisitsInfoModal";
-import { DOCTORSVISITS_URL, DOCTORSVISITS__SEARCH_URL } from "../../utils/constants";
+import { DOCTORSVISITS_URL, DOCTORSVISITS__SEARCH_URL, ROLES } from "../../utils/constants";
 import emptyTable from "../../dist/svg/emptyTable.svg"
 import DoctorVisitEditModal from "../EditViews/DoctorVisitEditModal";
+import DiscountModal from "../DiscountModal";
 
 function DoctorsVisitsTable({ doctorsVisits, setDoctorsVisits, refreshData,handleSearchPageCount,
   dataReceived }) {
@@ -38,7 +39,10 @@ function DoctorsVisitsTable({ doctorsVisits, setDoctorsVisits, refreshData,handl
   const [filterData, setFilterData] = useState({});
   const [filterDataJSON, setFilterDataJSON] = useState('');
   const [editRow, setEditRow] = useState(false);
+  const [discountData, setDiscountData] = useState(false);
 
+  const storedUserRoles = JSON.parse(localStorage.getItem('userRoles'));
+  const [superAdmin,setSuperAdmin]=useState(storedUserRoles?.includes(ROLES?.SuperAdmin))
  const handleOpenEditModal = (value) => {
     setEditRow((prev) => value);
   };
@@ -48,7 +52,10 @@ function DoctorsVisitsTable({ doctorsVisits, setDoctorsVisits, refreshData,handl
   const handleClosePosPay = () => {
     setOpenPosModal(false);
   };
-
+  const handleOpenDiscountModal = (value) => {
+    console.log(value)
+    setDiscountData((prev) => value);
+  };
   const handleOpenPrintModal = (data) => {
     setModalPrint((prev) => data);
   };
@@ -370,6 +377,27 @@ function DoctorsVisitsTable({ doctorsVisits, setDoctorsVisits, refreshData,handl
               ) : (
                 ""
               )}
+               {!row.original?.totalPayed && !!superAdmin ?
+                    <>
+                     <a
+                     className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover"
+                     data-bs-toggle="tooltip"
+                     data-placement="top"
+                     title="Discount"
+                     href="#"
+                     onClick={() => handleOpenDiscountModal(row.original)}
+                     
+                     >
+                  <span className="icon me-">
+                    <span className="feather-icon">
+                      <FeatherIcon icon="percent" />
+                    </span>
+                  </span>
+                </a>
+                   
+                  </>
+                :''                  
+              }
             </>
             {/* )} */}
           </div>
@@ -447,6 +475,9 @@ function DoctorsVisitsTable({ doctorsVisits, setDoctorsVisits, refreshData,handl
         setEditRow={setEditRow} 
         refreshData={refreshData} />
       )}
+     {!!discountData &&  (
+      <DiscountModal discountData={discountData} setDiscountData={setDiscountData} refreshData={refreshData} />
+    )}
       <table
         className="table nowrap w-100 mb-5 dataTable no-footer diagTable"
         {...getTableProps()}

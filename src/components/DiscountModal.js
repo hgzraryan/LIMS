@@ -11,8 +11,9 @@ import blueCard from "../dist/img/Blue.png";
 import goldCard from "../dist/img/Gold.png";
 import greenCard from "../dist/img/Green.png";
 import silverCard from "../dist/img/Silver.png";
+import { deleteNullProperties } from "../utils/helper";
 
-function DiscountModal({ diagData,setDiagData,refreshData}) {
+function DiscountModal({ discountData,setDiscountData,refreshData}) {
     
     const navigate = useNavigate();
     const location = useLocation();
@@ -67,17 +68,20 @@ console.log(discounts)
     progress: undefined,
     theme: "light",
   });
+  console.log(discountData)
   const onSubmit = methods.handleSubmit(async (data) => {
-    const newAgent = {
+    const newDiscount = {
         discountId:discountId?+discountId:null,
-        diagnosticsId:diagData?.diagnosticsId?+diagData?.diagnosticsId:null,
+        diagnosticsId:discountData?.diagnosticsId?+discountData?.diagnosticsId:null,
+        doctorVisitId:discountData?.doctorsVisitId?+discountData?.doctorsVisitId:null,
 
     };
+ const updatedData = deleteNullProperties(newDiscount)
 
-    console.log(newAgent);
-    setDiagData(false)
+    console.log(updatedData);
+    setDiscountData(false)
     try {
-      await axiosPrivate.post('setDiscount', newAgent, {
+      await axiosPrivate.post('setDiscount', updatedData, {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
       });
@@ -96,7 +100,7 @@ console.log(discounts)
     }
   }); 
   return (
-    <Modal show={() => true} size="xl" onHide={() => setDiagData(false)}>
+    <Modal show={() => true} size="xl" onHide={() => setDiscountData(false)}>
       <Modal.Header closeButton>
         <Modal.Title style={{ width: "100%", textAlign: "center" }}>
           Զեղչ
@@ -195,7 +199,7 @@ console.log(discounts)
                           <button
                             type="button"
                             className="btn btn-secondary"
-                            onClick={() => setDiagData(false)}
+                            onClick={() => setDiscountData(false)}
                           >
                             Չեղարկել
                           </button>

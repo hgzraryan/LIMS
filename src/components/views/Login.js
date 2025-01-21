@@ -355,16 +355,18 @@ const handleLoginError = (err) => {
                       </div>
                       {/* / Page Footer */}
                   </div>
-                  <div className="col-xl-7 col-lg-6 col-md-5 col-sm-10 d-md-block d-none position-relative bg-primary-light-5">
-                      <div className="auth-content flex-column text-center py-8">
+                  <div className="col-xl-7 col-lg-6 col-md-5 col-sm-10 d-md-block d-none position-relative bg-primary-light-5 p-0">
+
+                  <img src="dist/img/LIMS.svg" style={{ objectFit: 'cover',position:'absolute'}} className="w-100 h-100 m-0 p-0" alt="login"/>
+                      <div className="auth-content flex-column py-8  " style={{position:'absolute',top:'-300px'}}>
                           <div className="row">
-                              <div className="col-xxl-7 col-xl-8 col-lg-11 mx-auto text-white-color">
-                                  <h2 className="mb-4">LIMS Կառավարման համակարգ</h2>
-                                  <p>Լաբորատոր հետազոտությունների տեղեկատվական կառավարման համակարգ</p>
+                              <div className="col-xxl-7 col-xl-8 col-lg-11 ms-10 text-white-color " style={{textAlign:'center'}}>
+                                  <h2 className="mb-4" style={{fontSize:'35px'}}>LIMS Կառավարման համակարգ</h2>
+                                  <p style={{fontSize:'25px'}}>Լաբորատոր հետազոտությունների տեղեկատվական կառավարման համակարգ</p>
                                   {/*<button className="btn  btn-flush-primary btn-uppercase mt-2">Take Tour</button>*/}
                               </div>
                           </div>
-                          <img src="dist/img/lab-login.png"  className="img-fluid w-sm-60 mt-7" alt="login"/>
+                         
                       </div>
                   </div>
               </div>
