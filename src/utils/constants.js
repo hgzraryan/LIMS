@@ -34,6 +34,8 @@ export const RESEARCH_LISTS_ROUTE = 'setup/researchlists/page/:pageNumber'
 export const MEDICALSERVICES_ROUTE = 'setup/medicalServices/page/:pageNumber'
 export const PURCHASETWO_ROUTE = 'purchases/purchaseTwo'
 export const DIAGNOSTICS_ROUTE = 'diagnostics/page/:pageNumber'
+export const RADIOLOGIES_ROUTE = 'radiology/page/:pageNumber'
+export const RADIOLOGYSERVICES_ROUTE = 'setup/radiologyServices/page/:pageNumber'
 export const DIAGNOSTICS_ID_ROUTE = 'diagnostics/:id'
 export const MISSING_ROUTE = '*'
 export const PACKAGES_ROUTE = 'setup/packages/page/:pageNumber'
@@ -68,6 +70,8 @@ export const REGISTER_REFDOCTOR = "/registerRefDoctors";
 export const REGISTER_MEDINSTITUTION = "/registerMedInstitutions";
 export const REGISTER_MEDICALSERVICES = "/registerMedicalServices";
 export const REGISTER_PACKAGES = "/registerPackage";
+export const REGISTER_RADIOLOGY = "/registerRadiology";
+export const REGISTER_RADIOLOGYSERVICE = "/registerRadiologyService";
 
 export const RESEARCHLISTS_URL = "/researchLists";
 export const MEDICALSERVICES_URL = "/medicalServices";
@@ -87,6 +91,8 @@ export const SUPPORT_URL = "/support";
 export const DOCTORSVISITS_URL = '/doctorsVisits';
 export const PACKAGES_URL = "/customPackage";
 export const NOTIFICATIONS_URL = "/notifications";
+export const RADIOLOGIES_URL = "/radiologies";
+export const RADIOLOGYSERVICES_URL = "/radiologyService";
 
 export const PATIENTS__SEARCH_URL = "/searchPatient";
 export const DIAGNOSTICS__SEARCH_URL = "/searchDiagnostics";

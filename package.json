@@ -1,7 +1,7 @@
 {
   "name": "LIMS_VTEAM_CLIENT",
   "version": "0.1.0",
-  "revision": "251124",
+  "revision": "100225",
   "private": true,
   "dependencies": {
     "@coreui/coreui": "^4.2.6",
@@ -95,5 +95,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "https://127.0.0.1:9443"
+  "proxy": "https://37.186.119.16:9443"
 }

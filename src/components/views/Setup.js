@@ -2,6 +2,7 @@
 import FeatherIcon from 'feather-icons-react/build/FeatherIcon'
 import React from 'react'
 import researches  from '../../dist/svg/researches.svg'
+import radiologyServices  from '../../dist/svg/radiologyServices.svg'
 import settings  from '../../dist/svg/settings.svg'
 import discount  from '../../dist/svg/discount.svg'
 import info  from '../../dist/svg/info.svg'
@@ -43,6 +44,11 @@ const setupData = [
         pathname:'setup/medicalServices/page/1'
     },
     {
+        name:'Ռադիոլոգիական ծառայություններ',
+        icon:radiologyServices,
+        pathname:'setup/radiologyServices/page/1'
+    },
+    {
         name:'Սրվակներ',
         icon:tube,
         pathname:''
@@ -71,7 +77,7 @@ const setupData = [
 function Setup() {
     const navigate = useNavigate();
 
-    const handleDiagnosticsDetails = async (data) => {
+    const handleSetupPathClick = async (data) => {
         navigate(`/${data}`);
       };
   return (
@@ -125,7 +131,7 @@ function Setup() {
                  <div className="d-flex justify-content-center align-items-center h-100">
                  <p
                    style={{ cursor: "pointer", fontSize:'1.2rem',fontStyle:'italic' }}
-                   onClick={(e) => handleDiagnosticsDetails(el?.pathname)}
+                   onClick={(e) => handleSetupPathClick(el?.pathname)}
                    >
                    {el.name}
                  </p>

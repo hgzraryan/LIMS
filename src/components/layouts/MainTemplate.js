@@ -18,6 +18,7 @@ import { checkMedicalServicesCount } from "../../redux/features/medicalServices/
 import { checkDoctorsVisitCount } from "../../redux/features/DoctorsVisit/DoctorsVisitSlice";
 import sidePatientSvg from '../../dist/svg/sidePatients.svg'
 import sideDoctorVisitSvg from '../../dist/svg/sideDoctorVisit.svg'
+import radiologyServices from '../../dist/svg/radiologyServices.svg'
 import sideAgentsSvg from '../../dist/svg/sideAgents.svg'
 import sideOrganizationsSvg from '../../dist/svg/sideOrganizations.svg'
 import controlPanelSvg from '../../dist/svg/controlPanel.svg'
@@ -538,6 +539,24 @@ const MainTemplate = () => {
                           </span>
                         </span>
                         <span className="nav-link-text">Բժշկի այցելություններ</span>
+                      </Link>
+                      <Link
+                        className={
+                          menuIsActive === "radiology" ||
+                          location.pathname === "/radiology"
+                            ? "nav-link active"
+                            : "nav-link"
+                        }
+                        to="./radiology/page/1"
+                        onClick={() => handleSubmenuClick("radiology", "")}
+                      >
+                        <span className="nav-icon-wrap">
+                          <span className="svg-icon">
+                          <img width={'25px'} height={'25px'} src={radiologyServices} alt="radiologySVG"/>
+                         
+                          </span>
+                        </span>
+                        <span className="nav-link-text">Ռադիոլոգիա</span>
                       </Link>
                     </li>
                     <li className="nav-item">

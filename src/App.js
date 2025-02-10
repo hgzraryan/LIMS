@@ -46,12 +46,15 @@ DOCTORTEMPLETE_VISITS_ID_ROUTE,
 DOCTORTEMPLETE_VISITS,
 DOCTORTEMPLETE_DIAGNOSTICS_ID_ROUTE,
 DOCTORTEMPLETE_DIAGNOSTICS,
-DOCTORTEMPLETE_PATIENTS_ID_ROUTE} from '../src/utils/constants' 
+DOCTORTEMPLETE_PATIENTS_ID_ROUTE,
+RADIOLOGIES_ROUTE,
+RADIOLOGYSERVICES_ROUTE} from '../src/utils/constants' 
 import { lazy, Suspense, useEffect, useState } from "react";
 import Support from "./components/views/Support";
 import DoctorsTemplete from "./components/layouts/DoctorsTemplete";
 import DoctorsEmployment from "./components/views/DoctorsEmployment";
 import Notifications from "./components/views/Notifications";
+import RaddiologyServices from "./components/views/RaddiologyServices";
 
  const Register = lazy(()=>  import("./components/Register"));
  const Login = lazy(()=>  import("./components//views/Login"));
@@ -73,7 +76,7 @@ import Notifications from "./components/views/Notifications";
  const Agents = lazy(()=>  import("./components/views/Agents"));
  const Organizations = lazy(()=>  import("./components/views/Organizations"));
  const OrganizationDetails = lazy(()=>  import("./components/viewDetails/OrganizationDetails"));
- const Prices = lazy(()=>  import("./components/views/Prices"));
+ const Radiology = lazy(()=>  import("./components/views/Radiology"));
  const DiscountCards = lazy(()=>  import("./components/views/DiscountCards"));
  const Reagents = lazy(()=>  import("./components/views/Reagents"));
  const Equipments = lazy(()=>  import("./components/views/Equipments"));
@@ -175,6 +178,8 @@ function App() {
                 path={MEDICALSERVICES_ROUTE}
                 element={<MedicalServices />}
               />
+              <Route path={RADIOLOGIES_ROUTE} element={<Radiology />} />
+              <Route path={RADIOLOGYSERVICES_ROUTE} element={<RaddiologyServices />} />
               <Route path={DIAGNOSTICS_ROUTE} element={<Diagnostics />} />
               <Route path={DIAGNOSTICS_ID_ROUTE} element={<DiagnosticsDetails/>} />
               <Route path={REFDOCTORS_ROUTE} element={<RefDoctors />} />
