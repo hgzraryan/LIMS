@@ -251,7 +251,7 @@ function DoctorVisitEditModal({
                                 name="visitDate" 
                                 methods={methods} 
                                 control={methods.control} 
-                                defaultValue={new Date(doctorVisits?.visitDate)}
+                                defaultValue={doctorVisits?.visitDate}
                                 required={true}/>
                                 </div>
                               </div>

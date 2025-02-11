@@ -44,6 +44,8 @@ function CreatePayByPos({ handleClosePosPay, actionData, refreshData }) {
           ? actionData?.diagnosticsId
           : actionData?.doctorsVisitId
           ? actionData?.doctorsVisitId
+          : actionData?.radiologyId
+          ? actionData?.radiologyId
           : null,
       };
 
@@ -75,7 +77,9 @@ function CreatePayByPos({ handleClosePosPay, actionData, refreshData }) {
             <p>Վճարում ախտորոշման համար</p>
           ) : actionData?.doctorsVisitId ? (
             <p>Վճարում Բժշկի այցելության համար</p>
-          ) : (
+          ) : actionData?.radiologyId ? (
+            <p>Վճարում ծառայության  համար</p>
+          ) :(
             <></>
           )}
         </Modal.Title>

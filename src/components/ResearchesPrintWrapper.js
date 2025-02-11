@@ -23,7 +23,7 @@ function ResearchesPrintWrapper({ value,currentClient,externalChecked=false }) {
         <div style={{ display: "none" }}>
          {value?.diagnosticsId 
          ?<ComponentToPrint ref={componentRef} value={value} currentClient={currentClient} externalChecked={externalChecked}/>
-         :value?.doctorsVisitId
+         :value?.doctorsVisitId || value?.radiologyId
          ?<ComponentToPrintVisit ref={componentRef} value={value}  />
          :''
          }

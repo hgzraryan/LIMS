@@ -18,16 +18,16 @@ import { BiSolidInfoCircle } from "react-icons/bi";
 import ProgressBar from "../ProgressBar";
 import moment from "moment";
 import DoctorVisitsPrint from "../views/DoctorVisitsPrint";
-import DoctorVisitDeactivate from "../DeactivateItems/DoctorVisitDeactivate";
 import cancelledSvg from "../../dist/svg/cancelled.svg";
 import isActiveSvg from "../../dist/svg/isActive.svg";
 import posTerminalSvg from "../../dist/svg/posTerminal.svg";
 import CreatePayByPos from "../CreatePayByPos";
-import DoctorVisitsInfoModal from "../infoModals/DoctorVisitsInfoModal";
-import { DOCTORSVISITS_URL, DOCTORSVISITS__SEARCH_URL, ROLES } from "../../utils/constants";
+import { ROLES } from "../../utils/constants";
 import emptyTable from "../../dist/svg/emptyTable.svg"
-import DoctorVisitEditModal from "../EditViews/DoctorVisitEditModal";
 import DiscountModal from "../DiscountModal";
+import RadiologyEditModal from "../EditViews/RadiologyEditModal";
+import RadiologiesInfoModal from "../infoModals/RadiologiesInfoModal";
+import RadiologyDeactivate from "../DeactivateItems/RadiologyDeactivate";
 function RadiologiesTable({
   confirmRef,
   selectedItem,
@@ -106,25 +106,25 @@ function RadiologiesTable({
           accessor: "radiologyId",
           sortable: true,
           width: 80,
-          Filter: ({ column: { id } }) => (
-            <ColumnFilter id={id} 
-            setData={setRadiologies} 
-            placeholder={"ID"}
-            getUrl = {DOCTORSVISITS_URL}
-            searchUrl = {
-              DOCTORSVISITS__SEARCH_URL
-              //DOCTORSVISITS__SEARCH_URL
-            } 
-           // handleSearchPageCount={(val)=>handleSearchPageCount(val)}
-            filterData={filterData}
-            setFilterData={(newFilterData) => {
-                setFilterDataJSON(JSON.stringify({...filterData, ...newFilterData}))
-                setFilterData(newFilterData)   
-            }}
+        //   Filter: ({ column: { id } }) => (
+        //     <ColumnFilter id={id} 
+        //     setData={setRadiologies} 
+        //     placeholder={"ID"}
+        //     getUrl = {DOCTORSVISITS_URL}
+        //     searchUrl = {
+        //       DOCTORSVISITS__SEARCH_URL
+        //       //DOCTORSVISITS__SEARCH_URL
+        //     } 
+        //    // handleSearchPageCount={(val)=>handleSearchPageCount(val)}
+        //     filterData={filterData}
+        //     setFilterData={(newFilterData) => {
+        //         setFilterDataJSON(JSON.stringify({...filterData, ...newFilterData}))
+        //         setFilterData(newFilterData)   
+        //     }}
   
           
-            />
-          ),
+        //     />
+        //   ),
           Cell: ({ row }) => (
             <>
               <div
@@ -136,6 +136,22 @@ function RadiologiesTable({
             </>
           ),
         },
+        {
+            Header: (event) => (
+              <>
+                <div className="columnHeader">Այցելու ID</div>
+              </>
+            ),
+            accessor: "clientId",
+            width: 80,
+            // Filter: ({ column: { id } }) => (
+            //   <ColumnFilter
+            //     id={id}
+            //     setData={setDoctorsVisits}
+            //     placeholder="Հաջորդ այց"
+            //   />
+            // ),
+          },
         {
           Header: (event) => (
             <>
@@ -231,22 +247,7 @@ function RadiologiesTable({
             </div>
           ),
         },
-        {
-          Header: (event) => (
-            <>
-              <div className="columnHeader">Հաջորդ այց</div>
-            </>
-          ),
-          accessor: "nextVisit",
-          width: 200,
-          // Filter: ({ column: { id } }) => (
-          //   <ColumnFilter
-          //     id={id}
-          //     setData={setDoctorsVisits}
-          //     placeholder="Հաջորդ այց"
-          //   />
-          // ),
-        },
+ 
         {
           Header: (event) => (
             <>
@@ -460,7 +461,7 @@ function RadiologiesTable({
           />
         )}
         {!!DisableRowData && (
-          <DoctorVisitDeactivate
+          <RadiologyDeactivate
             handleCloseDeactivateModal={handleCloseDeactivateModal}
             rowData={DisableRowData}
             refreshData={refreshData}
@@ -473,110 +474,121 @@ function RadiologiesTable({
           />
         )}
         {!!modalInfo && (
-          <DoctorVisitsInfoModal
+          <RadiologiesInfoModal
             modalInfo={modalInfo}
             setModalInfo={setModalInfo}
           />
         )}
-         {!!editRow && (
-          <DoctorVisitEditModal 
-          doctorVisits={editRow} 
-          setEditRow={setEditRow} 
-          refreshData={refreshData} />
+        {!!editRow && (
+          <RadiologyEditModal
+            radiologies={editRow}
+            setEditRow={setEditRow}
+            refreshData={refreshData}
+          />
         )}
-       {!!discountData &&  (
-        <DiscountModal discountData={discountData} setDiscountData={setDiscountData} refreshData={refreshData} />
-      )}
+        {!!discountData && (
+          <DiscountModal
+            discountData={discountData}
+            setDiscountData={setDiscountData}
+            refreshData={refreshData}
+          />
+        )}
         <table
           className="table nowrap w-100 mb-5 dataTable no-footer diagTable"
           {...getTableProps()}
         >
-           <thead>
-          {headerGroups.map((headerGroup) => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
-                <th  {...column.getHeaderProps(column.getSortByToggleProps())}>
-                      {column.id !== "selection" && (
-                    <div className="d-flex justify-content-between ">
-                        
-                          <div>
-                            {column.canFilter ? column.render("Filter") : null}
-                          </div>
-                          <div
-                            style={{
-                              marginTop: "2px",
-                              display: "flex",
-                              justifyContent: "space-between",
-                              alignItems: "center",
-                            }}
-                          >
-                            <div>{column.render("Header")}</div>
-                          </div>
-                          {column.id!=="patientId" && 
-                            <div style={{ paddingTop: "20px" }}>
-                              {column.isSorted ? (
-                                column.isSortedDesc ? (
-                                  <span className="sorting_asc"></span>
-                                ) : (
-                                  <span className="sorting_desc"></span>
-                                )
+          <thead>
+            {headerGroups.map((headerGroup) => (
+              <tr {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map((column) => (
+                  <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                    {column.id !== "selection" && (
+                      <div className="d-flex justify-content-between ">
+                        <div>
+                          {column.canFilter ? column.render("Filter") : null}
+                        </div>
+                        <div
+                          style={{
+                            marginTop: "2px",
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                          }}
+                        >
+                          <div>{column.render("Header")}</div>
+                        </div>
+                        {column.id !== "patientId" && (
+                          <div style={{ paddingTop: "20px" }}>
+                            {column.isSorted ? (
+                              column.isSortedDesc ? (
+                                <span className="sorting_asc"></span>
                               ) : (
-                                <span className="sorting"></span>
-                              )}
-                            </div>
-                            }
-  
+                                <span className="sorting_desc"></span>
+                              )
+                            ) : (
+                              <span className="sorting"></span>
+                            )}
                           </div>
-                      )}
+                        )}
+                      </div>
+                    )}
                     <div
-                      {...column.getResizerProps({onClick(ev){ev.stopPropagation()}})}
+                      {...column.getResizerProps({
+                        onClick(ev) {
+                          ev.stopPropagation();
+                        },
+                      })}
                       className={`resizer ${
-                      column.isResizing ? "isResizing" : ""
-                    }`}
+                        column.isResizing ? "isResizing" : ""
+                      }`}
                     />
                   </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
+                ))}
+              </tr>
+            ))}
+          </thead>
           {radiologies?.length > 0 ? (
-              <tbody {...getTableBodyProps()}>
-                {rows.map((row) => {
-                  prepareRow(row);
-                  const rowProps = row.getRowProps();
-                  const visitStatus = row.original?.visitStatus === "Cancelled";
-                  // const diagStatus = row.original.patientId > 'Cancelled';
-                  return (
-                    <tr
-                      {...rowProps}
-                      style={{
-                        backgroundColor: visitStatus
-                          ? "rgb(255, 99, 71, 0.2)"
-                          : "inherit",
-                        borderStyle: "none !important",
-                      }}
-                    >
-                      {row.cells.map((cell) => {
-                        return (
-                          <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
-                        );
-                      })}
-                    </tr>
-                  );
-                })}
-               </tbody>
-           ):dataReceived?(
+            <tbody {...getTableBodyProps()}>
+              {rows.map((row) => {
+                prepareRow(row);
+                const rowProps = row.getRowProps();
+                const visitStatus = row.original?.visitStatus === "Cancelled";
+                // const diagStatus = row.original.patientId > 'Cancelled';
+                return (
+                  <tr
+                    {...rowProps}
+                    style={{
+                      backgroundColor: visitStatus
+                        ? "rgb(255, 99, 71, 0.2)"
+                        : "inherit",
+                      borderStyle: "none !important",
+                    }}
+                  >
+                    {row.cells.map((cell) => {
+                      return (
+                        <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                      );
+                    })}
+                  </tr>
+                );
+              })}
+            </tbody>
+          ) : dataReceived ? (
             <tr class="table-placeholder">
-              <td class="table-cell" >
+              <td class="table-cell">
                 <div class="empty-normal">
                   <div class="empty-image d-flex justify-content-center align-items-center">
-                    <img src={emptyTable} alt='emptyTable'/>
+                    <img src={emptyTable} alt="emptyTable" />
                   </div>
-                  <div class="empty-description d-flex justify-content-center align-items-center mb-2">Տվյալներ չկան</div>
+                  <div class="empty-description d-flex justify-content-center align-items-center mb-2">
+                    Տվյալներ չկան
+                  </div>
                 </div>
               </td>
             </tr>
-           ):<></>}        
+          ) : (
+            <></>
+          )}
         </table>
       </>
     );

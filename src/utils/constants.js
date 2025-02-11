@@ -71,7 +71,7 @@ export const REGISTER_MEDINSTITUTION = "/registerMedInstitutions";
 export const REGISTER_MEDICALSERVICES = "/registerMedicalServices";
 export const REGISTER_PACKAGES = "/registerPackage";
 export const REGISTER_RADIOLOGY = "/registerRadiology";
-export const REGISTER_RADIOLOGYSERVICE = "/registerRadiologyService";
+export const REGISTER_RADIOLOGYSERVICE = "/registerRadiologyServices";
 
 export const RESEARCHLISTS_URL = "/researchLists";
 export const MEDICALSERVICES_URL = "/medicalServices";
@@ -91,8 +91,8 @@ export const SUPPORT_URL = "/support";
 export const DOCTORSVISITS_URL = '/doctorsVisits';
 export const PACKAGES_URL = "/customPackage";
 export const NOTIFICATIONS_URL = "/notifications";
-export const RADIOLOGIES_URL = "/radiologies";
-export const RADIOLOGYSERVICES_URL = "/radiologyService";
+export const RADIOLOGIES_URL = "/radiology";
+export const RADIOLOGYSERVICES_URL = "/radiologyServices";
 
 export const PATIENTS__SEARCH_URL = "/searchPatient";
 export const DIAGNOSTICS__SEARCH_URL = "/searchDiagnostics";

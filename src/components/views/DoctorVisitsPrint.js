@@ -12,7 +12,6 @@ function DoctorVisitsPrint({ modalPrint, setModalPrint }) {
     originalPrice,
     totalPrice,
     visitDate,
-    doctorsVisitId,
     mServices,
     doctorName,
     clientAge,
@@ -215,7 +214,7 @@ function DoctorVisitsPrint({ modalPrint, setModalPrint }) {
           }}
         >
           <p style={{ padding: "5px", fontSize: "20px", fontWeight: "bold" }}>
-            Բժշկի այցելության թերթիկ
+            Այցելության թերթիկ
           </p>
         </div>
         <main>
@@ -247,7 +246,7 @@ function DoctorVisitsPrint({ modalPrint, setModalPrint }) {
                       alignItems: "center",
                     }}
                   >
-                    <BarcodeComp data={doctorsVisitId} />
+                    <BarcodeComp data={modalPrint?.doctorsVisitId||modalPrint?.radiologyId} />
                   </div>
 
                   <div className=" mb-3r">

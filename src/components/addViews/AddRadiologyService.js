@@ -17,7 +17,7 @@ import {
     additional_validation,
     price_validation,
   } from "../../utils/inputValidations";
-import { REGISTER_MEDICALSERVICES } from "../../utils/constants";
+import { REGISTER_MEDICALSERVICES, REGISTER_RADIOLOGYSERVICE } from "../../utils/constants";
 function AddRadiologyService({ handleToggleCreateModal, refreshData }) {
     const [errMsg, setErrMsg] = useState("");
     const axiosPrivate = useAxiosPrivate();
@@ -63,7 +63,7 @@ function AddRadiologyService({ handleToggleCreateModal, refreshData }) {
       }; 
       console.log(newMedicalService)     
        try {
-         await axiosPrivate.post(REGISTER_MEDICALSERVICES, newMedicalService, {
+         await axiosPrivate.post(REGISTER_RADIOLOGYSERVICE, newMedicalService, {
            headers: { "Content-Type": "application/json"  },
            withCredentials: true,
          });
@@ -108,7 +108,7 @@ function AddRadiologyService({ handleToggleCreateModal, refreshData }) {
                     >
                       <div className="card">
                         <div className="card-header">
-                          <a href="#">Բուժ․ ծառայության տվյալներ</a>
+                          <a href="#">Ծառայության տվյալներ</a>
                           <button
                             className="btn btn-xs btn-icon btn-rounded btn-light"
                             data-bs-toggle="tooltip"

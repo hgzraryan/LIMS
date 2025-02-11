@@ -1,5 +1,5 @@
 import React, { Suspense, useEffect, useRef, useState } from 'react'
-import { DOCTORS_URL, MEDICALSERVICES_URL, PATIENTS_URL, REGISTER_DOCTORSVISITS } from '../../utils/constants';
+import { DOCTORS_URL, MEDICALSERVICES_URL, PATIENTS_URL, REGISTER_DOCTORSVISITS, REGISTER_RADIOLOGY } from '../../utils/constants';
 import { toast } from "react-toastify";
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import { Modal } from "react-bootstrap";
@@ -24,6 +24,7 @@ function AddRadiology({ handleToggleCreateModal, refreshData }) {
     const axiosPrivate = useAxiosPrivate();
     const [isLoading, setIsLoading] = useState(true);
     const [enableSMS, setEnableSMS] = useState(true);
+    const [selectedClient, setSelectedClient] = useState({});
     const animatedComponents = makeAnimated();
     const editorRef = useRef(null);
 
@@ -83,6 +84,10 @@ function AddRadiology({ handleToggleCreateModal, refreshData }) {
       const onDoctorSelect = (data) => {
         setDoctor((prev) => data.label);
       };
+      const onPatientSelect = (data) => {
+        console.log(data)
+        setSelectedClient((prev) => data);
+      };
       
       const notify = (text) =>
       toast.success(text, {
@@ -101,13 +106,13 @@ function AddRadiology({ handleToggleCreateModal, refreshData }) {
         visitDate,medicalServices}) => {
         const newDoctorsVisit = {
             additional: editorRef.current.getContent({ format: "text" }),
-            clientId:client?.value,
+            clientId:client,
             doctor:doctor,
             medicalServices: medicalServices? medicalServices?.map((el) => el.value): null,
             visitDate:visitDate?moment(visitDate).format('YYYY-MM-DD HH:mm'):null,          
         }
         try {
-          const response = await axiosPrivate.post(REGISTER_DOCTORSVISITS, newDoctorsVisit, {
+          const response = await axiosPrivate.post(REGISTER_RADIOLOGY, newDoctorsVisit, {
             headers: { "Content-Type": "application/json" },
             withCredentials: true,
           });
@@ -169,7 +174,7 @@ function AddRadiology({ handleToggleCreateModal, refreshData }) {
                       >
                         <div className="card">
                           <div className="card-header">
-                            <a href="#">Բժշկի այցի տվյալներ</a>
+                            <a href="#">Այցի տվյալներ</a>
                             <button
                               className="btn btn-xs btn-icon btn-rounded btn-light"
                               data-bs-toggle="tooltip"
@@ -218,15 +223,20 @@ function AddRadiology({ handleToggleCreateModal, refreshData }) {
                                       render={({ field }) => (
                                         <Select
                                           {...field}
-                                          // onChange={(val) => {
-                                          //   field.onChange(
-                                          //     val ? val.value : null
-                                          //   ); // Ensure you pass null when no patient is selected
-                                          //   //onPatientSelect(val);
-                                          // }}                                         
+                                          onChange={(val) => {
+                                            field.onChange(
+                                              val ? val.value : null
+                                            ); // Ensure you pass null when no patient is selected
+                                            onPatientSelect(val);
+                                          }}
+                                          value={patients.find(
+                                            (option) =>
+                                              option.patientId === selectedClient?.patientId
+                                          )}                                      
                                           options={patients.map((client) => ({
                                               value: client.patientId,
                                               label: `${client?.patientId}․  ${client?.lastName} ${client?.firstName} ${client?.midName}`,
+                                              phone: client.contact.phone
                                             }))
                                           }
                                           placeholder={"Ընտրել"}
@@ -320,6 +330,7 @@ function AddRadiology({ handleToggleCreateModal, refreshData }) {
                                     }
                                     style={{ transform: "scale(1.5)",marginTop:'12px', marginLeft:'5px' }}
                                   />
+                                  <span className='ms-2'>{selectedClient.phone}</span>
                                 </div>
                                 </div>
                               </div>

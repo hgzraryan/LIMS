@@ -210,7 +210,7 @@ export const ComponentToPrintVisit = forwardRef(
                         alignItems: "center",
                       }}
                     >
-                      <BarcodeComp data={doctorsVisitId} />
+                      <BarcodeComp data={value?.doctorsVisitId || value?.radiologyId} />
                     </div>
           <div className=" mb-3r">
             <ul>

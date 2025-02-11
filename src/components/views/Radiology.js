@@ -9,7 +9,7 @@ import AddDoctor from "../addViews/AddDoctor";
 import ReactPaginate from "react-paginate";
 import { useSelector } from "react-redux";
 import { selectDoctorCount } from "../../redux/features/doctor/doctorCountSlice";
-import { DOCTORS_URL } from "../../utils/constants";
+import { DOCTORS_URL, RADIOLOGIES_URL } from "../../utils/constants";
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { useNavigate, useParams } from "react-router-dom";
 import useRefreshData from "../../hooks/useRefreshData";
@@ -39,9 +39,9 @@ function Radiology() {
     setData: setRadiologies,
     dataReceived,
     dataCount
-  } = useGetData(DOCTORS_URL,currentPage,usersPerPage,searchCount,null,searchId,searchTerms);
+  } = useGetData(RADIOLOGIES_URL,currentPage,usersPerPage,searchCount,null,searchId,searchTerms);
   const pageCount = searchCount?Math.ceil(searchCount/usersPerPage) :searchCount===0? 0:Math.ceil(dataCount/usersPerPage)
-  const { refreshData,data } = useRefreshData(DOCTORS_URL, usersPerPage,pageNumber);
+  const { refreshData,data } = useRefreshData(RADIOLOGIES_URL, usersPerPage,pageNumber);
   useEffect(()=>{
     setRadiologies(data)
     },[data])

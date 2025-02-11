@@ -74,6 +74,7 @@ console.log(discounts)
         discountId:discountId?+discountId:null,
         diagnosticsId:discountData?.diagnosticsId?+discountData?.diagnosticsId:null,
         doctorVisitId:discountData?.doctorsVisitId?+discountData?.doctorsVisitId:null,
+        radiologyId:discountData?.radiologyId?+discountData?.radiologyId:null,
 
     };
  const updatedData = deleteNullProperties(newDiscount)

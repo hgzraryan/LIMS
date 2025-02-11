@@ -1,12 +1,10 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import FeatherIcon from 'feather-icons-react/build/FeatherIcon';
 import React, { useEffect, useRef, useState } from 'react'
-import { MEDICALSERVICES_URL } from '../../utils/constants';
+import { MEDICALSERVICES_URL, RADIOLOGYSERVICES_URL } from '../../utils/constants';
 import useGetData from '../../hooks/useGetData';
 import { Dropdown } from "react-bootstrap";
-import AddMedicalService from '../addViews/AddMedicalService';
 import ReactPaginate from "react-paginate";
-import MedicalServicesTable from '../viewTables/MedicalServicesTable';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { useNavigate, useParams } from 'react-router-dom';
 import useRefreshData from '../../hooks/useRefreshData';
@@ -44,9 +42,9 @@ function RaddiologyServices() {
       setData: setRadiologyServices,
       dataReceived,
       dataCount
-    } = useGetData(MEDICALSERVICES_URL,currentPage,usersPerPage,searchCount,null,searchId,searchTerms);
+    } = useGetData(RADIOLOGYSERVICES_URL,currentPage,usersPerPage,searchCount,null,searchId,searchTerms);
     const pageCount = searchCount?Math.ceil(searchCount/usersPerPage) :searchCount===0? 0:Math.ceil(dataCount/usersPerPage)
-    const { refreshData,data } = useRefreshData(MEDICALSERVICES_URL, usersPerPage,pageNumber);
+    const { refreshData,data } = useRefreshData(RADIOLOGYSERVICES_URL, usersPerPage,pageNumber);
     useEffect(()=>{
         setRadiologyServices(data)
       },[data])
@@ -91,7 +89,7 @@ const handlePageClick = ({ selected: selectedPage }) => {
     
          <Helmet>
         <meta charSet="utf-8" />
-        <title>Vteam LIMS | Medical Services</title>
+        <title>Vteam LIMS | Radiology Services</title>
         <link rel="icon" type="image/x-icon" href="../dist/img/favicon.ico"></link>
         </Helmet>
           </div>
@@ -109,7 +107,7 @@ const handlePageClick = ({ selected: selectedPage }) => {
                       aria-haspopup="true"
                       aria-expanded="false"
                     >
-                      <h1>Բուժ․ ծառայություններ</h1>
+                      <h1>Ծառայություններ</h1>
                     </a>
                     {/*
                                   <div className={showUserMenu ? 'dropdown-menu show' : 'dropdown-menu'} >
@@ -132,7 +130,7 @@ const handlePageClick = ({ selected: selectedPage }) => {
                       </Dropdown.Toggle>
                       <Dropdown.Menu>
                       <Dropdown.Item onClick={() => setIsOpen(true)}>
-                      Բուժ․ ծառայություն
+                      Ծառայություն
                         </Dropdown.Item>
                       {/* <Dropdown.Item onClick={() => setCategoryModalisOpen(true)}>
                           Դասակարգ

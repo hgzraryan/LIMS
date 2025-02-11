@@ -2,8 +2,10 @@ import React from 'react'
 import { useController } from 'react-hook-form'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import moment from 'moment';
 
 function CustomDateTimeComponent({methods, control, name,required='true',defaultValue='' }) {
+  console.log(defaultValue)
     const {
         field,
         fieldState: { invalid, isTouched, isDirty },
@@ -12,7 +14,7 @@ function CustomDateTimeComponent({methods, control, name,required='true',default
         name,
         control,
         rules: { required: required },
-        defaultValue:defaultValue,
+        defaultValue:defaultValue ? moment(defaultValue, "YYYY-MM-DD HH:mm").toDate() : null,
 
       });
       const handleInputChange = (e) => {
