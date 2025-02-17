@@ -413,7 +413,7 @@ function DiagnosticsTable({
               row.original?.clientLastName +  " " +
               row.original?.clientMidName
               :row.original?.clientType==='organization'
-              ?'Պատվիրատու'
+              ?` ${row.original?.organization?.name}`
             :''}
             </div>
           </>

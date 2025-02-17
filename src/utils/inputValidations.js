@@ -172,6 +172,28 @@ export const authCode_validation = {
     },
   },
 };
+export const accountCode_validation = {
+  name: "accountCode",
+  label: "Հաշվի կոդ",
+  type: "number",
+  id: "accountCode",
+  placeholder: "Հաշվի կոդ",
+  validation: {
+    required: {
+      value: true,
+      message: "պարտադիր",
+    },
+    maxLength: {
+      value: 30,
+      message: "30 characters max",
+    },
+    pattern: {
+      value:
+        /^(?!.*-)\d+$/,
+      message: "Սխալ ձևաչափ",
+    },
+  },
+};
 export const payment_validation = {
   name: "payment",
   label: "Վճարման գումար",

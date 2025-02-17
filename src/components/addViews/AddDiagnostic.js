@@ -40,23 +40,7 @@ const diagnosticStatus = [
   { value: "Generated", label: "Ստեղծված" },
   { value: "Other", label: "Այլ" },
 ];
-const customPackageData = [
-  {
-    packageId:123,
-    localCode:45678,
-    name:'Բիլիռուբին',
-    price:37000,
-    researches:[30345,30741]
 
-  },
-  {
-    packageId:124,
-    localCode:45679,
-    name:'Որովայն',
-    price:42000,
-    researches:[30340,30341]
-  },
-]
 function AddDiagnostic({
   handleToggleCreateModal,
   refreshData,
@@ -224,6 +208,7 @@ const onResearchSelect = (data) => {
       partner: partnerName || null,
       refDoctor:+data.refDoctor?.id || null,
       additional: editorRef.current.getContent({ format: "text" }),
+      organizationId:organizationId,
       // packages:data?.package.map((el) => el.value)
     };
 
@@ -568,7 +553,7 @@ const onResearchSelect = (data) => {
                                           // isClearable={true}
                                           onChange={(val) => {
                                             field.onChange(val.value);
-                                            //onOrganizationSelect(val);
+                                            onOrganizationSelect(val);
                                           }}
                                           value={organizations.find(
                                             (option) =>

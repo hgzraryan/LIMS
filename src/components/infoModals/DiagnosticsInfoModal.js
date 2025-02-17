@@ -57,6 +57,13 @@ function DiagnosticsInfoModal({modalInfo,setModalInfo}) {
                   <span>{modalInfo.clientId}</span>
                 </div>
                 <div className="separator-full m-0"></div>
+
+                <div className="d-flex justify-content-between">
+                  {" "}
+                  <span>Պատվիրատու</span>{" "}
+                  <span>{modalInfo?.organization?.name}</span>
+                </div>
+                <div className="separator-full m-0"></div>
                 <div className="d-flex justify-content-between">
                   {" "}
                   <span>Գրանցվել է </span>{" "}

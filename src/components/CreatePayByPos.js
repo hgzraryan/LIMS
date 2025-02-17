@@ -10,18 +10,33 @@ import CustomDateTimeComponent from "./CustomDateTimeComponent";
 import Select from "react-select";
 import ErrorSvg from "../dist/svg/error.svg";
 import {
+  accountCode_validation,
   authCode_validation,
   payment_validation,
 } from "../utils/inputValidations";
 import moment from "moment";
+import { deleteNullProperties } from "../utils/helper";
 
-const paymentType = [{ value: "pos", label: "POS" }];
+const paymentTypes = [
+  { 
+    value: "pos", 
+    label: "POS" 
+  },
+  { 
+    value: "accTransfer", 
+    label: "Փոխանցում" 
+  },
+];
 function CreatePayByPos({ handleClosePosPay, actionData, refreshData }) {
   const [errMsg, setErrMsg] = useState("");
+  const [payType, setPaytType] = useState("");
   const axiosPrivate = useAxiosPrivate();
   const methods = useForm({
     mode: "onChange",
   });
+  const onPaymentTypeSelect = (data) => {
+    setPaytType(data.value);
+  };
   const notify = (text) =>
     toast.success(text, {
       position: "top-right",
@@ -34,10 +49,10 @@ function CreatePayByPos({ handleClosePosPay, actionData, refreshData }) {
       theme: "light",
     });
   const onSubmit = methods.handleSubmit(
-    async ({ authCode, paymentType, paymentDate, payment }) => {
+    async ({ authCode, paymentDate, payment,accountCode }) => {
       const newPosPayment = {
-        authCode: authCode,
-        paymentType: paymentType.value,
+        authCode: authCode || accountCode,
+        paymentType: payType,
         paymentDate: moment(paymentDate).format("YYYY-MM-DD HH:mm"),
         totalPayment: +payment,
         id: actionData?.diagnosticsId
@@ -48,18 +63,17 @@ function CreatePayByPos({ handleClosePosPay, actionData, refreshData }) {
           ? actionData?.radiologyId
           : null,
       };
-
-      console.log(newPosPayment);
+          const updatedData = deleteNullProperties(newPosPayment)
       try {
-        await axiosPrivate.post(CREATE_POS_PAY, newPosPayment, {
+        await axiosPrivate.post(CREATE_POS_PAY, updatedData, {
           headers: { "Content-Type": "application/json" },
           withCredentials: true,
         });
         refreshData();
         handleClosePosPay(false);
-        //   notify(
-        //     `${newAgent.name} գործընկերը ավելացված է`
-        //   );
+          notify(
+            `Վճարումը ընդանված է`
+          );
       } catch (err) {
         if (!err?.response) {
           setErrMsg("No Server Response");
@@ -105,7 +119,7 @@ function CreatePayByPos({ handleClosePosPay, actionData, refreshData }) {
                           {actionData?.diagnosticsId ? (
                             <div className="mt-0 mb-4">
                               <p>
-                                Ախտորոշման համար:{" "}
+                                Համար:{" "}
                                 <span style={{ fontWeight: "bold" }}>
                                   {actionData.diagnosticsId}
                                 </span>
@@ -145,14 +159,10 @@ function CreatePayByPos({ handleClosePosPay, actionData, refreshData }) {
                           )}
                           <div className="row gx-3 mb-3">
                             <div className="col-sm-6">
-                              <Input {...authCode_validation} min={'1'} />
-                            </div>
-
-                            <div className="col-sm-6">
                               <div className="d-flex justify-content-between me-2">
                                 <label
                                   className="form-label"
-                                  htmlFor="paymentType"
+                                  htmlFor="payType"
                                 >
                                   Վճարման տեսակը
                                 </label>
@@ -172,13 +182,31 @@ function CreatePayByPos({ handleClosePosPay, actionData, refreshData }) {
                                   rules={{ required: true }}
                                   render={({ field }) => (
                                     <Select
-                                      {...field}
-                                      options={paymentType}
-                                      placeholder={"Ընտրել"}
-                                    />
+                                              {...field}
+                                              onChange={(val) => {
+                                                field.onChange(val.value);
+                                                onPaymentTypeSelect(val);
+                                              }}
+                                              value={paymentTypes.find(
+                                                (option) =>
+                                                  option.value === payType
+                                              )}
+                                              options={paymentTypes.map((option) => ({
+                                                value: option.value,
+                                                label: option.label,
+                                              }))}
+                                              placeholder={"Ընտրել"}
+                                            />
                                   )}
                                 />
                               </div>
+                            <div className="col-sm-6">
+                          {payType==='accTransfer'
+                          ?<Input {...accountCode_validation} min={'1'} />
+                          :<Input {...authCode_validation} min={'1'} />
+                            }
+                            </div>
+
                           </div>
                           <div className="row gx-3">
                             <div className="col-sm-6">
