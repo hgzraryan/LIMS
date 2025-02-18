@@ -4,7 +4,6 @@ import FeatherIcon from "feather-icons-react";
 import { Editor } from "@tinymce/tinymce-react";
 import { useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
-import {  Form, FormProvider, useForm } from "react-hook-form";
 import { Input } from "../Input";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import {  toast } from 'react-toastify';
@@ -16,12 +15,46 @@ import {
     localCode_validation,
     additional_validation,
     price_validation,
+    category_validation,
+    partnerCode_validation,
   } from "../../utils/inputValidations";
 import { REGISTER_MEDICALSERVICES, REGISTER_RADIOLOGYSERVICE } from "../../utils/constants";
+import { Controller, Form, FormProvider, useForm } from "react-hook-form";
+import Select from "react-select";
+import ErrorSvg from "../../dist/svg/error.svg";
+import { deleteNullProperties } from "../../utils/helper";
+
+const radiologyserviceClassState = [
+  { value: "External", label: "Արտաքին" },
+  { value: "Internal", label: "Ներքին" },
+  { value: "Other", label: "Այլ" },
+];
 function AddRadiologyService({ handleToggleCreateModal, refreshData }) {
-    const [errMsg, setErrMsg] = useState("");
-    const axiosPrivate = useAxiosPrivate();
-    const editorRef = useRef(null);
+  const [errMsg, setErrMsg] = useState("");
+  const axiosPrivate = useAxiosPrivate();
+  const editorRef = useRef(null);
+  const [serviceType, setServiceType] = useState("");
+  const [externalType, setExternalType] = useState("");
+
+  const handleServiceType = (data) => {
+    console.log(data)
+    switch (data.value) {
+      case "External":
+        setServiceType(data.value);
+        setExternalType(true);
+        break;
+      case "Internal":
+        setServiceType(data.value);
+        setExternalType(false);
+        break;
+      case "Other":
+        setServiceType(data.value);
+        setExternalType(false);
+        break;
+      default:
+        break;
+    }
+  }
 
     // const { onSubmit, methods } = useSubmitForm(
     //   REGISTER_URL,
@@ -46,24 +79,31 @@ function AddRadiologyService({ handleToggleCreateModal, refreshData }) {
     });
     const onSubmit = methods.handleSubmit(async ({serviceName,
         localCode,
+        category,
         categoryName,
         shortName,
         price,
+        partnerCode,
         purchasePrice}
       ) => {
      
-      const newMedicalService = {
+      const newRadService = {
           serviceName,
           localCode,
+          category:category,
           categoryName,
           shortName,
-          price,
-          purchasePrice,
+          price:+price,
+          purchasePrice:+purchasePrice,
+          partnerCode:partnerCode?partnerCode:null,
+
+  
+          class: serviceType,
           additional: editorRef.current.getContent({ format: "text" }),
       }; 
-      console.log(newMedicalService)     
+      const updatedData = deleteNullProperties(newRadService)
        try {
-         await axiosPrivate.post(REGISTER_RADIOLOGYSERVICE, newMedicalService, {
+         await axiosPrivate.post(REGISTER_RADIOLOGYSERVICE, updatedData, {
            headers: { "Content-Type": "application/json"  },
            withCredentials: true,
          });
@@ -139,11 +179,58 @@ function AddRadiologyService({ handleToggleCreateModal, refreshData }) {
                             </div>
                             <div className="row gx-3">
                               <div className="col-sm-6">
+                               <Input {...category_validation} />
+                             </div>
+                              <div className="col-sm-6">
                                 <Input {...categoryName_validation} />
                               </div>
-                              <div className="col-sm-6">
+                            </div>
+                            <div className="row gx-3">
+                                <div className="col-sm-6">
                                 <Input {...shortName_validation} />
                               </div>
+                            <div className="col-sm-6">
+                                  <div className="d-flex justify-content-between me-2">
+                                    <label
+                                      className="form-label"
+                                      htmlFor="diagnosticsType"
+                                    >
+                                  Հետազոտության տեսակ
+                                    </label>
+                                    {methods.formState.errors
+                                      .researchType && (
+                                      <span className="error text-red">
+                                        <span>
+                                          <img src={ErrorSvg} alt="errorSvg" />
+                                        </span>{" "}
+                                        պարտադիր
+                                      </span>
+                                    )}
+                                  </div>
+                                  <div className="form-control">
+                                    <Controller
+                                      name="researchType"
+                                      control={methods.control}
+                                      defaultValue={null}
+                                      rules={{ required: true }}
+                                      render={({ field }) => (
+                                        <Select
+                                          {...field}
+                                          options={radiologyserviceClassState}
+                                          placeholder={"Ընտրել"}
+                                          onChange={(val) => {
+                                            field.onChange(val.value);
+                                            handleServiceType(val);
+                                          }}
+                                          value={radiologyserviceClassState.find(
+                                            (option) =>
+                                              option.value === serviceType
+                                          )}
+                                        />
+                                      )}
+                                    />
+                                  </div>
+                                </div>
                             </div>
                             <div className="row gx-3">  
                             <div className="col-sm-6">
@@ -152,6 +239,11 @@ function AddRadiologyService({ handleToggleCreateModal, refreshData }) {
                               <div className="col-sm-6">
                                 <Input {...price_validation} />
                               </div>
+                            </div>
+                            <div className="row gx-3">  
+                           <div className="col-sm-6">
+                               <Input {...partnerCode_validation} validation={{required:externalType? {value:true,message: "պարտադիր"}:{value:false}}}/>
+                           </div>
                             </div>
                             
                           </div>
