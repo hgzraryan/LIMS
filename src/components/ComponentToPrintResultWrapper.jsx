@@ -1,0 +1,36 @@
+import FeatherIcon from 'feather-icons-react/build/FeatherIcon';
+import  { useRef } from 'react'
+import ReactToPrint from 'react-to-print';
+import { ResultToPrintComponent } from './ResultToPrintComponent';
+function ComponentToPrintResultWrapper({data,patient}) {
+    let patientRef = useRef(null); 
+    
+const handlePrint = () =>{
+}
+     const {statusBoard}=data
+
+    let componentRef = useRef(null); 
+    return (
+        <div  style={{ display: "flex" }}>
+            <ReactToPrint
+                trigger={() => (
+                    <button
+                    type="button"
+                    className="btn btn-secondary" 
+                    >
+                    Տպել
+                  </button>
+                    
+                )}
+                onAfterPrint={handlePrint}
+                content={() => componentRef.current}
+            />
+            
+            <div style={{ display: "none" }}>
+                <ResultToPrintComponent ref={componentRef} value={data} statusBoard={statusBoard[4]} patient={patient} />
+            </div>
+        </div>
+    )
+}
+
+export default ComponentToPrintResultWrapper

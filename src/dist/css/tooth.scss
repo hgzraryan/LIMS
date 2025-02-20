@@ -1,0 +1,594 @@
+$blue-color: #007bff;
+
+.formula-wrapper {
+    background: #F4F6FD;
+    padding: 22px;
+    .teeth-toggler {
+      border-radius: 15px;
+      background: #fff;
+      color: #333;
+      text-transform: uppercase;
+      padding: 7px 20px;
+      margin: 0 9px;
+      &.active, &:hover {
+        text-decoration: none;
+        background: $blue-color;
+        color: green;
+      }
+    }}
+    @media screen and (max-width: 768px) {
+        .formula-wrapper {
+          padding: 20px 12px;
+          overflow: scroll;
+          white-space: nowrap;
+          .teeth-toggler {
+            border-radius: 15px;
+            margin: 0 4px;
+            font-size: 10px;
+            padding: 7px 10px;
+          }
+        }
+      }
+      .dashed-b {
+        border-top: 2px dashed #fff;
+      }
+      .dashed-v {
+        border-right: 2px dashed #fff;
+        position: absolute;
+        left: 50%;
+        top: 0;
+        height: 100%;
+        margin-left: -1px;
+      }
+
+      #tooth-status-modal[data-v-7d855e23] {
+        font-size: 14px
+    }
+    .dashed-b[data-v-76150418] {
+        border-top: 2px dashed #fff
+    }
+    
+    .dashed-b[data-v-b24fe608] {
+        border-top: 2px dashed #fff
+    }
+    .tooth-status-color[data-v-7d855e23] {
+        border-radius: 100%;
+        width: 24px;
+        height: 24px;
+        display: inline-block
+    }
+    
+    .tooth-status-color.bordered[data-v-7d855e23] {
+        border: 2px solid #eee
+    }
+    
+    .edit-svg-btn.standard[data-v-7d855e23] {
+        opacity: .15
+    }
+    
+    .status-item.active .title[data-v-7d855e23],.status-item:hover .title[data-v-7d855e23] {
+        color: #0787c9
+    }
+    
+    .status-item:hover .edit-svg-btn.standard[data-v-7d855e23] {
+        opacity: 1
+    }
+    
+    .formula-wrapper[data-v-753d937e] {
+        background: #f4f6fd;
+        padding: 22px
+    }
+    
+    .formula-wrapper .teeth-toggler[data-v-753d937e] {
+        border-radius: 15px;
+        background: #fff;
+        color: #5d6d7c;
+        text-transform: uppercase;
+        padding: 7px 20px;
+        margin: 0 9px
+    }
+    
+    .formula-wrapper .teeth-toggler.active[data-v-753d937e],.formula-wrapper .teeth-toggler[data-v-753d937e]:hover {
+        text-decoration: none;
+        background: #0787c9;
+        color: #fff
+    }
+    
+    @media screen and (max-width: 768px) {
+        .formula-wrapper[data-v-753d937e] {
+            padding:20px 12px;
+            overflow: scroll;
+            white-space: nowrap
+        }
+    
+        .formula-wrapper .teeth-toggler[data-v-753d937e] {
+            border-radius: 15px;
+            margin: 0 4px;
+            font-size: 10px;
+            padding: 7px 10px
+        }
+    }
+
+    
+.tooth {
+    display: inline-block;
+    max-width: 55px;
+    margin: 0 1px;
+    transition: all .1s ease-in;
+    vertical-align: top;
+    position: relative;
+    padding-top: 0;
+    padding-bottom: 10px
+}
+
+.tooth .implant-metal,.tooth .implant-metalceramics {
+    fill: #8889be
+}
+
+.tooth .tooth-content {
+    width: 55px;
+    position: relative
+}
+
+.tooth .tooth-content .tooth-wrap {
+    transform: translateY(10px);
+    cursor: pointer
+}
+
+.tooth .tooth-content .tooth-wrap:hover path {
+    fill: #dee1e9;
+    stroke: #dee1e9
+}
+
+.tooth .tooth-content .tooth-wrap:hover circle {
+    fill: #dee1e9
+}
+
+.tooth .tooth-content .tooth-wrap .implant {
+    transform: translateX(16px)
+}
+
+.tooth .tooth-content .tooth-wrap .absent {
+    fill: #f4f6fd
+}
+
+.tooth .tooth-name {
+    color: #87939e;
+    font-size: 11px
+}
+
+.tooth .inner-svg {
+    margin-left: -2px
+}
+
+.tooth-status-14 .tooth_inner,.tooth-status-15 .tooth_inner {
+    opacity: .3
+}
+
+.tooth-position-bottom {
+    padding-top: 10px;
+    padding-bottom: 0
+}
+
+.tooth-position-bottom .tooth-content {
+    margin-top: 8px
+}
+
+.tooth-position-bottom .tooth-content .tooth-wrap {
+    transform: translateY(0)
+}
+
+.tooth-position-bottom .tooth-content .tooth-wrap .implant {
+    transform: translateX(14px) translateY(19px)
+}
+
+.tooth-position-bottom .tooth-content .gum {
+    transform: translateY(30px)
+}
+
+.tooth:hover {
+    transform: scale(1.25);
+    z-index: 3;
+    background: #f4f6fd;
+    box-shadow: 0 4px 35px -14px #5c5c6661;
+    border-radius: 7px
+}
+
+.tooth.tooth-mode-select .tooth-content .gum,.tooth.tooth-mode-status .tooth-content .gum {
+    cursor: pointer
+}
+
+.tooth.tooth-mode-select .tooth-content .gum:hover,.tooth.tooth-mode-status .tooth-content .gum:hover {
+    fill: #e6577d
+}
+
+.tooth.tooth-mode-select .tooth_inner,.tooth.tooth-mode-status .tooth_inner {
+    cursor: pointer
+}
+
+.tooth.tooth-mode-select .tooth_inner:hover path,.tooth.tooth-mode-status .tooth_inner:hover path {
+    fill: #dee1e9
+}
+
+.tooth-18 .absent,.tooth-18 .custom,.tooth-18 .removed,.tooth-55 .absent,.tooth-55 .custom,.tooth-55 .removed {
+    transform: translateX(5px)
+}
+
+.tooth-18 .tooth-content .tooth-wrap .implant,.tooth-55 .tooth-content .tooth-wrap .implant {
+    transform: translateX(17px) translateY(5px)
+}
+
+.tooth-18 .tooth-content .tooth-wrap .peridontit,.tooth-55 .tooth-content .tooth-wrap .peridontit {
+    transform: translateX(5px) translateY(-2px)
+}
+
+.tooth-18 .tooth-content .tooth-wrap .skolpol,.tooth-28 .tooth-content .tooth-wrap .skolpol,.tooth-55 .tooth-content .tooth-wrap .skolpol,.tooth-65 .tooth-content .tooth-wrap .skolpol {
+    transform: translateX(10px) translateY(0)
+}
+
+.tooth-17 .tooth-content .tooth-wrap .skolpol,.tooth-54 .tooth-content .tooth-wrap .skolpol {
+    transform: translateX(9px) translateY(0)
+}
+
+.tooth-16 .tooth-content .tooth-wrap .skolpol {
+    transform: translateX(3px) translateY(-4px)
+}
+
+.tooth-28 .tooth-content .tooth-wrap,.tooth-65 .tooth-content .tooth-wrap {
+    transform: translateX(4px) translateY(10px)
+}
+
+.tooth-28 .tooth-content .tooth-wrap .implant,.tooth-65 .tooth-content .tooth-wrap .implant {
+    transform: translateX(12px) translateY(5px)
+}
+
+.tooth-17 .tooth-content .tooth-wrap,.tooth-27 .tooth-content .tooth-wrap,.tooth-54 .tooth-content .tooth-wrap,.tooth-64 .tooth-content .tooth-wrap {
+    transform: translateX(2px) translateY(10px)
+}
+
+.tooth-16 .tooth-content .tooth-wrap .implant,.tooth-26 .tooth-content .tooth-wrap .implant {
+    transform: translateX(16px) translateY(5px)
+}
+
+.tooth-16 .tooth-content .tooth-wrap .implant_corona,.tooth-26 .tooth-content .tooth-wrap .implant_corona {
+    transform: translateX(0) translateY(7px)
+}
+
+.tooth-16 .tooth-content .tooth-wrap .peridontit,.tooth-26 .tooth-content .tooth-wrap .peridontit {
+    transform: translateX(0) translateY(-4px)
+}
+
+.tooth-16 .tooth-content .tooth-wrap .skolpol,.tooth-26 .tooth-content .tooth-wrap .skolpol {
+    transform: translateX(2px) translateY(0)
+}
+
+.tooth-15 .tooth-content .tooth-wrap,.tooth-25 .tooth-content .tooth-wrap {
+    transform: translateX(11px) translateY(13px)
+}
+
+.tooth-15 .tooth-content .tooth-wrap .implant,.tooth-25 .tooth-content .tooth-wrap .implant {
+    transform: translateX(6px)
+}
+
+.tooth-15 .tooth-content .tooth-wrap .bridges,.tooth-25 .tooth-content .tooth-wrap .bridges {
+    transform: translateX(-3px) translateY(2px)
+}
+
+.tooth-14 .tooth-content .tooth-wrap,.tooth-24 .tooth-content .tooth-wrap,.tooth-53 .tooth-content .tooth-wrap,.tooth-63 .tooth-content .tooth-wrap {
+    transform: translateX(9px) translateY(8px)
+}
+
+.tooth-13 .tooth-content .tooth-wrap,.tooth-23 .tooth-content .tooth-wrap {
+    transform: translateX(6px) translateY(3px)
+}
+
+.tooth-13 .tooth-content .tooth-wrap .implant,.tooth-23 .tooth-content .tooth-wrap .implant {
+    transform: translateX(10.5px) translateY(12px)
+}
+
+.tooth-13 .tooth-content .tooth-wrap .implant_corona,.tooth-23 .tooth-content .tooth-wrap .implant_corona {
+    transform: translateX(3px) translateY(10px)
+}
+
+.tooth-13 .tooth-content .tooth-wrap .skolpol,.tooth-23 .tooth-content .tooth-wrap .skolpol {
+    transform: translateX(4px) translateY(0)
+}
+
+.tooth-13 .tooth-content .tooth-wrap .bridges,.tooth-23 .tooth-content .tooth-wrap .bridges {
+    transform: translateX(0) translateY(-2px)
+}
+
+.tooth-12 .tooth-content .tooth-wrap,.tooth-22 .tooth-content .tooth-wrap,.tooth-52 .tooth-content .tooth-wrap,.tooth-62 .tooth-content .tooth-wrap {
+    transform: translateX(10px) translateY(10px)
+}
+
+.tooth-12 .tooth-content .tooth-wrap .implant,.tooth-22 .tooth-content .tooth-wrap .implant,.tooth-52 .tooth-content .tooth-wrap .implant,.tooth-62 .tooth-content .tooth-wrap .implant {
+    transform: translateX(8.5px) translateY(5px)
+}
+
+.tooth-12 .tooth-content .tooth-wrap .implant_corona,.tooth-22 .tooth-content .tooth-wrap .implant_corona,.tooth-52 .tooth-content .tooth-wrap .implant_corona,.tooth-62 .tooth-content .tooth-wrap .implant_corona {
+    transform: translateX(2px) translateY(1px)
+}
+
+.tooth-12 .tooth-content .tooth-wrap .bridges,.tooth-22 .tooth-content .tooth-wrap .bridges,.tooth-52 .tooth-content .tooth-wrap .bridges,.tooth-62 .tooth-content .tooth-wrap .bridges {
+    transform: translateX(0) translateY(2px)
+}
+
+.tooth-11 .tooth-content .tooth-wrap,.tooth-21 .tooth-content .tooth-wrap,.tooth-51 .tooth-content .tooth-wrap,.tooth-61 .tooth-content .tooth-wrap {
+    transform: translateX(8px) translateY(5px)
+}
+
+.tooth-11 .tooth-content .tooth-wrap .implant,.tooth-21 .tooth-content .tooth-wrap .implant,.tooth-51 .tooth-content .tooth-wrap .implant,.tooth-61 .tooth-content .tooth-wrap .implant {
+    transform: translateX(8px) translateY(10px)
+}
+
+.tooth-11 .tooth-content .tooth-wrap .implant_corona,.tooth-21 .tooth-content .tooth-wrap .implant_corona,.tooth-51 .tooth-content .tooth-wrap .implant_corona,.tooth-61 .tooth-content .tooth-wrap .implant_corona {
+    transform: translateX(0) translateY(7px)
+}
+
+.tooth-11 .tooth-content .tooth-wrap .bridges,.tooth-21 .tooth-content .tooth-wrap .bridges,.tooth-51 .tooth-content .tooth-wrap .bridges,.tooth-61 .tooth-content .tooth-wrap .bridges {
+    transform: translateX(0) translateY(-1px)
+}
+
+.tooth-38 .tooth-content .tooth-wrap,.tooth-48 .tooth-content .tooth-wrap,.tooth-75 .tooth-content .tooth-wrap,.tooth-85 .tooth-content .tooth-wrap {
+    transform: translateX(3px) translateY(0)
+}
+
+.tooth-38 .tooth-content .tooth-wrap .skolpol,.tooth-48 .tooth-content .tooth-wrap .skolpol,.tooth-75 .tooth-content .tooth-wrap .skolpol,.tooth-85 .tooth-content .tooth-wrap .skolpol {
+    transform: translateX(4px) translateY(0)
+}
+
+.tooth-37 .tooth-content .tooth-wrap,.tooth-47 .tooth-content .tooth-wrap,.tooth-74 .tooth-content .tooth-wrap,.tooth-84 .tooth-content .tooth-wrap {
+    transform: translateX(2px) translateY(0)
+}
+
+.tooth-47 .tooth-content .tooth-wrap,.tooth-84 .tooth-content .tooth-wrap {
+    transform: translateX(4px) translateY(0)
+}
+
+.tooth-47 .tooth-content .tooth-wrap .implant,.tooth-84 .tooth-content .tooth-wrap .implant {
+    transform: translateX(13px) translateY(19px)
+}
+
+.tooth-36 .tooth-content .tooth-wrap,.tooth-46 .tooth-content .tooth-wrap {
+    transform: translateX(2px) translateY(0)
+}
+
+.tooth-35 .tooth-content .tooth-wrap,.tooth-45 .tooth-content .tooth-wrap {
+    transform: translateX(9px) translateY(0)
+}
+
+.tooth-35 .tooth-content .tooth-wrap .implant,.tooth-45 .tooth-content .tooth-wrap .implant {
+    transform: translateX(8px) translateY(19px)
+}
+
+.tooth-35 .tooth-content .tooth-wrap .skolpol,.tooth-45 .tooth-content .tooth-wrap .skolpol {
+    transform: translateX(4px) translateY(0)
+}
+
+.tooth-34 .tooth-content .tooth-wrap,.tooth-44 .tooth-content .tooth-wrap,.tooth-73 .tooth-content .tooth-wrap,.tooth-83 .tooth-content .tooth-wrap {
+    transform: translateX(6px) translateY(0)
+}
+
+.tooth-34 .tooth-content .tooth-wrap .implant,.tooth-44 .tooth-content .tooth-wrap .implant,.tooth-73 .tooth-content .tooth-wrap .implant,.tooth-83 .tooth-content .tooth-wrap .implant {
+    transform: translateX(11px) translateY(19px)
+}
+
+.tooth-34 .tooth-content .tooth-wrap .skolpol,.tooth-44 .tooth-content .tooth-wrap .skolpol,.tooth-73 .tooth-content .tooth-wrap .skolpol,.tooth-83 .tooth-content .tooth-wrap .skolpol {
+    transform: translateX(6px) translateY(0)
+}
+
+.tooth-33 .tooth-content .tooth-wrap,.tooth-43 .tooth-content .tooth-wrap {
+    transform: translateX(7px) translateY(0)
+}
+
+.tooth-33 .tooth-content .tooth-wrap .implant,.tooth-43 .tooth-content .tooth-wrap .implant {
+    transform: translateX(10px) translateY(19px)
+}
+
+.tooth-33 .tooth-content .tooth-wrap .skolpol,.tooth-43 .tooth-content .tooth-wrap .skolpol {
+    transform: translateX(6px) translateY(0)
+}
+
+.tooth-32 .tooth-content .tooth-wrap,.tooth-42 .tooth-content .tooth-wrap,.tooth-72 .tooth-content .tooth-wrap,.tooth-82 .tooth-content .tooth-wrap {
+    transform: translateX(15px) translateY(0)
+}
+
+.tooth-32 .tooth-content .tooth-wrap .implant,.tooth-42 .tooth-content .tooth-wrap .implant,.tooth-72 .tooth-content .tooth-wrap .implant,.tooth-82 .tooth-content .tooth-wrap .implant {
+    transform: translateX(2px) translateY(19px)
+}
+
+.tooth-31 .tooth-content .tooth-wrap,.tooth-41 .tooth-content .tooth-wrap,.tooth-71 .tooth-content .tooth-wrap,.tooth-81 .tooth-content .tooth-wrap {
+    transform: translateX(14px) translateY(0)
+}
+
+.tooth-31 .tooth-content .tooth-wrap .implant,.tooth-41 .tooth-content .tooth-wrap .implant,.tooth-71 .tooth-content .tooth-wrap .implant,.tooth-81 .tooth-content .tooth-wrap .implant {
+    transform: translateX(3px) translateY(19px)
+}
+
+.tooth-31 .tooth-content .tooth-wrap .skolpol,.tooth-41 .tooth-content .tooth-wrap .skolpol,.tooth-71 .tooth-content .tooth-wrap .skolpol,.tooth-81 .tooth-content .tooth-wrap .skolpol {
+    transform: translateX(3px) translateY(0)
+}
+.data-table-wrapper tr td.diagnosis-tooth-td {
+    width: auto;
+    margin-right: 10px
+}
+.order-first {
+    order: -1
+}
+
+.order-last {
+    order: 13
+}
+
+.order-0 {
+    order: 0
+}
+
+.order-1 {
+    order: 1
+}
+
+.order-2 {
+    order: 2
+}
+
+.order-3 {
+    order: 3
+}
+
+.order-4 {
+    order: 4
+}
+
+.order-5 {
+    order: 5
+}
+
+.order-6 {
+    order: 6
+}
+
+.order-7 {
+    order: 7
+}
+
+.order-8 {
+    order: 8
+}
+
+.order-9 {
+    order: 9
+}
+
+.order-10 {
+    order: 10
+}
+
+.order-11 {
+    order: 11
+}
+
+.order-12 {
+    order: 12
+}
+
+.offset-1 {
+    margin-left: 8.33333333%
+}
+
+.offset-2 {
+    margin-left: 16.66666667%
+}
+
+.offset-3 {
+    margin-left: 25%
+}
+
+.offset-4 {
+    margin-left: 33.33333333%
+}
+
+.offset-5 {
+    margin-left: 41.66666667%
+}
+
+.offset-6 {
+    margin-left: 50%
+}
+
+.offset-7 {
+    margin-left: 58.33333333%
+}
+
+.offset-8 {
+    margin-left: 66.66666667%
+}
+
+.offset-9 {
+    margin-left: 75%
+}
+
+.offset-10 {
+    margin-left: 83.33333333%
+}
+
+.offset-11 {
+    margin-left: 91.66666667%
+}
+.checkbox.sm[data-v-0f4b86f8],.checkbox[data-v-0f4b86f8] {
+    -webkit-user-select: none;
+    user-select: none
+}
+
+.checkbox label[data-v-0f4b86f8]:before,.checkbox.sm label[data-v-0f4b86f8]:before {
+    left: 50%;
+    margin-left: -9px
+}
+
+.checkbox label[data-v-0f4b86f8]:after,.checkbox.sm label[data-v-0f4b86f8]:after {
+    left: calc(50% - 6px)
+}
+.checkbox.sm label {
+    color: #000;
+    font-size: 15px;
+    padding-left: 28px
+}
+
+.checkbox.sm label:before {
+    height: 18px;
+    width: 18px
+}
+
+.checkbox.sm label:after {
+    width: 12px;
+    height: 12px;
+    left: 3px;
+    top: calc(50% - 8px)
+}
+
+.checkbox.sm label {
+    font-size: 13px;
+    padding-left: 28px
+}
+
+.checkbox.sm label:before {
+    margin-top: -11px
+}
+.checkbox input[type=checkbox] {
+    opacity: 0;
+    position: absolute;
+    left: 0
+}
+
+.checkbox label {
+    position: relative;
+    display: block;
+    padding-left: 36px;
+    font-weight: 400;
+    font-size: 16px;
+    height: 24px;
+    line-height: 20px;
+    color: #000
+}
+
+.checkbox label:after,.checkbox label:before {
+    position: absolute;
+    content: "";
+    display: inline-block
+}
+
+.checkbox label:before {
+    height: 24px;
+    width: 24px;
+    background: #fff;
+    border: 1px solid #d5d5d5;
+    left: 0;
+    top: 50%;
+    margin-top: -12px;
+    border-radius: 4px
+}
+
+.checkbox:hover label:before {
+    background-color: #f1f1f1
+}

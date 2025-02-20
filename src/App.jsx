@@ -1,0 +1,254 @@
+
+
+import { Routes, Route } from "react-router-dom";
+import {LOGIN_ROUTE,
+  PRIVACY_POLICY_ROUTE,
+  REGISTER_ROUTE,
+  LINKPAGE_ROUTE,
+  UNAUTHORIZED_ROUTE,
+  EDITOR_ROUTE,
+  LOUNGE_ROUTE,
+  ADMIN_ROUTE,
+  ADD_SAMPLE_ROUTE,
+  HOME_ROUTE,
+  USERS_ROUTE,
+  DOCTORS_ROUTE,
+  SAMPLES_ROUTE,
+  AGENTS_ROUTE,
+  ORGANIZATIONS_ROUTE,
+  PATIENTS_ROUTE,
+  PATIENTS_ID_ROUTE,
+  DISCOUNT_CARDS_ROUTE,
+  REAGENTS_ROUTE,
+  EQUIPMENTS_ROUTE,
+  DIAGNOSTICS_ROUTE,
+  RESEARCH_LISTS_ROUTE,
+  MISSING_ROUTE,
+  DOCTORS_ID_ROUTE,
+REFDOCTORS_ROUTE,
+MEDINSTITUTIONS_ROUTE,
+SUPPORT_URL,
+DIAGNOSTICS_ID_ROUTE,
+DOCTORSVISITS_ROUTE,
+DOCTORSVISITS_ID_ROUTE,
+USERS_ID_ROUTE,
+DOCTORSTAMPLETE_ROUTE,
+ORGANIZATIONS_ID_ROUTE,
+DOCTORS_EMPLOYMENT_ROUTE,
+SETUP_ROUTE,
+MEDICALSERVICES_ROUTE,
+PACKAGES_ROUTE,
+ROLES,
+REPORTSEXPORT_ROUTE,
+DOCTOR_PATIENTS_ID_ROUTE,
+NOTIFICATIONS_ROUTE,
+DOCTORTEMPLETE_VISITS_ID_ROUTE,
+DOCTORTEMPLETE_VISITS,
+DOCTORTEMPLETE_DIAGNOSTICS_ID_ROUTE,
+DOCTORTEMPLETE_DIAGNOSTICS,
+DOCTORTEMPLETE_PATIENTS_ID_ROUTE,
+RADIOLOGIES_ROUTE,
+RADIOLOGYSERVICES_ROUTE} from './utils/constants' 
+import { lazy, Suspense, useEffect, useState } from "react";
+import Support from "./components/views/Support";
+import DoctorsTemplete from "./components/layouts/DoctorsTemplete";
+import DoctorsEmployment from "./components/views/DoctorsEmployment";
+import Notifications from "./components/views/Notifications";
+import RaddiologyServices from "./components/views/RaddiologyServices";
+
+ const Register = lazy(()=>  import("./components/Register"));
+ const Login = lazy(()=>  import("./components/views/Login"));
+ const PrivacyPolicy = lazy(()=>  import("./components/PrivacyPolicy"));
+ const Home = lazy(()=>  import("./components/views/Home"));
+ const Users = lazy(()=>  import("./components/views/Users"));
+ const UserDetails = lazy(()=>  import("./components/viewDetails/UserDetails"));
+ const Layout = lazy(()=>  import("./components/layouts/Layout"));
+ const Editor = lazy(()=>  import("./components/Editor"));
+ const Admin = lazy(()=>  import("./components/Admin"));
+ const Missing = lazy(()=>  import("./components/Missing"));
+ const Unauthorized = lazy(()=>  import("./components/Unauthorized"));
+ const Lounge = lazy(()=>  import("./components/Lounge"));
+ const LinkPage = lazy(()=>  import("./components/LinkPage"));
+ const RequireAuth = lazy(()=>  import("./components/RequireAuth"));
+ const PersistLogin = lazy(()=>  import("./components/PersistLogin"));
+ const MainTemplate = lazy(()=>  import("./components/layouts/MainTemplate"));
+ const Patients = lazy(()=>  import("./components/views/Patients"));
+ const Agents = lazy(()=>  import("./components/views/Agents"));
+ const Organizations = lazy(()=>  import("./components/views/Organizations"));
+ const OrganizationDetails = lazy(()=>  import("./components/viewDetails/OrganizationDetails"));
+ const Radiology = lazy(()=>  import("./components/views/Radiology"));
+ const DiscountCards = lazy(()=>  import("./components/views/DiscountCards"));
+ const Reagents = lazy(()=>  import("./components/views/Reagents"));
+ const Equipments = lazy(()=>  import("./components/views/Equipments"));
+ const ResearchLists = lazy(()=>  import("./components/views/ResearchLists"));
+ const Packages = lazy(()=>  import("./components/views/Packages"));
+ const Diagnostics = lazy(()=>  import("./components/views/Diagnostics"));
+ const DiagnosticsDetails = lazy(()=>  import("./components/viewDetails/DiagnosticsDetails"));
+ const DoctorTempleteDiagsDetails = lazy(()=>  import("./components/viewDetails/DoctorTempleteDiagsDetails"));
+ const DoctorsVisits = lazy(()=>  import("./components/views/DoctorsVisits"));
+ const DoctorsVisitsDetails = lazy(()=>  import("./components/viewDetails/DoctorsVisitsDetails"));
+ const DoctorTempleteVisitsDetails = lazy(()=>  import("./components/viewDetails/DoctorTempleteVisitsDetails"));
+ const CurrentDoctorVisits = lazy(()=>  import("./components/doctorViews/CurrentDoctorVisits"));
+ const CurrentDoctorDiagnostics = lazy(()=>  import("./components/doctorViews/CurrentDoctorDiags"));
+ const Doctors_Visits_Details_Templete = lazy(()=>  import("./components/viewDetails/DoctorsVisitsDetails"));
+ const Doctors = lazy(()=>  import("./components/views/Doctors"));
+ const DoctorDetails = lazy(()=>  import("./components/viewDetails/DoctorDetails"));
+ const RefDoctors = lazy(()=>  import("./components/views/RefDoctors"));
+ const MedInstitutions = lazy(()=>  import("./components/views/MedInstitutions"));
+ const PatientDetails = lazy(()=>  import("./components/viewDetails/PatientDetails"));
+ const DoctorTempletePatientsDetails = lazy(()=>  import("./components/viewDetails/DoctorTempletePatientsDetails"));
+ const AddSample = lazy(()=>  import("./components/addViews/AddSample"));
+ const Samples = lazy(()=>  import("./components/views/Samples"));
+ const MedicalServices = lazy(()=>  import("./components/views/MedicalServices"));
+ const DoctorsPatients = lazy(()=>  import("./components/views/DoctorsPatients"));
+ const Setup = lazy(()=>  import("./components/views/Setup"));
+ const ReportsExport = lazy(()=>  import("./components/views/ReportsExport"));
+ const MyBigCalendar = lazy(()=>  import("./components/MyBigCalendar"));
+
+
+function App() {
+  const [userLoginData,setuserLoginData] = useState('')
+  
+  useEffect(() => {
+    const userLoginData1 = JSON.parse(localStorage.getItem('userRoles'));
+    if (userLoginData1) {
+      // const currentUser={
+      //   ...userLoginData1,
+      //   //Roles:[9578]
+      // }
+      setuserLoginData(userLoginData1)
+    }
+  }, []);
+  // console.log(userLoginData)
+  // console.log(userLoginData?.includes(ROLES.Doctor))
+  return (
+      <Suspense fallback={<h1>Loading...</h1>}>
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        {/* public routes */}
+        <Route path={LOGIN_ROUTE} element={<Login />} />
+        <Route path={PRIVACY_POLICY_ROUTE} element={<PrivacyPolicy />} />
+        <Route path={REGISTER_ROUTE} element={<Register />} />
+        <Route path={LINKPAGE_ROUTE} element={<LinkPage />} />
+        <Route path={UNAUTHORIZED_ROUTE} element={<Unauthorized />} />
+        <Route index path={SUPPORT_URL} element={<Support />} />
+
+        {/* we want to protect these routes */}
+        <Route element={<PersistLogin />}>
+          <Route element={<RequireAuth allowedRoles={[ROLES.Sampler]} />}>
+            <Route  path={ADD_SAMPLE_ROUTE} element={<AddSample />} />
+          </Route>
+         
+          <Route element={<RequireAuth allowedRoles={[ROLES.Admin,ROLES.SuperAdmin]} />}>
+          <Route path="/" element={<MainTemplate />}>
+            <Route index path={HOME_ROUTE} element={<Home />} />
+
+            <Route index path="/" element={<Home />} />
+          
+            <Route index path={SETUP_ROUTE} element={<Setup />} />
+            <Route path={DOCTORSTAMPLETE_ROUTE} element={<DoctorsTemplete />} />
+            <Route path={DOCTORSVISITS_ROUTE} element={<DoctorsVisits />} />
+            <Route path={DOCTORSVISITS_ID_ROUTE} element={<DoctorsVisitsDetails/>} />
+            <Route path={DOCTORS_ID_ROUTE} element={<DoctorDetails/>} />
+            <Route  path={SAMPLES_ROUTE} element={<Samples />} />
+
+            <Route path={DOCTORS_ROUTE} element={<Doctors />} />
+            <Route path={DOCTORS_EMPLOYMENT_ROUTE} element={<DoctorsEmployment/>} />
+            <Route path={AGENTS_ROUTE} element={<Agents />} />
+            <Route path={ORGANIZATIONS_ROUTE} element={<Organizations />} />
+            <Route path={ORGANIZATIONS_ID_ROUTE} element={<OrganizationDetails />} />
+
+              <Route path={PATIENTS_ROUTE} element={<Patients />} />
+              
+              <Route path={PATIENTS_ID_ROUTE} element={<PatientDetails/>} />
+              {/* <Route path="admin/useradd" element={<UserAdd />} /> */}
+              <Route path={USERS_ROUTE} element={<Users />} />
+              <Route path={USERS_ID_ROUTE} element={<UserDetails />} />
+              <Route path={ADMIN_ROUTE} element={<Admin />} />
+              {/* <Route path="settings/prices" element={<Prices />} /> */}
+              <Route
+                path={DISCOUNT_CARDS_ROUTE}
+                element={<DiscountCards />}
+              />
+              <Route path={REAGENTS_ROUTE} element={<Reagents />} />
+              <Route path={EQUIPMENTS_ROUTE} element={<Equipments />} />
+              <Route path={RESEARCH_LISTS_ROUTE} element={<ResearchLists />}/>
+              <Route path={PACKAGES_ROUTE} element={<Packages />}/>
+              <Route
+                path={MEDICALSERVICES_ROUTE}
+                element={<MedicalServices />}
+              />
+              <Route path={RADIOLOGIES_ROUTE} element={<Radiology />} />
+              <Route path={RADIOLOGYSERVICES_ROUTE} element={<RaddiologyServices />} />
+              <Route path={DIAGNOSTICS_ROUTE} element={<Diagnostics />} />
+              <Route path={DIAGNOSTICS_ID_ROUTE} element={<DiagnosticsDetails/>} />
+              <Route path={REFDOCTORS_ROUTE} element={<RefDoctors />} />
+              <Route path={MEDINSTITUTIONS_ROUTE} element={<MedInstitutions />} />
+              <Route path={REPORTSEXPORT_ROUTE} element={<ReportsExport />} />
+              <Route path={NOTIFICATIONS_ROUTE} element={<Notifications />} />
+          
+
+            <Route element={<RequireAuth allowedRoles={[ROLES.Editor]} />}>
+              <Route path={EDITOR_ROUTE} element={<Editor />} />
+            </Route>
+
+            <Route
+              element={
+                <RequireAuth allowedRoles={[ROLES.Editor, ROLES.Admin]} />
+              }
+            >
+              <Route path={LOUNGE_ROUTE} element={<Lounge />} />
+            </Route>
+
+            {/* catch all */}
+            <Route path={MISSING_ROUTE} element={<Missing />} />
+          </Route>
+          </Route>
+          <Route element={<RequireAuth allowedRoles={[ROLES.Doctor]} />}>
+          <Route path="/" element={<DoctorsTemplete />}>
+            <Route path={DOCTORTEMPLETE_VISITS} element={<CurrentDoctorVisits/>} />
+            <Route path={DOCTORTEMPLETE_VISITS_ID_ROUTE} element={<DoctorTempleteVisitsDetails/>} />
+            <Route path={DOCTORTEMPLETE_DIAGNOSTICS} element={<CurrentDoctorDiagnostics/>} />
+            <Route path={DOCTORTEMPLETE_DIAGNOSTICS_ID_ROUTE} element={<DoctorTempleteDiagsDetails/>} />
+            <Route index path={HOME_ROUTE} element={<Home />} />
+            <Route index path={SUPPORT_URL} element={<Support />} />
+            <Route path={DOCTORTEMPLETE_PATIENTS_ID_ROUTE} element={<DoctorTempletePatientsDetails/>} />
+
+            {/* <Route path={DOCTORSVISITS_ID_ROUTE} element={<DoctorsVisitsDetails/>} /> */}
+
+
+           {/* <Route path={PATIENTS_ID_ROUTE} element={<PatientDetails/>} /> */}
+            {/* <Route path={DOCTORSVISITS_ID_ROUTE} element={<DoctorsVisitsDetails/>} />  */}
+            <Route path={'doctorsTemplete/calendar'} element={<MyBigCalendar/>} />
+
+            {/* <Route index path="/" element={<DoctorsVisits />} />
+            <Route path={DOCTORSVISITS_ROUTE} element={<DoctorsVisits />} />
+            <Route path={DOCTORSVISITS_ID_ROUTE} element={<DoctorsVisitsDetails/>} />
+            <Route path={DOCTORS_ID_ROUTE} element={<DoctorDetails/>} />
+            <Route  path={SAMPLES_ROUTE} element={<Samples />} />
+              <Route path={DOCTOR_PATIENTS_ID_ROUTE} element={<PatientDetails/>} />
+              <Route
+                path={RESEARCH_LISTS_ROUTE}
+                element={<ResearchLists />}
+              /> */}
+                         <Route path={DIAGNOSTICS_ID_ROUTE} element={<DiagnosticsDetails/>} />
+                         <Route path={MISSING_ROUTE} element={<Missing />} />
+
+
+            {/* catch all */}
+          </Route>
+          </Route>
+
+          <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
+              
+          </Route>
+         
+         
+        </Route>
+      </Route>
+    </Routes>
+      </Suspense>
+  );
+}
+
+export default App;

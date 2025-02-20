@@ -1,0 +1,332 @@
+import React, { useMemo, useState } from "react";
+import ComponentToConfirm from "../ComponentToConfirm";
+import { useBlockLayout, useFilters, useResizeColumns, useRowSelect, useSortBy, useTable } from "react-table";
+import { Checkbox } from "../Checkbox";
+import FeatherIcon from "feather-icons-react/build/FeatherIcon";
+import { ColumnFilter } from "../ColumnFilter";
+import "../../dist/css/data-table.css";
+import AgentEditModal from "../EditViews/AgentEditModal";
+import moment from "moment";
+import AgentsInfoModal from "../infoModals/AgentsInfoModal";
+import { BiSolidInfoCircle } from "react-icons/bi";
+import emptyTable from "../../dist/svg/emptyTable.svg"
+
+function AgentsTable({
+  confirmRef,
+  selectedItem,
+  selectedItemId,
+  handleDeleteItem,
+  handleOpenModal,
+  handleCloseModal,
+  agents,
+  setAgents,
+  refreshData,
+  dataReceived
+}) {
+  const [editRow, setEditRow] = useState(false);
+  const [modalInfo, setModalInfo] = useState(false);
+
+  const handleOpenEditModal = (value) => {
+    setEditRow((prev) => value);
+  };
+  const handleOpenInfoModal = (data) => {
+    
+    setModalInfo((prev) => data);
+  };
+  const handleRowClick = (row) => {
+    // Add logic here to handle row click
+    console.log("Clicked row:", row);
+  };
+
+  const defaultColumn = React.useMemo(
+    () => ({
+      minWidth: 20,
+      width: 20,
+      maxWidth: 600,
+      Filter: ({ column: { id } }) => <></>,
+
+    }),
+    []
+  );
+
+  const columns = useMemo(
+    () => [
+      {
+        Header: (event) => (
+          <>
+            
+            <div  className="columnHeader">ID</div>
+          </>
+        ),
+        accessor: "agentId",
+        sortable: true,
+        width: 80,
+        
+      },
+      {
+        Header: (event) => (
+          <>
+            
+            <div  className="columnHeader">Անվանում</div>
+          </>
+        ),
+        accessor: "name",
+        sortable: true,
+        width: 300,
+        
+      },
+      {
+        Header: (event) => (
+          <>
+            <div>Էլ․ հասցե</div>
+          </>
+        ),
+        accessor: "email",
+        width: 200,
+        Cell: ({ row }) => (
+          <div className="d-flex align-items-center">
+            {row.original?.contact?.email}
+          </div>
+        ),
+        
+      },
+      {
+        Header: (event) => (
+          <>
+            <div>Հեռախոս</div>
+          </>
+        ),
+        accessor: "mobile",
+        width: 200,
+        Cell: ({ row }) => (
+          <div className="d-flex align-items-center">
+            {row.original?.contact?.phone}
+          </div>
+        ),
+        
+      },
+      {
+        Header: (event) => (
+          <>
+           
+            <div  className="columnHeader">Նկարագիր</div>
+          </>
+        ),
+        accessor: "role",
+        style: {
+           // Custom style for the 'description' column
+        },
+        width: 300,
+        
+      },
+      {
+        Header: (event) => (
+          <>
+           
+            <div  className="columnHeader">Գրանցված է</div>
+          </>
+        ),
+        accessor: "createdAt",
+        width: 300,
+        
+        Cell: ({ row }) => (
+          <div className="d-flex align-items-center">
+             {row.original?.createdAt && moment.utc(row.original?.createdAt).format('DD-MM-YYYY HH:mm')}
+          </div>
+        ),
+      },
+      {
+        Header: (event) => (
+          <>
+            <div className="columnHeader">Գործողություններ</div>
+          </>
+        ),
+        accessor: "actions",
+        width: 300,
+        Cell: ({ row }) => (
+          <div className="d-flex align-items-center">
+            <div className="d-flex">
+              <BiSolidInfoCircle
+              cursor={"pointer"}
+              size={"1.5rem"}
+              onClick={() => handleOpenInfoModal(row.original)}
+            />
+            </div>
+            <div className="d-flex">
+              <a
+                className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover"
+                data-bs-toggle="tooltip"
+                data-placement="top"
+                title="Edit"
+                href="#"
+                onClick={() => handleOpenEditModal(row.original)}
+
+              >
+                <span className="icon">
+                  <span className="feather-icon">
+                    <FeatherIcon icon="edit" />
+                  </span>
+                </span>
+              </a>
+              <a
+                className="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover del-button"
+                data-bs-toggle="tooltip"
+                onClick={() => handleOpenModal(row.original)}
+                data-placement="top"
+                title=""
+                data-bs-original-title="Delete"
+                href="#"
+              >
+                <span className="icon">
+                  <span className="feather-icon">
+                    <FeatherIcon icon="trash" />
+                  </span>
+                </span>
+              </a>
+            </div>
+          </div>
+        ),
+        disableSortBy: true,
+        
+      },
+    ],
+    []
+  );
+
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    rows,
+    prepareRow,
+    selectedFlatRows,
+    toggleHideColumn,
+  } = useTable(
+    {
+      columns,
+      data: agents,
+      defaultColumn
+    },
+    useFilters,
+    useBlockLayout,
+    useResizeColumns,
+    useSortBy,
+    useRowSelect,
+    (hooks) => {
+      hooks.visibleColumns.push((columns) => [
+        {
+          id: "selection",
+          Header: ({ getToggleAllRowsSelectedProps }) => (
+            <Checkbox {...getToggleAllRowsSelectedProps()} />
+          ),
+          Cell: ({ row }) => <Checkbox {...row.getToggleRowSelectedProps()} />,
+        },
+        ...columns,
+      ]);
+    }
+  );
+
+  return (
+    <>
+    {!!modalInfo && (
+        <AgentsInfoModal modalInfo={modalInfo} setModalInfo={setModalInfo}/>
+      )}
+      {!!editRow && (
+        <AgentEditModal agent={editRow} setEditRow={setEditRow} refreshData={refreshData} />
+      )}
+      <ComponentToConfirm
+        handleCloseModal={handleCloseModal}
+        handleOpenModal={handleOpenModal}
+        handleDeleteItem={handleDeleteItem}
+        selectedItemId={selectedItemId}
+        confirmUserRef={confirmRef}
+        keyName={selectedItem.name}
+        delId={selectedItem.agentId}
+      />
+      <table className="table nowrap w-100 mb-5 dataTable no-footer" {...getTableProps()}>
+      <thead>
+        {headerGroups.map((headerGroup) => (
+          <tr {...headerGroup.getHeaderGroupProps()} key={'headerGroup'+headerGroup?.id}>
+            {headerGroup.headers.map((column) => (
+              <th  {...column.getHeaderProps(column.getSortByToggleProps())} key={'column'+column?.id}>
+                    {column.id !== "selection" && (
+                  <div className="d-flex justify-content-between ">
+                      
+                        <div>
+                          {column.canFilter ? column.render("Filter") : null}
+                        </div>
+                        <div
+                          style={{
+                            marginTop: "2px",
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                          }}
+                        >
+                          <div>{column.render("Header")}</div>
+                        </div>
+                        {column.id!=="patientId" && 
+                          <div style={{ paddingTop: "20px" }}>
+                            {column.isSorted ? (
+                              column.isSortedDesc ? (
+                                <span className="sorting_asc"></span>
+                              ) : (
+                                <span className="sorting_desc"></span>
+                              )
+                            ) : (
+                              <span className="sorting"></span>
+                            )}
+                          </div>
+                          }
+
+                        </div>
+                    )}
+                  <div
+                    {...column.getResizerProps({onClick(ev){ev.stopPropagation()}})}
+                    className={`resizer ${
+                    column.isResizing ? "isResizing" : ""
+                  }`}
+                  />
+                </th>
+            ))}
+          </tr>
+        ))}
+      </thead>
+        {agents?.length > 0 ? (
+          <tbody {...getTableBodyProps()}>
+            {rows.map(row => {
+              prepareRow(row)
+              console.log(row)
+              return (
+                <tr key={'row'+row?.id} {...row.getRowProps({
+                  style: { width: '100%',cursor:'pointer' },
+                  onClick: () => handleRowClick(row) // Attach onClick event handler  
+                  
+                })}>
+                  {row.cells.map((cell,i) => {
+                    return <td key={i} {...cell.getCellProps({
+                      style: cell.column.style // Apply custom style to the column cells
+                    })}>{cell.render('Cell')}</td>
+                  })}
+                </tr>
+              )
+            })}
+          </tbody>
+          ):dataReceived?(
+            <tr className="table-placeholder">
+              <td className="table-cell" >
+                <div className="empty-normal">
+                  <div className="empty-image d-flex justify-content-center align-items-center">
+                    <img src={emptyTable} alt='emptyTable'/>
+                  </div>
+                  <div className="empty-description d-flex justify-content-center align-items-center mb-2">Տվյալներ չկան</div>
+                </div>
+              </td>
+            </tr>
+           ):<></>}         
+      </table>
+    </>
+  );
+}
+
+export default AgentsTable;

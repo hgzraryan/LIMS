@@ -46,15 +46,6 @@ Configure it for one of three modes of editing:
 
 ## Features
 
-### Integration
-
-TinyMCE is easily integrated into your projects with the help of components such as:
-
-- [tinymce-react](https://github.com/tinymce/tinymce-react)
-- [tinymce-vue](https://github.com/tinymce/tinymce-vue)
-- [tinymce-angular](https://github.com/tinymce/tinymce-angular)
-
-See the Tiny docs for a full list of [integration components](https://www.tiny.cloud/docs/integrations/).
 
 ### Customization
 
