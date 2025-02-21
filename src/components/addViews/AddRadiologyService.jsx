@@ -93,8 +93,6 @@ function AddRadiologyService({ handleToggleCreateModal, refreshData }) {
           price:+price,
           purchasePrice:+purchasePrice,
           partnerCode:partnerCode?partnerCode:null,
-
-  
           class: serviceType,
           additional: additionalData,
         }; 

@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useMemo, useState } from "react";
 import ComponentToConfirm from "../ComponentToConfirm";
 import {
@@ -10,11 +11,8 @@ import {
 } from "react-table";
 import { Checkbox } from "../Checkbox";
 import FeatherIcon from "feather-icons-react/build/FeatherIcon";
-import { ColumnFilter } from "../ColumnFilter";
 import { BiSolidInfoCircle } from "react-icons/bi";
-import researchSvg from "../../../src/dist/img/research.svg";
 import "../../dist/css/data-table.css";
-import moment from "moment";
 import emptyTable from "../../dist/svg/emptyTable.svg";
 import { ROLES } from "../../utils/constants";
 import RadiologyServiceEditModal from "../EditViews/RadiologyServiceEditModal";
@@ -284,8 +282,8 @@ function RaddiologyServicesTable({
         handleDeleteItem={handleDeleteItem}
         selectedItemId={selectedItemId}
         confirmUserRef={confirmRef}
-        keyName={selectedItem.researchName}
-        delId={selectedItem.researchListId}
+        keyName={selectedItem.serviceName}
+        delId={selectedItem.radiologyServiceId}
       />
       <table
         className="table nowrap w-100 mb-5 dataTable no-footer"

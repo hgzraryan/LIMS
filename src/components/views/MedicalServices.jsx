@@ -9,6 +9,7 @@ import MedicalServicesTable from '../viewTables/MedicalServicesTable';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { useNavigate, useParams } from 'react-router-dom';
 import useRefreshData from '../../hooks/useRefreshData';
+import useDeleteData from '../../hooks/useDeleteData';
 
 function MedicalServices() {
   const { pageNumber } = useParams();
@@ -56,16 +57,16 @@ function MedicalServices() {
     };
   
     /*------------------------------------------------*/
-    // const { handleDeleteItem } = useDeleteData(
-    //   RESEARCHLISTS_URL,
-    //   confirmResearchRef,
-    //   selectedItem,
-    //   setSelectedItemId,
-    //   researchList,
-    //   setResearches,
-    //   "researchName",
-    //   refreshData 
-    // );
+    const { handleDeleteItem } = useDeleteData(
+      MEDICALSERVICES_URL,
+      confirmResearchRef,
+      selectedItem,
+      setSelectedItemId,
+      medicalServices,
+      setMedicalServices,
+      "serviceName",
+      refreshData 
+    );
       //-------------------------PAGINATION---------------------------//  
  useEffect(() => {
   setCurrentPage(Number(pageNumber));
@@ -183,7 +184,7 @@ const handlePageClick = ({ selected: selectedPage }) => {
                           confirmRef={confirmResearchRef}
                           selectedItem={selectedItem}
                           selectedItemId={selectedItemId}
-                        //   handleDeleteItem={handleDeleteItem}
+                          handleDeleteItem={handleDeleteItem}
                           handleOpenModal={handleOpenModal}
                           handleCloseModal={handleCloseModal}
                           researches={medicalServices}

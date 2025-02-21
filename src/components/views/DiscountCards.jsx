@@ -507,7 +507,7 @@ export default function DiscountCards() {
             {pageTab === "tab_researches" && (
               <main>
                 <section className="discount-section">
-                  <Teeth/>
+                  {/* <Teeth/> */}
                 </section>
               </main>
             )}

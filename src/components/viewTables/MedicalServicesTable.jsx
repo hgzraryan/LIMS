@@ -293,8 +293,8 @@ function MedicalServicesTable({
               handleDeleteItem={handleDeleteItem}
               selectedItemId={selectedItemId}
               confirmUserRef={confirmRef}
-              keyName={selectedItem.researchName}
-              delId={selectedItem.researchListId}
+              keyName={selectedItem.serviceName}
+              delId={selectedItem.medServiceId}
               />
       <table  className="table nowrap w-100 mb-5 dataTable no-footer" {...getTableProps()} >
       <thead>

@@ -9,6 +9,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import useRefreshData from '../../hooks/useRefreshData';
 import RaddiologyServicesTable from '../viewTables/RaddiologyServicesTable';
 import AddRadiologyService from '../addViews/AddRadiologyService';
+import useDeleteData from '../../hooks/useDeleteData';
 
 function RaddiologyServices() {
   const { pageNumber } = useParams();
@@ -56,16 +57,16 @@ function RaddiologyServices() {
     };
   
     /*------------------------------------------------*/
-    // const { handleDeleteItem } = useDeleteData(
-    //   RESEARCHLISTS_URL,
-    //   confirmResearchRef,
-    //   selectedItem,
-    //   setSelectedItemId,
-    //   researchList,
-    //   setResearches,
-    //   "researchName",
-    //   refreshData 
-    // );
+    const { handleDeleteItem } = useDeleteData(
+      RADIOLOGYSERVICES_URL,
+      confirmResearchRef,
+      selectedItem,
+      setSelectedItemId,
+      radiologyServices,
+      setRadiologyServices,
+      "serviceName",
+      refreshData 
+    );
       //-------------------------PAGINATION---------------------------//  
  useEffect(() => {
   setCurrentPage(Number(pageNumber));
@@ -183,7 +184,7 @@ const handlePageClick = ({ selected: selectedPage }) => {
                           confirmRef={confirmResearchRef}
                           selectedItem={selectedItem}
                           selectedItemId={selectedItemId}
-                        //   handleDeleteItem={handleDeleteItem}
+                          handleDeleteItem={handleDeleteItem}
                           handleOpenModal={handleOpenModal}
                           handleCloseModal={handleCloseModal}
                           radiologyServices={radiologyServices}
