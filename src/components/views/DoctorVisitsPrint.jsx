@@ -347,7 +347,7 @@ function DoctorVisitsPrint({ modalPrint, setModalPrint }) {
                           </tr>
                         ))}
                       </thead>
-                      {modalPrint?.mServices?.length || modalPrint?.rServices?.length && (
+                      {(modalPrint?.mServices?.length || modalPrint?.rServices?.length) && (
                         <tbody {...getTableBodyProps()}>
                           {rows.map((row, i) => {
                             prepareRow(row);
