@@ -579,6 +579,7 @@ function CurrentDoctorsDiagsTable({
               })}
             </tbody>
           ):dataReceived?(
+            <tbody>
             <tr className="table-placeholder">
               <td className="table-cell" >
                 <div className="empty-normal">
@@ -589,6 +590,7 @@ function CurrentDoctorsDiagsTable({
                 </div>
               </td>
             </tr>
+            </tbody>
            ):<></>}       
         </table>
       </>

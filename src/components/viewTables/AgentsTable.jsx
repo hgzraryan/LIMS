@@ -312,6 +312,7 @@ function AgentsTable({
             })}
           </tbody>
           ):dataReceived?(
+            <tbody>
             <tr className="table-placeholder">
               <td className="table-cell" >
                 <div className="empty-normal">
@@ -322,6 +323,7 @@ function AgentsTable({
                 </div>
               </td>
             </tr>
+            </tbody>
            ):<></>}         
       </table>
     </>

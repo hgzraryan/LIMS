@@ -239,10 +239,6 @@ function DiagnosticsTable({
   //   </div>
   //   )
   // }
-  
-    console.log(superAdmin)
-  
-    
    
   const CheckboxFilter = ({ column: { filterValue, setFilter, preFilteredRows, id } }) => {
     const [toggleFilterModal, setToggleFilterModal] = useState(false);
@@ -780,9 +776,9 @@ function DiagnosticsTable({
       >
         <thead>
         {headerGroups.map((headerGroup) => (
-          <tr {...headerGroup.getHeaderGroupProps()} key={headerGroup?.id}>
+          <tr {...headerGroup.getHeaderGroupProps()} key={'headerGroup'+headerGroup?.id}>
             {headerGroup.headers.map((column) => (
-              <th  {...column.getHeaderProps(column.getSortByToggleProps())} key={column?.id}>
+              <th  {...column.getHeaderProps(column.getSortByToggleProps())} key={'column'+column?.id}>
                     {column.id !== "selection" && (
                   <div className="d-flex justify-content-between ">
                       
@@ -854,16 +850,18 @@ function DiagnosticsTable({
             })}
           </tbody>
         ):dataReceived?(
-          <tr className="table-placeholder">
-            <td className="table-cell" >
-              <div className="empty-normal">
-                <div className="empty-image d-flex justify-content-center align-items-center">
-                  <img src={emptyTable} alt='emptyTable'/>
+          <tbody>
+            <tr className="table-placeholder">
+              <td className="table-cell" >
+                <div className="empty-normal">
+                  <div className="empty-image d-flex justify-content-center align-items-center">
+                    <img src={emptyTable} alt='emptyTable'/>
+                  </div>
+                  <div className="empty-description d-flex justify-content-center align-items-center mb-2">Տվյալներ չկան</div>
                 </div>
-                <div className="empty-description d-flex justify-content-center align-items-center mb-2">Տվյալներ չկան</div>
-              </div>
-            </td>
-          </tr>
+              </td>
+            </tr>
+            </tbody>
          ):<></>}       
       </table>
     </>

@@ -368,6 +368,7 @@ function CurrentDoctorsVisitsTable({ doctorsVisits, setDoctorsVisits, refreshDat
                 })}
                </tbody>
            ):dataReceived?(
+            <tbody>
             <tr className="table-placeholder">
               <td className="table-cell" >
                 <div className="empty-normal">
@@ -378,6 +379,7 @@ function CurrentDoctorsVisitsTable({ doctorsVisits, setDoctorsVisits, refreshDat
                 </div>
               </td>
             </tr>
+            </tbody>
            ):<></>}        
         </table>
       </>

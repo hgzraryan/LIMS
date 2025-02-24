@@ -115,16 +115,18 @@ function CustomTable({data,column}) {
           })}
         </tbody>
        ):(
-        <tr className="table-placeholder">
-          <td className="table-cell" >
-            <div className="empty-normal">
-              <div className="empty-image d-flex justify-content-center align-items-center">
-                <img src={emptyTable} alt='emptyTable'/>
-              </div>
-              <div className="empty-description d-flex justify-content-center align-items-center mb-2">Տվյալներ չկան</div>
-            </div>
-          </td>
-        </tr>
+        <tbody>
+            <tr className="table-placeholder">
+              <td className="table-cell" >
+                <div className="empty-normal">
+                  <div className="empty-image d-flex justify-content-center align-items-center">
+                    <img src={emptyTable} alt='emptyTable'/>
+                  </div>
+                  <div className="empty-description d-flex justify-content-center align-items-center mb-2">Տվյալներ չկան</div>
+                </div>
+              </td>
+            </tr>
+            </tbody>
        )}        
     </table>
   )

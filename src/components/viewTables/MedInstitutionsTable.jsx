@@ -407,16 +407,18 @@ function MedInstitutionsTable({
             })}
           </tbody>
         ):dataReceived?(
-          <tr className="table-placeholder">
-            <td className="table-cell" >
-              <div className="empty-normal">
-                <div className="empty-image d-flex justify-content-center align-items-center">
-                  <img src={emptyTable} alt='emptyTable'/>
+          <tbody>
+            <tr className="table-placeholder">
+              <td className="table-cell" >
+                <div className="empty-normal">
+                  <div className="empty-image d-flex justify-content-center align-items-center">
+                    <img src={emptyTable} alt='emptyTable'/>
+                  </div>
+                  <div className="empty-description d-flex justify-content-center align-items-center mb-2">Տվյալներ չկան</div>
                 </div>
-                <div className="empty-description d-flex justify-content-center align-items-center mb-2">Տվյալներ չկան</div>
-              </div>
-            </td>
-          </tr>
+              </td>
+            </tr>
+            </tbody>
          ):<></>}         
       </table>
     </>

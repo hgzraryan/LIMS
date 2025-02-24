@@ -165,7 +165,6 @@ function App() {
               <Route path={USERS_ROUTE} element={<Users />} />
               <Route path={USERS_ID_ROUTE} element={<UserDetails />} />
               <Route path={ADMIN_ROUTE} element={<Admin />} />
-              {/* <Route path="settings/prices" element={<Prices />} /> */}
               <Route
                 path={DISCOUNT_CARDS_ROUTE}
                 element={<DiscountCards />}
