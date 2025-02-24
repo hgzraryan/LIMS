@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect, useState, useRef, Suspense } from "react";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { useDispatch} from "react-redux";
@@ -36,6 +37,7 @@ import { deleteNullProperties } from "../../utils/helper";
 import DiscountModal from "../DiscountModal";
 import moment from "moment";
 import Teeth from "./Teeth";
+import Swal from "sweetalert2";
 
 const GET_RESEARCHES = "/researchLists";
 
@@ -107,37 +109,27 @@ export default function DiscountCards() {
       progress: undefined,
       theme: "light",
     });
-  // useEffect(() => {
-  //   setResearchState(() => getResearchState);
-  // }, [getResearchState]);
-
-  // useEffect(() => {
-  //   setDiscountValue(() => getDiscountValue);
-  // }, [getDiscountValue]);
-
-  // useEffect(() => {
-  //   setDiscountUniqValue(() => getUniqDiscountValue);
-  // }, [getUniqDiscountValue]);
   /*------------------------------------------------------------------Get Researches----------------------------------------------------*/
-  useEffect(() => {
-    setTimeout(() => {
-      axiosPrivate
-        .get(GET_RESEARCHES)
-        .then((resp) => {
-          setResearchState(resp?.data?.jsonString);
-          //setIsLoading(false);
-        })
-        .then((resp) => {
-          axiosPrivate.get(DISCOUNTS_URL).then((resp) => {
-            setGlobalDiscountData(resp?.data?.jsonString);
-            setIsLoading(false);
-          });
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }, 500);
-  }, []);
+     useEffect(() => {
+              const fetchData = async () => {
+                try {
+                  const researchesResp = await axiosPrivate.get(GET_RESEARCHES);
+                  setResearchState(researchesResp?.data?.jsonString);
+          
+                  const discountResp = await axiosPrivate.get(DISCOUNTS_URL);
+                  setGlobalDiscountData(discountResp?.data?.jsonString);
+
+                  setIsLoading(false);
+                } catch (err) {
+                  console.log(err);
+                  //navigate("/login", { state: { from: location }, replace: true });
+                }
+              };
+              setTimeout(() => {
+                fetchData();
+              }, 500);
+     }, []);
+
   const onSubmit = methods.handleSubmit(
     async ({ startDate, endDate, description, discount }) => {
       const newDiscountData = {
@@ -157,9 +149,7 @@ export default function DiscountCards() {
           : null,
       };
 
-      console.log(newDiscountData);
       const formatedDiscountCard= deleteNullProperties(newDiscountData)
-
       axiosPrivate
       .post(REGISTER_DISCOUNT, formatedDiscountCard, {
         headers: { "Content-Type": "application/json" },
@@ -182,23 +172,37 @@ export default function DiscountCards() {
     }
   );
   const handleCancelDiscount = async(discountId) => {
-   
-    axiosPrivate
-    .delete(DISCOUNTS_URL, {
-      data: { id: discountId},
+    Swal.fire({
+      title: "Դուք ցանկանում եք չեղարկել զեղչը",
+      //text: "Ջնջելուց հետո հնարավոր չէ վերականգնել",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#08364d",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Չեղարկել",
+      cancelButtonText:"Փակել"
+    }).then((result) => {
+      if(result?.isConfirmed){
+ axiosPrivate
+      .delete(DISCOUNTS_URL, {
+        data: { id: discountId},
+        })
+      .then((resp) => {
+        notify("Զեղչը հեռացված է");
       })
-    .then((resp) => {
-      notify("Զեղչը հեռացված է");
-    })
-    .then((resp) => {
-      axiosPrivate.get(DISCOUNTS_URL).then((resp) => {
-        console.log(resp)
-        setGlobalDiscountData(resp?.data?.jsonString);
-        setIsLoading(false);
+      .then((resp) => {
+        axiosPrivate.get(DISCOUNTS_URL).then((resp) => {
+          console.log(resp)
+          setGlobalDiscountData(resp?.data?.jsonString);
+          setIsLoading(false);
+        });
+      })
+      .catch((err) => {
+        console.log(err);
       });
-    })
-    .catch((err) => {
-      console.log(err);
+      }else if(!result?.isConfirmed){
+        return
+      }
     });
   }
   /*--------------------------------------------------------------------------------------------------------------------*/
@@ -507,7 +511,7 @@ export default function DiscountCards() {
             {pageTab === "tab_researches" && (
               <main>
                 <section className="discount-section">
-                  <Teeth/>
+                  {/* <Teeth/> */}
                 </section>
               </main>
             )}

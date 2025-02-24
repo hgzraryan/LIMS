@@ -136,6 +136,7 @@ console.log(discounts)
       <LoadingSpinner />
     </div>
   ) : (
+    <>
     <div className="d-flex justify-content-center align-items-center flex-wrap">
       {discounts.length > 0 ? (
         discounts.map((el,i) => {
@@ -190,8 +191,19 @@ console.log(discounts)
         ''
       )}
     </div>
+    </>
   )}
 </div>
+                            {/* </div>
+                          </div>
+                        </div>
+                        <div className="separator-full"></div>
+                        <div className="card">
+                          <div className="card-header">
+                            <a href="#">Ակտիվ զեղչ</a>
+                          </div>
+                          <div className="card-body" style={{ zIndex: "0" }}>
+                            <div className="modal-body"> */}
                             </div>
                           </div>
                         </div>
