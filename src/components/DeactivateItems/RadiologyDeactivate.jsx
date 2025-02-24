@@ -27,7 +27,7 @@ function RadiologyDeactivate({
   const handleDoctorVistStatus = async (data) => {
     try {
       const response = await axiosPrivate.post(
-        "/visitStatusChange",
+        "/radiologyStatusChange",
         { id: radiologyId, visitStatus: data },
         {
           headers: { "Content-Type": "application/json" },
