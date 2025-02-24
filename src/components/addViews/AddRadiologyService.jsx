@@ -1,5 +1,7 @@
+import React, { useRef } from "react";
 import { Modal } from "react-bootstrap";
 import FeatherIcon from "feather-icons-react";
+
 import { useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import { Input } from "../Input";
@@ -11,11 +13,12 @@ import {
     serviceName_validation,
     categoryName_validation,
     localCode_validation,
+    additional_validation,
     price_validation,
     category_validation,
     partnerCode_validation,
   } from "../../utils/inputValidations";
-import { REGISTER_RADIOLOGYSERVICE } from "../../utils/constants";
+import { REGISTER_MEDICALSERVICES, REGISTER_RADIOLOGYSERVICE } from "../../utils/constants";
 import { Controller, Form, FormProvider, useForm } from "react-hook-form";
 import Select from "react-select";
 import ErrorSvg from "../../dist/svg/error.svg";
@@ -56,6 +59,7 @@ function AddRadiologyService({ handleToggleCreateModal, refreshData }) {
 
     // const { onSubmit, methods } = useSubmitForm(
     //   REGISTER_URL,
+    //   editorRef,
     //   getResearches,
     //   setErrMsg,
     //   handleToggleCreateModal,
@@ -93,6 +97,8 @@ function AddRadiologyService({ handleToggleCreateModal, refreshData }) {
           price:+price,
           purchasePrice:+purchasePrice,
           partnerCode:partnerCode?partnerCode:null,
+
+  
           class: serviceType,
           additional: additionalData,
         }; 

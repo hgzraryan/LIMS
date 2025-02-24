@@ -1,4 +1,4 @@
-import  { useEffect} from "react";
+import React, { useEffect, useRef } from "react";
 import { Modal } from "react-bootstrap";
 import FeatherIcon from "feather-icons-react";
 
@@ -140,6 +140,7 @@ function AddOrganization({ handleToggleCreateModal, refreshData }) {
   );
   // const { onSubmit, methods } = useSubmitForm(
   //   REGISTER_ORGANIZATIONS,
+  //   editorRef,
   //   getOrganizations,
   //   setErrMsg,
   //   handleToggleCreateModal,

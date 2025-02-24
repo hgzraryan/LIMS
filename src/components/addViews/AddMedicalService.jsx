@@ -1,3 +1,4 @@
+import React, { useRef } from "react";
 import { Modal } from "react-bootstrap";
 import FeatherIcon from "feather-icons-react";
 
@@ -26,6 +27,7 @@ function AddMedicalService({ handleToggleCreateModal, refreshData }) {
     
     // const { onSubmit, methods } = useSubmitForm(
     //   REGISTER_URL,
+    //   editorRef,
     //   getResearches,
     //   setErrMsg,
     //   handleToggleCreateModal,

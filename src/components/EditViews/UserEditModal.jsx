@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Suspense} from "react";
+import React, { useState, useEffect, Suspense, useRef } from "react";
 import { Modal } from "react-bootstrap";
 import FeatherIcon from "feather-icons-react";
 import { Controller, Form, FormProvider, useForm } from "react-hook-form";
@@ -10,6 +10,7 @@ import {
   city_validation,
   street_validation,
   zipCode_validation,
+  additional_validation,
   emergencyContactName_validation,
 } from "../../utils/inputValidations";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
@@ -17,6 +18,7 @@ import { toast } from "react-toastify";
 import ErrorSvg from "../../dist/svg/error.svg";
 import CustomPhoneComponent from "../CustomPhoneComponent";
 import CustomDateComponent from "../CustomDateComponent";
+import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import "react-phone-number-input/style.css";
 import {
@@ -44,12 +46,12 @@ function UserEditModal({ user, setEditRow, getData }) {
   const [region, setRegion] = useState("");
   const [gender, setGender] = useState("");
   const [merried, setMerried] = useState("");
-  const [additionalData, setAdditionalData] = useState(user.additional)
   //console.log(user)
   const { trigger } = useForm();
   const methods = useForm({
     mode: "onChange",
   });
+  const [additionalData, setAdditionalData] = useState(user.additional)
 
   const animatedComponents = makeAnimated();
   const colourStyles = {
@@ -185,7 +187,7 @@ function UserEditModal({ user, setEditRow, getData }) {
         roles:!deepEqual(objToArrWithObjects(user?.roles),roles)?onRoleSelect(roles):null ,
         birthday:
           user?.birthday !== newDateOfBirthString ? newDateOfBirthString : null,
-          additionalData: additionalData!==user?.additionalData?.trim()?additionalData:null,
+          //additionalData: editorRef.current.getContent({ format: "text" }).trim()!==user?.additionalData?.trim()?editorRef.current.getContent({ format: "text" }):null,
 
       };
       // formData.append("text", JSON.stringify(newUser));

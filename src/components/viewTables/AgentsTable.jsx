@@ -246,9 +246,9 @@ function AgentsTable({
       <table className="table nowrap w-100 mb-5 dataTable no-footer" {...getTableProps()}>
       <thead>
         {headerGroups.map((headerGroup) => (
-          <tr {...headerGroup.getHeaderGroupProps()} key={'headerGroup'+headerGroup?.id}>
+          <tr {...headerGroup.getHeaderGroupProps()} key={headerGroup?.id}>
             {headerGroup.headers.map((column) => (
-              <th  {...column.getHeaderProps(column.getSortByToggleProps())} key={'column'+column?.id}>
+              <th  {...column.getHeaderProps(column.getSortByToggleProps())} key={column?.id}>
                     {column.id !== "selection" && (
                   <div className="d-flex justify-content-between ">
                       
@@ -296,15 +296,14 @@ function AgentsTable({
           <tbody {...getTableBodyProps()}>
             {rows.map(row => {
               prepareRow(row)
-              console.log(row)
               return (
-                <tr key={'row'+row?.id} {...row.getRowProps({
+                <tr key={row.id} {...row.getRowProps({
                   style: { width: '100%',cursor:'pointer' },
                   onClick: () => handleRowClick(row) // Attach onClick event handler  
                   
                 })}>
-                  {row.cells.map((cell,i) => {
-                    return <td key={i} {...cell.getCellProps({
+                  {row.cells.map(cell => {
+                    return <td key={cell?.id} {...cell.getCellProps({
                       style: cell.column.style // Apply custom style to the column cells
                     })}>{cell.render('Cell')}</td>
                   })}

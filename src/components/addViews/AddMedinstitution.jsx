@@ -1,4 +1,4 @@
-import  {  useState,useEffect } from 'react'
+import  { useRef, useState,useEffect } from 'react'
 import { REGISTER_MEDINSTITUTION } from '../../utils/constants';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import { Modal } from "react-bootstrap";
@@ -37,6 +37,7 @@ function AddMedinstitution({ handleToggleCreateModal,
     }, []);
     // const { onSubmit, methods } = useSubmitForm(
     //   REGISTER_AGENT,
+    //   editorRef,
     //   getAgents,
     //   setErrMsg,
     //   handleToggleCreateModal,

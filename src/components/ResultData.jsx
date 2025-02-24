@@ -343,7 +343,7 @@ useEffect(()=>{
                      prepareRow(row);
                      return (
                        <tr key={i} {...row.getRowProps()}>
-                         {row.cells.map((cell,i) => {
+                         {row.cells.map((cell) => {
                            return (
                              <td
                                {...cell.getCellProps()}
@@ -465,7 +465,7 @@ useEffect(()=>{
                      prepareRow(row);
                      return (
                        <tr key={i} {...row.getRowProps()}>
-                         {row.cells.map((cell,i) => {
+                         {row.cells.map((cell) => {
                            return (
                              <td
                                {...cell.getCellProps()}

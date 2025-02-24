@@ -41,6 +41,7 @@ function AddDoctor({ handleToggleCreateModal, refreshData }) {
   const imageMimeType = /image\/(png|jpg|jpeg)/i;
   const fileReader = new FileReader();
   const formData = new FormData();
+  const editorRef = useRef(null);
   const [errMsg, setErrMsg] = useState("");
   const [additionalData, setAdditionalData] = useState('')
   const [country, setCountry] = useState('')

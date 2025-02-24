@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useState } from 'react'
+import React, { Suspense, useEffect, useRef, useState } from 'react'
 import { DOCTORS_URL, MEDICALSERVICES_URL, PATIENTS_URL, REGISTER_DOCTORSVISITS } from '../../utils/constants';
 import { toast } from "react-toastify";
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
@@ -11,6 +11,7 @@ import "react-phone-number-input/style.css";
 import LoadingSpinner from '../LoadingSpinner';
 import makeAnimated from "react-select/animated";
 import CustomDateTimeComponent from '../CustomDateTimeComponent';
+import { Editor } from '@tinymce/tinymce-react';
 import moment from 'moment';
 import ReactQuillEditor from "../ReactQuillEditor";
 
@@ -44,7 +45,6 @@ function AddDoctorsVisit({
     const [enableSMS, setEnableSMS] = useState(true);
     const animatedComponents = makeAnimated();
     const [additionalData, setAdditionalData] = useState('')
-    const [selectedClient, setSelectedClient] = useState({})
 
     const colourStyles = {
       control: (styles, { isFocused, isSelected }) => ({
@@ -99,11 +99,6 @@ function AddDoctorsVisit({
       const methods = useForm({
         mode: "onChange",
       });
-      const onPatientSelect = (data) => {
-        console.log(data)
-        setSelectedClient((prev) => data);
-      };
-      
       const onDoctorSelect = (data) => {
         setDoctor((prev) => data.label);
       };
@@ -125,7 +120,7 @@ function AddDoctorsVisit({
         visitDate,medicalServices}) => {
         const newDoctorsVisit = {
           additional: additionalData,
-          clientId:client,
+          clientId:client?.value,
             doctor:doctor,
             medicalServices: medicalServices? medicalServices?.map((el) => el.value): null,
             visitDate:visitDate?moment(visitDate).format('YYYY-MM-DD HH:mm'):null,          
@@ -241,25 +236,20 @@ function AddDoctorsVisit({
                                       rules={{ required: true }}
                                       render={({ field }) => (
                                         <Select
-                                        {...field}
-                                        onChange={(val) => {
-                                          field.onChange(
-                                            val ? val.value : null
-                                          ); // Ensure you pass null when no patient is selected
-                                          onPatientSelect(val);
-                                        }}
-                                        value={patients.find(
-                                          (option) =>
-                                            option.patientId === selectedClient?.patientId
-                                        )}                                      
-                                        options={patients.map((client) => ({
-                                            value: client.patientId,
-                                            label: `${client?.patientId}․  ${client?.lastName} ${client?.firstName} ${client?.midName}`,
-                                            phone: client.contact.phone
-                                          }))
-                                        }
-                                        placeholder={"Ընտրել"}
-                                      />
+                                          {...field}
+                                          // onChange={(val) => {
+                                          //   field.onChange(
+                                          //     val ? val.value : null
+                                          //   ); // Ensure you pass null when no patient is selected
+                                          //   //onPatientSelect(val);
+                                          // }}                                         
+                                          options={patients.map((client) => ({
+                                              value: client.patientId,
+                                              label: `${client?.patientId}․  ${client?.lastName} ${client?.firstName} ${client?.midName}`,
+                                            }))
+                                          }
+                                          placeholder={"Ընտրել"}
+                                        />
                                       )}
                                     />
                                   </div>
@@ -340,7 +330,7 @@ function AddDoctorsVisit({
                             <div className="d-flex justify-content-between me-2 flex-column">
                                 <label>Կարճ հաղորդագրություն</label>
                                 <div>
-                                <input
+                                  <input
                                     type="checkbox"
                                     name="selectDoctorsVisit"
                                     checked={enableSMS}
@@ -349,7 +339,6 @@ function AddDoctorsVisit({
                                     }
                                     style={{ transform: "scale(1.5)",marginTop:'12px', marginLeft:'5px' }}
                                   />
-                                    <span className='ms-2'>{selectedClient.phone}</span>
                                 </div>
                                 </div>
                               </div>

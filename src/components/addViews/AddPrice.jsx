@@ -11,6 +11,7 @@ import {
   name_validation,
   price_validation,
   unit_validation,
+  currency_validation,
   desc_validation,
 } from "../../utils/inputValidations";
 import useSubmitForm from "../../hooks/useSubmitForm";
@@ -20,6 +21,7 @@ const REGISTER_URL = "/registerPrice";
 function AddPrice({ handleToggleCreateModal, getPrices,researchState }) {
   const [errMsg, setErrMsg] = useState("");
   const multiselectRef = useRef("");
+  const editorRef = useRef(null);
   const currencyRef = useRef(null);
   const additionalData={}
   //const additionalData=useRef('')
@@ -36,6 +38,7 @@ function AddPrice({ handleToggleCreateModal, getPrices,researchState }) {
   };
   const { onSubmit, methods } = useSubmitForm(
     REGISTER_URL,
+    editorRef,
     getPrices,
     setErrMsg,
     handleToggleCreateModal,

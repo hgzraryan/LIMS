@@ -1,5 +1,5 @@
-import React, { Suspense, useEffect, useState } from 'react'
-import { DOCTORS_URL, DOCTORSVISITS_URL, PATIENTS_URL, REGISTER_DOCTORSVISITS } from '../../utils/constants';
+import React, { Suspense, useEffect, useRef, useState } from 'react'
+import { DOCTORS_URL, PATIENTS_URL, REGISTER_DOCTORSVISITS } from '../../utils/constants';
 import { toast } from "react-toastify";
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import { Modal } from "react-bootstrap";
@@ -10,6 +10,7 @@ import Select from "react-select";
 import "react-phone-number-input/style.css";
 import LoadingSpinner from '../LoadingSpinner';
 import CustomDateTimeComponent from '../CustomDateTimeComponent';
+import { Editor } from '@tinymce/tinymce-react';
 import moment from 'moment';
 import { deleteNullProperties } from '../../utils/helper';
 import ReactQuillEditor from "../ReactQuillEditor";
@@ -68,12 +69,12 @@ function DoctorVisitEditModal({
             moment(visitDate).format('YYYY-MM-DD HH:mm')!== moment(doctorVisits?.visitDate).format('YYYY-MM-DD HH:mm')
             ?moment(visitDate).format('YYYY-MM-DD HH:mm')
             :null,          
-            additional: additionalData?.trim()!==doctorVisits?.additional?.trim()?additionalData:null,
+            additional: additionalData.trim()!==doctorVisits?.additional?.trim()?additionalData:null,
         }        
         const updatedFields = deleteNullProperties(updatedDoctorsVisit);
 
                 try {
-          const response = await axiosPrivate.put(DOCTORSVISITS_URL, { updatedFields, id: doctorVisits.doctorsVisitId }, {
+          const response = await axiosPrivate.put(REGISTER_DOCTORSVISITS, updatedFields, {
             headers: { "Content-Type": "application/json" },
             withCredentials: true,
           });

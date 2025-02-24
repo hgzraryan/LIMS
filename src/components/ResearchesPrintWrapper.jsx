@@ -4,7 +4,7 @@ import ReactToPrint from 'react-to-print';
 import {ComponentToPrintVisit} from './ComponentToPrintVisit';
 
 function ResearchesPrintWrapper({ value,currentClient,externalChecked=false }) {
-    let componentRef = useRef(null);
+    let componentRef = useRef(null); // 2.
     return (
       <div style={{ display: "flex" }}>
         <ReactToPrint

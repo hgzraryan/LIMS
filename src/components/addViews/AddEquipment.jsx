@@ -1,3 +1,4 @@
+import React, { useRef } from "react";
 import { Modal } from "react-bootstrap";
 import FeatherIcon from "feather-icons-react";
 
@@ -123,6 +124,7 @@ function AddEquipment({ handleToggleCreateModal, refreshData }) {
   );
   // const { onSubmit, methods } = useSubmitForm(
   //   REGISTER_EQUIPMENT,
+  //   editorRef,
   //   getEquipments,
   //   setErrMsg,
   //   handleToggleCreateModal

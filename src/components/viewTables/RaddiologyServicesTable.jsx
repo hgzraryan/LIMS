@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useMemo, useState } from "react";
 import ComponentToConfirm from "../ComponentToConfirm";
 import {
@@ -11,8 +10,13 @@ import {
 } from "react-table";
 import { Checkbox } from "../Checkbox";
 import FeatherIcon from "feather-icons-react/build/FeatherIcon";
+import { ColumnFilter } from "../ColumnFilter";
 import { BiSolidInfoCircle } from "react-icons/bi";
+import researchSvg from "../../../src/dist/img/research.svg";
 import "../../dist/css/data-table.css";
+import { Modal } from "react-bootstrap";
+import ResearchListEditModal from "../EditViews/ResearchListEditModal";
+import moment from "moment";
 import emptyTable from "../../dist/svg/emptyTable.svg";
 import { ROLES } from "../../utils/constants";
 import RadiologyServiceEditModal from "../EditViews/RadiologyServiceEditModal";
@@ -282,8 +286,8 @@ function RaddiologyServicesTable({
         handleDeleteItem={handleDeleteItem}
         selectedItemId={selectedItemId}
         confirmUserRef={confirmRef}
-        keyName={selectedItem.serviceName}
-        delId={selectedItem.radiologyServiceId}
+        keyName={selectedItem.researchName}
+        delId={selectedItem.researchListId}
       />
       <table
         className="table nowrap w-100 mb-5 dataTable no-footer"
@@ -291,9 +295,9 @@ function RaddiologyServicesTable({
       >
         <thead>
           {headerGroups.map((headerGroup) =>  (
-            <tr {...headerGroup.getHeaderGroupProps()} key={'headerGroup'+headerGroup?.id}>
+            <tr {...headerGroup.getHeaderGroupProps()} key={headerGroup?.id}>
               {headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps(column.getSortByToggleProps())} key={'column'+column?.id}>
+                <th {...column.getHeaderProps(column.getSortByToggleProps())} key={column?.id}>
                   {column.id !== "selection" && (
                     <div className="d-flex justify-content-between ">
                       <div>

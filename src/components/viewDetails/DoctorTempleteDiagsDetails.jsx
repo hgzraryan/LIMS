@@ -707,9 +707,9 @@ function DoctorTempleteDiagsDetails() {
                               >
                                 <thead>
                                   {headerGroups.map((headerGroup) => (
-                                    <tr {...headerGroup.getHeaderGroupProps()} key={'headerGroup'+headerGroup?.id}>
+                                    <tr {...headerGroup.getHeaderGroupProps()} key={headerGroup?.id}>
                                       {headerGroup.headers.map((column) => (
-                                        <th {...column.getHeaderProps()} key={'column'+column?.id}>
+                                        <th {...column.getHeaderProps()} key={column?.id}>
                                           {column.render("Header")}
                                         </th>
                                       ))}
@@ -721,10 +721,10 @@ function DoctorTempleteDiagsDetails() {
                                     prepareRow(row);
                                     return (
                                       <tr key={i} {...row.getRowProps()}>
-                                        {row.cells.map((cell,i) => {
+                                        {row.cells.map((cell) => {
                                           return (
                                             <td
-                                            key={i}
+                                            key={cell?.id}
                                               {...cell.getCellProps()}
                                               style={{
                                                 border: "1px solid black",

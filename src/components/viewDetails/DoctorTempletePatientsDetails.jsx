@@ -396,9 +396,9 @@ return (
           >
             <thead>
               {headerGroups1.map((headerGroup) => (
-                <tr {...headerGroup.getHeaderGroupProps()} key={'headerGroup'+headerGroup?.id}>
+                <tr {...headerGroup.getHeaderGroupProps()} key={headerGroup?.id}>
                   {headerGroup.headers.map((column) => (
-                    <th {...column.getHeaderProps()} key={'column'+column?.id}>
+                    <th {...column.getHeaderProps()} key={column?.id}>
                       {column.render("Header")}
                     </th>
                   ))}
@@ -410,10 +410,10 @@ return (
                 prepareRow1(row);
                 return (
                   <tr key={i} {...row.getRowProps()}>
-                    {row.cells.map((cell,i) => {
+                    {row.cells.map((cell) => {
                       return (
                         <td
-                        key={i}
+                        key={cell?.id}
                           {...cell.getCellProps()}
                           style={{ border: "1px solid black" }}
                         >
@@ -827,14 +827,14 @@ return (
                       <thead>
                         {headerGroups.map((headerGroup) => (
                           <tr
-                          key={'headerGroup'+headerGroup?.id}
+                          key={headerGroup?.id}
                             {...headerGroup.getHeaderGroupProps({
                               style: { width: "100%" },
                             })}
                           >
                             {headerGroup.headers.map((column) => (
                               <th
-                              key={'column'+column?.id}
+                              key={column?.id}
                                 {...column.getHeaderProps(
                                   column.getSortByToggleProps({
                                     style: column.style, // Apply custom style to the column header
@@ -892,15 +892,15 @@ return (
                             prepareRow(row);
                             return (
                               <tr
-                              key={'row'+row?.id}
+                              key={row?.id}
                                 {...row.getRowProps({
                                   style: { width: "100%" },
                                 })}
                               >
-                                {row.cells.map((cell,i) => {
+                                {row.cells.map((cell) => {
                                   return (
                                     <td
-                                    key={i}
+                                    key={cell?.id}
                                       {...cell.getCellProps({
                                         style: cell.column.style, // Apply custom style to the column cells
                                       })}
@@ -929,14 +929,14 @@ return (
                       <thead>
                         {headerGroups2.map((headerGroup) => (
                           <tr
-                          key={'headerGroup'+headerGroup?.id}
+                          key={headerGroup?.id}
                             {...headerGroup.getHeaderGroupProps({
                               style: { width: "100%" },
                             })}
                           >
                             {headerGroup.headers.map((column) => (
                               <th
-                              key={'column'+column?.id}
+                              key={column?.id}
                                 {...column.getHeaderProps(
                                   column.getSortByToggleProps({
                                     style: column.style, // Apply custom style to the column header
@@ -994,15 +994,15 @@ return (
                             prepareRow2(row);
                             return (
                               <tr
-                              key={'row'+row?.id}
+                              key={row?.id}
                                 {...row.getRowProps({
                                   style: { width: "100%" },
                                 })}
                               >
-                                {row.cells.map((cell,i) => {
+                                {row.cells.map((cell) => {
                                   return (
                                     <td
-                                    key={i}
+                                    key={cell?.id}
                                       {...cell.getCellProps({
                                         style: cell.column.style, // Apply custom style to the column cells
                                       })}

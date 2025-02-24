@@ -1,4 +1,4 @@
-import {  useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 
 function Tooth({ position, mode, toothNumber, disabled }) {
     const [teethComponents, setTeethComponents] = useState({});

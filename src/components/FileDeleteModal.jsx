@@ -65,7 +65,7 @@ function FileDeleteModal({deleteFileId,keyName,handleCloseModal,setDownloadFiles
                                 className="form-label"
                                 htmlFor="confirmUser"
                               >
-                                {`Հեռացման համար խնդրում ենք մուտքագրել 'remove' տեքստը`}
+                                {`Հեռացման համար խնդրում ենք մուտքագրել "remove" տեքստը`}
                               </label>
                               <input
                                 ref={confirmRef}

@@ -64,7 +64,7 @@ function RaddiologyServices() {
       setSelectedItemId,
       radiologyServices,
       setRadiologyServices,
-      "serviceName",
+      "researchName",
       refreshData 
     );
       //-------------------------PAGINATION---------------------------//  
@@ -72,7 +72,7 @@ function RaddiologyServices() {
   setCurrentPage(Number(pageNumber));
 }, [pageNumber]);
 const handlePageClick = ({ selected: selectedPage }) => {
-  navigate(`/setup/medicalServices/page/${selectedPage+1}`);
+  navigate(`/setup/radiologyServices/page/${selectedPage+1}`);
 }
 //--------------------------------------------------------------//
     //-------------------------

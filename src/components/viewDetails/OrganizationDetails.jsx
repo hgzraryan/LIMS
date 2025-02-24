@@ -462,9 +462,9 @@ function OrganizationDetails() {
                   >
                     <thead>
                       {headerGroups1.map((headerGroup) => (
-                        <tr key={'headerGroup'+headerGroup?.id} {...headerGroup.getHeaderGroupProps()}>
+                        <tr key={headerGroup?.id} {...headerGroup.getHeaderGroupProps()}>
                           {headerGroup.headers.map((column) => (
-                            <th key={'column'+column?.id} {...column.getHeaderProps()}>
+                            <th key={column?.id} {...column.getHeaderProps()}>
                               {column.render("Header")}
                             </th>
                           ))}
@@ -476,10 +476,10 @@ function OrganizationDetails() {
                         prepareRow1(row);
                         return (
                           <tr key={i} {...row.getRowProps()}>
-                            {row.cells.map((cell,i) => {
+                            {row.cells.map((cell) => {
                               return (
                                 <td
-                                key={i}
+                                key={cell?.id}
                                   {...cell.getCellProps()}
                                   style={{ border: "1px solid black" }}
                                 >
@@ -550,14 +550,14 @@ function OrganizationDetails() {
   <thead>
     {headerGroups.map((headerGroup) => (
       <tr
-      key={'headerGroup'+headerGroup?.id}
+      key={headerGroup?.id}
         {...headerGroup.getHeaderGroupProps({
           style: { width: "100%" },
         })}
       >
         {headerGroup.headers.map((column) => (
           <th
-          key={'column'+column?.id}
+          key={column?.id}
             {...column.getHeaderProps(
               column.getSortByToggleProps({
                 style: column.style, // Apply custom style to the column header
@@ -614,11 +614,11 @@ function OrganizationDetails() {
       {rows.map((row) => {
         prepareRow(row);
         return (
-          <tr key={'row'+row?.id}{...row.getRowProps({ style: { width: "100%" } })}>
-            {row.cells.map((cell,i) => {
+          <tr key={row?.id}{...row.getRowProps({ style: { width: "100%" } })}>
+            {row.cells.map((cell) => {
               return (
                 <td
-                key={i}
+                key={cell?.id}
                   {...cell.getCellProps({
                     style: cell.column.style, // Apply custom style to the column cells
                   })}

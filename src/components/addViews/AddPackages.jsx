@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
-import React, { Suspense, useEffect } from "react";
+import React, { Suspense, useEffect, useRef } from "react";
 import { Modal } from "react-bootstrap";
 import FeatherIcon from "feather-icons-react";
 
@@ -139,6 +139,7 @@ function PackagesTable({
   });
   // const { onSubmit, methods } = useSubmitForm(
   //   REGISTER_DIAGNOSTICS,
+  //   editorRef,
   //   getDiagnostics,
   //   setErrMsg,
   //   handleToggleCreateModal,

@@ -193,10 +193,10 @@ const { inputRef } = Barcode({
             >
               <thead>
                 {headerGroups.map((headerGroup) => (
-                  <tr {...headerGroup.getHeaderGroupProps()} key={'headerGroup'+headerGroup?.id}>
+                  <tr {...headerGroup.getHeaderGroupProps()} key={headerGroup?.id}>
                     {headerGroup.headers.map((column) => (
                       <th
-                      key={'column'+column?.id}
+                      key={column?.id}
                         {...column.getHeaderProps()}
                         style={{ border: "1px solid black" }}
                       >
@@ -213,10 +213,10 @@ const { inputRef } = Barcode({
                   prepareRow(row);
                   return (
                     <tr key={i} {...row.getRowProps()}>
-                      {row.cells.map((cell,i) => {
+                      {row.cells.map((cell) => {
                         return (
                           <td
-                          key={i}
+                          key={cell?.id}
                           {...cell.getCellProps()}
                           style={{ border: "1px solid black" }}
                           >

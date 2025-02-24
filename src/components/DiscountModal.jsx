@@ -1,4 +1,4 @@
-import  { Suspense, useState, useEffect} from "react";
+import  { Suspense, useState, useEffect, useRef } from "react";
 import { Form, FormProvider, useForm } from "react-hook-form";
 import { Modal } from "react-bootstrap";
 import { toast } from "react-toastify";
@@ -23,6 +23,7 @@ function DiscountModal({ discountData,setDiscountData,refreshData}) {
     const [errMsg, setErrMsg] = useState("");
     const [isLoading, setIsLoading] = useState(true);
     const axiosPrivate = useAxiosPrivate();
+    const editorRef = useRef(null);
 console.log(discounts)
     const methods = useForm({
       mode: "onChange",
@@ -50,6 +51,7 @@ console.log(discounts)
   }, [navigate]);
   // const { onSubmit, methods } = useSubmitForm(
   //   REGISTER_AGENT,
+  //   editorRef,
   //   getAgents,
   //   setErrMsg,
   //   handleToggleCreateModal,

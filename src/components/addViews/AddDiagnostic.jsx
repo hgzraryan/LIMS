@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect } from "react";
+import React, { Suspense, useEffect, useRef } from "react";
 import { Modal } from "react-bootstrap";
 import FeatherIcon from "feather-icons-react";
 
@@ -51,6 +51,7 @@ function AddDiagnostic({
   const location = useLocation();
   const axiosPrivate = useAxiosPrivate();
   const [errMsg, setErrMsg] = useState("");
+  const editorRef = useRef(null);
   const [patientId, setPatientId] = useState(null);
   const [organizationId, setOrganizationId] = useState(null);
   const [clientType, setClientType] = useState(null);
@@ -237,6 +238,7 @@ const onResearchSelect = (data) => {
   });
   // const { onSubmit, methods } = useSubmitForm(
   //   REGISTER_DIAGNOSTICS,
+  //   editorRef,
   //   getDiagnostics,
   //   setErrMsg,
   //   handleToggleCreateModal,

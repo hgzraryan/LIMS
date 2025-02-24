@@ -659,26 +659,6 @@ console.log(referrer === 'other')
                         </div>
                       </div>
                     </div>
-                          {isChild &&
-                          <>
-                                              <div className="separator-full"></div>
-
-                           <div className="card">
-                           <div className="card-body">
-                        <div className="modal-body">
-                          <div className="row gx-3">
-                            <div className="col-sm-6">
-                              <Input {...respPersonFullName_validation} />
-                            </div>
-                            <div className="col-sm-6">
-                              <Input {...respPersonPassport_validation} />
-                            </div>
-                          </div>
-                          </div>
-                          </div>
-                          </div>
-                          </>
-                          }
                     <div className="separator-full"></div>
                     <div className="card">
                           <div className="card-body">
@@ -735,7 +715,27 @@ console.log(referrer === 'other')
                           </div>
                           </div>
                         </div>
-                    
+                        <div className="separator-full"></div>
+                          {isChild &&
+                          <>
+                           <div className="card">
+                           <div className="card-body">
+                        <div className="modal-body">
+                          <div className="row gx-3">
+                            <div className="col-sm-6">
+                              <Input {...respPersonFullName_validation} />
+                            </div>
+                            <div className="col-sm-6">
+                              <Input {...respPersonPassport_validation} />
+                            </div>
+                          </div>
+                          </div>
+                          </div>
+                          </div>
+                            <div className="separator-full"></div>
+                          </>
+                          }
+
                     {addDiagnostic && (
                       <>
                         <div className="card">
@@ -1336,8 +1336,6 @@ console.log(referrer === 'other')
                         <div className="separator-full"></div>
                       </>
                     )}
-                                        <div className="separator-full"></div>
-
                     <div className="card">
                       <div className="card-header">
                         <a href="#">Հավելյալ տվյալներ</a>

@@ -321,9 +321,9 @@ function RefDoctorsTable({
       >
          <thead>
         {headerGroups.map((headerGroup) => (
-          <tr {...headerGroup.getHeaderGroupProps()} key={'headerGroup'+headerGroup?.id}>
+          <tr {...headerGroup.getHeaderGroupProps()} key={headerGroup?.id}>
             {headerGroup.headers.map((column) => (
-              <th  {...column.getHeaderProps(column.getSortByToggleProps())} key={'column'+column?.id}>
+              <th  {...column.getHeaderProps(column.getSortByToggleProps())} key={column?.id}>
                     {column.id !== "selection" && (
                   <div className="d-flex justify-content-between ">
                       
@@ -372,11 +372,11 @@ function RefDoctorsTable({
             {rows.map((row) => {
               prepareRow(row);
               return (
-                <tr {...row.getRowProps({ style: { width: "100%" } })} key={'row'+row?.id}>
-                  {row.cells.map((cell,i) => {
+                <tr {...row.getRowProps({ style: { width: "100%" } })} key={row?.id}>
+                  {row.cells.map((cell) => {
                     return (
                       <td
-                      key={i}
+                      key={cell?.id}
                         {...cell.getCellProps({
                           style: cell.column.style, // Apply custom style to the column cells
                         })}

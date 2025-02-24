@@ -389,11 +389,11 @@ function MedInstitutionsTable({
             {rows.map((row) => {
               prepareRow(row);
               return (
-                <tr key={'row'+row?.id} {...row.getRowProps({ style: { width: "100%" } })}>
-                  {row.cells.map((cell,i) => {
+                <tr key={row?.id} {...row.getRowProps({ style: { width: "100%" } })}>
+                  {row.cells.map((cell) => {
                     return (
                       <td
-                      key={i}
+                      key={cell?.id}
                         {...cell.getCellProps({
                           style: cell.column.style, // Apply custom style to the column cells
                         })}

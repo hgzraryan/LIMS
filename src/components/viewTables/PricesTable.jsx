@@ -184,9 +184,9 @@ function PricesTable({
     >
       <thead>
         {headerGroups.map((headerGroup) => (
-          <tr {...headerGroup.getHeaderGroupProps()} key={'headerGroup'+headerGroup?.id}>
+          <tr {...headerGroup.getHeaderGroupProps()} key={headerGroup?.id}>
             {headerGroup.headers.map((column) => (
-              <th {...column.getHeaderProps(column.getSortByToggleProps())} key={'column'+column?.id}>
+              <th {...column.getHeaderProps(column.getSortByToggleProps())} key={column?.id}>
                 <div>
                   {column.id !== "selection" && (
                     <>
@@ -233,10 +233,10 @@ function PricesTable({
           {rows.map((row) => {
             prepareRow(row);
             return (
-              <tr key={'row'+row?.id} {...row.getRowProps()}>
-                {row.cells.map((cell,i) => {
+              <tr key={row?.id} {...row.getRowProps()}>
+                {row.cells.map((cell) => {
                   return (
-                    <td key={i} {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                    <td key={cell?.id} {...cell.getCellProps()}>{cell.render("Cell")}</td>
                   );
                 })}
               </tr>

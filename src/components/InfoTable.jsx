@@ -79,15 +79,10 @@ function InfoTable() {
        <table className="table nowrap w-100 mb-5 dataTable no-footer">
                         <thead>
                           {headerGroups.map((headerGroup) => (
-                            <tr {...headerGroup.getHeaderGroupProps()} key={'headerGroup'+headerGroup?.id}>
+          <tr {...headerGroup.getHeaderGroupProps()} key={'headerGroup'+headerGroup?.id}>
                               {headerGroup.headers.map((column) => (
-                                <th
-                                key={'column'+column?.id}
-                                  //className="sorting"
-                                  {...column.getHeaderProps(
-                                    column.getSortByToggleProps()
-                                  )}
-                                >
+                                             <th  {...column.getHeaderProps(column.getSortByToggleProps())} key={'column'+column?.id}>
+
                                   {column.isSorted ? (
                                     column.isSortedDesc ? (
                                       <span className="sorting_asc"></span>
@@ -109,7 +104,7 @@ function InfoTable() {
                             {rows.map((row) => {
                               prepareRow(row);
                               return (
-                                <tr {...row.getRowProps()} key={'row'+row?.id}>
+                                <tr {...row.getRowProps()} key={row?.id}>
                                   {row.cells.map((cell,i) => {
                                     return (
                                       <td {...cell.getCellProps()} key={i}>

@@ -363,7 +363,7 @@ function EquipmentsTable({
             {rows.map(row => {
               prepareRow(row)
               return (
-                <tr {...row.getRowProps()} key={'row'+row?.id}>
+                <tr {...row.getRowProps()} key={row?.id}>
                   {row.cells.map((cell,i) => {
                     return <td {...cell.getCellProps()} key={i}>{cell.render('Cell')}</td>
                   })}
@@ -372,6 +372,7 @@ function EquipmentsTable({
             })}
              </tbody>
          ):dataReceived?(
+          <tbody >
           <tr className="table-placeholder">
             <td className="table-cell" >
               <div className="empty-normal">
@@ -382,6 +383,7 @@ function EquipmentsTable({
               </div>
             </td>
           </tr>
+          </tbody>
          ):<></>}           
       </table>
     

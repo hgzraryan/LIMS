@@ -482,9 +482,9 @@ function DoctorsVisitsTable({ doctorsVisits, setDoctorsVisits, refreshData,handl
       >
          <thead>
         {headerGroups.map((headerGroup) => (
-          <tr {...headerGroup.getHeaderGroupProps()} key={'headerGroup'+headerGroup?.id}>
+          <tr {...headerGroup.getHeaderGroupProps()} key={headerGroup?.id}>
             {headerGroup.headers.map((column) => (
-              <th  {...column.getHeaderProps(column.getSortByToggleProps())} key={'column'+column?.id}>
+              <th  {...column.getHeaderProps(column.getSortByToggleProps())} key={column?.id}>
                     {column.id !== "selection" && (
                   <div className="d-flex justify-content-between ">
                       
@@ -537,7 +537,7 @@ function DoctorsVisitsTable({ doctorsVisits, setDoctorsVisits, refreshData,handl
                 // const diagStatus = row.original.patientId > 'Cancelled';
                 return (
                   <tr
-                  key={'row'+row?.id}
+                  key={row?.id}
                     {...rowProps}
                     style={{
                       backgroundColor: visitStatus
@@ -546,9 +546,9 @@ function DoctorsVisitsTable({ doctorsVisits, setDoctorsVisits, refreshData,handl
                       borderStyle: "none !important",
                     }}
                   >
-                    {row.cells.map((cell,i) => {
+                    {row.cells.map((cell) => {
                       return (
-                        <td {...cell.getCellProps()} key={i}>{cell.render("Cell")}</td>
+                        <td {...cell.getCellProps()} key={cell?.id}>{cell.render("Cell")}</td>
                       );
                     })}
                   </tr>

@@ -296,7 +296,7 @@ function DoctorsTable({
               {rows.map((row) => {
                 prepareRow(row);
                 return (
-                  <tr {...row.getRowProps()} key={'row'+row?.id}>
+                  <tr {...row.getRowProps()} key={row?.id}>
                     {row.cells.map((cell,i) => {
                       return (
                         <td

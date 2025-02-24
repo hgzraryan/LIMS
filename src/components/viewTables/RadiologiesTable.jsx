@@ -16,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 import { BiSolidInfoCircle } from "react-icons/bi";
 import ProgressBar from "../ProgressBar";
 import moment from "moment";
+import DoctorVisitsPrint from "../views/DoctorVisitsPrint";
 import cancelledSvg from "../../dist/svg/cancelled.svg";
 import isActiveSvg from "../../dist/svg/isActive.svg";
 import posTerminalSvg from "../../dist/svg/posTerminal.svg";
@@ -466,7 +467,7 @@ function RadiologiesTable({
             refreshData={refreshData}
           />
         )}
-        {!!modalPrint && (
+         {!!modalPrint && (
           <RadiologyPrint
             modalPrint={modalPrint}
             setModalPrint={setModalPrint}
@@ -498,9 +499,9 @@ function RadiologiesTable({
         >
           <thead>
             {headerGroups.map((headerGroup) => (
-              <tr {...headerGroup.getHeaderGroupProps()} key={'headerGroup'+headerGroup?.id}>
+          <tr {...headerGroup.getHeaderGroupProps()} key={'headerGroup'+headerGroup?.id}>
                 {headerGroup.headers.map((column) => (
-                  <th {...column.getHeaderProps(column.getSortByToggleProps())} key={'column'+column?.id}>
+              <th  {...column.getHeaderProps(column.getSortByToggleProps())} key={'column'+column?.id}>
                     {column.id !== "selection" && (
                       <div className="d-flex justify-content-between ">
                         <div>
@@ -555,7 +556,7 @@ function RadiologiesTable({
                 // const diagStatus = row.original.patientId > 'Cancelled';
                 return (
                   <tr
-                  key = {'row'+row.original?.radiologyId}
+                  key = {row.original?.radiologyId}
                     {...rowProps}
                     style={{
                       backgroundColor: visitStatus
