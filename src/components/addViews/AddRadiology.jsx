@@ -1,5 +1,5 @@
-import React, { Suspense, useEffect, useRef, useState } from 'react'
-import { DOCTORS_URL, MEDICALSERVICES_URL, PATIENTS_URL, REGISTER_DOCTORSVISITS, REGISTER_RADIOLOGY } from '../../utils/constants';
+import React, { Suspense, useEffect, useState } from 'react'
+import { DOCTORS_URL, MEDICALSERVICES_URL, PATIENTS_URL, RADIOLOGYSERVICES_URL, REGISTER_RADIOLOGY } from '../../utils/constants';
 import { toast } from "react-toastify";
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import { Modal } from "react-bootstrap";
@@ -11,7 +11,6 @@ import "react-phone-number-input/style.css";
 import LoadingSpinner from '../LoadingSpinner';
 import makeAnimated from "react-select/animated";
 import CustomDateTimeComponent from '../CustomDateTimeComponent';
-import { Editor } from '@tinymce/tinymce-react';
 import moment from 'moment';
 import ReactQuillEditor from "../ReactQuillEditor";
 
@@ -19,9 +18,8 @@ function AddRadiology({ handleToggleCreateModal, refreshData }) {
     const [doctor,setDoctor] = useState([])
     const [doctors,setDoctors] = useState([])
     const [patients,setPatients] = useState([])
-    const [medicalServices,setMedicalServices] = useState([])
-    const [medicalServicePrice,setMedicalServicePrice] = useState(0)
-    const [notValidVisitDate,setNotValidVisitDate] = useState(false)
+    const [radiologyServices,setRadiologyServices] = useState([])
+    const [radiologyServicePrice,setRadiologyServicePrice] = useState(0)
     const [errMsg, setErrMsg] = useState("");
     const axiosPrivate = useAxiosPrivate();
     const [isLoading, setIsLoading] = useState(true);
@@ -70,8 +68,8 @@ function AddRadiology({ handleToggleCreateModal, refreshData }) {
               });
             })
             .then((resp) => {
-              axiosPrivate.get(MEDICALSERVICES_URL).then((resp) => {
-                setMedicalServices(resp?.data?.jsonString);
+              axiosPrivate.get(RADIOLOGYSERVICES_URL).then((resp) => {
+                setRadiologyServices(resp?.data?.jsonString);
                 setIsLoading(false);
               });
             })
@@ -105,13 +103,13 @@ function AddRadiology({ handleToggleCreateModal, refreshData }) {
 
       const onSubmit = methods.handleSubmit(async ({client,
         doctor,
-        visitDate,medicalServices}) => {
+        visitDate,radiologyServices}) => {
         const newDoctorsVisit = {
           additional: additionalData,
           clientId:client,
-            doctor:doctor,
-            medicalServices: medicalServices? medicalServices?.map((el) => el.value): null,
-            visitDate:visitDate?moment(visitDate).format('YYYY-MM-DD HH:mm'):null,          
+          doctor:doctor,
+          medicalServices: radiologyServices? radiologyServices?.map((el) => el.value): null,
+          visitDate:visitDate?moment(visitDate).format('YYYY-MM-DD HH:mm'):null,          
         }
         try {
           const response = await axiosPrivate.post(REGISTER_RADIOLOGY, newDoctorsVisit, {
@@ -122,7 +120,7 @@ function AddRadiology({ handleToggleCreateModal, refreshData }) {
           handleToggleCreateModal(false);
           refreshData();
           notify(
-            `Բժշկի այցելությունը ավելացված է`
+            `Այցելությունը ավելացված է`
           );
            // Send notification if enableSMS is checked
     if (!!enableSMS && response?.data?.doctorVisitId) {
@@ -144,7 +142,7 @@ function AddRadiology({ handleToggleCreateModal, refreshData }) {
         const calcPrice = data.reduce((acc,el)=>{
           return acc+=el.price
         },0)
-        setMedicalServicePrice(calcPrice)
+        setRadiologyServicePrice(calcPrice)
     
       };
       return (
@@ -360,7 +358,7 @@ function AddRadiology({ handleToggleCreateModal, refreshData }) {
                                 <div className="col-sm-12">
                                   <div className="d-flex justify-content-between me-2">
 
-                                  {medicalServicePrice ? <div className="d-flex flex-row-reverse" ><p style={{color:'#4eafcb',}}>Ընդհանուր արժեք։ <span style={{fontWeight:'bold'}} >{medicalServicePrice}</span>դր․</p></div>:''}
+                                  {radiologyServices ? <div className="d-flex flex-row-reverse" ><p style={{color:'#4eafcb',}}>Ընդհանուր արժեք։ <span style={{fontWeight:'bold'}} >{radiologyServicePrice}</span>դր․</p></div>:''}
 
                                     <label
                                       className="form-label"
@@ -369,7 +367,7 @@ function AddRadiology({ handleToggleCreateModal, refreshData }) {
                                     >
                                       Ընտրել ծառայությունը
                                     </label>
-                                    {methods.formState.errors.medicalServices && (
+                                    {methods.formState.errors.radiologyServices && (
                                       <span className="error text-red">
                                         <span>
                                           <img src={ErrorSvg} alt="errorSvg" />
@@ -380,7 +378,7 @@ function AddRadiology({ handleToggleCreateModal, refreshData }) {
                                   </div>
                                   <div className="form-control">
                                   <Controller
-                                    name="medicalServices"
+                                    name="radiologyServices"
                                     control={methods.control}
                                     isClearable={true}
                                     defaultValue={null}
@@ -392,9 +390,9 @@ function AddRadiology({ handleToggleCreateModal, refreshData }) {
                                           isMulti
                                           components={animatedComponents}
                                           closeMenuOnSelect={false}
-                                          options={medicalServices.map((res) => ({
-                                            value: res.medServiceId,
-                                            label: `${res?.medServiceId}. ${res?.serviceName}`,
+                                          options={radiologyServices.map((res) => ({
+                                            value: res.radiologyServiceId,
+                                            label: `${res?.radiologyServiceId}. ${res?.serviceName}`,
                                             price: res?.price
                                           }))}
                                           // styles={colourStyles}
