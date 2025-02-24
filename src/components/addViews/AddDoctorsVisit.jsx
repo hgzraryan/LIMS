@@ -45,6 +45,7 @@ function AddDoctorsVisit({
     const [enableSMS, setEnableSMS] = useState(true);
     const animatedComponents = makeAnimated();
     const [additionalData, setAdditionalData] = useState('')
+    const [selectedClient, setSelectedClient] = useState({})
 
     const colourStyles = {
       control: (styles, { isFocused, isSelected }) => ({
@@ -73,29 +74,28 @@ function AddDoctorsVisit({
       }),
     };
     useEffect(() => {
+        const fetchData = async () => {
+          try {
+            const patientsResp = await axiosPrivate.get(PATIENTS_URL);
+            setPatients(patientsResp?.data?.jsonString);
+    
+            const doctorsResp = await axiosPrivate.get(DOCTORS_URL);
+            setDoctors(doctorsResp?.data?.jsonString);
+    
+            const medicalServicesResp = await axiosPrivate.get(MEDICALSERVICES_URL);
+            setMedicalServices(medicalServicesResp?.data?.jsonString);
+    
+            setIsLoading(false);
+          } catch (err) {
+            console.log(err);
+            //navigate("/login", { state: { from: location }, replace: true });
+          }
+        };
         setTimeout(() => {
-          axiosPrivate
-            .get(DOCTORS_URL)
-            .then((resp) => {
-              setDoctors(resp?.data?.jsonString);
-              setIsLoading(false);
-            }).then((resp) => {
-              axiosPrivate.get(PATIENTS_URL).then((resp) => {
-                setPatients(resp?.data?.jsonString);
-                setIsLoading(false);
-              });
-            })
-            .then((resp) => {
-              axiosPrivate.get(MEDICALSERVICES_URL).then((resp) => {
-                setMedicalServices(resp?.data?.jsonString);
-                setIsLoading(false);
-              });
-            })
-            .catch((err) => {
-              console.log(err);
-            });
+          fetchData();
         }, 500);
       }, []);
+
       const methods = useForm({
         mode: "onChange",
       });
@@ -158,6 +158,10 @@ function AddDoctorsVisit({
         },0)
         setMedicalServicePrice(calcPrice)
     
+      };
+      const onPatientSelect = (data) => {
+        console.log(data)
+        setSelectedClient((prev) => data);
       };
       return (
         <Modal
@@ -236,20 +240,25 @@ function AddDoctorsVisit({
                                       rules={{ required: true }}
                                       render={({ field }) => (
                                         <Select
-                                          {...field}
-                                          // onChange={(val) => {
-                                          //   field.onChange(
-                                          //     val ? val.value : null
-                                          //   ); // Ensure you pass null when no patient is selected
-                                          //   //onPatientSelect(val);
-                                          // }}                                         
-                                          options={patients.map((client) => ({
-                                              value: client.patientId,
-                                              label: `${client?.patientId}․  ${client?.lastName} ${client?.firstName} ${client?.midName}`,
-                                            }))
-                                          }
-                                          placeholder={"Ընտրել"}
-                                        />
+                                        {...field}
+                                        onChange={(val) => {
+                                          field.onChange(
+                                            val ? val.value : null
+                                          ); // Ensure you pass null when no patient is selected
+                                          onPatientSelect(val);
+                                        }}
+                                        value={patients.find(
+                                          (option) =>
+                                            option.patientId === selectedClient?.patientId
+                                        )}                                      
+                                        options={patients.map((client) => ({
+                                            value: client.patientId,
+                                            label: `${client?.patientId}․  ${client?.lastName} ${client?.firstName} ${client?.midName}`,
+                                            phone: client.contact.phone
+                                          }))
+                                        }
+                                        placeholder={"Ընտրել"}
+                                      />
                                       )}
                                     />
                                   </div>
@@ -339,6 +348,7 @@ function AddDoctorsVisit({
                                     }
                                     style={{ transform: "scale(1.5)",marginTop:'12px', marginLeft:'5px' }}
                                   />
+                                    <span className='ms-2'>{selectedClient.phone}</span>
                                 </div>
                                 </div>
                               </div>

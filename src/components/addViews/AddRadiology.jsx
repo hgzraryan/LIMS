@@ -54,30 +54,29 @@ function AddRadiology({ handleToggleCreateModal, refreshData }) {
         },
       }),
     };
-    useEffect(() => {
-        setTimeout(() => {
-          axiosPrivate
-            .get(DOCTORS_URL)
-            .then((resp) => {
-              setDoctors(resp?.data?.jsonString);
-              setIsLoading(false);
-            }).then((resp) => {
-              axiosPrivate.get(PATIENTS_URL).then((resp) => {
-                setPatients(resp?.data?.jsonString);
+     useEffect(() => {
+            const fetchData = async () => {
+              try {
+                const patientsResp = await axiosPrivate.get(PATIENTS_URL);
+                setPatients(patientsResp?.data?.jsonString);
+        
+                const doctorsResp = await axiosPrivate.get(DOCTORS_URL);
+                setDoctors(doctorsResp?.data?.jsonString);
+        
+                const radiologyServicesResp = await axiosPrivate.get(RADIOLOGYSERVICES_URL);
+                setRadiologyServices(radiologyServicesResp?.data?.jsonString);
+        
                 setIsLoading(false);
-              });
-            })
-            .then((resp) => {
-              axiosPrivate.get(RADIOLOGYSERVICES_URL).then((resp) => {
-                setRadiologyServices(resp?.data?.jsonString);
-                setIsLoading(false);
-              });
-            })
-            .catch((err) => {
-              console.log(err);
-            });
-        }, 500);
-      }, []);
+              } catch (err) {
+                console.log(err);
+                //navigate("/login", { state: { from: location }, replace: true });
+              }
+            };
+            setTimeout(() => {
+              fetchData();
+            }, 500);
+          }, []);
+  
       const methods = useForm({
         mode: "onChange",
       });
@@ -137,7 +136,7 @@ function AddRadiology({ handleToggleCreateModal, refreshData }) {
           }
         }
       }); 
-      const onMedServiceSelect = (data) => {
+      const onRadServiceSelect = (data) => {
         console.log(data);
         const calcPrice = data.reduce((acc,el)=>{
           return acc+=el.price
@@ -358,8 +357,8 @@ function AddRadiology({ handleToggleCreateModal, refreshData }) {
                                 <div className="col-sm-12">
                                   <div className="d-flex justify-content-between me-2">
 
-                                  {radiologyServices ? <div className="d-flex flex-row-reverse" ><p style={{color:'#4eafcb',}}>Ընդհանուր արժեք։ <span style={{fontWeight:'bold'}} >{radiologyServicePrice}</span>դր․</p></div>:''}
 
+                                  {radiologyServicePrice ? <div className="d-flex flex-row-reverse" ><p style={{color:'#4eafcb',}}>Ընդհանուր արժեք։ <span style={{fontWeight:'bold'}} >{radiologyServicePrice}</span>դր․</p></div>:''}
                                     <label
                                       className="form-label"
                                       htmlFor="research"
@@ -398,10 +397,10 @@ function AddRadiology({ handleToggleCreateModal, refreshData }) {
                                           // styles={colourStyles}
                                           menuPortalTarget={document.body} 
                                           styles={{ ...colourStyles,menuPortal: base => ({ ...base, zIndex: 9999 }) }}
-                                          placeholder={"Բժշկական ծառայություններ"}
+                                          placeholder={"Ծառայություններ"}
                                           onChange={(val) => {
                                             field.onChange(val);
-                                            onMedServiceSelect(val);
+                                            onRadServiceSelect(val);
                                           }}
                                           value={field.value}
                                         />
