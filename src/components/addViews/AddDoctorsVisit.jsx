@@ -118,9 +118,10 @@ function AddDoctorsVisit({
       const onSubmit = methods.handleSubmit(async ({client,
         doctor,
         visitDate,medicalServices}) => {
+          console.log(client)
         const newDoctorsVisit = {
           additional: additionalData,
-          clientId:client?.value,
+          clientId:client,
             doctor:doctor,
             medicalServices: medicalServices? medicalServices?.map((el) => el.value): null,
             visitDate:visitDate?moment(visitDate).format('YYYY-MM-DD HH:mm'):null,          
