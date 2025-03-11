@@ -62,8 +62,8 @@ function ExportData({handleToggleExportModal,toggleExport,section,refDoctors=[]}
       
       const onSubmit = methods.handleSubmit(async ({dates,refDoctor}) => {
         const newReportDates = {        
-          startDate:dates.startDate?moment(dates.startDate).format('YYYY-MM-DD'):null,
-          endDate:dates.endDate?moment(dates.endDate).format('YYYY-MM-DD'):null,  
+          startDate:dates?.startDate?moment(dates?.startDate).format('YYYY-MM-DD'):null,
+          endDate:dates?.endDate?moment(dates?.endDate).format('YYYY-MM-DD'):null,  
           refDoctor:refDoctor?refDoctor.map((el) => el.id):null  
         }
         const updatedFields = deleteNullProperties(newReportDates);
@@ -110,18 +110,18 @@ function ExportData({handleToggleExportModal,toggleExport,section,refDoctors=[]}
             console.log(formatedData)        
             exportData = formatedData.map(item => ({
           ...item,
-          diagnosticsId:item.diagnosticsId,
-          researchList: item.researchList.join(',\n '),
-          createdAt:moment(item.createdAt).format('DD-MM-YYYY HH:mm'),
-          generationDate:moment(item.generationDate).format('DD-MM-YYYY HH:mm'),
-          updatedAt:moment(item.updatedAt).format('DD-MM-YYYY HH:mm'),
-          clientDob:moment(item.clientDob).format('DD-MM-YYYY'),
-          clientGender:item.clientGender==="Male"?'Արական':item.clientGender==="Female"?'իգական':'',
-          diagStatus:item.diagStatus==="Active"?'Ակտիվ':item.diagStatus==="Cancelled"?'Չեղարկված':'',
-          class:item.class==="Internal"?'Ներքին':item.class==="External"?'Արտաքին':'',
+          diagnosticsId:item?.diagnosticsId,
+          researchList: item?.researchList.join(',\n '),
+          createdAt:moment(item?.createdAt).format('DD-MM-YYYY HH:mm'),
+          generationDate:moment(item?.generationDate).format('DD-MM-YYYY HH:mm'),
+          updatedAt:moment(item?.updatedAt).format('DD-MM-YYYY HH:mm'),
+          clientDob:moment(item?.clientDob).format('DD-MM-YYYY'),
+          clientGender:item?.clientGender==="Male"?'Արական':item?.clientGender==="Female"?'իգական':'',
+          diagStatus:item?.diagStatus==="Active"?'Ակտիվ':item?.diagStatus==="Cancelled"?'Չեղարկված':'',
+          class:item?.class==="Internal"?'Ներքին':item?.class==="External"?'Արտաքին':'',
           internalStatus:item?.internalStatus==="Approval"?'Ընդունված':item?.internalStatus==="Delayed"?"Հետաձգված":item?.internalStatus==="Generated"?"Ստեղծված":item?.internalStatus==="Other"?"Այլ":null,
           externalStatus:item?.externalStatus==="Approval"?'Ընդունված':item?.externalStatus==="Delayed"?"Հետաձգված":item?.externalStatus==="Generated"?"Ստեղծված":item?.externalStatus==="Other"?"Այլ":null,
-          clientType:item.clientType==="patient"?'Այցելու':item.clientType==="organization"?'Պատվիրատու':'',
+          clientType:item?.clientType==="patient"?'Այցելու':item?.clientType==="organization"?'Պատվիրատու':'',
           paymentDate:item?.paymentDate?moment(item?.paymentDate).format('DD-MM-YYYY HH:mm'):null,
           diagnosisDate:item?.diagnosisDate?moment(item?.diagnosisDate).format('DD-MM-YYYY HH:mm'):null,
           statusBoard:null
@@ -171,54 +171,54 @@ function ExportData({handleToggleExportModal,toggleExport,section,refDoctors=[]}
   
     }else if(section === 'patients'){
         exportData = exportData.map(el => ({ 
-            firstName:el.firstName,
-            lastName:el.lastName,
-            midName:el.midName,
-            patientId:el.patientId,
-            age:el.age,
-            dateOfBirth:moment(el.dateOfBirth).format('DD-MM-YYYY'),
-            createdAt:moment(el.createdAt).format('DD-MM-YYYY HH:mm'),
-            updatedAt:moment(el.updatedAt).format('DD-MM-YYYY HH:mm'),
-            gender:el.gender==="Male"?'Արական':el.gender==="Female"?'իգական':'',
-            email:el.contact.email,
-            phone:el.contact.phone,
-            passport:el.contact.passport,
-            city:el.contact.address.city,
-            country:el.contact.address.country,
-            state:el.contact.address.state,
-            street:el.contact.address.street,
-            zipCode:el.contact.address.zipCode
+            firstName:el?.firstName,
+            lastName:el?.lastName,
+            midName:el?.midName,
+            patientId:el?.patientId,
+            age:el?.age,
+            dateOfBirth:moment(el?.dateOfBirth).format('DD-MM-YYYY'),
+            createdAt:moment(el?.createdAt).format('DD-MM-YYYY HH:mm'),
+            updatedAt:moment(el?.updatedAt).format('DD-MM-YYYY HH:mm'),
+            gender:el?.gender==="Male"?'Արական':el?.gender==="Female"?'իգական':'',
+            email:el?.contact?.email,
+            phone:el?.contact?.phone,
+            passport:el?.contact?.passport,
+            city:el?.contact?.address?.city,
+            country:el?.contact?.address?.country,
+            state:el?.contact?.address?.state,
+            street:el?.contact?.address?.street,
+            zipCode:el?.contact?.address?.zipCode
             
         }));
     }else if(section === 'diagnostics' && diagExport==='researches'){
-      exportData = exportData.map(el => ({ 
-        id:el._id,
-        count:el.count,
-        researchName:el.researchName
+      exportData = exportData?.map(el => ({ 
+        id:el?._id,
+        count:el?.count,
+        researchName:el?.researchName
           
       }));
   }else if(section === 'doctorVisits'){
-        exportData = exportData.map(el => ({      
+        exportData = exportData?.map(el => ({      
             ...el,
-            clientDob:moment(el.clientDob).format('DD-MM-YYYY'),
-            createdAt:moment(el.createdAt).format('DD-MM-YYYY HH:mm'),
-            updatedAt:moment(el.updatedAt).format('DD-MM-YYYY HH:mm'),
-            visitDate:moment(el.visitDate).format('DD-MM-YYYY HH:mm'),
-            paymentDate:moment(el.paymentDate ).format('DD-MM-YYYY HH:mm'),
-            clientGender:el.clientGender==="Male"?'Արական':el.clientGender==="Female"?'իգական':''
+            clientDob:moment(el?.clientDob).format('DD-MM-YYYY'),
+            createdAt:moment(el?.createdAt).format('DD-MM-YYYY HH:mm'),
+            updatedAt:moment(el?.updatedAt).format('DD-MM-YYYY HH:mm'),
+            visitDate:moment(el?.visitDate).format('DD-MM-YYYY HH:mm'),
+            paymentDate:moment(el?.paymentDate ).format('DD-MM-YYYY HH:mm'),
+            clientGender:el?.clientGender==="Male"?'Արական':el?.clientGender==="Female"?'իգական':''
             
         }));
     }else if(section === 'notifications'){
-      exportData = exportData.map(el => ({      
+      exportData = exportData?.map(el => ({      
           ...el,
-          createdAt:moment(el.createdAt).format('DD-MM-YYYY HH:mm'),
-          updatedAt:moment(el.updatedAt).format('DD-MM-YYYY HH:mm'),          
+          createdAt:moment(el?.createdAt).format('DD-MM-YYYY HH:mm'),
+          updatedAt:moment(el?.updatedAt).format('DD-MM-YYYY HH:mm'),          
       }));
     }else if(section === 'researchList'){
-      exportData = exportData.map(el => ({      
+      exportData = exportData?.map(el => ({      
           ...el,
-          createdAt:moment(el.createdAt).format('DD-MM-YYYY HH:mm'),
-          updatedAt:moment(el.updatedAt).format('DD-MM-YYYY HH:mm'),          
+          createdAt:moment(el?.createdAt).format('DD-MM-YYYY HH:mm'),
+          updatedAt:moment(el?.updatedAt).format('DD-MM-YYYY HH:mm'),          
       }));
   }
         const workBook = utils.book_new()
